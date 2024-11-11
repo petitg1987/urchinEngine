@@ -5,8 +5,8 @@
 using namespace urchin;
 
 void GJKAlgorithmTest::identicalAABBox() {
-    AABBox aabbox1(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
-    AABBox aabbox2(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
+    AABBox aabbox1(Point3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
+    AABBox aabbox2(Point3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(aabbox1, aabbox2);
 
@@ -14,8 +14,8 @@ void GJKAlgorithmTest::identicalAABBox() {
 }
 
 void GJKAlgorithmTest::separateAABBox() {
-    AABBox aabbox1(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
-    AABBox aabbox2(Point3<float>(-1.1f, 0.0, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
+    AABBox aabbox1(Point3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
+    AABBox aabbox2(Point3(-1.1f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(aabbox1, aabbox2);
 
@@ -27,8 +27,8 @@ void GJKAlgorithmTest::separateAABBox() {
 }
 
 void GJKAlgorithmTest::overlapAABBox() {
-    AABBox aabbox1(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
-    AABBox aabbox2(Point3<float>(-0.5f, 0.0, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
+    AABBox aabbox1(Point3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
+    AABBox aabbox2(Point3(-0.5f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(aabbox1, aabbox2);
 
@@ -36,8 +36,8 @@ void GJKAlgorithmTest::overlapAABBox() {
 }
 
 void GJKAlgorithmTest::identicalOBBox() {
-    OBBox obbox1(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
-    OBBox obbox2(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    OBBox obbox1(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    OBBox obbox2(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(obbox1, obbox2);
 
@@ -45,8 +45,8 @@ void GJKAlgorithmTest::identicalOBBox() {
 }
 
 void GJKAlgorithmTest::separateEdgeOBBox() {
-    OBBox obbox1(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
-    OBBox obbox2(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(3.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    OBBox obbox1(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    OBBox obbox2(Vector3(1.0f, 1.0f, 1.0f), Point3(3.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(obbox1, obbox2);
 
@@ -58,20 +58,20 @@ void GJKAlgorithmTest::separateEdgeOBBox() {
 }
 
 void GJKAlgorithmTest::separateCornerOBBox() {
-    OBBox obbox1(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::fromAxisAngle(Vector3<float>(0.245f, 0.769f, -0.59f), 0.987859f));
-    OBBox obbox2(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(3.0f, 0.0f, 0.0f), Quaternion<float>());
+    OBBox obbox1(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 0.0f, 0.0f), Quaternion<float>::fromAxisAngle(Vector3(0.245f, 0.769f, -0.59f), 0.987859f));
+    OBBox obbox2(Vector3(1.0f, 1.0f, 1.0f), Point3(3.0f, 0.0f, 0.0f), Quaternion<float>());
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(obbox1, obbox2);
 
     AssertHelper::assertTrue(!result.isCollide());
     AssertHelper::assertFloatEquals(result.getSeparatingDistance(), 0.26794919243f);
-    AssertHelper::assertPoint3FloatEquals(result.getClosestPointA(), Point3<float>(1.73205080757f, 0.0f, 0.0f));
-    AssertHelper::assertPoint3FloatEquals(result.getClosestPointB(), Point3<float>(2.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(result.getClosestPointA(), Point3(1.73205080757f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(result.getClosestPointB(), Point3(2.0f, 0.0f, 0.0f));
 }
 
 void GJKAlgorithmTest::overlapOnEdgeOBBox() {
-    OBBox obbox1(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
-    OBBox obbox2(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    OBBox obbox1(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    OBBox obbox2(Vector3(1.0f, 1.0f, 1.0f), Point3(2.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(obbox1, obbox2);
 
@@ -80,12 +80,12 @@ void GJKAlgorithmTest::overlapOnEdgeOBBox() {
 
 void GJKAlgorithmTest::identicalBox() {
     std::vector<Point3<float>> obbPoints1 = {
-            Point3<float>(-0.3f, 1.0f, 0.0f), Point3<float>(0.2f, 0.0f, 0.0f), Point3<float>(-0.3f, -1.0f, 0.0f), Point3<float>(-0.8f, 0.0f, 0.0f),
-            Point3<float>(-0.3f, 1.0f, -1.0f), Point3<float>(0.2f, 0.0f, -1.0f), Point3<float>(-0.3f, -1.0f, -1.0f), Point3<float>(-0.8f, 0.0f, -1.0f)
+            Point3(-0.3f, 1.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(-0.3f, -1.0f, 0.0f), Point3(-0.8f, 0.0f, 0.0f),
+            Point3(-0.3f, 1.0f, -1.0f), Point3(0.2f, 0.0f, -1.0f), Point3(-0.3f, -1.0f, -1.0f), Point3(-0.8f, 0.0f, -1.0f)
     };
     std::vector<Point3<float>> obbPoints2 = {
-            Point3<float>(-0.3f, 1.0f, 0.0f), Point3<float>(0.2f, 0.0f, 0.0f), Point3<float>(-0.3f, -1.0f, 0.0f), Point3<float>(-0.8f, 0.0f, 0.0f),
-            Point3<float>(-0.3f, 1.0f, -1.0f), Point3<float>(0.2f, 0.0f, -1.0f), Point3<float>(-0.3f, -1.0f, -1.0f), Point3<float>(-0.8f, 0.0f, -1.0f)
+            Point3(-0.3f, 1.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(-0.3f, -1.0f, 0.0f), Point3(-0.8f, 0.0f, 0.0f),
+            Point3(-0.3f, 1.0f, -1.0f), Point3(0.2f, 0.0f, -1.0f), Point3(-0.3f, -1.0f, -1.0f), Point3(-0.8f, 0.0f, -1.0f)
     };
     ConvexHull3D ch1(obbPoints1);
     ConvexHull3D ch2(obbPoints2);
@@ -97,12 +97,12 @@ void GJKAlgorithmTest::identicalBox() {
 
 void GJKAlgorithmTest::separateBox() {
     std::vector<Point3<float>> aabbPoints = {
-            Point3<float>(0.0f, 1.0f, 0.0f), Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(1.0f, -1.0f, 0.0f), Point3<float>(0.0f, -1.0f, 0.0f),
-            Point3<float>(0.0f, 1.0f, -1.0f), Point3<float>(1.0f, 1.0f, -1.0f), Point3<float>(1.0f, -1.0f, -1.0f), Point3<float>(0.0f, -1.0f, -1.0f)
+            Point3(0.0f, 1.0f, 0.0f), Point3(1.0f, 1.0f, 0.0f), Point3(1.0f, -1.0f, 0.0f), Point3(0.0f, -1.0f, 0.0f),
+            Point3(0.0f, 1.0f, -1.0f), Point3(1.0f, 1.0f, -1.0f), Point3(1.0f, -1.0f, -1.0f), Point3(0.0f, -1.0f, -1.0f)
     };
     std::vector<Point3<float>> obbPoints = {
-            Point3<float>(-0.6f, 1.0f, 0.0f), Point3<float>(-0.1f, 0.0f, 0.0f), Point3<float>(-0.6f, -1.0f, 0.0f), Point3<float>(-1.1f, 0.0f, 0.0f),
-            Point3<float>(-0.6f, 1.0f, -1.0f), Point3<float>(-0.1f, 0.0f, -1.0f), Point3<float>(-0.6f, -1.0f, -1.0f), Point3<float>(-1.1f, 0.0f, -1.0f)
+            Point3(-0.6f, 1.0f, 0.0f), Point3(-0.1f, 0.0f, 0.0f), Point3(-0.6f, -1.0f, 0.0f), Point3(-1.1f, 0.0f, 0.0f),
+            Point3(-0.6f, 1.0f, -1.0f), Point3(-0.1f, 0.0f, -1.0f), Point3(-0.6f, -1.0f, -1.0f), Point3(-1.1f, 0.0f, -1.0f)
     };
     ConvexHull3D ch1(aabbPoints);
     ConvexHull3D ch2(obbPoints);
@@ -120,12 +120,12 @@ void GJKAlgorithmTest::separateBox() {
 
 void GJKAlgorithmTest::cornerInsideBox() {
     std::vector<Point3<float>> aabbPoints = {
-            Point3<float>(0.0f, 1.0f, 0.0f), Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(1.0f, -1.0f, 0.0f), Point3<float>(0.0f, -1.0f, 0.0f),
-            Point3<float>(0.0f, 1.0f, -1.0f), Point3<float>(1.0f, 1.0f, -1.0f), Point3<float>(1.0f, -1.0f, -1.0f), Point3<float>(0.0f, -1.0f, -1.0f)
+            Point3(0.0f, 1.0f, 0.0f), Point3(1.0f, 1.0f, 0.0f), Point3(1.0f, -1.0f, 0.0f), Point3(0.0f, -1.0f, 0.0f),
+            Point3(0.0f, 1.0f, -1.0f), Point3(1.0f, 1.0f, -1.0f), Point3(1.0f, -1.0f, -1.0f), Point3(0.0f, -1.0f, -1.0f)
     };
     std::vector<Point3<float>> obbPoints = {
-            Point3<float>(-0.3f, 1.0f, 0.0f), Point3<float>(0.2f, 0.0f, 0.0f), Point3<float>(-0.3f, -1.0f, 0.0f), Point3<float>(-0.8f, 0.0f, 0.0f),
-            Point3<float>(-0.3f, 1.0f, -1.0f), Point3<float>(0.2f, 0.0f, -1.0f), Point3<float>(-0.3f, -1.0f, -1.0f), Point3<float>(-0.8f, 0.0f, -1.0f)
+            Point3(-0.3f, 1.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(-0.3f, -1.0f, 0.0f), Point3(-0.8f, 0.0f, 0.0f),
+            Point3(-0.3f, 1.0f, -1.0f), Point3(0.2f, 0.0f, -1.0f), Point3(-0.3f, -1.0f, -1.0f), Point3(-0.8f, 0.0f, -1.0f)
     };
     ConvexHull3D ch1(aabbPoints);
     ConvexHull3D ch2(obbPoints);
@@ -137,12 +137,12 @@ void GJKAlgorithmTest::cornerInsideBox() {
 
 void GJKAlgorithmTest::faceInsideTrapeze() {
     std::vector<Point3<float>> trapezePoints1 = {
-            Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f), Point3<float>(0.0f, 3.0f, 0.0f), Point3<float>(0.0f, 1.0f, 0.0f),
-            Point3<float>(1.0f, 0.0f, -1.0f), Point3<float>(3.0f, 0.0f, -1.0f), Point3<float>(0.0f, 3.0f, -1.0f), Point3<float>(0.0f, 1.0f, -1.0f),
+            Point3(1.0f, 0.0f, 0.0f), Point3(3.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f), Point3(0.0f, 1.0f, 0.0f),
+            Point3(1.0f, 0.0f, -1.0f), Point3(3.0f, 0.0f, -1.0f), Point3(0.0f, 3.0f, -1.0f), Point3(0.0f, 1.0f, -1.0f),
     };
     std::vector<Point3<float>> trapezePoints2 = {
-            Point3<float>(0.0f, -1.0f, 0.0f), Point3<float>(1.0f, 0.8f, 0.0f), Point3<float>(0.8f, 1.0f, 0.0f), Point3<float>(-1.0f, 0.0f, 0.0f),
-            Point3<float>(0.0f, -1.0f, -1.0f), Point3<float>(1.0f, 0.8f, -1.0f), Point3<float>(0.8f, 1.0f, -1.0f), Point3<float>(-1.0f, 0.0f, -1.0f),
+            Point3(0.0f, -1.0f, 0.0f), Point3(1.0f, 0.8f, 0.0f), Point3(0.8f, 1.0f, 0.0f), Point3(-1.0f, 0.0f, 0.0f),
+            Point3(0.0f, -1.0f, -1.0f), Point3(1.0f, 0.8f, -1.0f), Point3(0.8f, 1.0f, -1.0f), Point3(-1.0f, 0.0f, -1.0f),
     };
     ConvexHull3D ch1(trapezePoints1);
     ConvexHull3D ch2(trapezePoints2);
@@ -154,12 +154,12 @@ void GJKAlgorithmTest::faceInsideTrapeze() {
 
 void GJKAlgorithmTest::separateHexagon() {
     std::vector<Point3<float>> hexagonPoints1 = {
-            Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(1.5f, 1.0f, 0.0f), Point3<float>(1.0f, 2.0f, 0.0f), Point3<float>(0.0f, 2.0f, 0.0f), Point3<float>(-0.5f, 1.0f, 0.0f),
-            Point3<float>(0.0f, 0.0f, -1.0f), Point3<float>(1.0f, 0.0f, -1.0f), Point3<float>(1.5f, 1.0f, -1.0f), Point3<float>(1.0f, 2.0f, -1.0f), Point3<float>(0.0f, 2.0f, -1.0f), Point3<float>(-0.5f, 1.0f, -1.0f),
+            Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(1.5f, 1.0f, 0.0f), Point3(1.0f, 2.0f, 0.0f), Point3(0.0f, 2.0f, 0.0f), Point3(-0.5f, 1.0f, 0.0f),
+            Point3(0.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f), Point3(1.5f, 1.0f, -1.0f), Point3(1.0f, 2.0f, -1.0f), Point3(0.0f, 2.0f, -1.0f), Point3(-0.5f, 1.0f, -1.0f),
     };
     std::vector<Point3<float>> hexagonPoints2 = {
-            Point3<float>(-2.5f, 0.0f, 0.0f), Point3<float>(-1.5f, 0.0f, 0.0f), Point3<float>(-1.0f, 1.0f, 0.0f), Point3<float>(-1.5f, 2.0f, 0.0f), Point3<float>(-2.5f, 2.0f, 0.0f), Point3<float>(-3.0f, 1.0f, 0.0f),
-            Point3<float>(-2.5f, 0.0f, -1.0f), Point3<float>(-1.5f, 0.0f, -1.0f), Point3<float>(-1.0f, 1.0f, -1.0f), Point3<float>(-1.5f, 2.0f, -1.0f), Point3<float>(-2.5f, 2.0f, -1.0f), Point3<float>(-3.0f, 1.0f, -1.0f),
+            Point3(-2.5f, 0.0f, 0.0f), Point3(-1.5f, 0.0f, 0.0f), Point3(-1.0f, 1.0f, 0.0f), Point3(-1.5f, 2.0f, 0.0f), Point3(-2.5f, 2.0f, 0.0f), Point3(-3.0f, 1.0f, 0.0f),
+            Point3(-2.5f, 0.0f, -1.0f), Point3(-1.5f, 0.0f, -1.0f), Point3(-1.0f, 1.0f, -1.0f), Point3(-1.5f, 2.0f, -1.0f), Point3(-2.5f, 2.0f, -1.0f), Point3(-3.0f, 1.0f, -1.0f),
     };
     ConvexHull3D ch1(hexagonPoints1);
     ConvexHull3D ch2(hexagonPoints2);
@@ -177,12 +177,12 @@ void GJKAlgorithmTest::separateHexagon() {
 
 void GJKAlgorithmTest::cornerInsideHexagon() {
     std::vector<Point3<float>> hexagonPoints1 = {
-            Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(1.5f, 1.0f, 0.0f), Point3<float>(1.0f, 2.0f, 0.0f), Point3<float>(0.0f, 2.0f, 0.0f), Point3<float>(-0.5f, 1.0f, 0.0f),
-            Point3<float>(0.0f, 0.0f, -1.0f), Point3<float>(1.0f, 0.0f, -1.0f), Point3<float>(1.5f, 1.0f, -1.0f), Point3<float>(1.0f, 2.0f, -1.0f), Point3<float>(0.0f, 2.0f, -1.0f), Point3<float>(-0.5f, 1.0f, -1.0f),
+            Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(1.5f, 1.0f, 0.0f), Point3(1.0f, 2.0f, 0.0f), Point3(0.0f, 2.0f, 0.0f), Point3(-0.5f, 1.0f, 0.0f),
+            Point3(0.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f), Point3(1.5f, 1.0f, -1.0f), Point3(1.0f, 2.0f, -1.0f), Point3(0.0f, 2.0f, -1.0f), Point3(-0.5f, 1.0f, -1.0f),
     };
     std::vector<Point3<float>> hexagonPoints2 = {
-            Point3<float>(-1.5f, 0.0f, 0.0f), Point3<float>(-0.5f, 0.0f, 0.0f), Point3<float>(0.0f, 1.0f, 0.0f), Point3<float>(-0.5f, 2.0f, 0.0f), Point3<float>(-1.5f, 2.0f, 0.0f), Point3<float>(-2.0f, 1.0f, 0.0f),
-            Point3<float>(-1.5f, 0.0f, -1.0f), Point3<float>(-0.5f, 0.0f, -1.0f), Point3<float>(0.0f, 1.0f, -1.0f), Point3<float>(-0.5f, 2.0f, -1.0f), Point3<float>(-1.5f, 2.0f, -1.0f), Point3<float>(-2.0f, 1.0f, -1.0f),
+            Point3(-1.5f, 0.0f, 0.0f), Point3(-0.5f, 0.0f, 0.0f), Point3(0.0f, 1.0f, 0.0f), Point3(-0.5f, 2.0f, 0.0f), Point3(-1.5f, 2.0f, 0.0f), Point3(-2.0f, 1.0f, 0.0f),
+            Point3(-1.5f, 0.0f, -1.0f), Point3(-0.5f, 0.0f, -1.0f), Point3(0.0f, 1.0f, -1.0f), Point3(-0.5f, 2.0f, -1.0f), Point3(-1.5f, 2.0f, -1.0f), Point3(-2.0f, 1.0f, -1.0f),
     };
     ConvexHull3D ch1(hexagonPoints1);
     ConvexHull3D ch2(hexagonPoints2);
@@ -193,8 +193,8 @@ void GJKAlgorithmTest::cornerInsideHexagon() {
 }
 
 void GJKAlgorithmTest::identicalSphere() {
-    Sphere sphere1(10.0f, Point3<float>(1.0f, 0.0f, 0.0f));
-    Sphere sphere2(10.0f, Point3<float>(1.0f, 0.0f, 0.0f));
+    Sphere sphere1(10.0f, Point3(1.0f, 0.0f, 0.0f));
+    Sphere sphere2(10.0f, Point3(1.0f, 0.0f, 0.0f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(sphere1, sphere2);
 
@@ -202,21 +202,21 @@ void GJKAlgorithmTest::identicalSphere() {
 }
 
 void GJKAlgorithmTest::separateSphere() {
-    Sphere sphere1(10.0f, Point3<float>(0.0f, 0.0f, 0.0f));
-    Sphere sphere2(10.0f, Point3<float>(7.0710678118f + 8.0f, 7.0710678118f + 8.0f, 0.0f));
+    Sphere sphere1(10.0f, Point3(0.0f, 0.0f, 0.0f));
+    Sphere sphere2(10.0f, Point3(7.0710678118f + 8.0f, 7.0710678118f + 8.0f, 0.0f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(sphere1, sphere2);
 
     float epsilon = 0.01f; //high epsilon used because curved shapes are bad case for GJK
     AssertHelper::assertTrue(!result.isCollide());
     AssertHelper::assertFloatEquals(result.getSeparatingDistance(), 1.31370849889f, epsilon);
-    AssertHelper::assertPoint3FloatEquals(result.getClosestPointA(), Point3<float>(7.0710678118f, 7.0710678118f, 0.0f), epsilon);
-    AssertHelper::assertPoint3FloatEquals(result.getClosestPointB(), Point3<float>(8.0f, 8.0f, 0.0f), epsilon);
+    AssertHelper::assertPoint3FloatEquals(result.getClosestPointA(), Point3(7.0710678118f, 7.0710678118f, 0.0f), epsilon);
+    AssertHelper::assertPoint3FloatEquals(result.getClosestPointB(), Point3(8.0f, 8.0f, 0.0f), epsilon);
 }
 
 void GJKAlgorithmTest::overlapSphere() {
-    Sphere sphere1(10.0f, Point3<float>(0.0f, 0.0f, 0.0f));
-    Sphere sphere2(10.0f, Point3<float>(7.0710678118f + 7.0f, 7.0710678118f + 7.0f, 0.0f));
+    Sphere sphere1(10.0f, Point3(0.0f, 0.0f, 0.0f));
+    Sphere sphere2(10.0f, Point3(7.0710678118f + 7.0f, 7.0710678118f + 7.0f, 0.0f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(sphere1, sphere2);
 
@@ -224,8 +224,8 @@ void GJKAlgorithmTest::overlapSphere() {
 }
 
 void GJKAlgorithmTest::separateOBBoxAABBox() {
-    OBBox obbox(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
-    AABBox aabbox(Point3<float>(2.0f, -1.0, -1.0f), Vector3<float>(2.0f, 2.0f, 2.0f));
+    OBBox obbox(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    AABBox aabbox(Point3(2.0f, -1.0f, -1.0f), Vector3(2.0f, 2.0f, 2.0f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(obbox, aabbox);
 
@@ -239,8 +239,8 @@ void GJKAlgorithmTest::separateOBBoxAABBox() {
 }
 
 void GJKAlgorithmTest::overlapOBBoxAABBox() {
-    OBBox obbox(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
-    AABBox aabbox(Point3<float>(1.0f, -1.0f, -1.0f), Vector3<float>(2.0f, 2.0f, 2.0f));
+    OBBox obbox(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    AABBox aabbox(Point3(1.0f, -1.0f, -1.0f), Vector3(2.0f, 2.0f, 2.0f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(obbox, aabbox);
 
@@ -248,8 +248,8 @@ void GJKAlgorithmTest::overlapOBBoxAABBox() {
 }
 
 void GJKAlgorithmTest::separateSphereAndAABBox() {
-    Sphere sphere(1.0f, Point3<float>(0.0f, 0.0f, 0.0f));
-    AABBox aabbox(Point3<float>(1.1f, 0.0f, 0.0f), Vector3<float>(0.5f, 0.5f, 0.5f));
+    Sphere sphere(1.0f, Point3(0.0f, 0.0f, 0.0f));
+    AABBox aabbox(Point3(1.1f, 0.0f, 0.0f), Vector3(0.5f, 0.5f, 0.5f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(sphere, aabbox);
 
@@ -258,8 +258,8 @@ void GJKAlgorithmTest::separateSphereAndAABBox() {
 }
 
 void GJKAlgorithmTest::overlapSphereAndAABBox() {
-    Sphere sphere(1.0f, Point3<float>(0.0f, 0.0f, 0.0f));
-    AABBox aabbox(Point3<float>(0.9f, 0.0f, 0.0f), Vector3<float>(0.5f, 0.5f, 0.5f));
+    Sphere sphere(1.0f, Point3(0.0f, 0.0f, 0.0f));
+    AABBox aabbox(Point3(0.9f, 0.0f, 0.0f), Vector3(0.5f, 0.5f, 0.5f));
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(sphere, aabbox);
 

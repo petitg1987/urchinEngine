@@ -9,73 +9,73 @@ using namespace urchin;
 
 void SortPointsServiceTest::threePointsClockwise() {
     std::vector<Point3<float>> threePoints({
-            Point3<float>(0.0, 0.0, 0.0),
-            Point3<float>(0.5, 0.0, -1.0),
-            Point3<float>(1.0, 0.0, 0.0)});
+            Point3(0.0f, 0.0f, 0.0f),
+            Point3(0.5f, 0.0f, -1.0f),
+            Point3(1.0f, 0.0f, 0.0f)});
 
-    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsClockwise(threePoints, Vector3<float>(0.0, -1.0, 0.0));
+    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsClockwise(threePoints, Vector3(0.0f, -1.0f, 0.0f));
 
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3<float>(0.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3<float>(1.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3<float>(0.5, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3(0.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3(1.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3(0.5f, 0.0f, -1.0f));
 }
 
 void SortPointsServiceTest::threePointsCounterClockwise() {
-    std::vector<Point3<float>> threePoints({
-            Point3<float>(0.0, 0.0, 0.0),
-            Point3<float>(1.0, 0.0, 0.0),
-            Point3<float>(0.5, 0.0, -1.0)});
+    std::vector threePoints({
+            Point3(0.0f, 0.0f, 0.0f),
+            Point3(1.0f, 0.0f, 0.0f),
+            Point3(0.5f, 0.0f, -1.0f)});
 
-    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsCounterClockwise(threePoints, Vector3<float>(0.0, -1.0, 0.0));
+    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsCounterClockwise(threePoints, Vector3(0.0f, -1.0f, 0.0f));
 
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3<float>(0.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3<float>(0.5, 0.0, -1.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3<float>(1.0, 0.0, 0.0));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3(0.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3(0.5f, 0.0f, -1.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3(1.0f, 0.0f, 0.0f));
 }
 
 void SortPointsServiceTest::fourPointsClockwise() {
-    std::vector<Point3<float>> fourPoints({
-            Point3<float>(0.0, 0.0, 0.0),
-            Point3<float>(1.0, 0.0, -1.0),
-            Point3<float>(1.0, 0.0, 0.0),
-            Point3<float>(0.0, 0.0, -1.0)});
+    std::vector fourPoints({
+            Point3(0.0f, 0.0f, 0.0f),
+            Point3(1.0f, 0.0f, -1.0f),
+            Point3(1.0f, 0.0f, 0.0f),
+            Point3(0.0f, 0.0f, -1.0f)});
 
-    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsClockwise(fourPoints, Vector3<float>(0.0, -1.0, 0.0));
+    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsClockwise(fourPoints, Vector3(0.0f, -1.0f, 0.0f));
 
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3<float>(0.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3<float>(1.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3<float>(1.0, 0.0, -1.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(0.0, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3(0.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3(1.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3(1.0f, 0.0f, -1.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3(0.0f, 0.0f, -1.0f));
 }
 
 void SortPointsServiceTest::fourPointsCounterClockwiseZNormal() {
-    std::vector<Point3<float>> fourPoints({
-            Point3<float>(-2.0, 0.0, -5.0),
-            Point3<float>(1.0, 1.0, -5.0),
-            Point3<float>(0.0, 2.0, -5.0),
-            Point3<float>(-1.0, 1.0, -5.0)});
+    std::vector fourPoints({
+            Point3(-2.0f, 0.0f, -5.0f),
+            Point3(1.0f, 1.0f, -5.0f),
+            Point3(0.0f, 2.0f, -5.0f),
+            Point3(-1.0f, 1.0f, -5.0f)});
 
-    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsCounterClockwise(fourPoints, Vector3<float>(0.0, 0.0, -1.0));
+    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsCounterClockwise(fourPoints, Vector3(0.0f, 0.0f, -1.0f));
 
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3<float>(-2.0, 0.0, -5.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3<float>(-1.0, 1.0, -5.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3<float>(0.0, 2.0, -5.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(1.0, 1.0, -5.0));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3(-2.0f, 0.0f, -5.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3(-1.0f, 1.0f, -5.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3(0.0f, 2.0f, -5.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3(1.0f, 1.0f, -5.0f));
 }
 
 void SortPointsServiceTest::fourPointsCounterClockwiseYNormal() {
-    std::vector<Point3<float>> fourPoints({
-            Point3<float>(1.0, 0.0, -1.0),
-            Point3<float>(1.0, 0.0, 1.0),
-            Point3<float>(-1.0, 0.0, -1.0),
-            Point3<float>(-1.0, 0.0, 1.0)});
+    std::vector fourPoints({
+            Point3(1.0f, 0.0f, -1.0f),
+            Point3(1.0f, 0.0f, 1.0f),
+            Point3(-1.0f, 0.0f, -1.0f),
+            Point3(-1.0f, 0.0f, 1.0f)});
 
-    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsCounterClockwise(fourPoints, Vector3<float>(0.0, -1.0, 0.0));
+    std::vector<Point3<float>> sortedPoints = SortPointsService<float>::sortPointsCounterClockwise(fourPoints, Vector3(0.0f, -1.0f, 0.0f));
 
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3<float>(1.0, 0.0, -1.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3<float>(1.0, 0.0, 1.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3<float>(-1.0, 0.0, 1.0));
-    AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(-1.0, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[0], Point3(1.0f, 0.0f, -1.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[1], Point3(1.0f, 0.0f, 1.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3(-1.0f, 0.0f, 1.0f));
+    AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3(-1.0f, 0.0f, -1.0f));
 }
 
 CppUnit::Test* SortPointsServiceTest::suite() {

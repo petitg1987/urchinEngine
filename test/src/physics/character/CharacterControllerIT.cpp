@@ -12,12 +12,12 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
     auto cubes = constructCubes(*physicsWorld, cubeHeight);
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(2.4f, 5.0f, 2.4f), Quaternion<float>()));
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(2.4f, 5.0f, 2.4f), Quaternion<float>()));
     auto characterController = CharacterController(std::move(character), CharacterControllerConfig(), *physicsWorld);
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
         for (std::size_t i = 0; i < 300; ++i) {
-            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
@@ -47,21 +47,21 @@ void CharacterControllerIT::characterMovingOnRemovedObjects() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
     constructGround(*physicsWorld);
 
-    std::unique_ptr<CollisionShape3D>  cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto cubeBody = std::make_shared<RigidBody>("cube", PhysicsTransform(Point3<float>(0.0f, 0.5f, 0.0f), Quaternion<float>()), std::move(cubeShape));
+    std::unique_ptr<CollisionShape3D>  cubeShape = std::make_unique<CollisionBoxShape>(Vector3(0.5f, 0.5f, 0.5f));
+    auto cubeBody = std::make_shared<RigidBody>("cube", PhysicsTransform(Point3(0.0f, 0.5f, 0.0f), Quaternion<float>()), std::move(cubeShape));
     physicsWorld->getBodyContainer().addBody(cubeBody);
 
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, characterHeight / 2.0f, 0.8f), Quaternion<float>()));
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, characterHeight / 2.0f, 0.8f), Quaternion<float>()));
     CharacterControllerConfig characterControllerConfig;
     characterControllerConfig.setWalkSpeed(5.0f);
     auto characterController = CharacterController(std::move(character), characterControllerConfig, *physicsWorld);
-    characterController.walk(Vector3<float>(0.0f, 0.0f, -1.0f));
+    characterController.walk(Vector3(0.0f, 0.0f, -1.0f));
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
         for (std::size_t i = 0; i < 300; ++i) {
-            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
@@ -89,12 +89,12 @@ void CharacterControllerIT::ccdFallingCharacter() {
     constructGround(*physicsWorld);
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 50.0f, 0.0f), Quaternion<float>()));
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, 50.0f, 0.0f), Quaternion<float>()));
     auto characterController = CharacterController(std::move(character), CharacterControllerConfig(), *physicsWorld);
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
         for (std::size_t i = 0; i < 250; ++i) {
-            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
@@ -116,15 +116,15 @@ void CharacterControllerIT::ccdMovingCharacter() {
     constructWall(*physicsWorld);
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 0.35f, 0.0f), Quaternion<float>()));
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, 0.35f, 0.0f), Quaternion<float>()));
     CharacterControllerConfig characterControllerConfig;
     characterControllerConfig.setWalkSpeed(15.0f);
     auto characterController = CharacterController(std::move(character), characterControllerConfig, *physicsWorld);
-    characterController.walk(Vector3<float>(0.0f, 0.0f, -1.0f));
+    characterController.walk(Vector3(0.0f, 0.0f, -1.0f));
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
         for (std::size_t i = 0; i < 100; ++i) {
-            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
@@ -143,17 +143,17 @@ void CharacterControllerIT::ccdMovingCharacter() {
 
 void CharacterControllerIT::constructGround(PhysicsWorld& physicsWorld) const {
     std::vector<Point3<float>> groundPoints = {
-            Point3<float>(-100.0f, 0.0f, -100.0f), Point3<float>(100.0f, 0.0f, -100.0f),
-            Point3<float>(-100.0f, 0.0f, 100.0f), Point3<float>(100.0f, 0.0f, 100.0f)
+            Point3(-100.0f, 0.0f, -100.0f), Point3(100.0f, 0.0f, -100.0f),
+            Point3(-100.0f, 0.0f, 100.0f), Point3(100.0f, 0.0f, 100.0f)
     };
     auto groundShape = std::make_unique<CollisionHeightfieldShape>(groundPoints, 2, 2);
-    auto groundBody = std::make_unique<RigidBody>("ground", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(groundShape));
+    auto groundBody = std::make_unique<RigidBody>("ground", PhysicsTransform(Point3(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(groundShape));
     physicsWorld.getBodyContainer().addBody(std::move(groundBody));
 }
 
 void CharacterControllerIT::constructWall(PhysicsWorld& physicsWorld) const {
-    auto wallShape = std::make_unique<CollisionBoxShape>(Vector3<float>(100.0f, 100.0f, 0.15f));
-    auto wallBody = std::make_unique<RigidBody>("wall", PhysicsTransform(Point3<float>(0.0f, 0.0f, -10.0f), Quaternion<float>()), std::move(wallShape));
+    auto wallShape = std::make_unique<CollisionBoxShape>(Vector3(100.0f, 100.0f, 0.15f));
+    auto wallBody = std::make_unique<RigidBody>("wall", PhysicsTransform(Point3(0.0f, 0.0f, -10.0f), Quaternion<float>()), std::move(wallShape));
     physicsWorld.getBodyContainer().addBody(std::move(wallBody));
 }
 

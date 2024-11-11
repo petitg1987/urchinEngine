@@ -11,9 +11,9 @@ void Renderer3dTest::modelPreWarm() {
     I18nService nullI18nService;
     auto camera = std::make_unique<FreeCamera>(90.0f, 0.01f, 1000.0f);
     Renderer3d renderer3D(1.0f, renderTarget, std::move(camera), VisualConfig(), nullI18nService);
-    std::shared_ptr<Model> opaqueModel = buildModel("materials/opaque.uda", "model1", Point3<float>(0.0f, 0.0f, -10.0f));
-    std::shared_ptr<Model> transparentModel = buildModel("materials/transparent.uda", "model2", Point3<float>(0.0f, 0.0f, -10.0f));
-    std::shared_ptr<Model> notVisibleModel = buildModel("materials/opaque.uda", "model3", Point3<float>(0.0f, 0.0f, 25.0f));
+    std::shared_ptr<Model> opaqueModel = buildModel("materials/opaque.uda", "model1", Point3(0.0f, 0.0f, -10.0f));
+    std::shared_ptr<Model> transparentModel = buildModel("materials/transparent.uda", "model2", Point3(0.0f, 0.0f, -10.0f));
+    std::shared_ptr<Model> notVisibleModel = buildModel("materials/opaque.uda", "model3", Point3(0.0f, 0.0f, 25.0f));
     renderer3D.addModel(opaqueModel);
     renderer3D.addModel(transparentModel);
     renderer3D.addModel(notVisibleModel);
@@ -33,7 +33,7 @@ void Renderer3dTest::modelPreWarm() {
 std::unique_ptr<Model> Renderer3dTest::buildModel(const std::string& materialFilename, const std::string& modelName, const Point3<float>& position) const {
     ModelBuilder modelBuilder(materialFilename);
 
-    std::vector<Point3<float>> vertices = {Point3<float>(-0.01f, 0.0f, 0.0f), Point3<float>(0.0f, 0.01f, 0.0f), Point3<float>(0.01f, 0.0f, 0.0f)};
+    std::vector<Point3<float>> vertices = {Point3(-0.01f, 0.0f, 0.0f), Point3(0.0f, 0.01f, 0.0f), Point3(0.01f, 0.0f, 0.0f)};
     std::vector<unsigned int> triangleIndices = {0, 1, 2};
     std::vector<Point2<float>> uvTexture = {Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 0.0f)};
 

@@ -9,67 +9,67 @@ using namespace urchin;
 
 void FunnelAlgorithmTest::straightPath() {
     std::vector<std::unique_ptr<PathPortal>> portals;
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr, false)); //start point
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr, false));
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0)), nullptr, nullptr, false)); //end point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(1.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
 
     FunnelAlgorithm().computePivotPoints(portals);
 
-    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3<float>(1.0, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3(1.0f, 0.0f, -1.0f));
     AssertHelper::assertTrue(!portals[1]->hasTransitionPoint());
-    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3<float>(1.0, 0.0, 1.0));
+    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3(1.0f, 0.0f, 1.0f));
 }
 
 void FunnelAlgorithmTest::cornerPath1() {
     std::vector<std::unique_ptr<PathPortal>> portals;
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr, false)); //start point
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr, false));
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(4.0, 0.0, 1.0), Point3<float>(4.0, 0.0, 1.0)), nullptr, nullptr, false)); //end point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(4.0f, 0.0f, 1.0f), Point3(4.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
 
     FunnelAlgorithm().computePivotPoints(portals);
 
-    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3<float>(1.0, 0.0, -1.0));
-    AssertHelper::assertPoint3FloatEquals(portals[1]->getTransitionPoint(), Point3<float>(2.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3<float>(4.0, 0.0, 1.0));
+    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3(1.0f, 0.0f, -1.0f));
+    AssertHelper::assertPoint3FloatEquals(portals[1]->getTransitionPoint(), Point3(2.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3(4.0f, 0.0f, 1.0f));
 }
 
 void FunnelAlgorithmTest::cornerPath2() {
     std::vector<std::unique_ptr<PathPortal>> portals;
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(4.0, 0.0, 1.0), Point3<float>(4.0, 0.0, 1.0)), nullptr, nullptr, false)); //start point
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)), nullptr, nullptr, false));
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr, false)); //end point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(4.0f, 0.0f, 1.0f), Point3(4.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //start point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //end point
 
     FunnelAlgorithm().computePivotPoints(portals);
 
-    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3<float>(4.0, 0.0, 1.0));
-    AssertHelper::assertPoint3FloatEquals(portals[1]->getTransitionPoint(), Point3<float>(2.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3<float>(1.0, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3(4.0f, 0.0f, 1.0f));
+    AssertHelper::assertPoint3FloatEquals(portals[1]->getTransitionPoint(), Point3(2.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3(1.0f, 0.0f, -1.0f));
 }
 
 void FunnelAlgorithmTest::cornerPath3() {
     std::vector<std::unique_ptr<PathPortal>> portals;
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr, false)); //start point
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr, false));
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(-2.0, 0.0, 1.0), Point3<float>(-2.0, 0.0, 1.0)), nullptr, nullptr, false)); //end point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(-2.0f, 0.0f, 1.0f), Point3(-2.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
 
     FunnelAlgorithm().computePivotPoints(portals);
 
-    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3<float>(1.0, 0.0, -1.0));
-    AssertHelper::assertPoint3FloatEquals(portals[1]->getTransitionPoint(), Point3<float>(0.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3<float>(-2.0, 0.0, 1.0));
+    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3(1.0f, 0.0f, -1.0f));
+    AssertHelper::assertPoint3FloatEquals(portals[1]->getTransitionPoint(), Point3(0.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3(-2.0f, 0.0f, 1.0f));
 }
 
 void FunnelAlgorithmTest::cornerPath4() {
     std::vector<std::unique_ptr<PathPortal>> portals;
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(-2.0, 0.0, 1.0), Point3<float>(-2.0, 0.0, 1.0)), nullptr, nullptr, false)); //end point
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)), nullptr, nullptr, false));
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr, false)); //start point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(-2.0f, 0.0f, 1.0f), Point3(-2.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
 
     FunnelAlgorithm().computePivotPoints(portals);
 
-    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3<float>(-2.0, 0.0, 1.0));
-    AssertHelper::assertPoint3FloatEquals(portals[1]->getTransitionPoint(), Point3<float>(0.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3<float>(1.0, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3(-2.0f, 0.0f, 1.0f));
+    AssertHelper::assertPoint3FloatEquals(portals[1]->getTransitionPoint(), Point3(0.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3(1.0f, 0.0f, -1.0f));
 }
 
 CppUnit::Test* FunnelAlgorithmTest::suite() {

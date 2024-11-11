@@ -9,11 +9,11 @@ using namespace urchin;
 
 void TerrainObstacleServiceTest::oneSquare() {
     std::vector<Point3<float>> localVertices = {
-            Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(2.0f, 100.0f, 0.0f),
-            Point3<float>(0.0f, 0.0f, 1.0f), Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(2.0f, 0.0f, 1.0f),
-            Point3<float>(0.0f, 0.0f, 2.0f), Point3<float>(1.0f, 0.0f, 2.0f), Point3<float>(2.0f, 0.0f, 2.0f)
+            Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(2.0f, 100.0f, 0.0f),
+            Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f), Point3(2.0f, 0.0f, 1.0f),
+            Point3(0.0f, 0.0f, 2.0f), Point3(1.0f, 0.0f, 2.0f), Point3(2.0f, 0.0f, 2.0f)
     };
-    TerrainObstacleService terrainObstacleService("terrain", Point3<float>(0.0f, 0.0f, 0.0f), localVertices, 3, 3);
+    TerrainObstacleService terrainObstacleService("terrain", Point3(0.0f, 0.0f, 0.0f), localVertices, 3, 3);
 
     std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(0.01f);
 
@@ -28,11 +28,11 @@ void TerrainObstacleServiceTest::oneSquare() {
 
 void TerrainObstacleServiceTest::twoAlignedSquares() {
     std::vector<Point3<float>> localVertices = {
-            Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(2.0f, 100.0f, 0.0f),
-            Point3<float>(0.0f, 0.0f, 1.0f), Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(2.0f, 100.0f, 1.0f),
-            Point3<float>(0.0f, 0.0f, 2.0f), Point3<float>(1.0f, 0.0f, 2.0f), Point3<float>(2.0f, 0.0f, 2.0f)
+            Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(2.0f, 100.0f, 0.0f),
+            Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f), Point3(2.0f, 100.0f, 1.0f),
+            Point3(0.0f, 0.0f, 2.0f), Point3(1.0f, 0.0f, 2.0f), Point3(2.0f, 0.0f, 2.0f)
     };
-    TerrainObstacleService terrainObstacleService("terrain", Point3<float>(0.0f, 0.0f, 0.0f), localVertices, 3, 3);
+    TerrainObstacleService terrainObstacleService("terrain", Point3(0.0f, 0.0f, 0.0f), localVertices, 3, 3);
 
     std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(0.01f);
 
@@ -47,11 +47,11 @@ void TerrainObstacleServiceTest::twoAlignedSquares() {
 
 void TerrainObstacleServiceTest::twoSquaresSamePoint() {
     std::vector<Point3<float>> localVertices = {
-            Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(2.0f, 100.0f, 0.0f),
-            Point3<float>(0.0f, 0.0f, 1.0f), Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(2.0f, 0.0f, 1.0f),
-            Point3<float>(0.0f, 100.0f, 2.0f), Point3<float>(1.0f, 0.0f, 2.0f), Point3<float>(2.0f, 0.0f, 2.0f)
+            Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(2.0f, 100.0f, 0.0f),
+            Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f), Point3(2.0f, 0.0f, 1.0f),
+            Point3(0.0f, 100.0f, 2.0f), Point3(1.0f, 0.0f, 2.0f), Point3(2.0f, 0.0f, 2.0f)
     };
-    TerrainObstacleService terrainObstacleService("terrain", Point3<float>(0.0f, 0.0f, 0.0f), localVertices, 3, 3);
+    TerrainObstacleService terrainObstacleService("terrain", Point3(0.0f, 0.0f, 0.0f), localVertices, 3, 3);
 
     std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(0.01f);
 
@@ -72,11 +72,11 @@ void TerrainObstacleServiceTest::twoSquaresSamePoint() {
 
 void TerrainObstacleServiceTest::squaresInUForm() {
     std::vector<Point3<float>> localVertices = {
-            Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(2.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f),
-            Point3<float>(0.0f, 100.0f, 1.0f), Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(2.0f, 0.0f, 1.0f), Point3<float>(3.0f, 100.0f, 1.0f),
-            Point3<float>(0.0f, 100.0f, 2.0f), Point3<float>(1.0f, 100.0f, 2.0f), Point3<float>(2.0f, 100.0f, 2.0f), Point3<float>(3.0f, 100.0f, 2.0f)
+            Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(3.0f, 0.0f, 0.0f),
+            Point3(0.0f, 100.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f), Point3(2.0f, 0.0f, 1.0f), Point3(3.0f, 100.0f, 1.0f),
+            Point3(0.0f, 100.0f, 2.0f), Point3(1.0f, 100.0f, 2.0f), Point3(2.0f, 100.0f, 2.0f), Point3(3.0f, 100.0f, 2.0f)
     };
-    TerrainObstacleService terrainObstacleService("terrain", Point3<float>(0.0f, 0.0f, 0.0f), localVertices, 4, 3);
+    TerrainObstacleService terrainObstacleService("terrain", Point3(0.0f, 0.0f, 0.0f), localVertices, 4, 3);
 
     std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(0.01f);
 

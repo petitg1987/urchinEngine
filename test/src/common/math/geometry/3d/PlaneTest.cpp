@@ -6,14 +6,14 @@ using namespace urchin;
 
 void PlaneTest::orthogonalProjection() {
     //test 1
-    Plane plane1(Point3<float>(1.0, 0.0, 0.0), Point3<float>(1.0, 5.0, 1.0), Point3<float>(1.0, 10.0, 0.0));
-    Point3<float> projectedPoint1 = plane1.orthogonalProjection(Point3<float>(-3.0, -3.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(projectedPoint1, Point3<float>(1.0, -3.0, 0.0));
+    Plane plane1(Point3(1.0f, 0.0f, 0.0f), Point3(1.0f, 5.0f, 1.0f), Point3(1.0f, 10.0f, 0.0f));
+    Point3<float> projectedPoint1 = plane1.orthogonalProjection(Point3(-3.0f, -3.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(projectedPoint1, Point3(1.0f, -3.0f, 0.0f));
 
     //test 2
-    Plane plane2(Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 1.0, 1.0), Point3<float>(2.0, 2.0, 0.0));
-    Point3<float> projectedPoint2 = plane2.orthogonalProjection(Point3<float>(0.0, 2.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(projectedPoint2, Point3<float>(1.0, 1.0, 0.0));
+    Plane plane2(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f), Point3(2.0f, 2.0f, 0.0f));
+    Point3<float> projectedPoint2 = plane2.orthogonalProjection(Point3(0.0f, 2.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(projectedPoint2, Point3(1.0f, 1.0f, 0.0f));
 }
 
 CppUnit::Test* PlaneTest::suite() {

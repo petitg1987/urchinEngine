@@ -7,7 +7,7 @@ using namespace urchin;
 
 void ModelOcclusionCullerTest::movingModel() {
     auto modelOcclusionCuller = std::make_unique<ModelOcclusionCuller>();
-    std::shared_ptr<Model> model = buildModel(Point3<float>(-500.0f, 2.0f, -3.0f)); //model outside frustum
+    std::shared_ptr<Model> model = buildModel(Point3(-500.0f, 2.0f, -3.0f)); //model outside frustum
     modelOcclusionCuller->addModel(model);
     Frustum frustum(90.0f, 1.0f, 0.01f, 100.0f);
 
@@ -17,7 +17,7 @@ void ModelOcclusionCullerTest::movingModel() {
     modelOcclusionCuller->postRefresh();
     AssertHelper::assertUnsignedIntEquals(models.size(), 0);
 
-    model->setTransform(Transform<float>(Point3<float>(0.0f, 2.0f, -3.0f), Quaternion<float>())); //model inside frustum
+    model->setTransform(Transform<float>(Point3(0.0f, 2.0f, -3.0f), Quaternion<float>())); //model inside frustum
     models.clear();
     modelOcclusionCuller->refresh();
     modelOcclusionCuller->getModelsInFrustum(frustum, models);
@@ -27,7 +27,7 @@ void ModelOcclusionCullerTest::movingModel() {
 
 void ModelOcclusionCullerTest::updateCullBehavior() {
     auto modelOcclusionCuller = std::make_unique<ModelOcclusionCuller>();
-    std::shared_ptr<Model> model = buildModel(Point3<float>(-500.0f, 2.0f, -3.0f)); //model outside frustum
+    std::shared_ptr<Model> model = buildModel(Point3(-500.0f, 2.0f, -3.0f)); //model outside frustum
     modelOcclusionCuller->addModel(model);
     Frustum frustum(90.0f, 1.0f, 0.01f, 100.0f);
 
@@ -55,7 +55,7 @@ void ModelOcclusionCullerTest::updateCullBehavior() {
 std::unique_ptr<Model> ModelOcclusionCullerTest::buildModel(const Point3<float>& modelPosition) const {
     ModelBuilder modelBuilder("materials/opaque.uda");
 
-    std::vector<Point3<float>> vertices = {Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.5f, -0.5f, 0.5f)};
+    std::vector<Point3<float>> vertices = {Point3(-0.5f, -0.5f, -0.5f), Point3(0.5f, 0.5f, 0.5f), Point3(0.5f, -0.5f, 0.5f)};
     std::vector<unsigned int> triangleIndices = {0, 1, 2};
     std::vector<Point2<float>> uvTexture = {Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 0.0f)};
 
