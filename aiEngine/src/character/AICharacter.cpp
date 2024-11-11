@@ -5,7 +5,7 @@ namespace urchin {
     AICharacter::AICharacter(float mass, float maxVelocityInKmH, const Point3<float>& position) :
             mass(mass),
             maxVelocityInKmH(maxVelocityInKmH),
-            velocity(Vector3<float>(0.0f, 0.0f, 0.0f)),
+            velocity(Vector3(0.0f, 0.0f, 0.0f)),
             position(position) {
 
     }

@@ -26,21 +26,21 @@ namespace urchin {
         outlineCwPoints.reserve(4);
 
         Point3<float> farLeftVertex = position + localVertices[0];
-        outlineCwPoints.emplace_back(Point2<float>(farLeftVertex.X, -farLeftVertex.Z));
+        outlineCwPoints.emplace_back(Point2(farLeftVertex.X, -farLeftVertex.Z));
 
         Point3<float> farRightVertex = position + localVertices[xLength - 1];
-        outlineCwPoints.emplace_back(Point2<float>(farRightVertex.X, -farRightVertex.Z));
+        outlineCwPoints.emplace_back(Point2(farRightVertex.X, -farRightVertex.Z));
 
         Point3<float> nearRightVertex = position + localVertices[(xLength * zLength) - 1];
-        outlineCwPoints.emplace_back(Point2<float>(nearRightVertex.X, -nearRightVertex.Z));
+        outlineCwPoints.emplace_back(Point2(nearRightVertex.X, -nearRightVertex.Z));
 
         Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - xLength];
-        outlineCwPoints.emplace_back(Point2<float>(nearLeftVertex.X, -nearLeftVertex.Z));
+        outlineCwPoints.emplace_back(Point2(nearLeftVertex.X, -nearLeftVertex.Z));
     }
 
     void PolytopeTerrainSurface::buildAABBox() {
-        AABBox<float> localAABBox(localVertices);
-        aabbox = AABBox<float>(position + localAABBox.getMin(), position + localAABBox.getMax());
+        AABBox localAABBox(localVertices);
+        aabbox = AABBox(position + localAABBox.getMin(), position + localAABBox.getMax());
     }
 
     bool PolytopeTerrainSurface::isWalkable() const {
@@ -54,7 +54,7 @@ namespace urchin {
         Point2 minPoint(nearLeftVertex.X, -nearLeftVertex.Z);
         Point2 maxPoint(farRightVertex.X, -farRightVertex.Z);
 
-        return Rectangle2D<float>(minPoint, maxPoint);
+        return Rectangle2D(minPoint, maxPoint);
     }
 
     const AABBox<float>& PolytopeTerrainSurface::getAABBox() const {
@@ -68,8 +68,8 @@ namespace urchin {
     Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle2D<float>& box) const {
         Point3<float> point1 = retrieveGlobalVertex(box.getMin());
         Point3<float> point2 = retrieveGlobalVertex(box.getMax());
-        Point3<float> point3 = retrieveGlobalVertex(Point2<float>(box.getMin().X, box.getMax().Y));
-        return Plane<float>(point1, point2, point3);
+        Point3<float> point3 = retrieveGlobalVertex(Point2(box.getMin().X, box.getMax().Y));
+        return Plane(point1, point2, point3);
     }
 
     const std::vector<CSGPolygon<float>>& PolytopeTerrainSurface::getSelfObstacles() const {
@@ -88,7 +88,7 @@ namespace urchin {
 
     Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float>& globalXzCoordinate) const {
         Point2 localCoordinate(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
-        return Point3<float>(localCoordinate.X, heightfieldPointHelper->findHeightAt(localCoordinate), localCoordinate.Y) + position;
+        return Point3(localCoordinate.X, heightfieldPointHelper->findHeightAt(localCoordinate), localCoordinate.Y) + position;
     }
 
     const std::shared_ptr<const NavTopography>& PolytopeTerrainSurface::getNavTopography() const {

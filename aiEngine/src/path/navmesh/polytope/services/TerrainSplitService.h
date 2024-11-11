@@ -3,8 +3,6 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <input/AITerrain.h>
-
 namespace urchin {
 
     struct TerrainSplit {

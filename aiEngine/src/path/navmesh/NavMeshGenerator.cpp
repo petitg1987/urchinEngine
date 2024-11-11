@@ -30,7 +30,7 @@ namespace urchin {
     }
 
     void NavMeshGenerator::setNavMeshAgent(const NavMeshAgent& navMeshAgent) {
-        std::scoped_lock<std::mutex> lock(navMeshMutex);
+        std::scoped_lock lock(navMeshMutex);
 
         this->navMeshAgent = std::make_unique<NavMeshAgent>(navMeshAgent);
         this->needFullRefresh.store(true, std::memory_order_release);
@@ -45,7 +45,7 @@ namespace urchin {
     }
 
     NavMesh NavMeshGenerator::copyLastGeneratedNavMesh() const {
-        std::scoped_lock<std::mutex> lock(navMeshMutex);
+        std::scoped_lock lock(navMeshMutex);
 
         return NavMesh(*navMesh);
     }
@@ -168,7 +168,7 @@ namespace urchin {
         navObjectsToRefresh.merge(affectedNavObjectsToRefresh);
     }
 
-    void NavMeshGenerator::updateNearObjects(NavObject& navObject) {
+    void NavMeshGenerator::updateNearObjects(NavObject& navObject) const {
         nearObjects.clear();
         navigationObjects.aabboxQuery(navObject.getExpandedPolytope().getAABBox(), nearObjects);
 
@@ -270,10 +270,10 @@ namespace urchin {
             return CSGPolygon<float>("", {});
         }
 
-        ConvexHull2D<float> footprintConvexHull(footprintPoints);
-        std::vector<Point2<float>> cwPoints(footprintConvexHull.getPoints());
+        ConvexHull2D footprintConvexHull(footprintPoints);
+        std::vector cwPoints(footprintConvexHull.getPoints());
         std::ranges::reverse(cwPoints);
-        return CSGPolygon<float>(polytopeObstacle.getName(), std::move(cwPoints));
+        return CSGPolygon(polytopeObstacle.getName(), std::move(cwPoints));
     }
 
     void NavMeshGenerator::applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>>& obstaclePolygons) {
@@ -413,7 +413,7 @@ namespace urchin {
             allNavPolygons.insert(allNavPolygons.end(), navPolygons.begin(), navPolygons.end());
         }
 
-        std::scoped_lock<std::mutex> lock(navMeshMutex);
+        std::scoped_lock lock(navMeshMutex);
         navMesh->copyAllPolygons(allNavPolygons);
     }
 

@@ -48,9 +48,9 @@ namespace urchin {
 
     //explicit template
     template CSGPolygonPath::CSGPolygonPath(const CSGPolygon<float>&);
-    template class CSGPolygon<float> CSGPolygonPath::toCSGPolygon<float>() const;
+    template CSGPolygon<float> CSGPolygonPath::toCSGPolygon<float>() const;
 
     template CSGPolygonPath::CSGPolygonPath(const CSGPolygon<long long>&);
-    template class CSGPolygon<long long> CSGPolygonPath::toCSGPolygon<long long>() const;
+    template CSGPolygon<long long> CSGPolygonPath::toCSGPolygon<long long>() const;
 
 }

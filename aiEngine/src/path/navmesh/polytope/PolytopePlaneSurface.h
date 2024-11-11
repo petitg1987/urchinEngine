@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <initializer_list>
 #include <UrchinCommon.h>
 
 #include <path/navmesh/polytope/PolytopeSurface.h>

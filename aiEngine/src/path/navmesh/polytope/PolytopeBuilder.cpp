@@ -140,7 +140,7 @@ namespace urchin {
         for (const auto& [triangleId, triangle] : expandedConvexHull->getIndexedTriangles()) {
             const std::array<std::size_t, 3>& indices = triangle.getIndices();
 
-            std::vector<Point3<float>> surfacePoints = {
+            std::vector surfacePoints = {
                     expandedConvexHull->getConvexHullPoints().find(indices[0])->second.point,
                     expandedConvexHull->getConvexHullPoints().find(indices[1])->second.point,
                     expandedConvexHull->getConvexHullPoints().find(indices[2])->second.point};
@@ -226,8 +226,8 @@ namespace urchin {
             Vector3<float> n3CrossN1 = plane2.getNormal().crossProduct(plane0.getNormal());
 
             Point3 newPoint(n2CrossN3 * plane0.getDistanceToOrigin());
-            newPoint += Point3<float>(n3CrossN1 * plane1.getDistanceToOrigin());
-            newPoint += Point3<float>(n1CrossN2 * plane2.getDistanceToOrigin());
+            newPoint += Point3(n3CrossN1 * plane1.getDistanceToOrigin());
+            newPoint += Point3(n1CrossN2 * plane2.getDistanceToOrigin());
             newPoint *= -1.0f / plane0.getNormal().dotProduct(n2CrossN3);
 
             expandedPoints.emplace_back(newPoint);

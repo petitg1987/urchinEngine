@@ -17,7 +17,7 @@ namespace urchin {
     }
 
     AIEntity::AIEntityType AIObject::getType() const {
-        return AIEntity::OBJECT;
+        return OBJECT;
     }
 
     const std::vector<std::unique_ptr<AIShape>>& AIObject::getShapes() const {

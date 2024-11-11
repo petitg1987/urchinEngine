@@ -34,7 +34,7 @@ namespace urchin {
             void removeNavObject(const AIEntity&);
 
             void prepareNavObjectsToUpdate();
-            void updateNearObjects(NavObject&);
+            void updateNearObjects(NavObject&) const;
 
             void updateNavPolygons();
             std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(NavObject&, const PolytopeSurface&);

@@ -18,7 +18,7 @@ namespace urchin {
 
         this->links.reserve(3); //estimated memory size
 
-        this->centerPoint = Point3<float>(0.0f, 0.0f, 0.0f);
+        this->centerPoint = Point3(0.0f, 0.0f, 0.0f);
     }
 
     NavTriangle::NavTriangle(const NavTriangle& navTriangle) :
@@ -97,7 +97,7 @@ namespace urchin {
 
     bool NavTriangle::isExternalEdge(std::size_t edgeIndex) const {
         return std::ranges::all_of(links, [&edgeIndex](const auto& link) {
-            return link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::STANDARD;
+            return link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != STANDARD;
         });
     }
 
@@ -105,7 +105,7 @@ namespace urchin {
         assert(edgeStartIndex <= 2);
 
         std::size_t edgeEndIndex = (edgeStartIndex + 1) % 3;
-        return LineSegment3D<float>(getNavPolygon()->getPoint(indices[edgeStartIndex]), getNavPolygon()->getPoint(indices[edgeEndIndex]));
+        return LineSegment3D(getNavPolygon()->getPoint(indices[edgeStartIndex]), getNavPolygon()->getPoint(indices[edgeEndIndex]));
     }
 
     void NavTriangle::assertLinksValidity() const {
@@ -118,9 +118,9 @@ namespace urchin {
                     assert(link->getSourceEdgeIndex() <= 2);
                     if (link->getSourceEdgeIndex() == edgeIndex) {
                         switch(link->getLinkType()) {
-                            case NavLinkType::STANDARD: countStandardLink++; break;
-                            case NavLinkType::JOIN_POLYGONS: countJoinPolygonsLink++; break;
-                            case NavLinkType::JUMP: countJumpLink++; break;
+                            case STANDARD: countStandardLink++; break;
+                            case JOIN_POLYGONS: countJoinPolygonsLink++; break;
+                            case JUMP: countJumpLink++; break;
                             default: break;
                         }
                     }

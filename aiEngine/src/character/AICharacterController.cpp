@@ -33,7 +33,7 @@ namespace urchin {
         }
         pathPoints.clear();
 
-        aiCharacter->updateVelocity(Vector3<float>(0.0f, 0.0f, 0.0f));
+        aiCharacter->updateVelocity(Vector3(0.0f, 0.0f, 0.0f));
     }
 
     AICharacter& AICharacterController::getAICharacter() const {

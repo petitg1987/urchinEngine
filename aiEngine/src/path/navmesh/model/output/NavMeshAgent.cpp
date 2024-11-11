@@ -43,11 +43,11 @@ namespace urchin {
     }
 
     CylinderShape<float> NavMeshAgent::getAgentCylinder() const {
-        return CylinderShape<float>(agentRadius, agentHeight, CylinderShape<float>::CYLINDER_Y);
+        return CylinderShape(agentRadius, agentHeight, CylinderShape<float>::CYLINDER_Y);
     }
 
     BoxShape<float> NavMeshAgent::getAgentBox() const {
-        return BoxShape<float>(Vector3<float>(agentRadius, agentHeight / 2.0f, agentRadius));
+        return BoxShape(Vector3(agentRadius, agentHeight / 2.0f, agentRadius));
     }
 
     float NavMeshAgent::computeExpandDistance(const Vector3<float>& normal) const {

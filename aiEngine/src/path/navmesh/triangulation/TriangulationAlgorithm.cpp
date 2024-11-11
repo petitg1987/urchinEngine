@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <stack>
 #include <algorithm>
 

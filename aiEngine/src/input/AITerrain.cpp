@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     AIEntity::AIEntityType AITerrain::getType() const {
-        return AIEntity::TERRAIN;
+        return TERRAIN;
     }
 
     const std::vector<Point3<float>>& AITerrain::getLocalVertices() const {

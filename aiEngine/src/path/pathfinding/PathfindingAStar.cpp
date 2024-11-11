@@ -161,7 +161,7 @@ namespace urchin {
         portals.reserve(10); //estimated memory size
 
         std::shared_ptr<PathNode> pathNode = endNode;
-        portals.emplace_back(std::make_unique<PathPortal>(LineSegment3D<float>(endPoint, endPoint), pathNode, nullptr, false));
+        portals.emplace_back(std::make_unique<PathPortal>(LineSegment3D(endPoint, endPoint), pathNode, nullptr, false));
         while (pathNode->getPreviousNode() != nullptr) {
             PathNodeEdgesLink pathNodeEdgesLink = pathNode->computePathNodeEdgesLink();
 
@@ -175,7 +175,7 @@ namespace urchin {
 
             pathNode = pathNode->getPreviousNode();
         }
-        portals.emplace_back(std::make_unique<PathPortal>(LineSegment3D<float>(startPoint, startPoint), nullptr, pathNode, false));
+        portals.emplace_back(std::make_unique<PathPortal>(LineSegment3D(startPoint, startPoint), nullptr, pathNode, false));
         std::ranges::reverse(portals);
 
         FunnelAlgorithm().computePivotPoints(portals);
@@ -191,7 +191,7 @@ namespace urchin {
         Vector3<float> characterToPortalA = characterPosition.vector(portal.getA()).normalize();
         float crossProductY = characterMoveDirection.Z * characterToPortalA.X - characterMoveDirection.X * characterToPortalA.Z;
         if (crossProductY > 0.0f) {
-            return LineSegment3D<float>(portal.getB(), portal.getA());
+            return LineSegment3D(portal.getB(), portal.getA());
         }
 
         return portal;
@@ -233,7 +233,7 @@ namespace urchin {
         return pathPoints;
     }
 
-    void PathfindingAStar::addMissingTransitionPoints(std::vector<std::unique_ptr<PathPortal>>& portals) const {
+    void PathfindingAStar::addMissingTransitionPoints(const std::vector<std::unique_ptr<PathPortal>>& portals) const {
         if (!portals.empty()) {
             assert(portals[0]->hasTransitionPoint());
             assert(portals.back()->hasTransitionPoint());

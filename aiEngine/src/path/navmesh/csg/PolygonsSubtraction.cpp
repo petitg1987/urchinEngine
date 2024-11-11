@@ -40,7 +40,7 @@ namespace urchin {
 
             if (mainSolution->Childs.empty()) {
                 std::string subtractionName = "[" + minuendPolygon.getName() + "] - [" + subtrahendPolygon.getName()+ "]";
-                subtractedPolygons.emplace_back(CSGPolygonPath(mainSolution->Contour, subtractionName).template toCSGPolygon<T>());
+                subtractedPolygons.emplace_back(CSGPolygonPath(mainSolution->Contour, subtractionName).toCSGPolygon<T>());
             } else {
                 assert(mainSolution->Childs[0]->IsHole());
 
@@ -50,7 +50,7 @@ namespace urchin {
         } else if (solution.Childs.size() > 1) {
             for (std::size_t i = 0; i < solution.Childs.size(); ++i) {
                 std::string subtractionName = "[" + minuendPolygon.getName() + "] - [" + subtrahendPolygon.getName()+ "]{" + std::to_string(i) + "}";
-                subtractedPolygons.emplace_back(CSGPolygonPath(solution.Childs[i]->Contour, subtractionName).template toCSGPolygon<T>());
+                subtractedPolygons.emplace_back(CSGPolygonPath(solution.Childs[i]->Contour, subtractionName).toCSGPolygon<T>());
             }
         }
 

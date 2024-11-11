@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void PolytopePlaneSurface::buildAABBox() {
-        aabbox = AABBox<float>(ccwPoints);
+        aabbox = AABBox(ccwPoints);
     }
 
     bool PolytopePlaneSurface::isWalkable() const {
@@ -58,7 +58,7 @@ namespace urchin {
             maxPoint.X = maxPoint.X < point.X ? point.X : minPoint.X;
             maxPoint.Y = maxPoint.Y < -point.Z ? -point.Z : minPoint.Y;
         }
-        return Rectangle2D<float>(minPoint, maxPoint);
+        return Rectangle2D(minPoint, maxPoint);
     }
 
     const AABBox<float>& PolytopePlaneSurface::getAABBox() const {
@@ -70,7 +70,7 @@ namespace urchin {
     }
 
     Plane<float> PolytopePlaneSurface::getPlane(const Rectangle2D<float>&) const {
-        return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
+        return Plane(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
     }
 
     const std::vector<CSGPolygon<float>>& PolytopePlaneSurface::getSelfObstacles() const {

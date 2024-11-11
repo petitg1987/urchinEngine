@@ -36,8 +36,8 @@ namespace urchin {
             return EdgeLinkResult::noEdgeLink();
         }
 
-        const float sampleSpaces = 1.0f;
-        const unsigned int samplesCount = 1 + MathFunction::ceilToUInt(startEdge.toVector().length() / sampleSpaces);
+        constexpr float SAMPLE_SPACES = 1.0f;
+        const unsigned int samplesCount = 1 + MathFunction::ceilToUInt(startEdge.toVector().length() / SAMPLE_SPACES);
 
         bool hasJumpPoints = false;
         float jumpStartRange = -std::numeric_limits<float>::max();

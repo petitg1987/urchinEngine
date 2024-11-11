@@ -6,7 +6,6 @@
 #include <UrchinCommon.h>
 
 #include <path/navmesh/polytope/PolytopeSurface.h>
-#include <path/navmesh/model/output/NavMeshAgent.h>
 
 namespace urchin {
 

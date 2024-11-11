@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <UrchinCommon.h>
 
 #include <AIEnvironment.h>
@@ -42,12 +41,12 @@ namespace urchin {
     }
 
     void AIEnvironment::addPathRequest(const std::shared_ptr<PathRequest>& pathRequest) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         pathRequests.push_back(pathRequest);
     }
 
     void AIEnvironment::removePathRequest(const PathRequest& pathRequest) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
 
         auto itFind = std::ranges::find_if(pathRequests, [&pathRequest](const auto& o){return o.get() == &pathRequest;});
         if (itFind != pathRequests.end()) {
@@ -69,17 +68,17 @@ namespace urchin {
     }
 
     void AIEnvironment::pause() {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         paused = true;
     }
 
     void AIEnvironment::unpause() {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         paused = false;
     }
 
     bool AIEnvironment::isPaused() const {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         return paused;
     }
 
@@ -143,7 +142,7 @@ namespace urchin {
         bool paused;
         copiedPathRequests.clear();
         {
-            std::scoped_lock<std::mutex> lock(mutex);
+            std::scoped_lock lock(mutex);
 
             paused = this->paused;
             copiedPathRequests = this->pathRequests;

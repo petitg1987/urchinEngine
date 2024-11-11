@@ -47,8 +47,8 @@ namespace urchin {
                 trianglePoints.emplace_back(p2.X, p2.Z);
                 trianglePoints.emplace_back(p3.X, p3.Z);
 
-                auto svgPolygon = std::make_unique<SVGPolygon>(trianglePoints, SVGColor::LIME, 0.5f);
-                svgPolygon->setStroke(SVGColor::RED, 0.05f);
+                auto svgPolygon = std::make_unique<SVGPolygon>(trianglePoints, LIME, 0.5f);
+                svgPolygon->setStroke(RED, 0.05f);
                 svgExporter.addShape(std::move(svgPolygon));
             }
         }
@@ -58,9 +58,9 @@ namespace urchin {
                 for (const auto& link : triangle->getLinks()) {
                     Point3<float> lineP1 = triangle->getCenterPoint();
                     Point3<float> lineP2 = link->getTargetTriangle()->getCenterPoint();
-                    LineSegment2D line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
+                    LineSegment2D line(Point2(lineP1.X, -lineP1.Z), Point2(lineP2.X, -lineP2.Z));
 
-                    SVGColor linkColor = (link->getLinkType() == NavLinkType::JUMP) ? SVGColor::ORANGE : SVGColor::BLUE;
+                    SVGColor linkColor = (link->getLinkType() == JUMP) ? ORANGE : BLUE;
                     auto svgLine = std::make_unique<SVGLine>(line, linkColor, 0.5f);
                     svgLine->setStroke(linkColor, 0.05f);
                     svgExporter.addShape(std::move(svgLine));

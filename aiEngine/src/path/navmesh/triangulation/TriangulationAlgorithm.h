@@ -10,11 +10,11 @@
 namespace mapbox::util {
 
     template<> struct nth<0, urchin::Point2<float>> {
-        static auto get(const urchin::Point2<float> &t);
+        static auto get(const urchin::Point2<float> &);
     };
 
     template<> struct nth<1, urchin::Point2<float>> {
-        static auto get(const urchin::Point2<float> &t);
+        static auto get(const urchin::Point2<float> &);
     };
 
 }

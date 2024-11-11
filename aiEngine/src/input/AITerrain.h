@@ -11,7 +11,7 @@ namespace urchin {
         public:
             AITerrain(std::string, const Transform<float>&, bool, std::vector<Point3<float>>, unsigned int, unsigned int);
 
-            AIEntity::AIEntityType getType() const override;
+            AIEntityType getType() const override;
 
             const std::vector<Point3<float>>& getLocalVertices() const;
             unsigned int getXLength() const;

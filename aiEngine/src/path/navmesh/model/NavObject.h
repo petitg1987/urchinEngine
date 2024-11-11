@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <vector>
-#include <map>
 
 #include <path/navmesh/polytope/Polytope.h>
 #include <path/navmesh/polytope/PolytopeSurface.h>
