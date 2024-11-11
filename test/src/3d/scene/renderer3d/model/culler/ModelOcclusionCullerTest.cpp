@@ -7,7 +7,7 @@ using namespace urchin;
 
 void ModelOcclusionCullerTest::movingModel() {
     auto modelOcclusionCuller = std::make_unique<ModelOcclusionCuller>();
-    std::shared_ptr<Model> model = buildModel(Point3(-500.0f, 2.0f, -3.0f)); //model outside frustum
+    std::shared_ptr model = buildModel(Point3(-500.0f, 2.0f, -3.0f)); //model outside frustum
     modelOcclusionCuller->addModel(model);
     Frustum frustum(90.0f, 1.0f, 0.01f, 100.0f);
 
@@ -17,7 +17,7 @@ void ModelOcclusionCullerTest::movingModel() {
     modelOcclusionCuller->postRefresh();
     AssertHelper::assertUnsignedIntEquals(models.size(), 0);
 
-    model->setTransform(Transform<float>(Point3(0.0f, 2.0f, -3.0f), Quaternion<float>())); //model inside frustum
+    model->setTransform(Transform(Point3(0.0f, 2.0f, -3.0f), Quaternion<float>())); //model inside frustum
     models.clear();
     modelOcclusionCuller->refresh();
     modelOcclusionCuller->getModelsInFrustum(frustum, models);
@@ -27,7 +27,7 @@ void ModelOcclusionCullerTest::movingModel() {
 
 void ModelOcclusionCullerTest::updateCullBehavior() {
     auto modelOcclusionCuller = std::make_unique<ModelOcclusionCuller>();
-    std::shared_ptr<Model> model = buildModel(Point3(-500.0f, 2.0f, -3.0f)); //model outside frustum
+    std::shared_ptr model = buildModel(Point3(-500.0f, 2.0f, -3.0f)); //model outside frustum
     modelOcclusionCuller->addModel(model);
     Frustum frustum(90.0f, 1.0f, 0.01f, 100.0f);
 

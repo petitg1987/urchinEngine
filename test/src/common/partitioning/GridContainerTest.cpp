@@ -15,17 +15,17 @@ const Point3<int>& MyGridItem::getGridPosition() const {
 }
 
 void GridContainerTest::findXPositiveNeighbor() {
-    auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
-    auto item2 = std::make_shared<MyGridItem>(Point3<int>(4, 2, 7));
-    auto item3 = std::make_shared<MyGridItem>(Point3<int>(5, 1, 7));
-    auto item4 = std::make_shared<MyGridItem>(Point3<int>(8, 1, 7));
+    auto item1 = std::make_shared<MyGridItem>(Point3(2, 1, 7));
+    auto item2 = std::make_shared<MyGridItem>(Point3(4, 2, 7));
+    auto item3 = std::make_shared<MyGridItem>(Point3(5, 1, 7));
+    auto item4 = std::make_shared<MyGridItem>(Point3(8, 1, 7));
     GridContainer<MyGridItem> gridContainer;
     gridContainer.addItem(item1);
     gridContainer.addItem(item2);
     gridContainer.addItem(item3);
     gridContainer.addItem(item4);
 
-    auto neighbor117 = gridContainer.findNeighbor(Point3<int>(1, 1, 7), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    auto neighbor117 = gridContainer.findNeighbor(Point3(1, 1, 7), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
     auto neighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
     auto neighborItem2 = gridContainer.findNeighbor(item2->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
     auto neighborItem3 = gridContainer.findNeighbor(item3->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
@@ -39,17 +39,17 @@ void GridContainerTest::findXPositiveNeighbor() {
 }
 
 void GridContainerTest::findXNegativeNeighbor() {
-    auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
-    auto item2 = std::make_shared<MyGridItem>(Point3<int>(4, 2, 7));
-    auto item3 = std::make_shared<MyGridItem>(Point3<int>(5, 1, 7));
-    auto item4 = std::make_shared<MyGridItem>(Point3<int>(8, 1, 7));
+    auto item1 = std::make_shared<MyGridItem>(Point3(2, 1, 7));
+    auto item2 = std::make_shared<MyGridItem>(Point3(4, 2, 7));
+    auto item3 = std::make_shared<MyGridItem>(Point3(5, 1, 7));
+    auto item4 = std::make_shared<MyGridItem>(Point3(8, 1, 7));
     GridContainer<MyGridItem> gridContainer;
     gridContainer.addItem(item1);
     gridContainer.addItem(item2);
     gridContainer.addItem(item3);
     gridContainer.addItem(item4);
 
-    auto neighbor317 = gridContainer.findNeighbor(Point3<int>(3, 1, 7), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    auto neighbor317 = gridContainer.findNeighbor(Point3(3, 1, 7), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
     auto neighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
     auto neighborItem2 = gridContainer.findNeighbor(item2->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
     auto neighborItem3 = gridContainer.findNeighbor(item3->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
@@ -63,10 +63,10 @@ void GridContainerTest::findXNegativeNeighbor() {
 }
 
 void GridContainerTest::findYPositiveAllDirectNeighbors() {
-    auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
-    auto item2 = std::make_shared<MyGridItem>(Point3<int>(2, 2, 7));
-    auto item3 = std::make_shared<MyGridItem>(Point3<int>(2, 3, 7));
-    auto item4 = std::make_shared<MyGridItem>(Point3<int>(2, 5, 7));
+    auto item1 = std::make_shared<MyGridItem>(Point3(2, 1, 7));
+    auto item2 = std::make_shared<MyGridItem>(Point3(2, 2, 7));
+    auto item3 = std::make_shared<MyGridItem>(Point3(2, 3, 7));
+    auto item4 = std::make_shared<MyGridItem>(Point3(2, 5, 7));
     GridContainer<MyGridItem> gridContainer;
     gridContainer.addItem(item1);
     gridContainer.addItem(item2);
@@ -81,10 +81,10 @@ void GridContainerTest::findYPositiveAllDirectNeighbors() {
 }
 
 void GridContainerTest::findYNegativeAllDirectNeighbors() {
-    auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
-    auto item2 = std::make_shared<MyGridItem>(Point3<int>(2, 2, 7));
-    auto item3 = std::make_shared<MyGridItem>(Point3<int>(2, 3, 7));
-    auto item4 = std::make_shared<MyGridItem>(Point3<int>(2, 5, 7));
+    auto item1 = std::make_shared<MyGridItem>(Point3(2, 1, 7));
+    auto item2 = std::make_shared<MyGridItem>(Point3(2, 2, 7));
+    auto item3 = std::make_shared<MyGridItem>(Point3(2, 3, 7));
+    auto item4 = std::make_shared<MyGridItem>(Point3(2, 5, 7));
     GridContainer<MyGridItem> gridContainer;
     gridContainer.addItem(item1);
     gridContainer.addItem(item2);
@@ -98,8 +98,8 @@ void GridContainerTest::findYNegativeAllDirectNeighbors() {
 }
 
 void GridContainerTest::removeNeighbor() {
-    auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
-    auto item2 = std::make_shared<MyGridItem>(Point3<int>(2, 2, 7));
+    auto item1 = std::make_shared<MyGridItem>(Point3(2, 1, 7));
+    auto item2 = std::make_shared<MyGridItem>(Point3(2, 2, 7));
     GridContainer<MyGridItem> gridContainer;
     gridContainer.addItem(item1);
     gridContainer.addItem(item2);
@@ -113,12 +113,12 @@ void GridContainerTest::removeNeighbor() {
 }
 
 void GridContainerTest::checkItemExist() {
-    auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
+    auto item1 = std::make_shared<MyGridItem>(Point3(2, 1, 7));
     GridContainer<MyGridItem> gridContainer;
     gridContainer.addItem(item1);
 
-    bool is217Exist = gridContainer.isItemExist(Point3<int>(2, 1, 7));
-    bool is317Exist = gridContainer.isItemExist(Point3<int>(3, 1, 7));
+    bool is217Exist = gridContainer.isItemExist(Point3(2, 1, 7));
+    bool is317Exist = gridContainer.isItemExist(Point3(3, 1, 7));
 
     AssertHelper::assertTrue(is217Exist);
     AssertHelper::assertTrue(!is317Exist);

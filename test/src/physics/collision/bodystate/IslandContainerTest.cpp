@@ -10,7 +10,7 @@ using namespace urchin;
  * All bodies of container should belong to same island.
  */
 void IslandContainerTest::cascadeMergeIslands() {
-    std::array<std::unique_ptr<TestBody>, 4> bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
+    std::array bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
     std::vector<IslandElement*> bodiesPtr;
     bodiesPtr.reserve(bodies.size());
     for (const auto& body : bodies) {
@@ -36,7 +36,7 @@ void IslandContainerTest::cascadeMergeIslands() {
  * All bodies of container should belong to same island.
  */
 void IslandContainerTest::mergeAllIslands() {
-    std::array<std::unique_ptr<TestBody>, 3> bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
+    std::array bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
     std::vector<IslandElement*> bodiesPtr;
     bodiesPtr.reserve(bodies.size());
     for (const auto& body : bodies) {
@@ -62,7 +62,7 @@ void IslandContainerTest::mergeAllIslands() {
  * We should have two distinct islands.
  */
 void IslandContainerTest::createTwoSeparateIslands() {
-    std::array<std::unique_ptr<TestBody>, 4> bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
+    std::array bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
     std::vector<IslandElement*> bodiesPtr;
     bodiesPtr.reserve(bodies.size());
     for (const auto& body : bodies) {

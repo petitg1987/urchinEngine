@@ -8,7 +8,7 @@
 using namespace urchin;
 
 void ResizePolygon2DServiceTest::reduceTriangle() {
-    std::vector<Point2<int>> trianglesPoints = {Point2<int>(-188, -6065), Point2<int>(1100, -6065), Point2<int>(1100, -4774)};
+    std::vector trianglesPoints = {Point2(-188, -6065), Point2(1100, -6065), Point2(1100, -4774)};
 
     ResizePolygon2DService<int>::resizePolygon(trianglesPoints, -5);
 

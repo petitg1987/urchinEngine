@@ -9,9 +9,9 @@ using namespace urchin;
 
 void FunnelAlgorithmTest::straightPath() {
     std::vector<std::unique_ptr<PathPortal>> portals;
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(1.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(1.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
 
     FunnelAlgorithm().computePivotPoints(portals);
 
@@ -22,9 +22,9 @@ void FunnelAlgorithmTest::straightPath() {
 
 void FunnelAlgorithmTest::cornerPath1() {
     std::vector<std::unique_ptr<PathPortal>> portals;
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(4.0f, 0.0f, 1.0f), Point3(4.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(4.0f, 0.0f, 1.0f), Point3(4.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
 
     FunnelAlgorithm().computePivotPoints(portals);
 
@@ -61,9 +61,9 @@ void FunnelAlgorithmTest::cornerPath3() {
 
 void FunnelAlgorithmTest::cornerPath4() {
     std::vector<std::unique_ptr<PathPortal>> portals;
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(-2.0f, 0.0f, 1.0f), Point3(-2.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
-    portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(-2.0f, 0.0f, 1.0f), Point3(-2.0f, 0.0f, 1.0f)), nullptr, nullptr, false)); //end point
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f)), nullptr, nullptr, false));
+    portals.push_back(std::make_unique<PathPortal>(LineSegment3D(Point3(1.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f)), nullptr, nullptr, false)); //start point
 
     FunnelAlgorithm().computePivotPoints(portals);
 
