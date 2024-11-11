@@ -6,10 +6,10 @@
 using namespace urchin;
 
 void Line2DTest::orthogonalProjection() {
-    Line2D line(Point2<float>(1.0f, 1.0f), Point2<float>(2.0f, 1.0f));
-    Point2<float> projectedPoint = line.orthogonalProjection(Point2<float>(3.0f, 2.0f));
+    Line2D line(Point2(1.0f, 1.0f), Point2(2.0f, 1.0f));
+    Point2<float> projectedPoint = line.orthogonalProjection(Point2(3.0f, 2.0f));
 
-    AssertHelper::assertPoint2FloatEquals(projectedPoint, Point2<float>(3.0f, 1.0f));
+    AssertHelper::assertPoint2FloatEquals(projectedPoint, Point2(3.0f, 1.0f));
 }
 
 CppUnit::Test* Line2DTest::suite() {

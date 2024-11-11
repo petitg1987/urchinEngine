@@ -8,7 +8,7 @@ using namespace urchin;
 
 void TriangulationTest::triangleTriangulation() {
     std::vector<std::vector<Point2<float>>> polygonPoints = {
-            {Point2<float>(0.0f, 0.0f), Point2<float>(2.0f, 0.0f), Point2<float>(1.0f, 1.0f)}
+            {Point2(0.0f, 0.0f), Point2(2.0f, 0.0f), Point2(1.0f, 1.0f)}
     };
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(polygonPoints));
@@ -21,7 +21,7 @@ void TriangulationTest::triangleTriangulation() {
 
 void TriangulationTest::cubeTriangulation() {
     std::vector<std::vector<Point2<float>>> polygonPoints = {
-            {Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)}
+            {Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)}
     };
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(polygonPoints));
@@ -37,9 +37,9 @@ void TriangulationTest::cubeTriangulation() {
 
 void TriangulationTest::twoNearPoints() {
     std::vector<std::vector<Point2<float>>> polygonPoints = {
-            {Point2<float>(500.0f, 500.0f), Point2<float>(0.0f, 3.0f), Point2<float>(2.0f, 3.0f), Point2<float>(2.0f, 2.0f),
-             Point2<float>(2.0000002f, 2.0f), Point2<float>(3.0f, 1.5f), Point2<float>(5.0f, 1.5f), Point2<float>(0.0f, 0.0f),
-             Point2<float>(6.0f, 0.0f)}
+            {Point2(500.0f, 500.0f), Point2(0.0f, 3.0f), Point2(2.0f, 3.0f), Point2(2.0f, 2.0f),
+             Point2(2.0000002f, 2.0f), Point2(3.0f, 1.5f), Point2(5.0f, 1.5f), Point2(0.0f, 0.0f),
+             Point2(6.0f, 0.0f)}
     };
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(polygonPoints));
@@ -78,8 +78,8 @@ void TriangulationTest::twoNearPoints() {
 
 void TriangulationTest::threeAlignedPoints() {
     std::vector<std::vector<Point2<float>>> polygonPoints = {
-            {Point2<float>(0.0f, 5.0f), Point2<float>(-1.0f, 4.0f), Point2<float>(0.0f, 0.0f),
-             Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 2.0f), Point2<float>(1.0f, 3.0f)}
+            {Point2(0.0f, 5.0f), Point2(-1.0f, 4.0f), Point2(0.0f, 0.0f),
+             Point2(1.0f, 1.0f), Point2(1.0f, 2.0f), Point2(1.0f, 3.0f)}
     };
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(polygonPoints));
@@ -104,9 +104,9 @@ void TriangulationTest::threeAlignedPoints() {
 
 void TriangulationTest::alternationPoints() {
     std::vector<std::vector<Point2<float>>> polygonPoints = {
-            {Point2<float>(0.0f, 6.0f), Point2<float>(-1.0f, 4.0f), Point2<float>(-1.0f, 2.0f),
-             Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 3.0f),
-             Point2<float>(1.0f, 5.0f)}
+            {Point2(0.0f, 6.0f), Point2(-1.0f, 4.0f), Point2(-1.0f, 2.0f),
+             Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(1.0f, 3.0f),
+             Point2(1.0f, 5.0f)}
     };
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(polygonPoints));
@@ -136,8 +136,8 @@ void TriangulationTest::alternationPoints() {
 
 void TriangulationTest::cavityTriangulation1() {
     std::vector<std::vector<Point2<float>>> polygonPoints = {
-            {Point2<float>(3.0f, 4.0f), Point2<float>(0.0f, 3.0f), Point2<float>(1.0f, 2.0f),
-             Point2<float>(0.0f, 1.75f), Point2<float>(2.0f, 0.0f)}
+            {Point2(3.0f, 4.0f), Point2(0.0f, 3.0f), Point2(1.0f, 2.0f),
+             Point2(0.0f, 1.75f), Point2(2.0f, 0.0f)}
     };
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(polygonPoints));
@@ -151,9 +151,9 @@ void TriangulationTest::cavityTriangulation1() {
 
 void TriangulationTest::cavityTriangulation2() {
     std::vector<std::vector<Point2<float>>> polygonPoints = {
-            {Point2<float>(2.0f, 0.0f), Point2<float>(3.0f, 5.0f), Point2<float>(0.0f, 3.0f),
-             Point2<float>(1.0f, 2.5f), Point2<float>(0.0f, 2.0f), Point2<float>(1.0f, 1.5f),
-             Point2<float>(0.0f, 1.0f)}
+            {Point2(2.0f, 0.0f), Point2(3.0f, 5.0f), Point2(0.0f, 3.0f),
+             Point2(1.0f, 2.5f), Point2(0.0f, 2.0f), Point2(1.0f, 1.5f),
+             Point2(0.0f, 1.0f)}
     };
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(polygonPoints));
@@ -169,8 +169,8 @@ void TriangulationTest::cavityTriangulation2() {
 
 void TriangulationTest::holeInTriangle() {
     std::vector<std::vector<Point2<float>>> polygonPoints = {
-            {Point2<float>(0.0f, 6.0f), Point2<float>(-5.0f, 0.0f), Point2<float>(5.0f, 0.0f)},
-            {Point2<float>(0.0f, 3.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)}, //hole
+            {Point2(0.0f, 6.0f), Point2(-5.0f, 0.0f), Point2(5.0f, 0.0f)},
+            {Point2(0.0f, 3.0f), Point2(1.0f, 1.0f), Point2(-1.0f, 1.0f)}, //hole
     };
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(polygonPoints));

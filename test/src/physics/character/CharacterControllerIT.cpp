@@ -142,7 +142,7 @@ void CharacterControllerIT::ccdMovingCharacter() {
 }
 
 void CharacterControllerIT::constructGround(PhysicsWorld& physicsWorld) const {
-    std::vector<Point3<float>> groundPoints = {
+    std::vector groundPoints = {
             Point3(-100.0f, 0.0f, -100.0f), Point3(100.0f, 0.0f, -100.0f),
             Point3(-100.0f, 0.0f, 100.0f), Point3(100.0f, 0.0f, 100.0f)
     };
@@ -163,9 +163,9 @@ std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(Ph
         float xValue = (float)x * 1.1f; //min: 0, max: 4.8
         for (unsigned int z = 0; z < 5; z++) {
             float zValue = (float)z * 1.1f; //min: 0, max: 4.8
-            std::unique_ptr<CollisionShape3D>  cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(cubeLength / 2.0f, cubeLength / 2.0f, cubeLength / 2.0f));
+            std::unique_ptr<CollisionShape3D>  cubeShape = std::make_unique<CollisionBoxShape>(Vector3(cubeLength / 2.0f, cubeLength / 2.0f, cubeLength / 2.0f));
             std::string bodyName = "cube_" + std::to_string(x) + "_" + std::to_string(z);
-            auto cubeBody = std::make_shared<RigidBody>(bodyName, PhysicsTransform(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), std::move(cubeShape));
+            auto cubeBody = std::make_shared<RigidBody>(bodyName, PhysicsTransform(Point3(xValue, 10.0f, zValue), Quaternion<float>()), std::move(cubeShape));
             cubeBody->setMass(10.0f); //non-static
 
             physicsWorld.getBodyContainer().addBody(cubeBody);

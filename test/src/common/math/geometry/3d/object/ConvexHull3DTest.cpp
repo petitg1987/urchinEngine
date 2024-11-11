@@ -9,10 +9,10 @@
 using namespace urchin;
 
 void ConvexHull3DTest::reduceBox() {
-    std::vector<Point3<float>> aabbPoints = {
+    std::vector aabbPoints = {
             Point3(0.0f, 1.0f, 0.0f), Point3(1.0f, 1.0f, 0.0f), Point3(1.0f, -1.0f, 0.0f), Point3(0.0f, -1.0f, 0.0f),
             Point3(0.0f, 1.0f, -1.0f), Point3(1.0f, 1.0f, -1.0f), Point3(1.0f, -1.0f, -1.0f), Point3(0.0f, -1.0f, -1.0f)};
-    ConvexHull3D<float> convexHull(aabbPoints);
+    ConvexHull3D convexHull(aabbPoints);
 
     std::unique_ptr<ConvexHull3D<float>> convexHullResult = convexHull.resize(-0.1f);
 
@@ -27,9 +27,8 @@ void ConvexHull3DTest::reduceBox() {
 }
 
 void ConvexHull3DTest::nullExpandTetrahedron() {
-    std::vector<Point3<float>> tetrahedronPoints = {
-                Point3(-1.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f)};
-    ConvexHull3D<float> convexHull(tetrahedronPoints);
+    std::vector tetrahedronPoints = {Point3(-1.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f)};
+    ConvexHull3D convexHull(tetrahedronPoints);
 
     std::unique_ptr<ConvexHull3D<float>> convexHullResult = convexHull.resize(0.0f);
 
@@ -40,9 +39,8 @@ void ConvexHull3DTest::nullExpandTetrahedron() {
 }
 
 void ConvexHull3DTest::expandTetrahedron() {
-    std::vector<Point3<float>> tetrahedronPoints = {
-                Point3(-1.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f)};
-    ConvexHull3D<float> convexHull(tetrahedronPoints);
+    std::vector tetrahedronPoints = {Point3(-1.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f)};
+    ConvexHull3D convexHull(tetrahedronPoints);
 
     std::unique_ptr<ConvexHull3D<float>> convexHullResult = convexHull.resize(0.5f);
 
