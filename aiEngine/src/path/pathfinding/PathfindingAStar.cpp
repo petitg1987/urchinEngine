@@ -201,7 +201,7 @@ namespace urchin {
         return (lineSegment.getA() + lineSegment.getB()) / 2.0f;
     }
 
-    std::vector<PathPoint> PathfindingAStar::pathPortalsToPathPoints(std::vector<std::unique_ptr<PathPortal>>& pathPortals, bool followTopography) const {
+    std::vector<PathPoint> PathfindingAStar::pathPortalsToPathPoints(const std::vector<std::unique_ptr<PathPortal>>& pathPortals, bool followTopography) const {
         std::vector<PathPoint> pathPoints;
         pathPoints.reserve(pathPortals.size() / 2); //estimated memory size
 

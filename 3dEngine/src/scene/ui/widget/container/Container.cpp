@@ -4,18 +4,18 @@
 namespace urchin {
 
     Container::Container(Position position, Size size, std::string skinName) :
-            Widget(position, size) {
+            Widget(std::move(position), size) {
         if (!skinName.empty()) {
             scrollbar = std::make_unique<Scrollbar>(*this, std::move(skinName));
         }
     }
 
     std::shared_ptr<Container> Container::create(Widget* parent, Position position, Size size) {
-        return Widget::create<Container>(new Container(position, size, ""), parent);
+        return Widget::create<Container>(new Container(std::move(position), size, ""), parent);
     }
 
     std::shared_ptr<Container> Container::createScrollable(Widget* parent, Position position, Size size, std::string skinName) {
-        return Widget::create<Container>(new Container(position, size, std::move(skinName)), parent);
+        return Widget::create<Container>(new Container(std::move(position), size, std::move(skinName)), parent);
     }
 
     void Container::onResize() {

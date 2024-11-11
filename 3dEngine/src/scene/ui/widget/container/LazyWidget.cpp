@@ -3,14 +3,14 @@
 namespace urchin {
 
     LazyWidget::LazyWidget(Position position, Size size, std::function<void(LazyWidget*)> loadChildrenFunction) :
-            Widget(position, size),
+            Widget(std::move(position), size),
             loadChildrenFunction(std::move(loadChildrenFunction)),
             isLoaded(false) {
 
     }
 
     std::shared_ptr<LazyWidget> LazyWidget::create(Widget* parent, Position position, Size size, std::function<void(LazyWidget*)> loadChildrenFunction) {
-        return Widget::create<LazyWidget>(new LazyWidget(position, size, std::move(loadChildrenFunction)), parent);
+        return Widget::create<LazyWidget>(new LazyWidget(std::move(position), size, std::move(loadChildrenFunction)), parent);
     }
 
     WidgetType LazyWidget::getWidgetType() const {

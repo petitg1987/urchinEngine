@@ -10,7 +10,7 @@
 namespace urchin {
 
     Text::Text(Position position, std::string skinName, std::string inputText, std::vector<std::string> inputTextParameters) :
-            Widget(position, Size(0, 0, PIXEL)),
+            Widget(std::move(position), Size(0, 0, PIXEL)),
             skinName(std::move(skinName)),
             inputText(std::move(inputText), std::move(inputTextParameters)),
             maxWidth(-1.0f),
@@ -20,11 +20,11 @@ namespace urchin {
     }
 
     std::shared_ptr<Text> Text::create(Widget* parent, Position position, std::string skinName, std::string inputText) {
-        return Widget::create<Text>(new Text(position, std::move(skinName), std::move(inputText), {}), parent);
+        return Widget::create<Text>(new Text(std::move(position), std::move(skinName), std::move(inputText), {}), parent);
     }
 
     std::shared_ptr<Text> Text::create(Widget* parent, Position position, std::string skinName, const ParameterizedText& parameterizedText) {
-        return Widget::create<Text>(new Text(position, std::move(skinName), parameterizedText.getText(), parameterizedText.getParameters()), parent);
+        return Widget::create<Text>(new Text(std::move(position), std::move(skinName), parameterizedText.getText(), parameterizedText.getParameters()), parent);
     }
 
     Text::~Text() {

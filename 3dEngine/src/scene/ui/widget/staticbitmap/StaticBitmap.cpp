@@ -7,32 +7,32 @@
 namespace urchin {
 
     StaticBitmap::StaticBitmap(Position position, Size size, std::shared_ptr<Texture> texture) :
-            Widget(position, size),
+            Widget(std::move(position), size),
             texture(std::move(texture)) {
 
     }
 
     std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, std::shared_ptr<Texture> texture) {
-        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
+        return Widget::create<StaticBitmap>(new StaticBitmap(std::move(position), size, std::move(texture)), parent);
     }
 
     std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, const std::string& filename) {
         std::shared_ptr<Texture> texture = buildTexture(filename);
-        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
+        return Widget::create<StaticBitmap>(new StaticBitmap(std::move(position), size, std::move(texture)), parent);
     }
 
     std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, WidthSize widthSize, const std::string& filename) {
         std::shared_ptr<Texture> texture = buildTexture(filename);
         float ratio = (float)texture->getHeight() / (float)texture->getWidth();
         Size size(widthSize.getWidth(), widthSize.getWidthType(), ratio, RATIO_TO_WIDTH);
-        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
+        return Widget::create<StaticBitmap>(new StaticBitmap(std::move(position), size, std::move(texture)), parent);
     }
 
     std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, HeightSize heightSize, const std::string& filename) {
         std::shared_ptr<Texture> texture = buildTexture(filename);
         float ratio = (float)texture->getWidth() / (float)texture->getHeight();
         Size size(ratio, RATIO_TO_HEIGHT, heightSize.getHeight(), heightSize.getHeightType());
-        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
+        return Widget::create<StaticBitmap>(new StaticBitmap(std::move(position), size, std::move(texture)), parent);
     }
 
     std::shared_ptr<Texture> StaticBitmap::buildTexture(const std::string& filename) {

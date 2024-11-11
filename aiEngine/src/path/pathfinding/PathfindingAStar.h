@@ -35,7 +35,7 @@ namespace urchin {
             LineSegment3D<float> rearrangePortal(const LineSegment3D<float>&, const std::vector<std::unique_ptr<PathPortal>>&) const;
             Point3<float> middlePoint(const LineSegment3D<float>&) const;
 
-            std::vector<PathPoint> pathPortalsToPathPoints(std::vector<std::unique_ptr<PathPortal>>&, bool) const;
+            std::vector<PathPoint> pathPortalsToPathPoints(const std::vector<std::unique_ptr<PathPortal>>&, bool) const;
             void addMissingTransitionPoints(const std::vector<std::unique_ptr<PathPortal>>&) const;
             Point3<float> computeTransitionPoint(const PathPortal&, const Point3<float>&) const;
 

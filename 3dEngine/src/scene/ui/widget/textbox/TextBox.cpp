@@ -9,7 +9,7 @@
 namespace urchin {
 
     TextBox::TextBox(Position position, Size size, std::string skinName) :
-            Widget(position, size),
+            Widget(std::move(position), size),
             skinName(std::move(skinName)),
             maxCharacter(-1),
             text(nullptr),
@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     std::shared_ptr<TextBox> TextBox::create(Widget* parent, Position position, Size size, std::string skinName) {
-        return Widget::create<TextBox>(new TextBox(position, size, std::move(skinName)), parent);
+        return Widget::create<TextBox>(new TextBox(std::move(position), size, std::move(skinName)), parent);
     }
 
     void TextBox::createOrUpdateWidget() {

@@ -6,7 +6,7 @@
 namespace urchin {
 
     Textarea::Textarea(Position position, Size size, std::string skinName) :
-            Widget(position, size),
+            Widget(std::move(position), size),
             skinName(std::move(skinName)),
             maxCharacter(-1),
             scrollbarWidthInPixel(0.0f),
@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Textarea> Textarea::create(Widget* parent, Position position, Size size, std::string skinName) {
-        return Widget::create<Textarea>(new Textarea(position, size, std::move(skinName)), parent);
+        return Widget::create<Textarea>(new Textarea(std::move(position), size, std::move(skinName)), parent);
     }
 
     WidgetType Textarea::getWidgetType() const {

@@ -5,14 +5,14 @@
 namespace urchin {
 
     CheckBox::CheckBox(Position position, Size size, std::string skinName) :
-            Widget(position, size),
+            Widget(std::move(position), size),
             skinName(std::move(skinName)),
             bIsChecked(false) {
 
     }
 
     std::shared_ptr<CheckBox> CheckBox::create(Widget* parent, Position position, Size size, std::string skinName) {
-        return Widget::create<CheckBox>(new CheckBox(position, size, std::move(skinName)), parent);
+        return Widget::create<CheckBox>(new CheckBox(std::move(position), size, std::move(skinName)), parent);
     }
 
     void CheckBox::createOrUpdateWidget() {

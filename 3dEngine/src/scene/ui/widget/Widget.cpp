@@ -16,7 +16,7 @@ namespace urchin {
             mouseY(0),
             parent(nullptr),
             widgetState(DEFAULT),
-            position(position),
+            position(std::move(position)),
             size(size),
             scale(Vector2(1.0f, 1.0f)),
             rotationZ(0.0f),
@@ -227,7 +227,7 @@ namespace urchin {
     }
 
     void Widget::updatePosition(Position position) {
-        this->position = position;
+        this->position = std::move(position);
         onPositionUpdated();
     }
 

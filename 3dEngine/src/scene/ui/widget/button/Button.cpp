@@ -8,7 +8,7 @@
 namespace urchin {
 
     Button::Button(Position position, Size size, std::string skinName, std::string buttonText) :
-            Widget(position, size),
+            Widget(std::move(position), size),
             skinName(std::move(skinName)),
             text(nullptr),
             buttonText(std::move(buttonText)) {
@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Button> Button::create(Widget* parent, Position position, Size size, std::string skinName, std::string buttonText) {
-        return Widget::create<Button>(new Button(position, size, std::move(skinName), std::move(buttonText)), parent);
+        return Widget::create<Button>(new Button(std::move(position), size, std::move(skinName), std::move(buttonText)), parent);
     }
 
     void Button::createOrUpdateWidget() {

@@ -9,7 +9,7 @@
 namespace urchin {
 
     Window::Window(Position position, Size size, std::string skinName, std::string titleKey) :
-            Widget(position, size),
+            Widget(std::move(position), size),
             skinName(std::move(skinName)),
             titleKey(std::move(titleKey)),
             mousePositionX(0),
@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Window> Window::create(Widget* parent, Position position, Size size, std::string skinName, std::string titleKey) {
-        return Widget::create<Window>(new Window(position, size, std::move(skinName), std::move(titleKey)), parent);
+        return Widget::create<Window>(new Window(std::move(position), size, std::move(skinName), std::move(titleKey)), parent);
     }
 
     void Window::createOrUpdateWidget() {
