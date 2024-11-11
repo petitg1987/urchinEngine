@@ -329,7 +329,7 @@ void PolygonsUnionTest::twoAlmostIdenticalTrapeze() { //see polygonsUnionAlmostI
     std::vector polyPoints2 = {Point2<long long>(747, -4979), Point2<long long>(973, -5019),
                                                   Point2<long long>(973, -5939), Point2<long long>(502, -5939)};
 
-    std::vector<CSGPolygon<long long>> allPolygons = {CSGPolygon("p1", std::move(polyPoints1)), CSGPolygon("p2", std::move(polyPoints2))};
+    std::vector allPolygons = {CSGPolygon("p1", std::move(polyPoints1)), CSGPolygon("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<long long>> polygonUnion = PolygonsUnion<long long>::instance().unionPolygons(allPolygons);
 
     AssertHelper::assertUnsignedIntEquals(polygonUnion.size(), 1);

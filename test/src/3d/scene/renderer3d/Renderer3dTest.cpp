@@ -33,9 +33,9 @@ void Renderer3dTest::modelPreWarm() {
 std::unique_ptr<Model> Renderer3dTest::buildModel(const std::string& materialFilename, const std::string& modelName, const Point3<float>& position) const {
     ModelBuilder modelBuilder(materialFilename);
 
-    std::vector<Point3<float>> vertices = {Point3(-0.01f, 0.0f, 0.0f), Point3(0.0f, 0.01f, 0.0f), Point3(0.01f, 0.0f, 0.0f)};
-    std::vector<unsigned int> triangleIndices = {0, 1, 2};
-    std::vector<Point2<float>> uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
+    std::vector vertices = {Point3(-0.01f, 0.0f, 0.0f), Point3(0.0f, 0.01f, 0.0f), Point3(0.01f, 0.0f, 0.0f)};
+    std::vector triangleIndices = {0u, 1u, 2u};
+    std::vector uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
 
     std::unique_ptr<Model> model = modelBuilder.newModel(modelName, vertices, triangleIndices, uvTexture);
     model->setPosition(position);
