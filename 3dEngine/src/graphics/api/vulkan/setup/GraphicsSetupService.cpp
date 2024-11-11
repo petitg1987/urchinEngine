@@ -121,6 +121,32 @@ namespace urchin {
         }
     }
 
+    void GraphicsSetupService::createAllocateCommandPool() {
+        VkCommandPoolCreateInfo poolInfo{};
+        poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+        poolInfo.queueFamilyIndex = queueHandler.getGraphicsAndComputeQueueFamily();
+        poolInfo.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
+
+        VkResult result = vkCreateCommandPool(deviceHandler->getLogicalDevice(), &poolInfo, nullptr, &allocateCommandPool);
+        if (result != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create command pool with error code: " + std::string(string_VkResult(result)));
+        }
+    }
+
+    void GraphicsSetupService::createAllocator() {
+        VmaAllocatorCreateInfo allocatorInfo = {};
+        allocatorInfo.vulkanApiVersion = vulkanVersion;
+        allocatorInfo.physicalDevice = deviceHandler->getPhysicalDevice();
+        allocatorInfo.device = deviceHandler->getLogicalDevice();
+        allocatorInfo.instance = vkInstance;
+        allocatorInfo.flags = 0;
+        if (deviceHandler->isMemoryBudgetExtSupported()) {
+            allocatorInfo.flags |= VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
+        }
+
+        vmaCreateAllocator(&allocatorInfo, &allocator);
+    }
+
     const FramebufferSizeRetriever* GraphicsSetupService::getFramebufferSizeRetriever() const {
         return framebufferSizeRetriever;
     }
@@ -153,32 +179,6 @@ namespace urchin {
     const ValidationLayer& GraphicsSetupService::getValidationLayer() const {
         assert(validationLayer);
         return *validationLayer;
-    }
-
-    void GraphicsSetupService::createAllocateCommandPool() {
-        VkCommandPoolCreateInfo poolInfo{};
-        poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        poolInfo.queueFamilyIndex = queueHandler.getGraphicsAndComputeQueueFamily();
-        poolInfo.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
-
-        VkResult result = vkCreateCommandPool(deviceHandler->getLogicalDevice(), &poolInfo, nullptr, &allocateCommandPool);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create command pool with error code: " + std::string(string_VkResult(result)));
-        }
-    }
-
-    void GraphicsSetupService::createAllocator() {
-        VmaAllocatorCreateInfo allocatorInfo = {};
-        allocatorInfo.vulkanApiVersion = vulkanVersion;
-        allocatorInfo.physicalDevice = deviceHandler->getPhysicalDevice();
-        allocatorInfo.device = deviceHandler->getLogicalDevice();
-        allocatorInfo.instance = vkInstance;
-        allocatorInfo.flags = 0;
-        if (deviceHandler->isMemoryBudgetExtSupported()) {
-            allocatorInfo.flags |= VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
-        }
-
-        vmaCreateAllocator(&allocatorInfo, &allocator);
     }
 
 }
