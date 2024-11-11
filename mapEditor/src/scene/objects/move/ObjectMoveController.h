@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class ObjectMoveController : public Observable {
+    class ObjectMoveController final : public Observable {
         public:
             ObjectMoveController(Scene&, SceneController&, MouseController&, StatusBarController&);
 

@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <QMessageBox>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 

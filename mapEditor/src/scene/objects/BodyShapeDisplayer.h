@@ -19,7 +19,7 @@ namespace urchin {
             void clearDisplay();
 
         private:
-            std::unique_ptr<GeometryModel> retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const CollisionConvexObject3D&);
+            std::unique_ptr<GeometryModel> retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const CollisionConvexObject3D&) const;
 
             std::unique_ptr<GeometryModel> retrieveSphereGeometry(const CollisionConvexObject3D&) const;
             std::unique_ptr<GeometryModel> retrieveBoxGeometry(const CollisionConvexObject3D&) const;

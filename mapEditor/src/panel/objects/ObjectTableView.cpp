@@ -19,8 +19,8 @@ namespace urchin {
         horizontalHeader()->resizeSection(1, 160);
         verticalHeader()->hide();
 
-        setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
-        setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+        setSelectionMode(SingleSelection);
+        setSelectionBehavior(SelectRows);
     }
 
     void ObjectTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
@@ -28,7 +28,7 @@ namespace urchin {
         horizontalHeader()->resizeSection(0, 180);
         horizontalHeader()->resizeSection(0, 160);
 
-        notifyObservers(this, NotificationType::OBJECT_SELECTION_CHANGED);
+        notifyObservers(this, OBJECT_SELECTION_CHANGED);
     }
 
     std::vector<QStandardItem*> ObjectTableView::buildObjectEntityItems(const ObjectEntity& objectEntity) const {

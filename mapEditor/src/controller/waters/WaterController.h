@@ -21,7 +21,7 @@ namespace urchin {
             const WaterEntity& updateWaterUnderWater(const WaterEntity&, float, float);
 
         private:
-            WaterEntity& findWaterEntity(const WaterEntity&);
+            WaterEntity& findWaterEntity(const WaterEntity&) const;
     };
 
 }

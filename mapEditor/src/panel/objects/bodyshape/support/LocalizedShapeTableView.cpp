@@ -15,12 +15,12 @@ namespace urchin {
         QTableView::setModel(localizedShapesTableModel);
         horizontalHeader()->resizeSection(0, 325);
 
-        setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
-        setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+        setSelectionMode(SingleSelection);
+        setSelectionBehavior(SelectRows);
     }
 
     void LocalizedShapeTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
-        notifyObservers(this, NotificationType::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
+        notifyObservers(this, OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
     }
 
     bool LocalizedShapeTableView::hasLocalizedShapeSelected() const {

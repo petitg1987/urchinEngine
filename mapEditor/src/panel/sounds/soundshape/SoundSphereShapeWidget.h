@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <memory>
 #include <QtWidgets/QDoubleSpinBox>
 
 #include <UrchinCommon.h>

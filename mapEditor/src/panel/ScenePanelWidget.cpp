@@ -93,25 +93,25 @@ namespace urchin {
     ScenePanelWidget::TabName ScenePanelWidget::getTabSelected() const {
         int tabIndex = this->currentIndex();
         if (tabIndex == 0) {
-            return TabName::OBJECTS;
+            return OBJECTS;
         } else if (tabIndex == 1) {
-            return TabName::LIGHTS;
+            return LIGHTS;
         } else if (tabIndex == 2) {
-            return TabName::TERRAINS;
+            return TERRAINS;
         } else if (tabIndex == 3) {
-            return TabName::WATERS;
+            return WATERS;
         } else if (tabIndex == 4) {
-            return TabName::SKY;
+            return SKY;
         } else if (tabIndex == 5) {
-            return TabName::SOUNDS;
+            return SOUNDS;
         } else if (tabIndex == 6) {
-            return TabName::AI;
+            return AI;
         }
 
         throw std::runtime_error("Unknown selected tab index: " + std::to_string(tabIndex));
     }
 
     void ScenePanelWidget::tabSelected() {
-        notifyObservers(this, NotificationType::TAB_SELECTED);
+        notifyObservers(this, TAB_SELECTED);
     }
 }

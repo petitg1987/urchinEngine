@@ -73,7 +73,7 @@ namespace urchin {
         }
     }
 
-    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const CollisionConvexObject3D& bodyObject) {
+    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const CollisionConvexObject3D& bodyObject) const {
         if (shapeType == CollisionShape3D::SPHERE_SHAPE) {
             return retrieveSphereGeometry(bodyObject);
         }

@@ -598,7 +598,7 @@ namespace urchin {
         bodyShapeWidget->show();
         connect(bodyShapeWidget.get(), SIGNAL(bodyShapeChange(std::unique_ptr<const CollisionShape3D>&)), this, SLOT(bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&)));
 
-        notifyObservers(this, NotificationType::OBJECT_BODY_SHAPE_WIDGET_CREATED);
+        notifyObservers(this, OBJECT_BODY_SHAPE_WIDGET_CREATED);
     }
 
     void ObjectPanelWidget::setupObjectTagsDataFrom(const ObjectEntity& objectEntity) {
@@ -719,9 +719,9 @@ namespace urchin {
             auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 
             Transform newObjectEntityTransform(
-                    Point3<float>((float)positionX->value(),(float)positionY->value(),(float)positionZ->value()),
+                    Point3((float)positionX->value(),(float)positionY->value(),(float)positionZ->value()),
                     Quaternion<float>::fromEuler(eulerAngle, rotationSequence),
-                    Vector3<float>((float)scaleX->value(), (float)scaleY->value(), (float)scaleZ->value()));
+                    Vector3((float)scaleX->value(), (float)scaleY->value(), (float)scaleZ->value()));
 
             objectController->updateObjectTransform(objectEntity, newObjectEntityTransform);
         }

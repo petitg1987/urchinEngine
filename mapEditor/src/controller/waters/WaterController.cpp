@@ -77,7 +77,7 @@ namespace urchin {
         return waterEntity;
     }
 
-    WaterEntity& WaterController::findWaterEntity(const WaterEntity& constWaterEntity) {
+    WaterEntity& WaterController::findWaterEntity(const WaterEntity& constWaterEntity) const {
         const auto& watersEntities = getMap().getWaterEntities();
         auto it = std::ranges::find_if(watersEntities, [&constWaterEntity](const auto& o){return o.get() == &constWaterEntity;});
 

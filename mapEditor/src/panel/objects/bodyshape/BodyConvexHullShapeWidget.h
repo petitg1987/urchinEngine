@@ -26,7 +26,7 @@ namespace urchin {
             std::unique_ptr<const CollisionShape3D> createBodyShape() const override;
 
         private:
-            void addPoint(const Point3<float>&);
+            void addPoint(const Point3<float>&) const;
             std::vector<Point3<float>> getPoints() const;
 
             QLabel* pointsLabel;

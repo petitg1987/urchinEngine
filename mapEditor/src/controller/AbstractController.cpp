@@ -22,7 +22,7 @@ namespace urchin {
     void AbstractController::markModified() {
         bIsModified = true;
 
-        notifyObservers(this, AbstractController::CHANGES_DONE);
+        notifyObservers(this, CHANGES_DONE);
     }
 
     Map& AbstractController::getMap() const {

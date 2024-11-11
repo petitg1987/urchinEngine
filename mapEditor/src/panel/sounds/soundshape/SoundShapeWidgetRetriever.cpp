@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    std::unique_ptr<SoundShapeWidget> SoundShapeWidgetRetriever::retrieveShapeWidget(SoundShape::ShapeType shapeType) {
+    std::unique_ptr<SoundShapeWidget> SoundShapeWidgetRetriever::retrieveShapeWidget(SoundShape::ShapeType shapeType) const {
         if (shapeType == SoundShape::ShapeType::SPHERE_SHAPE) {
             return std::make_unique<SoundSphereShapeWidget>(soundEntity);
         } else if (shapeType == SoundShape::ShapeType::BOX_SHAPE) {

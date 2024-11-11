@@ -1,8 +1,6 @@
 #pragma once
 
-#include <string>
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGroupBox>

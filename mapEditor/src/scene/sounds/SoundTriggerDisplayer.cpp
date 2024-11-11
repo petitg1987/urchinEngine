@@ -33,7 +33,7 @@ namespace urchin {
         }
     }
 
-    std::unique_ptr<GeometryModel> SoundTriggerDisplayer::retrieveGeometry(const SoundShape& soundShape) {
+    std::unique_ptr<GeometryModel> SoundTriggerDisplayer::retrieveGeometry(const SoundShape& soundShape) const {
         SoundShape::ShapeType shapeType = soundShape.getShapeType();
         if (shapeType == SoundShape::ShapeType::SPHERE_SHAPE) {
             return retrieveSphereGeometry(soundShape);

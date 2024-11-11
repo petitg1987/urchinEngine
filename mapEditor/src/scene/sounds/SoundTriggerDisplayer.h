@@ -14,7 +14,7 @@ namespace urchin {
             void displaySoundTrigger(const SoundEntity*);
 
         private:
-            std::unique_ptr<GeometryModel> retrieveGeometry(const SoundShape&);
+            std::unique_ptr<GeometryModel> retrieveGeometry(const SoundShape&) const;
 
             std::unique_ptr<GeometryModel> retrieveSphereGeometry(const SoundShape&) const;
             std::unique_ptr<GeometryModel> retrieveBoxGeometry(const SoundShape&) const;

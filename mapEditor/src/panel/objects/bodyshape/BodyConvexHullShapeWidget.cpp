@@ -68,7 +68,7 @@ namespace urchin {
             auto scaledShape = std::make_unique<const CollisionConvexHullShape>(getPoints());
 
             //test construction of original shape because can throw an exception due to imprecision of float
-            Vector3<float> invScale = Vector3<float>(1.0f, 1.0f, 1.0f) / getObjectEntity()->getModel()->getTransform().getScale();
+            Vector3<float> invScale = Vector3(1.0f, 1.0f, 1.0f) / getObjectEntity()->getModel()->getTransform().getScale();
             scaledShape->scale(invScale);
 
             return scaledShape;
@@ -89,13 +89,13 @@ namespace urchin {
             QVariant valueY = pointsTableModel->data(indexY);
             QVariant valueZ = pointsTableModel->data(indexZ);
 
-            points.emplace_back(Point3<float>(valueX.toFloat(), valueY.toFloat(), valueZ.toFloat()));
+            points.emplace_back(Point3(valueX.toFloat(), valueY.toFloat(), valueZ.toFloat()));
         }
 
         return points;
     }
 
-    void BodyConvexHullShapeWidget::addPoint(const Point3<float>& point) {
+    void BodyConvexHullShapeWidget::addPoint(const Point3<float>& point) const {
         pointsTableModel->insertRow(pointsTableModel->rowCount());
 
         QModelIndex indexX = pointsTableModel->index(pointsTableModel->rowCount()-1, 0);

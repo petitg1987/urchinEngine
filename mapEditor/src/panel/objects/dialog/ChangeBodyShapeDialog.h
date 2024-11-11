@@ -1,6 +1,5 @@
 #pragma once
 
-#include <list>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QComboBox>

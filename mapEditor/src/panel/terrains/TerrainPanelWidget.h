@@ -1,15 +1,11 @@
 #pragma once
 
-#include <string>
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGroupBox>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <UrchinCommon.h>
-#include <Urchin3dEngine.h>
 
 #include <controller/terrains/TerrainController.h>
 #include <panel/terrains/TerrainTableView.h>

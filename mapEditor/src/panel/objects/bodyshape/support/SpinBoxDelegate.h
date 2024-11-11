@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <memory>
 #include <QItemDelegate>
 #include <QtWidgets/QTableView>
 #include <QStandardItemModel>

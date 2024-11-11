@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <QWidget>
 
 #include <UrchinSoundEngine.h>
 #include <UrchinAggregation.h>
@@ -13,7 +12,7 @@ namespace urchin {
         public:
             explicit SoundShapeWidgetRetriever(const SoundEntity&);
 
-            std::unique_ptr<SoundShapeWidget> retrieveShapeWidget(SoundShape::ShapeType);
+            std::unique_ptr<SoundShapeWidget> retrieveShapeWidget(SoundShape::ShapeType) const;
 
         private:
             const SoundEntity& soundEntity;

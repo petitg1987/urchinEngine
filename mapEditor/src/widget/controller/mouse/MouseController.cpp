@@ -17,7 +17,7 @@ namespace urchin {
     Point2<double> MouseController::getMousePosition() const {
         QPoint mousePosition = widget->mapFromGlobal(QCursor::pos());
         //mouse coordinate computed in pixel
-        return Point2<double>(
+        return Point2(
                 (double)mousePosition.x() * widget->devicePixelRatio(),
                 (double)mousePosition.y() * widget->devicePixelRatio());
     }
