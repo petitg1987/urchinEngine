@@ -18,7 +18,7 @@ namespace urchin {
         private:
             void loadMap(Map&, const UdaChunk*, const UdaParser&, LoadMapCallback&) const;
             void loadObjectEntities(Map&, const UdaChunk*, const UdaParser&) const;
-            void loadLightEntities(Map& p, const UdaChunk*, const UdaParser&) const;
+            void loadLightEntities(Map&, const UdaChunk*, const UdaParser&) const;
             void loadTerrainEntities(Map&, const UdaChunk*, const UdaParser&) const;
             void loadWaterEntities(Map&, const UdaChunk*, const UdaParser&) const;
             void loadSkyEntity(Map&, const UdaChunk*, const UdaParser&) const;

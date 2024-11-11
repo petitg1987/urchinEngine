@@ -29,7 +29,7 @@ namespace urchin {
                     triangleMeshPoints.emplace_back(navPolygon->getPoints()[triangle->getIndex(2)]);
 
                     for (const auto& link : triangle->getLinks()) {
-                        if (link->getLinkType() == NavLinkType::JUMP) {
+                        if (link->getLinkType() == JUMP) {
                             LineSegment3D<float> endEdge = link->getTargetTriangle()->computeEdge(link->getLinkConstraint()->getTargetEdgeIndex());
                             LineSegment3D<float> constrainedStartEdge = link->getLinkConstraint()->computeSourceJumpEdge(triangle->computeEdge(link->getSourceEdgeIndex()));
                             LineSegment3D constrainedEndEdge(endEdge.closestPoint(constrainedStartEdge.getA()), endEdge.closestPoint(constrainedStartEdge.getB()));

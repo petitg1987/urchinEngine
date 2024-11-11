@@ -1,5 +1,3 @@
-#include <stdexcept>
-
 #include <model/SoundEntity.h>
 
 namespace urchin {

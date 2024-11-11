@@ -1,5 +1,3 @@
-#include <stdexcept>
-
 #include <model/WaterEntity.h>
 
 namespace urchin {

@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <AIEnvironment.h>
 
 #include <model/ObjectEntity.h>

@@ -72,7 +72,7 @@ namespace urchin {
             scale = scaleChunk->getVector3Value();
         }
 
-        model.setTransform(Transform<float>(position, orientation, scale));
+        model.setTransform(Transform(position, orientation, scale));
     }
 
     void ModelReaderWriter::writeTransform(UdaChunk& modelChunk, const Model& model, UdaParser& udaParser) {

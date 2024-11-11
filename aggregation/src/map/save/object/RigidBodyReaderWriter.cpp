@@ -7,7 +7,7 @@ namespace urchin {
     std::unique_ptr<RigidBody> RigidBodyReaderWriter::load(const UdaChunk* physicsChunk, std::string id, const Transform<float>& modelTransform, const UdaParser& udaParser) {
         auto shapeChunk = udaParser.getFirstChunk(true, SHAPE_TAG, UdaAttribute(), physicsChunk);
         std::unique_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk);
-        auto bodyShape = std::unique_ptr<CollisionShape3D>(shapeReaderWriter->load(shapeChunk, udaParser));
+        auto bodyShape = std::unique_ptr(shapeReaderWriter->load(shapeChunk, udaParser));
 
         auto rigidBody = std::make_unique<RigidBody>(std::move(id), PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()), std::move(bodyShape));
         loadBodyProperties(*rigidBody, physicsChunk, udaParser);

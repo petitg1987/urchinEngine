@@ -59,7 +59,7 @@ namespace urchin {
             }
         }
 
-        return std::make_unique<ConvexHullShape3D<float>>(std::vector<Point3<float>>(allVertices.begin(), allVertices.end()));
+        return std::make_unique<ConvexHullShape3D<float>>(std::vector(allVertices.begin(), allVertices.end()));
     }
 
 }

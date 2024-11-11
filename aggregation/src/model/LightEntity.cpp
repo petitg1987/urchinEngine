@@ -1,5 +1,3 @@
-#include <stdexcept>
-
 #include <model/LightEntity.h>
 
 namespace urchin {
