@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class EdgeLinkDetectionTest: public CppUnit::TestFixture {
+class EdgeLinkDetectionTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

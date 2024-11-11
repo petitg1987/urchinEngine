@@ -14,7 +14,7 @@ class IslandContainerTest final : public CppUnit::TestFixture {
         void createTwoSeparateIslands();
 };
 
-class TestBody : public urchin::IslandElement {
+class TestBody final : public urchin::IslandElement {
     public:
         bool isActive() const override {
             return true;

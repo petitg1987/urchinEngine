@@ -92,13 +92,13 @@ void CharacterControllerIT::ccdFallingCharacter() {
     auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, 50.0f, 0.0f), Quaternion<float>()));
     auto characterController = CharacterController(std::move(character), CharacterControllerConfig(), *physicsWorld);
 
-    auto physicsEngineThread = std::jthread([&physicsWorld]() {
+    auto physicsEngineThread = std::jthread([&physicsWorld] {
         for (std::size_t i = 0; i < 250; ++i) {
             physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
-    auto mainThread = std::jthread([&characterController]() {
+    auto mainThread = std::jthread([&characterController] {
         for (std::size_t i = 0; i < 250; ++i) {
             characterController.update(1.0f / 35.0f); //simulate slow update to favor CCD
             std::this_thread::sleep_for(std::chrono::microseconds(250));

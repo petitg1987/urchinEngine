@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-struct MyGridItem {
+class MyGridItem {
     public:
         explicit MyGridItem(const urchin::Point3<int>&);
 
