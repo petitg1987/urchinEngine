@@ -1,9 +1,12 @@
-#include <algorithm>
-
 #include <path/navmesh/csg/PolygonsSubtraction.h>
 #include <path/navmesh/csg/CSGPolygonPath.h>
 
 namespace urchin {
+
+    template<class T> PolygonsSubtraction<T>& PolygonsSubtraction<T>::instance() {
+        static PolygonsSubtraction<T> instance;
+        return instance;
+    }
 
     template<class T> const std::vector<CSGPolygon<T>> &PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T>& minuendPolygon, const CSGPolygon<T>& subtrahendPolygon) const {
         bool subtrahendInside;

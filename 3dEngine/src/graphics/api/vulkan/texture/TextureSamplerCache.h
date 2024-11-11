@@ -2,7 +2,6 @@
 
 #include <vulkan/vulkan.h>
 #include <map>
-#include <UrchinCommon.h>
 
 #include <graphics/api/vulkan/texture/TextureParam.h>
 
@@ -16,10 +15,10 @@ namespace urchin {
     /**
      * Cache for vkSampler. Cache is required because created samplers on logical device are limited (e.g. 4000 on RTX 2080 Super)
      */
-    class TextureSamplerCache final : public Singleton<TextureSamplerCache> {
+    class TextureSamplerCache {
         public:
-            friend class Singleton;
-            ~TextureSamplerCache() override;
+            static TextureSamplerCache& instance();
+            ~TextureSamplerCache();
 
             uint64_t computeKey(TextureParam::ReadMode, TextureParam::ReadQuality, TextureParam::Anisotropy, uint32_t) const;
             void registerTextureSampler(uint64_t, VkSampler);

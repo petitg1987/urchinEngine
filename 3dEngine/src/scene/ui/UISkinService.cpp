@@ -7,8 +7,12 @@
 
 namespace urchin {
 
+    UISkinService& UISkinService::instance() {
+        static UISkinService instance;
+        return instance;
+    }
+
     UISkinService::UISkinService() :
-            Singleton<UISkinService>(),
             skinReader(nullptr) {
 
     }

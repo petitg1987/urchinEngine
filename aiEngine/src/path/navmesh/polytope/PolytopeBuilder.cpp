@@ -9,6 +9,11 @@
 
 namespace urchin {
 
+    PolytopeBuilder& PolytopeBuilder::instance() {
+        static PolytopeBuilder instance;
+        return instance;
+    }
+
     PolytopeBuilder::PolytopeBuilder() :
             planeSurfaceSplitService(PlaneSurfaceSplitService(ConfigService::instance().getFloatValue("navMesh.polytopeMaxSize"))),
             terrainSplitService(TerrainSplitService(ConfigService::instance().getFloatValue("navMesh.polytopeMaxSize"))) {

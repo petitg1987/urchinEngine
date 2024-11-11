@@ -19,7 +19,7 @@ namespace urchin {
             frameIndex(0),
             screenRenderTarget(ScreenRender("screen", false, RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
-            activeUiRenderers(nullptr),
+            activeUiRenderer(nullptr),
             gammaFactor(1.0f) {
         //scene properties
         this->framebufferSizeRetriever->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
@@ -29,13 +29,20 @@ namespace urchin {
 
         //initialize
         SignalHandler::instance().initialize();
-        GraphicsApiService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), *this->framebufferSizeRetriever);
+        graphicsApiService = std::make_unique<GraphicsApiService>(windowRequiredExtensions, std::move(surfaceCreator), *this->framebufferSizeRetriever);
         screenRenderTarget.updateVerticalSync(verticalSyncEnabled);
         screenRenderTarget.initialize();
     }
 
     Scene::~Scene() {
+        activeRenderer3d = nullptr;
+        activeUiRenderer = nullptr;
+        uiRenderers.clear();
+        renderers3d.clear();
+
         screenRenderTarget.cleanup();
+        ResourceContainer::instance().cleanResources();
+        graphicsApiService.reset();
         if (!DEBUG_PROFILE_FRAME_BY_FRAME) {
             Profiler::graphic().log();
         }
@@ -188,21 +195,21 @@ namespace urchin {
     }
 
     void Scene::enableUIRenderer(UIRenderer* uiRenderer) {
-        if (activeUiRenderers && activeUiRenderers != uiRenderer) {
-            activeUiRenderers->onDisable();
+        if (activeUiRenderer && activeUiRenderer != uiRenderer) {
+            activeUiRenderer->onDisable();
         }
-        activeUiRenderers = uiRenderer;
+        activeUiRenderer = uiRenderer;
     }
 
     void Scene::removeUIRenderer(const UIRenderer* uiRenderer) {
-        if (activeUiRenderers == uiRenderer) {
-            activeUiRenderers = nullptr;
+        if (activeUiRenderer == uiRenderer) {
+            activeUiRenderer = nullptr;
         }
         std::erase_if(uiRenderers, [&](auto& p){return uiRenderer == p.get();});
     }
 
     UIRenderer* Scene::getActiveUIRenderer() const {
-        return activeUiRenderers;
+        return activeUiRenderer;
     }
 
     void Scene::updateGammaFactor(float gammaFactor) {
@@ -221,7 +228,7 @@ namespace urchin {
     }
 
     bool Scene::onKeyPress(InputDeviceKey key) {
-        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onKeyPress(key)) {
                 return false;
             }
@@ -230,7 +237,7 @@ namespace urchin {
     }
 
     bool Scene::onKeyRelease(InputDeviceKey key) {
-        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onKeyRelease(key)) {
                 return false;
             }
@@ -239,7 +246,7 @@ namespace urchin {
     }
 
     bool Scene::onChar(char32_t unicodeCharacter) {
-        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onChar(unicodeCharacter)) {
                 return false;
             }
@@ -248,7 +255,7 @@ namespace urchin {
     }
 
     bool Scene::onMouseMove(double mouseX, double mouseY, double deltaMouseX, double deltaMouseY) {
-        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onMouseMove(mouseX, mouseY, deltaMouseX, deltaMouseY)) {
                 return false;
             }
@@ -257,7 +264,7 @@ namespace urchin {
     }
 
     bool Scene::onScroll(double offsetY) {
-        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onScroll(offsetY)) {
                 return false;
             }
@@ -269,14 +276,14 @@ namespace urchin {
         {
             ScopeProfiler sp(Profiler::graphic(), "sceneDisplay");
 
-            GraphicsApiService::instance().frameStart(frameIndex);
+            graphicsApiService->frameStart(frameIndex);
             handleFpsLimiter();
             computeFps();
             float dt = getDeltaTime();
 
             unsigned int screenRenderingOrder = 0;
             screenRenderTarget.disableAllProcessors();
-            for (auto* activeRenderer: std::initializer_list<Renderer *>{activeRenderer3d, activeUiRenderers}) {
+            for (auto* activeRenderer: std::initializer_list<Renderer *>{activeRenderer3d, activeUiRenderer}) {
                 if (activeRenderer) {
                     screenRenderingOrder++;
                     activeRenderer->prepareRendering(frameIndex, dt, screenRenderingOrder);
@@ -285,7 +292,7 @@ namespace urchin {
             screenRenderTarget.render(frameIndex, 0);
 
             ResourceContainer::instance().cleanResources();
-            GraphicsApiService::instance().frameEnd();
+            graphicsApiService->frameEnd();
             frameIndex++;
         }
 

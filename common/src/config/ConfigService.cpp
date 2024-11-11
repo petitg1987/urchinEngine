@@ -7,6 +7,11 @@
 
 namespace urchin {
 
+    ConfigService& ConfigService::instance() {
+        static ConfigService instance;
+        return instance;
+    }
+
     void ConfigService::loadProperties(const std::string& propertiesFile) {
         loadProperties(propertiesFile, FileSystem::instance().getResourcesDirectory());
     }

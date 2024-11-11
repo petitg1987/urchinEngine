@@ -88,10 +88,6 @@
 
 #include <pattern/observer/Observable.h>
 #include <pattern/observer/Observer.h>
-#include <pattern/singleton/Singleton.h>
-#include <pattern/singleton/ThreadSafeSingleton.h>
-#include <pattern/singleton/SingletonContainer.h>
-#include <pattern/singleton/SingletonInterface.h>
 #include <pattern/tag/TaggableResource.h>
 #include <pattern/tag/TagHolder.h>
 #include <pattern/queue/CircularFifo.h>

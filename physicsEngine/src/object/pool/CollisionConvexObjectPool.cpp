@@ -10,6 +10,11 @@
 
 namespace urchin {
 
+    CollisionConvexObjectPool& CollisionConvexObjectPool::instance() {
+        static CollisionConvexObjectPool instance;
+        return instance;
+    }
+
     CollisionConvexObjectPool::CollisionConvexObjectPool() {
         unsigned int maxElementSize = maxObjectSize({
             sizeof(CollisionBoxObject),

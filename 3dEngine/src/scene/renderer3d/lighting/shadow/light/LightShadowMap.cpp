@@ -14,7 +14,7 @@ namespace urchin {
             shadowMapResolution(shadowMapResolution),
             nbShadowMaps(nbShadowMaps) {
 
-        if (GraphicsApiService::instance().isInitialized()) { //only false for unit tests
+        //TODO if (GraphicsApiService::instance().isInitialized()) { //only false for unit tests
             renderTarget = std::make_unique<OffscreenRender>("shadow map", false, RenderTarget::SHARED_DEPTH_ATTACHMENT);
             renderTarget->setOutputSize(shadowMapResolution, shadowMapResolution, nbShadowMaps);
             renderTarget->initialize();
@@ -26,7 +26,7 @@ namespace urchin {
             shadowModelSetDisplayer->initialize(*renderTarget);
             shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ShadowModelShaderVariable>(this));
             shadowModelSetDisplayer->setupLayerIndexDataInShader(true);
-        }
+        //}
 
         for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye.
             lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(this));

@@ -10,6 +10,11 @@
 
 namespace urchin {
 
+    CaptureService& CaptureService::instance() {
+        static CaptureService instance;
+        return instance;
+    }
+
     void CaptureService::takeCapture(const std::string& filename, VkImage srcImage, VkFormat imageFormat, unsigned int srcWidth, unsigned int srcHeight, unsigned int width, unsigned int height) const {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
         auto allocator = GraphicsSetupService::instance().getAllocator();

@@ -7,10 +7,10 @@ namespace urchin {
     class ValidationLayer {
         public:
             ValidationLayer();
+            ~ValidationLayer();
 
             void initializeDebugMessengerForInstance(VkInstanceCreateInfo&);
             void initializeDebugMessenger(VkInstance);
-            void cleanup() const;
 
             unsigned int getValidationLevel() const;
             std::vector<std::string> getRequiredExtensions() const;

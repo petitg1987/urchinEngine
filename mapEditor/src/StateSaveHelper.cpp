@@ -1,9 +1,13 @@
 #include <QApplication>
-#include <QtCore/QStandardPaths>
 
 #include <StateSaveHelper.h>
 
 namespace urchin {
+
+    StateSaveHelper& StateSaveHelper::instance() {
+        static StateSaveHelper instance;
+        return instance;
+    }
 
     StateSaveHelper::StateSaveHelper() {
         std::string saveDirPath = QCoreApplication::applicationDirPath().toStdString() + "/save/";

@@ -4,7 +4,6 @@
 #include <string>
 #include <stdexcept>
 #include <typeinfo>
-#include <UrchinCommon.h>
 
 #include <resources/ResourceContainer.h>
 #include <resources/model/ConstMeshes.h>
@@ -16,11 +15,11 @@
 
 namespace urchin {
 
-    class ResourceRetriever final : public ThreadSafeSingleton<ResourceRetriever> {
+    class ResourceRetriever {
         public:
             static constexpr char SPECIAL_FILENAME_PREFIX = '#';
 
-            friend class ThreadSafeSingleton<ResourceRetriever>;
+            static ResourceRetriever& instance();
 
             template<class T> std::shared_ptr<T> getResource(const std::string&, const std::map<std::string, std::string, std::less<>>& = {}, bool = false);
 

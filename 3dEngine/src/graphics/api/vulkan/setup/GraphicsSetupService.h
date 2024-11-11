@@ -1,6 +1,5 @@
 #pragma once
 
-#include <UrchinCommon.h>
 #include <memory>
 #include <vulkan/vulkan.h>
 
@@ -15,17 +14,14 @@ VK_DEFINE_HANDLE(VmaAllocator)
 
 namespace urchin {
 
-    class GraphicsSetupService final : public Singleton<GraphicsSetupService> {
+    class GraphicsSetupService {
         public:
-            friend class Singleton;
-
-            ~GraphicsSetupService() override;
-
-            static void enableUniqueSurface();
-            static void destroySurface();
+            static GraphicsSetupService& instance();
+            ~GraphicsSetupService();
 
             bool isInitialized() const;
             void initialize(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&, FramebufferSizeRetriever&);
+            void uninitialize();
 
             const FramebufferSizeRetriever* getFramebufferSizeRetriever() const;
             static VkSurfaceKHR getSurface();
@@ -38,20 +34,19 @@ namespace urchin {
         private:
             GraphicsSetupService();
 
-            void createInstance(const std::vector<std::string>&);
+            void createInstance(const std::vector<std::string>&) const;
 
             void createAllocateCommandPool();
             void createAllocator();
 
-            static bool useUniqueSurface;
             static VkInstance vkInstance;
             static VkSurfaceKHR surface;
 
             FramebufferSizeRetriever* framebufferSizeRetriever;
             bool apiGraphicInitialized;
             const uint32_t vulkanVersion;
-            ValidationLayer validationLayer;
-            DeviceHandler deviceHandler;
+            std::unique_ptr<ValidationLayer> validationLayer;
+            std::unique_ptr<DeviceHandler> deviceHandler;
             QueueHandler queueHandler;
             VkCommandPool allocateCommandPool;
             VmaAllocator allocator;

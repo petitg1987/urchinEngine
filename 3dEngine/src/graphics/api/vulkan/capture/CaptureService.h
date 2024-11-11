@@ -1,12 +1,12 @@
 #pragma once
 
-#include <UrchinCommon.h>
+#include <vulkan/vulkan.h>
 
 namespace urchin {
 
-    class CaptureService final : public Singleton<CaptureService> {
+    class CaptureService {
         public:
-            friend class Singleton;
+            static CaptureService& instance();
 
             void takeCapture(const std::string&, VkImage, VkFormat, unsigned int, unsigned int, unsigned int = 0, unsigned int = 0) const;
 

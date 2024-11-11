@@ -2,6 +2,11 @@
 
 namespace urchin {
 
+    PipelineContainer& PipelineContainer::instance() {
+        static PipelineContainer instance;
+        return instance;
+    }
+
     PipelineContainer::~PipelineContainer() {
         cleanPipelines();
         for (const auto& [pipelineId, pipeline] : pipelines) {

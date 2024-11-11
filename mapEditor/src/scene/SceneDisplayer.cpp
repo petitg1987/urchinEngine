@@ -34,8 +34,6 @@ namespace urchin {
         soundTriggerDisplayer.reset(nullptr);
         navMeshDisplayer.reset(nullptr);
         scene.reset(nullptr);
-
-        SingletonContainer::destroyAllSingletons();
     }
 
     void SceneDisplayer::loadMap(const std::string& mapEditorPath, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {

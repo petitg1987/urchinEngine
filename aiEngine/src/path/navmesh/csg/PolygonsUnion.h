@@ -8,9 +8,9 @@
 
 namespace urchin {
 
-    template<class T> class PolygonsUnion : public Singleton<PolygonsUnion<T>> {
+    template<class T> class PolygonsUnion {
         public:
-            friend class Singleton<PolygonsUnion<T>>;
+            static PolygonsUnion<T>& instance();
 
             std::vector<CSGPolygon<T>>& unionPolygons(const std::vector<CSGPolygon<T>>&) const;
 

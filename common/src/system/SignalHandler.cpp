@@ -19,6 +19,11 @@
 
 namespace urchin {
 
+    SignalHandler& SignalHandler::instance() {
+        static SignalHandler instance;
+        return instance;
+    }
+
     SignalHandler::SignalHandler() :
             isInitialized(false) {
 

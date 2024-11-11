@@ -3,16 +3,14 @@
 #include <string>
 #include <map>
 
-#include <pattern/singleton/ThreadSafeSingleton.h>
-
 namespace urchin {
 
     /**
     * Service to handle configuration properties files
     */
-    class ConfigService final : public ThreadSafeSingleton<ConfigService> {
+    class ConfigService {
         public:
-            friend class ThreadSafeSingleton;
+            static ConfigService& instance();
 
             void loadProperties(const std::string&);
             void loadProperties(const std::string&, const std::string&);

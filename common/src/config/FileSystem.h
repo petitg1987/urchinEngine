@@ -1,12 +1,12 @@
 #pragma once
 
-#include <pattern/singleton/Singleton.h>
+#include <string>
 
 namespace urchin {
 
-    class FileSystem final : public Singleton<FileSystem> {
+    class FileSystem {
         public:
-            friend class Singleton;
+            static FileSystem& instance();
 
             void setupResourcesDirectory(std::string);
             const std::string& getResourcesDirectory() const;

@@ -1,13 +1,16 @@
-#include <stdexcept>
-
 #include <path/navmesh/csg/PolygonsUnion.h>
 
 namespace urchin {
 
+    template<class T> PolygonsUnion<T>& PolygonsUnion<T>::instance() {
+        static PolygonsUnion<T> instance;
+        return instance;
+    }
+
     /**
-       * Perform an union of polygons.
-       * When polygons cannot be put together because there is no contact: there are returned apart.
-       */
+     * Perform an union of polygons.
+     * When polygons cannot be put together because there is no contact: there are returned apart.
+     */
     template<class T> std::vector<CSGPolygon<T>> &PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>>& polygons) const {
         mergedPolygons.clear();
 
@@ -36,7 +39,7 @@ namespace urchin {
                 }
             }
             if (!isPolygonsMerged) {
-                mergedPolygons.push_back(allPolygonPaths[0].template toCSGPolygon<T>());
+                mergedPolygons.push_back(allPolygonPaths[0].toCSGPolygon<T>());
                 VectorUtil::erase(allPolygonPaths, 0);
             }
         }

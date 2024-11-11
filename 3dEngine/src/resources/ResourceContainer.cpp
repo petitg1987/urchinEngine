@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    ResourceContainer::ResourceContainer() :
-            ThreadSafeSingleton<ResourceContainer>() {
-
+    ResourceContainer& ResourceContainer::instance() {
+        static ResourceContainer instance;
+        return instance;
     }
 
     ResourceContainer::~ResourceContainer() {

@@ -10,6 +10,11 @@
 
 namespace urchin {
 
+    ResourceRetriever& ResourceRetriever::instance() {
+        static ResourceRetriever instance;
+        return instance;
+    }
+
     ResourceRetriever::ResourceRetriever() {
         loadersRegistry.try_emplace("tga", std::make_unique<LoaderTGA>());
         loadersRegistry.try_emplace("png", std::make_unique<LoaderPNG>());

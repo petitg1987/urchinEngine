@@ -76,12 +76,13 @@ namespace urchin {
             int fpsLimit;
 
             //renderer
+            std::unique_ptr<GraphicsApiService> graphicsApiService;
             uint32_t frameIndex;
             ScreenRender screenRenderTarget;
             std::vector<std::unique_ptr<Renderer3d>> renderers3d;
             Renderer3d* activeRenderer3d;
             std::vector<std::unique_ptr<UIRenderer>> uiRenderers;
-            UIRenderer* activeUiRenderers;
+            UIRenderer* activeUiRenderer;
             float gammaFactor;
     };
 

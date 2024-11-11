@@ -9,9 +9,13 @@ using namespace urchin;
 namespace urchin {
 
     //static
-    bool GraphicsSetupService::useUniqueSurface = false;
     VkInstance GraphicsSetupService::vkInstance = nullptr;
     VkSurfaceKHR GraphicsSetupService::surface = nullptr;
+
+    GraphicsSetupService& GraphicsSetupService::instance() {
+        static GraphicsSetupService instance;
+        return instance;
+    }
 
     GraphicsSetupService::GraphicsSetupService() :
             framebufferSizeRetriever(nullptr),
@@ -23,28 +27,9 @@ namespace urchin {
     }
 
     GraphicsSetupService::~GraphicsSetupService() {
-        vmaDestroyAllocator(allocator);
-        if (apiGraphicInitialized) {
-            vkDestroyCommandPool(getDevices().getLogicalDevice(), allocateCommandPool, nullptr);
-        }
-        deviceHandler.cleanup();
-        validationLayer.cleanup();
-        if (!useUniqueSurface) {
-            destroySurface();
-        }
-    }
+        //TODO add assert to check uninit is called ? + check surface destroyed ?
 
-    /**
-     * Some Windows manager libraries do not support well the recreation of a Vulkan surface.
-     * Therefore, this feature allows to reuse the same surface (and his associated instance) even after the destruction of this service.
-     * When this feature is enable, the 'destroySurface' method must be explicitly called.
-     */
-    void GraphicsSetupService::enableUniqueSurface() {
-        useUniqueSurface = true;
-    }
-
-    void GraphicsSetupService::destroySurface() {
-        if (surface) {
+        if (surface) { //TODO don't destroy with instance !
             vkDestroySurfaceKHR(vkInstance, surface, nullptr);
             surface = nullptr;
         }
@@ -62,22 +47,40 @@ namespace urchin {
     void GraphicsSetupService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator,
             FramebufferSizeRetriever& framebufferSizeRetriever) {
         this->framebufferSizeRetriever = &framebufferSizeRetriever;
+        this->validationLayer = std::make_unique<ValidationLayer>();
+        this->deviceHandler = std::make_unique<DeviceHandler>();
 
         createInstance(windowRequiredExtensions);
-        validationLayer.initializeDebugMessenger(vkInstance);
+        validationLayer->initializeDebugMessenger(vkInstance);
         if (!surface) {
             surface = static_cast<VkSurfaceKHR>(surfaceCreator->createSurface(vkInstance));
         }
-        deviceHandler.initializeDevices(vkInstance, surface);
-        queueHandler.initializeQueueFamilies(deviceHandler.getPhysicalDevice(), surface);
-        queueHandler.initializeQueues(deviceHandler.getLogicalDevice());
+        deviceHandler->initializeDevices(vkInstance, surface);
+        queueHandler.initializeQueueFamilies(deviceHandler->getPhysicalDevice(), surface);
+        queueHandler.initializeQueues(deviceHandler->getLogicalDevice());
+
         createAllocateCommandPool();
         createAllocator();
 
         apiGraphicInitialized = true;
     }
 
-    void GraphicsSetupService::createInstance(const std::vector<std::string>& windowRequiredExtensions) {
+    void GraphicsSetupService::uninitialize() {
+        if (allocator) {
+            vmaDestroyAllocator(allocator);
+            allocator = nullptr;
+        }
+
+        if (apiGraphicInitialized) {
+            vkDestroyCommandPool(getDevices().getLogicalDevice(), allocateCommandPool, nullptr);
+            apiGraphicInitialized = false;
+        }
+
+        deviceHandler.reset();
+        validationLayer.reset();
+    }
+
+    void GraphicsSetupService::createInstance(const std::vector<std::string>& windowRequiredExtensions) const {
         if (vkInstance) {
             return;
         }
@@ -92,7 +95,7 @@ namespace urchin {
         applicationInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
         applicationInfo.apiVersion = vulkanVersion;
 
-        std::vector<std::string> requiredExtensionsString = VectorUtil::concatenate(windowRequiredExtensions, validationLayer.getRequiredExtensions());
+        std::vector<std::string> requiredExtensionsString = VectorUtil::concatenate(windowRequiredExtensions, validationLayer->getRequiredExtensions());
         std::vector<const char*> requiredExtensions;
         requiredExtensions.reserve(requiredExtensionsString.size());
         for (const std::string& requiredExtensionString : requiredExtensionsString) {
@@ -104,7 +107,7 @@ namespace urchin {
         instanceCreateInfo.pApplicationInfo = &applicationInfo;
         instanceCreateInfo.enabledExtensionCount = (uint32_t)requiredExtensions.size();
         instanceCreateInfo.ppEnabledExtensionNames = requiredExtensions.empty() ? nullptr : requiredExtensions.data();
-        validationLayer.initializeDebugMessengerForInstance(instanceCreateInfo);
+        validationLayer->initializeDebugMessengerForInstance(instanceCreateInfo);
 
         VkResult result = vkCreateInstance(&instanceCreateInfo, nullptr, &vkInstance);
         if (result != VK_SUCCESS) {
@@ -122,8 +125,8 @@ namespace urchin {
     }
 
     const DeviceHandler& GraphicsSetupService::getDevices() const {
-        assert(apiGraphicInitialized);
-        return deviceHandler;
+        assert(deviceHandler);
+        return *deviceHandler;
     }
 
     const QueueHandler& GraphicsSetupService::getQueues() const {
@@ -142,7 +145,8 @@ namespace urchin {
     }
 
     const ValidationLayer& GraphicsSetupService::getValidationLayer() const {
-        return validationLayer;
+        assert(validationLayer);
+        return *validationLayer;
     }
 
     void GraphicsSetupService::createAllocateCommandPool() {
@@ -151,7 +155,7 @@ namespace urchin {
         poolInfo.queueFamilyIndex = queueHandler.getGraphicsAndComputeQueueFamily();
         poolInfo.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
 
-        VkResult result = vkCreateCommandPool(deviceHandler.getLogicalDevice(), &poolInfo, nullptr, &allocateCommandPool);
+        VkResult result = vkCreateCommandPool(deviceHandler->getLogicalDevice(), &poolInfo, nullptr, &allocateCommandPool);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create command pool with error code: " + std::string(string_VkResult(result)));
         }
@@ -160,11 +164,11 @@ namespace urchin {
     void GraphicsSetupService::createAllocator() {
         VmaAllocatorCreateInfo allocatorInfo = {};
         allocatorInfo.vulkanApiVersion = vulkanVersion;
-        allocatorInfo.physicalDevice = deviceHandler.getPhysicalDevice();
-        allocatorInfo.device = deviceHandler.getLogicalDevice();
+        allocatorInfo.physicalDevice = deviceHandler->getPhysicalDevice();
+        allocatorInfo.device = deviceHandler->getLogicalDevice();
         allocatorInfo.instance = vkInstance;
         allocatorInfo.flags = 0;
-        if (deviceHandler.isMemoryBudgetExtSupported()) {
+        if (deviceHandler->isMemoryBudgetExtSupported()) {
             allocatorInfo.flags |= VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
         }
 

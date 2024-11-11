@@ -4,11 +4,10 @@
 
 namespace urchin {
 
-    class AudioDevice final : public Singleton<AudioDevice> {
+    class AudioDevice {
         public:
-            friend class Singleton;
-
-            ~AudioDevice() override;
+            static AudioDevice& instance();
+            ~AudioDevice();
 
             void enable() const;
 

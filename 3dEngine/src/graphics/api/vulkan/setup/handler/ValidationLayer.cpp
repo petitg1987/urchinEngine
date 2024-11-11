@@ -29,6 +29,12 @@ namespace urchin {
         filterOutMessages.emplace_back("gpuav_validate_copies option was enabled"); //warning on validation option enabled but extension not enabled
     }
 
+    ValidationLayer::~ValidationLayer() {
+        if (validationLevel >= 2 && instance) {
+            destroyDebugUtilsMessengerEXT(instance);
+        }
+    }
+
     void ValidationLayer::initializeDebugMessengerForInstance(VkInstanceCreateInfo& instanceCreateInfo) {
         if (validationLevel >= 2) {
             if (!checkValidationLayerSupport()) {
@@ -68,12 +74,6 @@ namespace urchin {
             if (result != VK_SUCCESS) {
                 throw std::runtime_error("Failed to set up debug messenger with error code: " + std::string(string_VkResult(result)));
             }
-        }
-    }
-
-    void ValidationLayer::cleanup() const {
-        if (validationLevel >= 2 && instance) {
-            destroyDebugUtilsMessengerEXT(instance);
         }
     }
 

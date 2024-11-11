@@ -2,6 +2,11 @@
 
 namespace urchin {
 
+    TextureSamplerCache& TextureSamplerCache::instance() {
+        static TextureSamplerCache instance;
+        return instance;
+    }
+
     TextureSamplerCache::~TextureSamplerCache() {
         if (!samplersCache.empty()) {
             Logger::instance().logError("Texture sampler still used before destruction");

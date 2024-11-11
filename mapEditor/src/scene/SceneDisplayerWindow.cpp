@@ -18,16 +18,11 @@ namespace urchin {
             rightKeyPressed(false),
             mouseX(0),
             mouseY(0) {
-        GraphicsApiService::enableUniqueSurface();
-        setSurfaceType(QSurface::VulkanSurface);
+        setSurfaceType(VulkanSurface);
 
-        QObject::connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), SIGNAL(activated()), this, SLOT(onCtrlXPressed()));
-        QObject::connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Y), parent), SIGNAL(activated()), this, SLOT(onCtrlYPressed()));
-        QObject::connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Z), parent), SIGNAL(activated()), this, SLOT(onCtrlZPressed()));
-    }
-
-    SceneDisplayerWindow::~SceneDisplayerWindow() {
-        GraphicsApiService::destroySurface();
+        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), SIGNAL(activated()), this, SLOT(onCtrlXPressed()));
+        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Y), parent), SIGNAL(activated()), this, SLOT(onCtrlYPressed()));
+        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Z), parent), SIGNAL(activated()), this, SLOT(onCtrlZPressed()));
     }
 
     void SceneDisplayerWindow::exposeEvent(QExposeEvent *) {

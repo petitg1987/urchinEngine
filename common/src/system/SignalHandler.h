@@ -3,8 +3,6 @@
 #include <csignal>
 #include <memory>
 
-#include <pattern/singleton/Singleton.h>
-
 #ifdef _WIN32
     struct _EXCEPTION_POINTERS;
 #endif
@@ -18,9 +16,9 @@ namespace urchin {
             virtual void onSignalReceived(unsigned long) = 0;
     };
 
-    class SignalHandler final : public Singleton<SignalHandler> {
+    class SignalHandler {
         public:
-            friend class Singleton;
+            static SignalHandler& instance();
 
             enum ErrorSimulationType {
                 SEGMENTATION_FAULT,

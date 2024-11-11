@@ -1,17 +1,14 @@
 #pragma once
 
 #include <vector>
-#include <map>
-#include <string>
-#include <UrchinCommon.h>
 
 #include <path/navmesh/csg/CSGPolygon.h>
 
 namespace urchin {
 
-    template<class T> class PolygonsSubtraction : public Singleton<PolygonsSubtraction<T>> {
+    template<class T> class PolygonsSubtraction {
         public:
-            friend class Singleton<PolygonsSubtraction<T>>;
+            static PolygonsSubtraction<T>& instance();
 
             const std::vector<CSGPolygon<T>>& subtractPolygons(const CSGPolygon<T>&, const CSGPolygon<T>&) const;
             const std::vector<CSGPolygon<T>>& subtractPolygons(const CSGPolygon<T>&, const CSGPolygon<T>&, bool&) const;

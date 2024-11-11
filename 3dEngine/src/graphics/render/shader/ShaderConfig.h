@@ -1,13 +1,12 @@
 #pragma once
 
 #include <string>
-#include <UrchinCommon.h>
 
 namespace urchin {
 
-    class ShaderConfig final : public Singleton<ShaderConfig> {
+    class ShaderConfig {
         public:
-            friend class Singleton;
+            static ShaderConfig& instance();
 
             void replaceShadersParentDirectoryBy(std::string);
 

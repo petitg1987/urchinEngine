@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <memory>
 #include <UrchinCommon.h>
 
@@ -14,9 +13,9 @@
 
 namespace urchin {
 
-    class PolytopeBuilder : public Singleton<PolytopeBuilder> {
+    class PolytopeBuilder {
         public:
-            friend class Singleton<PolytopeBuilder>;
+            static PolytopeBuilder& instance();
 
             std::vector<std::unique_ptr<Polytope>> buildExpandedPolytopes(const AIObject&, const NavMeshAgent&) const;
             std::vector<std::unique_ptr<Polytope>> buildExpandedPolytope(const AITerrain&, const NavMeshAgent&) const;

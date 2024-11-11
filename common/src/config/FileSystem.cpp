@@ -4,6 +4,11 @@
 
 namespace urchin {
 
+    FileSystem& FileSystem::instance() {
+        static FileSystem instance;
+        return instance;
+    }
+
     FileSystem::FileSystem() :
             resourcesDirectory("./") {
         this->engineUserDataDirectory = SystemInfo::userDataDirectory() + getEngineDirectoryName() + "/";

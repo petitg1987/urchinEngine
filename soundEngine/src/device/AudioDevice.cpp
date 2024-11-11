@@ -6,6 +6,11 @@
 
 namespace urchin {
 
+    AudioDevice& AudioDevice::instance() {
+        static AudioDevice instance;
+        return instance;
+    }
+
     AudioDevice::AudioDevice() :
             device(nullptr),
             context(nullptr) {

@@ -20,9 +20,9 @@ namespace urchin {
         LengthType type;
     };
 
-    class UISkinService final : public Singleton<UISkinService> {
+    class UISkinService {
         public:
-            friend class Singleton;
+            static UISkinService& instance();
 
             void setSkin(const std::string&);
 

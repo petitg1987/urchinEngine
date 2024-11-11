@@ -2,8 +2,12 @@
 
 namespace urchin {
 
+    ShaderConfig& ShaderConfig::instance() {
+        static ShaderConfig instance;
+        return instance;
+    }
+
     ShaderConfig::ShaderConfig() :
-            Singleton(),
             shadersParentDirectory(FileSystem::instance().getResourcesDirectory()),
             shadersDirectoryName(ConfigService::instance().getStringValue("shaders.shadersLocation")) {
 

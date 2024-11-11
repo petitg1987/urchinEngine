@@ -52,6 +52,13 @@ namespace urchin {
         };
     }
 
+    DeviceHandler::~DeviceHandler() {
+        if (logicalDevice) {
+            vkDestroyDevice(logicalDevice, nullptr);
+            logicalDevice = nullptr;
+        }
+    }
+
     void DeviceHandler::initializeDevices(VkInstance instance, VkSurfaceKHR vkSurface) {
         this->surface = vkSurface;
 
@@ -59,12 +66,6 @@ namespace urchin {
         logicalDevice = createLogicalDevice();
 
         devicesInitialized = true;
-    }
-
-    void DeviceHandler::cleanup() const {
-        if (logicalDevice) {
-            vkDestroyDevice(logicalDevice, nullptr);
-        }
     }
 
     VkPhysicalDevice DeviceHandler::getPhysicalDevice() const {

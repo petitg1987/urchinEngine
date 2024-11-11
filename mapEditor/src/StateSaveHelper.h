@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    class StateSaveHelper : public Singleton<StateSaveHelper> {
+    class StateSaveHelper {
         public:
-            friend class Singleton<StateSaveHelper>;
+            static StateSaveHelper& instance();
 
             static const std::string PREFERRED_PATH_MAP;
             static const std::string CAMERA_POSITION;
