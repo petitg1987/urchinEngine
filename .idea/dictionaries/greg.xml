@@ -9,6 +9,7 @@
       <w>heightfield</w>
       <w>lerp</w>
       <w>mergeable</w>
+      <w>obbox</w>
       <w>octree</w>
       <w>octreeable</w>
       <w>octreeables</w>
