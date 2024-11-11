@@ -1,7 +1,6 @@
 #include <utility>
 
 #include <request/HttpRequest.h>
-#include <request/RequestException.h>
 
 namespace urchin {
 

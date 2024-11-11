@@ -27,7 +27,7 @@ namespace urchin {
         }
     }
 
-    RequestResult NetworkExecutor::syncExecute(const HttpRequest& httpRequest, unsigned int timoutSec) {
+    RequestResult NetworkExecutor::syncExecute(const HttpRequest& httpRequest, unsigned int timoutSec) const {
         #ifdef URCHIN_DEBUG
             assert(std::this_thread::get_id() == mainThreadId); //not sure if it is mandatory but added for security
         #endif
