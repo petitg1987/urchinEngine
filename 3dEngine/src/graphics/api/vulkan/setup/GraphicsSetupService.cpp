@@ -19,7 +19,7 @@ namespace urchin {
 
     GraphicsSetupService::GraphicsSetupService() :
             framebufferSizeRetriever(nullptr),
-            apiGraphicInitialized(false),
+            isInitialized(false),
             vulkanVersion(VK_API_VERSION_1_3), //must be aligned with glslc target environment
             allocateCommandPool(nullptr),
             allocator(nullptr) {
@@ -27,9 +27,59 @@ namespace urchin {
     }
 
     GraphicsSetupService::~GraphicsSetupService() {
-        //TODO add assert to check uninit is called ? + check surface destroyed ?
+        assert(!isInitialized);
+        destroyUniqueInstanceAndSurface();
+    }
 
-        if (surface) { //TODO don't destroy with instance !
+    void GraphicsSetupService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator,
+            FramebufferSizeRetriever& framebufferSizeRetriever) {
+        assert(!isInitialized);
+
+        this->framebufferSizeRetriever = &framebufferSizeRetriever;
+        this->validationLayer = std::make_unique<ValidationLayer>();
+        this->deviceHandler = std::make_unique<DeviceHandler>();
+
+        createUniqueInstanceAndSurface(windowRequiredExtensions, surfaceCreator);
+        validationLayer->initializeDebugMessenger(vkInstance);
+        deviceHandler->initializeDevices(vkInstance, surface);
+        queueHandler.initializeQueueFamilies(deviceHandler->getPhysicalDevice(), surface);
+        queueHandler.initializeQueues(deviceHandler->getLogicalDevice());
+
+        createAllocateCommandPool();
+        createAllocator();
+
+        isInitialized = true;
+    }
+
+    void GraphicsSetupService::uninitialize() {
+        assert(isInitialized);
+
+        if (allocator) {
+            vmaDestroyAllocator(allocator);
+            allocator = nullptr;
+        }
+
+        vkDestroyCommandPool(getDevices().getLogicalDevice(), allocateCommandPool, nullptr);
+
+        deviceHandler.reset();
+        validationLayer.reset();
+
+        isInitialized = false;
+    }
+
+    void GraphicsSetupService::createUniqueInstanceAndSurface(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator) const {
+        //create a unique instance/surface for the whole lifetime of the application because some UI libraries do not support the re-creation
+        if (!vkInstance) {
+            createInstance(windowRequiredExtensions);
+        }
+
+        if (!surface) {
+            surface = static_cast<VkSurfaceKHR>(surfaceCreator->createSurface(vkInstance));
+        }
+    }
+
+    void GraphicsSetupService::destroyUniqueInstanceAndSurface() const {
+        if (surface) {
             vkDestroySurfaceKHR(vkInstance, surface, nullptr);
             surface = nullptr;
         }
@@ -40,51 +90,7 @@ namespace urchin {
         }
     }
 
-    bool GraphicsSetupService::isInitialized() const {
-        return apiGraphicInitialized;
-    }
-
-    void GraphicsSetupService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator,
-            FramebufferSizeRetriever& framebufferSizeRetriever) {
-        this->framebufferSizeRetriever = &framebufferSizeRetriever;
-        this->validationLayer = std::make_unique<ValidationLayer>();
-        this->deviceHandler = std::make_unique<DeviceHandler>();
-
-        createInstance(windowRequiredExtensions);
-        validationLayer->initializeDebugMessenger(vkInstance);
-        if (!surface) {
-            surface = static_cast<VkSurfaceKHR>(surfaceCreator->createSurface(vkInstance));
-        }
-        deviceHandler->initializeDevices(vkInstance, surface);
-        queueHandler.initializeQueueFamilies(deviceHandler->getPhysicalDevice(), surface);
-        queueHandler.initializeQueues(deviceHandler->getLogicalDevice());
-
-        createAllocateCommandPool();
-        createAllocator();
-
-        apiGraphicInitialized = true;
-    }
-
-    void GraphicsSetupService::uninitialize() {
-        if (allocator) {
-            vmaDestroyAllocator(allocator);
-            allocator = nullptr;
-        }
-
-        if (apiGraphicInitialized) {
-            vkDestroyCommandPool(getDevices().getLogicalDevice(), allocateCommandPool, nullptr);
-            apiGraphicInitialized = false;
-        }
-
-        deviceHandler.reset();
-        validationLayer.reset();
-    }
-
     void GraphicsSetupService::createInstance(const std::vector<std::string>& windowRequiredExtensions) const {
-        if (vkInstance) {
-            return;
-        }
-
         Logger::instance().logInfo("Create Vulkan instance with window required extensions: " + StringUtil::merge(windowRequiredExtensions, ','));
 
         VkApplicationInfo applicationInfo{};
@@ -130,12 +136,12 @@ namespace urchin {
     }
 
     const QueueHandler& GraphicsSetupService::getQueues() const {
-        assert(apiGraphicInitialized);
+        assert(isInitialized);
         return queueHandler;
     }
 
     VkCommandPool GraphicsSetupService::getAllocateCommandPool() const {
-        assert(apiGraphicInitialized);
+        assert(isInitialized);
         return allocateCommandPool;
     }
 

@@ -17,7 +17,7 @@ namespace urchin {
 
     class LightShadowMap final : public Observer {
         public:
-            LightShadowMap(Light&, const ModelOcclusionCuller&, float, unsigned int, unsigned int);
+            LightShadowMap(bool, Light&, const ModelOcclusionCuller&, float, unsigned int, unsigned int);
             ~LightShadowMap() override;
 
             void notify(Observable*, int) override;

@@ -218,6 +218,5 @@ int main(int argc, char *argv[]) {
     bool success = runner.run();
 
     Logger::instance().purge();
-    SingletonContainer::destroyAllSingletons();
     return success ? 0 : 1;
 }

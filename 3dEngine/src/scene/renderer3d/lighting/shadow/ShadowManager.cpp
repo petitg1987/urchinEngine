@@ -155,7 +155,7 @@ namespace urchin {
 
     void ShadowManager::addShadowLight(Light& light) {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
-        lightShadowMaps[&light] = std::make_unique<LightShadowMap>(light, modelOcclusionCuller, config.viewingShadowDistance, config.shadowMapResolution, config.nbShadowMaps);
+        lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.viewingShadowDistance, config.shadowMapResolution, config.nbShadowMaps);
     }
 
     void ShadowManager::removeShadowLight(const Light& light) {

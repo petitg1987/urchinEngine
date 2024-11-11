@@ -19,7 +19,6 @@ namespace urchin {
             static GraphicsSetupService& instance();
             ~GraphicsSetupService();
 
-            bool isInitialized() const;
             void initialize(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&, FramebufferSizeRetriever&);
             void uninitialize();
 
@@ -34,6 +33,9 @@ namespace urchin {
         private:
             GraphicsSetupService();
 
+            void createUniqueInstanceAndSurface(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&) const;
+            void destroyUniqueInstanceAndSurface() const;
+
             void createInstance(const std::vector<std::string>&) const;
 
             void createAllocateCommandPool();
@@ -43,7 +45,7 @@ namespace urchin {
             static VkSurfaceKHR surface;
 
             FramebufferSizeRetriever* framebufferSizeRetriever;
-            bool apiGraphicInitialized;
+            bool isInitialized;
             const uint32_t vulkanVersion;
             std::unique_ptr<ValidationLayer> validationLayer;
             std::unique_ptr<DeviceHandler> deviceHandler;
