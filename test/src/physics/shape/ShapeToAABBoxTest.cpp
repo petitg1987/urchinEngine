@@ -36,7 +36,7 @@ void ShapeToAABBoxTest::coneConversion() {
 }
 
 void ShapeToAABBoxTest::convexHullConversion() {
-    std::vector<Point3<float>> boxPoints = {
+    std::vector boxPoints = {
             Point3(-1.0f, -2.0f, 1.0f), Point3(1.0f, -2.0f, 1.0f), Point3(1.0f, 2.0f, 1.0f), Point3(-1.0f, 2.0f, 1.0f),
             Point3(-1.0f, -2.0f, -1.0f), Point3(1.0f, -2.0f, -1.0f), Point3(1.0f, 2.0f, -1.0f), Point3(-1.0f, 2.0f, -1.0f),
     };

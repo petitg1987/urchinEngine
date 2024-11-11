@@ -55,9 +55,9 @@ void ModelOcclusionCullerTest::updateCullBehavior() {
 std::unique_ptr<Model> ModelOcclusionCullerTest::buildModel(const Point3<float>& modelPosition) const {
     ModelBuilder modelBuilder("materials/opaque.uda");
 
-    std::vector<Point3<float>> vertices = {Point3(-0.5f, -0.5f, -0.5f), Point3(0.5f, 0.5f, 0.5f), Point3(0.5f, -0.5f, 0.5f)};
-    std::vector<unsigned int> triangleIndices = {0, 1, 2};
-    std::vector<Point2<float>> uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
+    std::vector vertices = {Point3(-0.5f, -0.5f, -0.5f), Point3(0.5f, 0.5f, 0.5f), Point3(0.5f, -0.5f, 0.5f)};
+    std::vector triangleIndices = {0u, 1u, 2u};
+    std::vector uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
 
     std::unique_ptr<Model> model = modelBuilder.newModel("modelName", vertices, triangleIndices, uvTexture);
     model->setPosition(modelPosition);

@@ -7,7 +7,7 @@
 using namespace urchin;
 
 void PathfindingAStarTest::straightPath() {
-    std::vector<Point3<float>> polygonPoints = {Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 4.0f), Point3(4.0f, 0.0f, 4.0f), Point3(4.0f, 0.0f, 0.0f)};
+    std::vector polygonPoints = {Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 4.0f), Point3(4.0f, 0.0f, 4.0f), Point3(4.0f, 0.0f, 0.0f)};
     auto navPolygon = std::make_shared<NavPolygon>("polyTestName", std::move(polygonPoints), nullptr);
     auto navTriangle1 = std::make_shared<NavTriangle>(0, 1, 3);
     auto navTriangle2 = std::make_shared<NavTriangle>(1, 2, 3);
@@ -28,12 +28,12 @@ void PathfindingAStarTest::straightPath() {
 }
 
 void PathfindingAStarTest::joinPolygonsPath() {
-    std::vector<Point3<float>> polygon1Points = {Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 4.0f), Point3(4.0f, 0.0f, 0.0f)};
+    std::vector polygon1Points = {Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 4.0f), Point3(4.0f, 0.0f, 0.0f)};
     auto navPolygon1 = std::make_shared<NavPolygon>("poly1TestName", std::move(polygon1Points), nullptr);
     auto navPolygon1Triangle1 = std::make_shared<NavTriangle>(0, 1, 2);
     navPolygon1->addTriangles({navPolygon1Triangle1}, navPolygon1);
 
-    std::vector<Point3<float>> polygon2Points = {Point3(1.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, -4.0f), Point3(-4.0f, 0.0f, 0.0f)};
+    std::vector polygon2Points = {Point3(1.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, -4.0f), Point3(-4.0f, 0.0f, 0.0f)};
     auto navPolygon2 = std::make_shared<NavPolygon>("poly2TestName", std::move(polygon2Points), nullptr);
     auto navPolygon2Triangle1 = std::make_shared<NavTriangle>(0, 1, 2);
     navPolygon2->addTriangles({navPolygon2Triangle1}, navPolygon2);
@@ -83,12 +83,12 @@ void PathfindingAStarTest::jumpWithBigConstraint() {
 }
 
 std::vector<PathPoint> PathfindingAStarTest::pathWithJump(std::unique_ptr<NavLinkConstraint> navLinkConstraint) {
-    std::vector<Point3<float>> polygon1Points = {Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 4.0f), Point3(4.0f, 0.0f, 0.0f)};
+    std::vector polygon1Points = {Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 4.0f), Point3(4.0f, 0.0f, 0.0f)};
     auto navPolygon1 = std::make_shared<NavPolygon>("poly1TestName", std::move(polygon1Points), nullptr);
     auto navPolygon1Triangle1 = std::make_shared<NavTriangle>(0, 1, 2);
     navPolygon1->addTriangles({navPolygon1Triangle1}, navPolygon1);
 
-    std::vector<Point3<float>> polygon2Points = {Point3(0.0f, 0.0f, 5.0f), Point3(4.0f, 0.0f, 5.0f), Point3(4.0f, 0.0f, 1.0f)};
+    std::vector polygon2Points = {Point3(0.0f, 0.0f, 5.0f), Point3(4.0f, 0.0f, 5.0f), Point3(4.0f, 0.0f, 1.0f)};
     auto navPolygon2 = std::make_shared<NavPolygon>("poly2TestName", std::move(polygon2Points), nullptr);
     auto navPolygon2Triangle1 = std::make_shared<NavTriangle>(0, 1, 2);
     navPolygon2->addTriangles({navPolygon2Triangle1}, navPolygon2);

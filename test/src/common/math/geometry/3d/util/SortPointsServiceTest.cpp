@@ -8,7 +8,7 @@
 using namespace urchin;
 
 void SortPointsServiceTest::threePointsClockwise() {
-    std::vector<Point3<float>> threePoints({
+    std::vector threePoints({
             Point3(0.0f, 0.0f, 0.0f),
             Point3(0.5f, 0.0f, -1.0f),
             Point3(1.0f, 0.0f, 0.0f)});
