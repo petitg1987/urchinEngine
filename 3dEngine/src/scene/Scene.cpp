@@ -36,13 +36,12 @@ namespace urchin {
 
     Scene::~Scene() {
         activeRenderer3d = nullptr;
+        renderers3d.clear();
         activeUiRenderer = nullptr;
         uiRenderers.clear();
-        renderers3d.clear();
 
-        screenRenderTarget.cleanup();
         ResourceContainer::instance().cleanResources();
-        graphicsApiService.reset();
+        screenRenderTarget.cleanup();
         if (!DEBUG_PROFILE_FRAME_BY_FRAME) {
             Profiler::graphic().log();
         }
