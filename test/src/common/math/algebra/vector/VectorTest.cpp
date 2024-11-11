@@ -1,4 +1,5 @@
 #include <cppunit/extensions/HelperMacros.h>
+#include <UrchinCommon.h>
 
 #include <common/math/algebra/vector/VectorTest.h>
 #include <AssertHelper.h>

@@ -5,7 +5,7 @@
 #include <memory>
 #include <Urchin3dEngine.h>
 
-class LightSplitShadowMapTest : public CppUnit::TestFixture {
+class LightSplitShadowMapTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

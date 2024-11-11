@@ -2,9 +2,8 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include <UrchinCommon.h>
 
-class GJKAlgorithmTest : public CppUnit::TestFixture {
+class GJKAlgorithmTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

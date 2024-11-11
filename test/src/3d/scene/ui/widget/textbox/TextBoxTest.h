@@ -5,7 +5,7 @@
 #include <cppunit/Test.h>
 #include <Urchin3dEngine.h>
 
-class TextBoxTest : public CppUnit::TestFixture {
+class TextBoxTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

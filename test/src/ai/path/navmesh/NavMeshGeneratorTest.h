@@ -2,11 +2,10 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include <memory>
 
 #include <UrchinAIEngine.h>
 
-class NavMeshGeneratorTest : public CppUnit::TestFixture {
+class NavMeshGeneratorTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

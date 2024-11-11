@@ -1,6 +1,7 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 #include <UrchinCommon.h>
+#include <UrchinAIEngine.h>
 
 #include <ai/path/navmesh/jump/EdgeLinkDetectionTest.h>
 #include <AssertHelper.h>

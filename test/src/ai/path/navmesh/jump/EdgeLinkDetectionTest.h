@@ -3,8 +3,6 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-#include <UrchinAIEngine.h>
-
 class EdgeLinkDetectionTest: public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();

@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class LineSegment2DTest : public CppUnit::TestFixture {
+class LineSegment2DTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

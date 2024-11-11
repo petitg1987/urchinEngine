@@ -1,4 +1,5 @@
 #include <cppunit/extensions/HelperMacros.h>
+#include <UrchinCommon.h>
 
 #include <common/io/uda/UdaParserTest.h>
 #include <AssertHelper.h>

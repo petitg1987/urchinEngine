@@ -2,9 +2,8 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include <UrchinCommon.h>
 
-class MapSerializerTest : public CppUnit::TestFixture {
+class MapSerializerTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

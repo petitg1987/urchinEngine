@@ -1,5 +1,4 @@
 #include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/TestResultCollector.h>
 
 #include <common/collision/GJKAlgorithmTest.h>
 #include <common/io/map/MapSerializerTest.h>

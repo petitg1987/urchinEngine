@@ -2,8 +2,6 @@
 
 #include <UrchinCommon.h>
 #include <cppunit/extensions/HelperMacros.h>
-#include <iomanip>
-#include <algorithm>
 
 class AssertHelper {
     public:

@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class SystemInfoTest : public CppUnit::TestFixture {
+class SystemInfoTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

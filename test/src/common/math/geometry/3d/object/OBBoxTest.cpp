@@ -1,11 +1,12 @@
 #include <cppunit/extensions/HelperMacros.h>
+#include <UrchinCommon.h>
 
 #include <common/math/geometry/3d/object/OBBoxTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 
 void OBBoxTest::noIntersection() {
-    OBBox oBBox(AABBox<float>(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
+    OBBox oBBox(AABBox(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3(-2.0f, 4.0f, 4.0f), Point3(2.0f, 1.0f, 1.0f));
 
     bool hasIntersection = false;
@@ -15,7 +16,7 @@ void OBBoxTest::noIntersection() {
 }
 
 void OBBoxTest::leftToRightLineIntersection() {
-    OBBox oBBox(AABBox<float>(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
+    OBBox oBBox(AABBox(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3(-2.0f, 0.5f, 0.5f), Point3(2.0f, 0.5f, 0.5f));
 
     bool hasIntersection = false;
@@ -26,7 +27,7 @@ void OBBoxTest::leftToRightLineIntersection() {
 }
 
 void OBBoxTest::rightToLeftLineIntersection() {
-    OBBox oBBox(AABBox<float>(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
+    OBBox oBBox(AABBox(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3(2.0f, 0.5f, 0.5f), Point3(-2.0f, 0.5f, 0.5f));
 
     bool hasIntersection = false;
@@ -49,7 +50,7 @@ void OBBoxTest::farToNearLineIntersection() {
 }
 
 void OBBoxTest::nearToFarLineIntersection() {
-    OBBox oBBox(AABBox<float>(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
+    OBBox oBBox(AABBox(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3(0.5f, 0.5f, 0.5f), Point3(0.5f, 0.5f, -0.5f));
 
     bool hasIntersection = false;
@@ -60,7 +61,7 @@ void OBBoxTest::nearToFarLineIntersection() {
 }
 
 void OBBoxTest::bottomRightToTopLeftLineIntersection() {
-    OBBox oBBox(AABBox<float>(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
+    OBBox oBBox(AABBox(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3(0.5f, 0.0f, 0.5f), Point3(0.0f, 0.5f, 0.5f));
 
     bool hasIntersection = false;

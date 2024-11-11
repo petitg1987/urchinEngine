@@ -13,7 +13,7 @@ struct MyGridItem {
         urchin::Point3<int> position;
 };
 
-class GridContainerTest : public CppUnit::TestFixture {
+class GridContainerTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

@@ -103,7 +103,7 @@ void UIRendererTest::relativeParentPixelPosition() {
     auto uiRenderer = setupUiRenderer();
     auto parentWidget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->addWidget(parentWidget);
-    auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
+    auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
 
     AssertHelper::assertFloatEquals(widget->getGlobalPositionX(), 20.0f + 60.0f + 10.0f);
     AssertHelper::assertFloatEquals(widget->getGlobalPositionY(), 20.0f + 10.0f);
@@ -207,13 +207,13 @@ void UIRendererTest::windowChildRenderingOrder() {
 
     auto win1 = Window::create(nullptr, Position(10.0f, 10.0f, PIXEL), Size(10.0f, 10.0f, PIXEL), "test", "my.text");
     uiRenderer->addWidget(win1);
-    auto widgetWin1Lvl1 = StaticBitmap::create(win1.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
-    auto widgetWin1Lvl2 = StaticBitmap::create(widgetWin1Lvl1.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
-    auto widgetWin1Lvl1Bis = StaticBitmap::create(win1.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
+    auto widgetWin1Lvl1 = StaticBitmap::create(win1.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
+    auto widgetWin1Lvl2 = StaticBitmap::create(widgetWin1Lvl1.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
+    auto widgetWin1Lvl1Bis = StaticBitmap::create(win1.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
 
     auto win2 = Window::create(nullptr, Position(10.0f, 10.0f, PIXEL), Size(10.0f, 10.0f, PIXEL), "test", "my.text");
     uiRenderer->addWidget(win2);
-    auto widgetWin2Lvl1 = StaticBitmap::create(win2.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
+    auto widgetWin2Lvl1 = StaticBitmap::create(win2.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
 
     unsigned int renderingOrder = 0;
     uiRenderer->prepareRendering(1.0f / 60.0f, renderingOrder, Matrix4<float>());

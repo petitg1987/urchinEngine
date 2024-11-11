@@ -2,9 +2,8 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include <UrchinCommon.h>
 
-class Line2DTest : public CppUnit::TestFixture {
+class Line2DTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

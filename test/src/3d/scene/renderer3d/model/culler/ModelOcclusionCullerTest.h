@@ -4,7 +4,7 @@
 #include <cppunit/Test.h>
 #include <Urchin3dEngine.h>
 
-class ModelOcclusionCullerTest : public CppUnit::TestFixture {
+class ModelOcclusionCullerTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

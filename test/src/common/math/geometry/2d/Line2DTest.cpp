@@ -1,4 +1,5 @@
 #include <cppunit/extensions/HelperMacros.h>
+#include <UrchinCommon.h>
 
 #include <common/math/geometry/2d/Line2DTest.h>
 #include <AssertHelper.h>

@@ -2,9 +2,8 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include <UrchinCommon.h>
 
-class AABBoxTest : public CppUnit::TestFixture {
+class AABBoxTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

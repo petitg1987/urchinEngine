@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class ShapeToConvexObjectTest : public CppUnit::TestFixture {
+class ShapeToConvexObjectTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

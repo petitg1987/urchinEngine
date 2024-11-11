@@ -2,9 +2,8 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include <UrchinCommon.h>
 
-class QuaternionTest : public CppUnit::TestFixture {
+class QuaternionTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

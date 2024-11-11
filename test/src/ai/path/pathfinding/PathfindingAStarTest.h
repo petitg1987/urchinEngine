@@ -5,7 +5,7 @@
 #include <cppunit/Test.h>
 #include <UrchinAIEngine.h>
 
-class PathfindingAStarTest : public CppUnit::TestFixture {
+class PathfindingAStarTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

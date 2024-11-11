@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class EPAAlgorithmTest : public CppUnit::TestFixture {
+class EPAAlgorithmTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

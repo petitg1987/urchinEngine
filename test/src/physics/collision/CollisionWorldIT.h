@@ -4,7 +4,7 @@
 #include <cppunit/Test.h>
 #include <UrchinPhysicsEngine.h>
 
-class CollisionWorldIT : public CppUnit::TestFixture {
+class CollisionWorldIT final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

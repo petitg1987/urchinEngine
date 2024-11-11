@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class TetrahedronTest : public CppUnit::TestFixture {
+class TetrahedronTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

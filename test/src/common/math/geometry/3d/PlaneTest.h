@@ -2,9 +2,8 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include <UrchinCommon.h>
 
-class PlaneTest : public CppUnit::TestFixture {
+class PlaneTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

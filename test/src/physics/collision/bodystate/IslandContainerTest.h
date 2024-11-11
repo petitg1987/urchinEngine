@@ -2,11 +2,10 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include <vector>
 
 #include <UrchinPhysicsEngine.h>
 
-class IslandContainerTest : public CppUnit::TestFixture {
+class IslandContainerTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

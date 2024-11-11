@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class TerrainObstacleServiceTest : public CppUnit::TestFixture {
+class TerrainObstacleServiceTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

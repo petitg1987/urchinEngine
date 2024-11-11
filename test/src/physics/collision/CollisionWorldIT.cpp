@@ -86,7 +86,7 @@ void CollisionWorldIT::changePositionOnInactiveBody() {
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (1)");
 
     //2. change position (in thread different from physics thread)
-    auto thread = std::jthread([&cubeBody]() {
+    auto thread = std::jthread([&cubeBody] {
         cubeBody->setTransform(PhysicsTransform(Point3(25.0f, 5.0f, 0.0f), Quaternion<float>()));
     });
     thread.join();
@@ -152,11 +152,11 @@ void CollisionWorldIT::rayTestWithRemovedBody() {
     auto collisionWorld = std::make_unique<CollisionWorld>(*bodyContainer);
     RayTester rayTester(*collisionWorld, Ray(Point3(0.0f, 0.5f, -100.0f), Point3(0.0f, 0.5f, 100.0f)));
 
-    auto physicsThread = std::jthread([&]() {
+    auto physicsThread = std::jthread([&] {
         collisionWorld->process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
         rayTester.execute(0.0f, Vector3<float>());
 
-        std::weak_ptr<AbstractBody> cubeBody = bodyContainer->getBodies()[1];
+        std::weak_ptr cubeBody = bodyContainer->getBodies()[1];
         bodyContainer->removeBody(*cubeBody.lock());
         collisionWorld->process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
         AssertHelper::assertUnsignedIntEquals((unsigned int)cubeBody.use_count(), 1 /* one reference to the body remaining in the ray test result */);

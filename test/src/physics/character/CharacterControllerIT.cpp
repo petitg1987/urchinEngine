@@ -15,13 +15,13 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
     auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(2.4f, 5.0f, 2.4f), Quaternion<float>()));
     auto characterController = CharacterController(std::move(character), CharacterControllerConfig(), *physicsWorld);
 
-    auto physicsEngineThread = std::jthread([&physicsWorld]() {
+    auto physicsEngineThread = std::jthread([&physicsWorld] {
         for (std::size_t i = 0; i < 300; ++i) {
             physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
-    auto mainThread = std::jthread([&characterController]() {
+    auto mainThread = std::jthread([&characterController] {
         for (std::size_t i = 0; i < 300; ++i) {
             characterController.update(1.0f / 60.0f);
             std::this_thread::sleep_for(std::chrono::microseconds(250));
@@ -59,13 +59,13 @@ void CharacterControllerIT::characterMovingOnRemovedObjects() {
     auto characterController = CharacterController(std::move(character), characterControllerConfig, *physicsWorld);
     characterController.walk(Vector3(0.0f, 0.0f, -1.0f));
 
-    auto physicsEngineThread = std::jthread([&physicsWorld]() {
+    auto physicsEngineThread = std::jthread([&physicsWorld] {
         for (std::size_t i = 0; i < 300; ++i) {
             physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
-    auto mainThread = std::jthread([&]() {
+    auto mainThread = std::jthread([&] {
         for (std::size_t i = 0; i < 300; ++i) {
             if (i == 50) {
                 physicsWorld->removeBody(*cubeBody);
@@ -122,13 +122,13 @@ void CharacterControllerIT::ccdMovingCharacter() {
     auto characterController = CharacterController(std::move(character), characterControllerConfig, *physicsWorld);
     characterController.walk(Vector3(0.0f, 0.0f, -1.0f));
 
-    auto physicsEngineThread = std::jthread([&physicsWorld]() {
+    auto physicsEngineThread = std::jthread([&physicsWorld] {
         for (std::size_t i = 0; i < 100; ++i) {
             physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
-    auto mainThread = std::jthread([&characterController]() {
+    auto mainThread = std::jthread([&characterController] {
         for (std::size_t i = 0; i < 100; ++i) {
             characterController.update(1.0f / 60.0f);
             std::this_thread::sleep_for(std::chrono::microseconds(250));

@@ -5,7 +5,7 @@
 #include <memory>
 #include <UrchinPhysicsEngine.h>
 
-class CharacterControllerIT : public CppUnit::TestFixture {
+class CharacterControllerIT final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

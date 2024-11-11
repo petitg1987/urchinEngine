@@ -72,15 +72,15 @@ void BodyAABBTreeTest::oneGhostBodyAndRemove(bool removeGhostBody) {
     if (removeGhostBody) {
         bodyAabbTree.removeBody(*bodyB);
         const auto& bodyANodeDataAfterRemove = static_cast<BodyAABBNodeData&>(bodyAabbTree.getNodeData(bodyA.get()));
-        std::vector<OverlappingPair> bodyBPairs;
-        bodyB->getPairContainer()->retrieveCopyOverlappingPairs(bodyBPairs);
-        AssertHelper::assertTrue(bodyBPairs.empty());
+        std::vector<OverlappingPair> updateBodyBPairs;
+        bodyB->getPairContainer()->retrieveCopyOverlappingPairs(updateBodyBPairs);
+        AssertHelper::assertTrue(updateBodyBPairs.empty());
         AssertHelper::assertUnsignedIntEquals(bodyANodeDataAfterRemove.getOwnerPairContainers().size(), 0);
     } else {
         bodyAabbTree.removeBody(*bodyA);
-        std::vector<OverlappingPair> bodyBPairs;
-        bodyB->getPairContainer()->retrieveCopyOverlappingPairs(bodyBPairs);
-        AssertHelper::assertTrue(bodyBPairs.empty());
+        std::vector<OverlappingPair> updateBodyBPairs;
+        bodyB->getPairContainer()->retrieveCopyOverlappingPairs(updateBodyBPairs);
+        AssertHelper::assertTrue(updateBodyBPairs.empty());
     }
 }
 

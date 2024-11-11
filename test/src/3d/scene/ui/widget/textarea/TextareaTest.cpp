@@ -67,13 +67,13 @@ void TextareaTest::leftArrowWithSelection() {
 
     uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over textarea
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate textarea
-    uiRenderer->onChar(static_cast<char32_t>('a'));
-    uiRenderer->onChar(static_cast<char32_t>('b'));
+    uiRenderer->onChar('a');
+    uiRenderer->onChar('b');
     uiRenderer->onKeyPress(InputDeviceKey::CTRL);
     uiRenderer->onKeyPress(InputDeviceKey::A); //select all
     uiRenderer->onKeyRelease(InputDeviceKey::CTRL);
     uiRenderer->onKeyPress(InputDeviceKey::LEFT_ARROW); //cursor index at 0
-    uiRenderer->onChar(static_cast<char32_t>('c'));
+    uiRenderer->onChar('c');
 
     AssertHelper::assertStringEquals(textarea->getText(), "cab");
 }

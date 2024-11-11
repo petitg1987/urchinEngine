@@ -5,7 +5,7 @@
 #include <cppunit/Test.h>
 #include <Urchin3dEngine.h>
 
-class UIRendererTest : public CppUnit::TestFixture {
+class UIRendererTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

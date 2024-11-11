@@ -4,7 +4,7 @@
 #include <cppunit/Test.h>
 #include <Urchin3dEngine.h>
 
-class Renderer3dTest : public CppUnit::TestFixture {
+class Renderer3dTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

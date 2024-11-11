@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class FileUtilTest : public CppUnit::TestFixture {
+class FileUtilTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

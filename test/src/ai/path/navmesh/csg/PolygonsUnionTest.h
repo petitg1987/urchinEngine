@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class PolygonsUnionTest : public CppUnit::TestFixture {
+class PolygonsUnionTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

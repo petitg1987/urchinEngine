@@ -2,10 +2,8 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include <memory>
-#include <UrchinPhysicsEngine.h>
 
-class CharacterControllerMT : public CppUnit::TestFixture {
+class CharacterControllerMT final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 };
