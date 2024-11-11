@@ -1,6 +1,4 @@
 #include <stdexcept>
-#include <QMessageBox>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QDialogButtonBox>
 #include <QVariant>
 
@@ -32,8 +30,8 @@ namespace urchin {
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
-        QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+        connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
     void NewLightDialog::setupNameFields(QGridLayout* mainLayout) {
@@ -74,11 +72,11 @@ namespace urchin {
 
         std::shared_ptr<Light> light;
          if (lightType == Light::LightType::SUN) {
-            light = std::make_shared<SunLight>(Vector3<float>(1.0f, -1.0f, 0.0f));
+            light = std::make_shared<SunLight>(Vector3(1.0f, -1.0f, 0.0f));
         } else if (lightType == Light::LightType::OMNIDIRECTIONAL) {
-            light = std::make_shared<OmnidirectionalLight>(Point3<float>(0.0f, 0.0f, 0.0f));
+            light = std::make_shared<OmnidirectionalLight>(Point3(0.0f, 0.0f, 0.0f));
         } else if (lightType == Light::LightType::SPOT) {
-             light = std::make_shared<SpotLight>(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(0.0f, -1.0f, 0.0f), 10.0f, 12.0f);
+             light = std::make_shared<SpotLight>(Point3(0.0f, 0.0f, 0.0f), Vector3(0.0f, -1.0f, 0.0f), 10.0f, 12.0f);
          } else {
             throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string((int)lightType));
         }
@@ -93,7 +91,7 @@ namespace urchin {
     }
 
     void NewLightDialog::done(int r) {
-        if (QDialog::Accepted == r) {
+        if (Accepted == r) {
             bool hasError = false;
 
             updateLightName();

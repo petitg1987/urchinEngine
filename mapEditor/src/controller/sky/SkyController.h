@@ -7,10 +7,8 @@
 
 namespace urchin {
 
-    class SkyController : public AbstractController {
+    class SkyController final : public AbstractController {
         public:
-            SkyController();
-
             const SkyEntity& getSkyEntity() const;
 
             void updateSkyEntity(const std::vector<std::string>&, float);

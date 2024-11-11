@@ -94,7 +94,7 @@ namespace urchin {
         connect(offsetY, SIGNAL(valueChanged(double)), this, SLOT(skyChanged()));
     }
 
-    QHBoxLayout* SkyPanelWidget::createFilenameInputText(QGridLayout* skyboxLayout, int row, const QString& text, QLineEdit **skyboxFilenameText) {
+    QHBoxLayout* SkyPanelWidget::createFilenameInputText(QGridLayout* skyboxLayout, int row, const QString& text, QLineEdit **skyboxFilenameText) const {
         auto* skyboxFilenameLabel= new QLabel(text);
         skyboxLayout->addWidget(skyboxFilenameLabel, row, 0);
 
@@ -107,7 +107,7 @@ namespace urchin {
         return skyboxFilenameLayout;
     }
 
-    QPushButton* SkyPanelWidget::createSelectFileButton(QHBoxLayout* skyboxFilenameLayout) {
+    QPushButton* SkyPanelWidget::createSelectFileButton(QHBoxLayout* skyboxFilenameLayout) const {
         auto* selectSkyboxFileButton = new QPushButton("...");
         skyboxFilenameLayout->addWidget(selectSkyboxFileButton);
         ButtonStyleHelper::applyNormalStyle(selectSkyboxFileButton);
@@ -116,7 +116,7 @@ namespace urchin {
         return selectSkyboxFileButton;
     }
 
-    QPushButton* SkyPanelWidget::createClearFileButton(QHBoxLayout* skyboxFilenameLayout) {
+    QPushButton* SkyPanelWidget::createClearFileButton(QHBoxLayout* skyboxFilenameLayout) const {
         auto* clearSkyboxFileButton = new QPushButton("Clr");
         skyboxFilenameLayout->addWidget(clearSkyboxFileButton);
         ButtonStyleHelper::applyNormalStyle(clearSkyboxFileButton);

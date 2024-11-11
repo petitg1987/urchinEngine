@@ -271,13 +271,13 @@ namespace urchin {
         disableSoundEvent = false;
     }
 
-    void SoundPanelWidget::setupGlobalSoundDataFrom() {
+    void SoundPanelWidget::setupGlobalSoundDataFrom() const {
         specificSpatialSoundGroupBox->hide();
 
         soundType->setText(NewSoundDialog::GLOBAL_SOUND_LABEL);
     }
 
-    void SoundPanelWidget::setupSpatialSoundDataFrom(const SpatialSound& spatialSound) {
+    void SoundPanelWidget::setupSpatialSoundDataFrom(const SpatialSound& spatialSound) const {
         specificSpatialSoundGroupBox->show();
 
         soundType->setText(NewSoundDialog::SPATIAL_SOUND_LABEL);
@@ -289,14 +289,14 @@ namespace urchin {
         this->inaudibleDistance->setValue(spatialSound.getInaudibleDistance());
     }
 
-    void SoundPanelWidget::setupPlayBehaviorDataFrom(const SoundTrigger& soundTrigger) {
+    void SoundPanelWidget::setupPlayBehaviorDataFrom(const SoundTrigger& soundTrigger) const {
         int playBehaviorIndex = playBehavior->findData((int)soundTrigger.getPlayBehavior());
         if (playBehaviorIndex != -1) {
             playBehavior->setCurrentIndex(playBehaviorIndex);
         }
     }
 
-    void SoundPanelWidget::setupManualTriggerDataFrom() {
+    void SoundPanelWidget::setupManualTriggerDataFrom() const {
         specificZoneTriggerGroupBox->hide();
         soundTriggerType->setText(NewSoundDialog::MANUAL_TRIGGER_LABEL);
     }

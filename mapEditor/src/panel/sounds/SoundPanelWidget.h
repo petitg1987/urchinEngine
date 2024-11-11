@@ -40,10 +40,10 @@ namespace urchin {
 
             void notify(Observable*, int) override;
             void setupSoundDataFrom(const SoundEntity&);
-            void setupGlobalSoundDataFrom();
-            void setupSpatialSoundDataFrom(const SpatialSound&);
-            void setupPlayBehaviorDataFrom(const SoundTrigger&);
-            void setupManualTriggerDataFrom();
+            void setupGlobalSoundDataFrom() const;
+            void setupSpatialSoundDataFrom(const SpatialSound&) const;
+            void setupPlayBehaviorDataFrom(const SoundTrigger&) const;
+            void setupManualTriggerDataFrom() const;
             void setupShapeTriggerDataFrom(const SoundEntity&);
 
             SoundShapeWidget& retrieveSoundShapeWidget(const SoundShape&, const SoundEntity&);

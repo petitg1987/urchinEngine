@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    class SkyPanelWidget : public QWidget {
+    class SkyPanelWidget final : public QWidget {
         Q_OBJECT
 
         public:
@@ -21,9 +21,9 @@ namespace urchin {
 
         private:
             void setupSkyboxBox(QVBoxLayout*);
-            QHBoxLayout* createFilenameInputText(QGridLayout*, int, const QString&, QLineEdit **);
-            QPushButton* createSelectFileButton(QHBoxLayout*);
-            QPushButton* createClearFileButton(QHBoxLayout*);
+            QHBoxLayout* createFilenameInputText(QGridLayout*, int, const QString&, QLineEdit **) const;
+            QPushButton* createSelectFileButton(QHBoxLayout*) const;
+            QPushButton* createClearFileButton(QHBoxLayout*) const;
 
             void setupSkyDataFrom(const Skybox*);
 

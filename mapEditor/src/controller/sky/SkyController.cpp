@@ -1,10 +1,6 @@
 #include <controller/sky/SkyController.h>
 
 namespace urchin {
-    SkyController::SkyController() :
-            AbstractController() {
-
-    }
 
     const SkyEntity& SkyController::getSkyEntity() const {
         return getMap().getSkyEntity();

@@ -16,7 +16,7 @@
 
 namespace urchin {
 
-    class ScenePanelWidget : public QTabWidget, public Observable {
+    class ScenePanelWidget final : public QTabWidget, public Observable {
         Q_OBJECT
 
         public:

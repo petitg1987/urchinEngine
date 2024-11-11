@@ -3,16 +3,13 @@
 #include <list>
 #include <UrchinCommon.h>
 #include <UrchinAggregation.h>
-#include <Urchin3dEngine.h>
 
 #include <controller/AbstractController.h>
 
 namespace urchin {
 
-    class WaterController : public AbstractController {
+    class WaterController final : public AbstractController {
         public:
-            WaterController();
-
             std::list<const WaterEntity*> getWaterEntities() const;
             void addWaterEntity(std::unique_ptr<WaterEntity>);
             void removeWaterEntity(const WaterEntity&);

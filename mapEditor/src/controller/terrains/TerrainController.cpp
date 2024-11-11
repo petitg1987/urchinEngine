@@ -3,10 +3,6 @@
 #include <controller/terrains/TerrainController.h>
 
 namespace urchin {
-    TerrainController::TerrainController() :
-            AbstractController() {
-
-    }
 
     std::list<const TerrainEntity*> TerrainController::getTerrainEntities() const {
         const auto& terrainEntities = getMap().getTerrainEntities();
@@ -92,7 +88,7 @@ namespace urchin {
         return terrainEntity;
     }
 
-    TerrainEntity& TerrainController::findTerrainEntity(const TerrainEntity& constTerrainEntity) {
+    TerrainEntity& TerrainController::findTerrainEntity(const TerrainEntity& constTerrainEntity) const {
         const auto& terrainsEntities = getMap().getTerrainEntities();
         auto it = std::ranges::find_if(terrainsEntities, [&constTerrainEntity](const auto& o){return o.get() == &constTerrainEntity;});
 

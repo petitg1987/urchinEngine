@@ -7,11 +7,6 @@
 
 namespace urchin {
 
-    ObjectController::ObjectController() :
-            AbstractController() {
-
-    }
-
     std::list<const ObjectEntity*> ObjectController::getObjectEntities() const {
         const auto& objectEntities = getMap().getObjectEntities();
         std::list<const ObjectEntity*> constObjectEntities;
@@ -187,7 +182,7 @@ namespace urchin {
         return objectEntity;
     }
 
-    ObjectEntity& ObjectController::findObjectEntity(const ObjectEntity& constObjectEntity) {
+    ObjectEntity& ObjectController::findObjectEntity(const ObjectEntity& constObjectEntity) const {
         const auto& objectEntities = getMap().getObjectEntities();
         auto it = std::ranges::find_if(objectEntities, [&constObjectEntity](const auto& o){return o.get() == &constObjectEntity;});
 

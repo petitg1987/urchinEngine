@@ -35,8 +35,8 @@ namespace urchin {
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
-        QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+        connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
     void NewTerrainDialog::setupNameFields(QGridLayout* mainLayout) {
@@ -83,12 +83,12 @@ namespace urchin {
 
             auto terrainMesh = std::make_unique<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f);
             auto terrainMaterials = std::make_unique<TerrainMaterials>("", emptyMaterialFilenames, 1.0f, 1.0f);
-            auto terrain = std::make_shared<Terrain>(std::move(terrainMesh), std::move(terrainMaterials), Point3<float>(0.0f, 0.0f, 0.0f));
+            auto terrain = std::make_shared<Terrain>(std::move(terrainMesh), std::move(terrainMaterials), Point3(0.0f, 0.0f, 0.0f));
 
             terrainEntity->setTerrain(terrain);
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
-            return QDialog::Rejected;
+            return Rejected;
         }
 
         return result;
@@ -111,7 +111,7 @@ namespace urchin {
     }
 
     void NewTerrainDialog::done(int r) {
-        if (QDialog::Accepted == r) {
+        if (Accepted == r) {
             bool hasError = false;
 
             updateTerrainName();

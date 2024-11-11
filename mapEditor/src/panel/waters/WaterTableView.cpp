@@ -13,8 +13,8 @@ namespace urchin {
         horizontalHeader()->resizeSection(0, 355);
         verticalHeader()->hide();
 
-        setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
-        setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+        setSelectionMode(SingleSelection);
+        setSelectionBehavior(SelectRows);
     }
 
     void WaterTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
@@ -22,7 +22,7 @@ namespace urchin {
         horizontalHeader()->resizeSection(0, 341);
         horizontalHeader()->resizeSection(0, 340);
 
-        notifyObservers(this, NotificationType::SELECTION_CHANGED);
+        notifyObservers(this, SELECTION_CHANGED);
     }
 
     bool WaterTableView::hasWaterEntitySelected() const {

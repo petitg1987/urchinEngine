@@ -1,6 +1,7 @@
 #pragma once
 
-#include <list>
+#include <vector>
+#include <memory>
 
 #include <UrchinAggregation.h>
 #include <controller/objects/ObjectController.h>
@@ -26,13 +27,13 @@ namespace urchin {
 
             void saveMapOnFile(const std::string&);
 
-            ObjectController& getObjectController();
-            LightController& getLightController();
-            TerrainController& getTerrainController();
-            WaterController& getWaterController();
-            SkyController& getSkyController();
-            SoundController& getSoundController();
-            AIController& getAIController();
+            ObjectController& getObjectController() const;
+            LightController& getLightController() const;
+            TerrainController& getTerrainController() const;
+            WaterController& getWaterController() const;
+            SkyController& getSkyController() const;
+            SoundController& getSoundController() const;
+            AIController& getAIController() const;
 
         private:
             std::vector<AbstractController*> subControllers;

@@ -99,32 +99,32 @@ namespace urchin {
         throw std::invalid_argument("Unknown shape type to retrieve geometry: " + std::to_string(shapeType));
     }
 
-    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveSphereGeometry(const CollisionConvexObject3D& bodyObject) {
+    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveSphereGeometry(const CollisionConvexObject3D& bodyObject) const {
         const auto& sphereObject = static_cast<const CollisionSphereObject&>(bodyObject);
         return std::make_unique<SphereModel>(sphereObject.retrieveSphere(), 15);
     }
 
-    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveBoxGeometry(const CollisionConvexObject3D& bodyObject) {
+    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveBoxGeometry(const CollisionConvexObject3D& bodyObject) const {
         const auto& boxObject = static_cast<const CollisionBoxObject&>(bodyObject);
         return std::make_unique<OBBoxModel>(boxObject.retrieveOBBox());
     }
 
-    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveCylinderGeometry(const CollisionConvexObject3D& bodyObject) {
+    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveCylinderGeometry(const CollisionConvexObject3D& bodyObject) const {
         const auto& cylinderObject = static_cast<const CollisionCylinderObject&>(bodyObject);
         return std::make_unique<CylinderModel>(cylinderObject.retrieveCylinder(), 15);
     }
 
-    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveConeGeometry(const CollisionConvexObject3D& bodyObject) {
+    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveConeGeometry(const CollisionConvexObject3D& bodyObject) const {
         const auto& coneObject = static_cast<const CollisionConeObject&>(bodyObject);
         return std::make_unique<ConeModel>(coneObject.retrieveCone(), 15);
     }
 
-    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveCapsuleGeometry(const CollisionConvexObject3D& bodyObject) {
+    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveCapsuleGeometry(const CollisionConvexObject3D& bodyObject) const {
         const auto& capsuleObject = static_cast<const CollisionCapsuleObject&>(bodyObject);
         return std::make_unique<CapsuleModel>(capsuleObject.retrieveCapsule(), 15, 15);
     }
 
-    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveConvexHullGeometry(const CollisionConvexObject3D& bodyObject) {
+    std::unique_ptr<GeometryModel> BodyShapeDisplayer::retrieveConvexHullGeometry(const CollisionConvexObject3D& bodyObject) const {
         const auto& convexHullObject = static_cast<const CollisionConvexHullObject&>(bodyObject);
         return std::make_unique<ConvexHullModel>(convexHullObject.getConvexHullWithMargin());
     }

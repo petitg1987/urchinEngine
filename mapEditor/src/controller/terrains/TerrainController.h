@@ -9,10 +9,8 @@
 
 namespace urchin {
 
-    class TerrainController : public AbstractController {
+    class TerrainController final : public AbstractController {
         public:
-            TerrainController();
-
             std::list<const TerrainEntity*> getTerrainEntities() const;
             void addTerrainEntity(std::unique_ptr<TerrainEntity>);
             void removeTerrainEntity(const TerrainEntity&);
@@ -23,7 +21,7 @@ namespace urchin {
             const TerrainEntity& updateTerrainGrass(const TerrainEntity&, std::string, std::string, unsigned int, float, float, float, const Vector3<float>&, float);
 
         private:
-            TerrainEntity& findTerrainEntity(const TerrainEntity&);
+            TerrainEntity& findTerrainEntity(const TerrainEntity&) const;
     };
 
 }

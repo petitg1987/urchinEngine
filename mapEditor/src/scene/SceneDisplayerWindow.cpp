@@ -135,7 +135,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWindow::updateSceneDisplayerViewProperties() {
+    void SceneDisplayerWindow::updateSceneDisplayerViewProperties() const {
         if (sceneDisplayer) {
             for (unsigned int i = 0; i < SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
                 sceneDisplayer->setViewProperties(static_cast<SceneDisplayer::ViewProperties>(i), viewProperties[i]);

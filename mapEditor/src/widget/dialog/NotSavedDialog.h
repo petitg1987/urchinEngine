@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    class NotSavedDialog : public QDialog {
+    class NotSavedDialog final : public QDialog {
         Q_OBJECT
 
         public:

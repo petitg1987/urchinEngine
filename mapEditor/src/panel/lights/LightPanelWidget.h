@@ -35,9 +35,9 @@ namespace urchin {
 
             void notify(Observable*, int) override;
             void setupLightDataFrom(const LightEntity*);
-            void setupSunLightDataFrom(const SunLight*);
-            void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight*);
-            void setupSpotLightDataFrom(const SpotLight*);
+            void setupSunLightDataFrom(const SunLight*) const;
+            void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight*) const;
+            void setupSpotLightDataFrom(const SpotLight*) const;
 
             LightController* lightController;
 

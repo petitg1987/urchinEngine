@@ -3,16 +3,13 @@
 #include <list>
 #include <UrchinCommon.h>
 #include <UrchinAggregation.h>
-#include <Urchin3dEngine.h>
 
 #include <controller/AbstractController.h>
 
 namespace urchin {
 
-    class LightController : public AbstractController {
+    class LightController final : public AbstractController {
         public:
-            LightController();
-
             std::list<const LightEntity*> getLightEntities() const;
             void addLightEntity(std::unique_ptr<LightEntity>);
             void removeLightEntity(const LightEntity&);
@@ -25,7 +22,7 @@ namespace urchin {
             const LightEntity& updateSpotLightProperties(const LightEntity&, float, const Point3<float>&, const Vector3<float>&, float, float);
 
         private:
-            LightEntity& findLightEntity(const LightEntity&);
+            LightEntity& findLightEntity(const LightEntity&) const;
     };
 
 }

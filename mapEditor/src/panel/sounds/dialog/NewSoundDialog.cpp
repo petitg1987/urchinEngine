@@ -46,8 +46,8 @@ namespace urchin {
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
-        QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+        connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
     void NewSoundDialog::setupNameFields(QGridLayout* mainLayout) {
@@ -164,7 +164,7 @@ namespace urchin {
             soundEntity->setSoundComponent(std::make_unique<SoundComponent>(sound, soundTrigger));
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
-            return QDialog::Rejected;
+            return Rejected;
         }
 
         return result;
@@ -187,7 +187,7 @@ namespace urchin {
     }
 
     void NewSoundDialog::done(int r) {
-        if (QDialog::Accepted == r) {
+        if (Accepted == r) {
             bool hasError = false;
 
             updateSoundName();

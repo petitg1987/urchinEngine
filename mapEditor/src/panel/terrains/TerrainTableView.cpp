@@ -17,8 +17,8 @@ namespace urchin {
         horizontalHeader()->resizeSection(1, 160);
         verticalHeader()->hide();
 
-        setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
-        setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+        setSelectionMode(SingleSelection);
+        setSelectionBehavior(SelectRows);
     }
 
     void TerrainTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
@@ -26,7 +26,7 @@ namespace urchin {
         horizontalHeader()->resizeSection(0, 180);
         horizontalHeader()->resizeSection(0, 160);
 
-        notifyObservers(this, NotificationType::SELECTION_CHANGED);
+        notifyObservers(this, SELECTION_CHANGED);
     }
 
     bool TerrainTableView::hasTerrainEntitySelected() const {

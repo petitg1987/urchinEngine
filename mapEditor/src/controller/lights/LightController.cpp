@@ -5,11 +5,6 @@
 
 namespace urchin {
 
-    LightController::LightController() :
-            AbstractController() {
-
-    }
-
     std::list<const LightEntity*> LightController::getLightEntities() const {
         const auto& lightEntities = getMap().getLightEntities();
         std::list<const LightEntity*> constLightEntities;
@@ -93,7 +88,7 @@ namespace urchin {
         return lightEntity;
     }
 
-    LightEntity& LightController::findLightEntity(const LightEntity& constLightEntity) {
+    LightEntity& LightController::findLightEntity(const LightEntity& constLightEntity) const {
         const auto& lightEntities = getMap().getLightEntities();
         auto it = std::ranges::find_if(lightEntities, [&constLightEntity](const auto& o){return o.get() == &constLightEntity;});
 

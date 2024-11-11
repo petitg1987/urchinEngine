@@ -53,7 +53,7 @@ namespace urchin {
 
         private:
             void clearVkInstance();
-            void updateSceneDisplayerViewProperties();
+            void updateSceneDisplayerViewProperties() const;
 
             QVulkanInstance vulkanInstance;
             StatusBarController& statusBarController;

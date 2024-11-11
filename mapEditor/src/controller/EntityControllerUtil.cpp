@@ -12,7 +12,7 @@ namespace urchin {
         if (!entityInFrustum || !entityNearToCamera) {
             return camera.getPosition().translate(camera.getView() * 5.0f);
         }
-        return Point3<float>(currentEntityPosition.X, currentEntityPosition.Y + 0.1f, currentEntityPosition.Z);
+        return Point3(currentEntityPosition.X, currentEntityPosition.Y + 0.1f, currentEntityPosition.Z);
     }
 
 }

@@ -1,5 +1,3 @@
-#include <QCursor>
-
 #include <scene/SceneFreeCamera.h>
 #include <StateSaveHelper.h>
 
@@ -41,7 +39,7 @@ namespace urchin {
         bool propagateEvent = true;
         if (!disableNextMouseEvent) {
             propagateEvent = Camera::onMouseMove(deltaMouseX, deltaMouseY);
-            if (Camera::isUseMouseToMoveCamera()) {
+            if (isUseMouseToMoveCamera()) {
                 mouseController.moveMouse((double) getSceneWidth() / 2.0, (double) getSceneHeight() / 2.0);
                 disableNextMouseEvent = true;
             }

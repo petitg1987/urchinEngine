@@ -111,7 +111,7 @@ namespace urchin {
         soundEnvironment = std::make_unique<SoundEnvironment>();
     }
 
-    void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {
+    void SceneDisplayer::setViewProperties(ViewProperties viewProperty, bool value) {
         viewProperties[viewProperty] = value;
     }
 
@@ -132,7 +132,7 @@ namespace urchin {
         this->highlightSoundEntity = highlightSoundEntity;
     }
 
-    void SceneDisplayer::refreshObjectsModel() {
+    void SceneDisplayer::refreshObjectsModel() const {
         if (bodyShapeDisplayer && objectMoveController) {
             if (viewProperties[OBJECT_PHYSICS]) {
                 bodyShapeDisplayer->displayBodyShape();
@@ -144,7 +144,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayer::refreshLightScopeModel() {
+    void SceneDisplayer::refreshLightScopeModel() const {
         if (lightScopeDisplayer) {
             if (viewProperties[LIGHT_SCOPE] && highlightLightEntity && highlightLightEntity->getLight()) {
                 lightScopeDisplayer->displayLightScope(highlightLightEntity);
@@ -154,7 +154,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayer::refreshSoundTriggerModel() {
+    void SceneDisplayer::refreshSoundTriggerModel() const {
         if (soundTriggerDisplayer) {
             if (viewProperties[SOUND_TRIGGER] && highlightSoundEntity && highlightSoundEntity->getSoundComponent()) {
                 soundTriggerDisplayer->displaySoundTrigger(highlightSoundEntity);
@@ -164,7 +164,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayer::refreshNavMeshModel() {
+    void SceneDisplayer::refreshNavMeshModel() const {
         if (navMeshDisplayer) {
             if (viewProperties[NAV_MESH]) {
                 navMeshDisplayer->display();

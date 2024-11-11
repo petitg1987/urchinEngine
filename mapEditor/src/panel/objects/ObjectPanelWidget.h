@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <memory>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QGridLayout>

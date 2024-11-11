@@ -6,11 +6,6 @@
 
 namespace urchin {
 
-    SoundController::SoundController() :
-            AbstractController() {
-
-    }
-
     std::list<const SoundEntity*> SoundController::getSoundEntities() const {
         const auto& soundEntities = getMap().getSoundEntities();
         std::list<const SoundEntity*> constSoundEntities;
@@ -96,7 +91,7 @@ namespace urchin {
         return soundEntity;
     }
 
-    SoundEntity& SoundController::findSoundEntity(const SoundEntity& constSoundEntity) {
+    SoundEntity& SoundController::findSoundEntity(const SoundEntity& constSoundEntity) const {
         const auto& soundEntities = getMap().getSoundEntities();
         auto it = std::ranges::find_if(soundEntities, [&constSoundEntity](const auto& o){return o.get() == &constSoundEntity;});
 

@@ -1,11 +1,8 @@
-#include <stdexcept>
-
 #include <controller/SceneController.h>
 
 namespace urchin {
 
-    SceneController::SceneController() :
-            AbstractController() {
+    SceneController::SceneController() {
         objectController = std::make_unique<ObjectController>();
         subControllers.emplace_back(objectController.get());
 
@@ -43,7 +40,7 @@ namespace urchin {
     }
 
     void SceneController::forceModified() {
-         AbstractController::markModified();
+         markModified();
     }
 
     bool SceneController::isModified() const {
@@ -68,31 +65,31 @@ namespace urchin {
         resetModified();
     }
 
-    ObjectController& SceneController::getObjectController() {
+    ObjectController& SceneController::getObjectController() const {
         return *objectController;
     }
 
-    LightController& SceneController::getLightController() {
+    LightController& SceneController::getLightController() const {
         return *lightController;
     }
 
-    TerrainController& SceneController::getTerrainController() {
+    TerrainController& SceneController::getTerrainController() const {
         return *terrainController;
     }
 
-    WaterController& SceneController::getWaterController() {
+    WaterController& SceneController::getWaterController() const {
         return *waterController;
     }
 
-    SkyController& SceneController::getSkyController() {
+    SkyController& SceneController::getSkyController() const {
         return *skyController;
     }
 
-    SoundController& SceneController::getSoundController() {
+    SoundController& SceneController::getSoundController() const {
         return *soundController;
     }
 
-    AIController& SceneController::getAIController() {
+    AIController& SceneController::getAIController() const {
         return *aiController;
     }
 

@@ -9,7 +9,7 @@ namespace urchin {
 
     class SceneDisplayerWindow;
 
-    class QtSurfaceCreator final : public urchin::SurfaceCreator {
+    class QtSurfaceCreator final : public SurfaceCreator {
         public:
             explicit QtSurfaceCreator(SceneDisplayerWindow*);
             void* createSurface(void*) override;
@@ -18,7 +18,7 @@ namespace urchin {
             SceneDisplayerWindow *window;
     };
 
-    class QtFramebufferSizeRetriever final : public urchin::FramebufferSizeRetriever {
+    class QtFramebufferSizeRetriever final : public FramebufferSizeRetriever {
         public:
             explicit QtFramebufferSizeRetriever(SceneDisplayerWindow*);
             void getFramebufferSizeInPixel(unsigned int&, unsigned int&) const override;

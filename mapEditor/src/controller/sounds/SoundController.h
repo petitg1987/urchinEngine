@@ -9,10 +9,8 @@
 
 namespace urchin {
 
-    class SoundController : public AbstractController {
+    class SoundController final : public AbstractController {
         public:
-            SoundController();
-
             std::list<const SoundEntity*> getSoundEntities() const;
             void addSoundEntity(std::unique_ptr<SoundEntity>);
             void removeSoundEntity(const SoundEntity&);
@@ -25,7 +23,7 @@ namespace urchin {
             const SoundEntity& updateSoundShape(const SoundEntity&, std::unique_ptr<SoundShape>);
 
         private:
-            SoundEntity& findSoundEntity(const SoundEntity&);
+            SoundEntity& findSoundEntity(const SoundEntity&) const;
     };
 
 }

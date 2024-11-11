@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class AIPanelWidget : public QWidget {
+    class AIPanelWidget final : public QWidget {
         Q_OBJECT
 
         public:

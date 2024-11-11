@@ -1,6 +1,6 @@
 #pragma once
 
-#include <list>
+#include <string>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>

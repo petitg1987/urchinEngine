@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
+#include <array>
+#include <memory>
 #include <QWidget>
-#include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 #include <Urchin3dEngine.h>
 #include <UrchinSoundEngine.h>
@@ -39,7 +39,7 @@ namespace urchin {
             void loadMap(const std::string&, const std::string&, const std::string&);
             void loadEmptyScene(const std::string&);
 
-            void setViewProperties(SceneDisplayer::ViewProperties, bool);
+            void setViewProperties(ViewProperties, bool);
             void setHighlightObjectEntity(const ObjectEntity*);
             void setHighlightLightEntity(const LightEntity*);
             void setHighlightSoundEntity(const SoundEntity*);
@@ -59,10 +59,10 @@ namespace urchin {
             static void initializeEngineResources(const std::string&);
             void initializeScene(const std::string&);
 
-            void refreshObjectsModel();
-            void refreshLightScopeModel();
-            void refreshSoundTriggerModel();
-            void refreshNavMeshModel();
+            void refreshObjectsModel() const;
+            void refreshLightScopeModel() const;
+            void refreshSoundTriggerModel() const;
+            void refreshNavMeshModel() const;
 
             bool isInitialized;
             SceneWindowController& windowController;

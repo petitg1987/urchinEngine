@@ -1,9 +1,7 @@
 #pragma once
 
 #include <Urchin3dEngine.h>
-#include <UrchinAggregation.h>
 
-#include <controller/SceneController.h>
 #include <widget/controller/statusbar/StatusBarController.h>
 
 namespace urchin {

@@ -2,11 +2,6 @@
 
 namespace urchin {
 
-    AIController::AIController() :
-            AbstractController() {
-
-    }
-
     const NavMeshAgentEntity& AIController::getNavMeshAgentEntity() const {
         return getMap().getNavMeshAgentEntity();
     }

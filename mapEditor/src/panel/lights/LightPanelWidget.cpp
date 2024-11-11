@@ -325,7 +325,7 @@ namespace urchin {
         disableLightEvent = false;
     }
 
-    void LightPanelWidget::setupSunLightDataFrom(const SunLight* light) {
+    void LightPanelWidget::setupSunLightDataFrom(const SunLight* light) const {
         specificSunLightGroupBox->show();
         specificOmnidirectionalLightGroupBox->hide();
         specificSpotLightGroupBox->hide();
@@ -337,7 +337,7 @@ namespace urchin {
         this->sunDirectionZ->setValue(light->getDirections()[0].Z);
     }
 
-    void LightPanelWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight* light) {
+    void LightPanelWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight* light) const {
         specificSunLightGroupBox->hide();
         specificOmnidirectionalLightGroupBox->show();
         specificSpotLightGroupBox->hide();
@@ -351,7 +351,7 @@ namespace urchin {
         this->omniAttenuation->setValue(light->getExponentialAttenuation());
     }
 
-    void LightPanelWidget::setupSpotLightDataFrom(const SpotLight* light) {
+    void LightPanelWidget::setupSpotLightDataFrom(const SpotLight* light) const {
         specificSunLightGroupBox->hide();
         specificOmnidirectionalLightGroupBox->hide();
         specificSpotLightGroupBox->show();

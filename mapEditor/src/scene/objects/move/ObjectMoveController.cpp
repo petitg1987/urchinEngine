@@ -29,7 +29,7 @@ namespace urchin {
             }
 
             selectedAxis = (int) axisIndex;
-            statusBarController.applyState(StatusBarState::MODEL_MOVE);
+            statusBarController.applyState(MODEL_MOVE);
         }
     }
 
@@ -40,7 +40,7 @@ namespace urchin {
             if (oldMouseX > -1.0 && oldMouseY > -1.0 && !isCameraMoved()) {
                 mousePositionAdjusted = adjustMousePosition();
                 if (!mousePositionAdjusted) {
-                    moveObject(Point2<float>((float)oldMouseX, (float)oldMouseY), Point2<float>((float)mouseX, (float)mouseY));
+                    moveObject(Point2((float)oldMouseX, (float)oldMouseY), Point2((float)mouseX, (float)mouseY));
                 }
             }
 
@@ -128,7 +128,7 @@ namespace urchin {
         transform.setPosition(newPosition);
 
         sceneController.getObjectController().updateObjectTransform(*selectedObjectEntity, transform);
-        notifyObservers(this, NotificationType::OBJECT_MOVED);
+        notifyObservers(this, OBJECT_MOVED);
     }
 
     bool ObjectMoveController::onMouseLeftButton() {
@@ -160,7 +160,7 @@ namespace urchin {
         this->selectedAxis = -1;
 
         if (selectedObjectEntity) {
-            statusBarController.applyState(StatusBarState::MODEL_SELECTED);
+            statusBarController.applyState(MODEL_SELECTED);
         } else {
             statusBarController.applyPreviousState();
         }

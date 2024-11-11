@@ -5,10 +5,6 @@
 #include <controller/EntityControllerUtil.h>
 
 namespace urchin {
-    WaterController::WaterController() :
-            AbstractController() {
-
-    }
 
     std::list<const WaterEntity*> WaterController::getWaterEntities() const {
         const auto& waterEntities = getMap().getWaterEntities();

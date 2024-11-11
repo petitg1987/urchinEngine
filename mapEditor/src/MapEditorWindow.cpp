@@ -145,7 +145,7 @@ namespace urchin {
 
     void MapEditorWindow::setupSceneDisplayerWidget(QWidget* centralWidget, QHBoxLayout* horizontalLayout) {
         sceneDisplayerWindow = new SceneDisplayerWindow(centralWidget, statusBarController, mapEditorPath);
-        QWidget* sceneDisplayerWidget = QWidget::createWindowContainer(sceneDisplayerWindow, centralWidget);
+        QWidget* sceneDisplayerWidget = createWindowContainer(sceneDisplayerWindow, centralWidget);
 
         sceneDisplayerWidget->setMouseTracking(true);
         sceneDisplayerWidget->setFocusPolicy(Qt::FocusPolicy::ClickFocus);

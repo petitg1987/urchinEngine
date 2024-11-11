@@ -34,8 +34,8 @@ namespace urchin {
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
-        QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+        connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
     void NewDialog::setupNameFields(QGridLayout* mainLayout) {
@@ -134,7 +134,7 @@ namespace urchin {
     }
 
     void NewDialog::done(int r) {
-        if (QDialog::Accepted == r) {
+        if (Accepted == r) {
             bool hasError = false;
 
             updateMapFilename();

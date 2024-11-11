@@ -4,7 +4,7 @@
 namespace urchin {
 
     StatusBarController::StatusBarController(QMainWindow* window) :
-            currentState(StatusBarState::NONE),
+            currentState(NONE),
             window(window) {
         window->setStatusBar(new QStatusBar(window));
         applyCurrentState();
@@ -34,18 +34,18 @@ namespace urchin {
 
     StatusBarStateData StatusBarController::getStateData(StatusBarState state) {
         switch(state) {
-            case StatusBarState::NONE:
-                return StatusBarStateData({}, StatusBarState::NONE);
-            case StatusBarState::MAP_LOADED:
-                return StatusBarStateData({"Select model: LMB"}, StatusBarState::NONE);
-            case StatusBarState::MODEL_SELECTED:
+            case NONE:
+                return StatusBarStateData({}, NONE);
+            case MAP_LOADED:
+                return StatusBarStateData({"Select model: LMB"}, NONE);
+            case MODEL_SELECTED:
                 return StatusBarStateData({"Select model: LMB",
-                                           "Move selected: Ctrl + X/Y/Z"}, StatusBarState::MAP_LOADED);
-            case StatusBarState::MODEL_MOVE:
+                                           "Move selected: Ctrl + X/Y/Z"}, MAP_LOADED);
+            case MODEL_MOVE:
                 return StatusBarStateData({"Move selected: mouse",
                                            "Switch axis: Ctrl + X/Y/Z",
                                            "Confirm move: LMB",
-                                           "Cancel move: Esc"}, StatusBarState::MODEL_SELECTED);
+                                           "Cancel move: Esc"}, MODEL_SELECTED);
             default:
                 throw std::runtime_error("Unknown status bar state: " + std::to_string(state));
         }

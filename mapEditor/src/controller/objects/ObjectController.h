@@ -9,11 +9,9 @@
 
 namespace urchin {
 
-    class ObjectController : public AbstractController {
+    class ObjectController final : public AbstractController {
         public:
             static constexpr char TAGS_SEPARATOR = ',';
-
-            ObjectController();
 
             std::list<const ObjectEntity*> getObjectEntities() const;
             const ObjectEntity* findObjectEntityByBodyId(std::string_view) const;
@@ -37,7 +35,7 @@ namespace urchin {
             const ObjectEntity& updateObjectPhysicsShape(const ObjectEntity&, std::unique_ptr<const CollisionShape3D>);
 
         private:
-            ObjectEntity& findObjectEntity(const ObjectEntity&);
+            ObjectEntity& findObjectEntity(const ObjectEntity&) const;
     };
 
 }

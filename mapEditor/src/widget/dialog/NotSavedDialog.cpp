@@ -25,7 +25,7 @@ namespace urchin {
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Yes|QDialogButtonBox::No|QDialogButtonBox::Cancel);
 
-        QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClick(QAbstractButton*)));
+        connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClick(QAbstractButton*)));
     }
 
     bool NotSavedDialog::needSave() const {
