@@ -24,7 +24,7 @@ namespace urchin {
      * @param overlappingPairs Pairs of bodies potentially colliding
      * @param manifoldResults [OUT] Collision constraints
      */
-    void NarrowPhase::process(float dt, const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhase::process(float dt, const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) const {
         ScopeProfiler sp(Profiler::physics(), "narrowPhase");
 
         processOverlappingPairs(overlappingPairs, manifoldResults);
@@ -45,7 +45,7 @@ namespace urchin {
         }
     }
 
-    void NarrowPhase::processOverlappingPairs(const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhase::processOverlappingPairs(const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) const {
         ScopeProfiler sp(Profiler::physics(), "procOverlapPair");
 
         for (const auto& overlappingPair : overlappingPairs) {

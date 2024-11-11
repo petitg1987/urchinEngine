@@ -66,9 +66,9 @@ namespace urchin {
 
     void RigidBody::refreshInertia() {
         this->localInertia = getShape().computeLocalInertia(mass);
-        this->invLocalInertia = Vector3<float>(MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
-                                               MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
-                                               MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);
+        this->invLocalInertia = Vector3(MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
+                                        MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
+                                        MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);
         refreshWorldInertia();
     }
 
@@ -184,7 +184,7 @@ namespace urchin {
             throw std::domain_error("Wrong angular damping value.");
         }
 
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->linearDamping = linearDamping;
         this->angularDamping = angularDamping;
     }

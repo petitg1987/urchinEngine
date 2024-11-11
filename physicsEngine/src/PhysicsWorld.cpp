@@ -53,12 +53,12 @@ namespace urchin {
     }
 
     void PhysicsWorld::addProcessable(const std::shared_ptr<Processable>& processable) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         processables.push_back(processable);
     }
 
     void PhysicsWorld::removeProcessable(const Processable& processable) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
 
         auto itFind = std::ranges::find_if(processables, [&processable](const auto& o){return o.get() == &processable;});
         if (itFind != processables.end()) {
@@ -67,7 +67,7 @@ namespace urchin {
     }
 
     std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
 
         auto rayTester = std::make_unique<RayTester>(getCollisionWorld(), ray);
         std::shared_ptr<const RayTestResult> rayTestResult = rayTester->getRayTestResult();
@@ -192,7 +192,7 @@ namespace urchin {
         copiedProcessables.clear();
 
         {
-            std::scoped_lock<std::mutex> lock(mutex);
+            std::scoped_lock lock(mutex);
             paused = this->paused;
             if (!paused) {
                 gravity = this->gravity;

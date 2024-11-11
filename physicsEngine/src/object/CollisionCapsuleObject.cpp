@@ -54,7 +54,7 @@ namespace urchin {
     }
 
     Capsule<float> CollisionCapsuleObject::retrieveCapsule() const {
-        return Capsule<float>(getRadius(), getCylinderHeight(), getCapsuleOrientation(), getCenterOfMass(), getOrientation());
+        return Capsule(getRadius(), getCylinderHeight(), getCapsuleOrientation(), getCenterOfMass(), getOrientation());
     }
 
     std::string CollisionCapsuleObject::toString() const {

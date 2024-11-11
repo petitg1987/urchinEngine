@@ -29,7 +29,7 @@ namespace urchin {
         // - Returning a reference to a class attribute will not work as vector methods (e.g.: clear()) could be called by two different threads later
         // - Using a 'thread_local std::vector<OverlappingPair>' and return the reference seems to not work. It generates invalid read/write in Valgrind !
 
-        std::scoped_lock<std::mutex> lock(pairMutex);
+        std::scoped_lock lock(pairMutex);
         copiedOverlappingPairs.reserve(overlappingPairs.size());
         for (const auto& overlappingPair : overlappingPairs) {
             copiedOverlappingPairs.emplace_back(*overlappingPair);

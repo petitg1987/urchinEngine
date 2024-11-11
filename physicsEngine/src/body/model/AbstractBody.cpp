@@ -95,7 +95,7 @@ namespace urchin {
     }
 
     void AbstractBody::setRestitution(float restitution) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->restitution = restitution;
     }
 

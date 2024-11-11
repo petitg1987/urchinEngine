@@ -184,7 +184,7 @@ namespace urchin {
      */
     std::pair<unsigned int, unsigned int> CollisionHeightfieldShape::computeStartEndIndices(float minValue, float maxValue, Axis axis) const {
         float halfSize = axis == X ? localAABBox.getHalfSizes().X : localAABBox.getHalfSizes().Z;
-        float verticesDistance = axis == Axis::X ? vertices[1].X - vertices[0].X : vertices[xLength].Z - vertices[0].Z;
+        float verticesDistance = axis == X ? vertices[1].X - vertices[0].X : vertices[xLength].Z - vertices[0].Z;
         int maxLength = axis == X ? (int)xLength - 1 : (int)zLength - 1;
 
         auto rawStartVertex = (int)((minValue + halfSize) / verticesDistance);
@@ -215,7 +215,7 @@ namespace urchin {
     }
 
     void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3) const {
-        trianglesInAABBox.emplace_back(TriangleShape3D<float>(p1, p2, p3));
+        trianglesInAABBox.emplace_back(TriangleShape3D(p1, p2, p3));
     }
 
 }

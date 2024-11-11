@@ -15,7 +15,7 @@ namespace urchin {
 
     void BodyAABBTree::addBody(const std::shared_ptr<AbstractBody>& body) {
         auto nodeData = std::make_unique<BodyAABBNodeData>(body);
-        AABBTree::addObject(std::move(nodeData));
+        addObject(std::move(nodeData));
     }
 
     void BodyAABBTree::postAddObjectCallback(AABBNode<std::shared_ptr<AbstractBody>>& newNode) {
@@ -24,8 +24,8 @@ namespace urchin {
 
     void BodyAABBTree::removeBody(const AbstractBody& body) {
         auto* bodyPtr = const_cast<AbstractBody*>(&body);
-        auto& nodeData = AABBTree::getNodeData(bodyPtr);
-        AABBTree::removeObject(nodeData);
+        auto& nodeData = getNodeData(bodyPtr);
+        removeObject(nodeData);
     }
 
     void BodyAABBTree::preRemoveObjectCallback(AABBNode<std::shared_ptr<AbstractBody>>& nodeToDelete) {
@@ -39,7 +39,7 @@ namespace urchin {
             inInitializationPhase = false;
         }
 
-        AABBTree::updateObjects();
+        updateObjects();
     }
 
     void BodyAABBTree::preUpdateObjectCallback(AABBNode<std::shared_ptr<AbstractBody>>& nodeToUpdate) {
@@ -52,7 +52,7 @@ namespace urchin {
 
     void BodyAABBTree::computeOverlappingPairs(const AABBNode<std::shared_ptr<AbstractBody>>& leafNode) {
         browseNodes.clear();
-        browseNodes.push_back(AABBTree::getRootNode());
+        browseNodes.push_back(getRootNode());
 
         for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
             const AABBNode<std::shared_ptr<AbstractBody>>* currentNode = browseNodes[i];
@@ -101,7 +101,7 @@ namespace urchin {
 
         for (const auto& overlappingPair : overlappingPairs) {
             const std::shared_ptr<AbstractBody>& otherPairBody = &overlappingPair.getBody1() == &body ? overlappingPair.getBody2Ptr() : overlappingPair.getBody1Ptr();
-            auto& otherNodeData = static_cast<BodyAABBNodeData&>(AABBTree::getNodeData(otherPairBody.get()));
+            auto& otherNodeData = static_cast<BodyAABBNodeData&>(getNodeData(otherPairBody.get()));
 
             otherNodeData.removeOwnerPairContainer(bodyPairContainer);
         }
