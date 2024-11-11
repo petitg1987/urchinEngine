@@ -53,7 +53,7 @@ namespace urchin {
         const Point3<float>& position = physicsTransform.getPosition();
         const Quaternion<float>& orientation = physicsTransform.getOrientation();
 
-        Vector3<float> halfSizeSubtractMargin = boxShape.getHalfSizes() - Vector3<float>(getInnerMargin(), getInnerMargin(), getInnerMargin());
+        Vector3<float> halfSizeSubtractMargin = boxShape.getHalfSizes() - Vector3(getInnerMargin(), getInnerMargin(), getInnerMargin());
 
         void* memPtr = getObjectsPool().allocate(sizeof(CollisionBoxObject));
         auto* collisionObjectPtr = new (memPtr) CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);

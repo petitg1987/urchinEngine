@@ -19,7 +19,7 @@ namespace urchin {
             CollisionConvexHullShape operator=(const CollisionConvexHullShape&) = delete;
             ~CollisionConvexHullShape() override;
 
-            CollisionShape3D::ShapeType getShapeType() const override;
+            ShapeType getShapeType() const override;
             const ConvexShape3D<float>& getSingleShape() const override;
             std::vector<Point3<float>> getPoints() const;
 

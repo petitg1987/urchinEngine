@@ -1,3 +1,8 @@
+#include <stdexcept>
+#include <cassert>
+#include <vector>
+#include <limits>
+
 #include <object/CollisionTriangleObject.h>
 #include <collision/narrowphase/algorithm/epa/EPAAlgorithm.h>
 
@@ -145,13 +150,13 @@ namespace urchin {
         Point3<float> contactPointTriangle = triangle.closestPoint(contactPointOther, triangleBarycentrics);
         if (triangle.projectedPointInsideTriangle(contactPointOther)) {
             float distanceToOrigin = contactPointTriangle.distance(contactPointOther);
-            Vector3<T> normal = contactPointOther.vector(contactPointTriangle).normalize().template cast<T>();
+            Vector3<T> normal = contactPointOther.vector(contactPointTriangle).normalize().cast<T>();
 
             if (needSwap) {
-                return EPAResult<T>::newCollideResult(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin);
+                return EPAResult<T>::newCollideResult(contactPointOther.cast<T>(), contactPointTriangle.cast<T>(), -normal, distanceToOrigin);
             }
 
-            return EPAResult<T>::newCollideResult(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin);
+            return EPAResult<T>::newCollideResult(contactPointTriangle.cast<T>(), contactPointOther.cast<T>(), normal, distanceToOrigin);
         }
 
         return EPAResult<T>::newInvalidResult();
@@ -330,7 +335,7 @@ namespace urchin {
      * @return Iterator on closest triangle data
      */
     template<class T> typename std::map<std::size_t, EPATriangleData<T>>::const_iterator EPAAlgorithm<T>::getClosestTriangleData(
-            const typename std::map<std::size_t, EPATriangleData<T>>& trianglesData) const {
+            const std::map<std::size_t, EPATriangleData<T>>& trianglesData) const {
         T minDistanceToOrigin = std::numeric_limits<T>::max();
         typename std::map<std::size_t, EPATriangleData<T>>::const_iterator closestTriangleData;
 

@@ -4,10 +4,10 @@
 
 namespace urchin {
 
-    CollisionConeObject::CollisionConeObject(float outerMargin, float radius, float height, typename ConeShape<float>::ConeOrientation coneOrientation,
+    CollisionConeObject::CollisionConeObject(float outerMargin, float radius, float height, ConeShape<float>::ConeOrientation coneOrientation,
                                              const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
             CollisionConvexObject3D(outerMargin),
-            coneObject(Cone<float>(radius, height, coneOrientation, centerOfMass, orientation)) {
+            coneObject(Cone(radius, height, coneOrientation, centerOfMass, orientation)) {
 
     }
 
@@ -22,7 +22,7 @@ namespace urchin {
         return coneObject.getHeight() + (2.0f * getOuterMargin());
     }
 
-    typename ConeShape<float>::ConeOrientation CollisionConeObject::getConeOrientation() const {
+    ConeShape<float>::ConeOrientation CollisionConeObject::getConeOrientation() const {
         return coneObject.getConeOrientation();
     }
 
@@ -42,7 +42,7 @@ namespace urchin {
     }
 
     CollisionConvexObject3D::ObjectType CollisionConeObject::getObjectType() const {
-        return CollisionConvexObject3D::CONE_OBJECT;
+        return CONE_OBJECT;
     }
 
     /**
@@ -57,7 +57,7 @@ namespace urchin {
     }
 
     Cone<float> CollisionConeObject::retrieveCone() const {
-        return Cone<float>(getRadius(), getHeight(), getConeOrientation(), getCenterOfMass(), getOrientation());
+        return Cone(getRadius(), getHeight(), getConeOrientation(), getCenterOfMass(), getOrientation());
     }
 
     std::string CollisionConeObject::toString() const {

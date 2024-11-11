@@ -16,7 +16,7 @@ namespace urchin {
             CollisionSphereShape(const CollisionSphereShape&) = delete;
             ~CollisionSphereShape() override = default;
 
-            CollisionShape3D::ShapeType getShapeType() const override;
+            ShapeType getShapeType() const override;
             const ConvexShape3D<float>& getSingleShape() const override;
             float getRadius() const;
 

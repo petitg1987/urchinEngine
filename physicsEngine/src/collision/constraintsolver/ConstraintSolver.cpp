@@ -211,7 +211,7 @@ namespace urchin {
 
         float tangentVelocityLength = tangentVelocity.length();
         if (tangentVelocityLength == 0.0f) {
-            return Vector3<float>(0.0f, 0.0f, 0.0f);
+            return Vector3(0.0f, 0.0f, 0.0f);
         }
 
         return tangentVelocity / tangentVelocityLength;

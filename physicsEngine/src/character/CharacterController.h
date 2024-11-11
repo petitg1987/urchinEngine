@@ -7,7 +7,6 @@
 #include <body/model/GhostBody.h>
 #include <processable/Processable.h>
 #include <collision/ManifoldResult.h>
-#include <collision/OverlappingPair.h>
 
 namespace urchin {
 

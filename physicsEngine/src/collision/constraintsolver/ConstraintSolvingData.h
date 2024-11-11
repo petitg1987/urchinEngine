@@ -1,7 +1,5 @@
 #pragma once
 
-#include <UrchinCommon.h>
-
 #include <body/model/RigidBody.h>
 #include <collision/ManifoldContactPoint.h>
 #include <collision/constraintsolver/solvingdata/CommonSolvingData.h>

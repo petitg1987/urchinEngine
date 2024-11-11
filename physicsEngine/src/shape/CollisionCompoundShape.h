@@ -21,7 +21,7 @@ namespace urchin {
         public:
             explicit CollisionCompoundShape(std::vector<std::shared_ptr<const LocalizedCollisionShape>>);
 
-            CollisionShape3D::ShapeType getShapeType() const override;
+            ShapeType getShapeType() const override;
             const ConvexShape3D<float>& getSingleShape() const override;
             const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& getLocalizedShapes() const;
 

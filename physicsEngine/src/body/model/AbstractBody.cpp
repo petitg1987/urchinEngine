@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <utility>
 
 #include <body/model/AbstractBody.h>
@@ -64,12 +63,12 @@ namespace urchin {
     }
 
     void AbstractBody::setTransform(const PhysicsTransform& transform) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->transform = transform;
     }
 
     PhysicsTransform AbstractBody::getTransform() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return transform;
     }
 
@@ -104,12 +103,12 @@ namespace urchin {
      * @return Restitution (0=stop, 1=100% elastic)
      */
     float AbstractBody::getRestitution() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return restitution;
     }
 
     void AbstractBody::setFriction(float friction) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->friction = friction;
     }
 
@@ -117,12 +116,12 @@ namespace urchin {
      * @return Friction (0=no friction, 1=total friction)
      */
     float AbstractBody::getFriction() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return friction;
     }
 
     void AbstractBody::setRollingFriction(float rollingFriction) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->rollingFriction = rollingFriction;
     }
 
@@ -130,21 +129,21 @@ namespace urchin {
      * @return Rolling friction (0=no friction, 1=total friction)
      */
     float AbstractBody::getRollingFriction() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return rollingFriction;
     }
 
     void AbstractBody::setCcdMotionThreshold(float ccdMotionThreshold) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->ccdMotionThreshold = ccdMotionThreshold;
     }
 
     /**
      * @return Threshold for continuous collision detection in distance unit (process continuous collision detection if the motion in one
-     * step is more then threshold). A default value is determinate automatically for each body thanks to constant 'CCD_MOTION_THRESHOLD_FACTOR'.
+     * step is more than threshold). A default value is determinate automatically for each body thanks to constant 'CCD_MOTION_THRESHOLD_FACTOR'.
      */
     float AbstractBody::getCcdMotionThreshold() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return ccdMotionThreshold;
     }
 

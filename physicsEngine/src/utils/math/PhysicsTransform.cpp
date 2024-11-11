@@ -45,7 +45,7 @@ namespace urchin {
      * @return Transform object with a scale of 1.0
      */
     Transform<float> PhysicsTransform::toTransform() const {
-        return Transform<float>(position, orientation);
+        return Transform(position, orientation);
     }
 
     PhysicsTransform PhysicsTransform::inverse() const {

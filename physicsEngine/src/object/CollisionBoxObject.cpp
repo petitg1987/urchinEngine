@@ -6,7 +6,7 @@ namespace urchin {
 
     CollisionBoxObject::CollisionBoxObject(float outerMargin, const Vector3<float>& halfSize, const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
             CollisionConvexObject3D(outerMargin),
-            boxObject(OBBox<float>(halfSize, centerOfMass, orientation)) {
+            boxObject(OBBox(halfSize, centerOfMass, orientation)) {
 
     }
 
@@ -15,7 +15,7 @@ namespace urchin {
     }
 
     Vector3<float> CollisionBoxObject::getHalfSizes() const {
-        return boxObject.getHalfSizes() + Vector3<float>(getOuterMargin(), getOuterMargin(), getOuterMargin());
+        return boxObject.getHalfSizes() + Vector3(getOuterMargin(), getOuterMargin(), getOuterMargin());
     }
 
     const Point3<float>& CollisionBoxObject::getCenterOfMass() const {
@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     CollisionConvexObject3D::ObjectType CollisionBoxObject::getObjectType() const {
-        return CollisionConvexObject3D::BOX_OBJECT;
+        return BOX_OBJECT;
     }
 
     /**
@@ -58,7 +58,7 @@ namespace urchin {
     }
 
     OBBox<float> CollisionBoxObject::retrieveOBBox() const {
-        return OBBox<float>(getHalfSizes(), getCenterOfMass(), getOrientation());
+        return OBBox(getHalfSizes(), getCenterOfMass(), getOrientation());
     }
 
     std::string CollisionBoxObject::toString() const {

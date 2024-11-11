@@ -33,7 +33,7 @@ namespace urchin {
      */
     void BodyContainer::refreshBodies() {
         ScopeProfiler sp(Profiler::physics(), "setupWorkBodies");
-        std::scoped_lock<std::mutex> lock(bodiesMutex);
+        std::scoped_lock lock(bodiesMutex);
 
         for (const auto& bodyToRefresh: bodiesToRefresh) {
             if (bodyToRefresh.bodyToAdd) {

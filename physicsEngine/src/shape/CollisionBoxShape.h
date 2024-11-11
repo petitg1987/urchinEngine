@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <vector>
 #include <UrchinCommon.h>
 
 #include <shape/CollisionShape3D.h>
@@ -17,7 +16,7 @@ namespace urchin {
             CollisionBoxShape(const CollisionBoxShape&) = delete;
             ~CollisionBoxShape() override = default;
 
-            CollisionShape3D::ShapeType getShapeType() const override;
+            ShapeType getShapeType() const override;
             const ConvexShape3D<float>& getSingleShape() const override;
             float getHalfSize(unsigned int) const;
             const Vector3<float>& getHalfSizes() const;

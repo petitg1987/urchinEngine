@@ -114,7 +114,7 @@ namespace urchin {
 
             const Point3<float>& position = physicsTransform.getPosition();
 
-            aabbox = AABBox<float>(min + position, max + position);
+            aabbox = AABBox(min + position, max + position);
             lastTransform = physicsTransform;
         }
 

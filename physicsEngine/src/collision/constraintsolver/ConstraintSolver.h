@@ -1,13 +1,11 @@
 #pragma once
 
 #include <vector>
-#include <map>
 #include <UrchinCommon.h>
 
 #include <collision/constraintsolver/ConstraintSolvingData.h>
 #include <collision/constraintsolver/solvingdata/CommonSolvingData.h>
 #include <collision/constraintsolver/solvingdata/ImpulseSolvingData.h>
-#include <body/BodyContainer.h>
 #include <collision/ManifoldResult.h>
 #include <utils/pool/FixedSizePool.h>
 #include <body/model/RigidBody.h>

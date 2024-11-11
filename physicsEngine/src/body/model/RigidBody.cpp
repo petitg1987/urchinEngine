@@ -13,7 +13,7 @@ namespace urchin {
             invMass(0.0f),
             linearDamping(0.0f),
             angularDamping(0.0f) {
-        initializeRigidBody(0.0f, 0.0f, 0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
+        initializeRigidBody(0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
     }
 
     RigidBody::RigidBody(const RigidBody& rigidBody) :
@@ -83,9 +83,9 @@ namespace urchin {
     }
 
     void RigidBody::setTransform(const PhysicsTransform& transform) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
 
-        if (!(std::this_thread::get_id() == physicsThreadId)) {
+        if (std::this_thread::get_id() != physicsThreadId) {
             if (AbstractBody::isActive()) {
                 throw std::runtime_error("Impossible to update the rigid body position/orientation while physics engine manages it");
             }
@@ -101,36 +101,36 @@ namespace urchin {
      * Define the body velocity. Undetermined behavior if called outside the physics engine thread.
      */
     void RigidBody::setVelocity(const Vector3<float>& linearVelocity, const Vector3<float>& angularVelocity) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->linearVelocity = linearVelocity;
         this->angularVelocity = angularVelocity;
     }
 
     Vector3<float> RigidBody::getLinearVelocity() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return linearVelocity;
     }
 
     Vector3<float> RigidBody::getAngularVelocity() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return angularVelocity;
     }
 
     void RigidBody::applyCentralMomentum(const Vector3<float>& momentum) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         bodyMomentum.addMomentum(momentum);
         refreshBodyActiveState();
     }
 
     void RigidBody::applyMomentum(const Vector3<float>& momentum, const Point3<float>& pos) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         bodyMomentum.addMomentum(momentum); //apply central force
         bodyMomentum.addTorqueMomentum(pos.toVector().crossProduct(momentum)); //apply torque
         refreshBodyActiveState();
     }
 
     void RigidBody::applyTorqueMomentum(const Vector3<float>& torqueMomentum) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         bodyMomentum.addTorqueMomentum(torqueMomentum);
         refreshBodyActiveState();
     }
@@ -139,36 +139,35 @@ namespace urchin {
      * Return the momentum and reset it. Undetermined behavior if called outside the physics engine thread.
      */
     BodyMomentum RigidBody::getMomentumAndReset() {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         BodyMomentum result(bodyMomentum);
         bodyMomentum.reset();
         return result;
     }
 
     void RigidBody::setMass(float mass) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->mass = mass;
         refreshMassProperties();
     }
 
     float RigidBody::getMass() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return mass;
     }
 
     float RigidBody::getInvMass() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
-
+        std::scoped_lock lock(bodyMutex);
         return invMass;
     }
 
     Vector3<float> RigidBody::getLocalInertia() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return localInertia;
     }
 
     Matrix3<float> RigidBody::getInvWorldInertia() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return invWorldInertia;
     }
 
@@ -191,12 +190,12 @@ namespace urchin {
     }
 
     float RigidBody::getLinearDamping() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return linearDamping;
     }
 
     float RigidBody::getAngularDamping() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return angularDamping;
     }
 
@@ -204,7 +203,7 @@ namespace urchin {
      * @param linearFactor Linear factor. Linear factor allows to block movement if axis value is 0.
      */
     void RigidBody::setLinearFactor(const Vector3<float>& linearFactor) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->linearFactor = linearFactor;
     }
 
@@ -212,7 +211,7 @@ namespace urchin {
      * @return Linear factor. Linear factor allows to block movement if axis value is 0.
      */
     Vector3<float> RigidBody::getLinearFactor() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return linearFactor;
     }
 
@@ -220,7 +219,7 @@ namespace urchin {
      * @param angularFactor Angular factor. Angular factor allows to block rotation movement if axis value is 0.
      */
     void RigidBody::setAngularFactor(const Vector3<float>& angularFactor) {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         this->angularFactor = angularFactor;
     }
 
@@ -228,7 +227,7 @@ namespace urchin {
      * @return Angular factor. Angular factor allows to block rotation movement if axis value is 0.
      */
     Vector3<float> RigidBody::getAngularFactor() const {
-        std::scoped_lock<std::mutex> lock(bodyMutex);
+        std::scoped_lock lock(bodyMutex);
         return angularFactor;
     }
 

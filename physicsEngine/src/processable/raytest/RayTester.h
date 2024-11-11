@@ -2,7 +2,6 @@
 
 #include <UrchinCommon.h>
 
-#include <PhysicsWorld.h>
 #include <processable/Processable.h>
 #include <processable/raytest/RayTestResult.h>
 #include <collision/CollisionWorld.h>

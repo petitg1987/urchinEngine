@@ -4,10 +4,10 @@
 
 namespace urchin {
 
-    CollisionCylinderObject::CollisionCylinderObject(float outerMargin, float radius, float height, typename CylinderShape<float>::CylinderOrientation cylinderOrientation,
+    CollisionCylinderObject::CollisionCylinderObject(float outerMargin, float radius, float height, CylinderShape<float>::CylinderOrientation cylinderOrientation,
                                                      const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
             CollisionConvexObject3D(outerMargin),
-            cylinderObject(Cylinder<float>(radius, height, cylinderOrientation, centerOfMass, orientation)) {
+            cylinderObject(Cylinder(radius, height, cylinderOrientation, centerOfMass, orientation)) {
 
     }
 
@@ -22,7 +22,7 @@ namespace urchin {
         return cylinderObject.getHeight() + (2.0f * getOuterMargin());
     }
 
-    typename CylinderShape<float>::CylinderOrientation CollisionCylinderObject::getCylinderOrientation() const {
+    CylinderShape<float>::CylinderOrientation CollisionCylinderObject::getCylinderOrientation() const {
         return cylinderObject.getCylinderOrientation();
     }
 
@@ -42,7 +42,7 @@ namespace urchin {
     }
 
     CollisionConvexObject3D::ObjectType CollisionCylinderObject::getObjectType() const {
-        return CollisionConvexObject3D::CYLINDER_OBJECT;
+        return CYLINDER_OBJECT;
     }
 
     /**
@@ -57,7 +57,7 @@ namespace urchin {
     }
 
     Cylinder<float> CollisionCylinderObject::retrieveCylinder() const {
-        return Cylinder<float>(getRadius(), getHeight(), getCylinderOrientation(), getCenterOfMass(), getOrientation());
+        return Cylinder(getRadius(), getHeight(), getCylinderOrientation(), getCenterOfMass(), getOrientation());
     }
 
     std::string CollisionCylinderObject::toString() const {

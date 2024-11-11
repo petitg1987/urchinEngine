@@ -14,7 +14,7 @@ namespace urchin {
     void CollisionVisualizer::notify(Observable* observable, int notificationType) {
         if (const auto* collisionWorld = dynamic_cast<CollisionWorld*>(observable)) {
             if (notificationType == CollisionWorld::COLLISION_RESULT_UPDATED) {
-                std::scoped_lock<std::mutex> lock(visualizerDataMutex);
+                std::scoped_lock lock(visualizerDataMutex);
 
                 const std::vector<ManifoldResult>& manifoldResults = collisionWorld->getLastUpdatedManifoldResults();
                 this->manifoldResults.clear();
@@ -26,7 +26,7 @@ namespace urchin {
     }
 
     std::vector<ManifoldResult> CollisionVisualizer::getManifoldResults() const {
-        std::scoped_lock<std::mutex> lock(visualizerDataMutex);
+        std::scoped_lock lock(visualizerDataMutex);
 
         return manifoldResults;
     }

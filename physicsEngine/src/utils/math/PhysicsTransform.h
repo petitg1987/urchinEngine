@@ -10,7 +10,7 @@ namespace urchin {
     class PhysicsTransform {
         public:
             PhysicsTransform();
-            explicit PhysicsTransform(const Point3<float>&, const Quaternion<float> &q = Quaternion<float>());
+            explicit PhysicsTransform(const Point3<float>&, const Quaternion<float> & = Quaternion<float>());
             explicit PhysicsTransform(const Transform<float>&);
 
             void setPosition(const Point3<float>&);

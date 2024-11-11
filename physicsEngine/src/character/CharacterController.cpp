@@ -104,7 +104,7 @@ namespace urchin {
         //Following lines are equivalent to Camera#updateComponents() but with simplification to avoid the rotation on X/Z axis:
         // - position.Y / viewVector.Y set to 0.0
         // - up = 0.0, 1.0, 0.0
-        Vector3<float> yViewVector = Vector3<float>(viewVector.X, 0.0f, viewVector.Z).normalize();
+        Vector3<float> yViewVector = Vector3(viewVector.X, 0.0f, viewVector.Z).normalize();
         Matrix3 mView(-yViewVector.Z,    0.0f,       yViewVector.X,
                       0.0f,              1.0f,       0.0f,
                       -yViewVector[0],   0.0f,       -yViewVector[2]);

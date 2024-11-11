@@ -9,7 +9,7 @@ namespace urchin {
     template<class BaseType> class SyncFixedSizePool final : public FixedSizePool<BaseType> {
         public:
             SyncFixedSizePool(const std::string&, unsigned int, unsigned int);
-            ~SyncFixedSizePool() = default;
+            ~SyncFixedSizePool() override = default;
 
             void* allocate(unsigned int) override;
             void deallocate(BaseType*) override;

@@ -6,8 +6,6 @@
 
 #include <shape/CollisionShape3D.h>
 #include <shape/CollisionConcaveShape.h>
-#include <object/CollisionTriangleObject.h>
-#include <utils/pool/FixedSizePool.h>
 
 namespace urchin {
 
@@ -18,7 +16,7 @@ namespace urchin {
             CollisionHeightfieldShape(const CollisionHeightfieldShape&) = delete;
             ~CollisionHeightfieldShape() override;
 
-            CollisionShape3D::ShapeType getShapeType() const override;
+            ShapeType getShapeType() const override;
             const ConvexShape3D<float>& getSingleShape() const override;
             const std::vector<Point3<float>>& getVertices() const;
             unsigned int getXLength() const;

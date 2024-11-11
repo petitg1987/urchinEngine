@@ -16,8 +16,8 @@ namespace urchin {
         PhysicsTransform interpolatedTransform1 = object1.getFrom();
         PhysicsTransform interpolatedTransform2 = object2.getFrom();
 
-        Vector3<T> linearVelocity1 = object1.getFrom().getPosition().vector(object1.getTo().getPosition()).template cast<T>();
-        Vector3<T> linearVelocity2 = object2.getFrom().getPosition().vector(object2.getTo().getPosition()).template cast<T>();
+        Vector3<T> linearVelocity1 = object1.getFrom().getPosition().vector(object1.getTo().getPosition()).cast<T>();
+        Vector3<T> linearVelocity2 = object2.getFrom().getPosition().vector(object2.getTo().getPosition()).cast<T>();
         Vector3<T> relativeMotion = linearVelocity1 - linearVelocity2;
 
         Point3<T> initialSupportPoint1 = getWorldSupportPoint(object1, -relativeMotion, interpolatedTransform1);
@@ -94,13 +94,13 @@ namespace urchin {
         Vector3<float> localDirection = worldTransform.retrieveOrientationMatrix().transpose() * globalDirection.template cast<float>();
         Point3<float> localSupportPoint = object.getLocalObject().getSupportPoint(localDirection, true);
 
-        return worldTransform.transform(localSupportPoint).template cast<T>();
+        return worldTransform.transform(localSupportPoint).cast<T>();
     }
 
     template<class T, class U> Point3<float> GJKContinuousCollisionAlgorithm<T, U>::interpolate(const Point3<float>& from, const Point3<float>& to, T interpolatePercentage) const {
         auto invertedInterpolatePercentage = (float)(1.0 - interpolatePercentage);
 
-        return Point3<float>(
+        return Point3(
                 invertedInterpolatePercentage * from.X + (float)interpolatePercentage * to.X,
                 invertedInterpolatePercentage * from.Y + (float)interpolatePercentage * to.Y,
                 invertedInterpolatePercentage * from.Z + (float)interpolatePercentage * to.Z);

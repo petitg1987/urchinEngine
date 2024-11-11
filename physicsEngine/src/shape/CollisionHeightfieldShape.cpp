@@ -41,7 +41,7 @@ namespace urchin {
         assert(std::abs(std::abs(min.Z) - max.Z) < 0.01f);
 
         Vector3 halfSizes((max.X - min.X) / 2.0f, (max.Y - min.Y) / 2.0f, (max.Z - min.Z) / 2.0f);
-        return BoxShape<float>(halfSizes);
+        return BoxShape(halfSizes);
     }
 
     CollisionShape3D::ShapeType CollisionHeightfieldShape::getShapeType() const {
@@ -115,8 +115,8 @@ namespace urchin {
     const std::vector<CollisionTriangleShape>& CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float>& checkAABBox) const {
         trianglesInAABBox.clear();
 
-        auto [vertexXMin, vertexXMax] = computeStartEndIndices(checkAABBox.getMin().X, checkAABBox.getMax().X, Axis::X);
-        auto [vertexZMin, vertexZMax] = computeStartEndIndices(checkAABBox.getMin().Z, checkAABBox.getMax().Z, Axis::Z);
+        auto [vertexXMin, vertexXMax] = computeStartEndIndices(checkAABBox.getMin().X, checkAABBox.getMax().X, X);
+        auto [vertexZMin, vertexZMax] = computeStartEndIndices(checkAABBox.getMin().Z, checkAABBox.getMax().Z, Z);
 
         for (unsigned int z = vertexZMin; z < vertexZMax; ++z) {
             for (unsigned int x = vertexXMin; x < vertexXMax; ++x) {
@@ -143,7 +143,7 @@ namespace urchin {
 
         float rayMinZ = std::min(ray.getA().Z, ray.getB().Z);
         float rayMaxZ = std::max(ray.getA().Z, ray.getB().Z);
-        auto [vertexZMin, vertexZMax] = computeStartEndIndices(rayMinZ, rayMaxZ, Axis::Z);
+        auto [vertexZMin, vertexZMax] = computeStartEndIndices(rayMinZ, rayMaxZ, Z);
 
         for (unsigned int z = vertexZMin; z < vertexZMax; ++z) {
             float zStartValue = vertices[xLength * z].Z;
@@ -152,7 +152,7 @@ namespace urchin {
             float xSecondValue = raySameZValues ? ray.getB().X : slopeLineZX * zEndValue + interceptLineZX;
             auto [xMinValue, xMaxValue] = std::minmax(xFirstValue, xSecondValue);
 
-            auto [vertexXMin, vertexXMax] = computeStartEndIndices(xMinValue, xMaxValue, Axis::X);
+            auto [vertexXMin, vertexXMax] = computeStartEndIndices(xMinValue, xMaxValue, X);
 
             for (unsigned int x = vertexXMin; x < vertexXMax; ++x) {
                 //compute min and max Y values based on X value (don't give satisfying result when ray is parallel to Z axis)
@@ -183,9 +183,9 @@ namespace urchin {
      * @param maxValue Upper bound value on X (or Z) axis
      */
     std::pair<unsigned int, unsigned int> CollisionHeightfieldShape::computeStartEndIndices(float minValue, float maxValue, Axis axis) const {
-        float halfSize = axis == Axis::X ? localAABBox.getHalfSizes().X : localAABBox.getHalfSizes().Z;
+        float halfSize = axis == X ? localAABBox.getHalfSizes().X : localAABBox.getHalfSizes().Z;
         float verticesDistance = axis == Axis::X ? vertices[1].X - vertices[0].X : vertices[xLength].Z - vertices[0].Z;
-        int maxLength = axis == Axis::X ? (int)xLength - 1 : (int)zLength - 1;
+        int maxLength = axis == X ? (int)xLength - 1 : (int)zLength - 1;
 
         auto rawStartVertex = (int)((minValue + halfSize) / verticesDistance);
         auto startVertex = (unsigned int)std::clamp(rawStartVertex, 0, maxLength);

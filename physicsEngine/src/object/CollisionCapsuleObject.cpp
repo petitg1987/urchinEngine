@@ -4,10 +4,10 @@
 
 namespace urchin {
 
-    CollisionCapsuleObject::CollisionCapsuleObject(float outerMargin, float radius, float cylinderHeight, typename CapsuleShape<float>::CapsuleOrientation capsuleOrientation,
+    CollisionCapsuleObject::CollisionCapsuleObject(float outerMargin, float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation,
                                                    const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
             CollisionConvexObject3D(outerMargin),
-            capsuleObject(Capsule<float>(radius, cylinderHeight, capsuleOrientation, centerOfMass, orientation)) {
+            capsuleObject(Capsule(radius, cylinderHeight, capsuleOrientation, centerOfMass, orientation)) {
 
     }
 
@@ -22,7 +22,7 @@ namespace urchin {
         return capsuleObject.getCylinderHeight();
     }
 
-    typename CapsuleShape<float>::CapsuleOrientation CollisionCapsuleObject::getCapsuleOrientation() const {
+    CapsuleShape<float>::CapsuleOrientation CollisionCapsuleObject::getCapsuleOrientation() const {
         return capsuleObject.getCapsuleOrientation();
     }
 
@@ -39,11 +39,11 @@ namespace urchin {
     }
 
     CollisionConvexObject3D::ObjectType CollisionCapsuleObject::getObjectType() const {
-        return CollisionConvexObject3D::CAPSULE_OBJECT;
+        return CAPSULE_OBJECT;
     }
 
     /**
-     * @return includeMargin Indicate whether support function need to take into account margin
+     * @param includeMargin Indicate whether support function need to take into account margin
      */
     Point3<float> CollisionCapsuleObject::getSupportPoint(const Vector3<float>& direction, bool includeMargin) const {
         if (includeMargin) {

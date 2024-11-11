@@ -17,7 +17,7 @@ namespace urchin {
             CollisionTriangleShape(CollisionTriangleShape&&) noexcept = default;
             CollisionTriangleShape(const CollisionTriangleShape&) = delete;
 
-            CollisionShape3D::ShapeType getShapeType() const override;
+            ShapeType getShapeType() const override;
             const ConvexShape3D<float>& getSingleShape() const override;
 
             std::unique_ptr<CollisionShape3D> scale(const Vector3<float>&) const override;

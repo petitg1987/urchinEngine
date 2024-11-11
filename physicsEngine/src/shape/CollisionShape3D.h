@@ -41,7 +41,7 @@ namespace urchin {
             static const std::vector<ShapeType>& sphereShapes();
 
             float getInnerMargin() const;
-            virtual CollisionShape3D::ShapeType getShapeType() const = 0;
+            virtual ShapeType getShapeType() const = 0;
             bool isConvex() const;
             bool isConcave() const;
             bool isCompound() const;

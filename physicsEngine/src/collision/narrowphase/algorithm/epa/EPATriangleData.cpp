@@ -16,14 +16,14 @@ namespace urchin {
     }
 
     /**
-     * @param Minimum distance between the triangle and the origin. Result can be negative or positive in function of normal orientation.
+     * @return Minimum distance between the triangle and the origin. Result can be negative or positive in function of normal orientation.
      */
     template<class T> T EPATriangleData<T>::getDistanceToOrigin() const {
         return distanceToOrigin;
     }
 
     /**
-     * @param Normal normalized of triangle
+     * @return Normal normalized of triangle
      */
     template<class T> const Vector3<T> &EPATriangleData<T>::getNormal() const {
         return normal;

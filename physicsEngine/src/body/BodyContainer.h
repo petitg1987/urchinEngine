@@ -1,7 +1,6 @@
 #pragma once
 
 #include <mutex>
-#include <variant>
 
 #include <body/model/AbstractBody.h>
 
@@ -16,7 +15,7 @@ namespace urchin {
     * A bodies manager allowing to manage bodies modifications coming from two different thread. Indeed, the user
     * can add/remove/update bodies from thread 1 while physics engine update the same bodies on thread 2.
     */
-    class BodyContainer : public Observable {
+    class BodyContainer final : public Observable {
         public:
             BodyContainer();
 

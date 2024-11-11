@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     Point3<double> GJKConvexObjectWrapper::getSupportPoint(const Vector3<double>& direction) const {
-        return collisionConvexObject.getSupportPoint(direction.template cast<float>(), includeMargin).template cast<double>();
+        return collisionConvexObject.getSupportPoint(direction.cast<float>(), includeMargin).cast<double>();
     }
 
     std::ostream& operator <<(std::ostream& stream, const GJKConvexObjectWrapper& collisionConvexObject) {

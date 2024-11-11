@@ -28,7 +28,7 @@ namespace urchin {
      * @param body Body to add. Smart pointer is required to force the user to create the body with a smart pointer. See the remove method comment for the reason to use a smart pointer.
      */
     void BroadPhase::addBodyAsync(const std::shared_ptr<AbstractBody>& body) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         bodiesToAdd.push_back(body);
     }
 
@@ -41,7 +41,7 @@ namespace urchin {
      * @param body Body to remove. Smart pointer is used to ensure that the body is not destroyed before it has been removed from the physics thread.
      */
     void BroadPhase::removeBodyAsync(const std::shared_ptr<AbstractBody>& body) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         bodiesToRemove.push_back(body);
     }
 
@@ -50,7 +50,7 @@ namespace urchin {
     }
 
     void BroadPhase::synchronizeBodies() {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
 
         for (const auto& bodyToAdd : bodiesToAdd) {
             addBody(bodyToAdd);

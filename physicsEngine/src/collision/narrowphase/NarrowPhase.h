@@ -22,14 +22,14 @@ namespace urchin {
             NarrowPhase(const BodyContainer&, const BroadPhase&);
 
             void process(float, const std::vector<std::unique_ptr<OverlappingPair>>&, std::vector<ManifoldResult>&);
-            void processGhostBody(const GhostBody&, std::vector<ManifoldResult>&);
+            void processGhostBody(const GhostBody&, std::vector<ManifoldResult>&) const;
 
             ccd_set continuousCollisionTest(const TemporalObject&, const std::vector<std::shared_ptr<AbstractBody>>&) const;
             ccd_set rayTest(const Ray<float>&, const std::vector<std::shared_ptr<AbstractBody>>&) const;
 
         private:
             void processOverlappingPairs(const std::vector<std::unique_ptr<OverlappingPair>>&, std::vector<ManifoldResult>&);
-            void processOverlappingPair(OverlappingPair&, std::vector<ManifoldResult>&);
+            void processOverlappingPair(OverlappingPair&, std::vector<ManifoldResult>&) const;
             CollisionAlgorithm* retrieveCollisionAlgorithm(OverlappingPair&) const;
 
             void processPredictiveContacts(float, std::vector<ManifoldResult>&) const;

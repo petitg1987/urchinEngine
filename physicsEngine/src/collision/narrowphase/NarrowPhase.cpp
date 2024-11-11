@@ -35,9 +35,8 @@ namespace urchin {
      * Process ghost body. This method can be called in different thread that physics thread.
      * @param ghostBody Ghost body to process
      * @param manifoldResults [OUT] Collision constraints
-     * @param overlappingPairsCache Pre-allocated vector used to store overlapping pair during method execution
      */
-    void NarrowPhase::processGhostBody(const GhostBody& ghostBody, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhase::processGhostBody(const GhostBody& ghostBody, std::vector<ManifoldResult>& manifoldResults) const {
         overlappingPairsCache.clear();
         ghostBody.getPairContainer()->retrieveCopyOverlappingPairs(overlappingPairsCache);
 
@@ -54,7 +53,7 @@ namespace urchin {
         }
     }
 
-    void NarrowPhase::processOverlappingPair(OverlappingPair& overlappingPair, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhase::processOverlappingPair(OverlappingPair& overlappingPair, std::vector<ManifoldResult>& manifoldResults) const {
         const AbstractBody& body1 = overlappingPair.getBody1();
         const AbstractBody& body2 = overlappingPair.getBody2();
 

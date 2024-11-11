@@ -5,7 +5,6 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
-#include <UrchinCommon.h>
 
 #include <collision/bodystate/IslandElement.h>
 #include <shape/CollisionShape3D.h>

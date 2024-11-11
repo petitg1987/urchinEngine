@@ -6,7 +6,7 @@ namespace urchin {
 
     CollisionSphereObject::CollisionSphereObject(float radius, const Point3<float>& centerOfMass) :
             CollisionConvexObject3D(radius),
-            sphereObject(Sphere<float>(radius, centerOfMass)) {
+            sphereObject(Sphere(radius, centerOfMass)) {
 
     }
 
@@ -19,11 +19,11 @@ namespace urchin {
     }
 
     CollisionConvexObject3D::ObjectType CollisionSphereObject::getObjectType() const {
-        return CollisionConvexObject3D::SPHERE_OBJECT;
+        return SPHERE_OBJECT;
     }
 
     /**
-     * @return includeMargin Indicate whether support function need to take into account margin
+     * @param includeMargin Indicate whether support function need to take into account margin
      */
     Point3<float> CollisionSphereObject::getSupportPoint(const Vector3<float>& direction, bool includeMargin) const {
         if (includeMargin) {
@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     Sphere<float> CollisionSphereObject::retrieveSphere() const {
-        return Sphere<float>(getRadius(), getCenterOfMass());
+        return Sphere(getRadius(), getCenterOfMass());
     }
 
     std::string CollisionSphereObject::toString() const {

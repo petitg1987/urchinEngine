@@ -4,7 +4,7 @@
 namespace urchin {
 
     CollisionTriangleShape::CollisionTriangleShape(const std::array<Point3<float>, 3>& points) :
-            triangleShape(TriangleShape3D<float>(points)) {
+            triangleShape(TriangleShape3D(points)) {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 

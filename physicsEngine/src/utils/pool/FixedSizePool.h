@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cassert>
 #include <sstream>
 #include <string>
 #include <UrchinCommon.h>

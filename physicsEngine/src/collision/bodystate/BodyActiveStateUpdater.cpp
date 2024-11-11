@@ -15,7 +15,6 @@ namespace urchin {
     /**
      * Refresh body active state. If all bodies of an island can sleep, we set their status to inactive.
      * If one body of the island cannot sleep, we set their status to active.
-     * @param overlappingPairs Overlapping pairs of broad phase used to determine the islands
      */
     void BodyActiveStateUpdater::update(const std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler sp(Profiler::physics(), "refreshBodyStat");
@@ -52,7 +51,7 @@ namespace urchin {
                     body->setIsActive(bodyActiveState);
 
                     if (bodyActiveState) {
-                        body->setVelocity(Vector3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(0.0f, 0.0f, 0.0f));
+                        body->setVelocity(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
                     }
                 }
             }

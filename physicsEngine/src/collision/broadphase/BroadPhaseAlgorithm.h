@@ -5,7 +5,6 @@
 
 #include <body/model/AbstractBody.h>
 #include <collision/OverlappingPair.h>
-#include <collision/broadphase/PairContainer.h>
 
 namespace urchin {
 

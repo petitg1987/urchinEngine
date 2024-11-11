@@ -49,7 +49,7 @@ namespace urchin {
     }
 
     CollisionConvexObject3D::ObjectType CollisionConvexHullObject::getObjectType() const {
-        return CollisionConvexObject3D::CONVEX_HULL_OBJECT;
+        return CONVEX_HULL_OBJECT;
     }
 
     /**
@@ -64,7 +64,7 @@ namespace urchin {
     }
 
     ConvexHull3D<float> CollisionConvexHullObject::retrieveConvexHull() const {
-        return ConvexHull3D<float>(*convexHullObjectWithMargin);
+        return ConvexHull3D(*convexHullObjectWithMargin);
     }
 
     std::string CollisionConvexHullObject::toString() const {

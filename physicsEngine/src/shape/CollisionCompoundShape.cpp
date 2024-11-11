@@ -6,7 +6,6 @@
 namespace urchin {
 
     CollisionCompoundShape::CollisionCompoundShape(std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedShapes) :
-            CollisionShape3D(),
             localizedShapes(std::move(localizedShapes)),
             maxDistanceToCenter(0.0f),
             minDistanceToCenter(0.0f) {

@@ -12,7 +12,7 @@ namespace urchin {
     PhysicsWorld::PhysicsWorld() :
             physicsSimulationThread(std::unique_ptr<std::jthread>(nullptr)),
             physicsSimulationStopper(false),
-            gravity(Vector3<float>(0.0f, -9.81f, 0.0f)),
+            gravity(Vector3(0.0f, -9.81f, 0.0f)),
             timeStep(0.0f),
             paused(true),
             bodyContainer(BodyContainer()),
@@ -80,7 +80,7 @@ namespace urchin {
      * @param gravity Gravity expressed in units/s^2
      */
     void PhysicsWorld::setGravity(const Vector3<float>& gravity) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         this->gravity = gravity;
     }
 
@@ -88,7 +88,7 @@ namespace urchin {
      * @return gravity expressed in units/s^2
      */
     Vector3<float> PhysicsWorld::getGravity() const {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         return gravity;
     }
 
@@ -106,17 +106,17 @@ namespace urchin {
     }
 
     void PhysicsWorld::pause() {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         paused = true;
     }
 
     void PhysicsWorld::unpause() {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         paused = false;
     }
 
     bool PhysicsWorld::isPaused() const {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         return paused;
     }
 
