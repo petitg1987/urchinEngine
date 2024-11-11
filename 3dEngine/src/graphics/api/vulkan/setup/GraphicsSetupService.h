@@ -20,7 +20,7 @@ namespace urchin {
             ~GraphicsSetupService();
 
             void initialize(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&, FramebufferSizeRetriever&);
-            void uninitialize();
+            void cleanup();
 
             const FramebufferSizeRetriever* getFramebufferSizeRetriever() const;
             static VkSurfaceKHR getSurface();

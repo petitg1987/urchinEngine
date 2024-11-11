@@ -51,7 +51,7 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void GraphicsSetupService::uninitialize() {
+    void GraphicsSetupService::cleanup() {
         assert(isInitialized);
 
         if (allocator) {

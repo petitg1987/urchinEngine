@@ -13,7 +13,7 @@ namespace urchin {
 
     GraphicsApiService::~GraphicsApiService() {
         PipelineContainer::instance().cleanPipelines();
-        GraphicsSetupService::instance().uninitialize();
+        GraphicsSetupService::instance().cleanup();
     }
 
     void GraphicsApiService::frameStart(uint32_t frameIndex) const {
