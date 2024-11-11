@@ -12,7 +12,7 @@ namespace urchin {
         public:
             ZoneTrigger(PlayBehavior, std::unique_ptr<SoundShape>);
 
-            const std::vector<SoundTrigger::TriggerAction>& evaluateTrigger(const Point3<float>&) override;
+            const std::vector<TriggerAction>& evaluateTrigger(const Point3<float>&) override;
 
             SoundShape& getSoundShape();
             const SoundShape& getSoundShape() const;

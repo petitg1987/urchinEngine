@@ -1,4 +1,3 @@
-#include <AL/alc.h>
 #include <stdexcept>
 
 #include <device/AudioDevice.h>

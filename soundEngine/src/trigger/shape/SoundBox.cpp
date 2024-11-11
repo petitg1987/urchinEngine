@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     SoundShape::ShapeType SoundBox::getShapeType() const {
-        return SoundShape::BOX_SHAPE;
+        return BOX_SHAPE;
     }
 
     const OBBox<float>& SoundBox::getPlayTriggerBox() const {
@@ -33,8 +33,8 @@ namespace urchin {
     }
 
     void SoundBox::updateCenterPosition(const Point3<float>& position) {
-        playTriggerBox = OBBox<float>(playTriggerBox.getHalfSizes(), position, playTriggerBox.getOrientation());
-        stopTriggerBox = OBBox<float>(stopTriggerBox.getHalfSizes(), position, stopTriggerBox.getOrientation());
+        playTriggerBox = OBBox(playTriggerBox.getHalfSizes(), position, playTriggerBox.getOrientation());
+        stopTriggerBox = OBBox(stopTriggerBox.getHalfSizes(), position, stopTriggerBox.getOrientation());
     }
 
     const Quaternion<float>& SoundBox::getOrientation() const {

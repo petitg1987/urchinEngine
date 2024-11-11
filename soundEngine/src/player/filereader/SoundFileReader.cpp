@@ -110,7 +110,7 @@ namespace urchin {
         std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
         const auto position = stream.tellg();
         assert(position >= 0);
-        return (long)position;
+        return position;
     }
 
     void SoundFileReader::closeSoundFile() {
