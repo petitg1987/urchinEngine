@@ -391,7 +391,7 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::destroyCommandBuffersAndPool() {
+    void RenderTarget::destroyCommandBuffersAndPool() const {
         vkDestroyCommandPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), commandPool, nullptr);
     }
 

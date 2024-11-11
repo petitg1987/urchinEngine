@@ -229,7 +229,7 @@ namespace urchin {
                 }
             }
 
-            RenderTarget::addFramebuffers(attachments);
+            addFramebuffers(attachments);
         }
     }
 
@@ -243,7 +243,7 @@ namespace urchin {
         }
     }
 
-    void OffscreenRender::destroyFence() {
+    void OffscreenRender::destroyFence() const {
         vkDestroyFence(GraphicsSetupService::instance().getDevices().getLogicalDevice(), commandBufferFence, nullptr);
     }
 

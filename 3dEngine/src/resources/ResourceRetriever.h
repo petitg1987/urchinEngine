@@ -6,11 +6,6 @@
 #include <typeinfo>
 
 #include <resources/ResourceContainer.h>
-#include <resources/model/ConstMeshes.h>
-#include <resources/model/ConstAnimation.h>
-#include <resources/image/Image.h>
-#include <resources/material/Material.h>
-#include <resources/font/Font.h>
 #include <loader/Loader.h>
 
 namespace urchin {

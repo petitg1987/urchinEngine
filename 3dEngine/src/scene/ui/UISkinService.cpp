@@ -4,6 +4,7 @@
 #include <scene/ui/UISkinService.h>
 #include <scene/ui/widget/LengthType.h>
 #include <resources/ResourceRetriever.h>
+#include <resources/image/Image.h>
 
 namespace urchin {
 
@@ -127,10 +128,10 @@ namespace urchin {
     }
 
     Length UISkinService::loadLength(const UdaChunk* mainChunk, std::string_view lengthName) const {
-        auto lengthChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, lengthName, UdaAttribute(), mainChunk);
-        float value = UISkinService::instance().getSkinReader().getFirstChunk(true, "value", UdaAttribute(), lengthChunk)->getFloatValue();
+        auto lengthChunk = getSkinReader().getFirstChunk(true, lengthName, UdaAttribute(), mainChunk);
+        float value = getSkinReader().getFirstChunk(true, "value", UdaAttribute(), lengthChunk)->getFloatValue();
 
-        std::string lengthTypeString = UISkinService::instance().getSkinReader().getFirstChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();
+        std::string lengthTypeString = getSkinReader().getFirstChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
             return Length{.value = value, .type = PIXEL};
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "screenPercent")) {

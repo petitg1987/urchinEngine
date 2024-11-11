@@ -172,14 +172,14 @@ namespace urchin {
         float cursorMaxPositionY = scrollableWidget.getHeight() - scrollbarCursor->getHeight();
         float cursorPositionY = cursorMaxPositionY * scrollPercentage;
 
-        scrollbarCursor->updatePosition(Position(cursorPositionX, cursorPositionXType, cursorPositionY, LengthType::PIXEL));
+        scrollbarCursor->updatePosition(Position(cursorPositionX, cursorPositionXType, cursorPositionY, PIXEL));
     }
 
     void Scrollbar::computeShiftPositionY() {
         shiftPixelPositionY = -(int)((contentHeight - visibleHeight) * scrollPercentage);
 
         //compensate the shift applied on all children (include scrollbarLine and its child, the cursor)
-        scrollbarLine->updatePosition(Position(scrollbarLine->getPosition().getX(), 0.0f - (float)shiftPixelPositionY, LengthType::PIXEL));
+        scrollbarLine->updatePosition(Position(scrollbarLine->getPosition().getX(), 0.0f - (float)shiftPixelPositionY, PIXEL));
     }
 
     std::vector<Widget*> Scrollbar::getContentChildren() const {

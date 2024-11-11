@@ -50,7 +50,7 @@ namespace urchin {
             void createRenderPass();
             void createFramebuffers();
             void createFence();
-            void destroyFence();
+            void destroyFence() const;
             void createSemaphores();
             void destroySemaphores() const;
 

@@ -1,5 +1,3 @@
-#include <stdexcept>
-
 #include <scene/renderer3d/Renderer3d.h>
 #include <scene/renderer3d/OpaqueMeshFilter.h>
 #include <graphics/render/shader/ShaderBuilder.h>

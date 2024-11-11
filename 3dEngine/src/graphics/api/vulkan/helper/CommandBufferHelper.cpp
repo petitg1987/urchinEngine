@@ -33,7 +33,7 @@ namespace urchin {
         return CommandBufferData{.commandBuffer = commandBuffer, .name = name};
     }
 
-    void CommandBufferHelper::endSingleTimeCommands(CommandBufferData commandBufferData) {
+    void CommandBufferHelper::endSingleTimeCommands(const CommandBufferData& commandBufferData) {
         VkResult resultEndCmdBuffer = vkEndCommandBuffer(commandBufferData.commandBuffer);
         if (resultEndCmdBuffer != VK_SUCCESS) {
             throw std::runtime_error("Failed to end command buffer with error code '" + std::string(string_VkResult(resultEndCmdBuffer)) + "' on " + std::string(commandBufferData.name));

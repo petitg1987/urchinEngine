@@ -114,9 +114,9 @@ namespace urchin {
         }
 
         auto modelSorter = [](const Model* model1, const Model* model2, const void* userData) {
-            const auto* sortUserData = static_cast<const SortUserData*>(userData);
-            float distanceCameraToModel1 = sortUserData->modelsDistanceToCamera.at(model1);
-            float distanceCameraToModel2 = sortUserData->modelsDistanceToCamera.at(model2);
+            const auto* sud = static_cast<const SortUserData*>(userData);
+            float distanceCameraToModel1 = sud->modelsDistanceToCamera.at(model1);
+            float distanceCameraToModel2 = sud->modelsDistanceToCamera.at(model2);
             if (distanceCameraToModel1 != distanceCameraToModel2) {
                 return distanceCameraToModel1 > distanceCameraToModel2;
             }

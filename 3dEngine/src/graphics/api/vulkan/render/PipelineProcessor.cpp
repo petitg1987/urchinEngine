@@ -264,7 +264,7 @@ namespace urchin {
         drawCommandsDirty = true;
     }
 
-    void PipelineProcessor::destroyDescriptorSetsAndPool() {
+    void PipelineProcessor::destroyDescriptorSetsAndPool() const {
         vkDestroyDescriptorPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), descriptorPool, nullptr);
     }
 

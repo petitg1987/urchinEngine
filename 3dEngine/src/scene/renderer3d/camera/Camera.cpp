@@ -213,7 +213,7 @@ namespace urchin {
             position = pivot.translate(rotationDelta.rotateVector(axis));
 
             updateComponents();
-            notifyObservers(this, Camera::POSITION_UPDATED);
+            notifyObservers(this, POSITION_UPDATED);
         } else {
             updateComponents();
         }

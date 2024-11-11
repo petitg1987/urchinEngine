@@ -1,9 +1,9 @@
 #pragma once
 
+#include <array>
 #include <UrchinCommon.h>
 
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
-#include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
 
 namespace urchin {

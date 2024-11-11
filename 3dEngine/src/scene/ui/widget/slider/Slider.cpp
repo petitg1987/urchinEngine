@@ -155,7 +155,7 @@ namespace urchin {
 
         float sliderCursorPositionPercentage = (float)selectedIndex / ((float)values.size() - 1.0f);
         float sliderCursorXPosition = sliderCursorPositionPercentage * (sliderCursorMaxXPosition - sliderCursorMinXPosition);
-        cursorImage->updatePosition(Position(sliderCursorXPosition, cursorImage->getPositionY(), LengthType::PIXEL));
+        cursorImage->updatePosition(Position(sliderCursorXPosition, cursorImage->getPositionY(), PIXEL));
     }
 
 }

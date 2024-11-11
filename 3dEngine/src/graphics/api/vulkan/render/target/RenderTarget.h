@@ -78,7 +78,7 @@ namespace urchin {
             void destroyFramebuffers();
             void createCommandPool();
             void createCommandBuffers();
-            void destroyCommandBuffersAndPool();
+            void destroyCommandBuffersAndPool() const;
 
             VkRenderPass getRenderPass() const;
             VkCommandBuffer getCommandBuffer(std::size_t) const;

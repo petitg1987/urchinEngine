@@ -7,7 +7,7 @@ namespace urchin {
     ShaderDataContainer::ShaderDataContainer(std::size_t dataSize, const void* ptr) :
             dataSize(dataSize),
             bHasNewData({}) {
-        this->ptr = ::operator new(dataSize);
+        this->ptr = operator new(dataSize);
         std::memcpy(this->ptr, ptr, dataSize);
 
         markDataAsNew();
@@ -16,12 +16,12 @@ namespace urchin {
     ShaderDataContainer::ShaderDataContainer(const ShaderDataContainer& src) :
             dataSize(src.dataSize),
             bHasNewData(src.bHasNewData) {
-        this->ptr = ::operator new(dataSize);
+        this->ptr = operator new(dataSize);
         std::memcpy(this->ptr, src.ptr, dataSize);
     }
 
     ShaderDataContainer::~ShaderDataContainer() {
-        ::operator delete(ptr);
+        operator delete(ptr);
     }
 
     void ShaderDataContainer::updateData(const void* newDataPtr) {

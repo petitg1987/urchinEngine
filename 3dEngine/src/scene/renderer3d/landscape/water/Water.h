@@ -58,7 +58,7 @@ namespace urchin {
             void setGradient(float);
             float getGradient() const;
 
-            void prepareRendering(unsigned int, const Camera&, FogContainer&, float invFrameRate);
+            void prepareRendering(unsigned int, const Camera&, FogContainer&, float);
 
         private:
             void updateRenderer();

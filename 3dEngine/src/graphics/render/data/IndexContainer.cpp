@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     IndexContainer::~IndexContainer() {
-        ::operator delete(ptr);
+        operator delete(ptr);
     }
 
     const uint32_t* IndexContainer::getIndices() const {

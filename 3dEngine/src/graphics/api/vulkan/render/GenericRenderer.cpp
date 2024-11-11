@@ -229,7 +229,7 @@ namespace urchin {
             vkCmdPushConstants(commandBuffer, getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(int), &layerIndexInt);
         }
 
-        std::array<VkDeviceSize, 20> offsets = {0};
+        std::array<VkDeviceSize, 20> offsets = {static_cast<VkDeviceSize>(0)};
         assert(offsets.size() >= data.size());
 
         rawVertexBuffers.clear();

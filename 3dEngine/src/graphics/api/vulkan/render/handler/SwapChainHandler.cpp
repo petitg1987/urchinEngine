@@ -54,8 +54,8 @@ namespace urchin {
             createInfo.imageUsage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
         }
 
-        std::array<uint32_t, 2> queueFamilyIndices = {GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueueFamily(),
-                                                      GraphicsSetupService::instance().getQueues().getPresentationQueueFamily()};
+        std::array queueFamilyIndices = {GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueueFamily(),
+                                         GraphicsSetupService::instance().getQueues().getPresentationQueueFamily()};
 
         if (queueFamilyIndices[0] != queueFamilyIndices[1]) {
             createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;

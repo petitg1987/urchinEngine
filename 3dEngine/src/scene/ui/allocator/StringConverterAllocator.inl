@@ -1,7 +1,7 @@
 template<class T> StringConverterAllocator<T>::StringConverterAllocator() :
         usageCount(new int(1)) {
     for (auto& memorySlot : memorySlots) {
-        memorySlot.ptr = static_cast<T*>(::operator new(ALLOCATED_SIZE * sizeof(T)));
+        memorySlot.ptr = static_cast<T*>(operator new(ALLOCATED_SIZE * sizeof(T)));
         memorySlot.used = false;
     }
 }
@@ -37,7 +37,7 @@ template<class T> T* StringConverterAllocator<T>::allocate(std::size_t n) {
             }
         }
     }
-    return static_cast<T*>(::operator new(n * sizeof(T)));
+    return static_cast<T*>(operator new(n * sizeof(T)));
 }
 
 template<class T> void StringConverterAllocator<T>::deallocate(T* p, std::size_t n) {

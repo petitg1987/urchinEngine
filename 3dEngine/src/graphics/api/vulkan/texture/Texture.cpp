@@ -81,7 +81,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Texture::buildEmptyGreyscale(std::string name) {
-        std::array<uint8_t, 1> textureData = {0};
+        std::array textureData = {(uint8_t)0};
         std::vector<const void*> allDataPtr(1, textureData.data());
         auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_INT, allDataPtr, TextureDataType::INT_8));
         texture->setName(std::move(name));

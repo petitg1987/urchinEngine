@@ -52,7 +52,7 @@ namespace urchin {
         int bitmapTopA = face->glyph->bitmap_top;
 
         for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS;i++) {
-            glyphIndex = FT_Get_Char_Index(face, static_cast<FT_ULong>(i));
+            glyphIndex = FT_Get_Char_Index(face, i);
             if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
                 FT_Done_Face(face);
                 FT_Done_FreeType(library);

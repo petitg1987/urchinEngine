@@ -55,7 +55,7 @@ namespace urchin {
         queueFamiliesInitialized = true;
     }
 
-    bool QueueHandler::isGraphicsAndComputeQueueFamily(VkQueueFamilyProperties queueFamily) const {
+    bool QueueHandler::isGraphicsAndComputeQueueFamily(const VkQueueFamilyProperties& queueFamily) const {
         return queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT && queueFamily.queueFlags & VK_QUEUE_COMPUTE_BIT;
     }
 

@@ -14,7 +14,7 @@ namespace urchin {
             skinName(std::move(skinName)),
             inputText(std::move(inputText), std::move(inputTextParameters)),
             maxWidth(-1.0f),
-            maxWidthType(LengthType::PIXEL),
+            maxWidthType(PIXEL),
             font(nullptr) {
 
     }
@@ -280,7 +280,7 @@ namespace urchin {
         }
         std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
         auto textHeight = (float)(font->getHeight() + (numberOfInterLines * font->getSpaceBetweenLines()));
-        Widget::updateSize(Size(width, textHeight, LengthType::PIXEL));
+        Widget::updateSize(Size(width, textHeight, PIXEL));
     }
 
     void Text::cutText() {

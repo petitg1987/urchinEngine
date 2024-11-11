@@ -19,12 +19,12 @@ namespace urchin {
         #endif
 
         std::size_t sumVariableSize = sumVariablesSize();
-        this->data = ::operator new(sumVariableSize);
+        this->data = operator new(sumVariableSize);
         std::memcpy(this->data, data, sumVariableSize);
     }
 
     ShaderConstants::~ShaderConstants() {
-        ::operator delete(data);
+        operator delete(data);
     }
 
     const std::vector<std::size_t>& ShaderConstants::getVariablesSize() const {

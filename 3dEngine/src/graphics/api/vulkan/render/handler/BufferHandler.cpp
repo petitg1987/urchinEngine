@@ -157,7 +157,7 @@ namespace urchin {
         CommandBufferHelper::endSingleTimeCommands(commandBufferData);
     }
 
-    void BufferHandler::updateBuffer(const void *dataPtr) {
+    void BufferHandler::updateBuffer(const void *dataPtr) const {
         void *dataDestination;
         vmaMapMemory(GraphicsSetupService::instance().getAllocator(), bufferMemory, &dataDestination);
         {

@@ -12,7 +12,7 @@ namespace urchin {
     class CommandBufferHelper {
         public:
             static CommandBufferData beginSingleTimeCommands(std::string_view);
-            static void endSingleTimeCommands(CommandBufferData);
+            static void endSingleTimeCommands(const CommandBufferData&);
     };
 
 }

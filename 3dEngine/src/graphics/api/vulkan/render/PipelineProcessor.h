@@ -61,7 +61,7 @@ namespace urchin {
             void createDescriptorSets();
             void updateDescriptorSets();
             void updateDescriptorSets(std::size_t);
-            void destroyDescriptorSetsAndPool();
+            void destroyDescriptorSetsAndPool() const;
 
             void markDrawCommandsDirty();
             std::vector<VkDescriptorSet>& getDescriptorSets();
