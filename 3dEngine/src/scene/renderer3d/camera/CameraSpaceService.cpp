@@ -7,9 +7,16 @@ namespace urchin {
 
     }
 
-    Point2<float> CameraSpaceService::worldSpacePointToScreenSpace(const Point3<float>& worldSpacePoint) const {
+    Point2<float> CameraSpaceService::worldSpacePointToNdcSpace(const Point3<float>& worldSpacePoint) const {
         Point4<float> pointClipSpace = camera.getProjectionViewMatrix() * Point4(worldSpacePoint, 1.0f);
-        Point4<float> pointNdcSpace = pointClipSpace.divideByW();
+        if (pointClipSpace.W != 0.0f) [[likely]] {
+            return {pointClipSpace.X / pointClipSpace.W, pointClipSpace.Y / pointClipSpace.W};
+        }
+        return {pointClipSpace.X, pointClipSpace.Y};
+    }
+
+    Point2<float> CameraSpaceService::worldSpacePointToScreenSpace(const Point3<float>& worldSpacePoint) const {
+        Point2<float> pointNdcSpace = worldSpacePointToNdcSpace(worldSpacePoint);
         return {((pointNdcSpace.X + 1.0f) / 2.0f) * ((float)camera.getSceneWidth()), ((pointNdcSpace.Y + 1.0f) / 2.0f) * ((float)camera.getSceneHeight())};
     }
 
