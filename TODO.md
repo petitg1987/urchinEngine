@@ -4,7 +4,7 @@
 
 # 3d Engine
 * Graphics API
-  * **OPTIMIZATION** (`major`): Use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
+  * **OPTIMIZATION** (`medium`): Use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`minor`): Use shader constants instead of uniform for values infrequently refreshed
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
