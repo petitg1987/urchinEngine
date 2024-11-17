@@ -1,7 +1,6 @@
 #pragma once
 
 #include <resources/Resource.h>
-#include <resources/image/Image.h>
 #include <resources/material/UvScale.h>
 #include <graphics/api/GraphicsApi.h>
 

@@ -1,6 +1,8 @@
 #include <cassert>
 #include <limits>
-#include <cmath>
+#ifdef URCHIN_DEBUG
+    #include <cmath>
+#endif
 
 #include <math/geometry/3d/object/AABBox.h>
 

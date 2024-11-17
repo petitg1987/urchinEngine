@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <limits>
+#include <ranges>
 
 #include <math/geometry/3d/shape/ConvexHullShape3D.h>
 #include <math/geometry/3d/util/ResizeConvexHull3DService.h>
@@ -124,7 +125,7 @@ namespace urchin {
             std::size_t newPointIndex = nextPointIndex++;
             points[newPointIndex].point = newPoint;
 
-            for (const auto& [edgeId, edgeIndices] : edges) {
+            for (const auto& edgeIndices : std::views::values(edges)) {
                 addTriangle(IndexedTriangle3D<T>(edgeIndices.first, edgeIndices.second, newPointIndex));
             }
 

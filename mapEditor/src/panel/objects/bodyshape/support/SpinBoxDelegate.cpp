@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <QtWidgets/QDoubleSpinBox>
 
 #include <panel/objects/bodyshape/support/SpinBoxDelegate.h>

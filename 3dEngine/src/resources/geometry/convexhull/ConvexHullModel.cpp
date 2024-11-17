@@ -1,4 +1,5 @@
 #include <utility>
+#include <ranges>
 
 #include <resources/geometry/convexhull/ConvexHullModel.h>
 
@@ -14,7 +15,7 @@ namespace urchin {
         vertexArray.reserve(convexHull.getIndexedTriangles().size() * 3ul);
 
         auto& convexHullPoints = convexHull.getConvexHullPoints();
-        for (const auto& [triangleId, triangle] : convexHull.getIndexedTriangles()) {
+        for (const auto& triangle : std::views::values(convexHull.getIndexedTriangles())) {
             vertexArray.push_back(convexHullPoints.at(triangle.getIndex(0)).point);
             vertexArray.push_back(convexHullPoints.at(triangle.getIndex(2)).point);
             vertexArray.push_back(convexHullPoints.at(triangle.getIndex(1)).point);

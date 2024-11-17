@@ -1,5 +1,6 @@
 #include <filesystem>
 #include <regex>
+#include <ranges>
 #include <UrchinCommon.h>
 
 #include <i18n/LabelTranslator.h>
@@ -106,7 +107,7 @@ namespace urchin {
         labelStatistics.labelsCount = (unsigned int)labels.size();
         labelStatistics.wordsCount = 0;
 
-        for (const auto &[key, value] : labels) {
+        for (const auto &value : std::views::values(labels)) {
             std::string text = value;
 
             //remove parameters (nothing to translate)

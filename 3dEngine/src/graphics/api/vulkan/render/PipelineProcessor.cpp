@@ -1,5 +1,6 @@
 #include <libs/vkenum/vk_enum.h>
 #include <numeric>
+#include <ranges>
 
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
@@ -26,12 +27,12 @@ namespace urchin {
         descriptorSetsDirty.resize(getRenderTarget().getNumFramebuffer(), false);
 
         if (!getRenderTarget().isTestMode()) {
-            for (const auto& [uniformBinding, uniformTextureReaderArray] : uniformTextureReaders) {
+            for (const auto& uniformTextureReaderArray : std::views::values(uniformTextureReaders)) {
                 for (const auto& uniformTextureReader : uniformTextureReaderArray) {
                     uniformTextureReader->initialize();
                 }
             }
-            for (const auto& [uniformBinding, uniformTextureOutput] : uniformTextureOutputs) {
+            for (const auto& uniformTextureOutput : std::views::values(uniformTextureOutputs)) {
                 uniformTextureOutput->initialize();
             }
         }
@@ -118,7 +119,7 @@ namespace urchin {
     }
 
     void PipelineProcessor::destroyUniformBuffers() {
-        for (auto& [uniformBinding, uniformsBuffer] : uniformsBuffers) {
+        for (auto& uniformsBuffer : std::views::values(uniformsBuffers)) {
             uniformsBuffer.cleanup();
         }
         uniformsBuffers.clear();
@@ -324,7 +325,7 @@ namespace urchin {
     std::span<OffscreenRender*> PipelineProcessor::getTexturesWriter() const {
         texturesWriter.clear();
 
-        for (auto& [uniformBinding, uniformTextureReaderArray] : uniformTextureReaders) {
+        for (auto& uniformTextureReaderArray : std::views::values(uniformTextureReaders)) {
             for (auto& uniformTextureReader : uniformTextureReaderArray) {
                 auto* lastTextureWriter = uniformTextureReader->getTexture()->getLastTextureWriter();
                 if (lastTextureWriter) {

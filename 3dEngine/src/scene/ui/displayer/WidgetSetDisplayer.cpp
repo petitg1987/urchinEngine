@@ -1,3 +1,5 @@
+#include <ranges>
+
 #include <scene/ui/displayer/WidgetSetDisplayer.h>
 #include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 
@@ -13,21 +15,21 @@ namespace urchin {
     }
 
     void WidgetSetDisplayer::onUiRendererSizeUpdated() const {
-        for (const auto& [widget, displayer] : widgetDisplayers) {
+        for (const auto& displayer : std::views::values(widgetDisplayers)) {
             displayer->onUiRendererSizeUpdated();
         }
 
-        for (const auto& [instanceId, displayer] : widgetInstanceDisplayers) {
+        for (const auto& displayer : std::views::values(widgetInstanceDisplayers)) {
             displayer->onUiRendererSizeUpdated();
         }
     }
 
     void WidgetSetDisplayer::onGammaFactorUpdated() const {
-        for (const auto& [widget, displayer] : widgetDisplayers) {
+        for (const auto& displayer : std::views::values(widgetDisplayers)) {
             displayer->onGammaFactorUpdated();
         }
 
-        for (const auto& [instanceId, displayer] : widgetInstanceDisplayers) {
+        for (const auto& displayer : std::views::values(widgetInstanceDisplayers)) {
             displayer->onGammaFactorUpdated();
         }
     }
@@ -92,7 +94,7 @@ namespace urchin {
         }
         widgetDisplayers.clear();
 
-        for (const auto& [instanceId, displayer] : widgetInstanceDisplayers) {
+        for (const auto& displayer : std::views::values(widgetInstanceDisplayers)) {
             for (Widget* widget : displayer->getInstanceWidgets()) {
                 unobserveWidgetUpdate(*widget);
             }

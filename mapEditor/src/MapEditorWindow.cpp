@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <ranges>
 #include <QApplication>
 #include <QMenuBar>
 #include <QtWidgets/QStatusBar>
@@ -359,7 +360,7 @@ namespace urchin {
         saveAsAction->setEnabled(hasMapOpen);
         closeAction->setEnabled(hasMapOpen);
         reloadAction->setEnabled(hasMapOpen);
-        for (const auto& [viewProperties, action] : viewActions) {
+        for (const auto& action : std::views::values(viewActions)) {
             action->setEnabled(hasMapOpen);
         }
 

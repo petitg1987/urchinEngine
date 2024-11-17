@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <stdexcept>
+#include <ranges>
 
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <graphics/render/shader/ShaderBuilder.h>
@@ -137,7 +138,7 @@ namespace urchin {
         }
         modelDisplayers.clear();
 
-        for (const auto& [instanceId, displayer] : modelInstanceDisplayers) {
+        for (const auto& displayer : std::views::values(modelInstanceDisplayers)) {
             for (Model* model : displayer->getInstanceModels()) {
                 unobserveModelUpdate(*model);
             }

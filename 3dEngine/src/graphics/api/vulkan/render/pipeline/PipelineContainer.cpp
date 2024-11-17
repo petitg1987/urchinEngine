@@ -1,3 +1,5 @@
+#include <ranges>
+
 #include <graphics/api/vulkan/render/pipeline/PipelineContainer.h>
 
 namespace urchin {
@@ -9,7 +11,7 @@ namespace urchin {
 
     PipelineContainer::~PipelineContainer() {
         cleanPipelines();
-        for (const auto& [pipelineId, pipeline] : pipelines) {
+        for (const auto& pipeline : std::views::values(pipelines)) {
             Logger::instance().logError("Pipeline not released: " + pipeline->getName());
         }
     }

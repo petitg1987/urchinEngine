@@ -1,6 +1,7 @@
 #include <cmath>
 #include <stdexcept>
 #include <string>
+#include <ranges>
 
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
@@ -138,13 +139,13 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
 
         splitFrustum(frustum);
-        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
+        for (const auto& lightShadowMap : std::views::values(lightShadowMaps)) {
             updateLightSplitsShadowMap(*lightShadowMap);
         }
     }
 
     void ShadowManager::removeModel(Model* model) const {
-        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
+        for (const auto& lightShadowMap : std::views::values(lightShadowMaps)) {
             lightShadowMap->removeModel(model);
         }
     }
@@ -168,7 +169,7 @@ namespace urchin {
     void ShadowManager::updateShadowLights() {
         std::vector<Light*> allLights;
         allLights.reserve(lightShadowMaps.size());
-        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
+        for (const auto& lightShadowMap : std::views::values(lightShadowMaps)) {
             allLights.emplace_back(&lightShadowMap->getLight());
         }
 
@@ -213,7 +214,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
 
         unsigned int renderingOrder = 0;
-        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
+        for (const auto& lightShadowMap : std::views::values(lightShadowMaps)) {
             lightShadowMap->renderModels(frameIndex, numDependenciesToShadowMaps, renderingOrder);
         }
     }

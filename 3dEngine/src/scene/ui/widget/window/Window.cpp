@@ -3,7 +3,6 @@
 #include <UrchinCommon.h>
 
 #include <scene/ui/widget/window/Window.h>
-#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/InputDeviceKey.h>
 
 namespace urchin {

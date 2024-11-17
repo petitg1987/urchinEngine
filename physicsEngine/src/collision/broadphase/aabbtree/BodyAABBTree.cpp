@@ -1,4 +1,5 @@
 #include <limits>
+#include <ranges>
 
 #include <collision/broadphase/aabbtree/BodyAABBTree.h>
 #include <collision/broadphase/VectorPairContainer.h>
@@ -109,7 +110,7 @@ namespace urchin {
 
     void BodyAABBTree::computeWorldBoundary() {
         float maxYBoundary = -std::numeric_limits<float>::max();
-        for (const auto& [objPtr, objNode] : objectsNode) {
+        for (const auto& objNode : std::views::values(objectsNode)) {
             const AABBox<float>& nodeAABBox = objNode->getAABBox();
             minYBoundary = std::min(nodeAABBox.getMin().Y, minYBoundary);
             maxYBoundary = std::max(nodeAABBox.getMax().Y, maxYBoundary);

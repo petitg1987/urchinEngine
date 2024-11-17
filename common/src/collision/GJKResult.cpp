@@ -1,4 +1,6 @@
-#include <cassert>
+#ifdef URCHIN_DEBUG
+    #include <cassert>
+#endif
 
 #include <collision/GJKResult.h>
 #include <math/algorithm/MathFunction.h>

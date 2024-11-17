@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <algorithm>
+#include <ranges>
 
 #include <scene/renderer3d/model/Model.h>
 #include <resources/ResourceRetriever.h>
@@ -138,7 +139,7 @@ namespace urchin {
         }
 
         //reset all animations to frame 0
-        for (const auto& [animName, anim] : animations) {
+        for (const auto& anim : std::views::values(animations)) {
             anim->gotoFrame(0);
         }
 

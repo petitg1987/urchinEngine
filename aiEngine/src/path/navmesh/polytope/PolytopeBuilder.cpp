@@ -1,4 +1,5 @@
 #include <cassert>
+#include <ranges>
 #include <UrchinCommon.h>
 
 #include <path/navmesh/polytope/PolytopeBuilder.h>
@@ -137,7 +138,7 @@ namespace urchin {
 
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(expandedConvexHull->getIndexedTriangles().size() * 3);
-        for (const auto& [triangleId, triangle] : expandedConvexHull->getIndexedTriangles()) {
+        for (const auto& triangle : std::views::values(expandedConvexHull->getIndexedTriangles())) {
             const std::array<std::size_t, 3>& indices = triangle.getIndices();
 
             std::vector surfacePoints = {

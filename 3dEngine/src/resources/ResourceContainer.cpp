@@ -1,3 +1,4 @@
+#include <ranges>
 #include <UrchinCommon.h>
 
 #include <resources/ResourceContainer.h>
@@ -11,7 +12,7 @@ namespace urchin {
 
     ResourceContainer::~ResourceContainer() {
         cleanResources(true);
-        for (const auto& [resourceId, resource] : resources) {
+        for (const auto& resource : std::views::values(resources)) {
             Logger::instance().logError("Resources not released: " + resource->getName() + ". Usage count: " + std::to_string(resource.use_count()));
         }
     }
