@@ -34,7 +34,6 @@ namespace urchin {
     }
 
     bool ObjectMoveController::onMouseMove(double mouseX, double mouseY) {
-        constexpr double MAX_ALLOWED_MOUSE_MOVE = 50.0;
         bool propagateEvent = true;
 
         //Ignore the mouse event because missing old mouse information
@@ -45,7 +44,8 @@ namespace urchin {
         }
 
         //Ignore the mouse event received because the event has been created before we adjusted the mouse position (MouseController::moveMouse)
-        if (std::abs(mouseX - oldMouseX) > MAX_ALLOWED_MOUSE_MOVE || std::abs(mouseY - oldMouseY) > MAX_ALLOWED_MOUSE_MOVE) {
+        const Camera& camera = scene.getActiveRenderer3d()->getCamera();
+        if (std::abs(mouseX - oldMouseX) > (camera.getSceneWidth() / 2.0) || std::abs(mouseY - oldMouseY) > (camera.getSceneHeight() / 2.0)) {
             oldMouseX = mouseX;
             oldMouseY = mouseY;
             return propagateEvent;
@@ -53,7 +53,7 @@ namespace urchin {
 
         bool mousePositionAdjusted = false;
         if (selectedAxis != -1) {
-            if (!scene.getActiveRenderer3d()->getCamera().isUseMouseToMoveCamera()) {
+            if (!camera.isUseMouseToMoveCamera()) {
                 mousePositionAdjusted = adjustMousePosition();
                 if (!mousePositionAdjusted) {
                     moveObject(Point2((float)oldMouseX, (float)oldMouseY), Point2((float)mouseX, (float)mouseY));
