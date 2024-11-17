@@ -7,6 +7,11 @@ namespace urchin {
 
     }
 
+    Point3<float> CameraSpaceService::worldSpacePointToViewSpace(const Point3<float>& worldSpacePoint) const {
+        Point4<float> pointViewSpace = camera.getViewMatrix() * Point4(worldSpacePoint, 1.0f);
+        return {pointViewSpace.X, pointViewSpace.Y, pointViewSpace.Z};
+    }
+
     Point2<float> CameraSpaceService::worldSpacePointToNdcSpace(const Point3<float>& worldSpacePoint) const {
         Point4<float> pointClipSpace = camera.getProjectionViewMatrix() * Point4(worldSpacePoint, 1.0f);
         if (pointClipSpace.W != 0.0f) [[likely]] {
@@ -18,6 +23,14 @@ namespace urchin {
     Point2<float> CameraSpaceService::worldSpacePointToScreenSpace(const Point3<float>& worldSpacePoint) const {
         Point2<float> pointNdcSpace = worldSpacePointToNdcSpace(worldSpacePoint);
         return {((pointNdcSpace.X + 1.0f) / 2.0f) * ((float)camera.getSceneWidth()), ((pointNdcSpace.Y + 1.0f) / 2.0f) * ((float)camera.getSceneHeight())};
+    }
+
+    Point3<float> CameraSpaceService::screenPointToViewSpace(const Point2<float>& screenPoint) const {
+        float ndcSpaceX = (2.0f * screenPoint.X) / ((float)camera.getSceneWidth()) - 1.0f;
+        float ndcSpaceY = (2.0f * screenPoint.Y) / ((float)camera.getSceneHeight()) - 1.0f;
+        Point4 pointNdcSpace(ndcSpaceX, ndcSpaceY, -1.0f /* NDC near plane */, 1.0f);
+        Point4 pointViewSpace = camera.getProjectionInverseMatrix() * pointNdcSpace;
+        return {pointViewSpace.X / pointViewSpace.W, pointViewSpace.Y / pointViewSpace.W, pointViewSpace.Z / pointViewSpace.W};
     }
 
     /**
@@ -41,10 +54,10 @@ namespace urchin {
     }
 
     Vector3<float> CameraSpaceService::screenPointToDirection(const Point2<float>& screenPoint) const {
-        float clipSpaceX = (2.0f * screenPoint.X) / ((float)camera.getSceneWidth()) - 1.0f;
-        float clipSpaceY = (2.0f * screenPoint.Y) / ((float)camera.getSceneHeight()) - 1.0f;
-        Vector4 lineDirectionClipSpace(clipSpaceX, clipSpaceY, -1.0f, 1.0f);
-        Vector3<float> lineDirectionEyeSpace = (camera.getProjectionInverseMatrix() * lineDirectionClipSpace).xyz();
-        return (camera.getViewMatrix().toMatrix3().inverse() * lineDirectionEyeSpace).normalize();
+        float ndcSpaceX = (2.0f * screenPoint.X) / ((float)camera.getSceneWidth()) - 1.0f;
+        float ndcSpaceY = (2.0f * screenPoint.Y) / ((float)camera.getSceneHeight()) - 1.0f;
+        Vector4 lineDirectionNdcSpace(ndcSpaceX, ndcSpaceY, -1.0f, 1.0f);
+        Vector3<float> lineDirectionViewSpace = (camera.getProjectionInverseMatrix() * lineDirectionNdcSpace).xyz();
+        return (camera.getViewMatrix().toMatrix3().inverse() * lineDirectionViewSpace).normalize();
     }
 }

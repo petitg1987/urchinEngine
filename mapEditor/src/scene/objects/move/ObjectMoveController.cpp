@@ -34,16 +34,31 @@ namespace urchin {
     }
 
     bool ObjectMoveController::onMouseMove(double mouseX, double mouseY) {
+        constexpr double MAX_ALLOWED_MOUSE_MOVE = 50.0;
         bool propagateEvent = true;
+
+        //Ignore the mouse event because missing old mouse information
+        if (oldMouseX <= -1.0 && oldMouseY <= -1.0) {
+            oldMouseX = mouseX;
+            oldMouseY = mouseY;
+            return propagateEvent;
+        }
+
+        //Ignore the mouse event received because the event has been created before we adjusted the mouse position (MouseController::moveMouse)
+        if (std::abs(mouseX - oldMouseX) > MAX_ALLOWED_MOUSE_MOVE || std::abs(mouseY - oldMouseY) > MAX_ALLOWED_MOUSE_MOVE) {
+            oldMouseX = mouseX;
+            oldMouseY = mouseY;
+            return propagateEvent;
+        }
+
         bool mousePositionAdjusted = false;
         if (selectedAxis != -1) {
-            if (oldMouseX > -1.0 && oldMouseY > -1.0 && !isCameraMoved()) {
+            if (!scene.getActiveRenderer3d()->getCamera().isUseMouseToMoveCamera()) {
                 mousePositionAdjusted = adjustMousePosition();
                 if (!mousePositionAdjusted) {
                     moveObject(Point2((float)oldMouseX, (float)oldMouseY), Point2((float)mouseX, (float)mouseY));
                 }
             }
-
             propagateEvent = false;
         }
 
@@ -51,8 +66,6 @@ namespace urchin {
             oldMouseX = mouseX;
             oldMouseY = mouseY;
         }
-        oldCameraViewMatrix = scene.getActiveRenderer3d()->getCamera().getViewMatrix();
-
         return propagateEvent;
     }
 
@@ -62,30 +75,22 @@ namespace urchin {
         }
     }
 
-    bool ObjectMoveController::isCameraMoved() const {
-        const Camera& camera = scene.getActiveRenderer3d()->getCamera();
-        for (unsigned int i = 0; i < 16; ++i) {
-            if (this->oldCameraViewMatrix(i) != camera.getViewMatrix()(i)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     bool ObjectMoveController::adjustMousePosition() {
+        constexpr double SAFETY_MARGIN = 5.0;
+
         Point2<double> mousePosition = mouseController.getMousePosition();
         Point2<double> newMousePosition = mousePosition;
 
-        if (mousePosition.X >= (double)sceneWidth) {
-            newMousePosition.X = 1.0;
-        } else if (mousePosition.X <= 0) {
-            newMousePosition.X = (double)sceneWidth - 1.0;
+        if (mousePosition.X >= (double)sceneWidth - SAFETY_MARGIN) {
+            newMousePosition.X = SAFETY_MARGIN;
+        } else if (mousePosition.X <= SAFETY_MARGIN) {
+            newMousePosition.X = (double)sceneWidth - SAFETY_MARGIN;
         }
 
-        if (mousePosition.Y >= (double)sceneHeight) {
-            newMousePosition.Y = 1.0;
-        } else if (mousePosition.Y <= 0) {
-            newMousePosition.Y = (double)sceneHeight - 1.0;
+        if (mousePosition.Y >= (double)sceneHeight - SAFETY_MARGIN) {
+            newMousePosition.Y = SAFETY_MARGIN;
+        } else if (mousePosition.Y <= SAFETY_MARGIN) {
+            newMousePosition.Y = (double)sceneHeight - SAFETY_MARGIN;
         }
 
         if (mousePosition != newMousePosition) {
@@ -100,26 +105,30 @@ namespace urchin {
     }
 
     void ObjectMoveController::moveObject(const Point2<float>& oldMouseCoord, const Point2<float>& newMouseCoord) {
+        constexpr float MOVE_SPEED_FACTOR = 20.0f;
+
         Point3<float> modelPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
         CameraSpaceService cameraSpaceService(scene.getActiveRenderer3d()->getCamera());
 
         Point3<float> startAxisWorldSpacePoint = modelPosition;
         startAxisWorldSpacePoint[(unsigned int)selectedAxis] -= 1.0f;
-        Point2<float> startAxisPointScreenSpace = cameraSpaceService.worldSpacePointToScreenSpace(startAxisWorldSpacePoint);
+        Point3<float> startAxisPointNdcSpace = cameraSpaceService.worldSpacePointToViewSpace(startAxisWorldSpacePoint);
 
         Point3<float> endAxisWorldSpacePoint = modelPosition;
         endAxisWorldSpacePoint[(unsigned int)selectedAxis] += 1.0f;
-        Point2<float> endAxisPointScreenSpace = cameraSpaceService.worldSpacePointToScreenSpace(endAxisWorldSpacePoint);
+        Point3<float> endAxisPointNdcSpace = cameraSpaceService.worldSpacePointToViewSpace(endAxisWorldSpacePoint);
 
-        Vector2<float> mouseVector = oldMouseCoord.vector(newMouseCoord);
-        Vector2<float> axisVector = startAxisPointScreenSpace.vector(endAxisPointScreenSpace);
+        Point3<float> startMouseCoordViewSpace = cameraSpaceService.screenPointToViewSpace(oldMouseCoord);
+        Point3<float> endMouseCoordViewSpace = cameraSpaceService.screenPointToViewSpace(newMouseCoord);
+
+        Vector3<float> mouseVector = startMouseCoordViewSpace.vector(endMouseCoordViewSpace);
+        Vector3<float> axisVector = startAxisPointNdcSpace.vector(endAxisPointNdcSpace);
 
         float moveFactor = axisVector.normalize().dotProduct(mouseVector);
         float moveSpeed = scene.getActiveRenderer3d()->getCamera().getPosition().distance(modelPosition);
-        float moveReduceFactor = 0.001f;
 
         Point3<float> newPosition = modelPosition;
-        newPosition[(unsigned int)selectedAxis] += moveFactor * moveSpeed * moveReduceFactor;
+        newPosition[(unsigned int)selectedAxis] += moveFactor * moveSpeed * MOVE_SPEED_FACTOR;
         updateObjectPosition(newPosition);
     }
 

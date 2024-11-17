@@ -83,16 +83,16 @@ void main() {
     for (int i = 0; i < KERNEL_SAMPLES; ++i) {
         vec3 sampleVectorWorldSpace = normalize(kernelMatrix * kernelData.samples[i].xyz);
         vec3 samplePointWorldSpace = position + RADIUS * sampleVectorWorldSpace;
-        vec4 samplePointEyeSpace = positioningData.mView * vec4(samplePointWorldSpace, 1.0);
-        vec4 samplePointClipSpace = projection.mProjection * samplePointEyeSpace;
+        vec4 samplePointViewSpace = positioningData.mView * vec4(samplePointWorldSpace, 1.0);
+        vec4 samplePointClipSpace = projection.mProjection * samplePointViewSpace;
         vec3 samplePointNDC = samplePointClipSpace.xyz / samplePointClipSpace.w;
         vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
 
         float zSceneNDC = texture(depthTex, samplePointTexCoord).r;
-        vec3 scenePositionEyeSpace = fetchEyePosition(samplePointTexCoord, zSceneNDC);
+        vec3 scenePositionViewSpace = fetchEyePosition(samplePointTexCoord, zSceneNDC);
 
-        float rangeCheck = smoothstep(0.0, 1.0, RADIUS / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
-        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + distanceBias ? rangeCheck : 0.0);
+        float rangeCheck = smoothstep(0.0, 1.0, RADIUS / abs(scenePositionViewSpace.z - samplePointViewSpace.z));
+        occlusion += (scenePositionViewSpace.z >= samplePointViewSpace.z + distanceBias ? rangeCheck : 0.0);
     }
 
     float aoValue = occlusion / float(KERNEL_SAMPLES);

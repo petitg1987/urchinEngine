@@ -33,7 +33,6 @@ namespace urchin {
             void displayAxis();
 
         private:
-            bool isCameraMoved() const;
             bool adjustMousePosition();
             void moveObject(const Point2<float>&, const Point2<float>&);
             void updateObjectPosition(const Point3<float>&);
@@ -53,7 +52,6 @@ namespace urchin {
 
             double oldMouseX;
             double oldMouseY;
-            Matrix4<float> oldCameraViewMatrix;
     };
 
 }
