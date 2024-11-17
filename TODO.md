@@ -1,7 +1,6 @@
 # Global
 * Performance
   * **OPTIMIZATION** (`minor`): Use PGO in g++
-  * **OPTIMIZATION** (`minor`): Use SSE (3 dot products: Triangle3D<T>#getSupportPoint()...)
 
 # 3d Engine
 * Graphics API
@@ -21,7 +20,6 @@
     * Tips: avoid to send full UV coordinates at each frame by using a Vulkan Descriptor Indexing to access to an array of UV by index
   * **OPTIMIZATION** (`medium`): Parallelize the creation of the ModelDisplayer
   * **OPTIMIZATION** (`medium`): Models LOD
-  * **NEW FEATURE** (`medium`): Allow transparency on geometry models
 * Shadow
   * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
   * **OPTIMIZATION** (`medium`): Avoid to render all the frustum models for each cascade: use the split frustum models instead
