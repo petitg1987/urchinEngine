@@ -23,15 +23,15 @@ namespace urchin {
             void setPosition(const Point3<float>&);
             Point3<float> getPosition() const;
 
-            void setInaudibleDistance(float);
-            float getInaudibleDistance() const;
+            void setRadius(float);
+            float getRadius() const;
 
         private:
             Point3<float> position;
             bool positionUpdated;
 
-            float inaudibleDistance;
-            bool inaudibleDistanceUpdated;
+            float radius;
+            bool radiusUpdated;
     };
 
 }

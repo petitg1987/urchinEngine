@@ -59,13 +59,12 @@ namespace urchin {
         }
     }
 
-    const SoundEntity& SoundController::updateSpatialSoundProperties(const SoundEntity& constSoundEntity, const Point3<float>& position,
-            float inaudibleDistance) {
+    const SoundEntity& SoundController::updateSpatialSoundProperties(const SoundEntity& constSoundEntity, const Point3<float>& position, float radius) {
         const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
         auto& spatialSound = static_cast<SpatialSound&>(soundEntity.getSoundComponent()->getSound());
 
         spatialSound.setPosition(position);
-        spatialSound.setInaudibleDistance(inaudibleDistance);
+        spatialSound.setRadius(radius);
 
         markModified();
         return soundEntity;

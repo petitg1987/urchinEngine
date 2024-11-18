@@ -24,7 +24,7 @@ namespace urchin {
             soundType(nullptr),
             soundCategory(nullptr),
             initialVolume(nullptr),
-            positionX(nullptr), positionY(nullptr), positionZ(nullptr), inaudibleDistance(nullptr),
+            positionX(nullptr), positionY(nullptr), positionZ(nullptr), radius(nullptr),
             playBehavior(nullptr),
             soundTriggerType(nullptr),
             triggerShapeLayout(nullptr),
@@ -128,15 +128,15 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 
-        auto* inaudibleDistanceLabel= new QLabel("Inau. Dist.:");
-        inaudibleDistanceLabel->setToolTip("Inaudible Distance");
-        spatialSoundLayout->addWidget(inaudibleDistanceLabel, 1, 0);
+        auto* radiusLabel= new QLabel("Radius:");
+        radiusLabel->setToolTip("Inaudible Distance");
+        spatialSoundLayout->addWidget(radiusLabel, 1, 0);
 
-        inaudibleDistance = new QDoubleSpinBox();
-        spatialSoundLayout->addWidget(inaudibleDistance, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(inaudibleDistance);
-        inaudibleDistance->setMinimum(0.0);
-        connect(inaudibleDistance, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
+        radius = new QDoubleSpinBox();
+        spatialSoundLayout->addWidget(radius, 1, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(radius);
+        radius->setMinimum(0.0);
+        connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
     }
 
     void SoundPanelWidget::setupSoundTriggerGeneralPropertiesBox(QVBoxLayout* soundTriggerLayout) {
@@ -286,7 +286,7 @@ namespace urchin {
         this->positionY->setValue(spatialSound.getPosition().Y);
         this->positionZ->setValue(spatialSound.getPosition().Z);
 
-        this->inaudibleDistance->setValue(spatialSound.getInaudibleDistance());
+        this->radius->setValue(spatialSound.getRadius());
     }
 
     void SoundPanelWidget::setupPlayBehaviorDataFrom(const SoundTrigger& soundTrigger) const {
@@ -355,9 +355,9 @@ namespace urchin {
                 //nothing to update
             } else if (sound.getSoundType() == Sound::SPATIAL) {
                 Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionY->value());
-                auto inaudibleDistance = (float)this->inaudibleDistance->value();
+                auto radius = (float)this->radius->value();
 
-                soundController->updateSpatialSoundProperties(soundEntity, position, inaudibleDistance);
+                soundController->updateSpatialSoundProperties(soundEntity, position, radius);
             } else {
                 throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string(sound.getSoundType()));
             }

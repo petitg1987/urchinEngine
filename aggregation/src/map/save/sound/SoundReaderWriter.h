@@ -22,7 +22,7 @@ namespace urchin {
             static constexpr char FILENAME_TAG[] = "filename";
             static constexpr char INITIAL_VOLUME_TAG[] = "initialVolume";
             static constexpr char POSITION_TAG[] = "position";
-            static constexpr char INAUDIBLE_DISTANCE_TAG[] = "inaudibleDistance";
+            static constexpr char RADIUS_TAG[] = "radius";
     };
 
 }

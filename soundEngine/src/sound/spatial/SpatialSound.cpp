@@ -6,14 +6,14 @@
 namespace urchin {
 
     /**
-     * @param inaudibleDistance Define distance at which the sound become inaudible
+     * @param radius Define distance at which the sound become inaudible
      */
-    SpatialSound::SpatialSound(std::string filename, SoundCategory category, float initialVolume, const Point3<float>& position, float inaudibleDistance) :
+    SpatialSound::SpatialSound(std::string filename, SoundCategory category, float initialVolume, const Point3<float>& position, float radius) :
             Sound(std::move(filename), category, initialVolume),
             position(position),
             positionUpdated(false),
-            inaudibleDistance(inaudibleDistance),
-            inaudibleDistanceUpdated(false) {
+            radius(radius),
+            radiusUpdated(false) {
 
     }
 
@@ -39,8 +39,8 @@ namespace urchin {
             soundModelInitialized = true;
         }
 
-        alSourcef(sourceId, AL_MAX_DISTANCE, inaudibleDistance);
-        CheckState::check("set source max distance (init)", inaudibleDistance);
+        alSourcef(sourceId, AL_MAX_DISTANCE, radius);
+        CheckState::check("set source max distance (init)", radius);
 
         alSourcef(sourceId, AL_REFERENCE_DISTANCE, 1.0f); //no sound volume decrease over the distance from 0.0f to AL_REFERENCE_DISTANCE
         CheckState::check("set source reference distance");
@@ -55,10 +55,10 @@ namespace urchin {
             CheckState::check("set source position (update)", position);
             positionUpdated = false;
         }
-        if (inaudibleDistanceUpdated) {
-            alSourcef(sourceId, AL_MAX_DISTANCE, inaudibleDistance);
-            CheckState::check("set source max distance (update)", inaudibleDistance);
-            inaudibleDistanceUpdated = false;
+        if (radiusUpdated) {
+            alSourcef(sourceId, AL_MAX_DISTANCE, radius);
+            CheckState::check("set source max distance (update)", radius);
+            radiusUpdated = false;
         }
     }
 
@@ -75,16 +75,16 @@ namespace urchin {
         return position;
     }
 
-    void SpatialSound::setInaudibleDistance(float inaudibleDistance) {
-        this->inaudibleDistance = inaudibleDistance;
-        this->inaudibleDistanceUpdated = true;
+    void SpatialSound::setRadius(float radius) {
+        this->radius = radius;
+        this->radiusUpdated = true;
     }
 
     /**
      * @return Distance at which the sound become inaudible
      */
-    float SpatialSound::getInaudibleDistance() const {
-        return inaudibleDistance;
+    float SpatialSound::getRadius() const {
+        return radius;
     }
 
 }

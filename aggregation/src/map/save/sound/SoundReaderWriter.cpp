@@ -21,8 +21,8 @@ namespace urchin {
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
         if (soundType == SPATIAL_VALUE) {
             Point3<float> position = udaParser.getFirstChunk(true, POSITION_TAG, UdaAttribute(), soundChunk)->getPoint3Value();
-            float inaudibleDistance = udaParser.getFirstChunk(true, INAUDIBLE_DISTANCE_TAG, UdaAttribute(), soundChunk)->getFloatValue();
-            auto spatialSound = std::make_unique<SpatialSound>(filename, category, initialVolume, position, inaudibleDistance);
+            float radius = udaParser.getFirstChunk(true, RADIUS_TAG, UdaAttribute(), soundChunk)->getFloatValue();
+            auto spatialSound = std::make_unique<SpatialSound>(filename, category, initialVolume, position, radius);
 
             return spatialSound;
         } else if (soundType == GLOBAL_VALUE) {
@@ -54,8 +54,8 @@ namespace urchin {
             auto& positionChunk = udaParser.createChunk(POSITION_TAG, UdaAttribute(), &soundChunk);
             positionChunk.setPoint3Value(spatialSound.getPosition());
 
-            auto& inaudibleDistanceChunk = udaParser.createChunk(INAUDIBLE_DISTANCE_TAG, UdaAttribute(), &soundChunk);
-            inaudibleDistanceChunk.setFloatValue(spatialSound.getInaudibleDistance());
+            auto& radiusChunk = udaParser.createChunk(RADIUS_TAG, UdaAttribute(), &soundChunk);
+            radiusChunk.setFloatValue(spatialSound.getRadius());
         } else if (sound.getSoundType() == Sound::GLOBAL) {
             soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, GLOBAL_VALUE));
         } else {

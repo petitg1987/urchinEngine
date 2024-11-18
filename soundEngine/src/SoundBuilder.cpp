@@ -26,15 +26,15 @@ namespace urchin {
         return buildSoundComponent(std::move(globalSound), std::move(manualTrigger));
     }
 
-    std::shared_ptr<SoundComponent> SoundBuilder::newManualSpatialEffect(std::string filename, const Point3<float>& position, float inaudibleDistance, PlayBehavior playBehavior) {
-        auto spatialSound = std::make_shared<SpatialSound>(std::move(filename), Sound::SoundCategory::EFFECTS, 1.0f, position, inaudibleDistance);
+    std::shared_ptr<SoundComponent> SoundBuilder::newManualSpatialEffect(std::string filename, const Point3<float>& position, float radius, PlayBehavior playBehavior) {
+        auto spatialSound = std::make_shared<SpatialSound>(std::move(filename), Sound::SoundCategory::EFFECTS, 1.0f, position, radius);
         spatialSound->preLoadChunks(chunkPreLoader);
         auto manualTrigger = std::make_shared<ManualTrigger>(playBehavior);
         return buildSoundComponent(std::move(spatialSound), std::move(manualTrigger));
     }
 
-    std::shared_ptr<SoundComponent> SoundBuilder::newManualSpatialMusic(std::string filename, const Point3<float>& position, float inaudibleDistance, PlayBehavior playBehavior) {
-        auto spatialSound = std::make_shared<SpatialSound>(std::move(filename), Sound::SoundCategory::MUSIC, 1.0f, position, inaudibleDistance);
+    std::shared_ptr<SoundComponent> SoundBuilder::newManualSpatialMusic(std::string filename, const Point3<float>& position, float radius, PlayBehavior playBehavior) {
+        auto spatialSound = std::make_shared<SpatialSound>(std::move(filename), Sound::SoundCategory::MUSIC, 1.0f, position, radius);
         spatialSound->preLoadChunks(chunkPreLoader);
         auto manualTrigger = std::make_shared<ManualTrigger>(playBehavior);
         return buildSoundComponent(std::move(spatialSound), std::move(manualTrigger));
@@ -52,17 +52,17 @@ namespace urchin {
         return buildSoundComponent(std::move(globalSound), std::move(areaTrigger));
     }
 
-    std::shared_ptr<SoundComponent> SoundBuilder::newAreaSpatialEffect(std::string filename, const Point3<float>& position, float inaudibleDistance, PlayBehavior playBehavior) {
-        auto spatialSound = std::make_shared<SpatialSound>(std::move(filename), Sound::SoundCategory::EFFECTS, 1.0f, position, inaudibleDistance);
+    std::shared_ptr<SoundComponent> SoundBuilder::newAreaSpatialEffect(std::string filename, const Point3<float>& position, float radius, PlayBehavior playBehavior) {
+        auto spatialSound = std::make_shared<SpatialSound>(std::move(filename), Sound::SoundCategory::EFFECTS, 1.0f, position, radius);
         spatialSound->preLoadChunks(chunkPreLoader);
-        auto areaTrigger = std::make_shared<AreaTrigger>(playBehavior, std::make_unique<SoundSphere>(inaudibleDistance, position, 0.0f));
+        auto areaTrigger = std::make_shared<AreaTrigger>(playBehavior, std::make_unique<SoundSphere>(radius, position, 0.0f));
         return buildSoundComponent(std::move(spatialSound), std::move(areaTrigger));
     }
 
-    std::shared_ptr<SoundComponent> SoundBuilder::newAreaSpatialMusic(std::string filename, const Point3<float>& position, float inaudibleDistance, PlayBehavior playBehavior) {
-        auto spatialSound = std::make_shared<SpatialSound>(std::move(filename), Sound::SoundCategory::MUSIC, 1.0f, position, inaudibleDistance);
+    std::shared_ptr<SoundComponent> SoundBuilder::newAreaSpatialMusic(std::string filename, const Point3<float>& position, float radius, PlayBehavior playBehavior) {
+        auto spatialSound = std::make_shared<SpatialSound>(std::move(filename), Sound::SoundCategory::MUSIC, 1.0f, position, radius);
         spatialSound->preLoadChunks(chunkPreLoader);
-        auto areaTrigger = std::make_shared<AreaTrigger>(playBehavior, std::make_unique<SoundSphere>(inaudibleDistance, position, 0.0f));
+        auto areaTrigger = std::make_shared<AreaTrigger>(playBehavior, std::make_unique<SoundSphere>(radius, position, 0.0f));
         return buildSoundComponent(std::move(spatialSound), std::move(areaTrigger));
     }
 

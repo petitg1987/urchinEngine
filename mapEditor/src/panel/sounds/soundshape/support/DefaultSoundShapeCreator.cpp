@@ -13,7 +13,7 @@ namespace urchin {
         if (sound.getSoundType() == Sound::SoundType::SPATIAL) {
             const auto& pointSound = static_cast<const SpatialSound&>(sound);
             position = pointSound.getPosition();
-            radius = pointSound.getInaudibleDistance();
+            radius = pointSound.getRadius();
         }
 
         if (shapeType == SoundShape::ShapeType::SPHERE_SHAPE) {

@@ -67,7 +67,7 @@ namespace urchin {
             QDoubleSpinBox* positionX;
             QDoubleSpinBox* positionY;
             QDoubleSpinBox* positionZ;
-            QDoubleSpinBox* inaudibleDistance;
+            QDoubleSpinBox* radius;
 
             //sound trigger
             QComboBox* playBehavior;
