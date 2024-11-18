@@ -254,7 +254,7 @@ namespace urchin {
             throw std::invalid_argument("Impossible to setup specific sound data for sound of category: " + std::to_string(sound.getSoundCategory()));
         }
 
-        initialVolume->setText(std::to_string(sound.getInitialVolume()).c_str());
+        initialVolume->setText(TypeConverter::toString(sound.getInitialVolume()).c_str());
 
         //sound trigger
         const SoundTrigger& soundTrigger = soundEntity.getSoundComponent()->getSoundTrigger();
