@@ -37,11 +37,11 @@ namespace urchin {
         throw std::runtime_error("Following sound is not linked to a manual trigger: " + sound->getFilename());
     }
 
-    ZoneTrigger& SoundComponent::getZoneTrigger() const {
-        if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::ZONE_TRIGGER) {
-            return static_cast<ZoneTrigger&>(*soundTrigger);
+    AreaTrigger& SoundComponent::getAreaTrigger() const {
+        if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::AREA_TRIGGER) {
+            return static_cast<AreaTrigger&>(*soundTrigger);
         }
-        throw std::runtime_error("Following sound is not linked to a zone trigger: " + sound->getFilename());
+        throw std::runtime_error("Following sound is not linked to an area trigger: " + sound->getFilename());
     }
 
 }

@@ -1,18 +1,18 @@
-#include <trigger/ZoneTrigger.h>
+#include <trigger/AreaTrigger.h>
 
 namespace urchin {
 
     /**
      * @param soundShape Delimited shape which trigger the sound play
      */
-    ZoneTrigger::ZoneTrigger(PlayBehavior playBehavior, std::unique_ptr<SoundShape> soundShape) :
-            SoundTrigger(ZONE_TRIGGER, playBehavior),
+    AreaTrigger::AreaTrigger(PlayBehavior playBehavior, std::unique_ptr<SoundShape> soundShape) :
+            SoundTrigger(AREA_TRIGGER, playBehavior),
             soundShape(std::move(soundShape)),
             isPlaying(false) {
 
     }
 
-    const std::vector<SoundTrigger::TriggerAction>& ZoneTrigger::evaluateTrigger(const Point3<float>& listenerPosition) {
+    const std::vector<SoundTrigger::TriggerAction>& AreaTrigger::evaluateTrigger(const Point3<float>& listenerPosition) {
         triggerActions.clear();
 
         if (!isPlaying && soundShape->pointInsidePlayShape(listenerPosition)) {
@@ -24,7 +24,7 @@ namespace urchin {
             } else {
                 throw std::runtime_error("Unknown play behavior: " + std::to_string((int)getPlayBehavior()));
             }
-        }else if (isPlaying && !soundShape->pointInsideStopShape(listenerPosition)) {
+        } else if (isPlaying && !soundShape->pointInsideStopShape(listenerPosition)) {
             isPlaying = false;
             triggerActions.emplace_back(STOP_ALL);
         }
@@ -32,15 +32,15 @@ namespace urchin {
         return triggerActions;
     }
 
-    SoundShape& ZoneTrigger::getSoundShape() {
+    SoundShape& AreaTrigger::getSoundShape() {
         return *soundShape;
     }
 
-    const SoundShape& ZoneTrigger::getSoundShape() const {
+    const SoundShape& AreaTrigger::getSoundShape() const {
         return *soundShape;
     }
 
-    void ZoneTrigger::setSoundShape(std::unique_ptr<SoundShape> soundShape) {
+    void AreaTrigger::setSoundShape(std::unique_ptr<SoundShape> soundShape) {
         this->soundShape = std::move(soundShape);
     }
 

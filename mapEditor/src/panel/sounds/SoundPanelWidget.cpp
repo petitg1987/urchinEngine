@@ -18,7 +18,7 @@ namespace urchin {
             removeSoundButton(nullptr),
             soundPropertiesGroupBox(nullptr),
             soundTriggerGroupBox(nullptr),
-            specificZoneTriggerGroupBox(nullptr),
+            specificAreaTriggerGroupBox(nullptr),
             specificSpatialSoundGroupBox(nullptr),
             disableSoundEvent(false),
             soundType(nullptr),
@@ -73,7 +73,7 @@ namespace urchin {
 
         auto* soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
         setupSoundTriggerGeneralPropertiesBox(soundTriggerLayout);
-        setupSpecificZoneTriggerBox(soundTriggerLayout);
+        setupSpecificAreaTriggerBox(soundTriggerLayout);
     }
 
     void SoundPanelWidget::setupSoundGeneralPropertiesBox(QVBoxLayout* soundPropertiesLayout) {
@@ -163,13 +163,13 @@ namespace urchin {
         generalLayout->addWidget(soundTriggerType, 3, 1);
     }
 
-    void SoundPanelWidget::setupSpecificZoneTriggerBox(QVBoxLayout* soundTriggerLayout) {
-        specificZoneTriggerGroupBox = new QGroupBox("Zone Trigger");
-        soundTriggerLayout->addWidget(specificZoneTriggerGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificZoneTriggerGroupBox);
-        specificZoneTriggerGroupBox->hide();
+    void SoundPanelWidget::setupSpecificAreaTriggerBox(QVBoxLayout* soundTriggerLayout) {
+        specificAreaTriggerGroupBox = new QGroupBox("Area Trigger");
+        soundTriggerLayout->addWidget(specificAreaTriggerGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(specificAreaTriggerGroupBox);
+        specificAreaTriggerGroupBox->hide();
 
-        triggerShapeLayout = new QVBoxLayout(specificZoneTriggerGroupBox);
+        triggerShapeLayout = new QVBoxLayout(specificAreaTriggerGroupBox);
 
         auto* shapeTypeLayout = new QHBoxLayout();
         shapeTypeLayout->setAlignment(Qt::AlignLeft);
@@ -262,7 +262,7 @@ namespace urchin {
 
         if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::MANUAL_TRIGGER) {
             setupManualTriggerDataFrom();
-        } else if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::ZONE_TRIGGER) {
+        } else if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::AREA_TRIGGER) {
             setupShapeTriggerDataFrom(soundEntity);
         } else {
             throw std::invalid_argument("Impossible to setup specific sound trigger data for sound trigger of type: " + std::to_string(soundTrigger.getTriggerType()));
@@ -297,15 +297,15 @@ namespace urchin {
     }
 
     void SoundPanelWidget::setupManualTriggerDataFrom() const {
-        specificZoneTriggerGroupBox->hide();
+        specificAreaTriggerGroupBox->hide();
         soundTriggerType->setText(NewSoundDialog::MANUAL_TRIGGER_LABEL);
     }
 
     void SoundPanelWidget::setupShapeTriggerDataFrom(const SoundEntity& soundEntity) {
-        specificZoneTriggerGroupBox->show();
-        soundTriggerType->setText(NewSoundDialog::ZONE_TRIGGER_LABEL);
+        specificAreaTriggerGroupBox->show();
+        soundTriggerType->setText(NewSoundDialog::AREA_TRIGGER_LABEL);
 
-        const auto& soundShape = soundEntity.getSoundComponent()->getZoneTrigger().getSoundShape();
+        const auto& soundShape = soundEntity.getSoundComponent()->getAreaTrigger().getSoundShape();
         SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, soundEntity);
         soundShapeWidget.setupShapePropertiesFrom(soundShape);
 

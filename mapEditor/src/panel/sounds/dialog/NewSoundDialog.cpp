@@ -116,7 +116,7 @@ namespace urchin {
         mainLayout->addWidget(soundTriggerTypeComboBox, 5, 1);
         soundTriggerTypeComboBox->setFixedWidth(150);
         soundTriggerTypeComboBox->addItem(MANUAL_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::MANUAL_TRIGGER));
-        soundTriggerTypeComboBox->addItem(ZONE_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::ZONE_TRIGGER));
+        soundTriggerTypeComboBox->addItem(AREA_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::AREA_TRIGGER));
     }
 
     void NewSoundDialog::updateSoundName() {
@@ -154,9 +154,9 @@ namespace urchin {
             std::shared_ptr<SoundTrigger> soundTrigger;
             if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
                 soundTrigger = std::make_shared<ManualTrigger>(PlayBehavior::PLAY_ONCE);
-            } else if (triggerType == SoundTrigger::ZONE_TRIGGER) {
+            } else if (triggerType == SoundTrigger::AREA_TRIGGER) {
                 auto newDefaultShape = DefaultSoundShapeCreator(*sound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
-                soundTrigger = std::make_shared<ZoneTrigger>(PlayBehavior::PLAY_ONCE, std::move(newDefaultShape));
+                soundTrigger = std::make_shared<AreaTrigger>(PlayBehavior::PLAY_ONCE, std::move(newDefaultShape));
             } else {
                 throw std::invalid_argument("Unknown the trigger type to create a new sound trigger: " + std::to_string(triggerType));
             }

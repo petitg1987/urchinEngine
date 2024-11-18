@@ -69,7 +69,7 @@ namespace urchin {
     }
 
     /**
-     * Computes the sphere scope representing light affectation zone
+     * Computes the sphere scope representing light affectation area
      */
     void OmnidirectionalLight::computeScope() {
         float radius = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();

@@ -19,9 +19,9 @@ namespace urchin {
         if (soundEntity) {
             const SoundTrigger& soundTrigger = soundEntity->getSoundComponent()->getSoundTrigger();
 
-            if (soundTrigger.getTriggerType() == ZoneTrigger::TriggerType::ZONE_TRIGGER) {
-                const auto& zoneTrigger = static_cast<const ZoneTrigger&>(soundTrigger);
-                auto geometryModel = retrieveGeometry(zoneTrigger.getSoundShape());
+            if (soundTrigger.getTriggerType() == AreaTrigger::TriggerType::AREA_TRIGGER) {
+                const auto& areaTrigger = static_cast<const AreaTrigger&>(soundTrigger);
+                auto geometryModel = retrieveGeometry(areaTrigger.getSoundShape());
                 geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                 soundTriggerModels.push_back(std::move(geometryModel));
             }

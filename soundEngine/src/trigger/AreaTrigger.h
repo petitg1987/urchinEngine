@@ -6,11 +6,11 @@
 namespace urchin {
 
     /**
-    * Trigger performed when inside a defined zone
+    * Trigger activated when inside a defined area
     */
-    class ZoneTrigger final : public SoundTrigger {
+    class AreaTrigger final : public SoundTrigger {
         public:
-            ZoneTrigger(PlayBehavior, std::unique_ptr<SoundShape>);
+            AreaTrigger(PlayBehavior, std::unique_ptr<SoundShape>);
 
             const std::vector<TriggerAction>& evaluateTrigger(const Point3<float>&) override;
 

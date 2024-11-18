@@ -21,7 +21,7 @@ namespace urchin {
             static constexpr char MUSIC_SOUND_LABEL[] = "Music";
             static constexpr char EFFECTS_SOUND_LABEL[] = "Effect";
             static constexpr char MANUAL_TRIGGER_LABEL[] = "Manual";
-            static constexpr char ZONE_TRIGGER_LABEL[] = "Zone";
+            static constexpr char AREA_TRIGGER_LABEL[] = "Area";
 
             NewSoundDialog(QWidget*, const SoundController*);
 

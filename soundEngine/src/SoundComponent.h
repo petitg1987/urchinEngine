@@ -3,7 +3,7 @@
 #include <sound/Sound.h>
 #include <trigger/SoundTrigger.h>
 #include <trigger/ManualTrigger.h>
-#include <trigger/ZoneTrigger.h>
+#include <trigger/AreaTrigger.h>
 #include <sound/global/GlobalSound.h>
 #include <sound/spatial/SpatialSound.h>
 
@@ -20,7 +20,7 @@ namespace urchin {
 
             SoundTrigger& getSoundTrigger() const;
             ManualTrigger& getManualTrigger() const;
-            ZoneTrigger& getZoneTrigger() const;
+            AreaTrigger& getAreaTrigger() const;
 
         private:
             std::shared_ptr<Sound> sound;

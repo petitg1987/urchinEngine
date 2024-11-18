@@ -15,7 +15,7 @@ namespace urchin {
             std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(soundShapeChunk);
             auto soundShape = soundShapeReaderWriter->load(soundShapeChunk, udaParser);
 
-            return std::make_unique<ZoneTrigger>(playBehavior, std::move(soundShape));
+            return std::make_unique<AreaTrigger>(playBehavior, std::move(soundShape));
         }
 
         throw std::invalid_argument("Unknown sound trigger type read from map: " + soundTriggerType);
@@ -24,13 +24,13 @@ namespace urchin {
     void SoundTriggerReaderWriter::write(UdaChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaParser& udaWriter) {
         if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, MANUAL_VALUE));
-        } else if (soundTrigger.getTriggerType() == SoundTrigger::ZONE_TRIGGER) {
-            const auto& zoneTrigger = static_cast<const ZoneTrigger&>(soundTrigger);
+        } else if (soundTrigger.getTriggerType() == SoundTrigger::AREA_TRIGGER) {
+            const auto& areaTrigger = static_cast<const AreaTrigger&>(soundTrigger);
             soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, SHAPE_VALUE));
 
             auto& soundShapeChunk = udaWriter.createChunk(SOUND_SHAPE_TAG, UdaAttribute(), &soundTriggerChunk);
-            std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(zoneTrigger.getSoundShape());
-            soundShapeReaderWriter->write(soundShapeChunk, zoneTrigger.getSoundShape(), udaWriter);
+            std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(areaTrigger.getSoundShape());
+            soundShapeReaderWriter->write(soundShapeChunk, areaTrigger.getSoundShape(), udaWriter);
         } else {
             throw std::invalid_argument("Unknown sound trigger type to write in map: " + std::to_string(soundTrigger.getTriggerType()));
         }

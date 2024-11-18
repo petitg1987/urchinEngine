@@ -31,10 +31,10 @@ namespace urchin {
     
     void SoundController::changeSoundShape(const SoundEntity& constSoundEntity, SoundShape::ShapeType shapeType) {
         const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
-        ZoneTrigger& zoneTrigger = soundEntity.getSoundComponent()->getZoneTrigger();
+        AreaTrigger& areaTrigger = soundEntity.getSoundComponent()->getAreaTrigger();
 
         auto newShape = DefaultSoundShapeCreator(constSoundEntity.getSoundComponent()->getSound()).createDefaultSoundShape(shapeType);
-        zoneTrigger.setSoundShape(std::move(newShape));
+        areaTrigger.setSoundShape(std::move(newShape));
 
         markModified();
     }
@@ -49,11 +49,11 @@ namespace urchin {
             markModified();
         }
 
-        if (constSoundEntity.getSoundComponent()->getSoundTrigger().getTriggerType() == SoundTrigger::TriggerType::ZONE_TRIGGER) {
-            auto& zoneTrigger = static_cast<ZoneTrigger&>(constSoundEntity.getSoundComponent()->getSoundTrigger());
-            Point3<float> currentPosition = zoneTrigger.getSoundShape().getCenterPosition();
+        if (constSoundEntity.getSoundComponent()->getSoundTrigger().getTriggerType() == SoundTrigger::TriggerType::AREA_TRIGGER) {
+            auto& areaTrigger = static_cast<AreaTrigger&>(constSoundEntity.getSoundComponent()->getSoundTrigger());
+            Point3<float> currentPosition = areaTrigger.getSoundShape().getCenterPosition();
             Point3<float> newPosition = EntityControllerUtil::determineNewPosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
-            zoneTrigger.getSoundShape().updateCenterPosition(newPosition);
+            areaTrigger.getSoundShape().updateCenterPosition(newPosition);
 
             markModified();
         }
@@ -83,9 +83,9 @@ namespace urchin {
 
     const SoundEntity& SoundController::updateSoundShape(const SoundEntity& constSoundEntity, std::unique_ptr<SoundShape> newSoundShape) {
         const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
-        ZoneTrigger& zoneTrigger = soundEntity.getSoundComponent()->getZoneTrigger();
+        AreaTrigger& areaTrigger = soundEntity.getSoundComponent()->getAreaTrigger();
 
-        zoneTrigger.setSoundShape(std::move(newSoundShape));
+        areaTrigger.setSoundShape(std::move(newSoundShape));
 
         markModified();
         return soundEntity;

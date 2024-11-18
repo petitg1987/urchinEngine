@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SoundComponent.h>
-#include <trigger/ZoneTrigger.h>
+#include <trigger/AreaTrigger.h>
 #include <player/filereader/ChunkPreLoader.h>
 
 namespace urchin {
@@ -21,12 +21,12 @@ namespace urchin {
             std::shared_ptr<SoundComponent> newManualSpatialMusic(std::string, const Point3<float>&, float, PlayBehavior);
 
             //usage example: user reach end of level and the success sound is played
-            std::shared_ptr<SoundComponent> newZoneEffect(std::string, std::shared_ptr<ZoneTrigger>);
-            std::shared_ptr<SoundComponent> newZoneMusic(std::string, std::shared_ptr<ZoneTrigger>);
+            std::shared_ptr<SoundComponent> newAreaEffect(std::string, std::shared_ptr<AreaTrigger>);
+            std::shared_ptr<SoundComponent> newAreaMusic(std::string, std::shared_ptr<AreaTrigger>);
 
             //usage examples: machine making noise, radio playing musics
-            std::shared_ptr<SoundComponent> newZoneSpatialEffect(std::string, const Point3<float>&, float, PlayBehavior);
-            std::shared_ptr<SoundComponent> newZoneSpatialMusic(std::string, const Point3<float>&, float, PlayBehavior);
+            std::shared_ptr<SoundComponent> newAreaSpatialEffect(std::string, const Point3<float>&, float, PlayBehavior);
+            std::shared_ptr<SoundComponent> newAreaSpatialMusic(std::string, const Point3<float>&, float, PlayBehavior);
 
         private:
             std::shared_ptr<SoundComponent> buildSoundComponent(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>) const;

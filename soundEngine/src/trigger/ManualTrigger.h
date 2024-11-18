@@ -5,7 +5,7 @@
 namespace urchin {
 
     /**
-    * Trigger performed by the user
+    * Trigger activated by the user
     */
     class ManualTrigger final : public SoundTrigger {
         public:
