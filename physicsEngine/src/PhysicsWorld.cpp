@@ -17,7 +17,6 @@ namespace urchin {
             paused(true),
             bodyContainer(BodyContainer()),
             collisionWorld(CollisionWorld(getBodyContainer())) {
-        NumericalCheck::perform();
         SignalHandler::instance().initialize();
     }
 

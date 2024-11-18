@@ -14,7 +14,6 @@ namespace urchin {
             timeStep(0),
             paused(true),
             navMeshGenerator(NavMeshGenerator()) {
-        NumericalCheck::perform();
         SignalHandler::instance().initialize();
     }
 
