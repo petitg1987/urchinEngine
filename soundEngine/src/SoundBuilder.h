@@ -25,8 +25,8 @@ namespace urchin {
             std::shared_ptr<SoundComponent> newZoneMusic(std::string, std::shared_ptr<ZoneTrigger>);
 
             //usage examples: machine making noise, radio playing musics
-            std::shared_ptr<SoundComponent> newZoneSpatialEffect(std::string, const Point3<float>&, float, std::shared_ptr<ZoneTrigger>);
-            std::shared_ptr<SoundComponent> newZoneSpatialMusic(std::string, const Point3<float>&, float, std::shared_ptr<ZoneTrigger>);
+            std::shared_ptr<SoundComponent> newZoneSpatialEffect(std::string, const Point3<float>&, float, PlayBehavior);
+            std::shared_ptr<SoundComponent> newZoneSpatialMusic(std::string, const Point3<float>&, float, PlayBehavior);
 
         private:
             std::shared_ptr<SoundComponent> buildSoundComponent(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>) const;
