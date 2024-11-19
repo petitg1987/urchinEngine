@@ -57,7 +57,7 @@ namespace urchin {
         this->soundEnvironment = &soundEnvironment;
 
         for (const std::string& musicFilename : musicFilenames) {
-            std::shared_ptr<SoundComponent> soundComponent = soundEnvironment.getSoundBuilder().newManualTriggerMusic(musicFilename, PlayBehavior::PLAY_ONCE);
+            std::shared_ptr<SoundComponent> soundComponent = soundEnvironment.getBuilder().newManualTriggerMusic(musicFilename, PlayBehavior::PLAY_ONCE);
             const AudioController& audioController = soundEnvironment.getAudioController(*soundComponent);
             musics.emplace_back(MusicInstance{.soundComponent=soundComponent, .audioController=audioController});
         }

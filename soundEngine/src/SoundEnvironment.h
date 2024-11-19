@@ -10,7 +10,7 @@
 #include <player/stream/StreamUpdateWorker.h>
 #include <SoundComponent.h>
 #include <MusicLoopPlayer.h>
-#include "SoundBuilder.h"
+#include <SoundBuilder.h>
 
 namespace urchin {
 
@@ -19,7 +19,7 @@ namespace urchin {
             SoundEnvironment();
             ~SoundEnvironment();
 
-            SoundBuilder& getSoundBuilder();
+            SoundBuilder& getBuilder();
             void addSoundComponent(std::shared_ptr<SoundComponent>);
             void removeSoundComponent(const SoundComponent&);
             const AudioController& getAudioController(const SoundComponent&) const;

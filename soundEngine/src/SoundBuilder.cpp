@@ -2,8 +2,9 @@
 #include <SoundEnvironment.h>
 #include <sound/global/GlobalSound.h>
 #include <sound/localizable/LocalizableSound.h>
+#include <trigger/AutoTrigger.h>
+#include <trigger/AreaTrigger.h>
 #include <trigger/ManualTrigger.h>
-#include <trigger/shape/SoundSphere.h>
 
 namespace urchin {
 
@@ -55,15 +56,15 @@ namespace urchin {
     std::shared_ptr<SoundComponent> SoundBuilder::newLocalizableEffect(std::string filename, const Point3<float>& position, float radius, PlayBehavior playBehavior) {
         auto localizableSound = std::make_shared<LocalizableSound>(std::move(filename), Sound::SoundCategory::EFFECTS, 1.0f, position, radius);
         localizableSound->preLoadChunks(chunkPreLoader);
-        auto areaTrigger = std::make_shared<AreaTrigger>(playBehavior, std::make_unique<SoundSphere>(radius, position, 0.0f));
-        return buildSoundComponent(std::move(localizableSound), std::move(areaTrigger));
+        auto autoTrigger = std::make_shared<AutoTrigger>(playBehavior, localizableSound);
+        return buildSoundComponent(std::move(localizableSound), std::move(autoTrigger));
     }
 
     std::shared_ptr<SoundComponent> SoundBuilder::newLocalizableMusic(std::string filename, const Point3<float>& position, float radius, PlayBehavior playBehavior) {
         auto localizableSound = std::make_shared<LocalizableSound>(std::move(filename), Sound::SoundCategory::MUSIC, 1.0f, position, radius);
         localizableSound->preLoadChunks(chunkPreLoader);
-        auto areaTrigger = std::make_shared<AreaTrigger>(playBehavior, std::make_unique<SoundSphere>(radius, position, 0.0f));
-        return buildSoundComponent(std::move(localizableSound), std::move(areaTrigger));
+        auto autoTrigger = std::make_shared<AutoTrigger>(playBehavior, localizableSound);
+        return buildSoundComponent(std::move(localizableSound), std::move(autoTrigger));
     }
 
     std::shared_ptr<SoundComponent> SoundBuilder::buildSoundComponent(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) const {

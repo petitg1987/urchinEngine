@@ -9,6 +9,7 @@ namespace urchin {
     class SoundTrigger {
         public:
             enum TriggerType {
+                AUTO_TRIGGER,
                 MANUAL_TRIGGER,
                 AREA_TRIGGER
             };

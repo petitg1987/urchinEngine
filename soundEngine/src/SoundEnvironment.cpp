@@ -31,7 +31,7 @@ namespace urchin {
         Profiler::sound().log();
     }
 
-    SoundBuilder& SoundEnvironment::getSoundBuilder() {
+    SoundBuilder& SoundEnvironment::getBuilder() {
         return soundBuilder;
     }
 

@@ -6,7 +6,7 @@
 namespace urchin {
 
     /**
-    * Trigger activated when inside a defined area
+    * Trigger activated when the listener is inside a defined area
     */
     class AreaTrigger final : public SoundTrigger {
         public:
