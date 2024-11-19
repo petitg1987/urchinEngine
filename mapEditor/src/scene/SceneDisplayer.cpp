@@ -31,7 +31,7 @@ namespace urchin {
         bodyShapeDisplayer.reset(nullptr);
         objectMoveController.reset(nullptr);
         lightScopeDisplayer.reset(nullptr);
-        soundTriggerDisplayer.reset(nullptr);
+        soundScopeDisplayer.reset(nullptr);
         navMeshDisplayer.reset(nullptr);
         scene.reset(nullptr);
     }
@@ -95,7 +95,7 @@ namespace urchin {
         bodyShapeDisplayer = std::make_unique<BodyShapeDisplayer>(*scene);
         objectMoveController = std::make_unique<ObjectMoveController>(*scene, *sceneController, mouseController, statusBarController);
         lightScopeDisplayer = std::make_unique<LightScopeDisplayer>(*scene);
-        soundTriggerDisplayer = std::make_unique<SoundTriggerDisplayer>(*scene);
+        soundScopeDisplayer = std::make_unique<SoundScopeDisplayer>(*scene);
 
         //physics
         physicsWorld = std::make_unique<PhysicsWorld>();
@@ -155,11 +155,11 @@ namespace urchin {
     }
 
     void SceneDisplayer::refreshSoundTriggerModel() const {
-        if (soundTriggerDisplayer) {
-            if (viewProperties[SOUND_TRIGGER] && highlightSoundEntity && highlightSoundEntity->getSoundComponent()) {
-                soundTriggerDisplayer->displaySoundTrigger(highlightSoundEntity);
+        if (soundScopeDisplayer) {
+            if (viewProperties[SOUND_SCOPE] && highlightSoundEntity && highlightSoundEntity->getSoundComponent()) {
+                soundScopeDisplayer->displaySoundScope(highlightSoundEntity);
             } else {
-                soundTriggerDisplayer->displaySoundTrigger(nullptr);
+                soundScopeDisplayer->displaySoundScope(nullptr);
             }
         }
     }

@@ -361,7 +361,7 @@ namespace urchin {
             if (sound.getSoundType() == Sound::GLOBAL) {
                 //nothing to update
             } else if (sound.getSoundType() == Sound::LOCALIZABLE) {
-                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionY->value());
+                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
                 auto radius = (float)this->radius->value();
 
                 soundController->updateLocalizableSoundProperties(soundEntity, position, radius);

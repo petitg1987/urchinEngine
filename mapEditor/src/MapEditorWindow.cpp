@@ -121,13 +121,13 @@ namespace urchin {
 
         auto* viewSoundMenu = new QMenu("Sound");
         viewMenu->addMenu(viewSoundMenu);
-        auto* viewSoundTriggerAction = new QAction("Sound Trigger", this);
-        viewSoundTriggerAction->setEnabled(false);
-        viewSoundTriggerAction->setCheckable(true);
-        viewSoundTriggerAction->setChecked(true);
-        viewSoundMenu->addAction(viewSoundTriggerAction);
-        viewActions[SceneDisplayer::SOUND_TRIGGER] = viewSoundTriggerAction;
-        connect(viewSoundTriggerAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
+        auto* viewSoundScopeAction = new QAction("Sound Scope", this);
+        viewSoundScopeAction->setEnabled(false);
+        viewSoundScopeAction->setCheckable(true);
+        viewSoundScopeAction->setChecked(true);
+        viewSoundMenu->addAction(viewSoundScopeAction);
+        viewActions[SceneDisplayer::SOUND_SCOPE] = viewSoundScopeAction;
+        connect(viewSoundScopeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
         auto* viewAIMenu = new QMenu("AI");
         viewMenu->addMenu(viewAIMenu);
@@ -407,7 +407,7 @@ namespace urchin {
         if (SceneDisplayer::LIGHT_SCOPE == viewProperties) {
             return ScenePanelWidget::LIGHTS;
         }
-        if (SceneDisplayer::SOUND_TRIGGER == viewProperties) {
+        if (SceneDisplayer::SOUND_SCOPE == viewProperties) {
             return ScenePanelWidget::SOUNDS;
         }
         if (SceneDisplayer::NAV_MESH == viewProperties) {

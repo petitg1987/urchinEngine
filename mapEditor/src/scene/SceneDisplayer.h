@@ -15,7 +15,7 @@
 #include <scene/objects/BodyShapeDisplayer.h>
 #include <scene/objects/move/ObjectMoveController.h>
 #include <scene/lights/LightScopeDisplayer.h>
-#include <scene/sounds/SoundTriggerDisplayer.h>
+#include <scene/sounds/SoundScopeDisplayer.h>
 
 namespace urchin {
 
@@ -27,7 +27,7 @@ namespace urchin {
             enum ViewProperties {
                 OBJECT_PHYSICS = 0,
                 LIGHT_SCOPE,
-                SOUND_TRIGGER,
+                SOUND_SCOPE,
                 NAV_MESH,
 
                 LAST_VIEW_PROPERTIES
@@ -76,7 +76,7 @@ namespace urchin {
             std::unique_ptr<BodyShapeDisplayer> bodyShapeDisplayer;
             std::unique_ptr<ObjectMoveController> objectMoveController;
             std::unique_ptr<LightScopeDisplayer> lightScopeDisplayer;
-            std::unique_ptr<SoundTriggerDisplayer> soundTriggerDisplayer;
+            std::unique_ptr<SoundScopeDisplayer> soundScopeDisplayer;
 
             //physics
             std::unique_ptr<PhysicsWorld> physicsWorld;
