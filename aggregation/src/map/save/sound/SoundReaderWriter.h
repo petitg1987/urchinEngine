@@ -15,7 +15,7 @@ namespace urchin {
         private:
             static constexpr char TYPE_ATTR[] = "type";
             static constexpr char CATEGORY_ATTR[] = "category";
-            static constexpr char SPATIAL_VALUE[] = "SPATIAL";
+            static constexpr char LOCALIZABLE_VALUE[] = "LOCALIZABLE";
             static constexpr char GLOBAL_VALUE[] = "GLOBAL";
             static constexpr char MUSIC_VALUE[] = "MUSIC";
             static constexpr char EFFECTS_VALUE[] = "EFFECTS";

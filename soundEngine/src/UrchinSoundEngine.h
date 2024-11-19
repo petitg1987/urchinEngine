@@ -6,7 +6,7 @@
 
 #include <sound/Sound.h>
 #include <sound/global/GlobalSound.h>
-#include <sound/spatial/SpatialSound.h>
+#include <sound/localizable/LocalizableSound.h>
 
 #include <trigger/SoundTrigger.h>
 #include <trigger/ManualTrigger.h>

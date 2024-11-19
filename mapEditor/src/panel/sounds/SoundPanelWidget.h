@@ -31,14 +31,14 @@ namespace urchin {
 
         private:
             void setupSoundGeneralPropertiesBox(QVBoxLayout*);
-            void setupSpecificSpatialSoundBox(QVBoxLayout*);
+            void setupSpecificLocalizableSoundBox(QVBoxLayout*);
             void setupSoundTriggerGeneralPropertiesBox(QVBoxLayout*);
             void setupSpecificAreaTriggerBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
             void setupSoundDataFrom(const SoundEntity&);
             void setupGlobalSoundDataFrom() const;
-            void setupSpatialSoundDataFrom(const SpatialSound&) const;
+            void setupLocalizableSoundDataFrom(const LocalizableSound&) const;
             void setupPlayBehaviorDataFrom(const SoundTrigger&) const;
             void setupManualTriggerDataFrom() const;
             void setupShapeTriggerDataFrom(const SoundEntity&);
@@ -54,7 +54,7 @@ namespace urchin {
             QGroupBox* soundPropertiesGroupBox;
             QGroupBox* soundTriggerGroupBox;
             QGroupBox* specificAreaTriggerGroupBox;
-            QGroupBox* specificSpatialSoundGroupBox;
+            QGroupBox* specificLocalizableSoundGroupBox;
 
             bool disableSoundEvent;
 

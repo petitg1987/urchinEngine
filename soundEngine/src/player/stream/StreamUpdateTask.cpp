@@ -11,8 +11,8 @@ namespace urchin {
             initialReadSamples(0) {
         this->streamChunks.resize(nbStreamChunks, {});
 
-        if (soundFileReader.getNumberOfChannels() != 1 && audioStreamPlayer.getSound().getSoundType() == Sound::SoundType::SPATIAL) {
-            throw std::runtime_error("Spatial sound " + audioStreamPlayer.getSound().getFilename() + " must be a mono sound");
+        if (soundFileReader.getNumberOfChannels() != 1 && audioStreamPlayer.getSound().getSoundType() == Sound::SoundType::LOCALIZABLE) {
+            throw std::runtime_error("Localizable sound " + audioStreamPlayer.getSound().getFilename() + " must be a mono sound");
         }
     }
 

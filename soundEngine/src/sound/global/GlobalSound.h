@@ -7,7 +7,7 @@
 namespace urchin {
 
     /**
-     * Non-spatialized sound. Useful for music, UI feedback, etc.
+     * Non-localized sound. Useful for music, UI feedback, etc.
      */
     class GlobalSound final : public Sound {
         public:

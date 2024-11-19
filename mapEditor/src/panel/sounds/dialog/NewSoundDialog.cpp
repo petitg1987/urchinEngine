@@ -83,7 +83,7 @@ namespace urchin {
         mainLayout->addWidget(soundTypeComboBox, 2, 1);
         soundTypeComboBox->setFixedWidth(150);
         soundTypeComboBox->addItem(GLOBAL_SOUND_LABEL, QVariant(Sound::SoundType::GLOBAL));
-        soundTypeComboBox->addItem(SPATIAL_SOUND_LABEL, QVariant(Sound::SoundType::SPATIAL));
+        soundTypeComboBox->addItem(LOCALIZABLE_SOUND_LABEL, QVariant(Sound::SoundType::LOCALIZABLE));
     }
 
     void NewSoundDialog::setupSoundCategoryFields(QGridLayout* mainLayout) {
@@ -143,8 +143,8 @@ namespace urchin {
             std::shared_ptr<Sound> sound;
             if (soundType == Sound::GLOBAL) {
                 sound = std::make_shared<GlobalSound>(soundFilename, soundCategory, initialVolume);
-            } else if (soundType == Sound::SPATIAL) {
-                sound = std::make_shared<SpatialSound>(soundFilename, soundCategory, initialVolume, Point3(0.0f, 0.0f, 0.0f), 10.0f);
+            } else if (soundType == Sound::LOCALIZABLE) {
+                sound = std::make_shared<LocalizableSound>(soundFilename, soundCategory, initialVolume, Point3(0.0f, 0.0f, 0.0f), 10.0f);
             } else {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }

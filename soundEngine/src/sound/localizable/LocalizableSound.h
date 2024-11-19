@@ -8,12 +8,12 @@
 namespace urchin {
 
     /**
-    * Spatialized sound with waves radiate uniformly in all directions from a given location in space.
+    * Localized sound with waves radiate uniformly in all directions from a given location in space.
     * Sound is attenuated when listener distance increases.
     */
-    class SpatialSound final : public Sound {
+    class LocalizableSound final : public Sound {
         public:
-            SpatialSound(std::string, SoundCategory, float, const Point3<float>&, float);
+            LocalizableSound(std::string, SoundCategory, float, const Point3<float>&, float);
 
             void initializeSource(ALuint) const override;
             void updateSource(ALuint) override;

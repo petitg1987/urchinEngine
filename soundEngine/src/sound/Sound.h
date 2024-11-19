@@ -10,7 +10,7 @@ namespace urchin {
     class Sound {
         public:
             enum SoundType {
-                SPATIAL,
+                LOCALIZABLE,
                 GLOBAL
             };
 

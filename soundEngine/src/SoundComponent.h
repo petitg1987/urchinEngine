@@ -5,8 +5,7 @@
 #include <trigger/ManualTrigger.h>
 #include <trigger/AreaTrigger.h>
 #include <sound/global/GlobalSound.h>
-#include <sound/spatial/SpatialSound.h>
-
+#include <sound/localizable/LocalizableSound.h>
 
 namespace urchin {
 
@@ -16,7 +15,7 @@ namespace urchin {
 
             Sound& getSound() const;
             GlobalSound& getGlobalSound() const;
-            SpatialSound& getSpatialSound() const;
+            LocalizableSound& getLocalizableSound() const;
 
             SoundTrigger& getSoundTrigger() const;
             ManualTrigger& getManualTrigger() const;

@@ -19,7 +19,7 @@ namespace urchin {
             soundPropertiesGroupBox(nullptr),
             soundTriggerGroupBox(nullptr),
             specificAreaTriggerGroupBox(nullptr),
-            specificSpatialSoundGroupBox(nullptr),
+            specificLocalizableSoundGroupBox(nullptr),
             disableSoundEvent(false),
             soundType(nullptr),
             soundCategory(nullptr),
@@ -63,7 +63,7 @@ namespace urchin {
 
         auto* soundPropertiesLayout = new QVBoxLayout(soundPropertiesGroupBox);
         setupSoundGeneralPropertiesBox(soundPropertiesLayout);
-        setupSpecificSpatialSoundBox(soundPropertiesLayout);
+        setupSpecificLocalizableSoundBox(soundPropertiesLayout);
 
         soundTriggerGroupBox = new QGroupBox("Sound Trigger");
         mainLayout->addWidget(soundTriggerGroupBox);
@@ -101,20 +101,20 @@ namespace urchin {
 
     }
 
-    void SoundPanelWidget::setupSpecificSpatialSoundBox(QVBoxLayout* soundPropertiesLayout) {
-        specificSpatialSoundGroupBox = new QGroupBox("Spatial Sound");
-        soundPropertiesLayout->addWidget(specificSpatialSoundGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificSpatialSoundGroupBox);
-        specificSpatialSoundGroupBox->hide();
+    void SoundPanelWidget::setupSpecificLocalizableSoundBox(QVBoxLayout* soundPropertiesLayout) {
+        specificLocalizableSoundGroupBox = new QGroupBox("Localizable Sound");
+        soundPropertiesLayout->addWidget(specificLocalizableSoundGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(specificLocalizableSoundGroupBox);
+        specificLocalizableSoundGroupBox->hide();
 
-        auto* spatialSoundLayout = new QGridLayout(specificSpatialSoundGroupBox);
-        spatialSoundLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+        auto* localizableSoundLayout = new QGridLayout(specificLocalizableSoundGroupBox);
+        localizableSoundLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         auto* positionLabel= new QLabel("Position:");
-        spatialSoundLayout->addWidget(positionLabel, 0, 0);
+        localizableSoundLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
-        spatialSoundLayout->addLayout(positionLayout, 0, 1);
+        localizableSoundLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
         SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
@@ -130,10 +130,10 @@ namespace urchin {
 
         auto* radiusLabel= new QLabel("Radius:");
         radiusLabel->setToolTip("Inaudible Distance");
-        spatialSoundLayout->addWidget(radiusLabel, 1, 0);
+        localizableSoundLayout->addWidget(radiusLabel, 1, 0);
 
         radius = new QDoubleSpinBox();
-        spatialSoundLayout->addWidget(radius, 1, 1);
+        localizableSoundLayout->addWidget(radius, 1, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(radius);
         radius->setMinimum(0.0);
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
@@ -240,8 +240,8 @@ namespace urchin {
 
         if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
             setupGlobalSoundDataFrom();
-        } else if (sound.getSoundType() == Sound::SoundType::SPATIAL) {
-            setupSpatialSoundDataFrom(static_cast<const SpatialSound&>(sound));
+        } else if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
+            setupLocalizableSoundDataFrom(static_cast<const LocalizableSound&>(sound));
         } else {
             throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound.getSoundType()));
         }
@@ -272,21 +272,21 @@ namespace urchin {
     }
 
     void SoundPanelWidget::setupGlobalSoundDataFrom() const {
-        specificSpatialSoundGroupBox->hide();
+        specificLocalizableSoundGroupBox->hide();
 
         soundType->setText(NewSoundDialog::GLOBAL_SOUND_LABEL);
     }
 
-    void SoundPanelWidget::setupSpatialSoundDataFrom(const SpatialSound& spatialSound) const {
-        specificSpatialSoundGroupBox->show();
+    void SoundPanelWidget::setupLocalizableSoundDataFrom(const LocalizableSound& localizableSound) const {
+        specificLocalizableSoundGroupBox->show();
 
-        soundType->setText(NewSoundDialog::SPATIAL_SOUND_LABEL);
+        soundType->setText(NewSoundDialog::LOCALIZABLE_SOUND_LABEL);
 
-        this->positionX->setValue(spatialSound.getPosition().X);
-        this->positionY->setValue(spatialSound.getPosition().Y);
-        this->positionZ->setValue(spatialSound.getPosition().Z);
+        this->positionX->setValue(localizableSound.getPosition().X);
+        this->positionY->setValue(localizableSound.getPosition().Y);
+        this->positionZ->setValue(localizableSound.getPosition().Z);
 
-        this->radius->setValue(spatialSound.getRadius());
+        this->radius->setValue(localizableSound.getRadius());
     }
 
     void SoundPanelWidget::setupPlayBehaviorDataFrom(const SoundTrigger& soundTrigger) const {
@@ -353,11 +353,11 @@ namespace urchin {
 
             if (sound.getSoundType() == Sound::GLOBAL) {
                 //nothing to update
-            } else if (sound.getSoundType() == Sound::SPATIAL) {
+            } else if (sound.getSoundType() == Sound::LOCALIZABLE) {
                 Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionY->value());
                 auto radius = (float)this->radius->value();
 
-                soundController->updateSpatialSoundProperties(soundEntity, position, radius);
+                soundController->updateLocalizableSoundProperties(soundEntity, position, radius);
             } else {
                 throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string(sound.getSoundType()));
             }

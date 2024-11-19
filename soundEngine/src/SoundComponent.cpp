@@ -19,11 +19,11 @@ namespace urchin {
         throw std::runtime_error("Following sound is not a global sound: " + sound->getFilename());
     }
 
-    SpatialSound& SoundComponent::getSpatialSound() const {
-        if (sound->getSoundType() == Sound::SoundType::SPATIAL) {
-            return static_cast<SpatialSound&>(*sound);
+    LocalizableSound& SoundComponent::getLocalizableSound() const {
+        if (sound->getSoundType() == Sound::SoundType::LOCALIZABLE) {
+            return static_cast<LocalizableSound&>(*sound);
         }
-        throw std::runtime_error("Following sound is not a spatial sound: " + sound->getFilename());
+        throw std::runtime_error("Following sound is not a localizable sound: " + sound->getFilename());
     }
 
     SoundTrigger& SoundComponent::getSoundTrigger() const {

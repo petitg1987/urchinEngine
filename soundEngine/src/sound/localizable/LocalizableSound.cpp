@@ -1,6 +1,6 @@
 #include <utility>
 
-#include <sound/spatial/SpatialSound.h>
+#include <sound/localizable/LocalizableSound.h>
 #include <util/CheckState.h>
 
 namespace urchin {
@@ -8,7 +8,7 @@ namespace urchin {
     /**
      * @param radius Define distance at which the sound become inaudible
      */
-    SpatialSound::SpatialSound(std::string filename, SoundCategory category, float initialVolume, const Point3<float>& position, float radius) :
+    LocalizableSound::LocalizableSound(std::string filename, SoundCategory category, float initialVolume, const Point3<float>& position, float radius) :
             Sound(std::move(filename), category, initialVolume),
             position(position),
             positionUpdated(false),
@@ -17,7 +17,7 @@ namespace urchin {
 
     }
 
-    void SpatialSound::initializeSource(ALuint sourceId) const {
+    void LocalizableSound::initializeSource(ALuint sourceId) const {
         alSourcei(sourceId, AL_SOURCE_RELATIVE, false);
         CheckState::check("set source relative to false");
 
@@ -49,7 +49,7 @@ namespace urchin {
         CheckState::check("set source rolloff factor");
     }
 
-    void SpatialSound::updateSource(ALuint sourceId) {
+    void LocalizableSound::updateSource(ALuint sourceId) {
         if (positionUpdated) {
             alSource3f(sourceId, AL_POSITION, position.X, position.Y, position.Z);
             CheckState::check("set source position (update)", position);
@@ -62,20 +62,20 @@ namespace urchin {
         }
     }
 
-    Sound::SoundType SpatialSound::getSoundType() const {
-        return SPATIAL;
+    Sound::SoundType LocalizableSound::getSoundType() const {
+        return LOCALIZABLE;
     }
 
-    void SpatialSound::setPosition(const Point3<float>& position) {
+    void LocalizableSound::setPosition(const Point3<float>& position) {
         this->position = position;
         this->positionUpdated = true;
     }
 
-    Point3<float> SpatialSound::getPosition() const {
+    Point3<float> LocalizableSound::getPosition() const {
         return position;
     }
 
-    void SpatialSound::setRadius(float radius) {
+    void LocalizableSound::setRadius(float radius) {
         this->radius = radius;
         this->radiusUpdated = true;
     }
@@ -83,7 +83,7 @@ namespace urchin {
     /**
      * @return Distance at which the sound become inaudible
      */
-    float SpatialSound::getRadius() const {
+    float LocalizableSound::getRadius() const {
         return radius;
     }
 

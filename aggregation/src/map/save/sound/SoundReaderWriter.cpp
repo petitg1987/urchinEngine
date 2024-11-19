@@ -19,12 +19,10 @@ namespace urchin {
 
         float initialVolume = udaParser.getFirstChunk(true, INITIAL_VOLUME_TAG, UdaAttribute(), soundChunk)->getFloatValue();
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
-        if (soundType == SPATIAL_VALUE) {
+        if (soundType == LOCALIZABLE_VALUE) {
             Point3<float> position = udaParser.getFirstChunk(true, POSITION_TAG, UdaAttribute(), soundChunk)->getPoint3Value();
             float radius = udaParser.getFirstChunk(true, RADIUS_TAG, UdaAttribute(), soundChunk)->getFloatValue();
-            auto spatialSound = std::make_unique<SpatialSound>(filename, category, initialVolume, position, radius);
-
-            return spatialSound;
+            return std::make_unique<LocalizableSound>(filename, category, initialVolume, position, radius);
         } else if (soundType == GLOBAL_VALUE) {
             return std::make_unique<GlobalSound>(filename, category, initialVolume);
         } else {
@@ -47,15 +45,15 @@ namespace urchin {
             throw std::invalid_argument("Unknown sound category to write in map: " + std::to_string(sound.getSoundCategory()));
         }
 
-        if (sound.getSoundType() == Sound::SPATIAL) {
-            const auto& spatialSound = static_cast<const SpatialSound&>(sound);
-            soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPATIAL_VALUE));
+        if (sound.getSoundType() == Sound::LOCALIZABLE) {
+            const auto& localizableSound = static_cast<const LocalizableSound&>(sound);
+            soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, LOCALIZABLE_VALUE));
 
             auto& positionChunk = udaParser.createChunk(POSITION_TAG, UdaAttribute(), &soundChunk);
-            positionChunk.setPoint3Value(spatialSound.getPosition());
+            positionChunk.setPoint3Value(localizableSound.getPosition());
 
             auto& radiusChunk = udaParser.createChunk(RADIUS_TAG, UdaAttribute(), &soundChunk);
-            radiusChunk.setFloatValue(spatialSound.getRadius());
+            radiusChunk.setFloatValue(localizableSound.getRadius());
         } else if (sound.getSoundType() == Sound::GLOBAL) {
             soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, GLOBAL_VALUE));
         } else {

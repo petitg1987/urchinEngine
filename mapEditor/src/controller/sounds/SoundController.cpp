@@ -40,11 +40,11 @@ namespace urchin {
     }
 
     void SoundController::moveSoundInFrontOfCamera(const SoundEntity& constSoundEntity, bool isClonedEntity) {
-        if (constSoundEntity.getSoundComponent()->getSound().getSoundType() == Sound::SoundType::SPATIAL) {
-            auto& spatialSound = static_cast<SpatialSound&>(constSoundEntity.getSoundComponent()->getSound());
-            Point3<float> currentPosition = spatialSound.getPosition();
+        if (constSoundEntity.getSoundComponent()->getSound().getSoundType() == Sound::SoundType::LOCALIZABLE) {
+            auto& localizableSound = static_cast<LocalizableSound&>(constSoundEntity.getSoundComponent()->getSound());
+            Point3<float> currentPosition = localizableSound.getPosition();
             Point3<float> newPosition = EntityControllerUtil::determineNewPosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
-            spatialSound.setPosition(newPosition);
+            localizableSound.setPosition(newPosition);
 
             markModified();
         }
@@ -59,12 +59,12 @@ namespace urchin {
         }
     }
 
-    const SoundEntity& SoundController::updateSpatialSoundProperties(const SoundEntity& constSoundEntity, const Point3<float>& position, float radius) {
+    const SoundEntity& SoundController::updateLocalizableSoundProperties(const SoundEntity& constSoundEntity, const Point3<float>& position, float radius) {
         const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
-        auto& spatialSound = static_cast<SpatialSound&>(soundEntity.getSoundComponent()->getSound());
+        auto& localizableSound = static_cast<LocalizableSound&>(soundEntity.getSoundComponent()->getSound());
 
-        spatialSound.setPosition(position);
-        spatialSound.setRadius(radius);
+        localizableSound.setPosition(position);
+        localizableSound.setRadius(radius);
 
         markModified();
         return soundEntity;

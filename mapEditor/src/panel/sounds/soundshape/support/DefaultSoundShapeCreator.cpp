@@ -10,10 +10,10 @@ namespace urchin {
     std::unique_ptr<SoundShape> DefaultSoundShapeCreator::createDefaultSoundShape(SoundShape::ShapeType shapeType) const {
         Point3 position(0.0f, 0.0f, 0.0f);
         float radius = 1.0f;
-        if (sound.getSoundType() == Sound::SoundType::SPATIAL) {
-            const auto& pointSound = static_cast<const SpatialSound&>(sound);
-            position = pointSound.getPosition();
-            radius = pointSound.getRadius();
+        if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
+            const auto& localizableSound = static_cast<const LocalizableSound&>(sound);
+            position = localizableSound.getPosition();
+            radius = localizableSound.getRadius();
         }
 
         if (shapeType == SoundShape::ShapeType::SPHERE_SHAPE) {

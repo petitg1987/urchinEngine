@@ -42,7 +42,7 @@ Game engine library in C++20: 3D, Physics, Sound, Network, IA, Map Editor
 
 * Sound Engine:
   * Supported formats: ogg
-  * Spatial sound and global sound
+  * Localizable sound and global sound
   * Sound trigger based on character position
 
 * IA Engine:
