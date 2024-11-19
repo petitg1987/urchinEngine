@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <QtWidgets/QLabel>
 
 #include <panel/sounds/soundshape/SoundShapeWidget.h>

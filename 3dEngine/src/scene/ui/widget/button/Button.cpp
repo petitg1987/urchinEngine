@@ -3,7 +3,6 @@
 
 #include <scene/ui/widget/button/Button.h>
 #include <scene/ui/UISkinService.h>
-#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 
 namespace urchin {
 

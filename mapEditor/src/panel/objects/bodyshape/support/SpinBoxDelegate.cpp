@@ -39,7 +39,7 @@ namespace urchin {
         editor->setGeometry(option.rect);
     }
 
-    void SpinBoxDelegate::onChange(double newValue) {
+    void SpinBoxDelegate::onChange(double newValue) const {
         const QModelIndex& index = tableView->currentIndex();
         model->setData(index, newValue, Qt::EditRole);
 

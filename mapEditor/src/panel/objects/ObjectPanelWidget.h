@@ -114,22 +114,22 @@ namespace urchin {
 
         private slots:
             void showAddObjectDialog();
-            void removeSelectedObject();
+            void removeSelectedObject() const;
             void showCloneObjectDialog();
             void showRenameObjectDialog();
-            void moveUpSelectedObject();
-            void moveDownSelectedObject();
+            void moveUpSelectedObject() const;
+            void moveDownSelectedObject() const;
 
             void updateObjectOrientationType();
-            void updateObjectTransform();
+            void updateObjectTransform() const;
             void updateObjectScale();
-            void updateObjectProperties();
-            void updateObjectTags();
+            void updateObjectProperties() const;
+            void updateObjectTags() const;
 
             void showChangeBodyShapeDialog();
             void rigidBodyToggled(int);
-            void updateObjectPhysicsProperties();
-            void bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&);
+            void updateObjectPhysicsProperties() const;
+            void bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&) const;
     };
 
 }

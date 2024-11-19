@@ -5,7 +5,6 @@
 #include <character/PhysicsCharacter.h>
 #include <character/CharacterControllerConfig.h>
 #include <body/model/GhostBody.h>
-#include <processable/Processable.h>
 #include <collision/ManifoldResult.h>
 
 namespace urchin {

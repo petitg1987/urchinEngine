@@ -82,13 +82,13 @@ namespace urchin {
 
         private slots:
             void showAddSoundDialog();
-            void removeSelectedSound();
+            void removeSelectedSound() const;
 
-            void updateSoundSpecificProperties();
-            void updateSoundTriggerProperties();
+            void updateSoundSpecificProperties() const;
+            void updateSoundTriggerProperties() const;
 
             void showChangeSoundShapeDialog();
-            void soundShapeChanged(SoundShape*);
+            void soundShapeChanged(SoundShape*) const;
     };
 
 }

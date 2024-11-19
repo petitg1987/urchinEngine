@@ -2,7 +2,6 @@
 
 #include <texture/filter/gaussianblur/GaussianBlurFilter.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
-#include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {

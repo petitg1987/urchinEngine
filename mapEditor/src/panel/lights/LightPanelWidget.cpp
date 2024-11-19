@@ -387,7 +387,7 @@ namespace urchin {
         }
     }
 
-    void LightPanelWidget::removeSelectedLight() {
+    void LightPanelWidget::removeSelectedLight() const {
         if (lightTableView->hasLightEntitySelected()) {
             const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
             lightController->removeLightEntity(lightEntity);
@@ -396,7 +396,7 @@ namespace urchin {
         }
     }
 
-    void LightPanelWidget::updateLightGeneralProperties() {
+    void LightPanelWidget::updateLightGeneralProperties() const {
         if (!disableLightEvent) {
             const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
 
@@ -408,7 +408,7 @@ namespace urchin {
         }
     }
 
-    void LightPanelWidget::updateLightSpecificProperties() {
+    void LightPanelWidget::updateLightSpecificProperties() const {
         if (!disableLightEvent) {
             const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
             const Light* light = lightEntity.getLight();

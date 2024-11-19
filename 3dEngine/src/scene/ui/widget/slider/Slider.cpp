@@ -1,6 +1,5 @@
 #include <scene/ui/widget/slider/Slider.h>
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
-#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/InputDeviceKey.h>
 #include <resources/ResourceRetriever.h>
 

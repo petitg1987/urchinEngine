@@ -344,7 +344,7 @@ namespace urchin {
         }
     }
 
-    void SoundPanelWidget::removeSelectedSound() {
+    void SoundPanelWidget::removeSelectedSound() const {
         if (soundTableView->hasSoundEntitySelected()) {
             const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
             soundController->removeSoundEntity(soundEntity);
@@ -353,7 +353,7 @@ namespace urchin {
         }
     }
 
-    void SoundPanelWidget::updateSoundSpecificProperties() {
+    void SoundPanelWidget::updateSoundSpecificProperties() const {
         if (!disableSoundEvent) {
             const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
             const Sound& sound = soundEntity.getSoundComponent()->getSound();
@@ -371,7 +371,7 @@ namespace urchin {
         }
     }
 
-    void SoundPanelWidget::updateSoundTriggerProperties() {
+    void SoundPanelWidget::updateSoundTriggerProperties() const {
         if (!disableSoundEvent) {
             const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
 
@@ -395,7 +395,7 @@ namespace urchin {
         }
     }
 
-    void SoundPanelWidget::soundShapeChanged(SoundShape* soundShape) {
+    void SoundPanelWidget::soundShapeChanged(SoundShape* soundShape) const {
         if (!disableSoundEvent) {
             const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
 

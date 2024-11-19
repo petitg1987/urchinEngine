@@ -4,7 +4,6 @@
 
 #include <graphics/api/GraphicsApi.h>
 #include <loader/Loader.h>
-#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 

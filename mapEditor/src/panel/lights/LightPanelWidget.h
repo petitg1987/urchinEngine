@@ -78,10 +78,10 @@ namespace urchin {
 
         private slots:
             void showAddLightDialog();
-            void removeSelectedLight();
+            void removeSelectedLight() const;
 
-            void updateLightGeneralProperties();
-            void updateLightSpecificProperties();
+            void updateLightGeneralProperties() const;
+            void updateLightSpecificProperties() const;
     };
 
 }

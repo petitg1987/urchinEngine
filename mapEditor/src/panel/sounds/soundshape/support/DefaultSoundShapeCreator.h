@@ -1,8 +1,6 @@
 #pragma once
 
 #include <memory>
-
-#include <UrchinAggregation.h>
 #include <UrchinSoundEngine.h>
 
 namespace urchin {

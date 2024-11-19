@@ -79,7 +79,7 @@ namespace urchin {
         connect(jumpDistance, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
     }
 
-    void AIPanelWidget::aiChanged() {
+    void AIPanelWidget::aiChanged() const {
         if (!disableAIEvent) {
             NavMeshAgent navMeshAgent((float)agentHeight->value(), (float)agentRadius->value());
             navMeshAgent.setMaxSlope(AngleConverter<float>::toRadian((float)maxSlope->value()));

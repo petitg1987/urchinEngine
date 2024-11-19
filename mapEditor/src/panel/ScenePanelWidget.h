@@ -4,7 +4,6 @@
 #include <QtWidgets/QTabWidget>
 
 #include <UrchinCommon.h>
-#include <UrchinAggregation.h>
 #include <controller/SceneController.h>
 #include <panel/objects/ObjectPanelWidget.h>
 #include <panel/lights/LightPanelWidget.h>

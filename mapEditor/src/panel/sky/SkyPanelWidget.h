@@ -57,7 +57,7 @@ namespace urchin {
             void clearZpSkyboxFilename();
             void clearSkyboxFilename(QLineEdit*);
 
-            void skyChanged();
+            void skyChanged() const;
     };
 
 }

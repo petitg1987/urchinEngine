@@ -1,4 +1,3 @@
-#include <stack>
 #include <algorithm>
 
 #include <path/navmesh/triangulation/TriangulationAlgorithm.h>

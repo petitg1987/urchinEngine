@@ -69,11 +69,11 @@ namespace urchin {
 
         private slots:
             void showAddWaterDialog();
-            void removeSelectedWater();
+            void removeSelectedWater() const;
 
-            void updateWaterProperties();
-            void updateSurfaceWaterProperties();
-            void updateUnderWaterProperties();
+            void updateWaterProperties() const;
+            void updateSurfaceWaterProperties() const;
+            void updateUnderWaterProperties() const;
 
             void showNormalTextureFilenameDialog();
             void clearNormalTextureFilename();

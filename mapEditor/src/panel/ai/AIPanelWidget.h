@@ -33,7 +33,7 @@ namespace urchin {
             bool disableAIEvent;
 
         private slots:
-            void aiChanged();
+            void aiChanged() const;
     };
 
 }

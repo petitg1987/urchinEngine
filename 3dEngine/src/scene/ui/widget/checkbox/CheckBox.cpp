@@ -1,5 +1,4 @@
 #include <scene/ui/widget/checkbox/CheckBox.h>
-#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <resources/ResourceRetriever.h>
 
 namespace urchin {

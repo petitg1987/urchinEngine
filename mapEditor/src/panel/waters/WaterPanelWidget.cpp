@@ -333,7 +333,7 @@ namespace urchin {
         }
     }
 
-    void WaterPanelWidget::removeSelectedWater() {
+    void WaterPanelWidget::removeSelectedWater() const {
         if (waterTableView->hasWaterEntitySelected()) {
             const WaterEntity& waterEntity = *waterTableView->getSelectedWaterEntity();
             waterController->removeWaterEntity(waterEntity);
@@ -342,7 +342,7 @@ namespace urchin {
         }
     }
 
-    void WaterPanelWidget::updateWaterProperties() {
+    void WaterPanelWidget::updateWaterProperties() const {
         if (!disableWaterEvent) {
             const WaterEntity& waterEntity = *waterTableView->getSelectedWaterEntity();
 
@@ -351,7 +351,7 @@ namespace urchin {
         }
     }
 
-    void WaterPanelWidget::updateSurfaceWaterProperties() {
+    void WaterPanelWidget::updateSurfaceWaterProperties() const {
         if (!disableWaterEvent) {
             const WaterEntity& waterEntity = *waterTableView->getSelectedWaterEntity();
 
@@ -363,7 +363,7 @@ namespace urchin {
         }
     }
 
-    void WaterPanelWidget::updateUnderWaterProperties() {
+    void WaterPanelWidget::updateUnderWaterProperties() const {
         if (!disableWaterEvent) {
             const WaterEntity& waterEntity = *waterTableView->getSelectedWaterEntity();
 

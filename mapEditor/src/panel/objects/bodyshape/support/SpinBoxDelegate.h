@@ -28,7 +28,7 @@ namespace urchin {
             QStandardItemModel* model;
 
         private slots:
-            void onChange(double);
+            void onChange(double) const;
     };
 
 }

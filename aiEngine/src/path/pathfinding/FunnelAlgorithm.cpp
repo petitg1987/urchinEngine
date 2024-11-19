@@ -2,7 +2,6 @@
 #include <utility>
 
 #include <path/pathfinding/FunnelAlgorithm.h>
-#include <path/navmesh/model/output/NavPolygon.h>
 
 namespace urchin {
 

@@ -216,7 +216,7 @@ namespace urchin {
         disableSkyEvent = false;
     }
 
-    void SkyPanelWidget::skyChanged() {
+    void SkyPanelWidget::skyChanged() const {
         if (!disableSkyEvent) {
             std::vector<std::string> skyboxFilenames;
             skyboxFilenames.emplace_back(xnSkyboxFilenameText->text().toStdString());

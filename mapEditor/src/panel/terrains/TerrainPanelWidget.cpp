@@ -420,7 +420,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::removeSelectedTerrain() {
+    void TerrainPanelWidget::removeSelectedTerrain() const {
         if (terrainTableView->hasTerrainEntitySelected()) {
             const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
             terrainController->removeTerrainEntity(terrainEntity);
@@ -429,7 +429,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::updateTerrainGeneralProperties() {
+    void TerrainPanelWidget::updateTerrainGeneralProperties() const {
         if (!disableTerrainEvent) {
             const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 
@@ -438,7 +438,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::updateTerrainMesh() {
+    void TerrainPanelWidget::updateTerrainMesh() const {
         if (!disableTerrainEvent) {
             const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 
@@ -446,7 +446,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::updateTerrainMaterial() {
+    void TerrainPanelWidget::updateTerrainMaterial() const {
         if (!disableTerrainEvent) {
             const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 
@@ -459,7 +459,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::updateTerrainGrass() {
+    void TerrainPanelWidget::updateTerrainGrass() const {
         if (!disableTerrainEvent) {
             const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 

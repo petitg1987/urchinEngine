@@ -1,7 +1,6 @@
 #include <utility>
 
 #include <sound/Sound.h>
-#include <player/filereader/SoundFileReader.h>
 
 namespace urchin {
 

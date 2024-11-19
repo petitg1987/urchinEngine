@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <QtWidgets/QDialogButtonBox>
 #include <QVariant>
 

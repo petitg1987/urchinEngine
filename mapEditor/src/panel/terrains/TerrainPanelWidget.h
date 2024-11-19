@@ -80,12 +80,12 @@ namespace urchin {
 
         private slots:
             void showAddTerrainDialog();
-            void removeSelectedTerrain();
+            void removeSelectedTerrain() const;
 
-            void updateTerrainGeneralProperties();
-            void updateTerrainMesh();
-            void updateTerrainMaterial();
-            void updateTerrainGrass();
+            void updateTerrainGeneralProperties() const;
+            void updateTerrainMesh() const;
+            void updateTerrainMaterial() const;
+            void updateTerrainGrass() const;
 
             void showMaskFilenameDialog();
             void clearMaskFilename();

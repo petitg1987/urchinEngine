@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <utility>
 
 #include <panel/objects/bodyshape/BodyShapeWidget.h>

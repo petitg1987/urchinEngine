@@ -624,7 +624,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::removeSelectedObject() {
+    void ObjectPanelWidget::removeSelectedObject() const {
         if (objectTableView->hasObjectEntitySelected()) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             objectController->removeObjectEntity(objectEntity);
@@ -663,7 +663,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::moveUpSelectedObject() {
+    void ObjectPanelWidget::moveUpSelectedObject() const {
         if (objectTableView->hasObjectEntitySelected()) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             bool controllerMoved = objectController->moveUpObjectEntity(objectEntity);
@@ -675,7 +675,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::moveDownSelectedObject() {
+    void ObjectPanelWidget::moveDownSelectedObject() const {
         if (objectTableView->hasObjectEntitySelected()) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             bool controllerMoved = objectController->moveDownObjectEntity(objectEntity);
@@ -705,7 +705,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::updateObjectTransform() {
+    void ObjectPanelWidget::updateObjectTransform() const {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
@@ -740,7 +740,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::updateObjectProperties() {
+    void ObjectPanelWidget::updateObjectProperties() const {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
@@ -754,7 +754,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::updateObjectTags() {
+    void ObjectPanelWidget::updateObjectTags() const {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
@@ -791,7 +791,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::updateObjectPhysicsProperties() {
+    void ObjectPanelWidget::updateObjectPhysicsProperties() const {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
@@ -804,7 +804,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::bodyShapeChanged(std::unique_ptr<const CollisionShape3D>& shape) {
+    void ObjectPanelWidget::bodyShapeChanged(std::unique_ptr<const CollisionShape3D>& shape) const {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             objectController->updateObjectPhysicsShape(objectEntity, std::move(shape));
