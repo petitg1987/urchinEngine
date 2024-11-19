@@ -209,6 +209,16 @@ namespace urchin {
             if (soundFilename.empty()) {
                 LabelStyleHelper::applyErrorStyle(soundFilenameLabel, "Sound file is mandatory");
                 hasError = true;
+            } else {
+                QVariant soundTypeVariant = soundTypeComboBox->currentData();
+                auto soundType = static_cast<Sound::SoundType>(soundTypeVariant.toInt());
+                if (soundType == Sound::SoundType::LOCALIZABLE) {
+                    SoundFileReader soundFileReader(soundFilename);
+                    if (soundFileReader.getNumberOfChannels() != 1) {
+                        LabelStyleHelper::applyErrorStyle(soundFilenameLabel, "Localizable sound must be a mono sound");
+                        hasError = true;
+                    }
+                }
             }
 
             if (!hasError) {
