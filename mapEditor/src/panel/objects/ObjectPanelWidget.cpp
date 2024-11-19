@@ -687,7 +687,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::updateObjectOrientationType() {
+    void ObjectPanelWidget::updateObjectOrientationType() const {
         if (!disableObjectEvent) {
             const ObjectEntity* objectEntity = objectTableView->getSelectedObjectEntity();
 

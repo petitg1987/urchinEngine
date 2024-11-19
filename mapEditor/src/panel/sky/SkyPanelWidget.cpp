@@ -170,31 +170,31 @@ namespace urchin {
         }
     }
 
-    void SkyPanelWidget::clearXnSkyboxFilename() {
+    void SkyPanelWidget::clearXnSkyboxFilename() const {
         clearSkyboxFilename(xnSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearXpSkyboxFilename() {
+    void SkyPanelWidget::clearXpSkyboxFilename() const {
         clearSkyboxFilename(xpSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearYnSkyboxFilename() {
+    void SkyPanelWidget::clearYnSkyboxFilename() const {
         clearSkyboxFilename(ynSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearYpSkyboxFilename() {
+    void SkyPanelWidget::clearYpSkyboxFilename() const {
         clearSkyboxFilename(ypSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearZnSkyboxFilename() {
+    void SkyPanelWidget::clearZnSkyboxFilename() const {
         clearSkyboxFilename(znSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearZpSkyboxFilename() {
+    void SkyPanelWidget::clearZpSkyboxFilename() const {
         clearSkyboxFilename(zpSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearSkyboxFilename(QLineEdit* skyboxFilenameText) {
+    void SkyPanelWidget::clearSkyboxFilename(QLineEdit* skyboxFilenameText) const {
         skyboxFilenameText->setText("");
 
         skyChanged();

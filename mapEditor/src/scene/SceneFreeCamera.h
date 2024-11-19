@@ -1,6 +1,5 @@
 #pragma once
 
-#include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 
 #include <widget/controller/mouse/MouseController.h>

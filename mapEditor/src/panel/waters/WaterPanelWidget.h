@@ -76,10 +76,10 @@ namespace urchin {
             void updateUnderWaterProperties() const;
 
             void showNormalTextureFilenameDialog();
-            void clearNormalTextureFilename();
+            void clearNormalTextureFilename() const;
 
             void showDudvMapFilenameDialog();
-            void clearDudvMapFilename();
+            void clearDudvMapFilename() const;
     };
 
 }

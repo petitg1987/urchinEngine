@@ -49,13 +49,13 @@ namespace urchin {
             void showZpSkyboxFilenameDialog();
             void showSkyboxFilenameDialog(QLineEdit*);
 
-            void clearXnSkyboxFilename();
-            void clearXpSkyboxFilename();
-            void clearYnSkyboxFilename();
-            void clearYpSkyboxFilename();
-            void clearZnSkyboxFilename();
-            void clearZpSkyboxFilename();
-            void clearSkyboxFilename(QLineEdit*);
+            void clearXnSkyboxFilename() const;
+            void clearXpSkyboxFilename() const;
+            void clearYnSkyboxFilename() const;
+            void clearYpSkyboxFilename() const;
+            void clearZnSkyboxFilename() const;
+            void clearZpSkyboxFilename() const;
+            void clearSkyboxFilename(QLineEdit*) const;
 
             void skyChanged() const;
     };

@@ -392,7 +392,7 @@ namespace urchin {
         }
     }
 
-    void WaterPanelWidget::clearNormalTextureFilename() {
+    void WaterPanelWidget::clearNormalTextureFilename() const {
         this->normalTextureFilenameText->setText("");
 
         updateSurfaceWaterProperties();
@@ -419,7 +419,7 @@ namespace urchin {
         }
     }
 
-    void WaterPanelWidget::clearDudvMapFilename() {
+    void WaterPanelWidget::clearDudvMapFilename() const {
         this->dudvMapFilenameText->setText("");
 
         updateSurfaceWaterProperties();

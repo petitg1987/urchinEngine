@@ -6,7 +6,6 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
 
-#include <UrchinAggregation.h>
 #include <controller/objects/ObjectController.h>
 
 namespace urchin {

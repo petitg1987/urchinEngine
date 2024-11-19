@@ -88,14 +88,14 @@ namespace urchin {
             void updateTerrainGrass() const;
 
             void showMaskFilenameDialog();
-            void clearMaskFilename();
+            void clearMaskFilename() const;
             void showMaterialFilenameDialog(const QString&);
-            void clearMaterialFilename(const QString&);
+            void clearMaterialFilename(const QString&) const;
 
             void showGrassTextureFilenameDialog();
-            void clearGrassTextureFilename();
+            void clearGrassTextureFilename() const;
             void showGrassMaskFilenameDialog();
-            void clearGrassMaskFilename();
+            void clearGrassMaskFilename() const;
     };
 
 }

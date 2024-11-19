@@ -120,7 +120,7 @@ namespace urchin {
             void moveUpSelectedObject() const;
             void moveDownSelectedObject() const;
 
-            void updateObjectOrientationType();
+            void updateObjectOrientationType() const;
             void updateObjectTransform() const;
             void updateObjectScale();
             void updateObjectProperties() const;

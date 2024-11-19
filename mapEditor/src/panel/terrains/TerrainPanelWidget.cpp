@@ -493,7 +493,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::clearMaskFilename() {
+    void TerrainPanelWidget::clearMaskFilename() const {
         this->maskMapFilenameText->setText("");
 
         updateTerrainMaterial();
@@ -522,7 +522,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::clearMaterialFilename(const QString& positionIndexStr) {
+    void TerrainPanelWidget::clearMaterialFilename(const QString& positionIndexStr) const {
         auto i = (unsigned int)std::stoi(positionIndexStr.toStdString());
         this->materialFilenameTexts[i]->setText("");
 
@@ -550,7 +550,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::clearGrassTextureFilename() {
+    void TerrainPanelWidget::clearGrassTextureFilename() const {
         this->grassTextureFilenameText->setText("");
 
         updateTerrainGrass();
@@ -577,7 +577,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::clearGrassMaskFilename() {
+    void TerrainPanelWidget::clearGrassMaskFilename() const {
         this->grassMaskFilenameText->setText("");
 
         updateTerrainGrass();
