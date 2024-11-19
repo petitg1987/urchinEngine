@@ -11,7 +11,9 @@ namespace urchin {
 
         auto soundChunk = udaParser.getFirstChunk(true, SOUND_TAG, UdaAttribute(), soundEntityChunk);
         auto soundTriggerChunk = udaParser.getFirstChunk(true, SOUND_TRIGGER_TAG, UdaAttribute(), soundEntityChunk);
-        soundEntity->setSoundComponent(std::make_unique<SoundComponent>(SoundReaderWriter::load(soundChunk, udaParser), SoundTriggerReaderWriter::load(soundTriggerChunk, udaParser)));
+        std::shared_ptr sound = SoundReaderWriter::load(soundChunk, udaParser);
+        std::shared_ptr soundTrigger = SoundTriggerReaderWriter::load(soundTriggerChunk, udaParser, sound);
+        soundEntity->setSoundComponent(std::make_unique<SoundComponent>(sound, soundTrigger));
 
         return soundEntity;
     }

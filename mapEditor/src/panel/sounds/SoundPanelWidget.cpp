@@ -260,7 +260,9 @@ namespace urchin {
         const SoundTrigger& soundTrigger = soundEntity.getSoundComponent()->getSoundTrigger();
         setupPlayBehaviorDataFrom(soundTrigger);
 
-        if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::MANUAL_TRIGGER) {
+        if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::AUTO_TRIGGER) {
+            setupAutoTriggerDataFrom();
+        } else if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::MANUAL_TRIGGER) {
             setupManualTriggerDataFrom();
         } else if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::AREA_TRIGGER) {
             setupShapeTriggerDataFrom(soundEntity);
@@ -294,6 +296,11 @@ namespace urchin {
         if (playBehaviorIndex != -1) {
             playBehavior->setCurrentIndex(playBehaviorIndex);
         }
+    }
+
+    void SoundPanelWidget::setupAutoTriggerDataFrom() const {
+        specificAreaTriggerGroupBox->hide();
+        soundTriggerType->setText(NewSoundDialog::AUTO_TRIGGER_LABEL);
     }
 
     void SoundPanelWidget::setupManualTriggerDataFrom() const {

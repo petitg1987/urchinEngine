@@ -2,13 +2,17 @@
 #include <map/save/sound/soundshape/SoundShapeReaderWriterRetriever.h>
 #include <map/save/sound/soundshape/SoundShapeReaderWriter.h>
 
+#include "trigger/AutoTrigger.h"
+
 namespace urchin {
 
-    std::unique_ptr<SoundTrigger> SoundTriggerReaderWriter::load(const UdaChunk* soundTriggerChunk, const UdaParser& udaParser) {
+    std::unique_ptr<SoundTrigger> SoundTriggerReaderWriter::load(const UdaChunk* soundTriggerChunk, const UdaParser& udaParser, std::shared_ptr<Sound> sound) {
         PlayBehavior playBehavior = loadPlayBehavior(soundTriggerChunk, udaParser);
 
         std::string soundTriggerType = soundTriggerChunk->getAttributeValue(TYPE_ATTR);
-        if (soundTriggerType == MANUAL_VALUE) {
+        if (soundTriggerType == AUTO_VALUE) {
+            return std::make_unique<AutoTrigger>(playBehavior, std::move(sound));
+        } else if (soundTriggerType == MANUAL_VALUE) {
             return std::make_unique<ManualTrigger>(playBehavior);
         } else if (soundTriggerType == SHAPE_VALUE) {
             auto soundShapeChunk = udaParser.getFirstChunk(true, SOUND_SHAPE_TAG, UdaAttribute(), soundTriggerChunk);
@@ -22,7 +26,9 @@ namespace urchin {
     }
 
     void SoundTriggerReaderWriter::write(UdaChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaParser& udaWriter) {
-        if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
+        if (soundTrigger.getTriggerType() == SoundTrigger::AUTO_TRIGGER) {
+            soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, AUTO_VALUE));
+        } else if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger.getTriggerType() == SoundTrigger::AREA_TRIGGER) {
             const auto& areaTrigger = static_cast<const AreaTrigger&>(soundTrigger);

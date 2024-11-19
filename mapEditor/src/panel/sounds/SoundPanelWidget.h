@@ -40,6 +40,7 @@ namespace urchin {
             void setupGlobalSoundDataFrom() const;
             void setupLocalizableSoundDataFrom(const LocalizableSound&) const;
             void setupPlayBehaviorDataFrom(const SoundTrigger&) const;
+            void setupAutoTriggerDataFrom() const;
             void setupManualTriggerDataFrom() const;
             void setupShapeTriggerDataFrom(const SoundEntity&);
 

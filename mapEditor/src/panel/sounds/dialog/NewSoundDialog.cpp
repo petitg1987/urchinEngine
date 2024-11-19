@@ -11,6 +11,8 @@
 #include <widget/style/ButtonStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 
+#include "trigger/AutoTrigger.h"
+
 namespace urchin {
 
     QString NewSoundDialog::preferredSoundPath = QString();
@@ -115,6 +117,7 @@ namespace urchin {
         soundTriggerTypeComboBox = new QComboBox();
         mainLayout->addWidget(soundTriggerTypeComboBox, 5, 1);
         soundTriggerTypeComboBox->setFixedWidth(150);
+        soundTriggerTypeComboBox->addItem(AUTO_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::AUTO_TRIGGER));
         soundTriggerTypeComboBox->addItem(MANUAL_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::MANUAL_TRIGGER));
         soundTriggerTypeComboBox->addItem(AREA_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::AREA_TRIGGER));
     }
@@ -152,7 +155,9 @@ namespace urchin {
             QVariant variant = soundTriggerTypeComboBox->currentData();
             auto triggerType = static_cast<SoundTrigger::TriggerType>(variant.toInt());
             std::shared_ptr<SoundTrigger> soundTrigger;
-            if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
+            if (triggerType == SoundTrigger::AUTO_TRIGGER) {
+                soundTrigger = std::make_shared<AutoTrigger>(PlayBehavior::PLAY_ONCE, sound);
+            } else if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
                 soundTrigger = std::make_shared<ManualTrigger>(PlayBehavior::PLAY_ONCE);
             } else if (triggerType == SoundTrigger::AREA_TRIGGER) {
                 auto newDefaultShape = DefaultSoundShapeCreator(*sound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);

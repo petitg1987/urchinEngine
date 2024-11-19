@@ -20,6 +20,7 @@ namespace urchin {
             static constexpr char LOCALIZABLE_SOUND_LABEL[] = "Localizable";
             static constexpr char MUSIC_SOUND_LABEL[] = "Music";
             static constexpr char EFFECTS_SOUND_LABEL[] = "Effect";
+            static constexpr char AUTO_TRIGGER_LABEL[] = "Auto";
             static constexpr char MANUAL_TRIGGER_LABEL[] = "Manual";
             static constexpr char AREA_TRIGGER_LABEL[] = "Area";
 

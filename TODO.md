@@ -84,7 +84,6 @@
 
 # Sound engine
 * Sound trigger
-  * **NEW FEATURE** (`major`): Review spatial sound creation to avoid manual creation of the sphere shape trigger matching the spatial sound properties
   * **NEW FEATURE** (`medium`): Support convex hull sound shape
   * **NEW FEATURE** (`medium`): Support portal IN and portal OUT to trigger sound
 * Listener    
