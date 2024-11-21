@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #include <math/geometry/3d/object/Frustum.h>
+#include <math/geometry/3d/object/AABBox.h>
 #include <math/trigonometry/AngleConverter.h>
 #include <math/algorithm/MinEnclosingSphere.h>
 
