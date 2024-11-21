@@ -31,8 +31,8 @@ namespace urchin {
 
     //explicit template
     template class MinEnclosingSphere<float>;
-    template class Sphere<float> MinEnclosingSphere<float>::compute<4ul>(std::array<Point3<float>, 4ul> const&);
+    template Sphere<float> MinEnclosingSphere<float>::compute<4ul>(std::array<Point3<float>, 4ul> const&);
 
     template class MinEnclosingSphere<double>;
-    template class Sphere<double> MinEnclosingSphere<double>::compute<4ul>(std::array<Point3<double>, 4ul> const&);
+    template Sphere<double> MinEnclosingSphere<double>::compute<4ul>(std::array<Point3<double>, 4ul> const&);
 }

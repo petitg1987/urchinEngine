@@ -1,4 +1,3 @@
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 #include <UrchinAggregation.h>

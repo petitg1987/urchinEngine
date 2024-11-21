@@ -1,4 +1,3 @@
-#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 

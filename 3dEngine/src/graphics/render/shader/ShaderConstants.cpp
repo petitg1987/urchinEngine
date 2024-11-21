@@ -1,5 +1,7 @@
 #include <cstring>
-#include <cassert>
+#ifdef URCHIN_DEBUG
+    #include <cassert>
+#endif
 
 #include <graphics/render/shader/ShaderConstants.h>
 

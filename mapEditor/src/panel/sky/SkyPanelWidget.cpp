@@ -1,4 +1,3 @@
-#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QLabel>
 #include <QMessageBox>

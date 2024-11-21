@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include <QMessageBox>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 

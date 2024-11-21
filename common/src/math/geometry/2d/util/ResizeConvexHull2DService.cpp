@@ -1,5 +1,7 @@
-#include <cassert>
-#include <limits>
+#ifdef URCHIN_DEBUG
+    #include <cassert>
+    #include <limits>
+#endif
 
 #include <math/geometry/2d/util/ResizeConvexHull2DService.h>
 #include <math/geometry/2d/util/ResizePolygon2DService.h>
@@ -11,7 +13,9 @@ namespace urchin {
      * Positive distance will extend convex hull shape. Negative distance are not supported by this algorithm.
      */
     template<class T> std::unique_ptr<ConvexHullShape2D<T>> ResizeConvexHull2DService<T>::resizeConvexHullShape(const ConvexHullShape2D<T>& originalConvexHullShape, T distance) {
-        assert(distance > (0.0 - std::numeric_limits<T>::epsilon()));
+        #ifdef URCHIN_DEBUG
+            assert(distance > (0.0 - std::numeric_limits<T>::epsilon()));
+        #endif
 
         std::vector<Point2<T>> ccwPoints = originalConvexHullShape.getPoints();
         ResizePolygon2DService<T>::resizePolygon(ccwPoints, distance);

@@ -1,8 +1,10 @@
-#include <cassert>
 #include <limits>
 #include <cmath>
 #include <stdexcept>
 #include <functional>
+#ifdef URCHIN_DEBUG
+    #include <cassert>
+#endif
 
 #include <math/geometry/3d/object/OBBox.h>
 #include <math/geometry/3d/Rectangle3D.h>

@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <QtWidgets/QGroupBox>
 
 #include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
 #include <panel/objects/dialog/ChangeBodyShapeDialog.h>

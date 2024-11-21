@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QFont>
 
 #include <MapEditorWindow.h>
 using namespace urchin;

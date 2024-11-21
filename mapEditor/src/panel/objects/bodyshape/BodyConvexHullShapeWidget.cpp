@@ -1,4 +1,3 @@
-#include <QtWidgets/QLabel>
 #include <QVariant>
 #include <QHeaderView>
 
