@@ -27,12 +27,12 @@ namespace urchin {
         descriptorSetsDirty.resize(getRenderTarget().getNumFramebuffer(), false);
 
         if (!getRenderTarget().isTestMode()) {
-            for (const auto& uniformTextureReaderArray : std::views::values(uniformTextureReaders)) {
+            for (const std::vector<std::shared_ptr<TextureReader>>& uniformTextureReaderArray : std::views::values(uniformTextureReaders)) {
                 for (const auto& uniformTextureReader : uniformTextureReaderArray) {
                     uniformTextureReader->initialize();
                 }
             }
-            for (const auto& uniformTextureOutput : std::views::values(uniformTextureOutputs)) {
+            for (const std::shared_ptr<Texture>& uniformTextureOutput : std::views::values(uniformTextureOutputs)) {
                 uniformTextureOutput->initialize();
             }
         }
@@ -119,7 +119,7 @@ namespace urchin {
     }
 
     void PipelineProcessor::destroyUniformBuffers() {
-        for (auto& uniformsBuffer : std::views::values(uniformsBuffers)) {
+        for (AlterableBufferHandler& uniformsBuffer : std::views::values(uniformsBuffers)) {
             uniformsBuffer.cleanup();
         }
         uniformsBuffers.clear();
@@ -188,7 +188,7 @@ namespace urchin {
         //uniform buffer objects
         bufferInfos.clear();
         bufferInfos.reserve(uniformData.size());
-        for (const auto& [uniformBinding, uniformSingleData] : uniformData) {
+        for (uint32_t uniformBinding : std::views::keys(uniformData)) {
             VkDescriptorBufferInfo bufferInfo{};
             bufferInfo.buffer = uniformsBuffers.at(uniformBinding).getBuffer(frameIndex);
             bufferInfo.offset = 0;
@@ -325,9 +325,9 @@ namespace urchin {
     std::span<OffscreenRender*> PipelineProcessor::getTexturesWriter() const {
         texturesWriter.clear();
 
-        for (auto& uniformTextureReaderArray : std::views::values(uniformTextureReaders)) {
-            for (auto& uniformTextureReader : uniformTextureReaderArray) {
-                auto* lastTextureWriter = uniformTextureReader->getTexture()->getLastTextureWriter();
+        for (const std::vector<std::shared_ptr<TextureReader>>& uniformTextureReaderArray : std::views::values(uniformTextureReaders)) {
+            for (const std::shared_ptr<TextureReader>& uniformTextureReader : uniformTextureReaderArray) {
+                OffscreenRender* lastTextureWriter = uniformTextureReader->getTexture()->getLastTextureWriter();
                 if (lastTextureWriter) {
                     texturesWriter.emplace_back(lastTextureWriter);
                 }

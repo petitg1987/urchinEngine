@@ -15,21 +15,21 @@ namespace urchin {
     }
 
     void WidgetSetDisplayer::onUiRendererSizeUpdated() const {
-        for (const auto& displayer : std::views::values(widgetDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetDisplayers)) {
             displayer->onUiRendererSizeUpdated();
         }
 
-        for (const auto& displayer : std::views::values(widgetInstanceDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetInstanceDisplayers)) {
             displayer->onUiRendererSizeUpdated();
         }
     }
 
     void WidgetSetDisplayer::onGammaFactorUpdated() const {
-        for (const auto& displayer : std::views::values(widgetDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetDisplayers)) {
             displayer->onGammaFactorUpdated();
         }
 
-        for (const auto& displayer : std::views::values(widgetInstanceDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetInstanceDisplayers)) {
             displayer->onGammaFactorUpdated();
         }
     }
@@ -89,12 +89,12 @@ namespace urchin {
     }
 
     void WidgetSetDisplayer::clearDisplayers() {
-        for (const auto& [widget, displayer] : widgetDisplayers) {
+        for (Widget* widget : std::views::keys(widgetDisplayers)) {
             unobserveWidgetUpdate(*widget);
         }
         widgetDisplayers.clear();
 
-        for (const auto& displayer : std::views::values(widgetInstanceDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetInstanceDisplayers)) {
             for (Widget* widget : displayer->getInstanceWidgets()) {
                 unobserveWidgetUpdate(*widget);
             }

@@ -1,5 +1,6 @@
 #include <cstring>
 #include <cassert>
+#include <ranges>
 #include <libs/vkenum/vk_enum.h>
 #include <UrchinCommon.h>
 
@@ -175,7 +176,7 @@ namespace urchin {
         }
 
         //check optional extensions
-        for (const auto& [extensionName, extensionDescription] : physicalDeviceOptionalExtensions) {
+        for (const char* extensionName : std::views::keys(physicalDeviceOptionalExtensions)) {
             if (checkPhysicalDeviceExtensionSupport(physicalDeviceToCheck, extensionName)) {
                 std::vector<const char*> emptyExt;
                 physicalDeviceOptionalExtensionsSupported.try_emplace(physicalDeviceToCheck, emptyExt).first->second.emplace_back(extensionName);

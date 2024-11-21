@@ -1,4 +1,5 @@
 #include <libs/vkenum/vk_enum.h>
+#include <ranges>
 
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineContainer.h>
@@ -169,7 +170,7 @@ namespace urchin {
             stageFlags = VK_SHADER_STAGE_COMPUTE_BIT;
         }
 
-        for (const auto& [uniformBinding, uniformSingleData] : *uniformData) {
+        for (uint32_t uniformBinding : std::views::keys(*uniformData)) {
             VkDescriptorSetLayoutBinding uboLayoutBinding{};
             uboLayoutBinding.binding = uniformBinding;
             uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -189,7 +190,7 @@ namespace urchin {
             bindings.emplace_back(samplerLayoutBinding);
         }
 
-        for (const auto& [uniformBinding, uniformTextureOutput] : *uniformTextureOutputs) {
+        for (uint32_t uniformBinding : std::views::keys(*uniformTextureOutputs)) {
             VkDescriptorSetLayoutBinding samplerLayoutBinding{};
             samplerLayoutBinding.binding = uniformBinding;
             samplerLayoutBinding.descriptorCount = (uint32_t)1;

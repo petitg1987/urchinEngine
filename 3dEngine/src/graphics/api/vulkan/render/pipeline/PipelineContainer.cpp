@@ -11,7 +11,7 @@ namespace urchin {
 
     PipelineContainer::~PipelineContainer() {
         cleanPipelines();
-        for (const auto& pipeline : std::views::values(pipelines)) {
+        for (const std::shared_ptr<Pipeline>& pipeline : std::views::values(pipelines)) {
             Logger::instance().logError("Pipeline not released: " + pipeline->getName());
         }
     }

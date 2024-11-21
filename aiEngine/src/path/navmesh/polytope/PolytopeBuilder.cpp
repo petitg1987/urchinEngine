@@ -138,7 +138,7 @@ namespace urchin {
 
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(expandedConvexHull->getIndexedTriangles().size() * 3);
-        for (const auto& triangle : std::views::values(expandedConvexHull->getIndexedTriangles())) {
+        for (const IndexedTriangle3D<float>& triangle : std::views::values(expandedConvexHull->getIndexedTriangles())) {
             const std::array<std::size_t, 3>& indices = triangle.getIndices();
 
             std::vector surfacePoints = {

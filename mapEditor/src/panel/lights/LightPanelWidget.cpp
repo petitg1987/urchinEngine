@@ -1,5 +1,3 @@
-#include <QtWidgets/QHBoxLayout>
-
 #include <panel/lights/LightPanelWidget.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>

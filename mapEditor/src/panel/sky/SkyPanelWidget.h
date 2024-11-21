@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QWidget>
-#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QDoubleSpinBox>
 

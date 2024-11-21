@@ -139,7 +139,7 @@ namespace urchin {
         }
 
         //reset all animations to frame 0
-        for (const auto& anim : std::views::values(animations)) {
+        for (const std::unique_ptr<Animation>& anim : std::views::values(animations)) {
             anim->gotoFrame(0);
         }
 

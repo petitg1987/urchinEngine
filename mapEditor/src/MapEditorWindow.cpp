@@ -360,7 +360,7 @@ namespace urchin {
         saveAsAction->setEnabled(hasMapOpen);
         closeAction->setEnabled(hasMapOpen);
         reloadAction->setEnabled(hasMapOpen);
-        for (const auto& action : std::views::values(viewActions)) {
+        for (QAction* action : std::views::values(viewActions)) {
             action->setEnabled(hasMapOpen);
         }
 

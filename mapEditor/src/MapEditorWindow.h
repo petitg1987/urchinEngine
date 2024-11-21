@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 #include <QMainWindow>
-#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QBoxLayout>
 
 #include <scene/SceneDisplayer.h>
 #include <scene/SceneDisplayerWindow.h>

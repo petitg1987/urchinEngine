@@ -6,7 +6,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QGridLayout>
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>

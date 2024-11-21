@@ -107,7 +107,7 @@ namespace urchin {
         labelStatistics.labelsCount = (unsigned int)labels.size();
         labelStatistics.wordsCount = 0;
 
-        for (const auto &value : std::views::values(labels)) {
+        for (const std::string& value : std::views::values(labels)) {
             std::string text = value;
 
             //remove parameters (nothing to translate)

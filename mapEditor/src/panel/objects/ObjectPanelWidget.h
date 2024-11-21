@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>

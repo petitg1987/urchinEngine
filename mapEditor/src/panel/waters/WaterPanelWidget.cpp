@@ -1,4 +1,3 @@
-#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QFileDialog>
 #include <QMessageBox>
 #include <UrchinAggregation.h>

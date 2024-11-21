@@ -133,12 +133,12 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::clearDisplayers() {
-        for (const auto& [model, displayer] : modelDisplayers) {
+        for (Model* model : std::views::keys(modelDisplayers)) {
             unobserveModelUpdate(*model);
         }
         modelDisplayers.clear();
 
-        for (const auto& displayer : std::views::values(modelInstanceDisplayers)) {
+        for (const std::unique_ptr<ModelInstanceDisplayer>& displayer : std::views::values(modelInstanceDisplayers)) {
             for (Model* model : displayer->getInstanceModels()) {
                 unobserveModelUpdate(*model);
             }

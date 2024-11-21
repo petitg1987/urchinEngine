@@ -12,7 +12,7 @@ namespace urchin {
 
     ResourceContainer::~ResourceContainer() {
         cleanResources(true);
-        for (const auto& resource : std::views::values(resources)) {
+        for (const std::shared_ptr<Resource>& resource : std::views::values(resources)) {
             Logger::instance().logError("Resources not released: " + resource->getName() + ". Usage count: " + std::to_string(resource.use_count()));
         }
     }

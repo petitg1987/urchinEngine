@@ -1,4 +1,3 @@
-#include <bitset>
 #include <UrchinCommon.h>
 
 #include <loader/image/LoaderPNG.h>

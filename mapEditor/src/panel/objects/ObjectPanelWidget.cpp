@@ -1,4 +1,3 @@
-#include <QtWidgets/QHBoxLayout>
 #include <UrchinAggregation.h>
 
 #include <widget/style/GroupBoxStyleHelper.h>
