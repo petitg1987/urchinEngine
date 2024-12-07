@@ -5,6 +5,7 @@
 # 3d Engine
 * Graphics API
   * **OPTIMIZATION** (`medium`): Use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
+  * **OPTIMIZATION** (`medium`): Use sub-passes for deferred rendering (see <https://www.saschawillems.de/blog/2018/07/19/vulkan-input-attachments-and-sub-passes/>)
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`minor`): Use shader constants instead of uniform for values infrequently refreshed
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
@@ -16,31 +17,28 @@
   * **OPTIMIZATION** (`major`): Remove the ModelInstanceDisplayer in ModelSetDisplayer#removeModelFromDisplayer() for models not displayed for a long time
   * **OPTIMIZATION** (`medium`): Draw calls batching
     * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
-  * **OPTIMIZATION** (`medium`): Make UV coordinates part of the instancing
-    * Tips: avoid to send full UV coordinates at each frame by using a Vulkan Descriptor Indexing to access to an array of UV by index
   * **OPTIMIZATION** (`medium`): Parallelize the creation of the ModelDisplayer
   * **OPTIMIZATION** (`medium`): Models LOD
-* Shadow
+* Lighting & Shadow
   * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
   * **OPTIMIZATION** (`medium`): Avoid to render all the frustum models for each cascade: use the split frustum models instead
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`minor`): Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
-* Lighting
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
+* Anti-aliasing
+  * **NEW FEATURE** (`medium`): Implement TAA (see <https://sugulee.wordpress.com/2021/06/21/temporal-anti-aliasingtaa-tutorial/>)
 * Landscape
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
   * **NEW FEATURE** (`minor`): Use material textures (normal map...) for terrain
   * **NEW FEATURE** (`minor`): Add auto shadow on terrain
+  * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
 * UI
   * **OPTIMIZATION** (`major`): Remove the WidgetInstanceDisplayer in WidgetSetDisplayer#removeWidgetFromDisplayer() for widgets not displayed for a long time
   * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
   * **IMPROVEMENT** (`medium`): Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
   * **IMPROVEMENT** (`minor`): Handle scrollable containers in UI 3d
   * **NEW FEATURE** (`minor`): Combo list
-* Graphic effect
-  * **NEW FEATURE** (`medium`): Decal (bullet impact, blood spread...)
-  * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
 
 # AI engine
 * Navigation mesh
@@ -78,6 +76,7 @@
     * Tips: don't disable bodies when there is only one contact point
 * Constraints solver
   * **BUG** (`medium`): A restitution of 1.0 introduce new force in the system. Example: a superball bounces higher and higher at each collision
+    * Tips: possible cause described in <https://youtu.be/ZOfMA8h4qO8?t=109>
 * Character
   * **NEW FEATURE** (`medium`): Handle stair for character controller
   * **NEW FEATURE** (`medium`): Apply impulse on objects hit by character or falling on the character
@@ -91,7 +90,7 @@
 
 # Aggregation
 * Object entity
-  * **NEW FEATURE** (`major`): Attach a sound component to an object entity
+  * **NEW FEATURE** (`major`): Attach a sound component to an object entity (or create new game object)
   * **NEW FEATURE** (`major`): Generate collision convex hull shapes from meshes inside a urchinMesh file
 
 # Map editor
