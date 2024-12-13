@@ -21,7 +21,7 @@ namespace urchin {
             this->inputTexture = inputTexture;
 
             clearRenderer();
-            outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
+            outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
             renderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
             renderTarget->addOutputTexture(outputTexture);
             renderTarget->initialize();

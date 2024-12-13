@@ -14,6 +14,7 @@ namespace urchin {
             static const TextureFormat ALBEDO_AND_EMISSIVE_TEXTURE_FORMAT;
             static const TextureFormat NORMAL_AND_AMBIENT_TEXTURE_FORMAT;
             static const TextureFormat MATERIAL_TEXTURE_FORMAT;
+            static const TextureFormat SCENE_HDR_TEXTURE_FORMAT;
             static const TextureFormat SCENE_TEXTURE_FORMAT;
 
             VisualConfig();
