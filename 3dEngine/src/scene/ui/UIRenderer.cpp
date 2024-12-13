@@ -385,7 +385,7 @@ namespace urchin {
     }
 
     /**
-     * Widgets to render must be rendered in depth order. In others words, all widgets of depth 1 must be rendered and than all widgets of depth 2, etc.
+     * Widgets to render must be rendered in depth order. In others words, all widgets of depth 1 must be rendered and then all widgets of depth 2, etc.
      * This way, the widgets of same depth can benefit from instancing.
      *
      * One exception exists for root widget (Widget#isRootWidget()) which allow to user to not care about depth between two root widgets and all their children.
