@@ -194,16 +194,16 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "widgetPreRender");
 
         activeWidgetDisplayers.clear();
-        activeWidgetDisplayersOrdered.clear();
         for (const Widget* widget : widgets) {
             WidgetInstanceDisplayer* widgetInstanceDisplayer = findWidgetInstanceDisplayer(*widget);
-            if (activeWidgetDisplayers.insert(widgetInstanceDisplayer).second) {
-                activeWidgetDisplayersOrdered.push_back(widgetInstanceDisplayer);
+            bool unknownInstanceDisplayer = std::ranges::none_of(activeWidgetDisplayers, [widgetInstanceDisplayer](const WidgetInstanceDisplayer* v) {return v == widgetInstanceDisplayer;});
+            if (unknownInstanceDisplayer) {
+                activeWidgetDisplayers.push_back(widgetInstanceDisplayer);
                 widgetInstanceDisplayer->resetRenderingWidgets();
             }
             widgetInstanceDisplayer->registerRenderingWidget(*widget);
         }
-        for (const WidgetInstanceDisplayer* activeWidgetDisplayer : activeWidgetDisplayersOrdered) {
+        for (const WidgetInstanceDisplayer* activeWidgetDisplayer : activeWidgetDisplayers) {
             renderingOrder++;
             activeWidgetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix);
         }
