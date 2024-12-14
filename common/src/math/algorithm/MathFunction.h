@@ -1,7 +1,6 @@
 #pragma once
 
 #include <limits>
-#include <vector>
 
 namespace urchin {
 
@@ -10,7 +9,6 @@ namespace urchin {
             MathFunction() = delete;
 
             template<class T> static T sign(T);
-            template<class T> static T max(const std::vector<T>&);
 
             static unsigned int powerOfTwo(unsigned int);
             static int pow(int, unsigned int);

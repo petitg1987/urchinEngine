@@ -195,9 +195,9 @@ namespace urchin {
             paused = this->paused;
             if (!paused) {
                 gravity = this->gravity;
-                copiedProcessables = this->processables;
+                std::ranges::copy(processables, std::back_inserter(copiedProcessables));
                 copiedProcessables.reserve(copiedProcessables.size() + oneShotProcessables.size());
-                for (auto& oneShotProcessable : oneShotProcessables) {
+                for (std::unique_ptr<Processable>& oneShotProcessable : oneShotProcessables) {
                     copiedProcessables.push_back(std::move(oneShotProcessable));
                 }
                 oneShotProcessables.clear();

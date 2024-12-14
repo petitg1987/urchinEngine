@@ -19,16 +19,6 @@ namespace urchin {
         return 0;
     }
 
-    template<class T> T MathFunction::max(const std::vector<T>& values) {
-        T maxValue = -std::numeric_limits<T>::max();
-        for (T value : values) {
-            if (value > maxValue) {
-                maxValue = value;
-            }
-        }
-        return maxValue;
-    }
-
     unsigned int MathFunction::powerOfTwo(unsigned int exponent) {
         return 1u << exponent;
     }
@@ -109,7 +99,6 @@ namespace urchin {
 
     //explicit template
     template float MathFunction::sign<float>(float);
-    template float MathFunction::max(const std::vector<float>&);
     template bool MathFunction::isEqual(float, float, float);
     template bool MathFunction::isZero(float, float);
     template bool MathFunction::isOne(float, float);
