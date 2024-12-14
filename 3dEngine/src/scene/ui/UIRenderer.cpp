@@ -1,5 +1,4 @@
 #include <utility>
-#include <queue>
 
 #include <scene/ui/UIRenderer.h>
 #include <scene/ui/displayer/WidgetSetDisplayer.h>
@@ -391,8 +390,6 @@ namespace urchin {
      * One exception exists for root widget (Widget#isRootWidget()) which allow to user to not care about depth between two root widgets and all their children.
      */
     void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const {
-        std::queue<Widget*> widgetsQueue;
-
         for (const auto& widget : rootWidgets) {
             if (widget->isVisible()) {
                 widgetsQueue.push(widget.get());
