@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include <util/VectorUtil.h>
+#include <container/VectorUtil.h>
 #include <math/geometry/3d/object/AABBox.h>
 
 namespace urchin {

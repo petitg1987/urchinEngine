@@ -7,6 +7,10 @@
 #include <config/ConfigService.h>
 #include <config/FileSystem.h>
 
+#include <container/MapUtil.h>
+#include <container/ArrayUtil.h>
+#include <container/VectorUtil.h>
+
 #include <io/file/PropertyFileHandler.h>
 #include <io/file/FileReader.h>
 #include <io/svg/SVGExporter.h>
@@ -106,10 +110,7 @@
 #include <util/DateTimeUtil.h>
 #include <util/FileUtil.h>
 #include <util/StringUtil.h>
-#include <util/MapUtil.h>
 #include <util/TypeConverter.h>
 #include <util/UserAuthorityException.h>
-#include <util/ArrayUtil.h>
-#include <util/VectorUtil.h>
 #include <util/HashUtil.h>
 #include <util/TrueFalse.h>
