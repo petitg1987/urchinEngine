@@ -205,27 +205,32 @@ void UIRendererTest::containerWithLazyWidgets() {
 void UIRendererTest::windowChildRenderingOrder() {
     std::unique_ptr<UIRenderer> uiRenderer = setupUiRenderer();
 
-    auto win1 = Window::create(nullptr, Position(10.0f, 10.0f, PIXEL), Size(10.0f, 10.0f, PIXEL), "test", "my.text");
-    uiRenderer->addWidget(win1);
+    auto background = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL, PARENT_RIGHT_TOP), Size(100.0f, 100.0f, SCREEN_PERCENT), "ui/widget/empty.png");
+    uiRenderer->addWidget(background);
+
+    auto win1 = Window::create(background.get(), Position(10.0f, 10.0f, PIXEL), Size(10.0f, 10.0f, PIXEL), "test", "my.text");
     auto widgetWin1Lvl1 = StaticBitmap::create(win1.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
     auto widgetWin1Lvl2 = StaticBitmap::create(widgetWin1Lvl1.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
+    auto widgetWin1Lvl1SubWin = Window::create(win1.get(), Position(10.0f, 10.0f, PIXEL), Size(10.0f, 10.0f, PIXEL), "test", "my.text");
+    auto widgetWin1Lvl2SubWinLvl1 = StaticBitmap::create(widgetWin1Lvl1SubWin.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
     auto widgetWin1Lvl1Bis = StaticBitmap::create(win1.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
-
-    auto win2 = Window::create(nullptr, Position(10.0f, 10.0f, PIXEL), Size(10.0f, 10.0f, PIXEL), "test", "my.text");
-    uiRenderer->addWidget(win2);
+    auto win2 = Window::create(background.get(), Position(10.0f, 10.0f, PIXEL), Size(10.0f, 10.0f, PIXEL), "test", "my.text");
     auto widgetWin2Lvl1 = StaticBitmap::create(win2.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
 
     unsigned int renderingOrder = 0;
     uiRenderer->prepareRendering(1.0f / 60.0f, renderingOrder, Matrix4<float>());
 
     std::span<Widget* const> sortedWidgetsToRender = uiRenderer->getWidgetSetDisplayer().getWidgets();
-    AssertHelper::assertUnsignedIntEquals(sortedWidgetsToRender.size(), 8);
-    AssertHelper::assertTrue(sortedWidgetsToRender[0] == win1.get());
-    AssertHelper::assertTrue(sortedWidgetsToRender[2] == widgetWin1Lvl1.get());
-    AssertHelper::assertTrue(sortedWidgetsToRender[3] == widgetWin1Lvl1Bis.get());
-    AssertHelper::assertTrue(sortedWidgetsToRender[4] == widgetWin1Lvl2.get());
-    AssertHelper::assertTrue(sortedWidgetsToRender[5] == win2.get());
-    AssertHelper::assertTrue(sortedWidgetsToRender[7] == widgetWin2Lvl1.get());
+    AssertHelper::assertUnsignedIntEquals(sortedWidgetsToRender.size(), 12);
+    AssertHelper::assertTrue(sortedWidgetsToRender[0] == background.get());
+    AssertHelper::assertTrue(sortedWidgetsToRender[1] == win1.get());
+    AssertHelper::assertTrue(sortedWidgetsToRender[3] == widgetWin1Lvl1.get());
+    AssertHelper::assertTrue(sortedWidgetsToRender[4] == widgetWin1Lvl1SubWin.get());
+    AssertHelper::assertTrue(sortedWidgetsToRender[6] == widgetWin1Lvl2SubWinLvl1.get());
+    AssertHelper::assertTrue(sortedWidgetsToRender[7] == widgetWin1Lvl1Bis.get());
+    AssertHelper::assertTrue(sortedWidgetsToRender[8] == widgetWin1Lvl2.get());
+    AssertHelper::assertTrue(sortedWidgetsToRender[9] == win2.get());
+    AssertHelper::assertTrue(sortedWidgetsToRender[11] == widgetWin2Lvl1.get());
 }
 
 std::unique_ptr<UIRenderer> UIRendererTest::setupUiRenderer() {
