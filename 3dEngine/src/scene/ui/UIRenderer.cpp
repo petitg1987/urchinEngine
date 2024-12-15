@@ -389,28 +389,37 @@ namespace urchin {
      *
      * One exception exists for root widget (Widget#isRootWidget()) which allow to user to not care about depth between two root widgets and all their children.
      */
-    void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const {
-        for (const auto& widget : rootWidgets) {
-            if (widget->isVisible()) {
-                widgetsQueue.push(widget.get());
-            }
-        }
+    void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const { //TODO check memory new/delete
+        for (const auto& rootWidget : rootWidgets) {
+            if (rootWidget->isVisible()) {
+                widgetsQueue.push_back(rootWidget.get());
 
-        while (!widgetsQueue.empty()) {
-            Widget* widget = widgetsQueue.front();
-            widgetsQueue.pop();
+                while (!widgetsQueue.empty()) {
+                    Widget* widget = widgetsQueue.front();
+                    widgetsQueue.pop_front();
 
-            widget->prepareWidgetRendering(dt);
-            if (widget->requireRenderer()) {
-                widgetsToRender.push_back(widget);
-            }
+                    widget->prepareWidgetRendering(dt);
+                    if (widget->requireRenderer()) {
+                        widgetsToRender.push_back(widget);
+                    }
 
-            if (widget->isRootWidget()) {
-                prepareWidgets(dt, widget->getChildren());
-            } else {
-                for (const auto& widgetChild : widget->getChildren()) {
-                    if (widgetChild->isVisible()) {
-                        widgetsQueue.push(widgetChild.get());
+                    if (widget->isRootWidget()) {
+                        //TODO comment
+                        while (!widgetsQueue.empty()) {
+                            laterWidgetsQueue.push_front(widgetsQueue.back()); //TODO rename laterWidgetsQueue
+                            widgetsQueue.pop_back();
+                        }
+                    }
+
+                    for (const auto& widgetChild : widget->getChildren()) {
+                        if (widgetChild->isVisible()) {
+                            widgetsQueue.push_back(widgetChild.get());
+                        }
+                    }
+
+                    if (widgetsQueue.empty() && !laterWidgetsQueue.empty()) {
+                        widgetsQueue = std::move(laterWidgetsQueue);
+                        laterWidgetsQueue.clear();
                     }
                 }
             }

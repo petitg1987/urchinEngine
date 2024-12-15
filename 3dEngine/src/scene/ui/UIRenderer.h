@@ -1,6 +1,6 @@
 #pragma once
 
-#include <queue>
+#include <deque>
 #include <UrchinCommon.h>
 
 #include <graphics/api/GraphicsApi.h>
@@ -92,7 +92,8 @@ namespace urchin {
             std::vector<std::shared_ptr<Widget>> widgets;
 
             std::unique_ptr<WidgetSetDisplayer> widgetSetDisplayer;
-            mutable std::queue<Widget*> widgetsQueue;
+            mutable std::deque<Widget*> widgetsQueue;
+            mutable std::deque<Widget*> laterWidgetsQueue;
             mutable std::vector<Widget*> widgetsToRender;
 
             std::unique_ptr<TextureRenderer> debugFont;
