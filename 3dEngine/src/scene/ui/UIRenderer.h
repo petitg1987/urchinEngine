@@ -92,8 +92,9 @@ namespace urchin {
             std::vector<std::shared_ptr<Widget>> widgets;
 
             std::unique_ptr<WidgetSetDisplayer> widgetSetDisplayer;
+
             mutable ChunkAllocQueue<Widget*> widgetsQueue;
-            mutable ChunkAllocQueue<Widget*> laterWidgetsQueue;
+            mutable ChunkAllocQueue<Widget*> postponedWidgetsQueue;
             mutable std::vector<Widget*> widgetsToRender;
 
             std::unique_ptr<TextureRenderer> debugFont;

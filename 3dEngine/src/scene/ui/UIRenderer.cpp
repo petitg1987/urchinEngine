@@ -23,7 +23,7 @@ namespace urchin {
             bCanInteractWithUi(true),
             widgetSetDisplayer(std::make_unique<WidgetSetDisplayer>(*this)),
             widgetsQueue(32, 16),
-            laterWidgetsQueue(16, 8) {
+            postponedWidgetsQueue(16, 8) {
 
     }
 
@@ -389,9 +389,9 @@ namespace urchin {
      * Widgets to render must be rendered in depth order. In others words, all widgets of depth 1 must be rendered and then all widgets of depth 2, etc.
      * This way, the widgets of same depth can benefit from instancing.
      *
-     * One exception exists for root widget (Widget#isRootWidget()) which allow to user to not care about depth between two root widgets and all their children.
+     * One exception exists for root/window widgets: all their children are displayed in priority to another root widget (and their children) having a lower precedence.
      */
-    void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const { //TODO check memory new/delete
+    void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const {
         for (const auto& rootWidget : rootWidgets) {
             if (rootWidget->isVisible()) {
                 widgetsQueue.pushBack(rootWidget.get());
@@ -405,9 +405,8 @@ namespace urchin {
                     }
 
                     if (widget->isRootWidget()) {
-                        //TODO comment
                         while (!widgetsQueue.isEmpty()) {
-                            laterWidgetsQueue.pushFront(widgetsQueue.popBack()); //TODO rename laterWidgetsQueue
+                            postponedWidgetsQueue.pushFront(widgetsQueue.popBack());
                         }
                     }
 
@@ -417,11 +416,10 @@ namespace urchin {
                         }
                     }
 
-                    if (widgetsQueue.isEmpty() && !laterWidgetsQueue.isEmpty()) {
-                        while (!laterWidgetsQueue.isEmpty()) {
-                            widgetsQueue.pushBack(laterWidgetsQueue.popFront()); //TODO check if correct
+                    if (widgetsQueue.isEmpty()) {
+                        while (!postponedWidgetsQueue.isEmpty()) {
+                            widgetsQueue.pushBack(postponedWidgetsQueue.popFront());
                         }
-                        laterWidgetsQueue.clear();
                     }
                 }
             }

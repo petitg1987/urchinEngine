@@ -62,12 +62,6 @@ template<class T> int ChunkAllocQueue<T>::getCapacity() const {
     return capacity;
 }
 
-template<class T> void ChunkAllocQueue<T>::clear() {
-    size = 0;
-    frontIndex = 0;
-    backIndex = capacity - 1;
-}
-
 template<class T> void ChunkAllocQueue<T>::expandCapacity() {
     std::vector<T> newData(capacity + chunkSize);
     for (std::size_t i = 0; i < size; ++i) {

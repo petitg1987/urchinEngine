@@ -5,6 +5,9 @@
 
 namespace urchin {
 
+    /**
+     * Similar to std::deque but with limited allocation/de-allocation on push and pop methods
+     */
     template<class T> class ChunkAllocQueue {
         public:
             ChunkAllocQueue(int, int);
@@ -17,7 +20,6 @@ namespace urchin {
             bool isEmpty() const;
             int getSize() const;
             int getCapacity() const;
-            void clear();
 
         private:
             void expandCapacity();
