@@ -21,7 +21,9 @@ namespace urchin {
             rawMouseX(0.0),
             rawMouseY(0.0),
             bCanInteractWithUi(true),
-            widgetSetDisplayer(std::make_unique<WidgetSetDisplayer>(*this)) {
+            widgetSetDisplayer(std::make_unique<WidgetSetDisplayer>(*this)),
+            widgetsQueue(32, 16),
+            laterWidgetsQueue(16, 8) {
 
     }
 
@@ -392,11 +394,10 @@ namespace urchin {
     void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const { //TODO check memory new/delete
         for (const auto& rootWidget : rootWidgets) {
             if (rootWidget->isVisible()) {
-                widgetsQueue.push_back(rootWidget.get());
+                widgetsQueue.pushBack(rootWidget.get());
 
-                while (!widgetsQueue.empty()) {
-                    Widget* widget = widgetsQueue.front();
-                    widgetsQueue.pop_front();
+                while (!widgetsQueue.isEmpty()) {
+                    Widget* widget = widgetsQueue.popFront();
 
                     widget->prepareWidgetRendering(dt);
                     if (widget->requireRenderer()) {
@@ -405,20 +406,21 @@ namespace urchin {
 
                     if (widget->isRootWidget()) {
                         //TODO comment
-                        while (!widgetsQueue.empty()) {
-                            laterWidgetsQueue.push_front(widgetsQueue.back()); //TODO rename laterWidgetsQueue
-                            widgetsQueue.pop_back();
+                        while (!widgetsQueue.isEmpty()) {
+                            laterWidgetsQueue.pushFront(widgetsQueue.popBack()); //TODO rename laterWidgetsQueue
                         }
                     }
 
                     for (const auto& widgetChild : widget->getChildren()) {
                         if (widgetChild->isVisible()) {
-                            widgetsQueue.push_back(widgetChild.get());
+                            widgetsQueue.pushBack(widgetChild.get());
                         }
                     }
 
-                    if (widgetsQueue.empty() && !laterWidgetsQueue.empty()) {
-                        widgetsQueue = std::move(laterWidgetsQueue);
+                    if (widgetsQueue.isEmpty() && !laterWidgetsQueue.isEmpty()) {
+                        while (!laterWidgetsQueue.isEmpty()) {
+                            widgetsQueue.pushBack(laterWidgetsQueue.popFront()); //TODO check if correct
+                        }
                         laterWidgetsQueue.clear();
                     }
                 }

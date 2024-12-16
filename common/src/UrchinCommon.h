@@ -10,6 +10,7 @@
 #include <container/MapUtil.h>
 #include <container/ArrayUtil.h>
 #include <container/VectorUtil.h>
+#include <container/ChunkAllocQueue.h>
 
 #include <io/file/PropertyFileHandler.h>
 #include <io/file/FileReader.h>

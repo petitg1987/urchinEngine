@@ -7,6 +7,7 @@
 #include <common/util/StringUtilTest.h>
 #include <common/util/HashUtilTest.h>
 #include <common/util/FileUtilTest.h>
+#include <common/container/ChunkAllocQueueTest.h>
 #include <common/math/algebra/QuaternionTest.h>
 #include <common/math/algebra/point/PointTest.h>
 #include <common/math/algebra/vector/VectorTest.h>
@@ -67,6 +68,9 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
 
     //system
     runner.addTest(SystemInfoTest::suite());
+
+    //container
+    runner.addTest(ChunkAllocQueueTest::suite());
 
     //util
     runner.addTest(FileUtilTest::suite());
