@@ -1,12 +1,12 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <UrchinCommon.h>
 
-#include <common/container/ChunkAllocQueueTest.h>
+#include <common/container/EverGrowQueueTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 
-void ChunkAllocQueueTest::pushAndPop() {
-    ChunkAllocQueue<int> queue(4, 2);
+void EverGrowQueueTest::pushAndPop() {
+    EverGrowQueue<int> queue(4, 2);
 
     queue.pushBack(2);
     AssertHelper::assertIntEquals(queue.getSize(), 1);
@@ -37,10 +37,10 @@ void ChunkAllocQueueTest::pushAndPop() {
     AssertHelper::assertIntEquals(queue.getCapacity(), 6);
 }
 
-CppUnit::Test* ChunkAllocQueueTest::suite() {
-    auto* suite = new CppUnit::TestSuite("ChunkAllocQueueTest");
+CppUnit::Test* EverGrowQueueTest::suite() {
+    auto* suite = new CppUnit::TestSuite("EverGrowQueueTest");
 
-    suite->addTest(new CppUnit::TestCaller("pushAndPop", &ChunkAllocQueueTest::pushAndPop));
+    suite->addTest(new CppUnit::TestCaller("pushAndPop", &EverGrowQueueTest::pushAndPop));
 
     return suite;
 }

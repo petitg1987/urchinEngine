@@ -1,4 +1,4 @@
-template<class T> ChunkAllocQueue<T>::ChunkAllocQueue(int initialCapacity, int chunkSize) :
+template<class T> EverGrowQueue<T>::EverGrowQueue(int initialCapacity, int chunkSize) :
         data(initialCapacity),
         capacity(initialCapacity),
         size(0),
@@ -8,7 +8,7 @@ template<class T> ChunkAllocQueue<T>::ChunkAllocQueue(int initialCapacity, int c
     data.resize(capacity);
 }
 
-template<class T> void ChunkAllocQueue<T>::pushFront(const T& value) {
+template<class T> void EverGrowQueue<T>::pushFront(const T& value) {
     if (size == capacity) {
         expandCapacity();
     }
@@ -18,7 +18,7 @@ template<class T> void ChunkAllocQueue<T>::pushFront(const T& value) {
     ++size;
 }
 
-template<class T> void ChunkAllocQueue<T>::pushBack(const T& value) {
+template<class T> void EverGrowQueue<T>::pushBack(const T& value) {
     if (size == capacity) {
         expandCapacity();
     }
@@ -28,7 +28,7 @@ template<class T> void ChunkAllocQueue<T>::pushBack(const T& value) {
     ++size;
 }
 
-template<class T> T ChunkAllocQueue<T>::popFront() {
+template<class T> T EverGrowQueue<T>::popFront() {
     #ifdef URCHIN_DEBUG
         assert(size != 0);
     #endif
@@ -39,7 +39,7 @@ template<class T> T ChunkAllocQueue<T>::popFront() {
     return value;
 }
 
-template<class T> T ChunkAllocQueue<T>::popBack() {
+template<class T> T EverGrowQueue<T>::popBack() {
     #ifdef URCHIN_DEBUG
         assert(size != 0);
     #endif
@@ -50,19 +50,19 @@ template<class T> T ChunkAllocQueue<T>::popBack() {
     return value;
 }
 
-template<class T> bool ChunkAllocQueue<T>::isEmpty() const {
+template<class T> bool EverGrowQueue<T>::isEmpty() const {
     return size == 0;
 }
 
-template<class T> int ChunkAllocQueue<T>::getSize() const {
+template<class T> int EverGrowQueue<T>::getSize() const {
     return size;
 }
 
-template<class T> int ChunkAllocQueue<T>::getCapacity() const {
+template<class T> int EverGrowQueue<T>::getCapacity() const {
     return capacity;
 }
 
-template<class T> void ChunkAllocQueue<T>::expandCapacity() {
+template<class T> void EverGrowQueue<T>::expandCapacity() {
     std::vector<T> newData(capacity + chunkSize);
     for (std::size_t i = 0; i < size; ++i) {
         newData[i] = data[(frontIndex + i) % capacity];

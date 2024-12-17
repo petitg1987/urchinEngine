@@ -10,7 +10,7 @@
 #include <container/MapUtil.h>
 #include <container/ArrayUtil.h>
 #include <container/VectorUtil.h>
-#include <container/ChunkAllocQueue.h>
+#include <container/EverGrowQueue.h>
 #include <container/EverGrowHashMap.h>
 
 #include <io/file/PropertyFileHandler.h>

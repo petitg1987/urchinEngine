@@ -6,11 +6,12 @@
 namespace urchin {
 
     /**
-     * Similar to std::deque but with limited allocation/de-allocation on push and pop methods
+     * Similar to std::deque but the memory is not shrink after a pop.
+     * The purpose is to avoid memory re-allocation on 'push' occurring after a 'pop'.
      */
-    template<class T> class ChunkAllocQueue { //TODO review comment and rename in EverGrowQueue
+    template<class T> class EverGrowQueue {
         public:
-            ChunkAllocQueue(int, int);
+            EverGrowQueue(int, int);
 
             void pushFront(const T&);
             void pushBack(const T&);
@@ -32,6 +33,6 @@ namespace urchin {
             const int chunkSize;
     };
 
-    #include "ChunkAllocQueue.inl"
+    #include "EverGrowQueue.inl"
 
 }
