@@ -33,9 +33,9 @@ void GridContainerTest::findXPositiveNeighbor() {
 
     AssertHelper::assertTrue(neighbor117 == item1);
     AssertHelper::assertTrue(neighborItem1 == item3);
-    AssertHelper::assertTrue(neighborItem2 == nullptr);
+    AssertHelper::assertNull(neighborItem2.get());
     AssertHelper::assertTrue(neighborItem3 == item4);
-    AssertHelper::assertTrue(neighborItem4 == nullptr);
+    AssertHelper::assertNull(neighborItem4.get());
 }
 
 void GridContainerTest::findXNegativeNeighbor() {
@@ -56,8 +56,8 @@ void GridContainerTest::findXNegativeNeighbor() {
     auto neighborItem4 = gridContainer.findNeighbor(item4->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
 
     AssertHelper::assertTrue(neighbor317 == item1);
-    AssertHelper::assertTrue(neighborItem1 == nullptr);
-    AssertHelper::assertTrue(neighborItem2 == nullptr);
+    AssertHelper::assertNull(neighborItem1.get());
+    AssertHelper::assertNull(neighborItem2.get());
     AssertHelper::assertTrue(neighborItem3 == item1);
     AssertHelper::assertTrue(neighborItem4 == item3);
 }
@@ -109,7 +109,7 @@ void GridContainerTest::removeNeighbor() {
     gridContainer.removeItem(item2->getGridPosition());
 
     neighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
-    AssertHelper::assertTrue(neighborItem1 == nullptr);
+    AssertHelper::assertNull(neighborItem1.get());
 }
 
 void GridContainerTest::checkItemExist() {

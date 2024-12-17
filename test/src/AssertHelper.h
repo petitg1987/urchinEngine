@@ -7,7 +7,9 @@ class AssertHelper {
     public:
         static void assertTrue(bool, const std::string& = "");
 
-        static void assertObjectEquals(void*, void*);
+        static void assertNull(const void*);
+        static void assertNotNull(const void*);
+        static void assertObjectEquals(const void*, const void*);
 
         static void assertStringEquals(const std::string&, const std::string&);
         static void assertIntEquals(int, int);

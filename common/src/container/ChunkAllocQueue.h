@@ -8,7 +8,7 @@ namespace urchin {
     /**
      * Similar to std::deque but with limited allocation/de-allocation on push and pop methods
      */
-    template<class T> class ChunkAllocQueue {
+    template<class T> class ChunkAllocQueue { //TODO review comment and rename in EverGrowQueue
         public:
             ChunkAllocQueue(int, int);
 

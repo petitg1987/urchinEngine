@@ -8,6 +8,7 @@
 #include <common/util/HashUtilTest.h>
 #include <common/util/FileUtilTest.h>
 #include <common/container/ChunkAllocQueueTest.h>
+#include <common/container/EverGrowHashMapTest.h>
 #include <common/math/algebra/QuaternionTest.h>
 #include <common/math/algebra/point/PointTest.h>
 #include <common/math/algebra/vector/VectorTest.h>
@@ -71,6 +72,7 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
 
     //container
     runner.addTest(ChunkAllocQueueTest::suite());
+    runner.addTest(EverGrowHashMapTest::suite());
 
     //util
     runner.addTest(FileUtilTest::suite());

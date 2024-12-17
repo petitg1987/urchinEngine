@@ -6,7 +6,15 @@ inline void AssertHelper::assertTrue(bool b, const std::string& msg) {
     }
 }
 
-inline void AssertHelper::assertObjectEquals(void* object, void* expectedObject) {
+inline void AssertHelper::assertNull(const void* object) {
+    CPPUNIT_ASSERT_MESSAGE("Assert fail. Object is not null", object == nullptr);
+}
+
+inline void AssertHelper::assertNotNull(const void* object) {
+    CPPUNIT_ASSERT_MESSAGE("Assert fail. Object is null", object != nullptr);
+}
+
+inline void AssertHelper::assertObjectEquals(const void* object, const void* expectedObject) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Objects are different", object == expectedObject);
 }
 

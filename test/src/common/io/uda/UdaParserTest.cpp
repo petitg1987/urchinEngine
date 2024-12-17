@@ -20,7 +20,7 @@ void UdaParserTest::removeChunk() {
     UdaParser udaParserReader(filename, UdaLoadType::LOAD_FILE);
     const UdaChunk* main = udaParserReader.getFirstChunk(true, "main", UdaAttribute(), nullptr);
     udaParserReader.getFirstChunk(true, "child1", UdaAttribute(), main); //no exception throw expected
-    AssertHelper::assertObjectEquals(udaParserReader.getFirstChunk(false, "child2", UdaAttribute(), main), nullptr);
+    AssertHelper::assertNull(udaParserReader.getFirstChunk(false, "child2", UdaAttribute(), main));
     udaParserReader.getFirstChunk(true, "child3", UdaAttribute(), main); //no exception throw expected
     AssertHelper::assertIntEquals(std::remove(filename.c_str()), 0);
 }

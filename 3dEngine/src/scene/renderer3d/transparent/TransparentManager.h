@@ -29,6 +29,10 @@ namespace urchin {
                 uint32_t maxLights;
                 float maxEmissiveFactor;
             };
+            struct SortUserData {
+                const Camera* camera = nullptr;
+                EverGrowHashMap<const Model*, float> modelsDistanceToCamera;
+            };
 
             void createOrUpdateRendering();
             void createOrUpdateTextures();
@@ -44,6 +48,7 @@ namespace urchin {
             std::shared_ptr<Texture> sceneTexture;
             std::unique_ptr<OffscreenRender> renderTarget;
 
+            mutable SortUserData sortUserData;
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
     };
 

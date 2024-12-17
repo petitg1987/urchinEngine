@@ -9,7 +9,8 @@ namespace urchin {
             lightManager(lightManager),
             sceneWidth(0),
             sceneHeight(0),
-            camera(nullptr) {
+            camera(nullptr),
+            sortUserData({.camera = nullptr, .modelsDistanceToCamera = EverGrowHashMap<const Model*, float>()}) {
 
     }
 
@@ -97,12 +98,8 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 
-        struct SortUserData {
-            const Camera* camera = nullptr;
-            std::map<const Model*, float> modelsDistanceToCamera;
-        };
-
-        SortUserData sortUserData = {.camera = &camera, .modelsDistanceToCamera = {}};
+        sortUserData.camera = &camera;
+        sortUserData.modelsDistanceToCamera.clear();
         for (const Model* model : modelSetDisplayer->getModels()) {
             Point3<float> modelPosition = model->getTransform().getPosition();
             if (!camera.getFrustum().collideWithPoint(modelPosition)) {
@@ -110,7 +107,7 @@ namespace urchin {
                 modelPosition = modelLineSegment.closestPoint(camera.getPosition());
             }
             float distanceToCamera = camera.getPosition().squareDistance(modelPosition);
-            sortUserData.modelsDistanceToCamera.try_emplace(model, distanceToCamera);
+            sortUserData.modelsDistanceToCamera.insert(model, distanceToCamera);
         }
 
         auto modelSorter = [](const Model* model1, const Model* model2, const void* userData) {
