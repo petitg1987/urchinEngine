@@ -33,7 +33,7 @@ namespace urchin {
 
             void rehash();
 
-            std::vector<std::list<Node>> table;
+            std::vector<std::vector<Node>> table;
 
             std::size_t numBuckets;
             std::size_t currentSize;
