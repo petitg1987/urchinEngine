@@ -154,7 +154,7 @@ void UIRendererTest::buttonRemoveParentContainer() {
     AssertHelper::assertTrue(childContainer.expired());
     AssertHelper::assertTrue(deleteButton.expired());
     AssertHelper::assertTrue(text.expired());
-    AssertHelper::assertTrue(!uiRenderer->getI18nService().isTranslatableLabelExist(textPTr));
+    AssertHelper::assertFalse(uiRenderer->getI18nService().isTranslatableLabelExist(textPTr));
 }
 
 void UIRendererTest::removeUIRendererBeforeWidget() {
@@ -167,8 +167,8 @@ void UIRendererTest::removeUIRendererBeforeWidget() {
 
     uiRenderer.reset(nullptr);
 
-    AssertHelper::assertTrue(!text->isInitialized());
-    AssertHelper::assertTrue(!i18nService.isTranslatableLabelExist(text.get()));
+    AssertHelper::assertFalse(text->isInitialized());
+    AssertHelper::assertFalse(i18nService.isTranslatableLabelExist(text.get()));
 }
 
 void UIRendererTest::containerWithLazyWidgets() {

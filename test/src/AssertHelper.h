@@ -6,6 +6,7 @@
 class AssertHelper {
     public:
         static void assertTrue(bool, const std::string& = "");
+        static void assertFalse(bool, const std::string& = "");
 
         static void assertNull(const void*);
         static void assertNotNull(const void*);

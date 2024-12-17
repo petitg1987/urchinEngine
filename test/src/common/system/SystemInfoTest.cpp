@@ -9,7 +9,7 @@ using namespace urchin;
 void SystemInfoTest::retrieveOsInfo() {
     std::string osInfo = SystemInfo::retrieveOsInfo();
 
-    AssertHelper::assertTrue(!osInfo.empty(), "OS info cannot be empty");
+    AssertHelper::assertFalse(osInfo.empty(), "OS info cannot be empty");
 }
 
 void SystemInfoTest::retrieveCpuCores() {
@@ -27,7 +27,7 @@ void SystemInfoTest::retrieveTotalMemory() {
 void SystemInfoTest::retrieveGraphicsCardNames() {
     std::string graphicsCardNames = SystemInfo::retrieveGraphicsCardNames();
 
-    AssertHelper::assertTrue(!graphicsCardNames.empty(), "Graphics card name cannot be empty");
+    AssertHelper::assertFalse(graphicsCardNames.empty(), "Graphics card name cannot be empty");
 }
 
 CppUnit::Test* SystemInfoTest::suite() {

@@ -8,14 +8,14 @@ void AABBoxTest::rayRightToBox() {
     AABBox box(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f));
     Ray ray(Point3(2.0f, 0.5f, 2.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f);
 
-    AssertHelper::assertTrue(!box.collideWithRay(ray));
+    AssertHelper::assertFalse(box.collideWithRay(ray));
 }
 
 void AABBoxTest::rayRightTopToBox() {
     AABBox box(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f));
     Ray ray(Point3(1.5f, 2.0f, 0.5f), Vector3(1.0f, 1.0f, 0.0f), 10.0f);
 
-    AssertHelper::assertTrue(!box.collideWithRay(ray));
+    AssertHelper::assertFalse(box.collideWithRay(ray));
 }
 
 void AABBoxTest::rayInsideBox() {

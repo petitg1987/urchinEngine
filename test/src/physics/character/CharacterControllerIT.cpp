@@ -35,7 +35,7 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
         float minPosY = (cubeHeight / 2.0f) - 0.01f;
         float maxPosY = cubeHeight + (cubeHeight / 2.0f) + 0.01f;
         AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Cube " + cube->getId() + " must be on the ground or above another cube. Position Y: " + std::to_string(posY));
-        AssertHelper::assertTrue(!cube->isActive(), "Cube " + cube->getId() + " must become inactive.");
+        AssertHelper::assertFalse(cube->isActive(), "Cube " + cube->getId() + " must become inactive.");
     }
     float posY = characterController.getPhysicsCharacter().getTransform().getPosition().Y;
     float minPosY = (characterHeight / 2.0f) - 0.01f;

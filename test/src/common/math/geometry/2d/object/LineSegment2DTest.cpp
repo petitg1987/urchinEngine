@@ -35,8 +35,8 @@ void LineSegment2DTest::noIntersection() {
     bool hasIntersection;
     firstLine.intersectPoint(secondLine, hasIntersection);
 
-    AssertHelper::assertTrue(!hasIntersection);
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(hasIntersection);
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::parallelLines() {
@@ -46,8 +46,8 @@ void LineSegment2DTest::parallelLines() {
     bool hasIntersection;
     firstLine.intersectPoint(secondLine, hasIntersection);
 
-    AssertHelper::assertTrue(!hasIntersection);
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(hasIntersection);
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::intersection() {
@@ -69,7 +69,7 @@ void LineSegment2DTest::intersectionOnOnePoint() {
     Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
     AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2(0.0f, 0.0f));
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::intersectionOnOnePointInt() {
@@ -80,7 +80,7 @@ void LineSegment2DTest::intersectionOnOnePointInt() {
     Point2<int> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
     AssertHelper::assertPoint2IntEquals(intersectionPoint, Point2(-180, -6062));
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::collinearIntersectionOnOnePoint() {
@@ -91,7 +91,7 @@ void LineSegment2DTest::collinearIntersectionOnOnePoint() {
     Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
     AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2(0.0f, 0.0f));
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::collinearLinesNoIntersectionSameDirection() {
@@ -101,8 +101,8 @@ void LineSegment2DTest::collinearLinesNoIntersectionSameDirection() {
     bool hasIntersection;
     firstLine.intersectPoint(secondLine, hasIntersection);
 
-    AssertHelper::assertTrue(!hasIntersection);
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(hasIntersection);
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::collinearLinesNoIntersectionOppositeDirection() {
@@ -112,8 +112,8 @@ void LineSegment2DTest::collinearLinesNoIntersectionOppositeDirection() {
     bool hasIntersection;
     firstLine.intersectPoint(secondLine, hasIntersection);
 
-    AssertHelper::assertTrue(!hasIntersection);
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(hasIntersection);
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::collinearLinesIntersectionSameDirection() {
@@ -124,7 +124,7 @@ void LineSegment2DTest::collinearLinesIntersectionSameDirection() {
     Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
     AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2(0.0f, 0.0f));
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::collinearLinesIntersectionSameDirection2() {
@@ -135,7 +135,7 @@ void LineSegment2DTest::collinearLinesIntersectionSameDirection2() {
     Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
     AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2(1.0f, 1.0f));
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::collinearLinesIntersectionOppositeDirection() {
@@ -146,7 +146,7 @@ void LineSegment2DTest::collinearLinesIntersectionOppositeDirection() {
     Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
     AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2(-1.25f, -1.25f));
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::collinearLinesIntersectionOppositeDirection2() {
@@ -157,7 +157,7 @@ void LineSegment2DTest::collinearLinesIntersectionOppositeDirection2() {
     Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
     AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2(-2.5f, -2.5f));
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::collinearLinesFullIntersectionSameDirection() {
@@ -168,7 +168,7 @@ void LineSegment2DTest::collinearLinesFullIntersectionSameDirection() {
     Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
     AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2(-1.5f, 0.0f));
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DTest::collinearLinesFullIntersectionOppositeDirection() {
@@ -179,7 +179,7 @@ void LineSegment2DTest::collinearLinesFullIntersectionOppositeDirection() {
     Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
     AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2(-1.5f, 0.0f));
-    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
+    AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
 CppUnit::Test* LineSegment2DTest::suite() {

@@ -260,17 +260,17 @@ void QuaternionTest::equalOrientationAndRotation() {
     Quaternion<float> q1 = Quaternion<float>::rotationY(MathValue::PI_FLOAT / 2.0f);
     Quaternion<float> q2 = Quaternion<float>::rotationY(-2.0f * MathValue::PI_FLOAT + MathValue::PI_FLOAT / 2.0f);
     AssertHelper::assertTrue(q1.isEqualOrientation(q2, 0.01f));
-    AssertHelper::assertTrue(!q1.isEqualRotation(q2, 0.01f));
+    AssertHelper::assertFalse(q1.isEqualRotation(q2, 0.01f));
 
     q1 = Quaternion<float>::rotationY(-MathValue::PI_FLOAT / 2.0f);
     q2 = Quaternion<float>::rotationY(MathValue::PI_FLOAT / 2.0f);
-    AssertHelper::assertTrue(!q1.isEqualOrientation(q2, 0.01f));
-    AssertHelper::assertTrue(!q1.isEqualRotation(q2, 0.01f));
+    AssertHelper::assertFalse(q1.isEqualOrientation(q2, 0.01f));
+    AssertHelper::assertFalse(q1.isEqualRotation(q2, 0.01f));
 
     q1 = Quaternion<float>::rotationY(0.0f);
     q2 = Quaternion<float>::rotationY(2.0f * MathValue::PI_FLOAT);
     AssertHelper::assertTrue(q1.isEqualOrientation(q2, 0.01f));
-    AssertHelper::assertTrue(!q1.isEqualRotation(q2, 0.01f));
+    AssertHelper::assertFalse(q1.isEqualRotation(q2, 0.01f));
 
     q1 = Quaternion<float>::fromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
     q2 = Quaternion<float>::fromAxisAngle(Vector3(0.0f, -1.0f, 0.0f), -MathValue::PI_FLOAT / 2.0f);
@@ -279,8 +279,8 @@ void QuaternionTest::equalOrientationAndRotation() {
 
     q1 = Quaternion<float>::fromAxisAngle(Vector3(2.0f, 1.0f, 0.0f).normalize(), MathValue::PI_FLOAT / 2.0f);
     q2 = Quaternion<float>::fromAxisAngle(Vector3(2.0f, 1.0f, 0.0f).normalize(), -MathValue::PI_FLOAT / 2.0f + 0.2f);
-    AssertHelper::assertTrue(!q1.isEqualOrientation(q2, 0.01f));
-    AssertHelper::assertTrue(!q1.isEqualRotation(q2, 0.01f));
+    AssertHelper::assertFalse(q1.isEqualOrientation(q2, 0.01f));
+    AssertHelper::assertFalse(q1.isEqualRotation(q2, 0.01f));
 }
 
 CppUnit::Test* QuaternionTest::suite() {

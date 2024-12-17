@@ -74,12 +74,16 @@ template<typename K, typename V> void EverGrowHashMap<K, V>::clear() {
     currentSize = 0;
 }
 
-template<typename K, typename V> std::size_t EverGrowHashMap<K, V>::size() const {
+template<typename K, typename V> bool EverGrowHashMap<K, V>::isEmpty() const {
+    return currentSize == 0;
+}
+
+template<typename K, typename V> std::size_t EverGrowHashMap<K, V>::getSize() const {
     return currentSize;
 }
 
-template<typename K, typename V> bool EverGrowHashMap<K, V>::empty() const {
-    return currentSize == 0;
+template<typename K, typename V> std::size_t EverGrowHashMap<K, V>::getNumBuckets() const {
+    return numBuckets;
 }
 
 template<typename K, typename V> void EverGrowHashMap<K, V>::rehash() {

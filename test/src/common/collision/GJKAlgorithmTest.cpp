@@ -20,7 +20,7 @@ void GJKAlgorithmTest::separateAABBox() {
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(aabbox1, aabbox2);
 
-    AssertHelper::assertTrue(!result.isCollide());
+    AssertHelper::assertFalse(result.isCollide());
     AssertHelper::assertFloatEquals(result.getSeparatingDistance(), 0.1f);
     AssertHelper::assertFloatEquals(result.getClosestPointA().X, 0.0f);
     AssertHelper::assertFloatEquals(result.getClosestPointB().X, -0.1f);
@@ -51,7 +51,7 @@ void GJKAlgorithmTest::separateEdgeOBBox() {
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(obbox1, obbox2);
 
-    AssertHelper::assertTrue(!result.isCollide());
+    AssertHelper::assertFalse(result.isCollide());
     AssertHelper::assertFloatEquals(result.getClosestPointA().Y, 0.0f);
     AssertHelper::assertFloatEquals(result.getClosestPointB().X, 1.58578643763f);
     AssertHelper::assertFloatEquals(result.getClosestPointB().Y, 0.0f);
@@ -64,7 +64,7 @@ void GJKAlgorithmTest::separateCornerOBBox() {
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(obbox1, obbox2);
 
-    AssertHelper::assertTrue(!result.isCollide());
+    AssertHelper::assertFalse(result.isCollide());
     AssertHelper::assertFloatEquals(result.getSeparatingDistance(), 0.26794919243f);
     AssertHelper::assertPoint3FloatEquals(result.getClosestPointA(), Point3(1.73205080757f, 0.0f, 0.0f));
     AssertHelper::assertPoint3FloatEquals(result.getClosestPointB(), Point3(2.0f, 0.0f, 0.0f));
@@ -110,7 +110,7 @@ void GJKAlgorithmTest::separateBox() {
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(ch1, ch2);
 
-    AssertHelper::assertTrue(!result.isCollide());
+    AssertHelper::assertFalse(result.isCollide());
     AssertHelper::assertFloatEquals(result.getSeparatingDistance(), 0.1f);
     AssertHelper::assertFloatEquals(result.getClosestPointA().X, 0.0f);
     AssertHelper::assertFloatEquals(result.getClosestPointA().Y, 0.0f);
@@ -167,7 +167,7 @@ void GJKAlgorithmTest::separateHexagon() {
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(ch1, ch2);
 
-    AssertHelper::assertTrue(!result.isCollide());
+    AssertHelper::assertFalse(result.isCollide());
     AssertHelper::assertFloatEquals(result.getSeparatingDistance(), 0.5f);
     AssertHelper::assertFloatEquals(result.getClosestPointA().X, -0.5f);
     AssertHelper::assertFloatEquals(result.getClosestPointA().Y, 1.0f);
@@ -209,7 +209,7 @@ void GJKAlgorithmTest::separateSphere() {
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(sphere1, sphere2);
 
     float epsilon = 0.01f; //high epsilon used because curved shapes are bad case for GJK
-    AssertHelper::assertTrue(!result.isCollide());
+    AssertHelper::assertFalse(result.isCollide());
     AssertHelper::assertFloatEquals(result.getSeparatingDistance(), 1.31370849889f, epsilon);
     AssertHelper::assertPoint3FloatEquals(result.getClosestPointA(), Point3(7.0710678118f, 7.0710678118f, 0.0f), epsilon);
     AssertHelper::assertPoint3FloatEquals(result.getClosestPointB(), Point3(8.0f, 8.0f, 0.0f), epsilon);
@@ -230,7 +230,7 @@ void GJKAlgorithmTest::separateOBBoxAABBox() {
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(obbox, aabbox);
 
-    AssertHelper::assertTrue(!result.isCollide());
+    AssertHelper::assertFalse(result.isCollide());
     AssertHelper::assertFloatEquals(result.getSeparatingDistance(), 0.58578643763f);
     AssertHelper::assertFloatEquals(result.getClosestPointA().X, 1.41421356237f);
     AssertHelper::assertFloatEquals(result.getClosestPointA().Y, 0.0f);
@@ -254,7 +254,7 @@ void GJKAlgorithmTest::separateSphereAndAABBox() {
 
     GJKResult<float> result = GJKAlgorithm<float>().processGJK(sphere, aabbox);
 
-    AssertHelper::assertTrue(!result.isCollide());
+    AssertHelper::assertFalse(result.isCollide());
     AssertHelper::assertFloatEquals(result.getSeparatingDistance(), 0.1f);
 }
 

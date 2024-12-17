@@ -20,8 +20,9 @@ namespace urchin {
             bool erase(const K&);
             void clear();
 
-            std::size_t size() const;
-            bool empty() const;
+            bool isEmpty() const;
+            std::size_t getSize() const;
+            std::size_t getNumBuckets() const;
 
         private:
             struct Node {

@@ -17,7 +17,7 @@ void CollisionWorldIT::fallOnGround() {
 
     auto cubeBody = bodyContainer->getBodies()[1];
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
-    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
+    AssertHelper::assertFalse(cubeBody->isActive(), "Body must become inactive when it doesn't move");
 }
 
 void CollisionWorldIT::ccdPushOnGround() {
@@ -35,7 +35,7 @@ void CollisionWorldIT::ccdPushOnGround() {
     }
 
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
-    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
+    AssertHelper::assertFalse(cubeBody->isActive(), "Body must become inactive when it doesn't move");
 }
 
 void CollisionWorldIT::ccdBounceOnGroundAndRoof() {
@@ -67,7 +67,7 @@ void CollisionWorldIT::fallForever() {
 
     auto cubeBody = bodyContainer->getBodies()[1];
     AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y > -4.0f, "Check cube doesn't fall forever");
-    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it goes outside the world limits");
+    AssertHelper::assertFalse(cubeBody->isActive(), "Body must become inactive when it goes outside the world limits");
     std::string logValue = Logger::instance().retrieveContent(std::numeric_limits<unsigned long>::max());
     AssertHelper::assertTrue(logValue.find("(WW) Body cube is below the limit of") != std::string::npos);
     Logger::instance().purge();
@@ -83,7 +83,7 @@ void CollisionWorldIT::changePositionOnInactiveBody() {
     }
     auto cubeBody = bodyContainer->getBodies()[1];
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
-    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (1)");
+    AssertHelper::assertFalse(cubeBody->isActive(), "Body must become inactive when it doesn't move (1)");
 
     //2. change position (in thread different from physics thread)
     auto thread = std::jthread([&cubeBody] {
@@ -95,7 +95,7 @@ void CollisionWorldIT::changePositionOnInactiveBody() {
     }
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().X, 25.0f, 2.5f);
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
-    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (2)");
+    AssertHelper::assertFalse(cubeBody->isActive(), "Body must become inactive when it doesn't move (2)");
 }
 
 void CollisionWorldIT::changeMomentumOnInactiveBody() {
@@ -108,7 +108,7 @@ void CollisionWorldIT::changeMomentumOnInactiveBody() {
     }
     auto* cubeBody = static_cast<RigidBody*>(bodyContainer->getBodies()[1].get());
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
-    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (1)");
+    AssertHelper::assertFalse(cubeBody->isActive(), "Body must become inactive when it doesn't move (1)");
 
     //2. apply momentum
     cubeBody->applyCentralMomentum(Vector3(100.0f, 100.0f, 0.0f));
@@ -117,7 +117,7 @@ void CollisionWorldIT::changeMomentumOnInactiveBody() {
     }
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().X, 25.0f, 2.5f);
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
-    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (2)");
+    AssertHelper::assertFalse(cubeBody->isActive(), "Body must become inactive when it doesn't move (2)");
 }
 
 void CollisionWorldIT::changeMass() {
@@ -144,7 +144,7 @@ void CollisionWorldIT::changeMass() {
         collisionWorld->process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
     }
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
-    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
+    AssertHelper::assertFalse(cubeBody->isActive(), "Body must become inactive when it doesn't move");
 }
 
 void CollisionWorldIT::rayTestWithRemovedBody() {

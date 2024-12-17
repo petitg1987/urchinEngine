@@ -12,7 +12,7 @@ void OBBoxTest::noIntersection() {
     bool hasIntersection = false;
     oBBox.intersectPoint(line, hasIntersection);
 
-    AssertHelper::assertTrue(!hasIntersection);
+    AssertHelper::assertFalse(hasIntersection);
 }
 
 void OBBoxTest::leftToRightLineIntersection() {

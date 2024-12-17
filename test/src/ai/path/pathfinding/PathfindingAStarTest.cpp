@@ -22,9 +22,9 @@ void PathfindingAStarTest::straightPath() {
 
     AssertHelper::assertUnsignedIntEquals(pathPoints.size(), 2);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3(1.0f, 0.0f, 1.0f));
-    AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[0].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3(3.0f, 0.0f, 3.0f));
-    AssertHelper::assertTrue(!pathPoints[1].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[1].isJumpPoint());
 }
 
 void PathfindingAStarTest::joinPolygonsPath() {
@@ -47,11 +47,11 @@ void PathfindingAStarTest::joinPolygonsPath() {
 
     AssertHelper::assertUnsignedIntEquals(pathPoints.size(), 3);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3(3.0f, 0.0f, 0.5f));
-    AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[0].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3(1.0f, 0.0f, 0.0f));
-    AssertHelper::assertTrue(!pathPoints[1].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[1].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[2].getPoint(), Point3(0.0f, 0.0f, -2.0f));
-    AssertHelper::assertTrue(!pathPoints[2].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[2].isJumpPoint());
 }
 
 void PathfindingAStarTest::jumpWithSmallConstraint() {
@@ -59,13 +59,13 @@ void PathfindingAStarTest::jumpWithSmallConstraint() {
 
     AssertHelper::assertUnsignedIntEquals(pathPoints.size(), 4);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3(1.0f, 0.0f, 1.0f));
-    AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[0].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3(2.0f, 0.0f, 2.0f)); //info: not the best point due to simplification in PathfindingAStar::computeTransitionPoint
     AssertHelper::assertTrue(pathPoints[1].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[2].getPoint(), Point3(2.5f, 0.0f, 2.5f)); //info: not the best point due to simplification in PathfindingAStar::computeTransitionPoint
-    AssertHelper::assertTrue(!pathPoints[2].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[2].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[3].getPoint(), Point3(3.0f, 0.0f, 4.0f));
-    AssertHelper::assertTrue(!pathPoints[3].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[3].isJumpPoint());
 }
 
 void PathfindingAStarTest::jumpWithBigConstraint() {
@@ -73,13 +73,13 @@ void PathfindingAStarTest::jumpWithBigConstraint() {
 
     AssertHelper::assertUnsignedIntEquals(pathPoints.size(), 4);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3(1.0f, 0.0f, 1.0f));
-    AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[0].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3(3.96f, 0.0f, 0.04f));
     AssertHelper::assertTrue(pathPoints[1].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[2].getPoint(), Point3(4.0f, 0.0f, 1.0f));
-    AssertHelper::assertTrue(!pathPoints[2].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[2].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[3].getPoint(), Point3(3.0f, 0.0f, 4.0f));
-    AssertHelper::assertTrue(!pathPoints[3].isJumpPoint());
+    AssertHelper::assertFalse(pathPoints[3].isJumpPoint());
 }
 
 std::vector<PathPoint> PathfindingAStarTest::pathWithJump(std::unique_ptr<NavLinkConstraint> navLinkConstraint) {

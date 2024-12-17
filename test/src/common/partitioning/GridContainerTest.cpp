@@ -121,7 +121,7 @@ void GridContainerTest::checkItemExist() {
     bool is317Exist = gridContainer.isItemExist(Point3(3, 1, 7));
 
     AssertHelper::assertTrue(is217Exist);
-    AssertHelper::assertTrue(!is317Exist);
+    AssertHelper::assertFalse(is317Exist);
 }
 
 CppUnit::Test* GridContainerTest::suite() {

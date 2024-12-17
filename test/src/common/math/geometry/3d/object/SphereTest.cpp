@@ -31,7 +31,7 @@ void SphereTest::sphereAABBoxNoSideCollision() {
 
     bool hasCollision = sphere.collideWithAABBox(aabBox);
 
-    AssertHelper::assertTrue(!hasCollision);
+    AssertHelper::assertFalse(hasCollision);
 }
 
 void SphereTest::sphereAABBoxCornerCollision() {
@@ -49,7 +49,7 @@ void SphereTest::sphereAABBoxNoCornerCollision() {
 
     bool hasCollision = sphere.collideWithAABBox(aabBox);
 
-    AssertHelper::assertTrue(!hasCollision);
+    AssertHelper::assertFalse(hasCollision);
 }
 
 CppUnit::Test* SphereTest::suite() {

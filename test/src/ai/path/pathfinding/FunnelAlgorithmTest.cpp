@@ -16,7 +16,7 @@ void FunnelAlgorithmTest::straightPath() {
     FunnelAlgorithm().computePivotPoints(portals);
 
     AssertHelper::assertPoint3FloatEquals(portals[0]->getTransitionPoint(), Point3(1.0f, 0.0f, -1.0f));
-    AssertHelper::assertTrue(!portals[1]->hasTransitionPoint());
+    AssertHelper::assertFalse(portals[1]->hasTransitionPoint());
     AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3(1.0f, 0.0f, 1.0f));
 }
 

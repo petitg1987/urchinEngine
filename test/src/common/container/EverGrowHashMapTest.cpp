@@ -8,12 +8,29 @@ using namespace urchin;
 void EverGrowHashMapTest::insertAndGet() {
     EverGrowHashMap<int, float> map(4, 0.75f);
 
+    AssertHelper::assertTrue(map.isEmpty());
+
     map.insert(12, 1.0f);
+    map.insert(14, 2.0f);
+    AssertHelper::assertFalse(map.isEmpty());
     AssertHelper::assertFloatEquals(map.at(12), 1.0f);
     AssertHelper::assertFloatEquals(*map.find(12), 1.0f);
     AssertHelper::assertNull(map.find(13));
+    AssertHelper::assertFloatEquals(map.at(14), 2.0f);
+    AssertHelper::assertUnsignedIntEquals(map.getSize(), 2);
+    AssertHelper::assertUnsignedIntEquals(map.getNumBuckets(), 4);
 
-    //TODO add more test
+    map.insert(15, 3.0f);
+    map.insert(16, 4.0f);
+    map.insert(17, 5.0f);
+    AssertHelper::assertUnsignedIntEquals(map.getNumBuckets(), 8);
+    AssertHelper::assertFloatEquals(map.at(12), 1.0f);
+    AssertHelper::assertFloatEquals(map.at(17), 5.0f);
+
+    map.clear();
+    AssertHelper::assertUnsignedIntEquals(map.getSize(), 0);
+    AssertHelper::assertUnsignedIntEquals(map.getNumBuckets(), 8);
+    AssertHelper::assertNull(map.find(12));
 }
 
 CppUnit::Test* EverGrowHashMapTest::suite() {
