@@ -9,6 +9,9 @@ template<typename K, typename V> EverGrowHashMap<K, V>::EverGrowHashMap(std::siz
         currentSize(0),
         maxLoadFactor(loadFactor) {
     table.resize(numBuckets);
+    for (std::vector<Node>& bucket : table) {
+        bucket.reserve(2); //reverse 2 slots by bucket to minimize memory allocation
+    }
 }
 
 template<typename K, typename V> void EverGrowHashMap<K, V>::insert(const K& key, const V& value) {
@@ -89,7 +92,6 @@ template<typename K, typename V> std::size_t EverGrowHashMap<K, V>::getNumBucket
 template<typename K, typename V> void EverGrowHashMap<K, V>::rehash() {
     std::size_t newBucketCount = numBuckets * 2;
     std::vector<std::vector<Node>> newTable(newBucketCount);
-
     for (std::vector<Node>& bucket : newTable) {
         bucket.reserve(2); //reverse 2 slots by bucket to minimize memory allocation
     }
