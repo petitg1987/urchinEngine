@@ -34,11 +34,9 @@ namespace urchin {
             void rehash();
 
             std::vector<std::vector<Node>> table;
-
             std::size_t numBuckets;
             std::size_t currentSize;
             float maxLoadFactor;
-
             std::hash<K> hashFunc;
     };
 
