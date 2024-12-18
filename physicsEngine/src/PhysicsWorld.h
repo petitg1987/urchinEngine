@@ -47,7 +47,7 @@ namespace urchin {
             bool continueExecution() const;
             void processPhysicsUpdate(float);
 
-            void executeRayTesters(const std::vector<std::shared_ptr<RayTester>>&) const;
+            void executeRayTesters(const std::vector<RayTester>&) const;
 
             std::unique_ptr<std::jthread> physicsSimulationThread;
             std::atomic_bool physicsSimulationStopper;
@@ -61,8 +61,8 @@ namespace urchin {
             BodyContainer bodyContainer;
             CollisionWorld collisionWorld;
 
-            std::vector<std::unique_ptr<RayTester>> rayTesters;
-            std::vector<std::shared_ptr<RayTester>> copiedRayTesters;
+            std::vector<RayTester> rayTesters;
+            std::vector<RayTester> copiedRayTesters;
 
             std::unique_ptr<CollisionVisualizer> collisionVisualizer;
     };
