@@ -176,7 +176,9 @@ namespace urchin {
             paused = this->paused;
             if (!paused) {
                 gravity = this->gravity;
-                copiedRayTesters = std::move(rayTesters);
+                for (RayTester& rayTester : rayTesters) {
+                    copiedRayTesters.push_back(rayTester);
+                }
                 rayTesters.clear();
             }
         }
