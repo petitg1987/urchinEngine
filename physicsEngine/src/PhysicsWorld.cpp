@@ -50,7 +50,7 @@ namespace urchin {
         bodyContainer.removeBody(body);
     }
 
-    std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) { //TODO remove shared ?
+    std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) {
         std::scoped_lock lock(mutex);
         rayTesters.emplace_back(getCollisionWorld(), ray);
         return rayTesters.back().getRayTestResult();
