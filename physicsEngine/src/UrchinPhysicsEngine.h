@@ -36,9 +36,8 @@
 #include <collision/bodystate/IslandContainer.h>
 #include <collision/bodystate/IslandElement.h>
 
-#include <processable/Processable.h>
-#include <processable/raytest/RayTester.h>
-#include <processable/raytest/RayTestResult.h>
+#include <raytest/RayTester.h>
+#include <raytest/RayTestResult.h>
 
 #include <character/CharacterController.h>
 #include <character/CharacterControllerConfig.h>

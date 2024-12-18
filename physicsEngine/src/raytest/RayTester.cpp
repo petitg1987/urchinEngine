@@ -1,5 +1,5 @@
 #include <collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h>
-#include <processable/raytest/RayTester.h>
+#include <raytest/RayTester.h>
 
 namespace urchin {
 
@@ -14,11 +14,7 @@ namespace urchin {
         return rayTestResult;
     }
 
-    void RayTester::setup(float, const Vector3<float>&) {
-        //nothing to do
-    }
-
-    void RayTester::execute(float, const Vector3<float>&) {
+    void RayTester::execute() const {
         std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitRay = collisionWorld.getBroadPhase().rayTest(ray);
         ccd_set rayCastResults = collisionWorld.getNarrowPhase().rayTest(ray, bodiesAABBoxHitRay);
 

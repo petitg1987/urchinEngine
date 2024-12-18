@@ -10,8 +10,8 @@
 #include <body/model/AbstractBody.h>
 #include <body/BodyContainer.h>
 #include <collision/CollisionWorld.h>
-#include <processable/Processable.h>
-#include <processable/raytest/RayTestResult.h>
+#include <raytest/RayTester.h>
+#include <raytest/RayTestResult.h>
 #include <visualizer/CollisionVisualizer.h>
 
 namespace urchin {
@@ -26,9 +26,6 @@ namespace urchin {
 
             void addBody(std::shared_ptr<AbstractBody>);
             void removeBody(const AbstractBody&);
-
-            void addProcessable(const std::shared_ptr<Processable>&);
-            void removeProcessable(const Processable&);
 
             std::shared_ptr<const RayTestResult> rayTest(const Ray<float>&);
 
@@ -50,8 +47,7 @@ namespace urchin {
             bool continueExecution() const;
             void processPhysicsUpdate(float);
 
-            void setupProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&) const;
-            void executeProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&) const;
+            void executeRayTesters(const std::vector<std::shared_ptr<RayTester>>&) const;
 
             std::unique_ptr<std::jthread> physicsSimulationThread;
             std::atomic_bool physicsSimulationStopper;
@@ -65,9 +61,8 @@ namespace urchin {
             BodyContainer bodyContainer;
             CollisionWorld collisionWorld;
 
-            std::vector<std::shared_ptr<Processable>> processables;
-            std::vector<std::unique_ptr<Processable>> oneShotProcessables;
-            std::vector<std::shared_ptr<Processable>> copiedProcessables;
+            std::vector<std::unique_ptr<RayTester>> rayTesters;
+            std::vector<std::shared_ptr<RayTester>> copiedRayTesters;
 
             std::unique_ptr<CollisionVisualizer> collisionVisualizer;
     };

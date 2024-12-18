@@ -2,7 +2,7 @@
 #include <algorithm>
 
 #include <PhysicsWorld.h>
-#include <processable/raytest/RayTester.h>
+#include <raytest/RayTester.h>
 
 namespace urchin {
 
@@ -26,9 +26,8 @@ namespace urchin {
             physicsSimulationThread->join();
         }
 
-        copiedProcessables.clear();
-        processables.clear();
-        oneShotProcessables.clear();
+        copiedRayTesters.clear();
+        rayTesters.clear();
 
         Profiler::physics().log(); //log for main (not physics) thread
     }
@@ -51,26 +50,12 @@ namespace urchin {
         bodyContainer.removeBody(body);
     }
 
-    void PhysicsWorld::addProcessable(const std::shared_ptr<Processable>& processable) {
-        std::scoped_lock lock(mutex);
-        processables.push_back(processable);
-    }
-
-    void PhysicsWorld::removeProcessable(const Processable& processable) {
-        std::scoped_lock lock(mutex);
-
-        auto itFind = std::ranges::find_if(processables, [&processable](const auto& o){return o.get() == &processable;});
-        if (itFind != processables.end()) {
-            processables.erase(itFind);
-        }
-    }
-
-    std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) {
-        std::scoped_lock lock(mutex);
-
-        auto rayTester = std::make_unique<RayTester>(getCollisionWorld(), ray);
+    std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) { //TODO remove shared ?
+        auto rayTester = std::make_unique<RayTester>(getCollisionWorld(), ray); //TODO remove alloc
         std::shared_ptr<const RayTestResult> rayTestResult = rayTester->getRayTestResult();
-        oneShotProcessables.push_back(std::move(rayTester));
+
+        std::scoped_lock lock(mutex);
+        rayTesters.push_back(std::move(rayTester));
 
         return rayTestResult;
     }
@@ -188,53 +173,34 @@ namespace urchin {
         //copy for local thread
         bool paused;
         Vector3<float> gravity;
-        copiedProcessables.clear();
+        copiedRayTesters.clear();
 
         {
             std::scoped_lock lock(mutex);
             paused = this->paused;
             if (!paused) {
                 gravity = this->gravity;
-                std::ranges::copy(processables, std::back_inserter(copiedProcessables));
-                copiedProcessables.reserve(copiedProcessables.size() + oneShotProcessables.size());
-                for (std::unique_ptr<Processable>& oneShotProcessable : oneShotProcessables) {
-                    copiedProcessables.push_back(std::move(oneShotProcessable));
+                copiedRayTesters.reserve(rayTesters.size());
+                for (std::unique_ptr<RayTester>& oneShotProcessable : rayTesters) {
+                    copiedRayTesters.push_back(std::move(oneShotProcessable));
                 }
-                oneShotProcessables.clear();
+                rayTesters.clear();
             }
         }
 
         //physics execution
         if (!paused) {
-            setupProcessables(copiedProcessables, dt, gravity);
-
             collisionWorld.process(dt, gravity);
 
-            executeProcessables(copiedProcessables, dt, gravity);
+            executeRayTesters(copiedRayTesters);
         }
     }
 
-    /**
-     * @param dt Delta of time between two simulation steps
-     * @param gravity Gravity expressed in units/s^2
-     */
-    void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) const {
-        ScopeProfiler sp(Profiler::physics(), "stpProcessable");
+    void PhysicsWorld::executeRayTesters(const std::vector<std::shared_ptr<RayTester>>& rayTesters) const {
+        ScopeProfiler sp(Profiler::physics(), "exeRayTest");
 
-        for (const auto& processable : processables) {
-            processable->setup(dt, gravity);
-        }
-    }
-
-    /**
-     * @param dt Delta of time between two simulation steps
-     * @param gravity Gravity expressed in units/s^2
-     */
-    void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) const {
-        ScopeProfiler sp(Profiler::physics(), "execProcessable");
-
-        for (const auto& processable : processables) {
-            processable->execute(dt, gravity);
+        for (const auto& rayTester : rayTesters) {
+            rayTester->execute();
         }
     }
 
