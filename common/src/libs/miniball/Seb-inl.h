@@ -17,7 +17,7 @@ namespace SEB_NAMESPACE {
   void Smallest_enclosing_ball<Float, Pt, PointAccessor>::allocate_resources()
   {
     center            = {};
-    center_to_aff     = new Float[dim];
+    center_to_aff     = {};
     center_to_point   = new Float[dim];
     lambdas           = new Float[dim+1];
   }
@@ -25,7 +25,6 @@ namespace SEB_NAMESPACE {
   template<typename Float, class Pt, class PointAccessor>
   void Smallest_enclosing_ball<Float, Pt, PointAccessor>::deallocate_resources()
   {
-    delete[] center_to_aff;
     delete[] center_to_point;
     delete[] lambdas;
 
@@ -131,7 +130,7 @@ namespace SEB_NAMESPACE {
           center_to_point[i] = S[j][i] - center[i];
 
         const Float dir_point_prod
-        = inner_product(center_to_aff,center_to_aff+dim,
+        = inner_product(center_to_aff.begin(),center_to_aff.begin()+dim,
                         center_to_point,Float(0));
 
         // we can ignore points beyond support since they stay
@@ -209,7 +208,7 @@ namespace SEB_NAMESPACE {
       while ((dist_to_aff
               = sqrt(dist_to_aff_square
                      = support->shortest_vector_to_span(center,
-                                                        center_to_aff)))
+                                                        center_to_aff.begin())))
              <= Eps * radius_)
         // We are closer than Eps * radius_square, so we try a drop:
         if (!successful_drop()) {

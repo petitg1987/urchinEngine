@@ -157,7 +157,7 @@ namespace SEB_NAMESPACE {
     // the essential structure for update()
 
   private: // member fields for temporary use:
-    Float *center_to_aff;
+    std::array<Float, 3> center_to_aff;
     Float *center_to_point;
     Float *lambdas;
     Float  dist_to_aff, dist_to_aff_square;
