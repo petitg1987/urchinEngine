@@ -1,2 +1,2 @@
 - Library from: https://github.com/hbf/miniball/tree/master/cpp/main
-- Library updated to support only a 3 dimension points but to avoid allocation at point creation
+- Library updated to support only a 3 dimension points but to avoid dynamic allocation
