@@ -154,7 +154,7 @@ void CollisionWorldIT::rayTestWithRemovedBody() {
 
     auto physicsThread = std::jthread([&] {
         collisionWorld->process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
-        rayTester.execute(0.0f, Vector3<float>());
+        rayTester.execute();
 
         std::weak_ptr cubeBody = bodyContainer->getBodies()[1];
         bodyContainer->removeBody(*cubeBody.lock());
