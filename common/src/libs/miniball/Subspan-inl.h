@@ -58,16 +58,6 @@ namespace SEB_NAMESPACE {
   }
 
   template<typename Float, class Pt, class PointAccessor> void Subspan<Float, Pt, PointAccessor>::init(unsigned int index) {
-    // allocate storage for Q, R, u, and w:
-    Q = new Float *[3];
-    R = new Float *[3];
-    for (unsigned int i=0; i<3; ++i) {
-      Q[i] = new Float[3];
-      R[i] = new Float[3];
-    }
-    u = new Float[3];
-    w = new Float[3];
-
     // initialize Q to the identity matrix:
     for (unsigned int i=0; i<3; ++i)
       for (unsigned int j=0; j<3; ++j)
@@ -82,14 +72,7 @@ namespace SEB_NAMESPACE {
   template<typename Float, class Pt, class PointAccessor>
   Subspan<Float, Pt, PointAccessor>::~Subspan()
   {
-    for (unsigned int i=0; i<3; ++i) {
-      delete[] Q[i];
-      delete[] R[i];
-    }
-    delete[] Q;
-    delete[] R;
-    delete[] u;
-    delete[] w;
+
   }
 
   template<typename Float, class Pt, class PointAccessor>
@@ -139,7 +122,7 @@ namespace SEB_NAMESPACE {
       // general case: delete column from R
 
       //  shift higher columns of R one step to the left
-      Float *dummy = R[local_index];
+      std::array<Float, 3> dummy = R[local_index];
       for (unsigned int j = local_index+1; j < r; ++j) {
         R[j-1] = R[j];
         members[j-1] = members[j];
@@ -167,7 +150,7 @@ namespace SEB_NAMESPACE {
 
     // remove projections of w onto the affine hull:
     for (unsigned int j = 0; j < r; ++j) {
-      const Float scale = inner_product(w,w+3,Q[j],Float(0));
+      const Float scale = inner_product(w,w+3,Q[j].begin(),Float(0));
       for (unsigned int i = 0; i < 3; ++i)
         w[i] -= scale * Q[j][i];
     }

@@ -161,12 +161,12 @@ namespace SEB_NAMESPACE {
     std::vector<unsigned int> members;
 
   private: // member fields for maintaining the QR-decomposition:
-    Float **Q, **R;                    // (dim x dim)-matrices Q
+    std::array<std::array<Float, 3>, 3> Q, R;
     // (orthogonal) and R (upper
     // triangular); notice that
     // e.g.  Q[j][i] is the element
     // in row i and column j
-    Float *u,*w;                       // needed for rank-1 update
+    std::array<Float, 3> u, w;                       // needed for rank-1 update
     unsigned int r;                    // the rank of R (i.e. #points - 1)
   };
 
