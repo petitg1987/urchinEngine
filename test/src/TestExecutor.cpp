@@ -12,6 +12,7 @@
 #include <common/math/algebra/QuaternionTest.h>
 #include <common/math/algebra/point/PointTest.h>
 #include <common/math/algebra/vector/VectorTest.h>
+#include <common/math/algorithm/MinEnclosingSphereTest.h>
 #include <common/math/geometry/2d/object/LineSegment2DTest.h>
 #include <common/math/geometry/2d/util/ResizePolygon2DServiceTest.h>
 #include <common/math/geometry/2d/shape/ConvexHullShape2DTest.h>
@@ -83,6 +84,9 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(QuaternionTest::suite());
     runner.addTest(PointTest::suite());
     runner.addTest(VectorTest::suite());
+
+    //math - algorithm
+    runner.addTest(MinEnclosingSphereTest::suite());
 
     //math - geometry
     runner.addTest(ResizePolygon2DServiceTest::suite());
