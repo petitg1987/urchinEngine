@@ -22,21 +22,12 @@ namespace SEB_NAMESPACE {
   public: // construction and destruction:
 
     Point()
-    : c(0)
+    : c({0, 0, 0})
     {
     }
 
-    Point(int d)
-    // Constructs a d-dimensional point with undefined coordinates.
-    : c(d)
-    {
-    }
-
-    template<typename InputIterator>
-    Point(int d,InputIterator first)
-    // Constructs a d-dimensional point with Cartesian center
-    // coordinates [first,first+d).
-    : c(first,first+d)
+    Point(Float x, Float y, Float z)
+    : c({x, y, z})
     {
     }
 
@@ -69,7 +60,7 @@ namespace SEB_NAMESPACE {
     }
 
   private: // member fields:
-    std::vector<Float> c;       // Cartesian center coordinates
+    std::array<Float, 3> c;       // Cartesian center coordinates
   };
 
 } // namespace SEB_NAMESPACE
