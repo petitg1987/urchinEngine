@@ -158,7 +158,7 @@ namespace SEB_NAMESPACE {
 
     // Entry i of members contains the index into S of the i-th point
     // in M.  The point members[r] is called the "origin."
-    std::vector<unsigned int> members;
+    std::array<unsigned int, 4> members;
 
   private: // member fields for maintaining the QR-decomposition:
     std::array<std::array<Float, 3>, 3> Q, R;

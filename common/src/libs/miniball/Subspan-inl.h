@@ -52,7 +52,7 @@ namespace SEB_NAMESPACE {
 
   template<typename Float, class Pt, class PointAccessor>
   Subspan<Float, Pt, PointAccessor>::Subspan(const PointAccessor& S)
-  : S(S), membership(S.size()), members(4)
+  : S(S), membership(S.size()), members({})
   {
 
   }
