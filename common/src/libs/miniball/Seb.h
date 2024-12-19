@@ -158,7 +158,7 @@ namespace SEB_NAMESPACE {
 
   private: // member fields for temporary use:
     std::array<Float, 3> center_to_aff;
-    Float *center_to_point;
+    std::array<Float, 3> center_to_point;
     Float *lambdas;
     Float  dist_to_aff, dist_to_aff_square;
 

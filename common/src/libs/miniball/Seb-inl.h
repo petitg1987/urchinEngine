@@ -18,14 +18,13 @@ namespace SEB_NAMESPACE {
   {
     center            = {};
     center_to_aff     = {};
-    center_to_point   = new Float[dim];
+    center_to_point   = {};
     lambdas           = new Float[dim+1];
   }
 
   template<typename Float, class Pt, class PointAccessor>
   void Smallest_enclosing_ball<Float, Pt, PointAccessor>::deallocate_resources()
   {
-    delete[] center_to_point;
     delete[] lambdas;
 
     if (support != NULL)
@@ -131,7 +130,7 @@ namespace SEB_NAMESPACE {
 
         const Float dir_point_prod
         = inner_product(center_to_aff.begin(),center_to_aff.begin()+dim,
-                        center_to_point,Float(0));
+                        center_to_point.begin(),Float(0));
 
         // we can ignore points beyond support since they stay
         // enclosed anyway:
@@ -145,8 +144,8 @@ namespace SEB_NAMESPACE {
         // (Better don't try to understand this calculus from the code,
         //  it needs some pencil-and-paper work.)
         Float bound = radius_square;
-        bound -= inner_product(center_to_point,center_to_point+dim,
-                               center_to_point,Float(0));
+        bound -= inner_product(center_to_point.begin(),center_to_point.begin()+dim,
+                               center_to_point.begin(),Float(0));
         bound /= 2 * (dist_to_aff_square - dir_point_prod);
 
         // watch for numerical instability - if bound=0 then we are
@@ -317,8 +316,8 @@ namespace SEB_NAMESPACE {
       // compare center-to-point distance with radius
       for (unsigned int i = 0; i < dim; ++i)
         center_to_point[i] = S[k][i] - center[i];
-      ball_error = sqrt(inner_product(center_to_point,center_to_point+dim,
-                                      center_to_point,Float(0)))
+      ball_error = sqrt(inner_product(center_to_point.begin(),center_to_point.begin()+dim,
+                                      center_to_point.begin(),Float(0)))
       - radius_;
 
       // check for sphere violations
