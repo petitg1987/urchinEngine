@@ -153,8 +153,7 @@ template<class T> void OctreeManager<T>::refreshOctreeables() {
     if (mainOctree) {
         VectorUtil::removeDuplicates(movingOctreeables);
 
-        std::vector<std::shared_ptr<T>> removedOctreeables;
-        removedOctreeables.reserve(movingOctreeables.size());
+        removedOctreeables.clear();
         for (T* movingOctreeable : movingOctreeables) {
             removedOctreeables.push_back(removeOctreeable(movingOctreeable, false));
         }

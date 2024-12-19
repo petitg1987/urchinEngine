@@ -53,6 +53,7 @@ namespace urchin {
             std::unique_ptr<Octree<T>> mainOctree;
 
             std::vector<T*> movingOctreeables;
+            std::vector<std::shared_ptr<T>> removedOctreeables;
             mutable std::vector<Octree<T>*> browseNodes;
 
             unsigned int refreshModCount;
