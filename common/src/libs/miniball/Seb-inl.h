@@ -19,14 +19,12 @@ namespace SEB_NAMESPACE {
     center            = {};
     center_to_aff     = {};
     center_to_point   = {};
-    lambdas           = new Float[dim+1];
+    lambdas           = {};
   }
 
   template<typename Float, class Pt, class PointAccessor>
   void Smallest_enclosing_ball<Float, Pt, PointAccessor>::deallocate_resources()
   {
-    delete[] lambdas;
-
     if (support != NULL)
       delete support;
   }
@@ -83,7 +81,7 @@ namespace SEB_NAMESPACE {
   // (and support remains unaltered).
   {
     // find coefficients of the affine combination of center:
-    support->find_affine_coefficients(center,lambdas);
+    support->find_affine_coefficients(center,lambdas.begin());
 
     // find a non-positive coefficient:
     unsigned int smallest = 0; // Note: assignment prevents compiler warnings.
@@ -305,7 +303,7 @@ namespace SEB_NAMESPACE {
     Float  qr_error = support->representation_error();
 
     // center really in convex hull?
-    support->find_affine_coefficients(center,lambdas);
+    support->find_affine_coefficients(center,lambdas.begin());
     for (unsigned int k = 0; k < support->size(); ++k)
       if (lambdas[k] <= min_lambda)
         min_lambda = lambdas[k];
