@@ -6,28 +6,11 @@
 #ifndef SEB_SEB_INL_H
 #define SEB_SEB_INL_H
 
-#include <algorithm>
 #include <numeric>
 
 #include "Seb.h" // Note: header included for better syntax highlighting in some IDEs.
 
 namespace SEB_NAMESPACE {
-
-  template<typename Float, class Pt, class PointAccessor>
-  void Smallest_enclosing_ball<Float, Pt, PointAccessor>::allocate_resources()
-  {
-    center            = {};
-    center_to_aff     = {};
-    center_to_point   = {};
-    lambdas           = {};
-  }
-
-  template<typename Float, class Pt, class PointAccessor>
-  void Smallest_enclosing_ball<Float, Pt, PointAccessor>::deallocate_resources()
-  {
-    if (support != NULL)
-      delete support;
-  }
 
   template<typename Float, class Pt, class PointAccessor>
   void Smallest_enclosing_ball<Float, Pt, PointAccessor>::init_ball()
@@ -62,9 +45,7 @@ namespace SEB_NAMESPACE {
     }
 
     // initialize support to the farthest point:
-    if (support != NULL)
-      delete support;
-    support = new Subspan<Float, Pt, PointAccessor>(dim,S,farthest);
+    support.init(farthest)
 
     // statistics:
     // initialize entry-counters to zero:
@@ -81,12 +62,12 @@ namespace SEB_NAMESPACE {
   // (and support remains unaltered).
   {
     // find coefficients of the affine combination of center:
-    support->find_affine_coefficients(center,lambdas.begin());
+    support.find_affine_coefficients(center,lambdas.begin());
 
     // find a non-positive coefficient:
     unsigned int smallest = 0; // Note: assignment prevents compiler warnings.
     Float minimum(1);
-    for (unsigned int i=0; i<support->size(); ++i)
+    for (unsigned int i=0; i<support.size(); ++i)
       if (lambdas[i] < minimum) {
         minimum = lambdas[i];
         smallest = i;
@@ -95,7 +76,7 @@ namespace SEB_NAMESPACE {
     // drop a point with non-positive coefficient, if any:
     if (minimum <= 0) {
       SEB_LOG ("debug","  removing local point #" << smallest << std::endl);
-      support->remove_point(smallest);
+      support.remove_point(smallest);
       return true;
     }
     return false;
@@ -120,7 +101,7 @@ namespace SEB_NAMESPACE {
 
     // ... but one of the points in S might hinder us:
     for (unsigned int j = 0; j < S.size(); ++j)
-      if (!support->is_member(j)) {
+      if (!support.is_member(j)) {
 
         // compute vector center_to_point from center to the point S[i]:
         for (unsigned int i = 0; i < dim; ++i)
@@ -204,7 +185,7 @@ namespace SEB_NAMESPACE {
       // and check if the former is perhaps too small:
       while ((dist_to_aff
               = sqrt(dist_to_aff_square
-                     = support->shortest_vector_to_span(center,
+                     = support.shortest_vector_to_span(center,
                                                         center_to_aff.begin())))
              <= Eps * radius_)
         // We are closer than Eps * radius_square, so we try a drop:
@@ -234,7 +215,7 @@ namespace SEB_NAMESPACE {
       // in this casev we cannot add yet another point to the support.
       //
       // Therefore, the condition reads:
-      if (stopper >= 0 && support->size() <= dim) {
+      if (stopper >= 0 && support.size() <= dim) {
         // stopping point exists
 
         // walk as far as we can
@@ -242,7 +223,7 @@ namespace SEB_NAMESPACE {
           center[i] += scale * center_to_aff[i];
 
         // update the radius
-        const Pt& stop_point = S[support->any_member()];
+        const Pt& stop_point = S[support.any_member()];
         radius_square = 0;
         for (unsigned int i = 0; i < dim; ++i)
           radius_square += sqr(stop_point[i] - center[i]);
@@ -253,7 +234,7 @@ namespace SEB_NAMESPACE {
                  << std::endl << std::endl);
 
         // and add stopper to support
-        support->add_point(stopper);
+        support.add_point(stopper);
         SEB_STATS (++entry_count[stopper]);
         SEB_LOG ("debug","  adding global point #" << stopper << std::endl);
       }
@@ -264,7 +245,7 @@ namespace SEB_NAMESPACE {
           center[i] += center_to_aff[i];
 
         // update the radius:
-        const Pt& stop_point = S[support->any_member()];
+        const Pt& stop_point = S[support.any_member()];
         radius_square = 0;
         for (unsigned int i = 0; i < dim; ++i)
           radius_square += sqr(stop_point[i] - center[i]);
@@ -300,11 +281,11 @@ namespace SEB_NAMESPACE {
     Float  max_overlength  = 0;  // for all-points-in-ball check
     Float  min_underlength = 0;  // for all-boundary-points-on-boundary
     Float  ball_error;
-    Float  qr_error = support->representation_error();
+    Float  qr_error = support.representation_error();
 
     // center really in convex hull?
-    support->find_affine_coefficients(center,lambdas.begin());
-    for (unsigned int k = 0; k < support->size(); ++k)
+    support.find_affine_coefficients(center,lambdas.begin());
+    for (unsigned int k = 0; k < support.size(); ++k)
       if (lambdas[k] <= min_lambda)
         min_lambda = lambdas[k];
 
@@ -322,7 +303,7 @@ namespace SEB_NAMESPACE {
       if (ball_error > max_overlength) max_overlength = ball_error;
 
       // check for boundary violations
-      if (support->is_member(k))
+      if (support.is_member(k))
         if (ball_error < min_underlength) min_underlength = ball_error;
     }
 
@@ -362,81 +343,6 @@ namespace SEB_NAMESPACE {
       if (histogram[j])
         cout << histogram[j] << " points entered " << j << " times" << endl;
 #endif // SEB_STATS MODE
-  }
-
-
-  template<typename Float, class Pt, class PointAccessor>
-  void Smallest_enclosing_ball<Float, Pt, PointAccessor>::test_affine_stuff()
-  {
-    using std::cout;
-    using std::endl;
-
-    Float *direction;
-    Float  error;
-    Float  max_representation_error = 0;
-
-    cout << S.size() << " points in " << dim << " dimensions" << endl;
-
-    if (!is_empty()) {
-      support = new Subspan<Float,PointAccessor,Pt>(dim,S,0);
-      cout << "initializing affine subspace with point S[0]" << endl;
-
-      direction = new Float[dim];
-    }
-    else return;
-
-    for (int loop = 0; loop < 5; ++loop) {
-
-      // Try to fill each point of S into aff
-      for (int i = 0; i < S.size(); ++i) {
-
-        cout << endl << "Trying new point #" << i << endl;
-
-        Float dist = sqrt(support->shortest_vector_to_span(S[i],direction));
-        cout << "dist(S[" << i << "],affine_hull) = "
-        << dist << endl;
-
-        if (dist > 1.0E-8) {
-          cout << "inserting point S["<<i<<"] into affine hull"
-          << endl;
-          support->add_point(i);
-
-          cout << "representation error: "
-          << (error = support->representation_error()) << endl;
-          if (error > max_representation_error)
-            max_representation_error = error;
-        }
-      }
-
-      //  Throw out half of the points
-      while (support->size() > dim/2) {
-
-        //  throw away the origin or point at position r/2,
-        //  depending on whether size is odd or even:
-        int k = support->size()/2;
-        if (2 * k == support->size()) {
-          //  size even
-          cout << endl << "Throwing out local point #" << k << endl;
-          support->remove_point(k);
-        } else {
-          //  size odd
-          cout << endl << "Throughing out the origin" << endl;
-          support->remove(support->size()-1);
-        }
-
-        cout << "representation error: "
-        << (error = support->representation_error()) << endl;
-        if (error > max_representation_error)
-          max_representation_error = error;
-      }
-    }
-
-    cout << "maximal representation error: "
-    << max_representation_error << endl
-    << "End of test." << endl;
-
-    delete support;
-    delete direction;
   }
 
 

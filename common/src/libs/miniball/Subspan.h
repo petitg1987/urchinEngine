@@ -76,7 +76,7 @@ namespace SEB_NAMESPACE {
   {
   public: // construction and deletion:
 
-    Subspan(unsigned int dim, const PointAccessor& S, unsigned int i);
+    Subspan(const PointAccessor& S);
     // Constructs an instance representing the affine hull aff(M) of M={p},
     // where p is the point S[i] from S.
     //
@@ -87,6 +87,7 @@ namespace SEB_NAMESPACE {
 
   public: // modification:
 
+    void init(unsigned int);
     void add_point(int global_index);
     void remove_point(unsigned int local_index);
 
@@ -154,9 +155,6 @@ namespace SEB_NAMESPACE {
   private: // member fields:
     const PointAccessor &S;            // a const-reference to the set S
     std::vector<bool> membership;      // S[i] in M iff membership[i]
-    const unsigned int dim;            // ambient dimension (not to be
-    // confused with the rank r,
-    // see below)
 
     // Entry i of members contains the index into S of the i-th point
     // in M.  The point members[r] is called the "origin."

@@ -51,22 +51,26 @@ namespace SEB_NAMESPACE {
   }
 
   template<typename Float, class Pt, class PointAccessor>
-  Subspan<Float, Pt, PointAccessor>::Subspan(unsigned int dim, const PointAccessor& S, unsigned int index)
-  : S(S), membership(S.size()), dim(dim), members(dim+1)
+  Subspan<Float, Pt, PointAccessor>::Subspan(const PointAccessor& S)
+  : S(S), membership(S.size()), members(4)
   {
+
+  }
+
+  template<typename Float, class Pt, class PointAccessor> void Subspan<Float, Pt, PointAccessor>::init(unsigned int index) {
     // allocate storage for Q, R, u, and w:
-    Q = new Float *[dim];
-    R = new Float *[dim];
-    for (unsigned int i=0; i<dim; ++i) {
-      Q[i] = new Float[dim];
-      R[i] = new Float[dim];
+    Q = new Float *[3];
+    R = new Float *[3];
+    for (unsigned int i=0; i<3; ++i) {
+      Q[i] = new Float[3];
+      R[i] = new Float[3];
     }
-    u = new Float[dim];
-    w = new Float[dim];
+    u = new Float[3];
+    w = new Float[3];
 
     // initialize Q to the identity matrix:
-    for (unsigned int i=0; i<dim; ++i)
-      for (unsigned int j=0; j<dim; ++j)
+    for (unsigned int i=0; i<3; ++i)
+      for (unsigned int j=0; j<3; ++j)
         Q[i][j] = (i==j)? 1 : 0;
 
     members[r = 0] = index;
@@ -78,7 +82,7 @@ namespace SEB_NAMESPACE {
   template<typename Float, class Pt, class PointAccessor>
   Subspan<Float, Pt, PointAccessor>::~Subspan()
   {
-    for (unsigned int i=0; i<dim; ++i) {
+    for (unsigned int i=0; i<3; ++i) {
       delete[] Q[i];
       delete[] R[i];
     }
@@ -93,7 +97,7 @@ namespace SEB_NAMESPACE {
     SEB_ASSERT(!is_member(index));
 
     // compute S[i] - origin into u:
-    for (unsigned int i=0; i<dim; ++i)
+    for (unsigned int i=0; i<3; ++i)
       u[i] = S[(unsigned long)index][i] - SEB_AFFINE_ORIGIN[i];
 
     // appends new column u to R and updates QR-decomposition,
@@ -122,7 +126,7 @@ namespace SEB_NAMESPACE {
       // as the new origin.  So all relative vectors (i.e., the
       // columns of "A = QR") have to be updated by u:= old origin -
       // S[global_index(r-1)]:
-      for (unsigned int i=0; i<dim; ++i)
+      for (unsigned int i=0; i<3; ++i)
         u[i] = SEB_AFFINE_ORIGIN[i] - S[global_index(r-1)][i];
 
       --r;
@@ -158,17 +162,17 @@ namespace SEB_NAMESPACE {
     using std::inner_product;
 
     // compute vector from p to origin, i.e., w = origin - p:
-    for (unsigned int i=0; i<dim; ++i)
+    for (unsigned int i=0; i<3; ++i)
       w[i] = SEB_AFFINE_ORIGIN[i] - p[i];
 
     // remove projections of w onto the affine hull:
     for (unsigned int j = 0; j < r; ++j) {
-      const Float scale = inner_product(w,w+dim,Q[j],Float(0));
-      for (unsigned int i = 0; i < dim; ++i)
+      const Float scale = inner_product(w,w+3,Q[j],Float(0));
+      for (unsigned int i = 0; i < 3; ++i)
         w[i] -= scale * Q[j][i];
     }
 
-    return inner_product(w,w+dim,w,Float(0));
+    return inner_product(w,w+3,w,Float(0));
   }
 
   template<typename Float, class Pt, class PointAccessor>
@@ -211,13 +215,13 @@ namespace SEB_NAMESPACE {
                            RandomAccessIterator2 lambdas)
   {
     // compute relative position of p, i.e., u = p - origin:
-    for (unsigned int i=0; i<dim; ++i)
+    for (unsigned int i=0; i<3; ++i)
       u[i] = p[i] - SEB_AFFINE_ORIGIN[i];
 
     // calculate Q^T u into w:
-    for (unsigned int i = 0; i < dim; ++i) {
+    for (unsigned int i = 0; i < 3; ++i) {
       w[i] = 0;
-      for (unsigned int k = 0; k < dim; ++k)
+      for (unsigned int k = 0; k < 3; ++k)
         w[i] += Q[i][k] * u[k];
     }
 
@@ -250,14 +254,14 @@ namespace SEB_NAMESPACE {
     SEB_ASSERT(r < dim);
 
     //  compute new column R[r] = Q^T * u
-    for (unsigned int i = 0; i < dim; ++i) {
+    for (unsigned int i = 0; i < 3; ++i) {
       R[r][i] = 0;
-      for (unsigned int k = 0; k < dim; ++k)
+      for (unsigned int k = 0; k < 3; ++k)
         R[r][i] += Q[i][k] * u[k];
     }
 
     //  zero all entries R[r][dim-1] down to R[r][r+1]
-    for (unsigned int j = dim-1; j > r; --j) {
+    for (unsigned int j = 2; j > r; --j) {
       //  j is the index of the entry to be cleared
       //  with the help of entry j-1
 
@@ -269,7 +273,7 @@ namespace SEB_NAMESPACE {
       R[r][j-1] = c * R[r][j-1] + s * R[r][j];
 
       //  rotate two Q-columns
-      for (unsigned int i = 0; i < dim; ++i) {
+      for (unsigned int i = 0; i < 3; ++i) {
         const Float a = Q[j-1][i];
         const Float b = Q[j][i];
         Q[j-1][i] =  c * a + s * b;
@@ -304,7 +308,7 @@ namespace SEB_NAMESPACE {
       }
 
       //  rotate Q-columns
-      for (unsigned int i = 0; i < dim; ++i) {
+      for (unsigned int i = 0; i < 3; ++i) {
         const Float a = Q[pos][i];
         const Float b = Q[pos+1][i];
         Q[pos][i]   =  c * a + s * b;
@@ -319,15 +323,15 @@ namespace SEB_NAMESPACE {
   // A + u * [1,...,1] = Q' R'.
   {
     //  compute w = Q^T * u
-    for (unsigned int i = 0; i < dim; ++i) {
+    for (unsigned int i = 0; i < 3; ++i) {
       w[i] = 0;
-      for (unsigned int k = 0; k < dim; ++k)
+      for (unsigned int k = 0; k < 3; ++k)
         w[i] += Q[i][k] * u[k];
     }
 
     //  rotate w down to a multiple of the first unit vector;
     //  the operations have to be recorded in R and Q
-    for (unsigned int k = dim-1; k > 0; --k) {
+    for (unsigned int k = 2; k > 0; --k) {
       //  k is the index of the entry to be cleared
       //  with the help of entry k-1
 
@@ -351,7 +355,7 @@ namespace SEB_NAMESPACE {
       }
 
       //  rotate two Q-columns
-      for (unsigned int i = 0; i < dim; ++i) {
+      for (unsigned int i = 0; i < 3; ++i) {
         const Float a = Q[k-1][i];
         const Float b = Q[k][i];
         Q[k-1][i] =  c * a + s * b;

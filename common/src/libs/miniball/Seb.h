@@ -35,16 +35,15 @@ namespace SEB_NAMESPACE {
     // Constructs an instance representing the miniball of points from
     // set S.  The dimension of the ambient space is fixed to d for
     // lifetime of the instance.
-    : dim(3), S(P), up_to_date(true), support(NULL)
+    : dim(3), S(P), up_to_date(true), support(S)
     {
-      allocate_resources();
       SEB_ASSERT(!is_empty());
       update();
     }
 
     ~Smallest_enclosing_ball()
     {
-      deallocate_resources();
+
     }
 
   public: // modification:
@@ -152,7 +151,8 @@ namespace SEB_NAMESPACE {
                                       // already been computed
     std::array<Float, 3> center;      // center of the miniball
     Float radius_, radius_square;     // squared radius of the miniball
-    Subspan<Float, Pt, PointAccessor> *support;          // the points that lie on the current
+    std::vector<Pt> dummy;
+    Subspan<Float, Pt, PointAccessor> support;          // the points that lie on the current
     // boundary and "support" the ball;
     // the essential structure for update()
 
