@@ -16,7 +16,7 @@ namespace SEB_NAMESPACE {
   template<typename Float, class Pt, class PointAccessor>
   void Smallest_enclosing_ball<Float, Pt, PointAccessor>::allocate_resources()
   {
-    center            = new Float[dim];
+    center            = {};
     center_to_aff     = new Float[dim];
     center_to_point   = new Float[dim];
     lambdas           = new Float[dim+1];
@@ -25,7 +25,6 @@ namespace SEB_NAMESPACE {
   template<typename Float, class Pt, class PointAccessor>
   void Smallest_enclosing_ball<Float, Pt, PointAccessor>::deallocate_resources()
   {
-    delete[] center;
     delete[] center_to_aff;
     delete[] center_to_point;
     delete[] lambdas;

@@ -99,7 +99,7 @@ namespace SEB_NAMESPACE {
         update();
 
       SEB_ASSERT(!is_empty());
-      return center;
+      return center.begin();
     }
 
     Coordinate_iterator center_end()
@@ -150,7 +150,7 @@ namespace SEB_NAMESPACE {
     const PointAccessor &S;           // set S of inserted points
     bool up_to_date;                  // whether the miniball has
                                       // already been computed
-    Float *center;                    // center of the miniball
+    std::array<Float, 3> center;      // center of the miniball
     Float radius_, radius_square;     // squared radius of the miniball
     Subspan<Float, Pt, PointAccessor> *support;          // the points that lie on the current
     // boundary and "support" the ball;
