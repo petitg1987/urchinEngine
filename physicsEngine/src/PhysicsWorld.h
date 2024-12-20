@@ -62,7 +62,7 @@ namespace urchin {
             CollisionWorld collisionWorld;
 
             std::vector<RayTester> rayTesters;
-            std::vector<RayTester> copiedRayTesters;
+            std::vector<RayTester> threadLocalRayTesters;
 
             std::unique_ptr<CollisionVisualizer> collisionVisualizer;
     };

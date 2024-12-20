@@ -26,7 +26,7 @@ namespace urchin {
             physicsSimulationThread->join();
         }
 
-        copiedRayTesters.clear();
+        threadLocalRayTesters.clear();
         rayTesters.clear();
 
         Profiler::physics().log(); //log for main (not physics) thread
@@ -169,7 +169,7 @@ namespace urchin {
         //copy for local thread
         bool paused;
         Vector3<float> gravity;
-        copiedRayTesters.clear();
+        threadLocalRayTesters.clear();
 
         {
             std::scoped_lock lock(mutex);
@@ -177,7 +177,7 @@ namespace urchin {
             if (!paused) {
                 gravity = this->gravity;
                 for (RayTester& rayTester : rayTesters) {
-                    copiedRayTesters.push_back(rayTester);
+                    threadLocalRayTesters.push_back(rayTester);
                 }
                 rayTesters.clear();
             }
@@ -187,7 +187,7 @@ namespace urchin {
         if (!paused) {
             collisionWorld.process(dt, gravity);
 
-            executeRayTesters(copiedRayTesters);
+            executeRayTesters(threadLocalRayTesters);
         }
     }
 
