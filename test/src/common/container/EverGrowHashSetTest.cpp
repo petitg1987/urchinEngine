@@ -9,15 +9,25 @@ void EverGrowHashSetTest::insertGetErase() {
     EverGrowHashSet<std::string> set(4, 0.75f);
 
     AssertHelper::assertTrue(set.isEmpty());
+    for (const std::string& value : set) {
+        AssertHelper::assertTrue(false, "Value found: " + value);
+    }
 
     set.insert("12");
-    set.insert("14");
     AssertHelper::assertFalse(set.isEmpty());
-    AssertHelper::assertFalse(set.insert("14"));
     AssertHelper::assertTrue(set.isExist("12"));
+    for (const std::string& value : set) {
+        AssertHelper::assertTrue(value == "12");
+    }
+
+    set.insert("14");
+    AssertHelper::assertFalse(set.insert("14"));
     AssertHelper::assertFalse(set.isExist("13"));
     AssertHelper::assertUnsignedIntEquals(set.getSize(), 2);
     AssertHelper::assertUnsignedIntEquals(set.getNumBuckets(), 4);
+    for (const std::string& value : set) {
+        AssertHelper::assertTrue(value == "12" || value == "14");
+    }
 
     set.insert("15");
     set.insert("16");

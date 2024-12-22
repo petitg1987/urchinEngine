@@ -1,3 +1,35 @@
+template<typename K> EverGrowHashSet<K>::Iterator::Iterator(EverGrowHashSet& set, std::size_t bucketIndex, std::size_t elementIndex) :
+        set(set),
+        bucketIndex(bucketIndex),
+        elementIndex(elementIndex) {
+
+}
+
+template<typename K> K& EverGrowHashSet<K>::Iterator::operator*() const {
+    return set.table[bucketIndex][elementIndex];
+}
+
+template<typename K> K* EverGrowHashSet<K>::Iterator::operator->() const {
+    return &set.table[bucketIndex][elementIndex];
+}
+
+template<typename K> EverGrowHashSet<K>::Iterator& EverGrowHashSet<K>::Iterator::operator++() {
+    ++elementIndex;
+    while (bucketIndex < set.table.size() && elementIndex >= set.table[bucketIndex].size()) {
+        ++bucketIndex;
+        elementIndex = 0;
+    }
+    return *this;
+}
+
+template<typename K> bool EverGrowHashSet<K>::Iterator::operator==(const Iterator& other) const {
+    return &set == &other.set && bucketIndex == other.bucketIndex && elementIndex == other.elementIndex;
+}
+
+template<typename K> bool EverGrowHashSet<K>::Iterator::operator!=(const Iterator& other) const {
+    return !(*this == other);
+}
+
 template<typename K> EverGrowHashSet<K>::EverGrowHashSet(std::size_t bucketCount, float loadFactor) :
         numBuckets(bucketCount),
         currentSize(0),
@@ -58,6 +90,18 @@ template<typename K> void EverGrowHashSet<K>::clear() {
         bucket.clear();
     }
     currentSize = 0;
+}
+
+template<typename K> EverGrowHashSet<K>::Iterator EverGrowHashSet<K>::begin() {
+    std::size_t bucketIndex = 0;
+    while (bucketIndex < table.size() && table[bucketIndex].empty()) {
+        ++bucketIndex;
+    }
+    return Iterator(*this, bucketIndex, 0);
+}
+
+template<typename K> EverGrowHashSet<K>::Iterator EverGrowHashSet<K>::end() {
+    return Iterator(*this, table.size(), 0);
 }
 
 template<typename K> bool EverGrowHashSet<K>::isEmpty() const {

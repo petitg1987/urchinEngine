@@ -11,12 +11,31 @@ namespace urchin {
      */
     template <typename K> class EverGrowHashSet {
         public:
+            class Iterator {
+                public:
+                    Iterator(EverGrowHashSet&, std::size_t, std::size_t);
+
+                    K& operator*() const;
+                    K* operator->() const;
+                    Iterator& operator++();
+                    bool operator==(const Iterator&) const;
+                    bool operator!=(const Iterator&) const;
+
+                private:
+                    EverGrowHashSet& set;
+                    std::size_t bucketIndex;
+                    std::size_t elementIndex;
+            };
+
             explicit EverGrowHashSet(std::size_t = 8, float = 0.75);
 
             bool insert(const K&);
             bool isExist(const K&);
             bool erase(const K&);
             void clear();
+
+            Iterator begin();
+            Iterator end();
 
             bool isEmpty() const;
             std::size_t getSize() const;
