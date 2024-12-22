@@ -114,7 +114,7 @@ inline void AssertHelper::assertPolygonFloatEquals(std::vector<urchin::Point2<fl
         try {
             assertPoints2FloatEquals(orientedPoints, orientedExpectedPoints, epsilon);
         } catch (const std::exception&) {
-            std::rotate(orientedPoints.begin(), orientedPoints.begin() + 1, orientedPoints.end());
+            std::ranges::rotate(orientedPoints, orientedPoints.begin() + 1);
             continue;
         }
 
