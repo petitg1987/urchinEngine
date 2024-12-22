@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <vector>
-#include <list>
 
 namespace urchin {
 
