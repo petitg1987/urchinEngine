@@ -50,10 +50,15 @@ namespace urchin {
         bodyContainer.removeBody(body);
     }
 
-    std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) {
+    std::shared_ptr<RayTester> PhysicsWorld::newRayTest(const Ray<float>& ray) {
         std::scoped_lock lock(mutex);
-        rayTesters.emplace_back(getCollisionWorld(), ray);
-        return rayTesters.back().getRayTestResult();
+        return rayTesters.emplace_back(std::make_unique<RayTester>(getCollisionWorld(), ray));
+    }
+
+    void PhysicsWorld::updateRayTest(std::shared_ptr<RayTester> rayTester, const Ray<float>& ray) {
+        std::scoped_lock lock(mutex);
+        rayTester->updateRay(ray);
+        rayTesters.push_back(std::move(rayTester));
     }
 
     /**
@@ -176,7 +181,7 @@ namespace urchin {
             paused = this->paused;
             if (!paused) {
                 gravity = this->gravity;
-                for (RayTester& rayTester : rayTesters) {
+                for (const std::shared_ptr<RayTester>& rayTester : rayTesters) {
                     threadLocalRayTesters.push_back(rayTester);
                 }
                 rayTesters.clear();
@@ -191,11 +196,11 @@ namespace urchin {
         }
     }
 
-    void PhysicsWorld::executeRayTesters(const std::vector<RayTester>& rayTesters) const {
+    void PhysicsWorld::executeRayTesters(const std::vector<std::shared_ptr<RayTester>>& rayTesters) const {
         ScopeProfiler sp(Profiler::physics(), "exeRayTest");
 
-        for (const RayTester& rayTester : rayTesters) {
-            rayTester.execute();
+        for (const std::shared_ptr<RayTester>& rayTester : rayTesters) {
+            rayTester->execute();
         }
     }
 

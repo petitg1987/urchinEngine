@@ -1,7 +1,7 @@
 #pragma once
 
-#include <atomic>
 #include <memory>
+#include <mutex>
 
 #include <collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h>
 
@@ -9,23 +9,20 @@ namespace urchin {
 
     /**
      * Result of a ray test. The result is fill asynchronously to ray test.
-     * Method "isResultReady" returns true when ray test result is correctly completed.
      */
     class RayTestResult {
         public:
             RayTestResult();
 
-            void addResults(ccd_set&);
+            void updateResults(const ccd_set&, unsigned int);
 
-            bool isResultReady() const;
-
-            bool hasHit() const;
-            const ContinuousCollisionResult<float>& getNearestResult() const;
-            const ccd_set& getResults() const;
+            bool isResultReady(unsigned int) const;
+            std::pair<unsigned int, std::optional<ContinuousCollisionResult<float>>> getNearestResult() const;
 
         private:
-            std::atomic_bool resultReady;
+            mutable std::mutex mutex;
 
+            std::atomic_uint rayTestVersion;
             ccd_set rayTestResults;
     };
 

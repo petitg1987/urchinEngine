@@ -163,12 +163,11 @@ void CollisionWorldIT::rayTestWithRemovedBody() {
     });
     physicsThread.join();
 
-    std::shared_ptr<const RayTestResult> rayTestResult = rayTester.getRayTestResult();
-    AssertHelper::assertTrue(rayTestResult->isResultReady());
-    AssertHelper::assertTrue(rayTestResult->hasHit());
-    AssertHelper::assertStringEquals(rayTestResult->getNearestResult().getBody2().getId(), "cube");
-    AssertHelper::assertVector3FloatEquals(rayTestResult->getNearestResult().getNormalFromObject2(), Vector3(0.0f, 0.0f, -1.0f), 0.01f);
-    AssertHelper::assertPoint3FloatEquals(rayTestResult->getNearestResult().getHitPointOnObject2(), Point3(0.0f, 0.5f, -0.5f), 0.01f);
+    std::optional<ContinuousCollisionResult<float>> rayTestResult = rayTester.getNearestResult();
+    AssertHelper::assertTrue(rayTestResult.has_value());
+    AssertHelper::assertStringEquals(rayTestResult->getBody2().getId(), "cube");
+    AssertHelper::assertVector3FloatEquals(rayTestResult->getNormalFromObject2(), Vector3(0.0f, 0.0f, -1.0f), 0.01f);
+    AssertHelper::assertPoint3FloatEquals(rayTestResult->getHitPointOnObject2(), Point3(0.0f, 0.5f, -0.5f), 0.01f);
 }
 
 std::unique_ptr<BodyContainer> CollisionWorldIT::buildWorld(const Point3<float>& cubePosition) const {

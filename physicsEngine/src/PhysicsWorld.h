@@ -11,7 +11,6 @@
 #include <body/BodyContainer.h>
 #include <collision/CollisionWorld.h>
 #include <raytest/RayTester.h>
-#include <raytest/RayTestResult.h>
 #include <visualizer/CollisionVisualizer.h>
 
 namespace urchin {
@@ -27,7 +26,8 @@ namespace urchin {
             void addBody(std::shared_ptr<AbstractBody>);
             void removeBody(const AbstractBody&);
 
-            std::shared_ptr<const RayTestResult> rayTest(const Ray<float>&);
+            std::shared_ptr<RayTester> newRayTest(const Ray<float>&);
+            void updateRayTest(std::shared_ptr<RayTester>, const Ray<float>&);
 
             void setGravity(const Vector3<float>&);
             Vector3<float> getGravity() const;
@@ -47,7 +47,7 @@ namespace urchin {
             bool continueExecution() const;
             void processPhysicsUpdate(float);
 
-            void executeRayTesters(const std::vector<RayTester>&) const;
+            void executeRayTesters(const std::vector<std::shared_ptr<RayTester>>&) const;
 
             std::unique_ptr<std::jthread> physicsSimulationThread;
             std::atomic_bool physicsSimulationStopper;
@@ -61,8 +61,8 @@ namespace urchin {
             BodyContainer bodyContainer;
             CollisionWorld collisionWorld;
 
-            std::vector<RayTester> rayTesters;
-            std::vector<RayTester> threadLocalRayTesters;
+            std::vector<std::shared_ptr<RayTester>> rayTesters;
+            std::vector<std::shared_ptr<RayTester>> threadLocalRayTesters;
 
             std::unique_ptr<CollisionVisualizer> collisionVisualizer;
     };

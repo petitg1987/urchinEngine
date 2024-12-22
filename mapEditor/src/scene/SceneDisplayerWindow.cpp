@@ -327,14 +327,14 @@ namespace urchin {
             constexpr float PICKING_RAY_LENGTH = 100.0f;
             const Camera& camera = sceneDisplayer->getScene().getActiveRenderer3d()->getCamera();
             Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2((float) mouseX, (float) mouseY), PICKING_RAY_LENGTH);
-            std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld().rayTest(pickingRay);
+            std::shared_ptr<RayTester> rayTester = sceneDisplayer->getPhysicsWorld().newRayTest(pickingRay);
 
-            while (!rayTestResult->isResultReady()) {
-                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            while (!rayTester->isResultReady()) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(25));
             }
-            const ccd_set& pickedModels = rayTestResult->getResults();
-            if (!pickedModels.empty()) {
-                lastPickedBodyId = pickedModels.begin()->getBody2().getId();
+            std::optional<ContinuousCollisionResult<float>> pickedModels = rayTester->getNearestResult();
+            if (pickedModels.has_value()) {
+                lastPickedBodyId = pickedModels->getBody2().getId();
                 notifyObservers(this, BODY_PICKED);
                 propagateEvent = false;
             } else {

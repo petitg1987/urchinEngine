@@ -5,21 +5,34 @@
 #include <raytest/RayTestResult.h>
 #include <collision/CollisionWorld.h>
 
+class CollisionWorldIT;
+
 namespace urchin {
 
     class RayTester {
         public:
-            RayTester(CollisionWorld&, const Ray<float>& ray);
+            friend class PhysicsWorld;
+            friend class ::CollisionWorldIT;
 
-            std::shared_ptr<const RayTestResult> getRayTestResult() const;
+            RayTester(CollisionWorld&, const Ray<float>&);
 
-            void execute() const;
+            unsigned int getRayTestVersion() const;
+
+            bool isResultReady() const;
+            std::optional<ContinuousCollisionResult<float>> getNearestResult() const;
+
+        protected:
+            void updateRay(const Ray<float>&);
+
+            void execute();
 
         private:
+
             CollisionWorld& collisionWorld;
             Ray<float> ray;
+            unsigned int rayTestVersion;
 
-            std::shared_ptr<RayTestResult> rayTestResult;
+            RayTestResult rayTestResult;
     };
 
 }

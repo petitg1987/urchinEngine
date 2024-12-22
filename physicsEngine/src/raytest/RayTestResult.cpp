@@ -1,52 +1,34 @@
-#include <stdexcept>
-
 #include <raytest/RayTestResult.h>
 
 namespace urchin {
 
-    RayTestResult::RayTestResult() :
-            resultReady(false) {
-
+    RayTestResult::RayTestResult() {
+        rayTestVersion.store(0);
     }
 
-    void RayTestResult::addResults(ccd_set& rayTestResults) {
-        assert(this->rayTestResults.empty());
-
-        this->rayTestResults.merge(rayTestResults);
-
-        resultReady.store(true, std::memory_order_release);
+    void RayTestResult::updateResults(const ccd_set& rayTestResults, unsigned int rayTestVersion) {
+        {
+            std::lock_guard lock(mutex);
+            this->rayTestResults = rayTestResults;
+        }
+        this->rayTestVersion.store(rayTestVersion, std::memory_order_relaxed);
+    }
+    
+    bool RayTestResult::isResultReady(unsigned int minRayTestResultVersion) const {
+        return rayTestVersion.load(std::memory_order_acquire) >= minRayTestResultVersion;
     }
 
-    /**
-     * Return true if result is available. Indeed, after calling test ray method, the result is not directly available
-     * as the physics engine work in separate thread.
-     */
-    bool RayTestResult::isResultReady() const {
-        return resultReady.load(std::memory_order_acquire);
-    }
-
-    bool RayTestResult::hasHit() const {
-        if (!resultReady.load(std::memory_order_acquire)) {
-            throw std::runtime_error("Ray test callback result is not ready.");
+    std::pair<unsigned int, std::optional<ContinuousCollisionResult<float>>> RayTestResult::getNearestResult() const {
+        unsigned int rayTestVersionLocal = rayTestVersion.load(std::memory_order_acquire);
+        if (rayTestVersionLocal == 0) {
+            throw std::runtime_error("Ray test result is not ready.");
         }
 
-        return !rayTestResults.empty();
-    }
-
-    const ContinuousCollisionResult<float>& RayTestResult::getNearestResult() const {
-        if (!resultReady.load(std::memory_order_acquire)) {
-            throw std::runtime_error("Ray test callback result is not ready.");
+        std::lock_guard lock(mutex);
+        if (rayTestResults.empty()) {
+            return std::make_pair(rayTestVersionLocal, std::nullopt);
         }
-
-        assert(!rayTestResults.empty());
-        return *rayTestResults.begin();
-    }
-
-    const ccd_set& RayTestResult::getResults() const {
-        if (!resultReady.load(std::memory_order_acquire)) {
-            throw std::runtime_error("Ray test callback result is not ready.");
-        }
-        return rayTestResults;
+        return std::make_pair(rayTestVersionLocal, *rayTestResults.begin());
     }
 
 }
