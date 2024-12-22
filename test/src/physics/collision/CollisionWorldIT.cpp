@@ -150,11 +150,12 @@ void CollisionWorldIT::changeMass() {
 void CollisionWorldIT::rayTestWithRemovedBody() {
     auto bodyContainer = buildWorld(Point3(0.0f, 0.5f, 0.0f));
     auto collisionWorld = std::make_unique<CollisionWorld>(*bodyContainer);
-    RayTester rayTester(*collisionWorld, Ray(Point3(0.0f, 0.5f, -100.0f), Point3(0.0f, 0.5f, 100.0f)));
+    auto rayTester = RayTester::newRayTester();
+    rayTester->updateRay(Ray(Point3(0.0f, 0.5f, -100.0f), Point3(0.0f, 0.5f, 100.0f)));
 
     auto physicsThread = std::jthread([&] {
         collisionWorld->process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
-        rayTester.execute();
+        rayTester->execute(*collisionWorld);
 
         std::weak_ptr cubeBody = bodyContainer->getBodies()[1];
         bodyContainer->removeBody(*cubeBody.lock());
@@ -163,7 +164,7 @@ void CollisionWorldIT::rayTestWithRemovedBody() {
     });
     physicsThread.join();
 
-    std::optional<ContinuousCollisionResult<float>> rayTestResult = rayTester.getNearestResult();
+    std::optional<ContinuousCollisionResult<float>> rayTestResult = rayTester->getNearestResult();
     AssertHelper::assertTrue(rayTestResult.has_value());
     AssertHelper::assertStringEquals(rayTestResult->getBody2().getId(), "cube");
     AssertHelper::assertVector3FloatEquals(rayTestResult->getNormalFromObject2(), Vector3(0.0f, 0.0f, -1.0f), 0.01f);

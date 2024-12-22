@@ -327,7 +327,8 @@ namespace urchin {
             constexpr float PICKING_RAY_LENGTH = 100.0f;
             const Camera& camera = sceneDisplayer->getScene().getActiveRenderer3d()->getCamera();
             Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2((float) mouseX, (float) mouseY), PICKING_RAY_LENGTH);
-            std::shared_ptr<RayTester> rayTester = sceneDisplayer->getPhysicsWorld().newRayTest(pickingRay);
+            std::shared_ptr<RayTester> rayTester = RayTester::newRayTester();
+            sceneDisplayer->getPhysicsWorld().triggerRayTest(rayTester, pickingRay);
 
             while (!rayTester->isResultReady()) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(25));

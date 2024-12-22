@@ -26,8 +26,7 @@ namespace urchin {
             void addBody(std::shared_ptr<AbstractBody>);
             void removeBody(const AbstractBody&);
 
-            std::shared_ptr<RayTester> newRayTest(const Ray<float>&);
-            void updateRayTest(std::shared_ptr<RayTester>, const Ray<float>&);
+            void triggerRayTest(std::shared_ptr<RayTester>, const Ray<float>&);
 
             void setGravity(const Vector3<float>&);
             Vector3<float> getGravity() const;
@@ -47,7 +46,7 @@ namespace urchin {
             bool continueExecution() const;
             void processPhysicsUpdate(float);
 
-            void executeRayTesters(const std::vector<std::shared_ptr<RayTester>>&) const;
+            void executeRayTesters(const std::vector<std::shared_ptr<RayTester>>&);
 
             std::unique_ptr<std::jthread> physicsSimulationThread;
             std::atomic_bool physicsSimulationStopper;

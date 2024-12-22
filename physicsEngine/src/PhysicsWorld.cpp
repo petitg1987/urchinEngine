@@ -50,12 +50,7 @@ namespace urchin {
         bodyContainer.removeBody(body);
     }
 
-    std::shared_ptr<RayTester> PhysicsWorld::newRayTest(const Ray<float>& ray) {
-        std::scoped_lock lock(mutex);
-        return rayTesters.emplace_back(std::make_unique<RayTester>(getCollisionWorld(), ray));
-    }
-
-    void PhysicsWorld::updateRayTest(std::shared_ptr<RayTester> rayTester, const Ray<float>& ray) {
+    void PhysicsWorld::triggerRayTest(std::shared_ptr<RayTester> rayTester, const Ray<float>& ray) {
         std::scoped_lock lock(mutex);
         rayTester->updateRay(ray);
         rayTesters.push_back(std::move(rayTester));
@@ -196,11 +191,11 @@ namespace urchin {
         }
     }
 
-    void PhysicsWorld::executeRayTesters(const std::vector<std::shared_ptr<RayTester>>& rayTesters) const {
+    void PhysicsWorld::executeRayTesters(const std::vector<std::shared_ptr<RayTester>>& rayTesters) {
         ScopeProfiler sp(Profiler::physics(), "exeRayTest");
 
         for (const std::shared_ptr<RayTester>& rayTester : rayTesters) {
-            rayTester->execute();
+            rayTester->execute(getCollisionWorld());
         }
     }
 

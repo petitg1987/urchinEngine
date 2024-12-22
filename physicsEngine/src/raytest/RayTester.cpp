@@ -3,16 +3,15 @@
 
 namespace urchin {
 
-    RayTester::RayTester(CollisionWorld& collisionWorld, const Ray<float>& ray) :
-            collisionWorld(collisionWorld),
-            ray(ray),
-            rayTestVersion(1),
+    RayTester::RayTester() :
+            ray(Ray(Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f))),
+            rayTestVersion(0),
             rayTestResult(RayTestResult()) {
 
     }
 
-    unsigned int RayTester::getRayTestVersion() const {
-        return rayTestVersion;
+    std::shared_ptr<RayTester> RayTester::newRayTester() {
+        return std::make_shared<RayTester>();
     }
 
     void RayTester::updateRay(const Ray<float>& ray) {
@@ -20,15 +19,19 @@ namespace urchin {
         this->rayTestVersion++;
     }
 
+    bool RayTester::isRayTestTriggerred() const {
+        return rayTestVersion != 0;
+    }
+
     bool RayTester::isResultReady() const {
-        return rayTestResult.isResultReady(rayTestVersion);
+        return isRayTestTriggerred() && rayTestResult.isResultReady(rayTestVersion);
     }
 
     std::optional<ContinuousCollisionResult<float>> RayTester::getNearestResult() const {
         return rayTestResult.getNearestResult().second;
     }
 
-    void RayTester::execute() {
+    void RayTester::execute(CollisionWorld& collisionWorld) {
         std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitRay = collisionWorld.getBroadPhase().rayTest(ray);
         ccd_set rayCastResults = collisionWorld.getNarrowPhase().rayTest(ray, bodiesAABBoxHitRay);
 
