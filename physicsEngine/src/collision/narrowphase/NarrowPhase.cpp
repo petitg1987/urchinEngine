@@ -110,6 +110,7 @@ namespace urchin {
         std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody;
         bodiesAABBoxHitBody.reserve(10);
         broadPhase.bodyTest(body, from, to, bodiesAABBoxHitBody);
+
         if (!bodiesAABBoxHitBody.empty()) {
             ccd_set ccdResults;
 
@@ -119,11 +120,11 @@ namespace urchin {
                 const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
                     TemporalObject temporalObject(*localizedShape->shape, localizedShape->shapeIndex, from * localizedShape->transform, to * localizedShape->transform);
-                    ccdResults.merge(continuousCollisionTest(temporalObject, bodiesAABBoxHitBody));
+                    continuousCollisionTest(temporalObject, bodiesAABBoxHitBody, ccdResults);
                 }
             } else if (bodyShape.isConvex()) {
                 TemporalObject temporalObject(body.getShape(), 0, from, to);
-                ccdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
+                continuousCollisionTest(temporalObject, bodiesAABBoxHitBody, ccdResults);
             } else {
                 throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape.getShapeType()));
             }
@@ -144,9 +145,10 @@ namespace urchin {
         }
     }
 
-    ccd_set NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHit) const {
-        ccd_set continuousCollisionResults;
-
+    /**
+     * @param continuousCollisionResults [out] In case of collision detected: continuous collision result will be updated with collision details
+     */
+    void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHit, ccd_set& continuousCollisionResults) const {
         for (auto& bodyAABBoxHit : bodiesAABBoxHit) {
             if (bodyAABBoxHit->getBodyType() == BodyType::GHOST) {
                 //No CCD support for ghost bodies
@@ -191,8 +193,6 @@ namespace urchin {
                 throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape.getShapeType()));
             }
         }
-
-        return continuousCollisionResults;
     }
 
     /**
@@ -218,13 +218,16 @@ namespace urchin {
         }
     }
 
-    ccd_set NarrowPhase::rayTest(const Ray<float>& ray, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitRay) const {
+    /**
+     * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
+     */
+    void NarrowPhase::rayTest(const Ray<float>& ray, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitRay, ccd_set& continuousCollisionResults) const {
         CollisionSphereShape pointShape(0.0f);
         PhysicsTransform from(ray.getOrigin());
         PhysicsTransform to(ray.computeTo());
         TemporalObject rayCastObject(pointShape, 0, from, to);
 
-        return continuousCollisionTest(rayCastObject, bodiesAABBoxHitRay);
+        continuousCollisionTest(rayCastObject, bodiesAABBoxHitRay, continuousCollisionResults);
     }
 
 }

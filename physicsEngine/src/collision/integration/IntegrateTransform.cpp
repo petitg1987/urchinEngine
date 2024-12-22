@@ -39,10 +39,12 @@ namespace urchin {
         std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody;
         bodiesAABBoxHitBody.reserve(10);
         broadPhase.bodyTest(body, from, to, bodiesAABBoxHitBody);
+
         if (!bodiesAABBoxHitBody.empty()) {
             CollisionSphereShape bodyEncompassedSphereShape(body.getShape().getMinDistanceToCenter());
             TemporalObject temporalObject(bodyEncompassedSphereShape, 0, from, to);
-            ccd_set ccdResults = narrowPhase.continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
+            ccd_set ccdResults;
+            narrowPhase.continuousCollisionTest(temporalObject, bodiesAABBoxHitBody, ccdResults);
 
             if (!ccdResults.empty()) {
                 //determine new body transform to avoid collision

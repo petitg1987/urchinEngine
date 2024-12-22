@@ -34,10 +34,11 @@ namespace urchin {
     void RayTester::execute(CollisionWorld& collisionWorld) {
         collisionWorld.getBroadPhase().rayTest(ray, bodiesAABBoxHitRay);
 
-        ccd_set rayCastResults = collisionWorld.getNarrowPhase().rayTest(ray, bodiesAABBoxHitRay);
+        collisionWorld.getNarrowPhase().rayTest(ray, bodiesAABBoxHitRay, rayCastResults);
         bodiesAABBoxHitRay.clear();
 
         rayTestResult.updateResults(rayCastResults, rayTestVersion);
+        rayCastResults.clear();
     }
 
 }
