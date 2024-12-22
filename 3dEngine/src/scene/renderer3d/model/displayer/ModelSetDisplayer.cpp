@@ -258,10 +258,10 @@ namespace urchin {
             throw std::runtime_error("Render target must be specified before call display");
         }
 
-        activeModelDisplayers.clear(); //TODO avoid memory clear
+        activeModelDisplayers.clear();
         for (const Model* model: models) {
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            if (activeModelDisplayers.insert(modelInstanceDisplayer).second) {
+            if (activeModelDisplayers.insert(modelInstanceDisplayer)) {
                 modelInstanceDisplayer->resetRenderingModels();
             }
             modelInstanceDisplayer->registerRenderingModel(*model);

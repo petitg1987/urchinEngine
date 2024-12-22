@@ -76,7 +76,7 @@ namespace urchin {
 
             RenderTarget* renderTarget;
             std::vector<Model*> models;
-            std::unordered_set<ModelInstanceDisplayer*> activeModelDisplayers;
+            EverGrowHashSet<ModelInstanceDisplayer*> activeModelDisplayers;
             std::unordered_map<Model*, std::unique_ptr<ModelInstanceDisplayer>> modelDisplayers;
             std::unordered_map<std::size_t, std::unique_ptr<ModelInstanceDisplayer>> modelInstanceDisplayers;
     };
