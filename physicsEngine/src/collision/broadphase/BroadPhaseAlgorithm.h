@@ -18,8 +18,8 @@ namespace urchin {
 
             virtual const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const = 0;
 
-            virtual std::vector<std::shared_ptr<AbstractBody>> rayTest(const Ray<float>&) const = 0;
-            virtual std::vector<std::shared_ptr<AbstractBody>> bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&) const = 0;
+            virtual void rayTest(const Ray<float>&, std::vector<std::shared_ptr<AbstractBody>>&) const = 0;
+            virtual void bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&, std::vector<std::shared_ptr<AbstractBody>>&) const = 0;
     };
 
 }

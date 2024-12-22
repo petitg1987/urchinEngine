@@ -32,7 +32,9 @@ namespace urchin {
     }
 
     void RayTester::execute(CollisionWorld& collisionWorld) {
-        std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitRay = collisionWorld.getBroadPhase().rayTest(ray);
+        bodiesAABBoxHitRay.clear();
+        collisionWorld.getBroadPhase().rayTest(ray, bodiesAABBoxHitRay);
+
         ccd_set rayCastResults = collisionWorld.getNarrowPhase().rayTest(ray, bodiesAABBoxHitRay);
 
         rayTestResult.updateResults(rayCastResults, rayTestVersion);

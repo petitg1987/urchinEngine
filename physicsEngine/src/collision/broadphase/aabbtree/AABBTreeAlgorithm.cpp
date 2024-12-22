@@ -24,26 +24,22 @@ namespace urchin {
         return tree.getOverlappingPairs();
     }
 
-    std::vector<std::shared_ptr<AbstractBody>> AABBTreeAlgorithm::rayTest(const Ray<float>& ray) const {
-        std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitRay;
-        bodiesAABBoxHitRay.reserve(10);
-
+    /**
+     * @param bodiesAABBoxHitRay [out] Bodies AABBox hit by ray
+     */
+    void AABBTreeAlgorithm::rayTest(const Ray<float>& ray, std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitRay) const {
         tree.rayQuery(ray, bodiesAABBoxHitRay);
-
-        return bodiesAABBoxHitRay;
     }
 
-    std::vector<std::shared_ptr<AbstractBody>> AABBTreeAlgorithm::bodyTest(const AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to) const {
-        std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody;
-        bodiesAABBoxHitBody.reserve(15);
-
+    /**
+     * @param bodiesAABBoxHitBody [out] Bodies AABBox hit by a moving body
+     */
+    void AABBTreeAlgorithm::bodyTest(const AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitBody) const {
         Ray ray(from.getPosition(), to.getPosition());
         float bodyBoundingSphereRadius = body.getShape().getMaxDistanceToCenter();
 
         const auto* bodyPtr = const_cast<AbstractBody*>(&body);
         tree.enlargedRayQuery(ray, bodyBoundingSphereRadius, bodyPtr, bodiesAABBoxHitBody);
-
-        return bodiesAABBoxHitBody;
     }
 
 }

@@ -19,8 +19,8 @@ namespace urchin {
 
             const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const override;
 
-            std::vector<std::shared_ptr<AbstractBody>> rayTest(const Ray<float>&) const override;
-            std::vector<std::shared_ptr<AbstractBody>> bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&) const override;
+            void rayTest(const Ray<float>&, std::vector<std::shared_ptr<AbstractBody>>&) const override;
+            void bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&, std::vector<std::shared_ptr<AbstractBody>>&) const override;
 
         private:
             BodyAABBTree tree;

@@ -30,6 +30,7 @@ namespace urchin {
             Ray<float> ray;
             unsigned int rayTestVersion;
 
+            std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitRay;
             RayTestResult rayTestResult;
     };
 

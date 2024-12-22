@@ -107,7 +107,9 @@ namespace urchin {
     }
 
     void NarrowPhase::handleContinuousCollision(AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<ManifoldResult>& manifoldResults) const {
-        std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody = broadPhase.bodyTest(body, from, to);
+        std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody;
+        bodiesAABBoxHitBody.reserve(10);
+        broadPhase.bodyTest(body, from, to, bodiesAABBoxHitBody);
         if (!bodiesAABBoxHitBody.empty()) {
             ccd_set ccdResults;
 

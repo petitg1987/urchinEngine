@@ -72,12 +72,20 @@ namespace urchin {
         return broadPhaseAlgorithm.getOverlappingPairs();
     }
 
-    std::vector<std::shared_ptr<AbstractBody>> BroadPhase::rayTest(const Ray<float>& ray) const {
-        return broadPhaseAlgorithm.rayTest(ray);
+    /**
+     * @param bodiesAABBoxHitRay [out] Bodies AABBox hit by ray
+     */
+    void BroadPhase::rayTest(const Ray<float>& ray, std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitRay) const {
+        assert(bodiesAABBoxHitRay.empty());
+        broadPhaseAlgorithm.rayTest(ray, bodiesAABBoxHitRay);
     }
 
-    std::vector<std::shared_ptr<AbstractBody>> BroadPhase::bodyTest(const AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to) const {
-        return broadPhaseAlgorithm.bodyTest(body, from, to);
+    /**
+     * @param bodiesAABBoxHitBody [out] Bodies AABBox hit by a moving body
+     */
+    void BroadPhase::bodyTest(const AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitBody) const {
+        assert(bodiesAABBoxHitBody.empty());
+        broadPhaseAlgorithm.bodyTest(body, from, to, bodiesAABBoxHitBody);
     }
 
 }

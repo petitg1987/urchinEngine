@@ -36,7 +36,9 @@ namespace urchin {
     void IntegrateTransform::handleContinuousCollision(RigidBody& body, const PhysicsTransform& from, const PhysicsTransform& to, float dt) const {
         PhysicsTransform updatedTargetTransform = to;
 
-        std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody = broadPhase.bodyTest(body, from, to);
+        std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody;
+        bodiesAABBoxHitBody.reserve(10);
+        broadPhase.bodyTest(body, from, to, bodiesAABBoxHitBody);
         if (!bodiesAABBoxHitBody.empty()) {
             CollisionSphereShape bodyEncompassedSphereShape(body.getShape().getMinDistanceToCenter());
             TemporalObject temporalObject(bodyEncompassedSphereShape, 0, from, to);
