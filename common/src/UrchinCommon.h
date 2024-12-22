@@ -12,6 +12,7 @@
 #include <container/VectorUtil.h>
 #include <container/EverGrowQueue.h>
 #include <container/EverGrowHashMap.h>
+#include <container/EverGrowHashSet.h>
 
 #include <io/file/PropertyFileHandler.h>
 #include <io/file/FileReader.h>

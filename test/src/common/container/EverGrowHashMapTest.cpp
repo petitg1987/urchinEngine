@@ -5,7 +5,7 @@
 #include <AssertHelper.h>
 using namespace urchin;
 
-void EverGrowHashMapTest::insertAndGet() {
+void EverGrowHashMapTest::insertGetErase() {
     EverGrowHashMap<int, float> map(4, 0.75f);
 
     AssertHelper::assertTrue(map.isEmpty());
@@ -27,6 +27,10 @@ void EverGrowHashMapTest::insertAndGet() {
     AssertHelper::assertFloatEquals(map.at(12), 1.0f);
     AssertHelper::assertFloatEquals(map.at(17), 5.0f);
 
+    map.erase(17);
+    AssertHelper::assertNull(map.find(17));
+    AssertHelper::assertUnsignedIntEquals(map.getSize(), 4);
+
     map.clear();
     AssertHelper::assertUnsignedIntEquals(map.getSize(), 0);
     AssertHelper::assertUnsignedIntEquals(map.getNumBuckets(), 8);
@@ -36,7 +40,7 @@ void EverGrowHashMapTest::insertAndGet() {
 CppUnit::Test* EverGrowHashMapTest::suite() {
     auto* suite = new CppUnit::TestSuite("EverGrowHashMapTest");
 
-    suite->addTest(new CppUnit::TestCaller("insertAndGet", &EverGrowHashMapTest::insertAndGet));
+    suite->addTest(new CppUnit::TestCaller("insertGetErase", &EverGrowHashMapTest::insertGetErase));
 
     return suite;
 }

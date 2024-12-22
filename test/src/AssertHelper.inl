@@ -7,11 +7,7 @@ inline void AssertHelper::assertTrue(bool b, const std::string& msg) {
 }
 
 inline void AssertHelper::assertFalse(bool b, const std::string& msg) {
-    if (msg.empty()) {
-        CPPUNIT_ASSERT(!b);
-    } else {
-        CPPUNIT_ASSERT_MESSAGE(msg, !b);
-    }
+    assertTrue(!b, msg);
 }
 
 inline void AssertHelper::assertNull(const void* object) {
