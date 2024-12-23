@@ -31,11 +31,11 @@ namespace SEB_NAMESPACE {
 
   public: // construction and destruction:
 
-    Smallest_enclosing_ball(const PointAccessor &P)
+    Smallest_enclosing_ball(PointAccessor P)
     // Constructs an instance representing the miniball of points from
     // set S.  The dimension of the ambient space is fixed to d for
     // lifetime of the instance.
-    : S(P), up_to_date(true), support(S)
+    : S(std::move(P)), up_to_date(true), support(S)
     {
       SEB_ASSERT(!is_empty());
       update();

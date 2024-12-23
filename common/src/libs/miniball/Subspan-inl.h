@@ -52,9 +52,12 @@ namespace SEB_NAMESPACE {
 
   template<typename Float, class Pt, class PointAccessor>
   Subspan<Float, Pt, PointAccessor>::Subspan(const PointAccessor& S)
-  : S(S), membership(S.size()), members({})
+  : S(S), members({}), r(0)
   {
-
+    SEB_ASSERT(S.size() < MAX_MEMBERSHIP);
+    for (std::size_t i=0; i < S.size(); ++i) {
+      membership[i] = false;
+    }
   }
 
   template<typename Float, class Pt, class PointAccessor> void Subspan<Float, Pt, PointAccessor>::init(unsigned int index) {

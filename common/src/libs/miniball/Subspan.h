@@ -17,6 +17,8 @@ namespace SEB_NAMESPACE {
     return x * x;
   }
 
+  static constexpr std::size_t MAX_INPUT_POINTS = 20;
+
   template<typename Float, class Pt, class PointAccessor>
   class Subspan
   // An instance of this class represents the affine hull of a
@@ -154,7 +156,7 @@ namespace SEB_NAMESPACE {
 
   private: // member fields:
     const PointAccessor &S;            // a const-reference to the set S
-    std::vector<bool> membership;      // S[i] in M iff membership[i]
+    std::array<bool, MAX_INPUT_POINTS> membership;      // S[i] in M iff membership[i]
 
     // Entry i of members contains the index into S of the i-th point
     // in M.  The point members[r] is called the "origin."
