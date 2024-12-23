@@ -6,7 +6,7 @@ namespace urchin {
         rayTestVersion.store(0);
     }
 
-    void RayTestResult::updateResults(const ccd_set& rayTestResults, unsigned int rayTestVersion) {
+    void RayTestResult::updateResults(const ccd_container& rayTestResults, unsigned int rayTestVersion) {
         {
             std::lock_guard lock(mutex);
             this->rayTestResults = rayTestResults;
@@ -28,7 +28,8 @@ namespace urchin {
         if (rayTestResults.empty()) {
             return std::make_pair(rayTestVersionLocal, std::nullopt);
         }
-        return std::make_pair(rayTestVersionLocal, *rayTestResults.begin());
+        const ContinuousCollisionResult<float> &nearestResult = *std::ranges::min_element(rayTestResults, ContinuousCollisionResultComparator<float>());
+        return std::make_pair(rayTestVersionLocal, nearestResult);
     }
 
 }

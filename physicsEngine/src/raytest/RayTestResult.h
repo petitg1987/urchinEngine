@@ -14,7 +14,7 @@ namespace urchin {
         public:
             RayTestResult();
 
-            void updateResults(const ccd_set&, unsigned int);
+            void updateResults(const ccd_container&, unsigned int);
 
             bool isResultReady(unsigned int) const;
             std::pair<unsigned int, std::optional<ContinuousCollisionResult<float>>> getNearestResult() const;
@@ -23,7 +23,7 @@ namespace urchin {
             mutable std::mutex mutex;
 
             std::atomic_uint rayTestVersion;
-            ccd_set rayTestResults;
+            ccd_container rayTestResults;
     };
 
 }

@@ -43,12 +43,12 @@ namespace urchin {
         if (!bodiesAABBoxHitBody.empty()) {
             CollisionSphereShape bodyEncompassedSphereShape(body.getShape().getMinDistanceToCenter());
             TemporalObject temporalObject(bodyEncompassedSphereShape, 0, from, to);
-            ccd_set ccdResults;
+            ccd_container ccdResults;
             narrowPhase.continuousCollisionTest(temporalObject, bodiesAABBoxHitBody, ccdResults);
 
             if (!ccdResults.empty()) {
                 //determine new body transform to avoid collision
-                float timeToFirstHit = ccdResults.begin()->getTimeToHit();
+                float timeToFirstHit = std::ranges::min_element(ccdResults, ContinuousCollisionResultComparator<float>())->getTimeToHit();
                 updatedTargetTransform = from.integrate(body.getLinearVelocity(), body.getAngularVelocity(), timeToFirstHit * dt);
 
                 //clamp linear velocity

@@ -112,7 +112,7 @@ namespace urchin {
         broadPhase.bodyTest(body, from, to, bodiesAABBoxHitBody);
 
         if (!bodiesAABBoxHitBody.empty()) {
-            ccd_set ccdResults;
+            ccd_container ccdResults;
 
             const auto& bodyShape = body.getShape();
             if (bodyShape.isCompound()) {
@@ -130,7 +130,7 @@ namespace urchin {
             }
 
             if (!ccdResults.empty()) {
-                const ContinuousCollisionResult<float>& firstCCDResult = *ccdResults.begin();
+                const ContinuousCollisionResult<float>& firstCCDResult = *std::ranges::min_element(ccdResults, ContinuousCollisionResultComparator<float>());
 
                 Vector3<float> distanceVector = from.getPosition().vector(to.getPosition()) * firstCCDResult.getTimeToHit();
                 float depth = distanceVector.dotProduct(-firstCCDResult.getNormalFromObject2());
@@ -148,7 +148,7 @@ namespace urchin {
     /**
      * @param continuousCollisionResults [out] In case of collision detected: continuous collision result will be updated with collision details
      */
-    void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHit, ccd_set& continuousCollisionResults) const {
+    void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHit, ccd_container& continuousCollisionResults) const {
         for (auto& bodyAABBoxHit : bodiesAABBoxHit) {
             if (bodyAABBoxHit->getBodyType() == BodyType::GHOST) {
                 //No CCD support for ghost bodies
@@ -198,7 +198,7 @@ namespace urchin {
     /**
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
-    void NarrowPhase::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>& triangles, const TemporalObject& temporalObject1, const std::shared_ptr<AbstractBody>& body2, ccd_set& continuousCollisionResults) const {
+    void NarrowPhase::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>& triangles, const TemporalObject& temporalObject1, const std::shared_ptr<AbstractBody>& body2, ccd_container& continuousCollisionResults) const {
         PhysicsTransform fromToObject2 = body2->getTransform();
 
         for (const auto& triangle : triangles) {
@@ -210,18 +210,18 @@ namespace urchin {
     /**
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
-    void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const TemporalObject& temporalObject2, std::shared_ptr<AbstractBody> body2, ccd_set& continuousCollisionResults) const {
+    void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const TemporalObject& temporalObject2, std::shared_ptr<AbstractBody> body2, ccd_container& continuousCollisionResults) const {
         ContinuousCollisionResult<float> continuousCollisionResult = gjkContinuousCollisionAlgorithm.calculateTimeOfImpact(temporalObject1, temporalObject2, std::move(body2));
 
         if (continuousCollisionResult.hasResult()) {
-            continuousCollisionResults.insert(std::move(continuousCollisionResult));
+            continuousCollisionResults.push_back(std::move(continuousCollisionResult));
         }
     }
 
     /**
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
-    void NarrowPhase::rayTest(const Ray<float>& ray, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitRay, ccd_set& continuousCollisionResults) const {
+    void NarrowPhase::rayTest(const Ray<float>& ray, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitRay, ccd_container& continuousCollisionResults) const {
         CollisionSphereShape pointShape(0.0f);
         PhysicsTransform from(ray.getOrigin());
         PhysicsTransform to(ray.computeTo());

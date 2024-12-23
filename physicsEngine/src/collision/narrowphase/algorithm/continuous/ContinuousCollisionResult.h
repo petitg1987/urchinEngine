@@ -1,6 +1,6 @@
 #pragma once
 
-#include <set>
+#include <vector>
 #include <memory>
 #include <UrchinCommon.h>
 
@@ -37,6 +37,6 @@ namespace urchin {
         bool operator()(const ContinuousCollisionResult<T>&, const ContinuousCollisionResult<T>&) const;
     };
 
-    using ccd_set = std::set<ContinuousCollisionResult<float>, ContinuousCollisionResultComparator<float>>;
+    using ccd_container = std::vector<ContinuousCollisionResult<float>>;
 
 }
