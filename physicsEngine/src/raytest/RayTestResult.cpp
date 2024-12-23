@@ -6,7 +6,7 @@ namespace urchin {
         rayTestVersion.store(0);
     }
 
-    void RayTestResult::updateResults(const ccd_container& rayTestResults, unsigned int rayTestVersion) {
+    void RayTestResult::updateResults(const std::vector<ContinuousCollisionResult<float>>& rayTestResults, unsigned int rayTestVersion) {
         {
             std::lock_guard lock(mutex);
             this->rayTestResults = rayTestResults;

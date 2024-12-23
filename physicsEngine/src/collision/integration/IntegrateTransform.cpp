@@ -43,7 +43,7 @@ namespace urchin {
         if (!bodiesAABBoxHitBody.empty()) {
             CollisionSphereShape bodyEncompassedSphereShape(body.getShape().getMinDistanceToCenter());
             TemporalObject temporalObject(bodyEncompassedSphereShape, 0, from, to);
-            ccd_container ccdResults;
+            std::vector<ContinuousCollisionResult<float>> ccdResults;
             narrowPhase.continuousCollisionTest(temporalObject, bodiesAABBoxHitBody, ccdResults);
 
             if (!ccdResults.empty()) {

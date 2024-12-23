@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <memory>
 #include <UrchinCommon.h>
 
@@ -36,7 +35,5 @@ namespace urchin {
     template<class T> struct ContinuousCollisionResultComparator {
         bool operator()(const ContinuousCollisionResult<T>&, const ContinuousCollisionResult<T>&) const;
     };
-
-    using ccd_container = std::vector<ContinuousCollisionResult<float>>;
 
 }

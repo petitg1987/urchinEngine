@@ -31,7 +31,7 @@ namespace urchin {
             unsigned int rayTestVersion;
 
             std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitRay;
-            ccd_container rayCastResults;
+            std::vector<ContinuousCollisionResult<float>> rayCastResults;
             RayTestResult rayTestResult;
     };
 
