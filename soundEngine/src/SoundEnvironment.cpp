@@ -73,9 +73,12 @@ namespace urchin {
     }
 
     /**
-     * @param masterVolume to set (0.0 for minimum volume, 1.0 for original volume). Note that volume can be higher to 1.0.
+     * @param masterVolume Master volume (0.0=minimum volume, 1.0=original volume)
      */
     void SoundEnvironment::setMasterVolume(float masterVolume) const {
+        if (masterVolume < 0.0f || masterVolume > 1.0f) {
+            throw std::runtime_error("Master volume is outside the acceptable range: " + std::to_string(masterVolume));
+        }
         alListenerf(AL_GAIN, masterVolume);
         CheckState::check("set listener gain", masterVolume);
     }

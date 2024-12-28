@@ -106,6 +106,7 @@ namespace urchin {
         mainLayout->addWidget(initialVolumeSpinBox, 4, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(initialVolumeSpinBox);
         initialVolumeSpinBox->setMinimum(0.0);
+        initialVolumeSpinBox->setMaximum(1.0);
         initialVolumeSpinBox->setValue(1.0);
     }
 

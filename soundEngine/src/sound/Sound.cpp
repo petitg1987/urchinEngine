@@ -5,11 +5,14 @@
 namespace urchin {
 
     /**
-     * @param initialVolume Initial sound volume (0.0=minimum volume, 1.0=original volume). Volume can be higher to 1.0.
+     * @param initialVolume Initial sound volume (0.0=minimum volume, 1.0=original volume)
      */
     Sound::Sound(std::string filename, SoundCategory category, float initialVolume) :
             category(category),
             initialVolume(initialVolume) {
+        if (initialVolume < 0.0f || initialVolume > 1.0f) {
+            throw std::runtime_error("Initial volume is outside the acceptable range: " + std::to_string(initialVolume));
+        }
         this->filename = FileUtil::isAbsolutePath(filename) ? std::move(filename) : FileSystem::instance().getResourcesDirectory() + std::move(filename);
     }
 
