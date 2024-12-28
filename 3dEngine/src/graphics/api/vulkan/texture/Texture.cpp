@@ -200,6 +200,9 @@ namespace urchin {
     }
 
     void Texture::createTextureImage() {
+        bool isCubeMap = textureType == TextureType::CUBE_MAP;
+        textureImage = ImageHelper::createImage(getName(), width, height, layer, mipLevels, isCubeMap, getVkFormat(), VK_IMAGE_TILING_OPTIMAL, getImageUsage(), textureImageMemory);
+
         auto allocator = GraphicsSetupService::instance().getAllocator();
         VkDeviceSize allImagesSize = getImageSize() * dataPtr.size();
 
@@ -216,9 +219,6 @@ namespace urchin {
             }
         }
         vmaUnmapMemory(allocator, stagingBufferMemory);
-
-        bool isCubeMap = textureType == TextureType::CUBE_MAP;
-        textureImage = ImageHelper::createImage(getName(), width, height, layer, mipLevels, isCubeMap, getVkFormat(), VK_IMAGE_TILING_OPTIMAL, getImageUsage(), textureImageMemory);
 
         if (!isDepthFormat()) { //depth image layout transition is automatically done in render pass (see 'layout' and 'finalLayout' properties)
             transitionImageLayout(textureImage, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mipLevels);

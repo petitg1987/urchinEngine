@@ -177,10 +177,10 @@ namespace urchin {
         return processorsDirty || copiersDirty;
     }
 
-    VkAttachmentDescription2 RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {
+    VkAttachmentDescription2 RenderTarget::buildDepthAttachment(VkFormat format, VkImageLayout finalLayout) const {
         VkAttachmentDescription2 depthAttachment{};
         depthAttachment.sType = VK_STRUCTURE_TYPE_ATTACHMENT_DESCRIPTION_2;
-        depthAttachment.format = VK_FORMAT_D32_SFLOAT;
+        depthAttachment.format = format;
         depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
 
         if (depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {

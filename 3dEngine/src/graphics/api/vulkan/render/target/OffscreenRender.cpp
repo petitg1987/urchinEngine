@@ -95,11 +95,9 @@ namespace urchin {
         assert(!isInitialized());
 
         initializeClearValues();
-        if (!isTestMode()) {
-            createRenderPass();
-        }
         createDepthResources();
         if (!isTestMode()) {
+            createRenderPass();
             createFramebuffers();
             createCommandPool();
             createCommandBuffers();
@@ -190,13 +188,13 @@ namespace urchin {
             VkAttachmentReference2 depthAttachmentRef{};
             depthAttachmentRef.sType = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
             if (hasDepthAttachment()) {
-                attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL));
+                attachments.emplace_back(buildDepthAttachment(getDepthTexture()->getVkFormat(), VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL));
                 depthAttachmentRef.attachment = attachmentIndex++;
                 depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
             }
 
             std::vector<VkAttachmentReference2> colorAttachmentRefs;
-            for (const auto& outputTexture: outputTextures) {
+            for (const auto& outputTexture : outputTextures) {
                 bool clearOnLoad = outputTexture.clearColor.has_value();
                 bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
                 VkImageLayout finalLayout = outputTexture.texture->getOutputUsage() == OutputUsage::GRAPHICS ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_GENERAL;

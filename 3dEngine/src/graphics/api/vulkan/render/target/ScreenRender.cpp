@@ -32,8 +32,8 @@ namespace urchin {
         initializeClearValues();
         swapChainHandler.initialize(verticalSyncEnabled);
         createImageViews();
-        createRenderPass();
         createDepthResources();
+        createRenderPass();
         createFramebuffers();
         createCommandPool();
         createCommandBuffers();
@@ -150,7 +150,7 @@ namespace urchin {
         VkAttachmentReference2 depthAttachmentRef{};
         depthAttachmentRef.sType = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
         if (hasDepthAttachment()) {
-            attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL));
+            attachments.emplace_back(buildDepthAttachment(getDepthTexture()->getVkFormat(), VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL));
             depthAttachmentRef.attachment = attachmentIndex++;
             depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
         }
