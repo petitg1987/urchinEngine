@@ -18,6 +18,8 @@ namespace urchin {
             static std::string timePointToDate(std::chrono::system_clock::time_point);
             static std::string epochToDateTime(uint64_t);
 
+            static std::string secondsToHumanReadable(double, char, char);
+
         private:
             static std::string timePointToCustomFormat(std::chrono::system_clock::time_point, const std::string&);
 
