@@ -44,6 +44,23 @@ namespace urchin {
         return value;
     }
 
+    bool TypeConverter::isUint32(const std::string& str) {
+        std::istringstream iss(str);
+        uint64_t value = 0;
+        iss >> std::noskipws >> value;
+        return iss.eof() && !iss.fail();
+    }
+
+    uint32_t TypeConverter::toUint32(const std::string& str) {
+        #ifdef URCHIN_DEBUG
+            assert(isUint32(str));
+        #endif
+        std::istringstream iss(str);
+        uint32_t value = 0;
+        iss >> value;
+        return value;
+    }
+
     bool TypeConverter::isUint64(const std::string& str) {
         std::istringstream iss(str);
         uint64_t value = 0;
