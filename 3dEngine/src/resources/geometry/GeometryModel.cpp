@@ -26,12 +26,20 @@ namespace urchin {
             return;
         }
 
-        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
-
         std::vector<uint32_t> indices;
         std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
 
-        if (polygonMode == PolygonMode::WIREFRAME) {
+        std::shared_ptr<GenericRendererBuilder> rendererBuilder;
+
+        if (polygonMode == PolygonMode::FILL) {
+            shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
+
+            rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
+                    ->addData(vertexArray);
+
+        } else if (polygonMode == PolygonMode::WIREFRAME) {
+            shader = ShaderBuilder::createShader("displayGeometryWireframe.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
+
             if (getShapeType() != ShapeType::TRIANGLE) {
                 throw std::runtime_error("Unsupported shape type for wireframe rendering: " + std::to_string((int)getShapeType()));
             }
@@ -53,15 +61,23 @@ namespace urchin {
                 }
             }
 
+            std::vector<Point3<float>> oppositePoints;
+            std::vector<Point2<float>> pointSides; //TODO should be std::vector<float>
+
             indices.clear();
-            vertexArray = linesToVertexArray(lines, indices);
+            vertexArray = linesToVertexArray(lines, indices, oppositePoints, pointSides);
+
+            rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
+                    ->addData(vertexArray)
+                    ->addData(oppositePoints)
+                    ->addData(pointSides);
         }
 
         Matrix4<float> projectionViewModelMatrix;
-        std::shared_ptr<GenericRendererBuilder> rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
-                ->addData(vertexArray)
+        rendererBuilder
                 ->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix)
                 ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color);
+
         if (!indices.empty()) {
             rendererBuilder->indices(indices);
         }
@@ -79,45 +95,41 @@ namespace urchin {
         renderer->disableRenderer(); //in case this method is called after 'renderTarget->disableAllRenderers()'
     }
 
-    std::vector<Point3<float>> GeometryModel::linesToVertexArray(const std::vector<LineSegment3D<float>>& lines, std::vector<uint32_t>& indices) const {
+    std::vector<Point3<float>> GeometryModel::linesToVertexArray(const std::vector<LineSegment3D<float>>& lines, std::vector<uint32_t>& indices,
+            std::vector<Point3<float>>& oppositePoints, std::vector<Point2<float>>& pointSides) const { //TODO GPE improve
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(6ul * lines.size());
+        vertexArray.reserve(4ul * lines.size());
+        oppositePoints.reserve(4ul * lines.size());
+        pointSides.reserve(4ul * lines.size());
 
-        float oneThirdRotation = AngleConverter<float>::toRadian(120);
         for (const auto& line : lines) {
             Vector3<float> lineVector = line.toVector().normalize();
             if (lineVector.squareLength() < 0.001f) {
                 continue;
             }
-            Quaternion<float> qRotation = Quaternion<float>::fromAxisAngle(lineVector, oneThirdRotation);
 
-            Vector3<float> perpendicularVector1 = lineVector.perpendicularVector().normalize() * wireframeLineWidth;
-            Vector3<float> perpendicularVector2 = qRotation.rotateVector(perpendicularVector1);
-            Vector3<float> perpendicularVector3 = qRotation.rotateVector(perpendicularVector2);
+            vertexArray.emplace_back(line.getA());
+            oppositePoints.emplace_back(line.getB());
+            pointSides.emplace_back(1.0f, 1.0f);
+            vertexArray.emplace_back(line.getA());
+            oppositePoints.emplace_back(line.getB());
+            pointSides.emplace_back(-1.0f, -1.0f);
 
-            vertexArray.emplace_back(line.getA().translate(perpendicularVector1));
-            vertexArray.emplace_back(line.getA().translate(perpendicularVector2));
-            vertexArray.emplace_back(line.getA().translate(perpendicularVector3));
-
-            vertexArray.emplace_back(line.getB().translate(perpendicularVector1));
-            vertexArray.emplace_back(line.getB().translate(perpendicularVector2));
-            vertexArray.emplace_back(line.getB().translate(perpendicularVector3));
+            vertexArray.emplace_back(line.getB());
+            oppositePoints.emplace_back(line.getA());
+            pointSides.emplace_back(1.0f, 1.0f);
+            vertexArray.emplace_back(line.getB());
+            oppositePoints.emplace_back(line.getA());
+            pointSides.emplace_back(-1.0f, 1.0f);
         }
 
-        indices.reserve(18ul * lines.size());
+        indices.reserve(2ul * 3ul * lines.size());
         for (uint32_t i = 0; i < lines.size(); ++i) {
-            uint32_t startIndex = i * 6;
+            uint32_t startIndex = i * 4;
 
             std::array faceIndices = {
-                //face 1
-                startIndex + 3, startIndex + 1, startIndex + 0,
-                startIndex + 1, startIndex + 3, startIndex + 4,
-                //face 2
-                startIndex + 4, startIndex + 2, startIndex + 1,
-                startIndex + 2, startIndex + 4, startIndex + 5,
-                //face 3
-                startIndex + 5, startIndex + 0, startIndex + 2,
-                startIndex + 0, startIndex + 5, startIndex + 3
+                startIndex + 2, startIndex + 1, startIndex + 0,
+                startIndex + 1, startIndex + 2, startIndex + 3,
             };
             indices.insert(indices.end(), std::begin(faceIndices), std::end(faceIndices));
         }
