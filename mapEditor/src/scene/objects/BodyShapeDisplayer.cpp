@@ -48,9 +48,9 @@ namespace urchin {
 
                     auto geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), *bodyObject);
                     if (selectedCompoundShapeComponent != nullptr && selectedCompoundShapeComponent->shapeIndex == localizedShape->shapeIndex) {
-                        geometryModel->setColor(1.0f, 1.0f, 1.0f);
-                    } else {
                         geometryModel->setColor(0.0f, 1.0f, 0.0f);
+                    } else {
+                        geometryModel->setColor(0.0f, 0.4f, 0.0f);
                     }
                     geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                     bodyShapeModels.push_back(std::move(geometryModel));
