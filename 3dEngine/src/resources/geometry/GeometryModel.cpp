@@ -61,16 +61,13 @@ namespace urchin {
                 }
             }
 
-            std::vector<Point3<float>> oppositePoints;
-            std::vector<Point2<float>> pointSides; //TODO should be std::vector<float>
-
             indices.clear();
-            vertexArray = linesToVertexArray(lines, indices, oppositePoints, pointSides);
+            std::vector<Point4<float>> vertexData;
+            vertexArray = linesToVertexArray(lines, indices, vertexData);
 
             rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                     ->addData(vertexArray)
-                    ->addData(oppositePoints)
-                    ->addData(pointSides);
+                    ->addData(vertexData);
         }
 
         Matrix4<float> projectionViewModelMatrix;
@@ -95,12 +92,10 @@ namespace urchin {
         renderer->disableRenderer(); //in case this method is called after 'renderTarget->disableAllRenderers()'
     }
 
-    std::vector<Point3<float>> GeometryModel::linesToVertexArray(const std::vector<LineSegment3D<float>>& lines, std::vector<uint32_t>& indices,
-            std::vector<Point3<float>>& oppositePoints, std::vector<Point2<float>>& pointSides) const { //TODO GPE improve
+    std::vector<Point3<float>> GeometryModel::linesToVertexArray(const std::vector<LineSegment3D<float>>& lines, std::vector<uint32_t>& indices, std::vector<Point4<float>>& vertexData) const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(4ul * lines.size());
-        oppositePoints.reserve(4ul * lines.size());
-        pointSides.reserve(4ul * lines.size());
+        vertexData.reserve(4ul * lines.size());
 
         for (const auto& line : lines) {
             Vector3<float> lineVector = line.toVector().normalize();
@@ -109,18 +104,14 @@ namespace urchin {
             }
 
             vertexArray.emplace_back(line.getA());
-            oppositePoints.emplace_back(line.getB());
-            pointSides.emplace_back(1.0f, 1.0f);
+            vertexData.emplace_back(line.getB(), 1.0f);
             vertexArray.emplace_back(line.getA());
-            oppositePoints.emplace_back(line.getB());
-            pointSides.emplace_back(-1.0f, -1.0f);
+            vertexData.emplace_back(line.getB(), -1.0f);
 
             vertexArray.emplace_back(line.getB());
-            oppositePoints.emplace_back(line.getA());
-            pointSides.emplace_back(1.0f, 1.0f);
+            vertexData.emplace_back(line.getA(), 1.0f);
             vertexArray.emplace_back(line.getB());
-            oppositePoints.emplace_back(line.getA());
-            pointSides.emplace_back(-1.0f, 1.0f);
+            vertexData.emplace_back(line.getA(), -1.0f);
         }
 
         indices.reserve(2ul * 3ul * lines.size());

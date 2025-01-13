@@ -60,6 +60,13 @@ namespace urchin {
         return shared_from_this();
     }
 
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Point4<float>>& dataPtr) {
+        assert(data.empty() || dataPtr.size() == data[0].getDataCount());
+        std::vector variableTypes = {VariableType::VEC4_FLOAT};
+        data.emplace_back(std::move(variableTypes), dataPtr.size(), dataPtr.data());
+        return shared_from_this();
+    }
+
     const std::vector<DataContainer>& GenericRendererBuilder::getData() const {
         return data;
     }

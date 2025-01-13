@@ -69,6 +69,8 @@ namespace urchin {
             return sizeof(float) * 2;
         } else if (variableTypes[variableTypeIndex] == VariableType::VEC3_FLOAT) {
             return sizeof(float) * 3;
+        } else if (variableTypes[variableTypeIndex] == VariableType::VEC4_FLOAT) {
+            return sizeof(float) * 4;
         } else if (variableTypes[variableTypeIndex] == VariableType::MAT4_FLOAT) {
             return sizeof(float) * 16;
         }

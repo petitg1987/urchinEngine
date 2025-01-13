@@ -461,6 +461,9 @@ namespace urchin {
         } else if (variableType == VariableType::VEC3_FLOAT) {
             repeatCount = 1;
             return VK_FORMAT_R32G32B32_SFLOAT;
+        } else if (variableType == VariableType::VEC4_FLOAT) {
+            repeatCount = 1;
+            return VK_FORMAT_R32G32B32A32_SFLOAT;
         } else if (variableType == VariableType::MAT4_FLOAT) {
             repeatCount = 4;
             return VK_FORMAT_R32G32B32A32_SFLOAT;

@@ -25,6 +25,7 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> addData(const std::vector<Point2<float>>&);
             std::shared_ptr<GenericRendererBuilder> addData(const std::vector<Point3<float>>&);
             std::shared_ptr<GenericRendererBuilder> addData(const std::vector<Vector3<float>>&);
+            std::shared_ptr<GenericRendererBuilder> addData(const std::vector<Point4<float>>&);
             const std::vector<DataContainer>& getData() const;
             std::shared_ptr<GenericRendererBuilder> instanceData(std::size_t, std::vector<VariableType>, const float*);
             const std::shared_ptr<DataContainer>& getInstanceData() const;

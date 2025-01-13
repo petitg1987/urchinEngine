@@ -37,7 +37,7 @@ namespace urchin {
             virtual std::vector<Point3<float>> retrieveVertexArray(std::vector<uint32_t>&) const = 0;
             virtual ShapeType getShapeType() const = 0;
 
-            std::vector<Point3<float>> linesToVertexArray(const std::vector<LineSegment3D<float>>&, std::vector<uint32_t>&, std::vector<Point3<float>>&, std::vector<Point2<float>>&) const;
+            std::vector<Point3<float>> linesToVertexArray(const std::vector<LineSegment3D<float>>&, std::vector<uint32_t>&, std::vector<Point4<float>>&) const;
 
             void prepareRendering(unsigned int, const Matrix4<float>&) const;
 

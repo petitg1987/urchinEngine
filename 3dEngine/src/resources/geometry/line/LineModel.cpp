@@ -19,9 +19,8 @@ namespace urchin {
             throw std::runtime_error("Wireframe polygon mode is not allowed on line model");
         }
 
-        std::vector<Point3<float>> oppositePoints;
-        std::vector<Point2<float>> pointSides;
-        return linesToVertexArray(lines, indices, oppositePoints, pointSides); //TODO review
+        std::vector<Point4<float>> vertexData;
+        return linesToVertexArray(lines, indices, vertexData); //TODO review
     }
 
     ShapeType LineModel::getShapeType() const {
