@@ -19,7 +19,7 @@ void main() {
     vec2 lineDirection = oppostivePointNDC - pointNDC;
     vec2 perpendicular = normalize(vec2(-lineDirection.y, lineDirection.x));
 
-    const float lineWidth = 0.001;
+    const float lineWidth = 0.0015;
     float pointSide = vertexData.w;
     vec2 offset = perpendicular * lineWidth * pointSide;
     offset *= pointClipSpace.w; //keep same line width no matter the projection depth
