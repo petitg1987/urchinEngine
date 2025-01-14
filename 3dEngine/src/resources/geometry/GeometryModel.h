@@ -38,11 +38,11 @@ namespace urchin {
             virtual std::vector<LineSegment3D<float>> retrieveWireframeLines() const;
             virtual ShapeType getShapeType() const = 0;
 
-            std::vector<Point3<float>> linesToVertexArray(const std::vector<LineSegment3D<float>>&, std::vector<uint32_t>&, std::vector<Point4<float>>&) const;
-
             void prepareRendering(unsigned int, const Matrix4<float>&) const;
 
         private:
+            std::vector<Point3<float>> linesToVertexArray(const std::vector<LineSegment3D<float>>&, std::vector<uint32_t>&, std::vector<Point4<float>>&) const;
+
             static constexpr uint32_t PVM_MATRIX_UNIFORM_BINDING = 0;
             static constexpr uint32_t COLOR_UNIFORM_BINDING = 1;
 

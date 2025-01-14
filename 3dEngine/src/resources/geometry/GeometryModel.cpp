@@ -158,7 +158,7 @@ namespace urchin {
         refreshRenderer();
     }
 
-    void GeometryModel::setWireframeLineWidth(float wireframeLineWidth) {
+    void GeometryModel::setWireframeLineWidth(float wireframeLineWidth) { //TODO use it
         this->wireframeLineWidth = wireframeLineWidth;
         refreshRenderer();
     }
