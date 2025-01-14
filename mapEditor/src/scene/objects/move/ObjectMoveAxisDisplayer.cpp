@@ -35,15 +35,18 @@ namespace urchin {
     }
 
     GeometryModel& ObjectMoveAxisDisplayer::createAxisModel(const Point3<float>& position, unsigned int selectedAxis, std::size_t axisIndex) {
+        constexpr float INACTIVE_WIDTH = 0.01f;
+        constexpr float ACTIVE_WIDTH = 0.02f;
+
         Point3<float> startPoint = position;
         Point3<float> endPoint = position;
         endPoint[axisIndex] += 0.4f;
 
         Vector3<float> axeVector = startPoint.vector(endPoint);
-        Point3<float> axeCenter = startPoint.translate(axeVector * 0.5f);
+        Point3<float> axeCenter = startPoint.translate(axeVector * 0.5f + axeVector.normalize() * INACTIVE_WIDTH);
         Quaternion<float> axeOrientation = Quaternion<float>::rotationFromTo(Vector3(1.0f, 0.0f, 0.0f), axeVector.normalize()).normalize();
-        float radius = (axisIndex == selectedAxis) ? 0.03f : 0.01f;
-        auto axisModel = std::make_shared<CylinderModel>(Cylinder(radius, axeVector.length(), CylinderShape<float>::CYLINDER_X, axeCenter, axeOrientation), 10); //TODO use LineModel !
+        float radius = (axisIndex == selectedAxis) ? ACTIVE_WIDTH : INACTIVE_WIDTH;
+        auto axisModel = std::make_shared<CylinderModel>(Cylinder(radius, axeVector.length(), CylinderShape<float>::CYLINDER_X, axeCenter, axeOrientation), 8);
         axisModel->setAlwaysVisible(true);
         return *objectMoveAxisModels.emplace_back(std::move(axisModel));
     }
