@@ -9,7 +9,7 @@ namespace urchin {
             renderTarget(nullptr),
             rgbColor(Vector3(0.0f, 1.0f, 0.0f)),
             polygonMode(PolygonMode::FILL),
-            wireframeLineWidth(0.0075f), //TODO fix line quad and then change to 0.0015
+            wireframeLineWidth(0.0015f),
             alwaysVisible(false),
             cullFaceDisabled(false) {
     }
@@ -27,14 +27,18 @@ namespace urchin {
         }
 
         std::shared_ptr<GenericRendererBuilder> rendererBuilder;
-        std::vector<uint32_t> indices;
 
         if (polygonMode == PolygonMode::FILL) {
+            std::vector<uint32_t> indices;
             std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
 
             shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
             rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                     ->addData(vertexArray);
+
+            if (!indices.empty()) {
+                rendererBuilder->indices(indices);
+            }
 
             if (cullFaceDisabled) {
                 rendererBuilder->disableCullFace();
@@ -42,6 +46,7 @@ namespace urchin {
         } else if (polygonMode == PolygonMode::WIREFRAME) {
             std::vector<LineSegment3D<float>> lines = retrieveWireframeLines();
 
+            std::vector<uint32_t> indices;
             std::vector<Point4<float>> vertexData;
             std::vector<Point3<float>> vertexArray = linesToVertexArray(lines, indices, vertexData);
 
@@ -49,6 +54,7 @@ namespace urchin {
             rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, ShapeType::TRIANGLE)
                     ->addData(vertexArray)
                     ->addData(vertexData)
+                    ->indices(indices)
                     ->addUniformData(WIREFRAME_LINE_WIDTH_UNIFORM_BINDING, sizeof(wireframeLineWidth), &wireframeLineWidth)
                     ->disableCullFace();
         }
@@ -57,10 +63,6 @@ namespace urchin {
         rendererBuilder
                 ->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix)
                 ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(rgbColor), &rgbColor);
-
-        if (!indices.empty()) {
-            rendererBuilder->indices(indices);
-        }
 
         if (!alwaysVisible) {
             rendererBuilder->enableDepthTest();
@@ -112,9 +114,9 @@ namespace urchin {
             vertexData.emplace_back(line.getB(), -1.0f);
 
             vertexArray.emplace_back(line.getB());
-            vertexData.emplace_back(line.getA(), 1.0f);
-            vertexArray.emplace_back(line.getB());
             vertexData.emplace_back(line.getA(), -1.0f);
+            vertexArray.emplace_back(line.getB());
+            vertexData.emplace_back(line.getA(), 1.0f);
         }
 
         indices.reserve(2ul * 3ul * lines.size());
