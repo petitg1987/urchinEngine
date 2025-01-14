@@ -40,17 +40,13 @@ namespace urchin {
                 rendererBuilder->disableCullFace();
             }
         } else if (polygonMode == PolygonMode::WIREFRAME) {
-            if (getShapeType() != ShapeType::TRIANGLE) {
-                throw std::runtime_error("Unsupported shape type for wireframe rendering: " + std::to_string((int)getShapeType()));
-            }
-
             std::vector<LineSegment3D<float>> lines = retrieveWireframeLines();
 
             std::vector<Point4<float>> vertexData;
             std::vector<Point3<float>> vertexArray = linesToVertexArray(lines, indices, vertexData);
 
             shader = ShaderBuilder::createShader("displayGeometryWireframe.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
-            rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
+            rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, ShapeType::TRIANGLE)
                     ->addData(vertexArray)
                     ->addData(vertexData)
                     ->disableCullFace();
