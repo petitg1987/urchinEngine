@@ -43,10 +43,10 @@ namespace urchin {
         endPoint[axisIndex] += 0.4f;
 
         Vector3<float> axeVector = startPoint.vector(endPoint);
-        Point3<float> axeCenter = startPoint.translate(axeVector * 0.5f + axeVector.normalize() * INACTIVE_WIDTH);
+        Point3<float> axeCenter = startPoint.translate((axeVector * 0.5f) + (axeVector.normalize() * (INACTIVE_WIDTH + 0.001f)));
         Quaternion<float> axeOrientation = Quaternion<float>::rotationFromTo(Vector3(1.0f, 0.0f, 0.0f), axeVector.normalize()).normalize();
         float radius = (axisIndex == selectedAxis) ? ACTIVE_WIDTH : INACTIVE_WIDTH;
-        auto axisModel = std::make_shared<CylinderModel>(Cylinder(radius, axeVector.length(), CylinderShape<float>::CYLINDER_X, axeCenter, axeOrientation), 8);
+        auto axisModel = std::make_shared<CapsuleModel>(Capsule(radius, axeVector.length(), CapsuleShape<float>::CAPSULE_X, axeCenter, axeOrientation), 15, 10);
         axisModel->setAlwaysVisible(true);
         return *objectMoveAxisModels.emplace_back(std::move(axisModel));
     }
