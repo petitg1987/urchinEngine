@@ -10,11 +10,7 @@ namespace urchin {
     }
 
     std::vector<Point3<float>> OBBoxModel::retrieveVertexArray(std::vector<uint32_t>& indices) const {
-        std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(8ul);
-        for (unsigned int i = 0; i < 8; ++i) {
-            vertexArray.push_back(obbox.getPoint(i));
-        }
+        std::vector<Point3<float>> vertexArray = obbox.getPoints();
 
         indices.reserve(6ul * 6ul);
         //back
@@ -72,6 +68,33 @@ namespace urchin {
         indices.push_back(0);
 
         return vertexArray;
+    }
+
+    std::vector<LineSegment3D<float>> OBBoxModel::retrieveWireframeLines() const {
+        std::vector<Point3<float>> points = obbox.getPoints();
+
+        std::vector<LineSegment3D<float>> lines;
+        lines.reserve(12ul);
+
+        //front
+        lines.emplace_back(points[0], points[2]);
+        lines.emplace_back(points[2], points[6]);
+        lines.emplace_back(points[6], points[4]);
+        lines.emplace_back(points[4], points[0]);
+
+        //back
+        lines.emplace_back(points[1], points[3]);
+        lines.emplace_back(points[3], points[7]);
+        lines.emplace_back(points[7], points[5]);
+        lines.emplace_back(points[5], points[1]);
+
+        //sides
+        lines.emplace_back(points[0], points[1]);
+        lines.emplace_back(points[2], points[3]);
+        lines.emplace_back(points[6], points[7]);
+        lines.emplace_back(points[4], points[5]);
+
+        return lines;
     }
 
     ShapeType OBBoxModel::getShapeType() const {

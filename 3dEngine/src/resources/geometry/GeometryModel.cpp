@@ -27,19 +27,18 @@ namespace urchin {
         }
 
         std::shared_ptr<GenericRendererBuilder> rendererBuilder;
+        std::vector<uint32_t> indices;
 
         if (polygonMode == PolygonMode::FILL) {
-            std::vector<uint32_t> indices;
             std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
 
             shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
             rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                     ->addData(vertexArray);
 
-            if (!indices.empty()) {
-                rendererBuilder->indices(indices);
+            if (cullFaceDisabled) {
+                rendererBuilder->disableCullFace();
             }
-
         } else if (polygonMode == PolygonMode::WIREFRAME) {
             if (getShapeType() != ShapeType::TRIANGLE) {
                 throw std::runtime_error("Unsupported shape type for wireframe rendering: " + std::to_string((int)getShapeType()));
@@ -47,14 +46,14 @@ namespace urchin {
 
             std::vector<LineSegment3D<float>> lines = retrieveWireframeLines();
 
-            std::vector<uint32_t> indices;
             std::vector<Point4<float>> vertexData;
             std::vector<Point3<float>> vertexArray = linesToVertexArray(lines, indices, vertexData);
 
             shader = ShaderBuilder::createShader("displayGeometryWireframe.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
             rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                     ->addData(vertexArray)
-                    ->addData(vertexData);
+                    ->addData(vertexData)
+                    ->disableCullFace();
         }
 
         Matrix4<float> projectionViewModelMatrix;
@@ -62,13 +61,13 @@ namespace urchin {
                 ->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix)
                 ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color);
 
+        if (!indices.empty()) {
+            rendererBuilder->indices(indices);
+        }
+
         if (!alwaysVisible) {
             rendererBuilder->enableDepthTest();
             rendererBuilder->enableDepthWrite();
-        }
-
-        if (cullFaceDisabled) {
-            rendererBuilder->disableCullFace();
         }
 
         renderer = rendererBuilder->build();
