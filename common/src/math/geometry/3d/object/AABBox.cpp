@@ -124,16 +124,19 @@ namespace urchin {
                 signZ * boxShape.getHalfSize(2) * (T)2.0);
     }
 
+    /**
+     * Points of AABBox sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
+     */
     template<class T> std::array<Point3<T>, 8> AABBox<T>::getPoints() const {
         std::array<Point3<T>, 8> result;
         result[0] = Point3<T>(max.X, max.Y, max.Z);
-        result[1] = Point3<T>(max.X, min.Y, max.Z);
-        result[2] = Point3<T>(min.X, min.Y, max.Z);
-        result[3] = Point3<T>(min.X, max.Y, max.Z);
-        result[4] = Point3<T>(max.X, max.Y, min.Z);
-        result[5] = Point3<T>(max.X, min.Y, min.Z);
-        result[6] = Point3<T>(min.X, min.Y, min.Z);
-        result[7] = Point3<T>(min.X, max.Y, min.Z);
+        result[1] = Point3<T>(max.X, max.Y, min.Z);
+        result[2] = Point3<T>(max.X, min.Y, max.Z);
+        result[3] = Point3<T>(max.X, min.Y, min.Z);
+        result[4] = Point3<T>(min.X, max.Y, max.Z);
+        result[5] = Point3<T>(min.X, max.Y, min.Z);
+        result[6] = Point3<T>(min.X, min.Y, max.Z);
+        result[7] = Point3<T>(min.X, min.Y, min.Z);
         return result;
     }
 
