@@ -16,7 +16,7 @@ namespace urchin {
             const RenderTarget& getRenderTarget() const;
 
             Vector3<float> getColor() const;
-            void setColor(float, float, float);
+            void setColor(const Vector3<float>&);
 
             PolygonMode getPolygonMode() const;
             void setPolygonMode(PolygonMode);
@@ -54,7 +54,7 @@ namespace urchin {
             std::unique_ptr<Shader> shader;
             Matrix4<float> modelMatrix;
 
-            Vector3<float> color;
+            Vector3<float> rgbColor;
             PolygonMode polygonMode;
             float wireframeLineWidth;
             bool alwaysVisible;

@@ -91,8 +91,8 @@ namespace urchin {
         return displayPoints;
     }
 
-    void NavMeshDisplayer::addNavMeshModel(std::shared_ptr<GeometryModel> model, const Vector3<float>& color) {
-        model->setColor(color.X, color.Y, color.Z);
+    void NavMeshDisplayer::addNavMeshModel(std::shared_ptr<GeometryModel> model, const Vector3<float>& rgbColor) {
+        model->setColor(rgbColor);
         model->disableCullFace();
         navMeshModels.push_back(model);
         renderer3d.getGeometryContainer().addGeometry(std::move(model));

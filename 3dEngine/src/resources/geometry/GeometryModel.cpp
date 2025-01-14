@@ -7,7 +7,7 @@ namespace urchin {
     GeometryModel::GeometryModel() :
             isInitialized(false),
             renderTarget(nullptr),
-            color(Vector3(0.0f, 1.0f, 0.0f)),
+            rgbColor(Vector3(0.0f, 1.0f, 0.0f)),
             polygonMode(PolygonMode::FILL),
             wireframeLineWidth(0.0075f),
             alwaysVisible(false),
@@ -59,7 +59,7 @@ namespace urchin {
         Matrix4<float> projectionViewModelMatrix;
         rendererBuilder
                 ->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix)
-                ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color);
+                ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(rgbColor), &rgbColor);
 
         if (!indices.empty()) {
             rendererBuilder->indices(indices);
@@ -139,13 +139,13 @@ namespace urchin {
     }
 
     Vector3<float> GeometryModel::getColor() const {
-        return color;
+        return rgbColor;
     }
 
-    void GeometryModel::setColor(float red, float green, float blue) {
-        color = Vector3(red, green, blue);
+    void GeometryModel::setColor(const Vector3<float>& rgbColor) {
+        this->rgbColor = rgbColor;
         if (renderer) {
-            renderer->updateUniformData(COLOR_UNIFORM_BINDING, &color);
+            renderer->updateUniformData(COLOR_UNIFORM_BINDING, &rgbColor);
         }
     }
 

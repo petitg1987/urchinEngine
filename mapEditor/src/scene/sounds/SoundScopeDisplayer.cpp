@@ -22,7 +22,7 @@ namespace urchin {
                 const auto& localizableSound = static_cast<const LocalizableSound&>(sound);
                 auto geometryModel = std::make_unique<SphereModel>(Sphere(localizableSound.getRadius(), localizableSound.getPosition()), 13);
                 geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
-                geometryModel->setColor(0.0f, 0.0f, 1.0f);
+                geometryModel->setColor(Vector3(0.0f, 0.0f, 1.0f));
                 soundModels.push_back(std::move(geometryModel));
                 scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(soundModels.back());
             }
@@ -32,7 +32,7 @@ namespace urchin {
                 const auto& areaTrigger = static_cast<const AreaTrigger&>(soundTrigger);
                 auto geometryModel = retrieveSoundShapeGeometry(areaTrigger.getSoundShape());
                 geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
-                geometryModel->setColor(0.0f, 1.0f, 1.0f);
+                geometryModel->setColor(Vector3(0.0f, 1.0f, 1.0f));
                 soundModels.push_back(std::move(geometryModel));
                 scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(soundModels.back());
             }

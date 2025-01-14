@@ -14,13 +14,13 @@ namespace urchin {
         cleanCurrentDisplay();
 
         GeometryModel& xLine = createAxisModel(position, selectedAxis, 0);
-        xLine.setColor(1.0f, 0.0f, 0.0f);
+        xLine.setColor(Vector3(1.0f, 0.0f, 0.0f));
 
         GeometryModel& yLine = createAxisModel(position, selectedAxis, 1);
-        yLine.setColor(0.0f, 1.0f, 0.0f);
+        yLine.setColor(Vector3(0.0f, 1.0f, 0.0f));
 
         GeometryModel& zLine = createAxisModel(position, selectedAxis, 2);
-        zLine.setColor(0.0f, 0.0f, 1.0f);
+        zLine.setColor(Vector3(0.0f, 0.0f, 1.0f));
 
         for (const auto& objectMoveAxisModel : objectMoveAxisModels) {
             scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(objectMoveAxisModel);

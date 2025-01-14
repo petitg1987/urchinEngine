@@ -31,12 +31,15 @@ namespace urchin {
             const Transform<float>& modelTransform = selectedObjectEntity->getModel()->getTransform();
             const CollisionShape3D& bodyShape = selectedObjectEntity->getRigidBody()->getShape();
 
+            Vector3 activeObjectColor(0.2f, 0.8f, 0.2f);
+            Vector3 inactiveObjectColor(0.0f, 0.5f, 0.0f);
+
             if (bodyShape.isConcave()) {
                 PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
                 AABBox<float> heightfieldAABBox = bodyShape.toAABBox(transform);
 
                 auto geometryModel = std::make_unique<AABBoxModel>(heightfieldAABBox);
-                geometryModel->setColor(0.0f, 1.0f, 0.0f);
+                geometryModel->setColor(activeObjectColor);
                 geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                 bodyShapeModels.push_back(std::move(geometryModel));
             } else if (bodyShape.isCompound()) {
@@ -48,9 +51,9 @@ namespace urchin {
 
                     auto geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), *bodyObject);
                     if (selectedCompoundShapeComponent != nullptr && selectedCompoundShapeComponent->shapeIndex == localizedShape->shapeIndex) {
-                        geometryModel->setColor(0.0f, 1.0f, 0.0f);
+                        geometryModel->setColor(activeObjectColor);
                     } else {
-                        geometryModel->setColor(0.0f, 0.4f, 0.0f);
+                        geometryModel->setColor(inactiveObjectColor);
                     }
                     geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                     bodyShapeModels.push_back(std::move(geometryModel));
@@ -60,7 +63,7 @@ namespace urchin {
                 std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = bodyShape.toConvexObject(transform);
 
                 auto geometryModel = retrieveSingleGeometry(bodyShape.getShapeType(), *bodyObject);
-                geometryModel->setColor(0.0f, 1.0f, 0.0f);
+                geometryModel->setColor(activeObjectColor);
                 geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                 bodyShapeModels.push_back(std::move(geometryModel));
             } else {
