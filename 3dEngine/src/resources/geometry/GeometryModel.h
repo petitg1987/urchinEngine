@@ -44,7 +44,8 @@ namespace urchin {
             std::vector<Point3<float>> linesToVertexArray(const std::vector<LineSegment3D<float>>&, std::vector<uint32_t>&, std::vector<Point4<float>>&) const;
 
             static constexpr uint32_t PVM_MATRIX_UNIFORM_BINDING = 0;
-            static constexpr uint32_t COLOR_UNIFORM_BINDING = 1;
+            static constexpr uint32_t WIREFRAME_LINE_WIDTH_UNIFORM_BINDING = 1;
+            static constexpr uint32_t COLOR_UNIFORM_BINDING = 2;
 
             bool isInitialized;
 

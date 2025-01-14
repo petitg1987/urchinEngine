@@ -1,7 +1,7 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(std140, set = 0, binding = 1) uniform Visual {
+layout(std140, set = 0, binding = 2) uniform Visual {
     vec3 color;
 } visual;
 

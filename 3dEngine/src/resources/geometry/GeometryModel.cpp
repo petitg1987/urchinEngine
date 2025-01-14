@@ -9,7 +9,7 @@ namespace urchin {
             renderTarget(nullptr),
             rgbColor(Vector3(0.0f, 1.0f, 0.0f)),
             polygonMode(PolygonMode::FILL),
-            wireframeLineWidth(0.0075f),
+            wireframeLineWidth(0.0075f), //TODO fix line quad and then change to 0.0015
             alwaysVisible(false),
             cullFaceDisabled(false) {
     }
@@ -49,6 +49,7 @@ namespace urchin {
             rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, ShapeType::TRIANGLE)
                     ->addData(vertexArray)
                     ->addData(vertexData)
+                    ->addUniformData(WIREFRAME_LINE_WIDTH_UNIFORM_BINDING, sizeof(wireframeLineWidth), &wireframeLineWidth)
                     ->disableCullFace();
         }
 
@@ -154,7 +155,7 @@ namespace urchin {
         refreshRenderer();
     }
 
-    void GeometryModel::setWireframeLineWidth(float wireframeLineWidth) { //TODO use it
+    void GeometryModel::setWireframeLineWidth(float wireframeLineWidth) {
         this->wireframeLineWidth = wireframeLineWidth;
         refreshRenderer();
     }
