@@ -26,45 +26,32 @@ namespace urchin {
             return;
         }
 
-        std::vector<uint32_t> indices;
-        std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
-
         std::shared_ptr<GenericRendererBuilder> rendererBuilder;
 
         if (polygonMode == PolygonMode::FILL) {
-            shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
+            std::vector<uint32_t> indices;
+            std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
 
+            shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
             rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                     ->addData(vertexArray);
 
-        } else if (polygonMode == PolygonMode::WIREFRAME) {
-            shader = ShaderBuilder::createShader("displayGeometryWireframe.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
+            if (!indices.empty()) {
+                rendererBuilder->indices(indices);
+            }
 
+        } else if (polygonMode == PolygonMode::WIREFRAME) {
             if (getShapeType() != ShapeType::TRIANGLE) {
                 throw std::runtime_error("Unsupported shape type for wireframe rendering: " + std::to_string((int)getShapeType()));
             }
 
-            std::vector<LineSegment3D<float>> lines;
-            if (!indices.empty()) {
-                lines.reserve(3ul * indices.size());
-                for (std::size_t i = 0; i < indices.size(); i+=3) {
-                    lines.emplace_back(vertexArray[indices[i]], vertexArray[indices[i + 1]]);
-                    lines.emplace_back(vertexArray[indices[i + 1]], vertexArray[indices[i + 2]]);
-                    lines.emplace_back(vertexArray[indices[i + 2]], vertexArray[indices[i]]);
-                }
-            } else {
-                lines.reserve(3ul * vertexArray.size());
-                for (std::size_t i = 0; i < vertexArray.size(); i+=3) {
-                    lines.emplace_back(vertexArray[i], vertexArray[i + 1]);
-                    lines.emplace_back(vertexArray[i + 1], vertexArray[i + 2]);
-                    lines.emplace_back(vertexArray[i + 2], vertexArray[i]);
-                }
-            }
+            std::vector<LineSegment3D<float>> lines = retrieveWireframeLines();
 
-            indices.clear();
+            std::vector<uint32_t> indices;
             std::vector<Point4<float>> vertexData;
-            vertexArray = linesToVertexArray(lines, indices, vertexData);
+            std::vector<Point3<float>> vertexArray = linesToVertexArray(lines, indices, vertexData);
 
+            shader = ShaderBuilder::createShader("displayGeometryWireframe.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
             rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                     ->addData(vertexArray)
                     ->addData(vertexData);
@@ -74,10 +61,6 @@ namespace urchin {
         rendererBuilder
                 ->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix)
                 ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color);
-
-        if (!indices.empty()) {
-            rendererBuilder->indices(indices);
-        }
 
         if (!alwaysVisible) {
             rendererBuilder->enableDepthTest();
@@ -90,6 +73,30 @@ namespace urchin {
 
         renderer = rendererBuilder->build();
         renderer->disableRenderer(); //in case this method is called after 'renderTarget->disableAllRenderers()'
+    }
+
+    std::vector<LineSegment3D<float>> GeometryModel::retrieveWireframeLines() const {
+        std::vector<uint32_t> indices;
+        std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
+
+        std::vector<LineSegment3D<float>> lines;
+        if (!indices.empty()) {
+            lines.reserve(3ul * indices.size());
+            for (std::size_t i = 0; i < indices.size(); i+=3) {
+                lines.emplace_back(vertexArray[indices[i]], vertexArray[indices[i + 1]]);
+                lines.emplace_back(vertexArray[indices[i + 1]], vertexArray[indices[i + 2]]);
+                lines.emplace_back(vertexArray[indices[i + 2]], vertexArray[indices[i]]);
+            }
+        } else {
+            lines.reserve(3ul * vertexArray.size());
+            for (std::size_t i = 0; i < vertexArray.size(); i+=3) {
+                lines.emplace_back(vertexArray[i], vertexArray[i + 1]);
+                lines.emplace_back(vertexArray[i + 1], vertexArray[i + 2]);
+                lines.emplace_back(vertexArray[i + 2], vertexArray[i]);
+            }
+        }
+
+        return lines;
     }
 
     std::vector<Point3<float>> GeometryModel::linesToVertexArray(const std::vector<LineSegment3D<float>>& lines, std::vector<uint32_t>& indices, std::vector<Point4<float>>& vertexData) const {
