@@ -2,6 +2,10 @@
 
 namespace urchin {
 
+    void EventListener::onInit(Widget*) {
+
+    }
+
     bool EventListener::onMouseLeftClick(Widget*) {
         return true;
     }

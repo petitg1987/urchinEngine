@@ -209,6 +209,7 @@ namespace urchin {
 
     void Widget::addEventListener(std::shared_ptr<EventListener> eventListener) {
         this->eventListeners.push_back(std::move(eventListener));
+        this->eventListeners.back()->onInit(this);
     }
 
     const std::vector<std::shared_ptr<EventListener>>& Widget::getEventListeners() const {

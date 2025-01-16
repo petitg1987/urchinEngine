@@ -8,6 +8,8 @@ namespace urchin {
         public:
             virtual ~EventListener() = default;
 
+            virtual void onInit(Widget*);
+
             virtual bool onMouseLeftClick(Widget*);
             virtual bool onMouseLeftClickRelease(Widget*);
 
