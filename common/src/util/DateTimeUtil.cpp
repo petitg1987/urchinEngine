@@ -40,7 +40,17 @@ namespace urchin {
         return timePointToDateTime(timePoint, DATE_HOUR_MIN_SEC);
     }
 
-    std::string DateTimeUtil::secondsToHumanReadable(double totalSeconds, char hourSeparator, char minuteSeparator) {
+    std::string DateTimeUtil::secondsToHhmm(double totalSeconds, char hourSeparator) {
+        int hours = static_cast<int>(totalSeconds) / 3600;
+        int minutes = (static_cast<int>(totalSeconds) % 3600) / 60;
+
+        std::ostringstream result;
+        result << std::setw(2) << std::setfill('0') << hours << hourSeparator
+               << std::setw(2) << std::setfill('0') << minutes;
+        return result.str();
+    }
+
+    std::string DateTimeUtil::secondsToHhmmss(double totalSeconds, char hourSeparator, char minuteSeparator) {
         int hours = static_cast<int>(totalSeconds) / 3600;
         int minutes = (static_cast<int>(totalSeconds) % 3600) / 60;
         int seconds = static_cast<int>(totalSeconds) % 60;
