@@ -83,8 +83,8 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::notify(Observable* observable, int notificationType) {
-        if (const Model* model = dynamic_cast<Model*>(observable)) {
-            const ModelInstanceDisplayer* displayer = findModelInstanceDisplayer(*model);
+        if (Model* model = dynamic_cast<Model*>(observable)) {
+            ModelInstanceDisplayer* displayer = findModelInstanceDisplayer(*model);
             if (!displayer) {
                 return;
             }
@@ -119,6 +119,8 @@ namespace urchin {
                 } else if (notificationType == Model::SCALE_UPDATED) {
                     displayer->updateScale();
                 }
+            } else {
+                removeModelFromDisplayer(*model, *displayer);
             }
         }
     }
