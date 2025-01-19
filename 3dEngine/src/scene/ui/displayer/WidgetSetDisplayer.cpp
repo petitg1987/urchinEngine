@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     void WidgetSetDisplayer::notify(Observable* observable, int notificationType) {
-        if (Widget* widget = dynamic_cast<Widget*>(observable)) {
+        if (auto widget = dynamic_cast<Widget*>(observable)) {
             WidgetInstanceDisplayer* displayer = findWidgetInstanceDisplayer(*widget);
             if (!displayer) {
                 return;
@@ -73,6 +73,8 @@ namespace urchin {
                     displayer->updateAlphaFactor();
                 }
             } else {
+                //The displayer will be replaced in the 'updateWidgets' method, but it is already detached here.
+                //Indeed, the updated value in the widget could be wrongly used by another update of widget in the displayer via WidgetInstanceDisplayer#getReferenceWidget().
                 removeWidgetFromDisplayer(*widget, *displayer);
             }
         }

@@ -83,7 +83,7 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::notify(Observable* observable, int notificationType) {
-        if (Model* model = dynamic_cast<Model*>(observable)) {
+        if (auto model = dynamic_cast<Model*>(observable)) {
             ModelInstanceDisplayer* displayer = findModelInstanceDisplayer(*model);
             if (!displayer) {
                 return;
@@ -120,6 +120,8 @@ namespace urchin {
                     displayer->updateScale();
                 }
             } else {
+                //The displayer will be replaced in the 'updateModels' method, but it is already detached here.
+                //Indeed, the updated value in the model could be wrongly used by another update of model in the displayer via ModelInstanceDisplayer#getReferenceModel().
                 removeModelFromDisplayer(*model, *displayer);
             }
         }
