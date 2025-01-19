@@ -39,8 +39,4 @@ namespace urchin {
         return heightType;
     }
 
-    Size Size::extend(float extendWidth, float extendHeight) const {
-        return Size(width + extendWidth, widthType, height + extendHeight, heightType);
-    }
-
 }

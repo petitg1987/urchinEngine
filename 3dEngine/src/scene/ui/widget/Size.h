@@ -15,8 +15,6 @@ namespace urchin {
             float getHeight() const;
             LengthType getHeightType() const;
 
-            Size extend(float, float) const;
-
         private:
             float width;
             LengthType widthType;
