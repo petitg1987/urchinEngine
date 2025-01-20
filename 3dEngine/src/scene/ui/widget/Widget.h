@@ -80,7 +80,9 @@ namespace urchin {
             virtual void updateSize(Size);
             Size getSize() const;
             float getWidth() const;
+            float getWidthMinusOutline() const;
             float getHeight() const;
+            float getHeightMinusOutline() const;
             Rectangle2D<int> widgetRectangle() const;
 
             void updateScale(const Vector2<float>&);
