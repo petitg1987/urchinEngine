@@ -48,7 +48,7 @@ namespace urchin {
         }
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
-        text = Text::create(this, Position(0.0f, 0.0f, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY), textSkinChunk->getStringValue(), "");
+        text = Text::create(this, Position(0.0f, 0.0f, PIXEL, PARENT_LEFT_CENTERY, LEFT_CENTERY), textSkinChunk->getStringValue(), "");
         maxWidthText = (unsigned int)((int)getWidth() - (getOutline().leftWidth + getOutline().rightWidth + (int)TextFieldConst::LETTER_AND_CURSOR_SHIFT + (int)TextFieldConst::CURSOR_WIDTH_PIXEL));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
@@ -327,7 +327,7 @@ namespace urchin {
         cursorPosition = computeCursorPosition(cursorIdx);
         cursorBlink = 0.0f;
 
-        cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
+        cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y, PIXEL, PARENT_LEFT_CENTERY, LEFT_CENTERY));
     }
 
     std::size_t TextBox::computeCursorIndex(int approximatePositionX, int) const {
@@ -365,7 +365,7 @@ namespace urchin {
         Point2<int> displaySelectionStartPos = computeCursorPosition(displaySelectionStartIndex) + Point2(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
         Point2<int> displaySelectionEndPos = computeCursorPosition(displaySelectionEndIndex) + Point2(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
 
-        selectionImage->updatePosition(Position((float)displaySelectionStartPos.X, (float)displaySelectionStartPos.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
+        selectionImage->updatePosition(Position((float)displaySelectionStartPos.X, (float)displaySelectionStartPos.Y, PIXEL, PARENT_LEFT_CENTERY, LEFT_CENTERY));
         float sizeX = std::min((float)(displaySelectionEndPos.X - displaySelectionStartPos.X), (float)maxWidthText - (float)displaySelectionStartPos.X);
         selectionImage->updateSize(Size(sizeX, (float)(displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL));
     }

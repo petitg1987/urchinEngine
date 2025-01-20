@@ -8,7 +8,7 @@
 #include <scene/ui/UIRenderer.h>
 #include <scene/InputDeviceKey.h>
 
-namespace urchin { //TODO remove RefPoint::
+namespace urchin {
 
     Widget::Widget(Position position, Size size) :
             uiRenderer(nullptr),
@@ -285,9 +285,9 @@ namespace urchin { //TODO remove RefPoint::
             }
         }
 
-        if (position.getReferencePoint() == RefPoint::RIGHT_TOP || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM || position.getReferencePoint() == RefPoint::RIGHT_CENTERY) { //right
+        if (position.getReferencePoint() == RIGHT_TOP || position.getReferencePoint() == RIGHT_BOTTOM || position.getReferencePoint() == RIGHT_CENTERY) { //right
             startPosition -= getWidth();
-        } else if (position.getReferencePoint() == RefPoint::CENTER_XY || position.getReferencePoint() == RefPoint::CENTERX_TOP || position.getReferencePoint() == RefPoint::CENTERX_BOTTOM) { //center X
+        } else if (position.getReferencePoint() == CENTER_XY || position.getReferencePoint() == CENTERX_TOP || position.getReferencePoint() == CENTERX_BOTTOM) { //center X
             startPosition -= getWidth() / 2.0f;
         }
 
@@ -326,9 +326,9 @@ namespace urchin { //TODO remove RefPoint::
             startPosition += (float)scrollable->getScrollShiftY();
         }
 
-        if (position.getReferencePoint() == RefPoint::LEFT_BOTTOM || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM || position.getReferencePoint() == RefPoint::CENTERX_BOTTOM) { //bottom
+        if (position.getReferencePoint() == LEFT_BOTTOM || position.getReferencePoint() == RIGHT_BOTTOM || position.getReferencePoint() == CENTERX_BOTTOM) { //bottom
             startPosition -= getHeight();
-        } else if (position.getReferencePoint() == RefPoint::CENTER_XY ||  position.getReferencePoint() == RefPoint::LEFT_CENTERY || position.getReferencePoint() == RefPoint::RIGHT_CENTERY) { //center Y
+        } else if (position.getReferencePoint() == CENTER_XY ||  position.getReferencePoint() == LEFT_CENTERY || position.getReferencePoint() == RIGHT_CENTERY) { //center Y
             startPosition -= getHeight() / 2.0f;
         }
 
