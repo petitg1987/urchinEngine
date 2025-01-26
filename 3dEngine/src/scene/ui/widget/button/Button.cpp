@@ -37,7 +37,7 @@ namespace urchin {
 
         if (!buttonText.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), buttonChunk);
-            text = Text::create(this, Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), i18n(buttonText));
+            text = Text::create(this, Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), buttonText);
         }
     }
 
