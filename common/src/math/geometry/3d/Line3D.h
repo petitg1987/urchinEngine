@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+
 #include <math/algebra/point/Point3.h>
 
 namespace urchin {

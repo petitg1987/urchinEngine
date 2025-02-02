@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iostream>
+#include <ostream>
 
 #include <math/algebra/vector/Vector3.h>
 #include <math/algebra/matrix/Matrix4.h>

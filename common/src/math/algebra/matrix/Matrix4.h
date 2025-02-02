@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iosfwd>
+#include <ostream>
 
 #include <math/algebra/matrix/Matrix3.h>
 
