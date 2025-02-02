@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include <io/svg/shape/SVGLine.h>
 
 namespace urchin {

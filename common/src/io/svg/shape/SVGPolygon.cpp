@@ -1,5 +1,6 @@
 #include <limits>
 #include <utility>
+#include <sstream>
 
 #include <io/svg/shape/SVGPolygon.h>
 

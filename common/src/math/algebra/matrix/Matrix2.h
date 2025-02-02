@@ -1,7 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <iomanip>
+#include <iosfwd>
 
 namespace urchin {
 

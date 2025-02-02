@@ -1,3 +1,5 @@
+#include <iomanip>
+
 #include <math/geometry/3d/object/Capsule.h>
 
 namespace urchin {

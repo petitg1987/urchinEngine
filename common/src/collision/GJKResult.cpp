@@ -1,3 +1,4 @@
+#include <sstream>
 #ifdef URCHIN_DEBUG
     #include <cassert>
 #endif

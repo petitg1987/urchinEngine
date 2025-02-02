@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iomanip>
 
 #include <math/algebra/matrix/Matrix2.h>
 
