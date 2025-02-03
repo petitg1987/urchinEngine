@@ -96,6 +96,10 @@ namespace urchin {
         markModified();
     }
 
+    void ObjectController::changeLightType(const ObjectEntity&, Light::LightType) {
+        //TODO impl
+    }
+
     const ObjectEntity& ObjectController::updateObjectTransform(const ObjectEntity& constObjectEntity, const Transform<float>& transform) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         Model* model = objectEntity.getModel();

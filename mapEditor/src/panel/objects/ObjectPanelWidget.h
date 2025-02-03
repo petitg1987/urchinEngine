@@ -46,6 +46,7 @@ namespace urchin {
             void setupPhysicsDampingPropertiesBox(QVBoxLayout*);
             void setupPhysicsFactorPropertiesBox(QVBoxLayout*);
             void setupPhysicsShapeBox(QVBoxLayout*);
+            void setupLightBox(QVBoxLayout*);
             void setupTagsBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
@@ -112,6 +113,12 @@ namespace urchin {
             QPushButton* changeBodyShapeButton;
             std::unique_ptr<BodyShapeWidget> bodyShapeWidget;
 
+            //light
+            QLabel* lightTypeValueLabel;
+            QPushButton* changeLightButton;
+            QPushButton* removeLightButton;
+
+
         private slots:
             void showAddObjectDialog();
             void removeSelectedObject() const;
@@ -130,6 +137,10 @@ namespace urchin {
             void rigidBodyToggled(int);
             void updateObjectPhysicsProperties() const;
             void bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&) const;
+
+            void showChangeLightDialog();
+            void removeLightAction();
+
     };
 
 }

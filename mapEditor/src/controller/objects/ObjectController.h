@@ -27,6 +27,8 @@ namespace urchin {
             void moveObjectInFrontOfCamera(const ObjectEntity&, bool);
             void removeBody(const ObjectEntity&);
 
+            void changeLightType(const ObjectEntity&, Light::LightType);
+
             const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
             const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowBehavior, Model::CullBehavior);
             const ObjectEntity& updateObjectTags(const ObjectEntity&, std::string_view);

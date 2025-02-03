@@ -10,6 +10,7 @@
 #include <panel/objects/dialog/CloneObjectDialog.h>
 #include <panel/objects/dialog/ChangeBodyShapeDialog.h>
 #include <panel/objects/dialog/RenameObjectDialog.h>
+#include <panel/objects/dialog/ChangeLightDialog.h>
 #include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
 #include <scene/objects/move/ObjectMoveController.h>
 #include <panel/objects/bodyshape/NoBodyShapeWidget.h>
@@ -113,6 +114,22 @@ namespace urchin {
         physicsLayout->setContentsMargins(1, 1, 1, 1);
         setupPhysicsBox(physicsLayout);
         tabWidget->addTab(tabPhysics, "Physics");
+
+        //light properties
+        auto* tabLight = new QWidget();
+        auto* lightLayout = new QVBoxLayout(tabLight);
+        lightLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+        lightLayout->setContentsMargins(1, 1, 1, 1);
+        setupLightBox(lightLayout);
+        tabWidget->addTab(tabLight, "Light");
+
+        //sound properties
+        auto* tabSound = new QWidget();
+        auto* soundLayout = new QVBoxLayout(tabSound);
+        soundLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+        soundLayout->setContentsMargins(1, 1, 1, 1);
+        //TODO setupSoundBox(soundLayout);
+        tabWidget->addTab(tabSound, "Sound");
 
         //tags properties
         auto* tabTags = new QWidget();
@@ -428,6 +445,29 @@ namespace urchin {
         FrameStyleHelper::applyLineStyle(frameLine);
 
         bodyShapeWidget = nullptr;
+    }
+
+    void ObjectPanelWidget::setupLightBox(QVBoxLayout* lightLayout) { //TODO impl
+        auto* lightTypeLayout = new QHBoxLayout();
+        lightTypeLayout->setAlignment(Qt::AlignLeft);
+        lightTypeLayout->setSpacing(15);
+        lightLayout->addLayout(lightTypeLayout);
+
+        auto* lightTypeLabel = new QLabel("Light Type:");
+        lightTypeLayout->addWidget(lightTypeLabel);
+
+        lightTypeValueLabel = new QLabel();
+        lightTypeLayout->addWidget(lightTypeValueLabel);
+
+        changeLightButton = new QPushButton("Change");
+        lightTypeLayout->addWidget(changeLightButton);
+        ButtonStyleHelper::applyNormalStyle(changeLightButton);
+        connect(changeLightButton, SIGNAL(clicked()), this, SLOT(showChangeLightDialog()));
+
+        removeLightButton = new QPushButton("Remove");
+        lightTypeLayout->addWidget(removeLightButton);
+        ButtonStyleHelper::applyNormalStyle(removeLightButton);
+        connect(removeLightButton, SIGNAL(clicked()), this, SLOT(removeLightAction()));
     }
 
     void ObjectPanelWidget::setupTagsBox(QVBoxLayout* mainTagsLayout) {
@@ -808,6 +848,23 @@ namespace urchin {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             objectController->updateObjectPhysicsShape(objectEntity, std::move(shape));
         }
+    }
+
+    void ObjectPanelWidget::showChangeLightDialog() {
+        ChangeLightDialog changeLightDialog(this);
+        changeLightDialog.exec();
+
+        if (changeLightDialog.result() == QDialog::Accepted) {
+            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            Light::LightType lightType = changeLightDialog.getLightType();
+
+            objectController->changeLightType(objectEntity, lightType);
+            //TODO setupObjectPhysicsDataFrom(objectEntity);
+        }
+    }
+
+    void ObjectPanelWidget::removeLightAction() { //TODO impl
+
     }
 
 }
