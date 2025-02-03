@@ -10,14 +10,14 @@ namespace urchin {
     */
     class AutoTrigger final : public SoundTrigger {
         public:
-            AutoTrigger(PlayBehavior, std::shared_ptr<Sound>);
+            AutoTrigger(PlayBehavior, const std::shared_ptr<Sound>&);
 
             const std::vector<TriggerAction>& evaluateTrigger(const Point3<float>&) override;
 
-            std::unique_ptr<SoundTrigger> clone(std::shared_ptr<Sound>) const override;
+            std::unique_ptr<SoundTrigger> clone(const std::shared_ptr<Sound>&) const override;
 
         private:
-            std::shared_ptr<Sound> sound;
+            std::weak_ptr<Sound> sound;
             bool isPlaying;
     };
 

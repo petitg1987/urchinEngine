@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     ObjectEntity::~ObjectEntity() {
-        if (soundEnvironment) {
+        if (soundEnvironment && soundComponent) {
             soundEnvironment->removeSoundComponent(*soundComponent);
         }
         if (renderer3d) {

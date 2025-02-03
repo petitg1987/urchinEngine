@@ -33,7 +33,7 @@ namespace urchin {
 
             virtual const std::vector<TriggerAction>& evaluateTrigger(const Point3<float>&) = 0;
 
-            virtual std::unique_ptr<SoundTrigger> clone(std::shared_ptr<Sound>) const = 0;
+            virtual std::unique_ptr<SoundTrigger> clone(const std::shared_ptr<Sound>&) const = 0;
 
         protected:
             std::vector<TriggerAction> triggerActions;
