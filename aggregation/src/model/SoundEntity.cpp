@@ -9,7 +9,7 @@ namespace urchin {
 
     SoundEntity::~SoundEntity() {
         if (soundEnvironment) {
-            soundEnvironment->removeSoundComponent(*soundComponent);
+            soundEnvironment->removeSoundComponent(soundComponent.get());
         }
     }
 
@@ -35,7 +35,7 @@ namespace urchin {
 
     void SoundEntity::setSoundComponent(const std::shared_ptr<SoundComponent>& soundComponent) {
         if (soundEnvironment) {
-            soundEnvironment->removeSoundComponent(*this->soundComponent);
+            soundEnvironment->removeSoundComponent(this->soundComponent.get());
             soundEnvironment->addSoundComponent(soundComponent);
         }
 

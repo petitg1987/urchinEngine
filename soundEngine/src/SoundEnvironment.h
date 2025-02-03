@@ -21,7 +21,7 @@ namespace urchin {
 
             SoundBuilder& getBuilder();
             void addSoundComponent(std::shared_ptr<SoundComponent>);
-            void removeSoundComponent(const SoundComponent&);
+            void removeSoundComponent(const SoundComponent*);
             const AudioController& getAudioController(const SoundComponent&) const;
 
             void addMusicLoopPlayer(std::shared_ptr<MusicLoopPlayer>);

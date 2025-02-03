@@ -16,8 +16,8 @@ namespace urchin {
     }
 
     ObjectEntity::~ObjectEntity() {
-        if (soundEnvironment && soundComponent) {
-            soundEnvironment->removeSoundComponent(*soundComponent);
+        if (soundEnvironment) {
+            soundEnvironment->removeSoundComponent(soundComponent.get());
         }
         if (renderer3d) {
             renderer3d->getLightManager().removeLight(light.get());
@@ -117,7 +117,7 @@ namespace urchin {
 
     void ObjectEntity::setSoundComponent(const std::shared_ptr<SoundComponent>& soundComponent) {
         if (soundEnvironment) {
-            soundEnvironment->removeSoundComponent(*this->soundComponent);
+            soundEnvironment->removeSoundComponent(this->soundComponent.get());
             soundEnvironment->addSoundComponent(soundComponent);
         }
 

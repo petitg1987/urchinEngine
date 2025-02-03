@@ -41,10 +41,12 @@ namespace urchin {
         audioControllers.push_back(std::make_unique<AudioController>(std::move(soundComponent), streamUpdateWorker));
     }
 
-    void SoundEnvironment::removeSoundComponent(const SoundComponent& soundComponent) {
-        std::size_t erasedCount = std::erase_if(audioControllers, [&soundComponent](const auto& ac){ return &ac->getSoundComponent() == &soundComponent; });
-        if (erasedCount != 1) {
-            throw std::runtime_error("Removing the sound component fail: " + soundComponent.getSound().getFilename());
+    void SoundEnvironment::removeSoundComponent(const SoundComponent* soundComponent) {
+        if (soundComponent) {
+            std::size_t erasedCount = std::erase_if(audioControllers, [&soundComponent](const auto& ac){ return &ac->getSoundComponent() == soundComponent; });
+            if (erasedCount != 1) {
+                throw std::runtime_error("Removing the sound component fail: " + soundComponent->getSound().getFilename());
+            }
         }
     }
 

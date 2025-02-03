@@ -35,7 +35,7 @@ namespace urchin {
 
     MusicLoopPlayer::~MusicLoopPlayer() {
         for (const auto& music : musics) {
-            soundEnvironment->removeSoundComponent(*music.soundComponent);
+            soundEnvironment->removeSoundComponent(music.soundComponent.get());
         }
         musics.clear();
     }
