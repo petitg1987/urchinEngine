@@ -75,7 +75,7 @@ namespace urchin {
     }
 
     ObjectEntity& Map::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
-        objectEntity->setup(renderer3d, physicsWorld, aiEnvironment);
+        objectEntity->setup(renderer3d, physicsWorld, soundEnvironment, aiEnvironment);
         objectEntitiesTagHolder.addTaggableResource(*objectEntity);
         objectEntities.push_back(std::move(objectEntity));
         return *objectEntities.back();

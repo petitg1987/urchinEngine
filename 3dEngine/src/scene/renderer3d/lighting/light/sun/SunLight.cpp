@@ -31,4 +31,8 @@ namespace urchin {
         throw std::runtime_error("No bounding box for sun light.");
     }
 
+    std::unique_ptr<Light> SunLight::clone() const {
+        return std::make_unique<SunLight>(directions[0]);
+    }
+
 }

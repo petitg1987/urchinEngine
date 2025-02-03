@@ -34,6 +34,8 @@ namespace urchin {
             SoundCategory getSoundCategory() const;
             float getInitialVolume() const;
 
+            virtual std::unique_ptr<Sound> clone() const = 0;
+
         private:
             std::string filename;
             SoundCategory category;

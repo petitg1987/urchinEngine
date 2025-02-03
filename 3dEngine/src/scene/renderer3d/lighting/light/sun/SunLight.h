@@ -18,6 +18,8 @@ namespace urchin {
             LightType getLightType() const override;
             const AABBox<float>& getAABBox() const override;
 
+            std::unique_ptr<Light> clone() const override;
+
         private:
             std::vector<Vector3<float>> directions;
     };

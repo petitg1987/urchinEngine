@@ -14,6 +14,8 @@ namespace urchin {
 
             const std::vector<TriggerAction>& evaluateTrigger(const Point3<float>&) override;
 
+            std::unique_ptr<SoundTrigger> clone(std::shared_ptr<Sound>) const override;
+
         private:
             std::shared_ptr<Sound> sound;
             bool isPlaying;

@@ -62,4 +62,8 @@ namespace urchin {
         return triggerActions;
     }
 
+    std::unique_ptr<SoundTrigger> ManualTrigger::clone(std::shared_ptr<Sound>) const {
+        return std::make_unique<ManualTrigger>(getPlayBehavior());
+    }
+
 }

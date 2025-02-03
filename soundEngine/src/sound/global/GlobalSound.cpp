@@ -24,4 +24,8 @@ namespace urchin {
         return GLOBAL;
     }
 
+    std::unique_ptr<Sound> GlobalSound::clone() const {
+        return std::make_unique<GlobalSound>(getFilename(), getSoundCategory(), getInitialVolume());
+    }
+
 }

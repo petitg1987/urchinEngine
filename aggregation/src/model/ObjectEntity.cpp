@@ -8,6 +8,7 @@ namespace urchin {
     ObjectEntity::ObjectEntity() :
             renderer3d(nullptr),
             physicsWorld(nullptr),
+            soundEnvironment(nullptr),
             aiEnvironment(nullptr),
             rigidBody(nullptr),
             aiObject(nullptr) {
@@ -15,23 +16,32 @@ namespace urchin {
     }
 
     ObjectEntity::~ObjectEntity() {
+        if (soundEnvironment) {
+            soundEnvironment->removeSoundComponent(*soundComponent);
+        }
         if (renderer3d) {
+            renderer3d->getLightManager().removeLight(light.get());
             renderer3d->removeModel(model.get());
         }
         deleteRigidBody();
         deleteAIObjects();
     }
 
-    void ObjectEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
+    void ObjectEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundEnvironment* soundEnvironment, AIEnvironment* aiEnvironment) {
         this->renderer3d = renderer3d;
         this->physicsWorld = physicsWorld;
+        this->soundEnvironment = soundEnvironment;
         this->aiEnvironment = aiEnvironment;
 
         if (renderer3d) {
             renderer3d->addModel(model);
+            renderer3d->getLightManager().addLight(light);
         }
         if (physicsWorld && rigidBody) {
             physicsWorld->addBody(rigidBody);
+        }
+        if (soundEnvironment && soundComponent) {
+            soundEnvironment->addSoundComponent(soundComponent);
         }
         if (aiEnvironment && aiObject) {
             aiEnvironment->addEntity(aiObject);
@@ -84,6 +94,36 @@ namespace urchin {
         }
     }
 
+    Light* ObjectEntity::getLight() const {
+        return light.get();
+    }
+
+    std::shared_ptr<Light>& ObjectEntity::getLightPtr() {
+        return light;
+    }
+
+    void ObjectEntity::setLight(std::shared_ptr<Light> light) {
+        if (renderer3d) {
+            renderer3d->getLightManager().removeLight(this->light.get());
+            renderer3d->getLightManager().addLight(light);
+        }
+
+        this->light = std::move(light);
+    }
+
+    SoundComponent* ObjectEntity::getSoundComponent() const {
+        return soundComponent.get();
+    }
+
+    void ObjectEntity::setSoundComponent(const std::shared_ptr<SoundComponent>& soundComponent) {
+        if (soundEnvironment) {
+            soundEnvironment->removeSoundComponent(*this->soundComponent);
+            soundEnvironment->addSoundComponent(soundComponent);
+        }
+
+        this->soundComponent = soundComponent;
+    }
+
     void ObjectEntity::setupAIObject() {
         deleteAIObjects();
 
@@ -121,6 +161,16 @@ namespace urchin {
             auto rigidBody = std::make_unique<RigidBody>(*toCloneRigidBody);
             rigidBody->setId(newObject->getName());
             newObject->setupInteractiveBody(std::move(rigidBody));
+        }
+
+        SoundComponent* toCloneSoundComponent = getSoundComponent();
+        if (toCloneSoundComponent) {
+            newObject->setSoundComponent(std::make_unique<SoundComponent>(*toCloneSoundComponent));
+        }
+
+        Light* toCloneLight = getLight();
+        if (toCloneLight) {
+            newObject->setLight(toCloneLight->clone());
         }
 
         newObject->addTags(getTags());

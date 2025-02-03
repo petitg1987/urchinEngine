@@ -17,6 +17,8 @@ namespace urchin {
             void updateSource(ALuint) override;
 
             SoundType getSoundType() const override;
+
+            std::unique_ptr<Sound> clone() const override;
     };
 
 }

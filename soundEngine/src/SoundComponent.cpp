@@ -8,6 +8,12 @@ namespace urchin {
 
     }
 
+    SoundComponent::SoundComponent(const SoundComponent& soundComponent) :
+            sound(soundComponent.getSound().clone()),
+            soundTrigger(soundComponent.getSoundTrigger().clone(sound)) {
+
+    }
+
     Sound& SoundComponent::getSound() const {
         return *sound;
     }

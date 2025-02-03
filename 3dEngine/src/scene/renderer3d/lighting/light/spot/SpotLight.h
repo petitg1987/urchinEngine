@@ -32,6 +32,8 @@ namespace urchin {
             const AABBox<float>& getAABBoxScope() const;
             const Cone<float>& getConeScope() const;
 
+            std::unique_ptr<Light> clone() const override;
+
         private:
             void computeScope();
 

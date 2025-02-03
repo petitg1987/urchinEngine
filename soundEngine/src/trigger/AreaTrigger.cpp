@@ -44,4 +44,8 @@ namespace urchin {
         this->soundShape = std::move(soundShape);
     }
 
+    std::unique_ptr<SoundTrigger> AreaTrigger::clone(std::shared_ptr<Sound>) const {
+        return std::make_unique<AreaTrigger>(getPlayBehavior(), soundShape->clone());
+    }
+
 }

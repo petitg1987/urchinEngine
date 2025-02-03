@@ -26,6 +26,8 @@ namespace urchin {
             void setRadius(float);
             float getRadius() const;
 
+            std::unique_ptr<Sound> clone() const override;
+
         private:
             Point3<float> position;
             bool positionUpdated;

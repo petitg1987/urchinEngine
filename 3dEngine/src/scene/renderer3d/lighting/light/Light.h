@@ -41,6 +41,8 @@ namespace urchin {
             void setProduceShadow(bool);
             bool isProduceShadow() const;
 
+            virtual std::unique_ptr<Light> clone() const = 0;
+
         private:
             Transform<float> noTransform; //no transformation because light position is specified in global space
             Point3<float> lightColor;

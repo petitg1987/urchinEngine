@@ -87,4 +87,8 @@ namespace urchin {
         return radius;
     }
 
+    std::unique_ptr<Sound> LocalizableSound::clone() const {
+        return std::make_unique<LocalizableSound>(getFilename(), getSoundCategory(), getInitialVolume(), getPosition(), getRadius());
+    }
+
 }

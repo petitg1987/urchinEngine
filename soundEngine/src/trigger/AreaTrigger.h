@@ -18,6 +18,8 @@ namespace urchin {
             const SoundShape& getSoundShape() const;
             void setSoundShape(std::unique_ptr<SoundShape>);
 
+            std::unique_ptr<SoundTrigger> clone(std::shared_ptr<Sound>) const override;
+
         private:
             std::unique_ptr<SoundShape> soundShape;
             bool isPlaying;

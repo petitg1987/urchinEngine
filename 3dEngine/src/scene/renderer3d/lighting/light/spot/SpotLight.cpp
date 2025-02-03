@@ -126,4 +126,10 @@ namespace urchin {
         notifyOctreeableMove();
     }
 
+    std::unique_ptr<Light> SpotLight::clone() const {
+        auto cloned =  std::make_unique<SpotLight>(position, directions[0], innerAngleInDegrees, outerAngleInDegrees);
+        cloned->setAttenuation(exponentialAttenuation);
+        return cloned;
+    }
+
 }

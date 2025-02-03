@@ -24,6 +24,8 @@ namespace urchin {
             const AABBox<float>& getAABBoxScope() const;
             const Sphere<float>& getSphereScope() const;
 
+            std::unique_ptr<Light> clone() const override;
+
         private:
             void computeScope();
 

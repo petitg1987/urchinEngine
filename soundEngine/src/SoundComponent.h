@@ -12,6 +12,8 @@ namespace urchin {
     class SoundComponent {
         public:
             SoundComponent(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
+            SoundComponent(const SoundComponent&);
+            SoundComponent& operator=(const SoundComponent&) = delete;
 
             Sound& getSound() const;
             GlobalSound& getGlobalSound() const;
