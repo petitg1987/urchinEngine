@@ -3,7 +3,6 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QComboBox>
 
 namespace urchin {
@@ -25,7 +24,6 @@ namespace urchin {
 
             void done(int) override;
 
-            QLabel* lightTypeLabel;
             QComboBox* lightTypeComboBox;
 
             Light::LightType lightType;

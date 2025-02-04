@@ -8,7 +8,6 @@ namespace urchin {
 
     ChangeLightDialog::ChangeLightDialog(QWidget* parent) : //TODO add option to remove light
                 QDialog(parent),
-                lightTypeLabel(nullptr),
                 lightTypeComboBox(nullptr) {
         this->setWindowTitle("Change Light");
         this->resize(245, 80);
@@ -29,7 +28,7 @@ namespace urchin {
     }
 
     void ChangeLightDialog::setupLightTypeFields(QGridLayout* mainLayout) {
-        lightTypeLabel = new QLabel("Light Type:");
+        auto *lightTypeLabel = new QLabel("Light Type:");
         mainLayout->addWidget(lightTypeLabel, 1, 0);
 
         lightTypeComboBox = new QComboBox();
