@@ -264,7 +264,7 @@ namespace urchin {
         connect(cullBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectProperties()));
     }
 
-    void ObjectPanelWidget::setupPhysicsBox(QVBoxLayout* physicsLayout) {
+    void ObjectPanelWidget::setupPhysicsBox(QVBoxLayout* physicsLayout) { //TODO create one widget having both tabs
         hasRigidBody = new QCheckBox("Rigid Body");
         physicsLayout->addWidget(hasRigidBody);
         connect(hasRigidBody, SIGNAL(stateChanged(int)), this, SLOT(rigidBodyToggled(int)));
@@ -447,7 +447,7 @@ namespace urchin {
         bodyShapeWidget = nullptr;
     }
 
-    void ObjectPanelWidget::setupLightBox(QVBoxLayout* lightLayout) { //TODO impl
+    void ObjectPanelWidget::setupLightBox(QVBoxLayout* lightLayout) {
         auto* lightTypeLayout = new QHBoxLayout();
         lightTypeLayout->setAlignment(Qt::AlignLeft);
         lightTypeLayout->setSpacing(15);
@@ -644,7 +644,6 @@ namespace urchin {
         const Light* light = objectEntity.getLight();
 
         lightWidget = std::make_unique<LightWidget>(objectEntity, *objectController);
-        lightWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed); //TODO required ?
         lightInfoLayout->addWidget(lightWidget.get());
 
         if (light) {
