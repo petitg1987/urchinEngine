@@ -19,7 +19,6 @@ namespace urchin {
             colorB(nullptr),
             enablePbrCheckBox(nullptr),
             produceShadowCheckBox(nullptr),
-            lightType(nullptr),
             sunDirectionX(nullptr),
             sunDirectionY(nullptr),
             sunDirectionZ(nullptr),
@@ -57,7 +56,6 @@ namespace urchin {
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
         generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        generalPropertiesGroupBox->hide();
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
@@ -92,12 +90,6 @@ namespace urchin {
         produceShadowCheckBox = new QCheckBox("Product Shadow");
         generalPropertiesLayout->addWidget(produceShadowCheckBox, 2, 0, 1, 2);
         connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
-
-        auto* lightTypeLabel= new QLabel("Light Type:");
-        generalPropertiesLayout->addWidget(lightTypeLabel, 3, 0);
-
-        lightType = new QLabel();
-        generalPropertiesLayout->addWidget(lightType, 3, 1);
     }
 
     void LightWidget::setupSpecificSunLightBox(QVBoxLayout* mainLayout) {
@@ -275,8 +267,6 @@ namespace urchin {
         specificOmnidirectionalLightGroupBox->hide();
         specificSpotLightGroupBox->hide();
 
-        lightType->setText(ChangeLightDialog::SUN_LIGHT_LABEL);
-
         this->sunDirectionX->setValue(light->getDirections()[0].X);
         this->sunDirectionY->setValue(light->getDirections()[0].Y);
         this->sunDirectionZ->setValue(light->getDirections()[0].Z);
@@ -286,8 +276,6 @@ namespace urchin {
         specificSunLightGroupBox->hide();
         specificOmnidirectionalLightGroupBox->show();
         specificSpotLightGroupBox->hide();
-
-        lightType->setText(ChangeLightDialog::OMNIDIRECTIONAL_LIGHT_LABEL);
 
         this->omniPositionX->setValue(light->getPosition().X);
         this->omniPositionY->setValue(light->getPosition().Y);
@@ -300,8 +288,6 @@ namespace urchin {
         specificSunLightGroupBox->hide();
         specificOmnidirectionalLightGroupBox->hide();
         specificSpotLightGroupBox->show();
-
-        lightType->setText(ChangeLightDialog::SPOT_LIGHT_LABEL);
 
         this->spotPositionX->setValue(light->getPosition().X);
         this->spotPositionY->setValue(light->getPosition().Y);
