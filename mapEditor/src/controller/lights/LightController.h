@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class LightController final : public AbstractController {
+    class LightController final : public AbstractController { //TODO remove
         public:
             std::list<const LightEntity*> getLightEntities() const;
             void addLightEntity(std::unique_ptr<LightEntity>);

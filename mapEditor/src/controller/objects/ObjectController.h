@@ -28,6 +28,10 @@ namespace urchin {
             void removeBody(const ObjectEntity&);
 
             void changeLightType(const ObjectEntity&, Light::LightType);
+            const ObjectEntity& updateLightGeneralProperties(const ObjectEntity&, const Point3<float>&, bool, bool);
+            const ObjectEntity& updateSunLightProperties(const ObjectEntity&, const Vector3<float>&);
+            const ObjectEntity& updateOmnidirectionalLightProperties(const ObjectEntity&, float, const Point3<float>&);
+            const ObjectEntity& updateSpotLightProperties(const ObjectEntity&, float, const Point3<float>&, const Vector3<float>&, float, float);
 
             const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
             const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowBehavior, Model::CullBehavior);

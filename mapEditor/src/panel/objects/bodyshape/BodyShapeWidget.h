@@ -5,7 +5,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QGridLayout>
 
-#include <UrchinCommon.h>
 #include <UrchinAggregation.h>
 #include <UrchinPhysicsEngine.h>
 

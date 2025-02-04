@@ -96,8 +96,69 @@ namespace urchin {
         markModified();
     }
 
-    void ObjectController::changeLightType(const ObjectEntity&, Light::LightType) {
-        //TODO impl
+    void ObjectController::changeLightType(const ObjectEntity& constObjectEntity, Light::LightType lightType) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+
+        if (lightType == Light::LightType::SUN) {
+            objectEntity.setLight(std::make_shared<SunLight>(Vector3(1.0f, -1.0f, 0.0f)));
+        } else if (lightType == Light::LightType::OMNIDIRECTIONAL) {
+            objectEntity.setLight(std::make_shared<OmnidirectionalLight>(Point3(0.0f, 0.0f, 0.0f)));
+        } else if (lightType == Light::LightType::SPOT) {
+            objectEntity.setLight(std::make_shared<SpotLight>(Point3(0.0f, 0.0f, 0.0f), Vector3(0.0f, -1.0f, 0.0f), 10.0f, 12.0f));
+        } else {
+            throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string((int)lightType));
+        }
+
+        markModified();
+    }
+
+    const ObjectEntity& ObjectController::updateLightGeneralProperties(const ObjectEntity& constObjectEntity, const Point3<float>& lightColor, bool enablePbr, bool isProduceShadow) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        Light* light = objectEntity.getLight();
+
+        light->setLightColor(lightColor);
+        light->setPbrEnabled(enablePbr);
+        if (light->isProduceShadow() != isProduceShadow) {
+            light->setProduceShadow(isProduceShadow);
+        }
+
+        markModified();
+        return objectEntity;
+    }
+
+    const ObjectEntity& ObjectController::updateSunLightProperties(const ObjectEntity& constObjectEntity, const Vector3<float>& direction) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        auto* sunLight = static_cast<SunLight*>(objectEntity.getLight());
+
+        sunLight->setDirection(direction);
+
+        markModified();
+        return objectEntity;
+    }
+
+    const ObjectEntity& ObjectController::updateOmnidirectionalLightProperties(const ObjectEntity& constObjectEntity, float attenuation, const Point3<float>& position) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        auto* omnidirectionalLight = static_cast<OmnidirectionalLight*>(objectEntity.getLight());
+
+        omnidirectionalLight->setAttenuation(attenuation);
+        omnidirectionalLight->setPosition(position);
+
+        markModified();
+        return objectEntity;
+    }
+
+    const ObjectEntity& ObjectController::updateSpotLightProperties(const ObjectEntity& constObjectEntity, float attenuation, const Point3<float>& position, const Vector3<float>& direction,
+                                                                    float innerAngleInDegrees, float outerAngleInDegrees) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        auto* spotLight = static_cast<SpotLight*>(objectEntity.getLight());
+
+        spotLight->setAttenuation(attenuation);
+        spotLight->setPosition(position);
+        spotLight->setDirection(direction);
+        spotLight->setAngles(innerAngleInDegrees, outerAngleInDegrees);
+
+        markModified();
+        return objectEntity;
     }
 
     const ObjectEntity& ObjectController::updateObjectTransform(const ObjectEntity& constObjectEntity, const Transform<float>& transform) {

@@ -464,10 +464,8 @@ namespace urchin {
         ButtonStyleHelper::applyNormalStyle(changeLightButton);
         connect(changeLightButton, SIGNAL(clicked()), this, SLOT(showChangeLightDialog()));
 
-        removeLightButton = new QPushButton("Remove");
-        lightTypeLayout->addWidget(removeLightButton);
-        ButtonStyleHelper::applyNormalStyle(removeLightButton);
-        connect(removeLightButton, SIGNAL(clicked()), this, SLOT(removeLightAction()));
+        lightInfoLayout = new QVBoxLayout();
+        lightLayout->addLayout(lightInfoLayout);
     }
 
     void ObjectPanelWidget::setupTagsBox(QVBoxLayout* mainTagsLayout) {
@@ -578,6 +576,7 @@ namespace urchin {
         }
 
         setupObjectPhysicsDataFrom(objectEntity);
+        setupObjectLightDataFrom(objectEntity);
         setupObjectTagsDataFrom(objectEntity);
         disableObjectEvent = false;
     }
@@ -638,6 +637,34 @@ namespace urchin {
         connect(bodyShapeWidget.get(), SIGNAL(bodyShapeChange(std::unique_ptr<const CollisionShape3D>&)), this, SLOT(bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&)));
 
         notifyObservers(this, OBJECT_BODY_SHAPE_WIDGET_CREATED);
+    }
+
+    void ObjectPanelWidget::setupObjectLightDataFrom(const ObjectEntity& objectEntity) { //TODO display spot scope in scene !
+        disableObjectEvent = true;
+        const Light* light = objectEntity.getLight();
+
+        lightWidget = std::make_unique<LightWidget>(objectEntity, *objectController);
+        lightWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed); //TODO required ?
+        lightInfoLayout->addWidget(lightWidget.get());
+
+        if (light) {
+            if (light->getLightType() == Light::LightType::SUN) {
+                lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::SUN_LIGHT_LABEL));
+            } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+                lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::OMNIDIRECTIONAL_LIGHT_LABEL));
+            } else if (light->getLightType() == Light::LightType::SPOT) {
+                lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::SPOT_LIGHT_LABEL));
+            } else {
+                throw std::invalid_argument("Unknown the light type: " + std::to_string((int)light->getLightType()));
+            }
+
+            lightWidget->show();
+        } else {
+            lightTypeValueLabel->setText(QString::fromStdString("None"));
+            lightWidget->hide();
+        }
+
+        disableObjectEvent = false;
     }
 
     void ObjectPanelWidget::setupObjectTagsDataFrom(const ObjectEntity& objectEntity) {
@@ -859,12 +886,8 @@ namespace urchin {
             Light::LightType lightType = changeLightDialog.getLightType();
 
             objectController->changeLightType(objectEntity, lightType);
-            //TODO setupObjectPhysicsDataFrom(objectEntity);
+            setupObjectLightDataFrom(objectEntity);
         }
-    }
-
-    void ObjectPanelWidget::removeLightAction() { //TODO impl
-
     }
 
 }

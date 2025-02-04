@@ -15,6 +15,7 @@
 #include <controller/objects/ObjectController.h>
 #include <panel/objects/ObjectTableView.h>
 #include <panel/objects/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/light/LightWidget.h>
 
 namespace urchin {
 
@@ -52,6 +53,7 @@ namespace urchin {
             void notify(Observable*, int) override;
             void setupObjectDataFrom(const ObjectEntity&);
             void setupObjectPhysicsDataFrom(const ObjectEntity&);
+            void setupObjectLightDataFrom(const ObjectEntity&);
             void setupObjectTagsDataFrom(const ObjectEntity&);
 
             BodyShapeWidget& createBodyShapeWidget(const CollisionShape3D&, const ObjectEntity&);
@@ -116,8 +118,8 @@ namespace urchin {
             //light
             QLabel* lightTypeValueLabel;
             QPushButton* changeLightButton;
-            QPushButton* removeLightButton;
-
+            QVBoxLayout* lightInfoLayout;
+            std::unique_ptr<LightWidget> lightWidget;
 
         private slots:
             void showAddObjectDialog();
@@ -139,8 +141,6 @@ namespace urchin {
             void bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&) const;
 
             void showChangeLightDialog();
-            void removeLightAction();
-
     };
 
 }
