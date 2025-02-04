@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    ChangeLightDialog::ChangeLightDialog(QWidget* parent) :
+    ChangeLightDialog::ChangeLightDialog(QWidget* parent) : //TODO add option to remove light
                 QDialog(parent),
                 lightTypeLabel(nullptr),
                 lightTypeComboBox(nullptr) {
