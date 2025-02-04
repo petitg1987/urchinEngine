@@ -39,7 +39,7 @@ namespace urchin {
         markModified();
     }
 
-    void SoundController::moveSoundInFrontOfCamera(const SoundEntity& constSoundEntity, bool isClonedEntity) {
+    void SoundController::moveSoundInFrontOfCamera(const SoundEntity& constSoundEntity, bool isClonedEntity) { //TODO use this method somewhere before removing the class
         if (constSoundEntity.getSoundComponent()->getSound().getSoundType() == Sound::SoundType::LOCALIZABLE) {
             auto& localizableSound = static_cast<LocalizableSound&>(constSoundEntity.getSoundComponent()->getSound());
             Point3<float> currentPosition = localizableSound.getPosition();

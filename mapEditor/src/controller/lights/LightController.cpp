@@ -21,7 +21,7 @@ namespace urchin {
         markModified();
     }
 
-    void LightController::moveLightInFrontOfCamera(const LightEntity& constLightEntity, bool isClonedEntity) {
+    void LightController::moveLightInFrontOfCamera(const LightEntity& constLightEntity, bool isClonedEntity) { //TODO use this method somewhere before removing the class
         if (constLightEntity.getLight()->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
             auto* omnidirectionalLight = static_cast<OmnidirectionalLight*>(constLightEntity.getLight());
             Point3<float> currentPosition = omnidirectionalLight->getPosition();

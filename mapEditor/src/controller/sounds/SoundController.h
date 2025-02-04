@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    class SoundController final : public AbstractController {
+    class SoundController final : public AbstractController { //TODO remove
         public:
             std::list<const SoundEntity*> getSoundEntities() const;
             void addSoundEntity(std::unique_ptr<SoundEntity>);
