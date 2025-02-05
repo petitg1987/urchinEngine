@@ -27,10 +27,12 @@ namespace urchin {
             ~ObjectPanelWidget() override = default;
 
             enum NotificationType {
-                OBJECT_BODY_SHAPE_WIDGET_CREATED
+                OBJECT_BODY_SHAPE_WIDGET_CREATED,
+                OBJECT_SUB_TAB_SELECTION_CHANGED
             };
 
             ObjectTableView* getObjectTableView() const;
+            int getTabSelected() const;
             BodyShapeWidget* getBodyShapeWidget() const;
 
             void load(ObjectController&);
@@ -77,6 +79,7 @@ namespace urchin {
             QPushButton* moveUpObjectButton;
             QPushButton* moveDownObjectButton;
             QTabWidget* tabWidget;
+            int tabSelected;
 
             bool disableObjectEvent;
 
@@ -128,6 +131,7 @@ namespace urchin {
             void showRenameObjectDialog();
             void moveUpSelectedObject() const;
             void moveDownSelectedObject() const;
+            void onObjectSubTabChanged(int);
 
             void updateObjectOrientationType() const;
             void updateObjectTransform() const;

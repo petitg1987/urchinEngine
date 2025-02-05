@@ -16,9 +16,9 @@ namespace urchin {
             mouseController(mouseController),
             statusBarController(statusBarController),
             viewProperties(),
-            highlightObjectEntity(nullptr),
-            highlightLightEntity(nullptr),
-            highlightSoundEntity(nullptr) {
+            highlightObjectMesh(nullptr),
+            highlightObjectLight(nullptr),
+            highlightObjectSound(nullptr) {
 
     }
 
@@ -115,26 +115,26 @@ namespace urchin {
         viewProperties[viewProperty] = value;
     }
 
-    void SceneDisplayer::setHighlightObjectEntity(const ObjectEntity* highlightObjectEntity) {
-        if (this->highlightObjectEntity != highlightObjectEntity) {
-            this->highlightObjectEntity = highlightObjectEntity;
+    void SceneDisplayer::setHighlightObjectMesh(const ObjectEntity* highlightObjectMesh) {
+        if (this->highlightObjectMesh != highlightObjectMesh) {
+            this->highlightObjectMesh = highlightObjectMesh;
 
-            bodyShapeDisplayer->setSelectedObjectEntity(highlightObjectEntity);
-            objectMoveController->setSelectedObjectEntity(highlightObjectEntity);
+            bodyShapeDisplayer->setSelectedObjectEntity(highlightObjectMesh);
+            objectMoveController->setSelectedObjectEntity(highlightObjectMesh);
         }
     }
 
-    void SceneDisplayer::setHighlightLightEntity(const LightEntity* highlightLightEntity) {
-        this->highlightLightEntity = highlightLightEntity;
+    void SceneDisplayer::setHighlightObjectLight(const ObjectEntity* highlightObjectLight) {
+        this->highlightObjectLight = highlightObjectLight;
     }
 
-    void SceneDisplayer::setHighlightSoundEntity(const SoundEntity* highlightSoundEntity) {
-        this->highlightSoundEntity = highlightSoundEntity;
+    void SceneDisplayer::setHighlightObjectSound(const ObjectEntity* highlightObjectSound) {
+        this->highlightObjectSound = highlightObjectSound;
     }
 
     void SceneDisplayer::refreshObjectsModel() const {
         if (bodyShapeDisplayer && objectMoveController) {
-            if (viewProperties[OBJECT_PHYSICS]) {
+            if (viewProperties[OBJECT_SCOPE]) {
                 bodyShapeDisplayer->displayBodyShape();
             } else {
                 bodyShapeDisplayer->clearDisplay();
@@ -146,8 +146,8 @@ namespace urchin {
 
     void SceneDisplayer::refreshLightScopeModel() const {
         if (lightScopeDisplayer) {
-            if (viewProperties[LIGHT_SCOPE] && highlightLightEntity && highlightLightEntity->getLight()) {
-                lightScopeDisplayer->displayLightScope(highlightLightEntity);
+            if (viewProperties[OBJECT_SCOPE] && highlightObjectLight && highlightObjectLight->getLight()) {
+                lightScopeDisplayer->displayLightScope(highlightObjectLight);
             } else {
                 lightScopeDisplayer->displayLightScope(nullptr);
             }
@@ -156,8 +156,8 @@ namespace urchin {
 
     void SceneDisplayer::refreshSoundTriggerModel() const {
         if (soundScopeDisplayer) {
-            if (viewProperties[SOUND_SCOPE] && highlightSoundEntity && highlightSoundEntity->getSoundComponent()) {
-                soundScopeDisplayer->displaySoundScope(highlightSoundEntity);
+            if (viewProperties[OBJECT_SCOPE] && highlightObjectSound && highlightObjectSound->getSoundComponent()) {
+                soundScopeDisplayer->displaySoundScope(highlightObjectSound);
             } else {
                 soundScopeDisplayer->displaySoundScope(nullptr);
             }

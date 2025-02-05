@@ -29,7 +29,8 @@ namespace urchin {
             mapEditorPath(std::move(mapEditorPath)),
             sceneController(nullptr),
             sceneDisplayerWindow(nullptr),
-            scenePanelWidget(nullptr) {
+            scenePanelWidget(nullptr),
+            objectSubTabSelected(0) {
         this->setAttribute(Qt::WA_DeleteOnClose);
         this->setWindowTitle(getBaseWindowTitle());
         this->resize(1200, 675);
@@ -106,7 +107,7 @@ namespace urchin {
         viewPhysicsShapeAction->setCheckable(true);
         viewPhysicsShapeAction->setChecked(true);
         viewObjectMenu->addAction(viewPhysicsShapeAction);
-        viewActions[SceneDisplayer::OBJECT_PHYSICS] = viewPhysicsShapeAction;
+        viewActions[SceneDisplayer::OBJECT_SCOPE] = viewPhysicsShapeAction;
         connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
         auto* viewLightMenu = new QMenu("Light");
@@ -171,6 +172,7 @@ namespace urchin {
         scenePanelWidget->setSizePolicy(sizePolicy);
         scenePanelWidget->setMaximumSize(QSize(380, 16777215));
         scenePanelWidget->getObjectPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
+        scenePanelWidget->getObjectPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_SUB_TAB_SELECTION_CHANGED);
         scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
         scenePanelWidget->getLightPanelWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
         scenePanelWidget->getSoundPanelWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
@@ -190,35 +192,40 @@ namespace urchin {
     }
 
     void MapEditorWindow::notify(Observable* observable, int notificationType) {
+        bool refreshObjectHighlight = false;
+
         if (dynamic_cast<ScenePanelWidget*>(observable)) {
             if (notificationType == ScenePanelWidget::TAB_SELECTED) {
                 executeViewPropertiesChangeAction();
             }
-        } else if (const auto* modelTableView = dynamic_cast<ObjectTableView*>(observable)) {
+        } else if (dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
-                sceneDisplayerWindow->setHighlightObjectEntity(modelTableView->getSelectedObjectEntity());
-            }
-        } else if (const auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
-            if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
-                sceneDisplayerWindow->setHighlightLightEntity(lightTableView->getSelectedLightEntity());
-            }
-        } else if (const auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
-            if (notificationType == SoundTableView::SOUND_SELECTION_CHANGED) {
-                sceneDisplayerWindow->setHighlightSoundEntity(soundTableView->getSelectedSoundEntity());
+                refreshObjectHighlight = true;
             }
         } else if (dynamic_cast<AbstractController*>(observable)) {
             if (notificationType == AbstractController::CHANGES_DONE) {
                 refreshWindowTitle();
             }
-        } else {
-            handleCompoundShapeSelectionChange(observable, notificationType);
+        } else if (const auto* objectPanelWidget = dynamic_cast<ObjectPanelWidget*>(observable)) {
+            if (notificationType == ObjectPanelWidget::OBJECT_SUB_TAB_SELECTION_CHANGED) {
+                objectSubTabSelected = objectPanelWidget->getTabSelected(); //TODO use enum
+                refreshObjectHighlight = true;
+            }
+        }
+        handleCompoundShapeSelectionChange(observable, notificationType);
+
+        if (refreshObjectHighlight) {
+            const ObjectEntity* selectedObjectEntity = scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->getSelectedObjectEntity();
+            sceneDisplayerWindow->setHighlightObjectMesh(selectedObjectEntity);
+            sceneDisplayerWindow->setHighlightObjectLight(objectSubTabSelected == 2 ? selectedObjectEntity : nullptr);
+            sceneDisplayerWindow->setHighlightObjectSound(objectSubTabSelected == 3 ? selectedObjectEntity : nullptr);
         }
     }
 
     void MapEditorWindow::handleCompoundShapeSelectionChange(Observable* observable, int notificationType) {
-        if (const auto* modelControllerWidget = dynamic_cast<ObjectPanelWidget*>(observable)) {
+        if (const auto* objectPanelWidget = dynamic_cast<ObjectPanelWidget*>(observable)) {
             if (notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
-                BodyShapeWidget* bodyShapeWidget = modelControllerWidget->getBodyShapeWidget();
+                BodyShapeWidget* bodyShapeWidget = objectPanelWidget->getBodyShapeWidget();
                 if (const auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget*>(bodyShapeWidget)) {
                     bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
                 }
@@ -401,13 +408,13 @@ namespace urchin {
     }
 
     ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties) {
-        if (SceneDisplayer::OBJECT_PHYSICS == viewProperties) {
+        if (SceneDisplayer::OBJECT_SCOPE == viewProperties) {
             return ScenePanelWidget::OBJECTS;
         }
-        if (SceneDisplayer::LIGHT_SCOPE == viewProperties) {
+        if (SceneDisplayer::LIGHT_SCOPE == viewProperties) { //TODO remove
             return ScenePanelWidget::LIGHTS;
         }
-        if (SceneDisplayer::SOUND_SCOPE == viewProperties) {
+        if (SceneDisplayer::SOUND_SCOPE == viewProperties) { //TODO remove
             return ScenePanelWidget::SOUNDS;
         }
         if (SceneDisplayer::NAV_MESH == viewProperties) {

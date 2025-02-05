@@ -111,9 +111,9 @@ namespace urchin {
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWindow::setHighlightObjectEntity(const ObjectEntity* highlightObjectEntity) const {
+    void SceneDisplayerWindow::setHighlightObjectMesh(const ObjectEntity* highlightObjectEntity) const {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightObjectEntity(highlightObjectEntity);
+            sceneDisplayer->setHighlightObjectMesh(highlightObjectEntity);
         }
     }
 
@@ -123,15 +123,15 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWindow::setHighlightLightEntity(const LightEntity* highlightLightEntity) const {
+    void SceneDisplayerWindow::setHighlightObjectLight(const ObjectEntity* highlightObjectEntity) const {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightLightEntity(highlightLightEntity);
+            sceneDisplayer->setHighlightObjectLight(highlightObjectEntity);
         }
     }
 
-    void SceneDisplayerWindow::setHighlightSoundEntity(const SoundEntity* highlightSoundEntity) const {
+    void SceneDisplayerWindow::setHighlightObjectSound(const ObjectEntity* highlightSoundEntity) const {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightSoundEntity(highlightSoundEntity);
+            sceneDisplayer->setHighlightObjectSound(highlightSoundEntity);
         }
     }
 

@@ -52,6 +52,7 @@ namespace urchin {
             std::unique_ptr<SceneController> sceneController;
             SceneDisplayerWindow* sceneDisplayerWindow;
             ScenePanelWidget* scenePanelWidget;
+            int objectSubTabSelected;
 
         private slots:
             void showNewDialog();

@@ -13,11 +13,11 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void SoundScopeDisplayer::displaySoundScope(const SoundEntity* soundEntity) {
+    void SoundScopeDisplayer::displaySoundScope(const ObjectEntity* objectEntity) {
         cleanCurrentDisplay();
 
-        if (soundEntity) {
-            const Sound& sound = soundEntity->getSoundComponent()->getSound();
+        if (objectEntity) {
+            const Sound& sound = objectEntity->getSoundComponent()->getSound();
             if (sound.getSoundType() == Sound::LOCALIZABLE) {
                 const auto& localizableSound = static_cast<const LocalizableSound&>(sound);
                 auto geometryModel = std::make_unique<SphereModel>(Sphere(localizableSound.getRadius(), localizableSound.getPosition()), 13);
@@ -27,7 +27,7 @@ namespace urchin {
                 scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(soundModels.back());
             }
 
-            const SoundTrigger& soundTrigger = soundEntity->getSoundComponent()->getSoundTrigger();
+            const SoundTrigger& soundTrigger = objectEntity->getSoundComponent()->getSoundTrigger();
             if (soundTrigger.getTriggerType() == AreaTrigger::TriggerType::AREA_TRIGGER) {
                 const auto& areaTrigger = static_cast<const AreaTrigger&>(soundTrigger);
                 auto geometryModel = retrieveSoundShapeGeometry(areaTrigger.getSoundShape());

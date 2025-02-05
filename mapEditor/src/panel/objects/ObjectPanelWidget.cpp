@@ -26,6 +26,7 @@ namespace urchin {
             cloneObjectButton(nullptr),
             renameObjectButton(nullptr),
             tabWidget(nullptr),
+            tabSelected(0),
             disableObjectEvent(false),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr),
             orientationType(nullptr),
@@ -138,10 +139,23 @@ namespace urchin {
         tagsLayout->setContentsMargins(1, 1, 1, 1);
         setupTagsBox(tagsLayout);
         tabWidget->addTab(tabTags, "Tags");
+
+        connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onObjectSubTabChanged(int)));
+        //TODO connect selectionChanged on tabWidget
+    }
+
+    void ObjectPanelWidget::onObjectSubTabChanged(int tabSelected) {
+        this->tabSelected = tabSelected;
+
+        notifyObservers(this, OBJECT_SUB_TAB_SELECTION_CHANGED);
     }
 
     ObjectTableView* ObjectPanelWidget::getObjectTableView() const {
         return objectTableView;
+    }
+
+    int ObjectPanelWidget::getTabSelected() const {
+        return tabSelected;
     }
 
     BodyShapeWidget* ObjectPanelWidget::getBodyShapeWidget() const {

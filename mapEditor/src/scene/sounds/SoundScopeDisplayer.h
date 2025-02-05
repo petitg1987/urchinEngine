@@ -11,7 +11,7 @@ namespace urchin {
             explicit SoundScopeDisplayer(Scene&);
             ~SoundScopeDisplayer();
 
-            void displaySoundScope(const SoundEntity*);
+            void displaySoundScope(const ObjectEntity*);
 
         private:
             std::unique_ptr<GeometryModel> retrieveSoundShapeGeometry(const SoundShape&) const;

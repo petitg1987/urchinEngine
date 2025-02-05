@@ -10,7 +10,7 @@ namespace urchin {
             explicit LightScopeDisplayer(Scene&);
             ~LightScopeDisplayer();
 
-            void displayLightScope(const LightEntity*);
+            void displayLightScope(const ObjectEntity*);
 
         private:
             void cleanCurrentDisplay();

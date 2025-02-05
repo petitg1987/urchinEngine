@@ -13,11 +13,11 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void LightScopeDisplayer::displayLightScope(const LightEntity* lightEntity) {
+    void LightScopeDisplayer::displayLightScope(const ObjectEntity* objectEntity) {
         cleanCurrentDisplay();
 
-        if (lightEntity) {
-            const Light* light = lightEntity->getLight();
+        if (objectEntity) {
+            const Light* light = objectEntity->getLight();
 
             if (const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light)) {
                 auto sphereModel = std::make_unique<SphereModel>(omnidirectionalLight->getSphereScope(), 25);
