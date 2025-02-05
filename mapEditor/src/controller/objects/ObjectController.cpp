@@ -96,17 +96,21 @@ namespace urchin {
         markModified();
     }
 
-    void ObjectController::changeLightType(const ObjectEntity& constObjectEntity, Light::LightType lightType) {
+    void ObjectController::changeLightType(const ObjectEntity& constObjectEntity, std::optional<Light::LightType> lightType) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
-        if (lightType == Light::LightType::SUN) {
-            objectEntity.setLight(std::make_shared<SunLight>(Vector3(1.0f, -1.0f, 0.0f)));
-        } else if (lightType == Light::LightType::OMNIDIRECTIONAL) {
-            objectEntity.setLight(std::make_shared<OmnidirectionalLight>(Point3(0.0f, 0.0f, 0.0f)));
-        } else if (lightType == Light::LightType::SPOT) {
-            objectEntity.setLight(std::make_shared<SpotLight>(Point3(0.0f, 0.0f, 0.0f), Vector3(0.0f, -1.0f, 0.0f), 10.0f, 12.0f));
+        if (lightType.has_value()) {
+            if (lightType.value() == Light::LightType::SUN) {
+                objectEntity.setLight(std::make_shared<SunLight>(Vector3(1.0f, -1.0f, 0.0f)));
+            } else if (lightType.value() == Light::LightType::OMNIDIRECTIONAL) {
+                objectEntity.setLight(std::make_shared<OmnidirectionalLight>(Point3(0.0f, 0.0f, 0.0f)));
+            } else if (lightType.value() == Light::LightType::SPOT) {
+                objectEntity.setLight(std::make_shared<SpotLight>(Point3(0.0f, 0.0f, 0.0f), Vector3(0.0f, -1.0f, 0.0f), 10.0f, 12.0f));
+            } else {
+                throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string((int)lightType.value()));
+            }
         } else {
-            throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string((int)lightType));
+            objectEntity.setLight(std::shared_ptr<Light>(nullptr));
         }
 
         markModified();

@@ -27,7 +27,7 @@ namespace urchin {
             void moveObjectInFrontOfCamera(const ObjectEntity&, bool);
             void removeBody(const ObjectEntity&);
 
-            void changeLightType(const ObjectEntity&, Light::LightType);
+            void changeLightType(const ObjectEntity&, std::optional<Light::LightType>);
             const ObjectEntity& updateLightGeneralProperties(const ObjectEntity&, const Point3<float>&, bool, bool);
             const ObjectEntity& updateSunLightProperties(const ObjectEntity&, const Vector3<float>&);
             const ObjectEntity& updateOmnidirectionalLightProperties(const ObjectEntity&, float, const Point3<float>&);

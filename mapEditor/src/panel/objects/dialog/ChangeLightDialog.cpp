@@ -6,9 +6,10 @@
 
 namespace urchin {
 
-    ChangeLightDialog::ChangeLightDialog(QWidget* parent) : //TODO add option to remove light
+    ChangeLightDialog::ChangeLightDialog(QWidget* parent) :
                 QDialog(parent),
-                lightTypeComboBox(nullptr) {
+                lightTypeComboBox(nullptr),
+                lightType(std::nullopt) {
         this->setWindowTitle("Change Light");
         this->resize(245, 80);
         this->setFixedSize(this->width(), this->height());
@@ -34,6 +35,7 @@ namespace urchin {
         lightTypeComboBox = new QComboBox();
         mainLayout->addWidget(lightTypeComboBox, 1, 1);
         lightTypeComboBox->setFixedWidth(150);
+        lightTypeComboBox->addItem(NONE_LABEL, QVariant(-1));
         lightTypeComboBox->addItem(SUN_LIGHT_LABEL, QVariant((int)Light::LightType::SUN));
         lightTypeComboBox->addItem(OMNIDIRECTIONAL_LIGHT_LABEL, QVariant((int)Light::LightType::OMNIDIRECTIONAL));
         lightTypeComboBox->addItem(SPOT_LIGHT_LABEL, QVariant((int)Light::LightType::SPOT));
@@ -41,15 +43,19 @@ namespace urchin {
 
     void ChangeLightDialog::done(int r) {
         if (Accepted == r) {
-            QVariant variant = lightTypeComboBox->currentData();
-            lightType = static_cast<Light::LightType>(variant.toInt());
+            int lightTypeIndex = lightTypeComboBox->currentData().toInt();
+            if (lightTypeIndex == -1) {
+                lightType = std::nullopt;
+            } else {
+                lightType = static_cast<Light::LightType>(lightTypeIndex);
+            }
             QDialog::done(r);
         } else {
             QDialog::done(r);
         }
     }
 
-    Light::LightType ChangeLightDialog::getLightType() const {
+    std::optional<Light::LightType> ChangeLightDialog::getLightType() const {
         return lightType;
     }
 

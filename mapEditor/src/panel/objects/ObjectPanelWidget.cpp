@@ -672,7 +672,7 @@ namespace urchin {
 
             lightWidget->show();
         } else {
-            lightTypeValueLabel->setText(QString::fromStdString("None"));
+            lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::NONE_LABEL));
             lightWidget->hide();
         }
 
@@ -895,7 +895,7 @@ namespace urchin {
 
         if (changeLightDialog.result() == QDialog::Accepted) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            Light::LightType lightType = changeLightDialog.getLightType();
+            std::optional<Light::LightType> lightType = changeLightDialog.getLightType();
 
             objectController->changeLightType(objectEntity, lightType);
             setupObjectLightDataFrom(objectEntity);

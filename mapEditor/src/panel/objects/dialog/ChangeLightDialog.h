@@ -11,13 +11,14 @@ namespace urchin {
         Q_OBJECT
 
         public:
+            static constexpr char NONE_LABEL[] = "None";
             static constexpr char SUN_LIGHT_LABEL[] = "Sun";
             static constexpr char OMNIDIRECTIONAL_LIGHT_LABEL[] = "Omnidirectional";
             static constexpr char SPOT_LIGHT_LABEL[] = "Spot";
 
             explicit ChangeLightDialog(QWidget*);
 
-            Light::LightType getLightType() const;
+            std::optional<Light::LightType> getLightType() const;
 
         private:
             void setupLightTypeFields(QGridLayout*);
@@ -26,7 +27,7 @@ namespace urchin {
 
             QComboBox* lightTypeComboBox;
 
-            Light::LightType lightType;
+            std::optional<Light::LightType> lightType;
     };
 
 }
