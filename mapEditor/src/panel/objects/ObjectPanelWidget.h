@@ -5,8 +5,6 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QTabWidget>
 
@@ -26,13 +24,21 @@ namespace urchin {
             ObjectPanelWidget();
             ~ObjectPanelWidget() override = default;
 
+            enum class ObjectTab {
+                GENERAL = 0,
+                PHYSICS,
+                LIGHT,
+                SOUND,
+                TAG
+            };
+
             enum NotificationType {
                 OBJECT_BODY_SHAPE_WIDGET_CREATED,
                 OBJECT_SUB_TAB_SELECTION_CHANGED
             };
 
             ObjectTableView* getObjectTableView() const;
-            int getTabSelected() const;
+            ObjectTab getTabSelected() const;
             BodyShapeWidget* getBodyShapeWidget() const;
 
             void load(ObjectController&);
@@ -79,7 +85,7 @@ namespace urchin {
             QPushButton* moveUpObjectButton;
             QPushButton* moveDownObjectButton;
             QTabWidget* tabWidget;
-            int tabSelected;
+            ObjectTab tabSelected;
 
             bool disableObjectEvent;
 

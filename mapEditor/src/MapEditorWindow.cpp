@@ -30,7 +30,7 @@ namespace urchin {
             sceneController(nullptr),
             sceneDisplayerWindow(nullptr),
             scenePanelWidget(nullptr),
-            objectSubTabSelected(0) {
+            objectSubTabSelected(ObjectPanelWidget::ObjectTab::GENERAL) {
         this->setAttribute(Qt::WA_DeleteOnClose);
         this->setWindowTitle(getBaseWindowTitle());
         this->resize(1200, 675);
@@ -217,8 +217,8 @@ namespace urchin {
         if (refreshObjectHighlight) {
             const ObjectEntity* selectedObjectEntity = scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->getSelectedObjectEntity();
             sceneDisplayerWindow->setHighlightObjectMesh(selectedObjectEntity);
-            sceneDisplayerWindow->setHighlightObjectLight(objectSubTabSelected == 2 ? selectedObjectEntity : nullptr);
-            sceneDisplayerWindow->setHighlightObjectSound(objectSubTabSelected == 3 ? selectedObjectEntity : nullptr);
+            sceneDisplayerWindow->setHighlightObjectLight(objectSubTabSelected == ObjectPanelWidget::ObjectTab::LIGHT ? selectedObjectEntity : nullptr);
+            sceneDisplayerWindow->setHighlightObjectSound(objectSubTabSelected == ObjectPanelWidget::ObjectTab::SOUND ? selectedObjectEntity : nullptr);
         }
     }
 

@@ -26,7 +26,7 @@ namespace urchin {
             cloneObjectButton(nullptr),
             renameObjectButton(nullptr),
             tabWidget(nullptr),
-            tabSelected(0),
+            tabSelected(ObjectTab::GENERAL),
             disableObjectEvent(false),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr),
             orientationType(nullptr),
@@ -145,7 +145,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::onObjectSubTabChanged(int tabSelected) {
-        this->tabSelected = tabSelected;
+        this->tabSelected = static_cast<ObjectTab>(tabSelected);
 
         notifyObservers(this, OBJECT_SUB_TAB_SELECTION_CHANGED);
     }
@@ -154,7 +154,7 @@ namespace urchin {
         return objectTableView;
     }
 
-    int ObjectPanelWidget::getTabSelected() const {
+    ObjectPanelWidget::ObjectTab ObjectPanelWidget::getTabSelected() const {
         return tabSelected;
     }
 
