@@ -141,7 +141,6 @@ namespace urchin {
         tabWidget->addTab(tabTags, "Tags");
 
         connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onObjectTabChanged(int)));
-        //TODO connect selectionChanged on tabWidget
     }
 
     void ObjectPanelWidget::onObjectTabChanged(int tabSelected) {

@@ -2,7 +2,6 @@
 
 #include <array>
 #include <memory>
-#include <QWidget>
 #include <UrchinPhysicsEngine.h>
 #include <Urchin3dEngine.h>
 #include <UrchinSoundEngine.h>
@@ -24,10 +23,10 @@ namespace urchin {
 
     class SceneDisplayer {
         public:
-            enum ViewProperties { //TODO review view menu !
-                OBJECT_SCOPE = 0, //TODO rename into mesh ?
-                LIGHT_SCOPE, //TODO remove ?
-                SOUND_SCOPE, //TODO remove ?
+            enum ViewProperties {
+                PHYSICS_SHAPE = 0,
+                LIGHT_SCOPE,
+                SOUND_SCOPE,
                 NAV_MESH,
 
                 LAST_VIEW_PROPERTIES
@@ -40,7 +39,7 @@ namespace urchin {
             void loadEmptyScene(const std::string&);
 
             void setViewProperties(ViewProperties, bool);
-            void setHighlightObjectMesh(const ObjectEntity*);
+            void setHighlightObjectPhysicsShape(const ObjectEntity*);
             void setHighlightObjectLight(const ObjectEntity*);
             void setHighlightObjectSound(const ObjectEntity*);
 
@@ -93,7 +92,7 @@ namespace urchin {
 
             //scene specifics
             std::array<bool, LAST_VIEW_PROPERTIES> viewProperties;
-            const ObjectEntity* highlightObjectMesh;
+            const ObjectEntity* highlightObjectPhysicsShape;
             const ObjectEntity* highlightObjectLight;
             const ObjectEntity* highlightObjectSound;
     };

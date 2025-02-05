@@ -111,9 +111,9 @@ namespace urchin {
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWindow::setHighlightObjectMesh(const ObjectEntity* highlightObjectEntity) const {
+    void SceneDisplayerWindow::setHighlightObjectPhysicsShape(const ObjectEntity* highlightObjectEntity) const {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightObjectMesh(highlightObjectEntity);
+            sceneDisplayer->setHighlightObjectPhysicsShape(highlightObjectEntity);
         }
     }
 

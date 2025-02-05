@@ -108,7 +108,7 @@ namespace urchin {
         viewPhysicsShapeAction->setCheckable(true);
         viewPhysicsShapeAction->setChecked(true);
         viewObjectMenu->addAction(viewPhysicsShapeAction);
-        viewActions[SceneDisplayer::OBJECT_SCOPE] = viewPhysicsShapeAction;
+        viewActions[SceneDisplayer::PHYSICS_SHAPE] = viewPhysicsShapeAction;
         connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
         auto* viewLightScopeAction = new QAction("Light Scope", this);
@@ -214,7 +214,7 @@ namespace urchin {
 
         if (refreshObjectHighlight) {
             const ObjectEntity* selectedObjectEntity = scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->getSelectedObjectEntity();
-            sceneDisplayerWindow->setHighlightObjectMesh(selectedObjectEntity);
+            sceneDisplayerWindow->setHighlightObjectPhysicsShape(selectedObjectEntity);
             sceneDisplayerWindow->setHighlightObjectLight(objectTabSelected == ObjectPanelWidget::ObjectTab::LIGHT ? selectedObjectEntity : nullptr);
             sceneDisplayerWindow->setHighlightObjectSound(objectTabSelected == ObjectPanelWidget::ObjectTab::SOUND ? selectedObjectEntity : nullptr);
         }
@@ -397,7 +397,7 @@ namespace urchin {
         for (int i = 0; i < SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
             auto viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
-            ScenePanelWidget::MainTab selectedTab = ScenePanelWidget::MainTab::OBJECTS;
+            auto selectedTab = ScenePanelWidget::MainTab::OBJECTS;
             if (scenePanelWidget != nullptr) {
                 selectedTab = scenePanelWidget->getTabSelected();
             }
@@ -410,7 +410,7 @@ namespace urchin {
     }
 
     ScenePanelWidget::MainTab MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties) {
-        if (SceneDisplayer::OBJECT_SCOPE == viewProperties || SceneDisplayer::LIGHT_SCOPE == viewProperties || SceneDisplayer::SOUND_SCOPE == viewProperties) {
+        if (SceneDisplayer::PHYSICS_SHAPE == viewProperties || SceneDisplayer::LIGHT_SCOPE == viewProperties || SceneDisplayer::SOUND_SCOPE == viewProperties) {
             return ScenePanelWidget::MainTab::OBJECTS;
         }
         if (SceneDisplayer::NAV_MESH == viewProperties) {
