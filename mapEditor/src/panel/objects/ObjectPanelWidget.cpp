@@ -652,7 +652,7 @@ namespace urchin {
         notifyObservers(this, OBJECT_BODY_SHAPE_WIDGET_CREATED);
     }
 
-    void ObjectPanelWidget::setupObjectLightDataFrom(const ObjectEntity& objectEntity) { //TODO display spot scope in scene !
+    void ObjectPanelWidget::setupObjectLightDataFrom(const ObjectEntity& objectEntity) {
         disableObjectEvent = true;
         const Light* light = objectEntity.getLight();
 
