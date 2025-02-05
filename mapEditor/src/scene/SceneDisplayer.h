@@ -25,9 +25,9 @@ namespace urchin {
     class SceneDisplayer {
         public:
             enum ViewProperties { //TODO review view menu !
-                OBJECT_SCOPE = 0,
-                LIGHT_SCOPE, //TODO remove
-                SOUND_SCOPE, //TODO remove
+                OBJECT_SCOPE = 0, //TODO rename into mesh ?
+                LIGHT_SCOPE, //TODO remove ?
+                SOUND_SCOPE, //TODO remove ?
                 NAV_MESH,
 
                 LAST_VIEW_PROPERTIES

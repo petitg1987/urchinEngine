@@ -137,7 +137,7 @@ namespace urchin {
             void showRenameObjectDialog();
             void moveUpSelectedObject() const;
             void moveDownSelectedObject() const;
-            void onObjectSubTabChanged(int);
+            void onObjectTabChanged(int);
 
             void updateObjectOrientationType() const;
             void updateObjectTransform() const;

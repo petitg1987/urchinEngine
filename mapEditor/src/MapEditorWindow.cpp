@@ -30,7 +30,7 @@ namespace urchin {
             sceneController(nullptr),
             sceneDisplayerWindow(nullptr),
             scenePanelWidget(nullptr),
-            objectSubTabSelected(ObjectPanelWidget::ObjectTab::GENERAL) {
+            objectTabSelected(ObjectPanelWidget::ObjectTab::GENERAL) {
         this->setAttribute(Qt::WA_DeleteOnClose);
         this->setWindowTitle(getBaseWindowTitle());
         this->resize(1200, 675);
@@ -102,6 +102,7 @@ namespace urchin {
 
         auto* viewObjectMenu = new QMenu("Object");
         viewMenu->addMenu(viewObjectMenu);
+
         auto* viewPhysicsShapeAction = new QAction("Physics Shape", this);
         viewPhysicsShapeAction->setEnabled(false);
         viewPhysicsShapeAction->setCheckable(true);
@@ -110,28 +111,25 @@ namespace urchin {
         viewActions[SceneDisplayer::OBJECT_SCOPE] = viewPhysicsShapeAction;
         connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-        auto* viewLightMenu = new QMenu("Light");
-        viewMenu->addMenu(viewLightMenu);
         auto* viewLightScopeAction = new QAction("Light Scope", this);
         viewLightScopeAction->setEnabled(false);
         viewLightScopeAction->setCheckable(true);
         viewLightScopeAction->setChecked(true);
-        viewLightMenu->addAction(viewLightScopeAction);
+        viewObjectMenu->addAction(viewLightScopeAction);
         viewActions[SceneDisplayer::LIGHT_SCOPE] = viewLightScopeAction;
         connect(viewLightScopeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-        auto* viewSoundMenu = new QMenu("Sound");
-        viewMenu->addMenu(viewSoundMenu);
         auto* viewSoundScopeAction = new QAction("Sound Scope", this);
         viewSoundScopeAction->setEnabled(false);
         viewSoundScopeAction->setCheckable(true);
         viewSoundScopeAction->setChecked(true);
-        viewSoundMenu->addAction(viewSoundScopeAction);
+        viewObjectMenu->addAction(viewSoundScopeAction);
         viewActions[SceneDisplayer::SOUND_SCOPE] = viewSoundScopeAction;
         connect(viewSoundScopeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
         auto* viewAIMenu = new QMenu("AI");
         viewMenu->addMenu(viewAIMenu);
+
         auto* viewNavMeshAction = new QAction("Navigation Mesh", this);
         viewNavMeshAction->setEnabled(false);
         viewNavMeshAction->setCheckable(true);
@@ -208,7 +206,7 @@ namespace urchin {
             }
         } else if (const auto* objectPanelWidget = dynamic_cast<ObjectPanelWidget*>(observable)) {
             if (notificationType == ObjectPanelWidget::OBJECT_SUB_TAB_SELECTION_CHANGED) {
-                objectSubTabSelected = objectPanelWidget->getTabSelected(); //TODO use enum
+                objectTabSelected = objectPanelWidget->getTabSelected();
                 refreshObjectHighlight = true;
             }
         }
@@ -217,8 +215,8 @@ namespace urchin {
         if (refreshObjectHighlight) {
             const ObjectEntity* selectedObjectEntity = scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->getSelectedObjectEntity();
             sceneDisplayerWindow->setHighlightObjectMesh(selectedObjectEntity);
-            sceneDisplayerWindow->setHighlightObjectLight(objectSubTabSelected == ObjectPanelWidget::ObjectTab::LIGHT ? selectedObjectEntity : nullptr);
-            sceneDisplayerWindow->setHighlightObjectSound(objectSubTabSelected == ObjectPanelWidget::ObjectTab::SOUND ? selectedObjectEntity : nullptr);
+            sceneDisplayerWindow->setHighlightObjectLight(objectTabSelected == ObjectPanelWidget::ObjectTab::LIGHT ? selectedObjectEntity : nullptr);
+            sceneDisplayerWindow->setHighlightObjectSound(objectTabSelected == ObjectPanelWidget::ObjectTab::SOUND ? selectedObjectEntity : nullptr);
         }
     }
 
@@ -399,26 +397,24 @@ namespace urchin {
         for (int i = 0; i < SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
             auto viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
+            ScenePanelWidget::MainTab selectedTab = ScenePanelWidget::MainTab::OBJECTS;
+            if (scenePanelWidget != nullptr) {
+                selectedTab = scenePanelWidget->getTabSelected();
+            }
+
             bool isViewChecked = viewActions[viewProperties]->isChecked();
-            bool isCorrespondingTabSelected = (scenePanelWidget == nullptr && i == 0)
-                    || (scenePanelWidget != nullptr && getConcernedTabFor(viewProperties) == scenePanelWidget->getTabSelected());
+            bool isCorrespondingTabSelected = getConcernedTabFor(viewProperties) == selectedTab;
 
             sceneDisplayerWindow->setViewProperties(viewProperties, isViewChecked && isCorrespondingTabSelected);
         }
     }
 
-    ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties) {
-        if (SceneDisplayer::OBJECT_SCOPE == viewProperties) {
-            return ScenePanelWidget::OBJECTS;
-        }
-        if (SceneDisplayer::LIGHT_SCOPE == viewProperties) { //TODO remove
-            return ScenePanelWidget::LIGHTS;
-        }
-        if (SceneDisplayer::SOUND_SCOPE == viewProperties) { //TODO remove
-            return ScenePanelWidget::SOUNDS;
+    ScenePanelWidget::MainTab MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties) {
+        if (SceneDisplayer::OBJECT_SCOPE == viewProperties || SceneDisplayer::LIGHT_SCOPE == viewProperties || SceneDisplayer::SOUND_SCOPE == viewProperties) {
+            return ScenePanelWidget::MainTab::OBJECTS;
         }
         if (SceneDisplayer::NAV_MESH == viewProperties) {
-            return ScenePanelWidget::AI;
+            return ScenePanelWidget::MainTab::AI;
         }
 
         throw std::runtime_error("Impossible to find concerned tab for properties: " + std::to_string(viewProperties));

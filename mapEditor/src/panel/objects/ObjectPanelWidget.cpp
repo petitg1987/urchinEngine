@@ -140,11 +140,11 @@ namespace urchin {
         setupTagsBox(tagsLayout);
         tabWidget->addTab(tabTags, "Tags");
 
-        connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onObjectSubTabChanged(int)));
+        connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onObjectTabChanged(int)));
         //TODO connect selectionChanged on tabWidget
     }
 
-    void ObjectPanelWidget::onObjectSubTabChanged(int tabSelected) {
+    void ObjectPanelWidget::onObjectTabChanged(int tabSelected) {
         this->tabSelected = static_cast<ObjectTab>(tabSelected);
 
         notifyObservers(this, OBJECT_SUB_TAB_SELECTION_CHANGED);

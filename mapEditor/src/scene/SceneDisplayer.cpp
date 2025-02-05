@@ -146,7 +146,7 @@ namespace urchin {
 
     void SceneDisplayer::refreshLightScopeModel() const {
         if (lightScopeDisplayer) {
-            if (viewProperties[OBJECT_SCOPE] && highlightObjectLight && highlightObjectLight->getLight()) {
+            if (viewProperties[LIGHT_SCOPE] && highlightObjectLight && highlightObjectLight->getLight()) {
                 lightScopeDisplayer->displayLightScope(highlightObjectLight);
             } else {
                 lightScopeDisplayer->displayLightScope(nullptr);
@@ -156,7 +156,7 @@ namespace urchin {
 
     void SceneDisplayer::refreshSoundTriggerModel() const {
         if (soundScopeDisplayer) {
-            if (viewProperties[OBJECT_SCOPE] && highlightObjectSound && highlightObjectSound->getSoundComponent()) {
+            if (viewProperties[SOUND_SCOPE] && highlightObjectSound && highlightObjectSound->getSoundComponent()) {
                 soundScopeDisplayer->displaySoundScope(highlightObjectSound);
             } else {
                 soundScopeDisplayer->displaySoundScope(nullptr);

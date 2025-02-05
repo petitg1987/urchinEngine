@@ -25,7 +25,7 @@ namespace urchin {
                 TAB_SELECTED
             };
 
-            enum TabName {
+            enum class MainTab {
                 OBJECTS,
                 LIGHTS,
                 TERRAINS,
@@ -46,17 +46,17 @@ namespace urchin {
             SceneController& loadMap(SceneController&);
             void closeMap();
 
-            TabName getTabSelected() const;
+            MainTab getTabSelected() const;
 
         private:
             SceneController* sceneController;
 
             ObjectPanelWidget* tabObjects;
-            LightPanelWidget* tabLights;
+            LightPanelWidget* tabLights; //TODO remove
             TerrainPanelWidget* tabTerrains;
             WaterPanelWidget* tabWaters;
             SkyPanelWidget* tabSky;
-            SoundPanelWidget* tabSounds;
+            SoundPanelWidget* tabSounds; //TODO remove
             AIPanelWidget* tabAI;
 
         private slots:
