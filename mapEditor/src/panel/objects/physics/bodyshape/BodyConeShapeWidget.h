@@ -3,24 +3,31 @@
 #include <string>
 #include <memory>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QComboBox>
+#include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <panel/objects/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 
-    class NoBodyShapeWidget final : public BodyShapeWidget {
+    class BodyConeShapeWidget final : public BodyShapeWidget {
         Q_OBJECT
 
         public:
-            explicit NoBodyShapeWidget(const ObjectEntity*);
-            ~NoBodyShapeWidget() override = default;
+            explicit BodyConeShapeWidget(const ObjectEntity*);
+            ~BodyConeShapeWidget() override = default;
 
             std::string getBodyShapeName() const override;
 
         protected:
             void doSetupShapePropertiesFrom(const CollisionShape3D&) override;
             std::unique_ptr<const CollisionShape3D> createBodyShape() const override;
+
+        private:
+            QDoubleSpinBox* radius;
+            QDoubleSpinBox* height;
+            QComboBox* orientation;
     };
 
 }

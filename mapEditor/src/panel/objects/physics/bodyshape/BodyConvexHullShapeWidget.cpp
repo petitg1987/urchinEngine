@@ -1,8 +1,8 @@
 #include <QVariant>
 #include <QHeaderView>
 
-#include <panel/objects/bodyshape/BodyConvexHullShapeWidget.h>
-#include <panel/objects/bodyshape/support/SpinBoxDelegate.h>
+#include <panel/objects/physics/bodyshape/BodyConvexHullShapeWidget.h>
+#include <panel/objects/physics/bodyshape/support/SpinBoxDelegate.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 

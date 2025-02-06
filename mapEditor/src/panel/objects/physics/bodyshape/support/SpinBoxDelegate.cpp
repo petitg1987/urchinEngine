@@ -1,4 +1,4 @@
-#include <panel/objects/bodyshape/support/SpinBoxDelegate.h>
+#include <panel/objects/physics/bodyshape/support/SpinBoxDelegate.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 
 namespace urchin {

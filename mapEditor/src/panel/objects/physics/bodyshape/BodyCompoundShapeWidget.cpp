@@ -1,8 +1,8 @@
 #include <stdexcept>
 
-#include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyCompoundShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidgetRetriever.h>
 #include <panel/objects/dialog/ChangeBodyShapeDialog.h>
-#include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>

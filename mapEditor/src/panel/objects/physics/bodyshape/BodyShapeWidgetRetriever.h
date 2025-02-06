@@ -5,7 +5,7 @@
 #include <UrchinPhysicsEngine.h>
 #include <UrchinAggregation.h>
 
-#include <panel/objects/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 

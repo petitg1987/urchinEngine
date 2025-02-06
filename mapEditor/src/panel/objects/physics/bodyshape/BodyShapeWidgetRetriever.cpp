@@ -1,14 +1,14 @@
 #include <stdexcept>
 
-#include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
-#include <panel/objects/bodyshape/BodyShapeWidget.h>
-#include <panel/objects/bodyshape/BodySphereShapeWidget.h>
-#include <panel/objects/bodyshape/BodyBoxShapeWidget.h>
-#include <panel/objects/bodyshape/BodyCapsuleShapeWidget.h>
-#include <panel/objects/bodyshape/BodyCylinderShapeWidget.h>
-#include <panel/objects/bodyshape/BodyConeShapeWidget.h>
-#include <panel/objects/bodyshape/BodyConvexHullShapeWidget.h>
-#include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidgetRetriever.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodySphereShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyBoxShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyCapsuleShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyCylinderShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyConeShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyConvexHullShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyCompoundShapeWidget.h>
 
 namespace urchin {
 

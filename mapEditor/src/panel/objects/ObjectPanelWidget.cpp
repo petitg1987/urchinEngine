@@ -11,9 +11,9 @@
 #include <panel/objects/dialog/ChangeBodyShapeDialog.h>
 #include <panel/objects/dialog/RenameObjectDialog.h>
 #include <panel/objects/dialog/ChangeLightDialog.h>
-#include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidgetRetriever.h>
 #include <scene/objects/move/ObjectMoveController.h>
-#include <panel/objects/bodyshape/NoBodyShapeWidget.h>
+#include <panel/objects/physics/bodyshape/NoBodyShapeWidget.h>
 #include <scene/SceneDisplayerWindow.h>
 
 namespace urchin {

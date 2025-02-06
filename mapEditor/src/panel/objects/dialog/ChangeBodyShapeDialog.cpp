@@ -1,8 +1,7 @@
 #include <QtWidgets/QDialogButtonBox>
-#include <QVariant>
 
 #include <panel/objects/dialog/ChangeBodyShapeDialog.h>
-#include <panel/objects/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 

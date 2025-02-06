@@ -7,16 +7,16 @@
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <panel/objects/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 
-    class BodyConeShapeWidget final : public BodyShapeWidget {
+    class BodyCapsuleShapeWidget final : public BodyShapeWidget {
         Q_OBJECT
 
         public:
-            explicit BodyConeShapeWidget(const ObjectEntity*);
-            ~BodyConeShapeWidget() override = default;
+            explicit BodyCapsuleShapeWidget(const ObjectEntity*);
+            ~BodyCapsuleShapeWidget() override = default;
 
             std::string getBodyShapeName() const override;
 
@@ -26,7 +26,7 @@ namespace urchin {
 
         private:
             QDoubleSpinBox* radius;
-            QDoubleSpinBox* height;
+            QDoubleSpinBox* cylinderHeight;
             QComboBox* orientation;
     };
 

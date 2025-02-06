@@ -12,7 +12,7 @@
 #include <UrchinPhysicsEngine.h>
 #include <controller/objects/ObjectController.h>
 #include <panel/objects/ObjectTableView.h>
-#include <panel/objects/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidget.h>
 #include <panel/objects/light/LightWidget.h>
 
 namespace urchin {

@@ -2,7 +2,6 @@
 
 #include <string>
 #include <memory>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QComboBox>
@@ -11,8 +10,8 @@
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <panel/objects/bodyshape/BodyShapeWidget.h>
-#include <panel/objects/bodyshape/support/LocalizedShapeTableView.h>
+#include <panel/objects/physics/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/physics/bodyshape/support/LocalizedShapeTableView.h>
 
 namespace urchin {
 
