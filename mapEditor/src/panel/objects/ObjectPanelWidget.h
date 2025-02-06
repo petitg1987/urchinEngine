@@ -127,7 +127,6 @@ namespace urchin {
             //light
             QLabel* lightTypeValueLabel;
             QPushButton* changeLightButton;
-            QVBoxLayout* lightInfoLayout;
             std::unique_ptr<LightWidget> lightWidget;
 
         private slots:

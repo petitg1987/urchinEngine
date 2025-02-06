@@ -15,8 +15,10 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            LightWidget(const ObjectEntity&, ObjectController&);
-            
+            LightWidget();
+
+            void load(const ObjectEntity&, ObjectController&);
+
         private:
             void setupGeneralPropertiesBox(QVBoxLayout*);
             void setupSpecificSunLightBox(QVBoxLayout*);
@@ -28,8 +30,8 @@ namespace urchin {
             void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight*) const;
             void setupSpotLightDataFrom(const SpotLight*) const;
 
-            const ObjectEntity& objectEntity;
-            ObjectController& objectController;
+            const ObjectEntity* objectEntity;
+            ObjectController* objectController;
 
             QGroupBox* generalPropertiesGroupBox;
             QGroupBox* specificSunLightGroupBox;

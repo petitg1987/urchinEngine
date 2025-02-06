@@ -5,10 +5,9 @@
 
 namespace urchin {
 
-
-    LightWidget::LightWidget(const ObjectEntity& objectEntity, ObjectController& objectController) :
-            objectEntity(objectEntity),
-            objectController(objectController),
+    LightWidget::LightWidget() :
+            objectEntity(nullptr),
+            objectController(nullptr),
             generalPropertiesGroupBox(nullptr),
             specificSunLightGroupBox(nullptr),
             specificOmnidirectionalLightGroupBox(nullptr),
@@ -45,6 +44,11 @@ namespace urchin {
         setupSpecificSunLightBox(mainLayout);
         setupSpecificOmnidirectionalLightBox(mainLayout);
         setupSpecificSpotLightBox(mainLayout);
+    }
+
+    void LightWidget::load(const ObjectEntity& objectEntity, ObjectController& objectController) {
+        this->objectEntity = &objectEntity;
+        this->objectController = &objectController;
 
         if (objectEntity.getLight()) {
             setupLightDataFrom(objectEntity.getLight());
@@ -309,24 +313,24 @@ namespace urchin {
             bool enablePbr = enablePbrCheckBox->isChecked();
             bool produceShadow = produceShadowCheckBox->isChecked();
 
-            objectController.updateLightGeneralProperties(objectEntity, lightColor, enablePbr, produceShadow);
+            objectController->updateLightGeneralProperties(*objectEntity, lightColor, enablePbr, produceShadow);
         }
     }
 
     void LightWidget::updateLightSpecificProperties() const {
         if (!disableLightEvent) {
-            const Light* light = objectEntity.getLight();
+            const Light* light = objectEntity->getLight();
 
             if (light->getLightType() == Light::LightType::SUN) {
                 Vector3 direction((float)sunDirectionX->value(), (float)sunDirectionY->value(), (float)sunDirectionZ->value());
-                objectController.updateSunLightProperties(objectEntity, direction);
+                objectController->updateSunLightProperties(*objectEntity, direction);
             } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                 Point3 position((float)omniPositionX->value(), (float)omniPositionY->value(), (float)omniPositionZ->value());
-                objectController.updateOmnidirectionalLightProperties(objectEntity, (float)omniAttenuation->value(), position);
+                objectController->updateOmnidirectionalLightProperties(*objectEntity, (float)omniAttenuation->value(), position);
             } else if (light->getLightType() == Light::LightType::SPOT) {
                 Point3 position((float)spotPositionX->value(), (float)spotPositionY->value(), (float)spotPositionZ->value());
                 Vector3 direction((float)spotDirectionX->value(), (float)spotDirectionY->value(), (float)spotDirectionZ->value());
-                objectController.updateSpotLightProperties(objectEntity, (float)spotAttenuation->value(), position, direction, (float)spotInnerAngle->value(), (float)spotOuterAngle->value());
+                objectController->updateSpotLightProperties(*objectEntity, (float)spotAttenuation->value(), position, direction, (float)spotInnerAngle->value(), (float)spotOuterAngle->value());
             } else {
                 throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string((int)light->getLightType()));
             }

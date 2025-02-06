@@ -477,8 +477,10 @@ namespace urchin {
         ButtonStyleHelper::applyNormalStyle(changeLightButton);
         connect(changeLightButton, SIGNAL(clicked()), this, SLOT(showChangeLightDialog()));
 
-        lightInfoLayout = new QVBoxLayout();
+        QVBoxLayout *lightInfoLayout = new QVBoxLayout();
         lightLayout->addLayout(lightInfoLayout);
+        lightWidget = std::make_unique<LightWidget>(); //TODO unique_ptr, good idea ? Is QT destroy the widget ?
+        lightInfoLayout->addWidget(lightWidget.get());
     }
 
     void ObjectPanelWidget::setupTagsBox(QVBoxLayout* mainTagsLayout) {
@@ -654,11 +656,8 @@ namespace urchin {
 
     void ObjectPanelWidget::setupObjectLightDataFrom(const ObjectEntity& objectEntity) {
         disableObjectEvent = true;
+
         const Light* light = objectEntity.getLight();
-
-        lightWidget = std::make_unique<LightWidget>(objectEntity, *objectController);
-        lightInfoLayout->addWidget(lightWidget.get());
-
         if (light) {
             if (light->getLightType() == Light::LightType::SUN) {
                 lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::SUN_LIGHT_LABEL));
@@ -669,10 +668,14 @@ namespace urchin {
             } else {
                 throw std::invalid_argument("Unknown the light type: " + std::to_string((int)light->getLightType()));
             }
-
-            lightWidget->show();
         } else {
             lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::NONE_LABEL));
+        }
+
+        lightWidget->load(objectEntity, *objectController);
+        if (light) {
+            lightWidget->show();
+        } else {
             lightWidget->hide();
         }
 
