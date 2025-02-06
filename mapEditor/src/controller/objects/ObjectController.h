@@ -27,18 +27,17 @@ namespace urchin {
             void moveObjectInFrontOfCamera(const ObjectEntity&, bool);
             void removeBody(const ObjectEntity&);
 
+            const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
+            const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowBehavior, Model::CullBehavior);
+            const ObjectEntity& updateObjectTags(const ObjectEntity&, std::string_view);
+            const ObjectEntity& updateObjectPhysicsProperties(const ObjectEntity&, float, float, float, float, float, float, const Vector3<float>&, const Vector3<float>&);
+            const ObjectEntity& updateObjectPhysicsShape(const ObjectEntity&, std::unique_ptr<const CollisionShape3D>);
+
             void changeLightType(const ObjectEntity&, std::optional<Light::LightType>);
             const ObjectEntity& updateLightGeneralProperties(const ObjectEntity&, const Point3<float>&, bool, bool);
             const ObjectEntity& updateSunLightProperties(const ObjectEntity&, const Vector3<float>&);
             const ObjectEntity& updateOmnidirectionalLightProperties(const ObjectEntity&, float, const Point3<float>&);
             const ObjectEntity& updateSpotLightProperties(const ObjectEntity&, float, const Point3<float>&, const Vector3<float>&, float, float);
-
-            const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
-            const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowBehavior, Model::CullBehavior);
-            const ObjectEntity& updateObjectTags(const ObjectEntity&, std::string_view);
-            const ObjectEntity& updateObjectPhysicsProperties(const ObjectEntity&, float, float, float, float, float, float,
-                    const Vector3<float>&, const Vector3<float>&);
-            const ObjectEntity& updateObjectPhysicsShape(const ObjectEntity&, std::unique_ptr<const CollisionShape3D>);
 
         private:
             ObjectEntity& findObjectEntity(const ObjectEntity&) const;
