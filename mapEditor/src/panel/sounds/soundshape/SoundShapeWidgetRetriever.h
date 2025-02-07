@@ -12,7 +12,7 @@ namespace urchin {
         public:
             explicit SoundShapeWidgetRetriever(const SoundEntity&);
 
-            std::unique_ptr<SoundShapeWidget> retrieveShapeWidget(SoundShape::ShapeType) const;
+            SoundShapeWidget* retrieveShapeWidget(SoundShape::ShapeType) const;
 
         private:
             const SoundEntity& soundEntity;

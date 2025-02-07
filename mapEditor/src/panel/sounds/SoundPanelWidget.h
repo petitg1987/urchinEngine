@@ -78,7 +78,7 @@ namespace urchin {
             QVBoxLayout* triggerShapeLayout;
             QLabel* soundShapeType;
             QPushButton* changeSoundShapeTypeButton;
-            std::unique_ptr<SoundShapeWidget> soundShapeWidget;
+            SoundShapeWidget* soundShapeWidget;
 
         private slots:
             void showAddSoundDialog();

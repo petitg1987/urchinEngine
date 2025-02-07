@@ -319,10 +319,10 @@ namespace urchin {
 
     SoundShapeWidget& SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape& shape, const SoundEntity& soundEntity) {
         soundShapeWidget = SoundShapeWidgetRetriever(soundEntity).retrieveShapeWidget(shape.getShapeType());
-        triggerShapeLayout->addWidget(soundShapeWidget.get());
+        triggerShapeLayout->addWidget(soundShapeWidget);
         soundShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         soundShapeWidget->show();
-        connect(soundShapeWidget.get(), SIGNAL(soundShapeChange(SoundShape*)), this, SLOT(soundShapeChanged(SoundShape*)));
+        connect(soundShapeWidget, SIGNAL(soundShapeChange(SoundShape*)), this, SLOT(soundShapeChanged(SoundShape*)));
 
         return *soundShapeWidget;
     }

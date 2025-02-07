@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class LightWidget : public QWidget {
+    class LightWidget final : public QWidget {
         Q_OBJECT
 
         public:

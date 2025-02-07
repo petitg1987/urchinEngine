@@ -12,7 +12,7 @@
 #include <UrchinPhysicsEngine.h>
 #include <controller/objects/ObjectController.h>
 #include <panel/objects/ObjectTableView.h>
-#include <panel/objects/physics/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/physics/PhysicsWidget.h>
 #include <panel/objects/light/LightWidget.h>
 
 namespace urchin {
@@ -51,10 +51,6 @@ namespace urchin {
             void setupScale(QGridLayout*);
             void setupPropertiesBox(QVBoxLayout*);
             void setupPhysicsBox(QVBoxLayout*);
-            void setupPhysicsGeneralPropertiesBox(QVBoxLayout*);
-            void setupPhysicsDampingPropertiesBox(QVBoxLayout*);
-            void setupPhysicsFactorPropertiesBox(QVBoxLayout*);
-            void setupPhysicsShapeBox(QVBoxLayout*);
             void setupLightBox(QVBoxLayout*);
             void setupTagsBox(QVBoxLayout*);
 
@@ -63,10 +59,6 @@ namespace urchin {
             void setupObjectPhysicsDataFrom(const ObjectEntity&);
             void setupObjectLightDataFrom(const ObjectEntity&);
             void setupObjectTagsDataFrom(const ObjectEntity&);
-
-            BodyShapeWidget& createBodyShapeWidget(const CollisionShape3D&, const ObjectEntity&);
-            BodyShapeWidget& createNoBodyShapeWidget(const ObjectEntity&);
-            void setupBodyShapeWidget();
 
             static constexpr char RECEIVER_AND_CASTER_LABEL[] = "Receiver & Caster";
             static constexpr char RECEIVER_ONLY_LABEL[] = "Receiver only";
@@ -106,28 +98,12 @@ namespace urchin {
 
             //physics
             QCheckBox* hasRigidBody;
-            QTabWidget* tabPhysicsRigidBody;
-            QVBoxLayout* physicsShapeLayout;
-            QDoubleSpinBox* mass;
-            QDoubleSpinBox* restitution;
-            QDoubleSpinBox* friction;
-            QDoubleSpinBox* rollingFriction;
-            QDoubleSpinBox* linearDamping;
-            QDoubleSpinBox* angularDamping;
-            QDoubleSpinBox* linearFactorX;
-            QDoubleSpinBox* linearFactorY;
-            QDoubleSpinBox* linearFactorZ;
-            QDoubleSpinBox* angularFactorX;
-            QDoubleSpinBox* angularFactorY;
-            QDoubleSpinBox* angularFactorZ;
-            QLabel* shapeTypeValueLabel;
-            QPushButton* changeBodyShapeButton;
-            std::unique_ptr<BodyShapeWidget> bodyShapeWidget;
+            PhysicsWidget* physicsWidget;
 
             //light
             QLabel* lightTypeValueLabel;
             QPushButton* changeLightButton;
-            std::unique_ptr<LightWidget> lightWidget;
+            LightWidget* lightWidget;
 
         private slots:
             void showAddObjectDialog();
@@ -144,10 +120,7 @@ namespace urchin {
             void updateObjectProperties() const;
             void updateObjectTags() const;
 
-            void showChangeBodyShapeDialog();
             void rigidBodyToggled(int);
-            void updateObjectPhysicsProperties() const;
-            void bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&) const;
 
             void showChangeLightDialog();
     };

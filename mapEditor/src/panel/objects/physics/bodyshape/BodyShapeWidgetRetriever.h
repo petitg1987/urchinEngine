@@ -1,6 +1,5 @@
 #pragma once
 
-#include <memory>
 #include <QWidget>
 #include <UrchinPhysicsEngine.h>
 #include <UrchinAggregation.h>
@@ -13,7 +12,7 @@ namespace urchin {
         public:
             explicit BodyShapeWidgetRetriever(const ObjectEntity*);
 
-            std::unique_ptr<BodyShapeWidget> createBodyShapeWidget(CollisionShape3D::ShapeType);
+            BodyShapeWidget* createBodyShapeWidget(CollisionShape3D::ShapeType) const;
 
         private:
             const ObjectEntity* objectEntity;

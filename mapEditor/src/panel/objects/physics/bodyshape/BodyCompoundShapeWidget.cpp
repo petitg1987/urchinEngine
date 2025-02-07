@@ -2,7 +2,7 @@
 
 #include <panel/objects/physics/bodyshape/BodyCompoundShapeWidget.h>
 #include <panel/objects/physics/bodyshape/BodyShapeWidgetRetriever.h>
-#include <panel/objects/dialog/ChangeBodyShapeDialog.h>
+#include <panel/objects/physics/dialog/ChangeBodyShapeDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
@@ -12,7 +12,16 @@
 namespace urchin {
 
     BodyCompoundShapeWidget::BodyCompoundShapeWidget(const ObjectEntity* objectEntity) :
-            BodyShapeWidget(objectEntity) {
+            BodyShapeWidget(objectEntity),
+            localizedShapeDetails(nullptr),
+            positionX(nullptr),
+            positionY(nullptr),
+            positionZ(nullptr),
+            orientationType(nullptr),
+            eulerAxis0(nullptr),
+            eulerAxis1(nullptr),
+            eulerAxis2(nullptr),
+            bodyShapeWidget(nullptr) {
         shapesLabel = new QLabel("Shapes:");
         mainLayout->addWidget(shapesLabel, 0, 0);
 
@@ -34,16 +43,6 @@ namespace urchin {
         buttonLayout->addWidget(removeShapeButton);
         ButtonStyleHelper::applyNormalStyle(removeShapeButton);
         connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));
-
-        localizedShapeDetails.reset(nullptr);
-        positionX = nullptr;
-        positionY = nullptr;
-        positionZ = nullptr;
-        orientationType = nullptr;
-        eulerAxis0 = nullptr;
-        eulerAxis1 = nullptr;
-        eulerAxis2 = nullptr;
-        bodyShapeWidget = nullptr;
     }
 
     std::string BodyCompoundShapeWidget::getBodyShapeName() const {
@@ -81,16 +80,16 @@ namespace urchin {
                 if (localizedShapeTableView->hasLocalizedShapeSelected()) {
                     const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
-                    localizedShapeDetails = std::make_unique<QWidget>();
-                    mainLayout->addWidget(localizedShapeDetails.get(), 3, 0);
+                    localizedShapeDetails = new QWidget();
+                    mainLayout->addWidget(localizedShapeDetails, 3, 0);
 
-                    auto* localizedShapeLayout = new QVBoxLayout(localizedShapeDetails.get());
+                    auto* localizedShapeLayout = new QVBoxLayout(localizedShapeDetails);
                     setupTransformBox(localizedShapeLayout, localizedShape);
                     setupShapeBox(localizedShapeLayout, localizedShape);
 
                     localizedShapeDetails->show();
                 } else {
-                    localizedShapeDetails.reset(nullptr);
+                    localizedShapeDetails = nullptr;
                 }
             }
         }
@@ -172,7 +171,7 @@ namespace urchin {
         shapeGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* shapeLayout = new QGridLayout(shapeGroupBox);
-        bodyShapeWidget = BodyShapeWidgetRetriever(getObjectEntity()).createBodyShapeWidget(localizedShape->shape->getShapeType()).release();
+        bodyShapeWidget = BodyShapeWidgetRetriever(getObjectEntity()).createBodyShapeWidget(localizedShape->shape->getShapeType());
         shapeLayout->addWidget(bodyShapeWidget, 0, 0);
         bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         bodyShapeWidget->setupShapePropertiesFrom(*localizedShape->shape);

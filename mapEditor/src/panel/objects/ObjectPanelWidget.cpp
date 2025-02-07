@@ -4,16 +4,12 @@
 #include <widget/style/SpinBoxStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 #include <widget/style/ComboBoxStyleHelper.h>
-#include <widget/style/FrameStyleHelper.h>
 #include <panel/objects/ObjectPanelWidget.h>
 #include <panel/objects/dialog/NewObjectDialog.h>
 #include <panel/objects/dialog/CloneObjectDialog.h>
-#include <panel/objects/dialog/ChangeBodyShapeDialog.h>
 #include <panel/objects/dialog/RenameObjectDialog.h>
 #include <panel/objects/dialog/ChangeLightDialog.h>
-#include <panel/objects/physics/bodyshape/BodyShapeWidgetRetriever.h>
 #include <scene/objects/move/ObjectMoveController.h>
-#include <panel/objects/physics/bodyshape/NoBodyShapeWidget.h>
 #include <scene/SceneDisplayerWindow.h>
 
 namespace urchin {
@@ -36,15 +32,10 @@ namespace urchin {
             cullBehavior(nullptr),
             tags(nullptr),
             hasRigidBody(nullptr),
-            tabPhysicsRigidBody(nullptr),
-            physicsShapeLayout(nullptr),
-            mass(nullptr), restitution(nullptr), friction(nullptr), rollingFriction(nullptr),
-            linearDamping(nullptr), angularDamping(nullptr),
-            linearFactorX(nullptr), linearFactorY(nullptr), linearFactorZ(nullptr),
-            angularFactorX(nullptr), angularFactorY(nullptr), angularFactorZ(nullptr),
-            shapeTypeValueLabel(nullptr),
-            changeBodyShapeButton(nullptr),
-            bodyShapeWidget(nullptr) {
+            physicsWidget(nullptr),
+            lightTypeValueLabel(nullptr),
+            changeLightButton(nullptr),
+            lightWidget(nullptr) {
         auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -282,182 +273,8 @@ namespace urchin {
         physicsLayout->addWidget(hasRigidBody);
         connect(hasRigidBody, SIGNAL(stateChanged(int)), this, SLOT(rigidBodyToggled(int)));
 
-        tabPhysicsRigidBody = new QTabWidget();
-        physicsLayout->addWidget(tabPhysicsRigidBody);
-
-        auto* tabPhysicsProperties = new QWidget();
-        auto* physicsPropertiesLayout = new QVBoxLayout(tabPhysicsProperties);
-        physicsPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
-        physicsPropertiesLayout->setContentsMargins(1, 1, 1, 1);
-        setupPhysicsGeneralPropertiesBox(physicsPropertiesLayout);
-        setupPhysicsDampingPropertiesBox(physicsPropertiesLayout);
-        setupPhysicsFactorPropertiesBox(physicsPropertiesLayout);
-        tabPhysicsRigidBody->addTab(tabPhysicsProperties, "Properties");
-
-        auto* tabPhysicsShape = new QWidget();
-        physicsShapeLayout = new QVBoxLayout(tabPhysicsShape);
-        physicsShapeLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
-        physicsShapeLayout->setContentsMargins(1, 1, 1, 1);
-        setupPhysicsShapeBox(physicsShapeLayout);
-        tabPhysicsRigidBody->addTab(tabPhysicsShape, "Shape");
-    }
-
-    void ObjectPanelWidget::setupPhysicsGeneralPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
-        auto* rigidBodyGeneralBox = new QGroupBox("General");
-        physicsPropertiesLayout->addWidget(rigidBodyGeneralBox);
-        GroupBoxStyleHelper::applyNormalStyle(rigidBodyGeneralBox);
-        rigidBodyGeneralBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        auto* rigidBodyGeneralLayout = new QGridLayout(rigidBodyGeneralBox);
-
-        auto* massLabel = new QLabel("Mass:");
-        rigidBodyGeneralLayout->addWidget(massLabel, 0, 0);
-
-        mass = new QDoubleSpinBox();
-        rigidBodyGeneralLayout->addWidget(mass, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(mass);
-        mass->setMinimum(0.0);
-        connect(mass, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-
-        auto* restitutionLabel = new QLabel("Restitution:");
-        rigidBodyGeneralLayout->addWidget(restitutionLabel, 0, 2);
-
-        restitution = new QDoubleSpinBox();
-        rigidBodyGeneralLayout->addWidget(restitution, 0, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(restitution);
-        restitution->setMinimum(0.0);
-        restitution->setMaximum(1.0);
-        connect(restitution, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-
-        auto* frictionLabel = new QLabel("Friction:");
-        rigidBodyGeneralLayout->addWidget(frictionLabel, 1, 0);
-
-        friction = new QDoubleSpinBox();
-        rigidBodyGeneralLayout->addWidget(friction, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(friction);
-        friction->setMinimum(0.0);
-        friction->setMaximum(1.0);
-        connect(friction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-
-        auto* rollingFrictionLabel = new QLabel("Rolling Friction:");
-        rigidBodyGeneralLayout->addWidget(rollingFrictionLabel, 1, 2);
-
-        rollingFriction = new QDoubleSpinBox();
-        rigidBodyGeneralLayout->addWidget(rollingFriction, 1, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(rollingFriction);
-        rollingFriction->setMinimum(0.0);
-        rollingFriction->setMaximum(1.0);
-        connect(rollingFriction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-    }
-
-    void ObjectPanelWidget::setupPhysicsDampingPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
-        auto* rigidBodyDampingBox = new QGroupBox("Damping");
-        physicsPropertiesLayout->addWidget(rigidBodyDampingBox);
-        GroupBoxStyleHelper::applyNormalStyle(rigidBodyDampingBox);
-        rigidBodyDampingBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        auto* rigidBodyDampingLayout = new QGridLayout(rigidBodyDampingBox);
-
-        auto* linearDampingLabel = new QLabel("Linear:");
-        rigidBodyDampingLayout->addWidget(linearDampingLabel, 0, 0);
-
-        linearDamping = new QDoubleSpinBox();
-        rigidBodyDampingLayout->addWidget(linearDamping, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearDamping);
-        linearDamping->setMinimum(0.0);
-        linearDamping->setMaximum(1.0);
-        connect(linearDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-
-        auto* angularDampingLabel = new QLabel("Angular:");
-        rigidBodyDampingLayout->addWidget(angularDampingLabel, 0, 2);
-
-        angularDamping = new QDoubleSpinBox();
-        rigidBodyDampingLayout->addWidget(angularDamping, 0, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularDamping);
-        angularDamping->setMinimum(0.0);
-        angularDamping->setMaximum(1.0);
-        connect(angularDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-    }
-
-    void ObjectPanelWidget::setupPhysicsFactorPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
-        auto* rigidBodyFactorBox = new QGroupBox("Factor");
-        physicsPropertiesLayout->addWidget(rigidBodyFactorBox);
-        GroupBoxStyleHelper::applyNormalStyle(rigidBodyFactorBox);
-        rigidBodyFactorBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        auto* rigidBodyFactorLayout = new QGridLayout(rigidBodyFactorBox);
-
-        auto* linearFactorLabel = new QLabel("Linear:");
-        rigidBodyFactorLayout->addWidget(linearFactorLabel, 0, 0);
-
-        auto* linearFactorLayout = new QHBoxLayout();
-        rigidBodyFactorLayout->addLayout(linearFactorLayout, 0, 1);
-        linearFactorX = new QDoubleSpinBox();
-        linearFactorLayout->addWidget(linearFactorX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorX);
-        linearFactorX->setMinimum(0.0);
-        linearFactorX->setMaximum(1.0);
-        connect(linearFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-        linearFactorY = new QDoubleSpinBox();
-        linearFactorLayout->addWidget(linearFactorY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorY);
-        linearFactorY->setMinimum(0.0);
-        linearFactorY->setMaximum(1.0);
-        connect(linearFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-        linearFactorZ = new QDoubleSpinBox();
-        linearFactorLayout->addWidget(linearFactorZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorZ);
-        linearFactorZ->setMinimum(0.0);
-        linearFactorZ->setMaximum(1.0);
-        connect(linearFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-
-        auto* angularFactorLabel = new QLabel("Angular:");
-        rigidBodyFactorLayout->addWidget(angularFactorLabel, 1, 0);
-
-        auto* angularFactorLayout = new QHBoxLayout();
-        rigidBodyFactorLayout->addLayout(angularFactorLayout, 1, 1);
-        angularFactorX = new QDoubleSpinBox();
-        angularFactorLayout->addWidget(angularFactorX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorX);
-        angularFactorX->setMinimum(0.0);
-        angularFactorX->setMaximum(1.0);
-        connect(angularFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-        angularFactorY = new QDoubleSpinBox();
-        angularFactorLayout->addWidget(angularFactorY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorY);
-        angularFactorY->setMinimum(0.0);
-        angularFactorY->setMaximum(1.0);
-        connect(angularFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-        angularFactorZ = new QDoubleSpinBox();
-        angularFactorLayout->addWidget(angularFactorZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorZ);
-        angularFactorZ->setMinimum(0.0);
-        angularFactorZ->setMaximum(1.0);
-        connect(angularFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-    }
-
-    void ObjectPanelWidget::setupPhysicsShapeBox(QVBoxLayout* physicsShapeLayout) {
-        auto* shapeTypeLayout = new QHBoxLayout();
-        shapeTypeLayout->setAlignment(Qt::AlignLeft);
-        shapeTypeLayout->setSpacing(15);
-        physicsShapeLayout->addLayout(shapeTypeLayout);
-
-        auto* shapeTypeLabel = new QLabel("Shape Type:");
-        shapeTypeLayout->addWidget(shapeTypeLabel);
-
-        shapeTypeValueLabel = new QLabel();
-        shapeTypeLayout->addWidget(shapeTypeValueLabel);
-
-        changeBodyShapeButton = new QPushButton("Change");
-        shapeTypeLayout->addWidget(changeBodyShapeButton);
-        ButtonStyleHelper::applyNormalStyle(changeBodyShapeButton);
-        connect(changeBodyShapeButton, SIGNAL(clicked()), this, SLOT(showChangeBodyShapeDialog()));
-
-        auto* frameLine = new QFrame();
-        physicsShapeLayout->addWidget(frameLine);
-        FrameStyleHelper::applyLineStyle(frameLine);
-
-        bodyShapeWidget = nullptr;
+        physicsWidget = new PhysicsWidget();
+        physicsLayout->addWidget(physicsWidget);
     }
 
     void ObjectPanelWidget::setupLightBox(QVBoxLayout* lightLayout) {
@@ -477,10 +294,8 @@ namespace urchin {
         ButtonStyleHelper::applyNormalStyle(changeLightButton);
         connect(changeLightButton, SIGNAL(clicked()), this, SLOT(showChangeLightDialog()));
 
-        QVBoxLayout *lightInfoLayout = new QVBoxLayout();
-        lightLayout->addLayout(lightInfoLayout);
-        lightWidget = std::make_unique<LightWidget>(); //TODO unique_ptr, good idea ? Is QT destroy the widget ?
-        lightInfoLayout->addWidget(lightWidget.get());
+        lightWidget = new LightWidget();
+        lightLayout->addWidget(lightWidget);
     }
 
     void ObjectPanelWidget::setupTagsBox(QVBoxLayout* mainTagsLayout) {
@@ -598,60 +413,18 @@ namespace urchin {
 
     void ObjectPanelWidget::setupObjectPhysicsDataFrom(const ObjectEntity& objectEntity) {
         disableObjectEvent = true;
+
         const RigidBody* rigidBody = objectEntity.getRigidBody();
+        hasRigidBody->setChecked(rigidBody ? true : false);
 
+        physicsWidget->load(objectEntity, *objectController);
         if (rigidBody) {
-            hasRigidBody->setChecked(true);
-            tabPhysicsRigidBody->show();
-
-            mass->setValue(rigidBody->getMass());
-            restitution->setValue(rigidBody->getRestitution());
-            friction->setValue(rigidBody->getFriction());
-            rollingFriction->setValue(rigidBody->getRollingFriction());
-
-            linearDamping->setValue(rigidBody->getLinearDamping());
-            angularDamping->setValue(rigidBody->getAngularDamping());
-
-            linearFactorX->setValue(rigidBody->getLinearFactor().X);
-            linearFactorY->setValue(rigidBody->getLinearFactor().Y);
-            linearFactorZ->setValue(rigidBody->getLinearFactor().Z);
-            angularFactorX->setValue(rigidBody->getAngularFactor().X);
-            angularFactorY->setValue(rigidBody->getAngularFactor().Y);
-            angularFactorZ->setValue(rigidBody->getAngularFactor().Z);
-
-            BodyShapeWidget& bodyShapeWidget = createBodyShapeWidget(rigidBody->getShape(), objectEntity);
-            bodyShapeWidget.setupShapePropertiesFrom(rigidBody->getShape());
-            shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget.getBodyShapeName()));
+            physicsWidget->show();
         } else {
-            hasRigidBody->setChecked(false);
-            tabPhysicsRigidBody->hide();
-
-            const BodyShapeWidget& bodyShapeWidget = createNoBodyShapeWidget(objectEntity);
-            shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget.getBodyShapeName()));
+            physicsWidget->hide();
         }
 
         disableObjectEvent = false;
-    }
-
-    BodyShapeWidget& ObjectPanelWidget::createBodyShapeWidget(const CollisionShape3D& shape, const ObjectEntity& objectEntity) {
-        bodyShapeWidget = BodyShapeWidgetRetriever(&objectEntity).createBodyShapeWidget(shape.getShapeType());
-        setupBodyShapeWidget();
-        return *bodyShapeWidget;
-    }
-
-    BodyShapeWidget& ObjectPanelWidget::createNoBodyShapeWidget(const ObjectEntity& objectEntity) {
-        bodyShapeWidget = std::make_unique<NoBodyShapeWidget>(&objectEntity);
-        setupBodyShapeWidget();
-        return *bodyShapeWidget;
-    }
-
-    void ObjectPanelWidget::setupBodyShapeWidget() {
-        physicsShapeLayout->addWidget(bodyShapeWidget.get());
-        bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        bodyShapeWidget->show();
-        connect(bodyShapeWidget.get(), SIGNAL(bodyShapeChange(std::unique_ptr<const CollisionShape3D>&)), this, SLOT(bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&)));
-
-        notifyObservers(this, OBJECT_BODY_SHAPE_WIDGET_CREATED);
     }
 
     void ObjectPanelWidget::setupObjectLightDataFrom(const ObjectEntity& objectEntity) {
@@ -844,51 +617,18 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::showChangeBodyShapeDialog() {
-        ChangeBodyShapeDialog changeBodyShapeDialog(this, false);
-        changeBodyShapeDialog.exec();
-
-        if (changeBodyShapeDialog.result() == QDialog::Accepted) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
-
-            objectController->changeBodyShape(objectEntity, shapeType);
-            setupObjectPhysicsDataFrom(objectEntity);
-        }
-    }
-
     void ObjectPanelWidget::rigidBodyToggled(int rigidBodyState) {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             if (Qt::CheckState::Checked == rigidBodyState) {
-                tabPhysicsRigidBody->show();
+                physicsWidget->show();
                 objectController->createDefaultBody(objectEntity);
             } else if (Qt::CheckState::Unchecked == rigidBodyState) {
                 objectController->removeBody(objectEntity);
-                tabPhysicsRigidBody->hide();
+                physicsWidget->hide();
             }
 
             setupObjectPhysicsDataFrom(objectEntity);
-        }
-    }
-
-    void ObjectPanelWidget::updateObjectPhysicsProperties() const {
-        if (!disableObjectEvent) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-
-            Vector3 linearFactor((float)linearFactorX->value(), (float)linearFactorY->value(), (float)linearFactorZ->value());
-            Vector3 angularFactor((float)angularFactorX->value(), (float)angularFactorY->value(), (float)angularFactorZ->value());
-
-            objectController->updateObjectPhysicsProperties(objectEntity, (float)mass->value(), (float)restitution->value(),
-                    (float)friction->value(), (float)rollingFriction->value(), (float)linearDamping->value(), (float)angularDamping->value(),
-                    linearFactor, angularFactor);
-        }
-    }
-
-    void ObjectPanelWidget::bodyShapeChanged(std::unique_ptr<const CollisionShape3D>& shape) const {
-        if (!disableObjectEvent) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            objectController->updateObjectPhysicsShape(objectEntity, std::move(shape));
         }
     }
 

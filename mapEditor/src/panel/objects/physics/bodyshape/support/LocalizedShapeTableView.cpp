@@ -60,9 +60,9 @@ namespace urchin {
     }
 
     int LocalizedShapeTableView::addLocalizedShape(const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
-        auto bodyShapeWidget = BodyShapeWidgetRetriever(nullptr).createBodyShapeWidget(localizedShape->shape->getShapeType());
+        auto* bodyShapeWidget = BodyShapeWidgetRetriever(nullptr).createBodyShapeWidget(localizedShape->shape->getShapeType());
         std::string shapeTypeString = bodyShapeWidget->getBodyShapeName();
-        bodyShapeWidget.reset(nullptr);
+        delete bodyShapeWidget;
 
         auto* itemShape = new QStandardItem(QString::fromStdString(shapeTypeString));
         addLocalizedShapeInMap(localizedShape);
