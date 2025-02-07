@@ -260,6 +260,17 @@ namespace urchin {
     }
 
     void PhysicsWidget::setupBodyShapeWidget() {
+        QString bodyShapeWidgetName = QString::fromStdString("bodyShapeWidget");
+
+        for (int i = 0; i < physicsShapeLayout->count(); ++i) {
+            QWidget* oldBodyShapeWidget = physicsShapeLayout->itemAt(i)->widget();
+            if(oldBodyShapeWidget && oldBodyShapeWidget->objectName() == bodyShapeWidgetName) {
+                physicsShapeLayout->removeWidget(oldBodyShapeWidget);
+                oldBodyShapeWidget->deleteLater();
+            }
+        }
+
+        bodyShapeWidget->setObjectName(bodyShapeWidgetName);
         physicsShapeLayout->addWidget(bodyShapeWidget);
         bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         bodyShapeWidget->show();

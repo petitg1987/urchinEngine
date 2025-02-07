@@ -27,7 +27,7 @@ namespace urchin {
 
         localizedShapeTableView = new LocalizedShapeTableView();
         mainLayout->addWidget(localizedShapeTableView, 1, 0);
-        localizedShapeTableView->setFixedHeight(100);
+        localizedShapeTableView->setFixedHeight(200);
         localizedShapeTableView->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
 
         auto* buttonLayout = new QHBoxLayout();

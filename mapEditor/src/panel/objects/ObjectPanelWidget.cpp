@@ -415,7 +415,7 @@ namespace urchin {
         disableObjectEvent = true;
 
         const RigidBody* rigidBody = objectEntity.getRigidBody();
-        hasRigidBody->setChecked(rigidBody ? true : false); //TODO no working on four cube
+        hasRigidBody->setChecked(rigidBody ? true : false);
 
         physicsWidget->load(objectEntity, *objectController);
         if (rigidBody) {
