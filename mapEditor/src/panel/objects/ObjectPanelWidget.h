@@ -113,7 +113,7 @@ namespace urchin {
 
             void updateObjectOrientationType() const;
             void updateObjectTransform() const;
-            void updateObjectScale();
+            void updateObjectScale() const;
             void updateObjectProperties() const;
             void updateObjectTags() const;
 

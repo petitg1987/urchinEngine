@@ -581,15 +581,17 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::updateObjectScale() {
+    void ObjectPanelWidget::updateObjectScale() const {
         if (!disableObjectEvent) {
             updateObjectTransform();
 
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             if (objectEntity.getRigidBody()) {
-                const CollisionShape3D& updatedCollisionShape = objectEntity.getRigidBody()->getShape();
-                auto& bodyShapeWidget = createBodyShapeWidget(updatedCollisionShape, objectEntity);
-                bodyShapeWidget.setupShapePropertiesFrom(updatedCollisionShape);
+                physicsWidget->load(objectEntity, *objectController); //refresh physics shape dimension
+                //TODO remove ?
+                //const CollisionShape3D& updatedCollisionShape = objectEntity.getRigidBody()->getShape();
+                // BodyShapeWidget& bodyShapeWidget = createBodyShapeWidget(updatedCollisionShape, objectEntity);
+                // bodyShapeWidget.setupShapePropertiesFrom(updatedCollisionShape);
             }
         }
     }
