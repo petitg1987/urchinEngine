@@ -50,6 +50,10 @@ namespace urchin {
         setupObjectPhysicsDataFrom(objectEntity.getRigidBody());
     }
 
+    BodyShapeWidget* PhysicsWidget::getBodyShapeWidget() const {
+        return bodyShapeWidget;
+    }
+
     void PhysicsWidget::setupPhysicsGeneralPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto* rigidBodyGeneralBox = new QGroupBox("General");
         physicsPropertiesLayout->addWidget(rigidBodyGeneralBox);

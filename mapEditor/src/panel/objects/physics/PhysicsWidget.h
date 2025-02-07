@@ -4,19 +4,26 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QPushButton>
+#include <UrchinPhysicsEngine.h>
 
 #include <controller/objects/ObjectController.h>
 #include <panel/objects/physics/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 
-    class PhysicsWidget final : public QWidget {
+    class PhysicsWidget final : public QWidget, public Observable {
         Q_OBJECT
 
         public:
             PhysicsWidget();
 
+            enum NotificationType {
+                OBJECT_BODY_SHAPE_WIDGET_CREATED
+            };
+
             void load(const ObjectEntity&, ObjectController&);
+
+            BodyShapeWidget* getBodyShapeWidget() const;
 
         private:
             void setupPhysicsGeneralPropertiesBox(QVBoxLayout*);

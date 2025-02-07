@@ -1,6 +1,5 @@
 #pragma once
 
-#include <memory>
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
@@ -9,7 +8,6 @@
 #include <QtWidgets/QTabWidget>
 
 #include <UrchinCommon.h>
-#include <UrchinPhysicsEngine.h>
 #include <controller/objects/ObjectController.h>
 #include <panel/objects/ObjectTableView.h>
 #include <panel/objects/physics/PhysicsWidget.h>
@@ -33,13 +31,12 @@ namespace urchin {
             };
 
             enum NotificationType {
-                OBJECT_BODY_SHAPE_WIDGET_CREATED,
                 OBJECT_SUB_TAB_SELECTION_CHANGED
             };
 
             ObjectTableView* getObjectTableView() const;
             ObjectTab getTabSelected() const;
-            BodyShapeWidget* getBodyShapeWidget() const;
+            PhysicsWidget* getPhysicsWidget() const;
 
             void load(ObjectController&);
             void unload();

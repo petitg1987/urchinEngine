@@ -148,8 +148,8 @@ namespace urchin {
         return tabSelected;
     }
 
-    BodyShapeWidget* ObjectPanelWidget::getBodyShapeWidget() const {
-        return bodyShapeWidget.get();
+    PhysicsWidget* ObjectPanelWidget::getPhysicsWidget() const {
+        return physicsWidget;
     }
 
     void ObjectPanelWidget::setupTransformBox(QVBoxLayout* generalLayout) {
