@@ -24,7 +24,12 @@ namespace urchin {
             bodyShapeWidget(nullptr) {
         setContentsMargins(0, 0, 0, 0);
 
+        auto* mainLayout = new QVBoxLayout(this);
+        mainLayout->setAlignment(Qt::AlignTop);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
+
         auto* tabPhysicsRigidBody = new QTabWidget(this);
+        mainLayout->addWidget(tabPhysicsRigidBody);
 
         auto* tabPhysicsProperties = new QWidget();
         auto* physicsPropertiesLayout = new QVBoxLayout(tabPhysicsProperties);

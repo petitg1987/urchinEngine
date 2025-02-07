@@ -268,7 +268,7 @@ namespace urchin {
         connect(cullBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectProperties()));
     }
 
-    void ObjectPanelWidget::setupPhysicsBox(QVBoxLayout* physicsLayout) { //TODO create one widget having both tabs
+    void ObjectPanelWidget::setupPhysicsBox(QVBoxLayout* physicsLayout) {
         hasRigidBody = new QCheckBox("Rigid Body");
         physicsLayout->addWidget(hasRigidBody);
         connect(hasRigidBody, SIGNAL(stateChanged(int)), this, SLOT(rigidBodyToggled(int)));
@@ -415,7 +415,7 @@ namespace urchin {
         disableObjectEvent = true;
 
         const RigidBody* rigidBody = objectEntity.getRigidBody();
-        hasRigidBody->setChecked(rigidBody ? true : false);
+        hasRigidBody->setChecked(rigidBody ? true : false); //TODO no working on four cube
 
         physicsWidget->load(objectEntity, *objectController);
         if (rigidBody) {
@@ -586,13 +586,7 @@ namespace urchin {
             updateObjectTransform();
 
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            if (objectEntity.getRigidBody()) {
-                physicsWidget->load(objectEntity, *objectController); //refresh physics shape dimension
-                //TODO remove ?
-                //const CollisionShape3D& updatedCollisionShape = objectEntity.getRigidBody()->getShape();
-                // BodyShapeWidget& bodyShapeWidget = createBodyShapeWidget(updatedCollisionShape, objectEntity);
-                // bodyShapeWidget.setupShapePropertiesFrom(updatedCollisionShape);
-            }
+            physicsWidget->load(objectEntity, *objectController); //refresh physics shape dimension
         }
     }
 
