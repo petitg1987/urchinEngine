@@ -33,7 +33,6 @@ namespace urchin {
             const ObjectEntity* objectEntity;
             ObjectController* objectController;
 
-            QGroupBox* generalPropertiesGroupBox;
             QGroupBox* specificSunLightGroupBox;
             QGroupBox* specificOmnidirectionalLightGroupBox;
             QGroupBox* specificSpotLightGroupBox;

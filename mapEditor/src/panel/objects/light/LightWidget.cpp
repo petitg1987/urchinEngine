@@ -8,7 +8,6 @@ namespace urchin {
     LightWidget::LightWidget() :
             objectEntity(nullptr),
             objectController(nullptr),
-            generalPropertiesGroupBox(nullptr),
             specificSunLightGroupBox(nullptr),
             specificOmnidirectionalLightGroupBox(nullptr),
             specificSpotLightGroupBox(nullptr),
@@ -56,7 +55,7 @@ namespace urchin {
     }
 
     void LightWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
-        generalPropertiesGroupBox = new QGroupBox("General Properties");
+        auto* generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
         generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);

@@ -48,8 +48,6 @@ namespace urchin {
             const ObjectEntity* objectEntity;
             ObjectController* objectController;
 
-            QGroupBox* soundPropertiesGroupBox;
-            QGroupBox* soundTriggerGroupBox;
             QGroupBox* specificAreaTriggerGroupBox;
             QGroupBox* specificLocalizableSoundGroupBox;
 

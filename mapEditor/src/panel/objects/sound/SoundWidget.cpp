@@ -13,8 +13,6 @@ namespace urchin {
     SoundWidget::SoundWidget() :
             objectEntity(nullptr),
             objectController(nullptr),
-            soundPropertiesGroupBox(nullptr),
-            soundTriggerGroupBox(nullptr),
             specificAreaTriggerGroupBox(nullptr),
             specificLocalizableSoundGroupBox(nullptr) {
         setContentsMargins(0, 0, 0, 0);
