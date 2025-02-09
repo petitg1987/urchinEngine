@@ -12,6 +12,7 @@
 #include <panel/objects/ObjectTableView.h>
 #include <panel/objects/physics/PhysicsWidget.h>
 #include <panel/objects/light/LightWidget.h>
+#include <panel/objects/sound/SoundWidget.h>
 
 namespace urchin {
 
@@ -49,12 +50,14 @@ namespace urchin {
             void setupPropertiesBox(QVBoxLayout*);
             void setupPhysicsBox(QVBoxLayout*);
             void setupLightBox(QVBoxLayout*);
+            void setupSoundBox(QVBoxLayout*);
             void setupTagsBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
             void setupObjectDataFrom(const ObjectEntity&);
             void setupObjectPhysicsDataFrom(const ObjectEntity&);
             void setupObjectLightDataFrom(const ObjectEntity&);
+            void setupObjectSoundDataFrom(const ObjectEntity&);
             void setupObjectTagsDataFrom(const ObjectEntity&);
 
             static constexpr char RECEIVER_AND_CASTER_LABEL[] = "Receiver & Caster";
@@ -99,8 +102,13 @@ namespace urchin {
 
             //light
             QLabel* lightTypeValueLabel;
-            QPushButton* changeLightButton;
+            QPushButton* changeLightTypeButton;
             LightWidget* lightWidget;
+
+            //sound
+            QLabel* soundTypeValueLabel;
+            QPushButton* changeSoundTypeButton;
+            SoundWidget* soundWidget;
 
         private slots:
             void showAddObjectDialog();
@@ -119,7 +127,9 @@ namespace urchin {
 
             void rigidBodyToggled(int);
 
-            void showChangeLightDialog();
+            void showChangeLightTypeDialog();
+
+            void showChangeSoundTypeDialog();
     };
 
 }

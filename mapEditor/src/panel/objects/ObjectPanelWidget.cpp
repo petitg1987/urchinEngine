@@ -9,6 +9,7 @@
 #include <panel/objects/dialog/CloneObjectDialog.h>
 #include <panel/objects/dialog/RenameObjectDialog.h>
 #include <panel/objects/dialog/ChangeLightTypeDialog.h>
+#include <panel/objects/dialog/ChangeSoundTypeDialog.h>
 #include <scene/objects/move/ObjectMoveController.h>
 #include <scene/SceneDisplayerWindow.h>
 
@@ -34,8 +35,11 @@ namespace urchin {
             hasRigidBody(nullptr),
             physicsWidget(nullptr),
             lightTypeValueLabel(nullptr),
-            changeLightButton(nullptr),
-            lightWidget(nullptr) {
+            changeLightTypeButton(nullptr),
+            lightWidget(nullptr),
+            soundTypeValueLabel(nullptr),
+            changeSoundTypeButton(nullptr),
+            soundWidget(nullptr) {
         auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -120,7 +124,7 @@ namespace urchin {
         auto* soundLayout = new QVBoxLayout(tabSound);
         soundLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
         soundLayout->setContentsMargins(1, 1, 1, 1);
-        //TODO setupSoundBox(soundLayout);
+        setupSoundBox(soundLayout);
         tabWidget->addTab(tabSound, "Sound");
 
         //tags properties
@@ -289,13 +293,34 @@ namespace urchin {
         lightTypeValueLabel = new QLabel();
         lightTypeLayout->addWidget(lightTypeValueLabel);
 
-        changeLightButton = new QPushButton("Change");
-        lightTypeLayout->addWidget(changeLightButton);
-        ButtonStyleHelper::applyNormalStyle(changeLightButton);
-        connect(changeLightButton, SIGNAL(clicked()), this, SLOT(showChangeLightDialog()));
+        changeLightTypeButton = new QPushButton("Change");
+        lightTypeLayout->addWidget(changeLightTypeButton);
+        ButtonStyleHelper::applyNormalStyle(changeLightTypeButton);
+        connect(changeLightTypeButton, SIGNAL(clicked()), this, SLOT(showChangeLightTypeDialog()));
 
         lightWidget = new LightWidget();
         lightLayout->addWidget(lightWidget);
+    }
+
+    void ObjectPanelWidget::setupSoundBox(QVBoxLayout* soundLayout) {
+        auto* soundTypeLayout = new QHBoxLayout();
+        soundTypeLayout->setAlignment(Qt::AlignLeft);
+        soundTypeLayout->setSpacing(15);
+        soundLayout->addLayout(soundTypeLayout);
+
+        auto* soundTypeLabel = new QLabel("Sound Type:");
+        soundTypeLayout->addWidget(soundTypeLabel);
+
+        soundTypeValueLabel = new QLabel();
+        soundTypeLayout->addWidget(soundTypeValueLabel);
+
+        changeSoundTypeButton = new QPushButton("Change");
+        soundTypeLayout->addWidget(changeSoundTypeButton);
+        ButtonStyleHelper::applyNormalStyle(changeSoundTypeButton);
+        connect(changeSoundTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTypeDialog()));
+
+        soundWidget = new SoundWidget();
+        soundLayout->addWidget(soundWidget);
     }
 
     void ObjectPanelWidget::setupTagsBox(QVBoxLayout* mainTagsLayout) {
@@ -450,6 +475,32 @@ namespace urchin {
             lightWidget->show();
         } else {
             lightWidget->hide();
+        }
+
+        disableObjectEvent = false;
+    }
+
+    void ObjectPanelWidget::setupObjectSoundDataFrom(const ObjectEntity& objectEntity) {
+        disableObjectEvent = true;
+
+        const SoundComponent* soundComponent = objectEntity.getSoundComponent();
+        if (soundComponent) {
+            if (soundComponent->getSound().getSoundType() == Sound::SoundType::LOCALIZABLE) {
+                soundTypeValueLabel->setText(QString::fromStdString(ChangeSoundTypeDialog::LOCALIZABLE_SOUND_LABEL));
+            } else if (soundComponent->getSound().getSoundType() == Sound::SoundType::GLOBAL) {
+                soundTypeValueLabel->setText(QString::fromStdString(ChangeSoundTypeDialog::GLOBAL_SOUND_LABEL));
+            } else {
+                throw std::invalid_argument("Unknown the sound type: " + std::to_string((int)soundComponent->getSound().getSoundType()));
+            }
+        } else {
+            soundTypeValueLabel->setText(QString::fromStdString(ChangeSoundTypeDialog::NONE_LABEL));
+        }
+
+        soundWidget->load(objectEntity, *objectController);
+        if (soundComponent) {
+            soundWidget->show();
+        } else {
+            soundWidget->hide();
         }
 
         disableObjectEvent = false;
@@ -628,7 +679,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::showChangeLightDialog() {
+    void ObjectPanelWidget::showChangeLightTypeDialog() {
         ChangeLightTypeDialog changeLightTypeDialog(this);
         changeLightTypeDialog.exec();
 
@@ -638,6 +689,19 @@ namespace urchin {
 
             objectController->changeLightType(objectEntity, lightType);
             setupObjectLightDataFrom(objectEntity);
+        }
+    }
+
+    void ObjectPanelWidget::showChangeSoundTypeDialog() {
+        ChangeSoundTypeDialog changeSoundTypeDialog(this);
+        changeSoundTypeDialog.exec();
+
+        if (changeSoundTypeDialog.result() == QDialog::Accepted) {
+            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            std::optional<Sound::SoundType> soundType = changeSoundTypeDialog.getSoundType();
+
+            objectController->changeSoundType(objectEntity, soundType);
+            setupObjectSoundDataFrom(objectEntity);
         }
     }
 

@@ -63,7 +63,7 @@ namespace urchin {
     }
 
     Sound::SoundType LocalizableSound::getSoundType() const {
-        return LOCALIZABLE;
+        return SoundType::LOCALIZABLE;
     }
 
     void LocalizableSound::setPosition(const Point3<float>& position) {

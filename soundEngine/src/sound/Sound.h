@@ -9,12 +9,12 @@ namespace urchin {
 
     class Sound {
         public:
-            enum SoundType {
+            enum class SoundType {
                 LOCALIZABLE,
                 GLOBAL
             };
 
-            enum SoundCategory {
+            enum class SoundCategory {
                 MUSIC, //ambient music in game or in the menus
                 EFFECTS //game effects (wind, explosion, radio playing music...), UI feedbacks
             };

@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     Sound::SoundType GlobalSound::getSoundType() const {
-        return GLOBAL;
+        return SoundType::GLOBAL;
     }
 
     std::unique_ptr<Sound> GlobalSound::clone() const {

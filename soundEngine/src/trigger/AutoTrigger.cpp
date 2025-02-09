@@ -17,14 +17,14 @@ namespace urchin {
         }
 
         bool needToPlaySound = false;
-        if (sound.lock()->getSoundType() == Sound::GLOBAL) {
+        if (sound.lock()->getSoundType() == Sound::SoundType::GLOBAL) {
             needToPlaySound = true;
-        } else if (sound.lock()->getSoundType() == Sound::LOCALIZABLE) {
+        } else if (sound.lock()->getSoundType() == Sound::SoundType::LOCALIZABLE) {
             const auto& localizableSound = static_cast<const LocalizableSound&>(*sound.lock());
             Sphere soundSphere(localizableSound.getRadius(), localizableSound.getPosition());
             needToPlaySound = soundSphere.collideWithPoint(listenerPosition);
         } else {
-            throw std::invalid_argument("Unknown sound type for auto trigger: " + std::to_string(sound.lock()->getSoundType()));
+            throw std::invalid_argument("Unknown sound type for auto trigger: " + std::to_string((int)sound.lock()->getSoundType()));
         }
 
         if (!isPlaying && needToPlaySound) {

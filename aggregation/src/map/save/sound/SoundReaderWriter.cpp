@@ -42,10 +42,10 @@ namespace urchin {
         } else if (sound.getSoundCategory() == Sound::SoundCategory::EFFECTS) {
             soundChunk.addAttribute(UdaAttribute(CATEGORY_ATTR, EFFECTS_VALUE));
         } else {
-            throw std::invalid_argument("Unknown sound category to write in map: " + std::to_string(sound.getSoundCategory()));
+            throw std::invalid_argument("Unknown sound category to write in map: " + std::to_string((int)sound.getSoundCategory()));
         }
 
-        if (sound.getSoundType() == Sound::LOCALIZABLE) {
+        if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
             const auto& localizableSound = static_cast<const LocalizableSound&>(sound);
             soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, LOCALIZABLE_VALUE));
 
@@ -54,10 +54,10 @@ namespace urchin {
 
             auto& radiusChunk = udaParser.createChunk(RADIUS_TAG, UdaAttribute(), &soundChunk);
             radiusChunk.setFloatValue(localizableSound.getRadius());
-        } else if (sound.getSoundType() == Sound::GLOBAL) {
+        } else if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
             soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, GLOBAL_VALUE));
         } else {
-            throw std::invalid_argument("Unknown sound type to write in map: " + std::to_string(sound.getSoundType()));
+            throw std::invalid_argument("Unknown sound type to write in map: " + std::to_string((int)sound.getSoundType()));
         }
     }
 
