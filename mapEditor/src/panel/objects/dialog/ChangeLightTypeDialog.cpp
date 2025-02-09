@@ -1,8 +1,7 @@
 #include <QtWidgets/QDialogButtonBox>
-#include <Urchin3dEngine.h>
+#include <QtWidgets/QLabel>
 
 #include <panel/objects/dialog/ChangeLightTypeDialog.h>
-#include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
 
@@ -10,7 +9,7 @@ namespace urchin {
                 QDialog(parent),
                 lightTypeComboBox(nullptr),
                 lightType(std::nullopt) {
-        this->setWindowTitle("Change Light");
+        this->setWindowTitle("Change Light Type");
         this->resize(245, 80);
         this->setFixedSize(this->width(), this->height());
 

@@ -4,6 +4,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QComboBox>
+#include <Urchin3dEngine.h>
 
 namespace urchin {
 
