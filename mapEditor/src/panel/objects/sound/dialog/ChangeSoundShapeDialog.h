@@ -3,7 +3,6 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QLabel>
 
 #include <UrchinSoundEngine.h>
 
@@ -22,7 +21,6 @@ namespace urchin {
 
             void done(int) override;
 
-            QLabel* soundShapeTypeLabel;
             QComboBox* soundShapeTypeComboBox;
 
             SoundShape::ShapeType shapeType;

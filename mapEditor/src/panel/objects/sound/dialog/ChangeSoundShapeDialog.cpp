@@ -1,5 +1,5 @@
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QDialogButtonBox>
-#include <QVariant>
 
 #include <panel/objects/sound/dialog/ChangeSoundShapeDialog.h>
 #include <panel/objects/sound/soundshape/SoundShapeWidget.h>
@@ -8,7 +8,6 @@ namespace urchin {
 
     ChangeSoundShapeDialog::ChangeSoundShapeDialog(QWidget* parent) :
             QDialog(parent),
-            soundShapeTypeLabel(nullptr),
             soundShapeTypeComboBox(nullptr),
             shapeType(SoundShape::ShapeType::SPHERE_SHAPE) {
         this->setWindowTitle("Select Trigger Shape");
@@ -30,7 +29,7 @@ namespace urchin {
     }
 
     void ChangeSoundShapeDialog::setupSoundShapeTypeFields(QGridLayout* mainLayout) {
-        soundShapeTypeLabel = new QLabel("Shape Type:");
+        auto* soundShapeTypeLabel = new QLabel("Shape Type:");
         mainLayout->addWidget(soundShapeTypeLabel, 0, 0);
 
         soundShapeTypeComboBox = new QComboBox();
