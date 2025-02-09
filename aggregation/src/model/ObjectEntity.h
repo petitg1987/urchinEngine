@@ -3,6 +3,7 @@
 #include <string>
 #include <Urchin3dEngine.h>
 #include <UrchinPhysicsEngine.h>
+#include <UrchinSoundEngine.h>
 #include <UrchinAIEngine.h>
 
 namespace urchin {

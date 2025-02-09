@@ -319,6 +319,18 @@ namespace urchin {
 
     SoundShapeWidget& SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape& shape, const SoundEntity& soundEntity) {
         soundShapeWidget = SoundShapeWidgetRetriever(soundEntity).retrieveShapeWidget(shape.getShapeType());
+
+        QString soundShapeWidgetName = QString::fromStdString("soundShapeWidget");
+
+        for (int i = 0; i < triggerShapeLayout->count(); ++i) {
+            QWidget* oldSoundShapeWidget = triggerShapeLayout->itemAt(i)->widget();
+            if(oldSoundShapeWidget && oldSoundShapeWidget->objectName() == soundShapeWidgetName) {
+                triggerShapeLayout->removeWidget(oldSoundShapeWidget);
+                oldSoundShapeWidget->deleteLater();
+            }
+        }
+
+        soundShapeWidget->setObjectName(soundShapeWidgetName);
         triggerShapeLayout->addWidget(soundShapeWidget);
         soundShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         soundShapeWidget->show();
