@@ -64,14 +64,21 @@ namespace urchin {
 
         auto* soundCategoryLabel= new QLabel("Sound Category:");
         generalPropertiesLayout->addWidget(soundCategoryLabel, 1, 0);
-        soundCategory = new QLabel();
+
+        soundCategory = new QComboBox();
         generalPropertiesLayout->addWidget(soundCategory, 1, 1);
+        soundCategory->addItem(MUSIC_SOUND_LABEL, QVariant((int)Sound::SoundCategory::MUSIC));
+        soundCategory->addItem(EFFECTS_SOUND_LABEL, QVariant((int)Sound::SoundCategory::EFFECTS));
+        connect(soundCategory, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundComponent()));
 
         auto* initialVolumeLabel= new QLabel("Initial volume:");
         generalPropertiesLayout->addWidget(initialVolumeLabel, 2, 0);
-        initialVolume = new QLabel();
-        generalPropertiesLayout->addWidget(initialVolume, 2, 1);
-
+        initialVolume = new QDoubleSpinBox();
+        generalPropertiesLayout->addWidget(initialVolume);
+        SpinBoxStyleHelper::applyDefaultStyleOn(initialVolume);
+        initialVolume->setMinimum(0.0);
+        initialVolume->setMaximum(1.0);
+        connect(initialVolume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
     }
 
     void SoundWidget::setupSpecificLocalizableSoundBox(QVBoxLayout* soundPropertiesLayout) {
@@ -124,16 +131,26 @@ namespace urchin {
         generalLayout->addWidget(playBehaviorLabel, 0, 0);
 
         playBehavior = new QComboBox();
-        generalLayout->addWidget(playBehavior, 0, 1, 1, 3);
+        generalLayout->addWidget(playBehavior, 0, 1);
         playBehavior->addItem(PLAY_ONCE_LABEL, QVariant((int)PlayBehavior::PLAY_ONCE));
         playBehavior->addItem(PLAY_LOOP_LABEL, QVariant((int)PlayBehavior::PLAY_LOOP));
         connect(playBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundTriggerProperties()));
 
-        auto* soundTriggerTypeLabel= new QLabel("Trigger:");
-        generalLayout->addWidget(soundTriggerTypeLabel, 3, 0);
+        auto* triggerTypeLayout = new QHBoxLayout();
+        triggerTypeLayout->setAlignment(Qt::AlignLeft);
+        triggerTypeLayout->setSpacing(15);
+        generalLayout->addLayout(triggerTypeLayout, 1, 0, 1, 2);
+
+        auto* soundTriggerTypeLabel= new QLabel("Trigger Type:");
+        triggerTypeLayout->addWidget(soundTriggerTypeLabel);
 
         soundTriggerType = new QLabel();
-        generalLayout->addWidget(soundTriggerType, 3, 1);
+        triggerTypeLayout->addWidget(soundTriggerType);
+
+        changeSoundTriggerTypeButton = new QPushButton("Change");
+        triggerTypeLayout->addWidget(changeSoundTriggerTypeButton);
+        ButtonStyleHelper::applyNormalStyle(changeSoundTriggerTypeButton);
+        connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerDialog()));
     }
 
     void SoundWidget::setupSpecificAreaTriggerBox(QVBoxLayout* soundTriggerLayout) {
@@ -178,15 +195,12 @@ namespace urchin {
         soundFile->setText(soundFilename.c_str());
         soundFile->setToolTip(soundPathFilename.c_str());
 
-        if (sound.getSoundCategory() == Sound::SoundCategory::MUSIC) {
-            soundCategory->setText(MUSIC_SOUND_LABEL);
-        } else if (sound.getSoundCategory() == Sound::SoundCategory::EFFECTS) {
-            soundCategory->setText(EFFECTS_SOUND_LABEL);
-        } else {
-            throw std::invalid_argument("Impossible to setup specific sound data for sound of category: " + std::to_string((int)sound.getSoundCategory()));
+        int soundCategoryIndex = soundCategory->findData((int)sound.getSoundCategory());
+        if (soundCategoryIndex != -1) {
+            soundCategory->setCurrentIndex(soundCategoryIndex);
         }
 
-        initialVolume->setText(TypeConverter::toString(sound.getInitialVolume()).c_str());
+        initialVolume->setValue(sound.getInitialVolume());
 
         if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
             setupGlobalSoundDataFrom();
@@ -277,7 +291,35 @@ namespace urchin {
         return *soundShapeWidget;
     }
 
-    void SoundWidget::updateSoundSpecificProperties() const {
+    void SoundWidget::updateSoundComponent() const {
+        if (!disableSoundEvent) {
+            const Sound& sound = objectEntity->getSoundComponent()->getSound();
+
+            //sound
+            QVariant soundCategoryVariant = soundCategory->currentData();
+            auto soundCategoryValue = static_cast<Sound::SoundCategory>(soundCategoryVariant.toInt());
+
+            float initialVolumeValue = (float)initialVolume->value();
+
+            std::shared_ptr<Sound> newSound;
+            if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
+                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+                auto radius = (float)this->radius->value();
+                newSound = std::make_shared<LocalizableSound>(soundFile->text().toStdString(), soundCategoryValue, initialVolumeValue, position, radius);
+            } else if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
+                newSound = std::make_shared<GlobalSound>(soundFile->text().toStdString(), soundCategoryValue, initialVolumeValue);
+            } else {
+                throw std::invalid_argument("Unknown sound type to update sound component: " + std::to_string((int)sound.getSoundType()));
+            }
+
+            //sound trigger
+            //TODO
+
+            //TOOD objectController->updateSoundComponent(*objectEntity, newSound, newSoundTrigger);
+        }
+    }
+
+    void SoundWidget::updateSoundSpecificProperties() const { //TODO remove ? + objectController
         if (!disableSoundEvent) {
             const Sound& sound = objectEntity->getSoundComponent()->getSound();
 
@@ -294,13 +336,17 @@ namespace urchin {
         }
     }
 
-    void SoundWidget::updateSoundTriggerProperties() const {
+    void SoundWidget::updateSoundTriggerProperties() const { //TODO remove ? + objectController
         if (!disableSoundEvent) {
-            QVariant playVariant = playBehavior->currentData();
-            auto playBehavior = static_cast<PlayBehavior>(playVariant.toInt());
+            QVariant playBehaviorVariant = playBehavior->currentData();
+            auto playBehavior = static_cast<PlayBehavior>(playBehaviorVariant.toInt());
 
             objectController->updateSoundTriggerGeneralProperties(*objectEntity, playBehavior);
         }
+    }
+
+    void SoundWidget::showChangeSoundTriggerDialog() {
+        //TODO impl
     }
 
     void SoundWidget::showChangeSoundShapeDialog() {

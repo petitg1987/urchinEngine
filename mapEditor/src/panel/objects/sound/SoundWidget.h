@@ -55,8 +55,8 @@ namespace urchin {
 
             //sound general properties
             QLabel* soundFile;
-            QLabel* soundCategory;
-            QLabel* initialVolume;
+            QComboBox* soundCategory;
+            QDoubleSpinBox* initialVolume;
 
             //sound specific properties
             QDoubleSpinBox* positionX;
@@ -70,14 +70,17 @@ namespace urchin {
 
             //sound trigger specific properties
             QVBoxLayout* triggerShapeLayout;
+            QPushButton* changeSoundTriggerTypeButton;
             QLabel* soundShapeType;
             QPushButton* changeSoundShapeTypeButton;
             SoundShapeWidget* soundShapeWidget;
 
         private slots:
+            void updateSoundComponent() const;
             void updateSoundSpecificProperties() const;
             void updateSoundTriggerProperties() const;
 
+            void showChangeSoundTriggerDialog();
             void showChangeSoundShapeDialog();
             void soundShapeChanged(SoundShape*) const;
     };
