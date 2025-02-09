@@ -57,10 +57,10 @@ namespace urchin {
         auto* generalPropertiesLayout = new QGridLayout(generalGroupBox);
         generalPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        auto* soundTypeLabel= new QLabel("Sound Type:");
-        generalPropertiesLayout->addWidget(soundTypeLabel, 0, 0);
-        soundType = new QLabel();
-        generalPropertiesLayout->addWidget(soundType, 0, 1);
+        auto* soundFileLabel= new QLabel("Sound File:");
+        generalPropertiesLayout->addWidget(soundFileLabel, 0, 0);
+        soundFile = new QLabel();
+        generalPropertiesLayout->addWidget(soundFile, 0, 1);
 
         auto* soundCategoryLabel= new QLabel("Sound Category:");
         generalPropertiesLayout->addWidget(soundCategoryLabel, 1, 0);
@@ -173,13 +173,10 @@ namespace urchin {
         //sound
         const Sound& sound = objectEntity->getSoundComponent()->getSound();
 
-        if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
-            setupGlobalSoundDataFrom();
-        } else if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
-            setupLocalizableSoundDataFrom(static_cast<const LocalizableSound&>(sound));
-        } else {
-            throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string((int)sound.getSoundType()));
-        }
+        std::string soundPathFilename = sound.getFilename();
+        std::string soundFilename = FileUtil::getFileName(soundPathFilename);
+        soundFile->setText(soundFilename.c_str());
+        soundFile->setToolTip(soundPathFilename.c_str());
 
         if (sound.getSoundCategory() == Sound::SoundCategory::MUSIC) {
             soundCategory->setText(MUSIC_SOUND_LABEL);
@@ -190,6 +187,14 @@ namespace urchin {
         }
 
         initialVolume->setText(TypeConverter::toString(sound.getInitialVolume()).c_str());
+
+        if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
+            setupGlobalSoundDataFrom();
+        } else if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
+            setupLocalizableSoundDataFrom(static_cast<const LocalizableSound&>(sound));
+        } else {
+            throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string((int)sound.getSoundType()));
+        }
 
         //sound trigger
         const SoundTrigger& soundTrigger = objectEntity->getSoundComponent()->getSoundTrigger();
@@ -210,14 +215,10 @@ namespace urchin {
 
     void SoundWidget::setupGlobalSoundDataFrom() const {
         specificLocalizableSoundGroupBox->hide();
-
-        soundType->setText(ChangeSoundDialog::GLOBAL_SOUND_LABEL);
     }
 
     void SoundWidget::setupLocalizableSoundDataFrom(const LocalizableSound& localizableSound) const {
         specificLocalizableSoundGroupBox->show();
-
-        soundType->setText(ChangeSoundDialog::LOCALIZABLE_SOUND_LABEL);
 
         this->positionX->setValue(localizableSound.getPosition().X);
         this->positionY->setValue(localizableSound.getPosition().Y);

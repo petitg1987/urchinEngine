@@ -54,7 +54,7 @@ namespace urchin {
             bool disableSoundEvent;
 
             //sound general properties
-            QLabel* soundType;
+            QLabel* soundFile;
             QLabel* soundCategory;
             QLabel* initialVolume;
 
