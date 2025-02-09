@@ -25,7 +25,7 @@ namespace urchin {
             void setupSpecificOmnidirectionalLightBox(QVBoxLayout*);
             void setupSpecificSpotLightBox(QVBoxLayout*);
 
-            void setupLightDataFrom(const Light*);
+            void setupLightDataFrom();
             void setupSunLightDataFrom(const SunLight*) const;
             void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight*) const;
             void setupSpotLightDataFrom(const SpotLight*) const;

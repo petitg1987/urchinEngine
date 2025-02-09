@@ -49,7 +49,7 @@ namespace urchin {
         this->objectController = &objectController;
 
         if (objectEntity.getSoundComponent()) {
-            //TODO setupLightDataFrom(objectEntity.getLight());
+            setupSoundDataFrom();
         }
     }
 
@@ -171,11 +171,11 @@ namespace urchin {
         soundShapeWidget = nullptr;
     }
 
-    void SoundWidget::setupSoundDataFrom(const ObjectEntity& objectEntity) {
+    void SoundWidget::setupSoundDataFrom() {
         disableSoundEvent = true;
 
         //sound
-        const Sound& sound = objectEntity.getSoundComponent()->getSound();
+        const Sound& sound = objectEntity->getSoundComponent()->getSound();
 
         if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
             setupGlobalSoundDataFrom();
@@ -196,7 +196,7 @@ namespace urchin {
         initialVolume->setText(TypeConverter::toString(sound.getInitialVolume()).c_str());
 
         //sound trigger
-        const SoundTrigger& soundTrigger = objectEntity.getSoundComponent()->getSoundTrigger();
+        const SoundTrigger& soundTrigger = objectEntity->getSoundComponent()->getSoundTrigger();
         setupPlayBehaviorDataFrom(soundTrigger);
 
         if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::AUTO_TRIGGER) {
@@ -204,7 +204,7 @@ namespace urchin {
         } else if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::MANUAL_TRIGGER) {
             setupManualTriggerDataFrom();
         } else if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::AREA_TRIGGER) {
-            setupShapeTriggerDataFrom(objectEntity);
+            setupShapeTriggerDataFrom();
         } else {
             throw std::invalid_argument("Impossible to setup specific sound trigger data for sound trigger of type: " + std::to_string(soundTrigger.getTriggerType()));
         }
@@ -247,11 +247,11 @@ namespace urchin {
         soundTriggerType->setText(MANUAL_TRIGGER_LABEL);
     }
 
-    void SoundWidget::setupShapeTriggerDataFrom(const ObjectEntity& objectEntity) {
+    void SoundWidget::setupShapeTriggerDataFrom() {
         specificAreaTriggerGroupBox->show();
         soundTriggerType->setText(AREA_TRIGGER_LABEL);
 
-        const auto& soundShape = objectEntity.getSoundComponent()->getAreaTrigger().getSoundShape();
+        const auto& soundShape = objectEntity->getSoundComponent()->getAreaTrigger().getSoundShape();
         SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape);
         soundShapeWidget.setupShapePropertiesFrom(soundShape);
 
@@ -314,7 +314,7 @@ namespace urchin {
             SoundShape::ShapeType shapeType = changeSoundShapeDialog.getShapeType();
 
             objectController->changeSoundShape(*objectEntity, shapeType);
-            setupShapeTriggerDataFrom(*objectEntity);
+            setupShapeTriggerDataFrom();
         }
     }
 

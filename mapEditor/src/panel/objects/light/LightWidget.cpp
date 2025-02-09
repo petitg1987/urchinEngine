@@ -51,7 +51,7 @@ namespace urchin {
         this->objectController = &objectController;
 
         if (objectEntity.getLight()) {
-            setupLightDataFrom(objectEntity.getLight());
+            setupLightDataFrom();
         }
     }
 
@@ -240,8 +240,10 @@ namespace urchin {
         connect(spotAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
-    void LightWidget::setupLightDataFrom(const Light* light) {
+    void LightWidget::setupLightDataFrom() {
         disableLightEvent = true;
+
+        const Light* light = objectEntity->getLight();
 
         this->colorR->setValue(light->getLightColor().X);
         this->colorG->setValue(light->getLightColor().Y);
