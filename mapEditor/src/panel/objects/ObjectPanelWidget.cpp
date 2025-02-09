@@ -8,7 +8,7 @@
 #include <panel/objects/dialog/NewObjectDialog.h>
 #include <panel/objects/dialog/CloneObjectDialog.h>
 #include <panel/objects/dialog/RenameObjectDialog.h>
-#include <panel/objects/dialog/ChangeLightDialog.h>
+#include <panel/objects/dialog/ChangeLightTypeDialog.h>
 #include <scene/objects/move/ObjectMoveController.h>
 #include <scene/SceneDisplayerWindow.h>
 
@@ -433,16 +433,16 @@ namespace urchin {
         const Light* light = objectEntity.getLight();
         if (light) {
             if (light->getLightType() == Light::LightType::SUN) {
-                lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::SUN_LIGHT_LABEL));
+                lightTypeValueLabel->setText(QString::fromStdString(ChangeLightTypeDialog::SUN_LIGHT_LABEL));
             } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-                lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::OMNIDIRECTIONAL_LIGHT_LABEL));
+                lightTypeValueLabel->setText(QString::fromStdString(ChangeLightTypeDialog::OMNIDIRECTIONAL_LIGHT_LABEL));
             } else if (light->getLightType() == Light::LightType::SPOT) {
-                lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::SPOT_LIGHT_LABEL));
+                lightTypeValueLabel->setText(QString::fromStdString(ChangeLightTypeDialog::SPOT_LIGHT_LABEL));
             } else {
                 throw std::invalid_argument("Unknown the light type: " + std::to_string((int)light->getLightType()));
             }
         } else {
-            lightTypeValueLabel->setText(QString::fromStdString(ChangeLightDialog::NONE_LABEL));
+            lightTypeValueLabel->setText(QString::fromStdString(ChangeLightTypeDialog::NONE_LABEL));
         }
 
         lightWidget->load(objectEntity, *objectController);
@@ -629,12 +629,12 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showChangeLightDialog() {
-        ChangeLightDialog changeLightDialog(this);
-        changeLightDialog.exec();
+        ChangeLightTypeDialog changeLightTypeDialog(this);
+        changeLightTypeDialog.exec();
 
-        if (changeLightDialog.result() == QDialog::Accepted) {
+        if (changeLightTypeDialog.result() == QDialog::Accepted) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            std::optional<Light::LightType> lightType = changeLightDialog.getLightType();
+            std::optional<Light::LightType> lightType = changeLightTypeDialog.getLightType();
 
             objectController->changeLightType(objectEntity, lightType);
             setupObjectLightDataFrom(objectEntity);

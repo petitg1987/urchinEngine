@@ -1,12 +1,12 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <Urchin3dEngine.h>
 
-#include <panel/objects/dialog/ChangeLightDialog.h>
+#include <panel/objects/dialog/ChangeLightTypeDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
 
-    ChangeLightDialog::ChangeLightDialog(QWidget* parent) :
+    ChangeLightTypeDialog::ChangeLightTypeDialog(QWidget* parent) :
                 QDialog(parent),
                 lightTypeComboBox(nullptr),
                 lightType(std::nullopt) {
@@ -28,7 +28,7 @@ namespace urchin {
         connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void ChangeLightDialog::setupLightTypeFields(QGridLayout* mainLayout) {
+    void ChangeLightTypeDialog::setupLightTypeFields(QGridLayout* mainLayout) {
         auto *lightTypeLabel = new QLabel("Light Type:");
         mainLayout->addWidget(lightTypeLabel, 1, 0);
 
@@ -41,7 +41,7 @@ namespace urchin {
         lightTypeComboBox->addItem(SPOT_LIGHT_LABEL, QVariant((int)Light::LightType::SPOT));
     }
 
-    void ChangeLightDialog::done(int r) {
+    void ChangeLightTypeDialog::done(int r) {
         if (Accepted == r) {
             int lightTypeIndex = lightTypeComboBox->currentData().toInt();
             if (lightTypeIndex == -1) {
@@ -55,7 +55,7 @@ namespace urchin {
         }
     }
 
-    std::optional<Light::LightType> ChangeLightDialog::getLightType() const {
+    std::optional<Light::LightType> ChangeLightTypeDialog::getLightType() const {
         return lightType;
     }
 

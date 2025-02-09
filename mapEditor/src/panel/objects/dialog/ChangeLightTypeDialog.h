@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class ChangeLightDialog final : public QDialog {
+    class ChangeLightTypeDialog final : public QDialog {
         Q_OBJECT
 
         public:
@@ -16,7 +16,7 @@ namespace urchin {
             static constexpr char OMNIDIRECTIONAL_LIGHT_LABEL[] = "Omnidirectional";
             static constexpr char SPOT_LIGHT_LABEL[] = "Spot";
 
-            explicit ChangeLightDialog(QWidget*);
+            explicit ChangeLightTypeDialog(QWidget*);
 
             std::optional<Light::LightType> getLightType() const;
 
