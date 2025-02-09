@@ -129,7 +129,7 @@ namespace urchin {
 
             void showChangeLightTypeDialog();
 
-            void showChangeSoundTypeDialog();
+            void showChangeSoundDialog();
     };
 
 }

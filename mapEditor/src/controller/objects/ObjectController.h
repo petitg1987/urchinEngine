@@ -2,7 +2,9 @@
 
 #include <list>
 #include <UrchinCommon.h>
+#include <Urchin3dEngine.h>
 #include <UrchinPhysicsEngine.h>
+#include <UrchinSoundEngine.h>
 #include <UrchinAggregation.h>
 
 #include <controller/AbstractController.h>
@@ -38,6 +40,8 @@ namespace urchin {
             const ObjectEntity& updateSunLightProperties(const ObjectEntity&, const Vector3<float>&);
             const ObjectEntity& updateOmnidirectionalLightProperties(const ObjectEntity&, float, const Point3<float>&);
             const ObjectEntity& updateSpotLightProperties(const ObjectEntity&, float, const Point3<float>&, const Vector3<float>&, float, float);
+
+            void changeSound(const ObjectEntity&, std::optional<Sound::SoundType>, std::string);
 
         private:
             ObjectEntity& findObjectEntity(const ObjectEntity&) const;

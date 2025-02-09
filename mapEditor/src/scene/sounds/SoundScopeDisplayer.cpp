@@ -18,7 +18,7 @@ namespace urchin {
 
         if (objectEntity) {
             const Sound& sound = objectEntity->getSoundComponent()->getSound();
-            if (sound.getSoundType() == Sound::LOCALIZABLE) {
+            if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
                 const auto& localizableSound = static_cast<const LocalizableSound&>(sound);
                 auto geometryModel = std::make_unique<SphereModel>(Sphere(localizableSound.getRadius(), localizableSound.getPosition()), 13);
                 geometryModel->setPolygonMode(PolygonMode::WIREFRAME);

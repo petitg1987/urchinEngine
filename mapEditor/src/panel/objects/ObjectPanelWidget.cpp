@@ -9,7 +9,7 @@
 #include <panel/objects/dialog/CloneObjectDialog.h>
 #include <panel/objects/dialog/RenameObjectDialog.h>
 #include <panel/objects/dialog/ChangeLightTypeDialog.h>
-#include <panel/objects/dialog/ChangeSoundTypeDialog.h>
+#include <panel/objects/dialog/ChangeSoundDialog.h>
 #include <scene/objects/move/ObjectMoveController.h>
 #include <scene/SceneDisplayerWindow.h>
 
@@ -317,7 +317,7 @@ namespace urchin {
         changeSoundTypeButton = new QPushButton("Change");
         soundTypeLayout->addWidget(changeSoundTypeButton);
         ButtonStyleHelper::applyNormalStyle(changeSoundTypeButton);
-        connect(changeSoundTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTypeDialog()));
+        connect(changeSoundTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundDialog()));
 
         soundWidget = new SoundWidget();
         soundLayout->addWidget(soundWidget);
@@ -432,6 +432,7 @@ namespace urchin {
 
         setupObjectPhysicsDataFrom(objectEntity);
         setupObjectLightDataFrom(objectEntity);
+        setupObjectSoundDataFrom(objectEntity);
         setupObjectTagsDataFrom(objectEntity);
         disableObjectEvent = false;
     }
@@ -486,14 +487,14 @@ namespace urchin {
         const SoundComponent* soundComponent = objectEntity.getSoundComponent();
         if (soundComponent) {
             if (soundComponent->getSound().getSoundType() == Sound::SoundType::LOCALIZABLE) {
-                soundTypeValueLabel->setText(QString::fromStdString(ChangeSoundTypeDialog::LOCALIZABLE_SOUND_LABEL));
+                soundTypeValueLabel->setText(QString::fromStdString(ChangeSoundDialog::LOCALIZABLE_SOUND_LABEL));
             } else if (soundComponent->getSound().getSoundType() == Sound::SoundType::GLOBAL) {
-                soundTypeValueLabel->setText(QString::fromStdString(ChangeSoundTypeDialog::GLOBAL_SOUND_LABEL));
+                soundTypeValueLabel->setText(QString::fromStdString(ChangeSoundDialog::GLOBAL_SOUND_LABEL));
             } else {
                 throw std::invalid_argument("Unknown the sound type: " + std::to_string((int)soundComponent->getSound().getSoundType()));
             }
         } else {
-            soundTypeValueLabel->setText(QString::fromStdString(ChangeSoundTypeDialog::NONE_LABEL));
+            soundTypeValueLabel->setText(QString::fromStdString(ChangeSoundDialog::NONE_LABEL));
         }
 
         soundWidget->load(objectEntity, *objectController);
@@ -692,15 +693,16 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::showChangeSoundTypeDialog() {
-        ChangeSoundTypeDialog changeSoundTypeDialog(this);
-        changeSoundTypeDialog.exec();
+    void ObjectPanelWidget::showChangeSoundDialog() {
+        ChangeSoundDialog changeSoundDialog(this);
+        changeSoundDialog.exec();
 
-        if (changeSoundTypeDialog.result() == QDialog::Accepted) {
+        if (changeSoundDialog.result() == QDialog::Accepted) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            std::optional<Sound::SoundType> soundType = changeSoundTypeDialog.getSoundType();
+            std::optional<Sound::SoundType> soundType = changeSoundDialog.getSoundType();
+            std::string soundFilename = changeSoundDialog.getSoundFilename();
 
-            objectController->changeSoundType(objectEntity, soundType);
+            objectController->changeSound(objectEntity, soundType, soundFilename);
             setupObjectSoundDataFrom(objectEntity);
         }
     }

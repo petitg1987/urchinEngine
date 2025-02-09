@@ -83,8 +83,8 @@ namespace urchin {
         soundTypeComboBox = new QComboBox();
         mainLayout->addWidget(soundTypeComboBox, 2, 1);
         soundTypeComboBox->setFixedWidth(150);
-        soundTypeComboBox->addItem(GLOBAL_SOUND_LABEL, QVariant(Sound::SoundType::GLOBAL));
-        soundTypeComboBox->addItem(LOCALIZABLE_SOUND_LABEL, QVariant(Sound::SoundType::LOCALIZABLE));
+        soundTypeComboBox->addItem(GLOBAL_SOUND_LABEL, QVariant((int)Sound::SoundType::GLOBAL));
+        soundTypeComboBox->addItem(LOCALIZABLE_SOUND_LABEL, QVariant((int)Sound::SoundType::LOCALIZABLE));
     }
 
     void NewSoundDialog::setupSoundCategoryFields(QGridLayout* mainLayout) {
@@ -94,8 +94,8 @@ namespace urchin {
         soundCategoryComboBox = new QComboBox();
         mainLayout->addWidget(soundCategoryComboBox, 3, 1);
         soundCategoryComboBox->setFixedWidth(150);
-        soundCategoryComboBox->addItem(MUSIC_SOUND_LABEL, QVariant(Sound::SoundCategory::MUSIC));
-        soundCategoryComboBox->addItem(EFFECTS_SOUND_LABEL, QVariant(Sound::SoundCategory::EFFECTS));
+        soundCategoryComboBox->addItem(MUSIC_SOUND_LABEL, QVariant((int)Sound::SoundCategory::MUSIC));
+        soundCategoryComboBox->addItem(EFFECTS_SOUND_LABEL, QVariant((int)Sound::SoundCategory::EFFECTS));
     }
 
     void NewSoundDialog::setupSoundInitialVolume(QGridLayout* mainLayout) {
@@ -144,12 +144,12 @@ namespace urchin {
             auto initialVolume = (float)initialVolumeSpinBox->value();
 
             std::shared_ptr<Sound> sound;
-            if (soundType == Sound::GLOBAL) {
+            if (soundType == Sound::SoundType::GLOBAL) {
                 sound = std::make_shared<GlobalSound>(soundFilename, soundCategory, initialVolume);
-            } else if (soundType == Sound::LOCALIZABLE) {
+            } else if (soundType == Sound::SoundType::LOCALIZABLE) {
                 sound = std::make_shared<LocalizableSound>(soundFilename, soundCategory, initialVolume, Point3(0.0f, 0.0f, 0.0f), 10.0f);
             } else {
-                throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
+                throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string((int)soundType));
             }
 
             QVariant variant = soundTriggerTypeComboBox->currentData();

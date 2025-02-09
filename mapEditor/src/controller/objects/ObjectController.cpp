@@ -253,6 +253,29 @@ namespace urchin {
         return objectEntity;
     }
 
+    void ObjectController::changeSound(const ObjectEntity& constObjectEntity, std::optional<Sound::SoundType> soundType, std::string soundFilename) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+
+        if (soundType.has_value()) {
+            std::shared_ptr<Sound> sound;
+            if (soundType.value() == Sound::SoundType::LOCALIZABLE) {
+                Point3<float> soundPosition = objectEntity.getModel()->getTransform().getPosition();
+                sound = std::make_shared<LocalizableSound>(std::move(soundFilename), Sound::SoundCategory::EFFECTS, 1.0f, soundPosition, 5.0f);
+            } else if (soundType.value() == Sound::SoundType::GLOBAL) {
+                sound = std::make_shared<GlobalSound>(std::move(soundFilename), Sound::SoundCategory::MUSIC, 1.0f);
+            } else {
+                throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string((int)soundType.value()));
+            }
+
+            auto defaultSoundTrigger = std::make_shared<AutoTrigger>(PlayBehavior::PLAY_ONCE, sound);
+            objectEntity.setSoundComponent(std::make_shared<SoundComponent>(sound, defaultSoundTrigger));
+        } else {
+            objectEntity.setSoundComponent(std::shared_ptr<SoundComponent>(nullptr));
+        }
+
+        markModified();
+    }
+
     ObjectEntity& ObjectController::findObjectEntity(const ObjectEntity& constObjectEntity) const {
         const auto& objectEntities = getMap().getObjectEntities();
         auto it = std::ranges::find_if(objectEntities, [&constObjectEntity](const auto& o){return o.get() == &constObjectEntity;});

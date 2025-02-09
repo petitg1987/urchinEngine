@@ -10,7 +10,7 @@ namespace urchin {
                 lightTypeComboBox(nullptr),
                 lightType(std::nullopt) {
         this->setWindowTitle("Change Light Type");
-        this->resize(245, 80);
+        this->resize(260, 90);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
@@ -19,7 +19,7 @@ namespace urchin {
         setupLightTypeFields(mainLayout);
 
         auto* buttonBox = new QDialogButtonBox();
-        mainLayout->addWidget(buttonBox, 2, 0, 1, 2, Qt::AlignRight);
+        mainLayout->addWidget(buttonBox, 1, 0, 1, 2, Qt::AlignRight);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -29,10 +29,10 @@ namespace urchin {
 
     void ChangeLightTypeDialog::setupLightTypeFields(QGridLayout* mainLayout) {
         auto *lightTypeLabel = new QLabel("Light Type:");
-        mainLayout->addWidget(lightTypeLabel, 1, 0);
+        mainLayout->addWidget(lightTypeLabel, 0, 0);
 
         lightTypeComboBox = new QComboBox();
-        mainLayout->addWidget(lightTypeComboBox, 1, 1);
+        mainLayout->addWidget(lightTypeComboBox, 0, 1);
         lightTypeComboBox->setFixedWidth(150);
         lightTypeComboBox->addItem(NONE_LABEL, QVariant(-1));
         lightTypeComboBox->addItem(SUN_LIGHT_LABEL, QVariant((int)Light::LightType::SUN));

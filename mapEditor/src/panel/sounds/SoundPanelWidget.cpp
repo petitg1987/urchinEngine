@@ -241,7 +241,7 @@ namespace urchin {
         } else if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
             setupLocalizableSoundDataFrom(static_cast<const LocalizableSound&>(sound));
         } else {
-            throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound.getSoundType()));
+            throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string((int)sound.getSoundType()));
         }
 
         if (sound.getSoundCategory() == Sound::SoundCategory::MUSIC) {
@@ -249,7 +249,7 @@ namespace urchin {
         } else if (sound.getSoundCategory() == Sound::SoundCategory::EFFECTS) {
             soundCategory->setText(NewSoundDialog::EFFECTS_SOUND_LABEL);
         } else {
-            throw std::invalid_argument("Impossible to setup specific sound data for sound of category: " + std::to_string(sound.getSoundCategory()));
+            throw std::invalid_argument("Impossible to setup specific sound data for sound of category: " + std::to_string((int)sound.getSoundCategory()));
         }
 
         initialVolume->setText(TypeConverter::toString(sound.getInitialVolume()).c_str());
@@ -368,15 +368,15 @@ namespace urchin {
             const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
             const Sound& sound = soundEntity.getSoundComponent()->getSound();
 
-            if (sound.getSoundType() == Sound::GLOBAL) {
+            if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
                 //nothing to update
-            } else if (sound.getSoundType() == Sound::LOCALIZABLE) {
+            } else if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
                 Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
                 auto radius = (float)this->radius->value();
 
                 soundController->updateLocalizableSoundProperties(soundEntity, position, radius);
             } else {
-                throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string(sound.getSoundType()));
+                throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string((int)sound.getSoundType()));
             }
         }
     }
