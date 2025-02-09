@@ -23,21 +23,19 @@ namespace urchin {
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(0, 0, 0, 0);
 
-        soundPropertiesGroupBox = new QGroupBox("Sound Properties");
+        auto* soundPropertiesGroupBox = new QGroupBox("Sound Properties");
         mainLayout->addWidget(soundPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(soundPropertiesGroupBox);
         soundPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        soundPropertiesGroupBox->hide();
 
         auto* soundPropertiesLayout = new QVBoxLayout(soundPropertiesGroupBox);
         setupSoundGeneralPropertiesBox(soundPropertiesLayout);
         setupSpecificLocalizableSoundBox(soundPropertiesLayout);
 
-        soundTriggerGroupBox = new QGroupBox("Sound Trigger");
+        auto* soundTriggerGroupBox = new QGroupBox("Sound Trigger");
         mainLayout->addWidget(soundTriggerGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(soundTriggerGroupBox);
         soundTriggerGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        soundTriggerGroupBox->hide();
 
         auto* soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
         setupSoundTriggerGeneralPropertiesBox(soundTriggerLayout);
