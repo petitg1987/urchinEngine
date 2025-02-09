@@ -155,7 +155,7 @@ namespace urchin {
             if (isFeatureAvailable) {
                 score += 5000;
             } else if (!expectedFeature.optional) {
-                return {physicalDeviceToCheck, "missing " + expectedFeature.featureDescription + " support"};
+                return {physicalDeviceToCheck, "missing Vulkan feature '" + expectedFeature.featureDescription + "' support"};
             }
         }
 
@@ -164,14 +164,14 @@ namespace urchin {
             if (isFeatureAvailable) {
                 score += 5000;
             } else if (!expectedFeature.optional) {
-                return {physicalDeviceToCheck, "missing " + expectedFeature.featureDescription + " support"};
+                return {physicalDeviceToCheck, "missing Vulkan feature '" + expectedFeature.featureDescription + "' support"};
             }
         }
 
         //check required extensions
         for (const auto& [extensionName, extensionDescription] : physicalDeviceRequiredExtensions) {
             if (!checkPhysicalDeviceExtensionSupport(physicalDeviceToCheck, extensionName)) {
-                return {physicalDeviceToCheck, "missing " + extensionDescription + " support"};
+                return {physicalDeviceToCheck, "missing Vulkan extension '" + extensionDescription + "' support"};
             }
         }
 
