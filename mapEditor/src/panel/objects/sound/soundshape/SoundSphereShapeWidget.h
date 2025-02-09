@@ -5,7 +5,7 @@
 
 #include <UrchinCommon.h>
 #include <UrchinSoundEngine.h>
-#include <panel/sounds/soundshape/SoundShapeWidget.h>
+#include <panel/objects/sound/soundshape/SoundShapeWidget.h>
 
 namespace urchin {
 
@@ -13,7 +13,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit SoundSphereShapeWidget(const SoundEntity&);
+            SoundSphereShapeWidget();
             ~SoundSphereShapeWidget() override = default;
 
             std::string getSoundShapeName() const override;

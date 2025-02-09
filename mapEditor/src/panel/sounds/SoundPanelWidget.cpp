@@ -4,8 +4,8 @@
 #include <widget/style/ButtonStyleHelper.h>
 #include <widget/style/FrameStyleHelper.h>
 #include <panel/sounds/dialog/NewSoundDialog.h>
-#include <panel/sounds/dialog/ChangeSoundShapeDialog.h>
-#include <panel/sounds/soundshape/SoundShapeWidgetRetriever.h>
+#include <panel/objects/sound/dialog/ChangeSoundShapeDialog.h>
+#include <panel/objects/sound/soundshape/SoundShapeWidgetRetriever.h>
 
 namespace urchin {
 
@@ -311,14 +311,14 @@ namespace urchin {
         soundTriggerType->setText(NewSoundDialog::AREA_TRIGGER_LABEL);
 
         const auto& soundShape = soundEntity.getSoundComponent()->getAreaTrigger().getSoundShape();
-        SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, soundEntity);
+        SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape);
         soundShapeWidget.setupShapePropertiesFrom(soundShape);
 
         soundShapeType->setText(QString::fromStdString(soundShapeWidget.getSoundShapeName()));
     }
 
-    SoundShapeWidget& SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape& shape, const SoundEntity& soundEntity) {
-        soundShapeWidget = SoundShapeWidgetRetriever(soundEntity).retrieveShapeWidget(shape.getShapeType());
+    SoundShapeWidget& SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape& shape) {
+        soundShapeWidget = SoundShapeWidgetRetriever().retrieveShapeWidget(shape.getShapeType());
 
         QString soundShapeWidgetName = QString::fromStdString("soundShapeWidget");
 

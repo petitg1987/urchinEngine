@@ -1,13 +1,12 @@
 #include <QtWidgets/QLabel>
 
-#include <panel/sounds/soundshape/SoundShapeWidget.h>
+#include <panel/objects/sound/soundshape/SoundShapeWidget.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 
 namespace urchin {
 
-    SoundShapeWidget::SoundShapeWidget(const SoundEntity& soundEntity) :
+    SoundShapeWidget::SoundShapeWidget() :
             disableShapeEvent(false),
-            soundEntity(soundEntity),
             shape(nullptr) {
         setContentsMargins(0, 0, 0, 0);
 
@@ -23,10 +22,6 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(margin);
         margin->setMinimum(0.0);
         connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-    }
-
-    const SoundEntity& SoundShapeWidget::getSoundEntity() const {
-        return soundEntity;
     }
 
     const SoundShape* SoundShapeWidget::retrieveShape() {

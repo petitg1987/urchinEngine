@@ -4,6 +4,7 @@
 
 #include <controller/objects/ObjectController.h>
 #include <controller/EntityControllerUtil.h>
+#include <panel/objects/sound/soundshape/support/DefaultSoundShapeCreator.h> //TODO ref correct ?
 
 namespace urchin {
 
@@ -274,6 +275,47 @@ namespace urchin {
         }
 
         markModified();
+    }
+
+    void ObjectController::changeSoundShape(const ObjectEntity& constObjectEntity, SoundShape::ShapeType shapeType) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        AreaTrigger& areaTrigger = objectEntity.getSoundComponent()->getAreaTrigger();
+
+        auto newShape = DefaultSoundShapeCreator(constObjectEntity.getSoundComponent()->getSound()).createDefaultSoundShape(shapeType);
+        areaTrigger.setSoundShape(std::move(newShape));
+
+        markModified();
+    }
+
+    const ObjectEntity& ObjectController::updateLocalizableSoundProperties(const ObjectEntity& constObjectEntity, const Point3<float>& position, float radius) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        auto& localizableSound = static_cast<LocalizableSound&>(objectEntity.getSoundComponent()->getSound());
+
+        localizableSound.setPosition(position);
+        localizableSound.setRadius(radius);
+
+        markModified();
+        return objectEntity;
+    }
+
+    const ObjectEntity& ObjectController::updateSoundTriggerGeneralProperties(const ObjectEntity& constObjectEntity, PlayBehavior playBehavior) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        SoundTrigger& soundTrigger = objectEntity.getSoundComponent()->getSoundTrigger();
+
+        soundTrigger.setPlayBehavior(playBehavior);
+
+        markModified();
+        return objectEntity;
+    }
+
+    const ObjectEntity& ObjectController::updateSoundShape(const ObjectEntity& constObjectEntity, std::unique_ptr<SoundShape> newSoundShape) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        AreaTrigger& areaTrigger = objectEntity.getSoundComponent()->getAreaTrigger();
+
+        areaTrigger.setSoundShape(std::move(newSoundShape));
+
+        markModified();
+        return objectEntity;
     }
 
     ObjectEntity& ObjectController::findObjectEntity(const ObjectEntity& constObjectEntity) const {

@@ -1,8 +1,8 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QVariant>
 
-#include <panel/sounds/dialog/ChangeSoundShapeDialog.h>
-#include <panel/sounds/soundshape/SoundShapeWidget.h>
+#include <panel/objects/sound/dialog/ChangeSoundShapeDialog.h>
+#include <panel/objects/sound/soundshape/SoundShapeWidget.h>
 
 namespace urchin {
 

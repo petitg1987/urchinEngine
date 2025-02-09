@@ -1,13 +1,12 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QBoxLayout>
 
-#include <panel/sounds/soundshape/SoundSphereShapeWidget.h>
+#include <panel/objects/sound/soundshape/SoundSphereShapeWidget.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 
 namespace urchin {
 
-    SoundSphereShapeWidget::SoundSphereShapeWidget(const SoundEntity& soundEntity) :
-            SoundShapeWidget(soundEntity) {
+    SoundSphereShapeWidget::SoundSphereShapeWidget() {
         auto* positionLabel = new QLabel("Position:");
         mainLayout->addWidget(positionLabel, 1, 0);
 

@@ -10,7 +10,7 @@
 #include <UrchinCommon.h>
 #include <controller/sounds/SoundController.h>
 #include <panel/sounds/SoundTableView.h>
-#include <panel/sounds/soundshape/SoundShapeWidget.h>
+#include <panel/objects/sound/soundshape/SoundShapeWidget.h>
 
 namespace urchin {
 
@@ -44,7 +44,7 @@ namespace urchin {
             void setupManualTriggerDataFrom() const;
             void setupShapeTriggerDataFrom(const SoundEntity&);
 
-            SoundShapeWidget& retrieveSoundShapeWidget(const SoundShape&, const SoundEntity&);
+            SoundShapeWidget& retrieveSoundShapeWidget(const SoundShape&);
 
             SoundController* soundController;
 

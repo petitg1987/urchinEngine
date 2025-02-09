@@ -5,7 +5,7 @@
 
 #include <UrchinCommon.h>
 #include <panel/sounds/dialog/NewSoundDialog.h>
-#include <panel/sounds/soundshape/support/DefaultSoundShapeCreator.h>
+#include <panel/objects/sound/soundshape/support/DefaultSoundShapeCreator.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>

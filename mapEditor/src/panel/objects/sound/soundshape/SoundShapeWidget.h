@@ -17,10 +17,9 @@ namespace urchin {
             static constexpr char SPHERE_SHAPE_LABEL[] = "Sphere";
             static constexpr char BOX_SHAPE_LABEL[] = "Box";
 
-            explicit SoundShapeWidget(const SoundEntity&);
+            SoundShapeWidget();
             ~SoundShapeWidget() override = default;
 
-            const SoundEntity& getSoundEntity() const;
             virtual std::string getSoundShapeName() const = 0;
             const SoundShape* retrieveShape();
 
@@ -44,7 +43,6 @@ namespace urchin {
         private:
             QDoubleSpinBox* margin;
 
-            const SoundEntity& soundEntity;
             SoundShape* shape;
     };
 
