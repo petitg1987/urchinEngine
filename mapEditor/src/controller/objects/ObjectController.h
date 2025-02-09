@@ -43,7 +43,6 @@ namespace urchin {
 
             void changeSound(const ObjectEntity&, std::optional<Sound::SoundType>, std::string);
             void changeSoundShape(const ObjectEntity&, SoundShape::ShapeType);
-            const ObjectEntity& updateLocalizableSoundProperties(const ObjectEntity&, const Point3<float>&, float);
             const ObjectEntity& updateSoundTriggerGeneralProperties(const ObjectEntity&, PlayBehavior);
             const ObjectEntity& updateSoundShape(const ObjectEntity&, std::unique_ptr<SoundShape>);
 

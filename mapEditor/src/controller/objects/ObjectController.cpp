@@ -287,17 +287,6 @@ namespace urchin {
         markModified();
     }
 
-    const ObjectEntity& ObjectController::updateLocalizableSoundProperties(const ObjectEntity& constObjectEntity, const Point3<float>& position, float radius) {
-        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        auto& localizableSound = static_cast<LocalizableSound&>(objectEntity.getSoundComponent()->getSound());
-
-        localizableSound.setPosition(position);
-        localizableSound.setRadius(radius);
-
-        markModified();
-        return objectEntity;
-    }
-
     const ObjectEntity& ObjectController::updateSoundTriggerGeneralProperties(const ObjectEntity& constObjectEntity, PlayBehavior playBehavior) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         SoundTrigger& soundTrigger = objectEntity.getSoundComponent()->getSoundTrigger();

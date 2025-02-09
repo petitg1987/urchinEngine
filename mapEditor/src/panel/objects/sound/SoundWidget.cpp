@@ -99,15 +99,15 @@ namespace urchin {
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
         SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
-        connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
+        connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
         SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
-        connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
+        connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
         SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
-        connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
+        connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
 
         auto* radiusLabel= new QLabel("Radius:");
         radiusLabel->setToolTip("Inaudible Distance");
@@ -117,7 +117,7 @@ namespace urchin {
         localizableSoundLayout->addWidget(radius, 1, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(radius);
         radius->setMinimum(0.0);
-        connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
+        connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
     }
 
     void SoundWidget::setupSoundTriggerGeneralPropertiesBox(QVBoxLayout* soundTriggerLayout) {
@@ -316,24 +316,7 @@ namespace urchin {
             //sound trigger
             //TODO
 
-            //TOOD objectController->updateSoundComponent(*objectEntity, newSound, newSoundTrigger);
-        }
-    }
-
-    void SoundWidget::updateSoundSpecificProperties() const { //TODO remove ? + objectController
-        if (!disableSoundEvent) {
-            const Sound& sound = objectEntity->getSoundComponent()->getSound();
-
-            if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
-                //nothing to update
-            } else if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
-                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
-                auto radius = (float)this->radius->value();
-
-                objectController->updateLocalizableSoundProperties(*objectEntity, position, radius);
-            } else {
-                throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string((int)sound.getSoundType()));
-            }
+            //TODO objectController->updateSoundComponent(*objectEntity, newSound, newSoundTrigger);
         }
     }
 

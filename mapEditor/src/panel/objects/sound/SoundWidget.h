@@ -73,7 +73,6 @@ namespace urchin {
 
         private slots:
             void updateSoundComponent() const;
-            void updateSoundSpecificProperties() const;
             void updateSoundTriggerProperties() const;
 
             void showChangeSoundTriggerDialog();
