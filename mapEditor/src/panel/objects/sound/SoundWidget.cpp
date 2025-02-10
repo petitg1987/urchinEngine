@@ -7,6 +7,7 @@
 #include <panel/objects/sound/dialog/ChangeSoundShapeDialog.h>
 #include <panel/objects/sound/dialog/ChangeSoundTriggerDialog.h>
 #include <panel/objects/sound/soundshape/SoundShapeWidgetRetriever.h>
+#include <panel/objects/sound/soundshape/support/DefaultSoundShapeCreator.h>
 #include <panel/objects/dialog/ChangeSoundDialog.h>
 
 namespace urchin {
@@ -335,9 +336,24 @@ namespace urchin {
 
         if (changeSoundTriggerDialog.result() == QDialog::Accepted) {
             SoundTrigger::TriggerType triggerType = changeSoundTriggerDialog.getSoundTriggerType();
+            if (triggerType != objectEntity->getSoundComponent()->getSoundTrigger().getTriggerType()) {
+                std::shared_ptr clonedSound = objectEntity->getSoundComponent()->getSound().clone();
 
-            //TODO objectController->changeSoundShape(*objectEntity, triggerType);
-            //TODO setupShapeTriggerDataFrom();
+                std::shared_ptr<SoundTrigger> newSoundTrigger;
+                if (triggerType == SoundTrigger::AUTO_TRIGGER) {
+                    newSoundTrigger = std::make_shared<AutoTrigger>(PlayBehavior::PLAY_ONCE, clonedSound);
+                } else if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
+                    newSoundTrigger = std::make_shared<ManualTrigger>(PlayBehavior::PLAY_ONCE);
+                } else if (triggerType == SoundTrigger::AREA_TRIGGER) {
+                    auto newDefaultShape = DefaultSoundShapeCreator(*clonedSound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
+                    newSoundTrigger = std::make_shared<AreaTrigger>(PlayBehavior::PLAY_ONCE, std::move(newDefaultShape));
+                } else {
+                    throw std::invalid_argument("Unknown the trigger type to create a new sound trigger: " + std::to_string(triggerType));
+                }
+
+                objectController->updateSoundComponent(*objectEntity, std::move(clonedSound), std::move(newSoundTrigger));
+                setupSoundDataFrom();
+            }
         }
     }
 

@@ -42,9 +42,10 @@ namespace urchin {
             const ObjectEntity& updateSpotLightProperties(const ObjectEntity&, float, const Point3<float>&, const Vector3<float>&, float, float);
 
             void changeSound(const ObjectEntity&, std::optional<Sound::SoundType>, std::string);
-            void changeSoundShape(const ObjectEntity&, SoundShape::ShapeType);
-            const ObjectEntity& updateSoundTriggerGeneralProperties(const ObjectEntity&, PlayBehavior);
-            const ObjectEntity& updateSoundShape(const ObjectEntity&, std::unique_ptr<SoundShape>);
+            void updateSoundComponent(const ObjectEntity&, std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
+            void changeSoundShape(const ObjectEntity&, SoundShape::ShapeType); //TODO remove ?
+            const ObjectEntity& updateSoundTriggerGeneralProperties(const ObjectEntity&, PlayBehavior); //TODO remove ?
+            const ObjectEntity& updateSoundShape(const ObjectEntity&, std::unique_ptr<SoundShape>); //TODO remove ?
 
         private:
             ObjectEntity& findObjectEntity(const ObjectEntity&) const;
