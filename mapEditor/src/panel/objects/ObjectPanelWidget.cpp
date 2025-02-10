@@ -548,7 +548,7 @@ namespace urchin {
             const std::string& newObjectName = cloneObjectEntityDialog.getObjectName();
             const ObjectEntity& toCloneObjectEntity = *objectTableView->getSelectedObjectEntity();
             const ObjectEntity& newObjectEntity = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
-            objectController->moveObjectInFrontOfCamera(newObjectEntity, true); //TODO review for light, sound
+            objectController->moveObjectInFrontOfCamera(newObjectEntity, true);
 
             int row = objectTableView->addObject(newObjectEntity);
             objectTableView->selectRow(row);
