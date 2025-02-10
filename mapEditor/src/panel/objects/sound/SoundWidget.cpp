@@ -297,6 +297,9 @@ namespace urchin {
         if (!disableSoundEvent) {
             //sound
             const Sound& sound = objectEntity->getSoundComponent()->getSound();
+
+            std::string filename = soundFile->toolTip().toStdString();
+
             QVariant soundCategoryVariant = soundCategory->currentData();
             auto soundCategoryValue = static_cast<Sound::SoundCategory>(soundCategoryVariant.toInt());
 
@@ -306,9 +309,9 @@ namespace urchin {
             if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
                 Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
                 auto radius = (float)this->radius->value();
-                newSound = std::make_shared<LocalizableSound>(soundFile->text().toStdString(), soundCategoryValue, initialVolumeValue, position, radius);
+                newSound = std::make_shared<LocalizableSound>(filename, soundCategoryValue, initialVolumeValue, position, radius);
             } else if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
-                newSound = std::make_shared<GlobalSound>(soundFile->text().toStdString(), soundCategoryValue, initialVolumeValue);
+                newSound = std::make_shared<GlobalSound>(filename, soundCategoryValue, initialVolumeValue);
             } else {
                 throw std::invalid_argument("Unknown sound type to update sound component: " + std::to_string((int)sound.getSoundType()));
             }
@@ -326,8 +329,8 @@ namespace urchin {
                 newSoundTrigger = std::make_shared<ManualTrigger>(playBehavior);
             } else if (soundTrigger.getTriggerType() == SoundTrigger::AREA_TRIGGER) {
                 AreaTrigger& areaTrigger = objectEntity->getSoundComponent()->getAreaTrigger();
-                std::unique_ptr areSoundShape = areaTrigger.getSoundShape().clone();
-                newSoundTrigger = std::make_shared<AreaTrigger>(playBehavior, std::move(areSoundShape));
+                std::unique_ptr areaSoundShape = areaTrigger.getSoundShape().clone();
+                newSoundTrigger = std::make_shared<AreaTrigger>(playBehavior, std::move(areaSoundShape));
             } else {
                 throw std::invalid_argument("Unknown the trigger type to create a new sound trigger: " + std::to_string(soundTrigger.getTriggerType()));
             }
