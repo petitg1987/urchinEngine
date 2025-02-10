@@ -13,8 +13,8 @@
 #include <scene/SceneFreeCamera.h>
 #include <scene/objects/BodyShapeDisplayer.h>
 #include <scene/objects/move/ObjectMoveController.h>
-#include <scene/lights/LightScopeDisplayer.h>
-#include <scene/sounds/SoundScopeDisplayer.h>
+#include <scene/objects/light/LightScopeDisplayer.h>
+#include <scene/objects/sound/SoundScopeDisplayer.h>
 
 namespace urchin {
 

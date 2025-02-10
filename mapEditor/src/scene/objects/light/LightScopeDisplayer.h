@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    class LightScopeDisplayer { //TODO move inside objects folder
+    class LightScopeDisplayer {
         public:
             explicit LightScopeDisplayer(Scene&);
             ~LightScopeDisplayer();
