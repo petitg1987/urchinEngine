@@ -44,7 +44,6 @@ namespace urchin {
             void changeSound(const ObjectEntity&, std::optional<Sound::SoundType>, std::string);
             void updateSoundComponent(const ObjectEntity&, std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
             void changeSoundShape(const ObjectEntity&, SoundShape::ShapeType); //TODO remove ?
-            const ObjectEntity& updateSoundTriggerGeneralProperties(const ObjectEntity&, PlayBehavior); //TODO remove ?
             const ObjectEntity& updateSoundShape(const ObjectEntity&, std::unique_ptr<SoundShape>); //TODO remove ?
 
         private:

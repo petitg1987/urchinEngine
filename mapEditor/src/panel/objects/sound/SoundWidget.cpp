@@ -136,7 +136,7 @@ namespace urchin {
         generalLayout->addWidget(playBehavior, 0, 1);
         playBehavior->addItem(PLAY_ONCE_LABEL, QVariant((int)PlayBehavior::PLAY_ONCE));
         playBehavior->addItem(PLAY_LOOP_LABEL, QVariant((int)PlayBehavior::PLAY_LOOP));
-        connect(playBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundTriggerProperties()));
+        connect(playBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundComponent()));
 
         auto* triggerTypeLayout = new QHBoxLayout();
         triggerTypeLayout->setAlignment(Qt::AlignLeft);
@@ -295,9 +295,8 @@ namespace urchin {
 
     void SoundWidget::updateSoundComponent() const {
         if (!disableSoundEvent) {
-            const Sound& sound = objectEntity->getSoundComponent()->getSound();
-
             //sound
+            const Sound& sound = objectEntity->getSoundComponent()->getSound();
             QVariant soundCategoryVariant = soundCategory->currentData();
             auto soundCategoryValue = static_cast<Sound::SoundCategory>(soundCategoryVariant.toInt());
 
@@ -315,18 +314,25 @@ namespace urchin {
             }
 
             //sound trigger
-            //TODO
+            const SoundTrigger& soundTrigger = objectEntity->getSoundComponent()->getSoundTrigger();
 
-            //TODO objectController->updateSoundComponent(*objectEntity, newSound, newSoundTrigger);
-        }
-    }
-
-    void SoundWidget::updateSoundTriggerProperties() const { //TODO remove ? + objectController
-        if (!disableSoundEvent) {
             QVariant playBehaviorVariant = playBehavior->currentData();
             auto playBehavior = static_cast<PlayBehavior>(playBehaviorVariant.toInt());
 
-            objectController->updateSoundTriggerGeneralProperties(*objectEntity, playBehavior);
+            std::shared_ptr<SoundTrigger> newSoundTrigger;
+            if (soundTrigger.getTriggerType() == SoundTrigger::AUTO_TRIGGER) {
+                newSoundTrigger = std::make_shared<AutoTrigger>(playBehavior, newSound);
+            } else if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
+                newSoundTrigger = std::make_shared<ManualTrigger>(playBehavior);
+            } else if (soundTrigger.getTriggerType() == SoundTrigger::AREA_TRIGGER) {
+                //TODO review
+                auto newDefaultShape = DefaultSoundShapeCreator(*newSound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
+                newSoundTrigger = std::make_shared<AreaTrigger>(playBehavior, std::move(newDefaultShape));
+            } else {
+                throw std::invalid_argument("Unknown the trigger type to create a new sound trigger: " + std::to_string(soundTrigger.getTriggerType()));
+            }
+
+            objectController->updateSoundComponent(*objectEntity, newSound, newSoundTrigger);
         }
     }
 
