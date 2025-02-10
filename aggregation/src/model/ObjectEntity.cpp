@@ -182,6 +182,7 @@ namespace urchin {
         if (rigidBody) {
             rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
         }
+        //TODO update light and sound position relatively ?
     }
 
     void ObjectEntity::updateOrientation(const Quaternion<float>& newOrientation) const {

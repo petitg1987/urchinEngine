@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class SoundScopeDisplayer {
+    class SoundScopeDisplayer { //TODO move inside objects folder
         public:
             explicit SoundScopeDisplayer(Scene&);
             ~SoundScopeDisplayer();
