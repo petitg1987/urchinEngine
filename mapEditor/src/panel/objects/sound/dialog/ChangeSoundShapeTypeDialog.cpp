@@ -1,12 +1,12 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QDialogButtonBox>
 
-#include <panel/objects/sound/dialog/ChangeSoundShapeDialog.h>
+#include <panel/objects/sound/dialog/ChangeSoundShapeTypeDialog.h>
 #include <panel/objects/sound/soundshape/SoundShapeWidget.h>
 
 namespace urchin {
 
-    ChangeSoundShapeDialog::ChangeSoundShapeDialog(QWidget* parent) :
+    ChangeSoundShapeTypeDialog::ChangeSoundShapeTypeDialog(QWidget* parent) :
             QDialog(parent),
             soundShapeTypeComboBox(nullptr),
             shapeType(SoundShape::ShapeType::SPHERE_SHAPE) {
@@ -28,7 +28,7 @@ namespace urchin {
         connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void ChangeSoundShapeDialog::setupSoundShapeTypeFields(QGridLayout* mainLayout) {
+    void ChangeSoundShapeTypeDialog::setupSoundShapeTypeFields(QGridLayout* mainLayout) {
         auto* soundShapeTypeLabel = new QLabel("Shape Type:");
         mainLayout->addWidget(soundShapeTypeLabel, 0, 0);
 
@@ -39,7 +39,7 @@ namespace urchin {
         soundShapeTypeComboBox->addItem(SoundShapeWidget::BOX_SHAPE_LABEL, QVariant(SoundShape::ShapeType::BOX_SHAPE));
     }
 
-    void ChangeSoundShapeDialog::done(int r) {
+    void ChangeSoundShapeTypeDialog::done(int r) {
         if (Accepted == r) {
             QVariant variant = soundShapeTypeComboBox->currentData();
             shapeType = static_cast<SoundShape::ShapeType>(variant.toInt());
@@ -49,7 +49,7 @@ namespace urchin {
         }
     }
 
-    SoundShape::ShapeType ChangeSoundShapeDialog::getShapeType() const {
+    SoundShape::ShapeType ChangeSoundShapeTypeDialog::getShapeType() const {
         return shapeType;
     }
 

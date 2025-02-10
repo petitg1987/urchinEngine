@@ -8,11 +8,11 @@
 
 namespace urchin {
 
-    class ChangeSoundShapeDialog final : public QDialog {
+    class ChangeSoundShapeTypeDialog final : public QDialog {
         Q_OBJECT
 
         public:
-            explicit ChangeSoundShapeDialog(QWidget*);
+            explicit ChangeSoundShapeTypeDialog(QWidget*);
 
             SoundShape::ShapeType getShapeType() const;
 

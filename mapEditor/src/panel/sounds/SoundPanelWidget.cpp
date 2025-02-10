@@ -4,7 +4,7 @@
 #include <widget/style/ButtonStyleHelper.h>
 #include <widget/style/FrameStyleHelper.h>
 #include <panel/sounds/dialog/NewSoundDialog.h>
-#include <panel/objects/sound/dialog/ChangeSoundShapeDialog.h>
+#include <panel/objects/sound/dialog/ChangeSoundShapeTypeDialog.h>
 #include <panel/objects/sound/soundshape/SoundShapeWidgetRetriever.h>
 
 namespace urchin {
@@ -393,7 +393,7 @@ namespace urchin {
     }
 
     void SoundPanelWidget::showChangeSoundShapeDialog() {
-        ChangeSoundShapeDialog changeSoundShapeDialog(this);
+        ChangeSoundShapeTypeDialog changeSoundShapeDialog(this);
         changeSoundShapeDialog.exec();
 
         if (changeSoundShapeDialog.result() == QDialog::Accepted) {

@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class ChangeSoundTriggerDialog final : public QDialog {
+    class ChangeSoundTriggerTypeDialog final : public QDialog {
         Q_OBJECT
 
         public:
@@ -16,7 +16,7 @@ namespace urchin {
             static constexpr char MANUAL_TRIGGER_LABEL[] = "Manual";
             static constexpr char AREA_TRIGGER_LABEL[] = "Area";
 
-            explicit ChangeSoundTriggerDialog(QWidget*);
+            explicit ChangeSoundTriggerTypeDialog(QWidget*);
 
             SoundTrigger::TriggerType getSoundTriggerType() const;
 
