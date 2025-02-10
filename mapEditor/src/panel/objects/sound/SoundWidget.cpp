@@ -325,9 +325,9 @@ namespace urchin {
             } else if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
                 newSoundTrigger = std::make_shared<ManualTrigger>(playBehavior);
             } else if (soundTrigger.getTriggerType() == SoundTrigger::AREA_TRIGGER) {
-                //TODO review
-                auto newDefaultShape = DefaultSoundShapeCreator(*newSound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
-                newSoundTrigger = std::make_shared<AreaTrigger>(playBehavior, std::move(newDefaultShape));
+                AreaTrigger& areaTrigger = objectEntity->getSoundComponent()->getAreaTrigger();
+                std::unique_ptr areSoundShape = areaTrigger.getSoundShape().clone();
+                newSoundTrigger = std::make_shared<AreaTrigger>(playBehavior, std::move(areSoundShape));
             } else {
                 throw std::invalid_argument("Unknown the trigger type to create a new sound trigger: " + std::to_string(soundTrigger.getTriggerType()));
             }
