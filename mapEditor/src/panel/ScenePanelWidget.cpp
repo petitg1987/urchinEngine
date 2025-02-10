@@ -10,9 +10,6 @@ namespace urchin {
         tabObjects = new ObjectPanelWidget();
         addTab(tabObjects, "Object");
 
-        tabLights = new LightPanelWidget();
-        addTab(tabLights, "Light");
-
         tabTerrains = new TerrainPanelWidget();
         addTab(tabTerrains, "Terrain");
 
@@ -21,9 +18,6 @@ namespace urchin {
 
         tabSky = new SkyPanelWidget();
         addTab(tabSky, "Sky");
-
-        tabSounds = new SoundPanelWidget();
-        addTab(tabSounds, "Sound");
 
         tabAI = new AIPanelWidget();
         addTab(tabAI, "AI");
@@ -35,10 +29,6 @@ namespace urchin {
 
     ObjectPanelWidget* ScenePanelWidget::getObjectPanelWidget() const {
         return tabObjects;
-    }
-
-    LightPanelWidget* ScenePanelWidget::getLightPanelWidget() const {
-        return tabLights;
     }
 
     TerrainPanelWidget* ScenePanelWidget::getTerrainPanelWidget() const {
@@ -53,10 +43,6 @@ namespace urchin {
         return tabSky;
     }
 
-    SoundPanelWidget* ScenePanelWidget::getSoundPanelWidget() const {
-        return tabSounds;
-    }
-
     AIPanelWidget* ScenePanelWidget::getAIPanelWidget() const {
         return tabAI;
     }
@@ -67,11 +53,9 @@ namespace urchin {
 
         setEnabled(true);
         tabObjects->load(sceneController.getObjectController());
-        tabLights->load(sceneController.getLightController());
         tabTerrains->load(sceneController.getTerrainController());
         tabWaters->load(sceneController.getWaterController());
         tabSky->load(sceneController.getSkyController());
-        tabSounds->load(sceneController.getSoundController());
         tabAI->load(sceneController.getAIController());
 
         return sceneController;
@@ -79,11 +63,9 @@ namespace urchin {
 
     void ScenePanelWidget::closeMap() {
         tabObjects->unload();
-        tabLights->unload();
         tabTerrains->unload();
         tabWaters->unload();
         tabSky->unload();
-        tabSounds->unload();
         tabAI->unload();
         setEnabled(false);
 
@@ -94,17 +76,13 @@ namespace urchin {
         int tabIndex = this->currentIndex();
         if (tabIndex == 0) {
             return MainTab::OBJECTS;
-        } else if (tabIndex == 1) { //TODO remove
-            return MainTab::LIGHTS;
-        } else if (tabIndex == 2) {
+        } else if (tabIndex == 1) {
             return MainTab::TERRAINS;
-        } else if (tabIndex == 3) {
+        } else if (tabIndex == 2) {
             return MainTab::WATERS;
-        } else if (tabIndex == 4) {
+        } else if (tabIndex == 3) {
             return MainTab::SKY;
-        } else if (tabIndex == 5) { //TODO remove
-            return MainTab::SOUNDS;
-        } else if (tabIndex == 6) {
+        } else if (tabIndex == 4) {
             return MainTab::AI;
         }
 

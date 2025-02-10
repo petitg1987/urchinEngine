@@ -14,8 +14,6 @@
 #include <panel/objects/ObjectTableView.h>
 #include <panel/objects/physics/bodyshape/BodyCompoundShapeWidget.h>
 #include <panel/objects/physics/bodyshape/support/LocalizedShapeTableView.h>
-#include <panel/lights/LightTableView.h>
-#include <panel/sounds/SoundTableView.h>
 #include <StateSaveHelper.h>
 
 namespace urchin {
@@ -172,8 +170,6 @@ namespace urchin {
         scenePanelWidget->getObjectPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_SUB_TAB_SELECTION_CHANGED);
         scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
         scenePanelWidget->getObjectPanelWidget()->getPhysicsWidget()->addObserver(this, PhysicsWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
-        scenePanelWidget->getLightPanelWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
-        scenePanelWidget->getSoundPanelWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
         scenePanelWidget->addObserver(this, ScenePanelWidget::TAB_SELECTED);
         horizontalLayout->addWidget(scenePanelWidget);
 

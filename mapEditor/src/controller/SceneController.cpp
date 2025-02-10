@@ -6,9 +6,6 @@ namespace urchin {
         objectController = std::make_unique<ObjectController>();
         subControllers.emplace_back(objectController.get());
 
-        lightController = std::make_unique<LightController>();
-        subControllers.emplace_back(lightController.get());
-
         terrainController = std::make_unique<TerrainController>();
         subControllers.emplace_back(terrainController.get());
 
@@ -17,9 +14,6 @@ namespace urchin {
 
         skyController = std::make_unique<SkyController>();
         subControllers.emplace_back(skyController.get());
-
-        soundController = std::make_unique<SoundController>();
-        subControllers.emplace_back(soundController.get());
 
         aiController = std::make_unique<AIController>();
         subControllers.emplace_back(aiController.get());
@@ -69,10 +63,6 @@ namespace urchin {
         return *objectController;
     }
 
-    LightController& SceneController::getLightController() const {
-        return *lightController;
-    }
-
     TerrainController& SceneController::getTerrainController() const {
         return *terrainController;
     }
@@ -83,10 +73,6 @@ namespace urchin {
 
     SkyController& SceneController::getSkyController() const {
         return *skyController;
-    }
-
-    SoundController& SceneController::getSoundController() const {
-        return *soundController;
     }
 
     AIController& SceneController::getAIController() const {
