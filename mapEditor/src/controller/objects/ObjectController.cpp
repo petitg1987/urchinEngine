@@ -100,6 +100,8 @@ namespace urchin {
     const ObjectEntity& ObjectController::updateObjectTransform(const ObjectEntity& constObjectEntity, const Transform<float>& transform) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
+        //TODO call constObjectEntity.updateTransform to beneficiate of update of all linked entity ?
+
         Model* model = objectEntity.getModel();
         Transform<float> oldTransform = model->getTransform();
         Vector3<float> positionDelta = oldTransform.getPosition().vector(transform.getPosition());

@@ -177,19 +177,33 @@ namespace urchin {
         return newObject;
     }
 
+    void ObjectEntity::updateTransform(const Transform<float>& newTransform) const {
+        model->setPosition(newTransform.getPosition());
+        if (rigidBody) {
+            rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
+        }
+
+        model->setOrientation(newTransform.getOrientation());
+        if (rigidBody) {
+            rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
+        }
+
+        //TODO update light and sound position relatively ?
+        //TODO update scale
+    }
+
     void ObjectEntity::updatePosition(const Point3<float>& newPosition) const {
+        updateTransform(Transform(newPosition, model->getTransform().getOrientation(), model->getTransform().getScale()));
+
         model->setPosition(newPosition);
         if (rigidBody) {
             rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
         }
-        //TODO update light and sound position relatively ?
+
     }
 
     void ObjectEntity::updateOrientation(const Quaternion<float>& newOrientation) const {
-        model->setOrientation(newOrientation);
-        if (rigidBody) {
-            rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
-        }
+        updateTransform(Transform(model->getTransform().getPosition(), newOrientation, model->getTransform().getScale()));
     }
 
     void ObjectEntity::refresh() const {

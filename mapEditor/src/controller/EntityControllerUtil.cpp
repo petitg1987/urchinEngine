@@ -2,7 +2,6 @@
 
 namespace urchin {
 
-    //TODO review usage, still make sense ? is isCloneEntity always false ?
     Point3<float> EntityControllerUtil::determineNewPosition(const Point3<float>& currentEntityPosition, bool isClonedEntity, const Camera& camera) {
         if (!isClonedEntity) { //new entity created from scratch
             return computeFrontCameraPosition(camera);
