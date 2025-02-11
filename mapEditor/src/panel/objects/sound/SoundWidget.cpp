@@ -92,7 +92,7 @@ namespace urchin {
         auto* localizableSoundLayout = new QGridLayout(specificLocalizableSoundGroupBox);
         localizableSoundLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        auto* positionLabel= new QLabel("Position:");
+        auto* positionLabel= new QLabel("Position rel.:");
         localizableSoundLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -236,9 +236,12 @@ namespace urchin {
     void SoundWidget::setupLocalizableSoundDataFrom(const LocalizableSound& localizableSound) const {
         specificLocalizableSoundGroupBox->show();
 
-        this->positionX->setValue(localizableSound.getPosition().X);
-        this->positionY->setValue(localizableSound.getPosition().Y);
-        this->positionZ->setValue(localizableSound.getPosition().Z);
+        Point3<float> absoluteSoundPosition = localizableSound.getPosition();
+        Point3<float> relativeSoundPosition = absoluteSoundPosition - objectEntity->getModel()->getTransform().getPosition();
+
+        this->positionX->setValue(relativeSoundPosition.X);
+        this->positionY->setValue(relativeSoundPosition.Y);
+        this->positionZ->setValue(relativeSoundPosition.Z);
 
         this->radius->setValue(localizableSound.getRadius());
     }
@@ -307,9 +310,10 @@ namespace urchin {
 
             std::shared_ptr<Sound> newSound;
             if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
-                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+                Point3 relativeSoundPosition((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+                Point3 absoluteSoundPosition = objectEntity->getModel()->getTransform().getPosition() + relativeSoundPosition;
                 auto radius = (float)this->radius->value();
-                newSound = std::make_shared<LocalizableSound>(filename, soundCategoryValue, initialVolumeValue, position, radius);
+                newSound = std::make_shared<LocalizableSound>(filename, soundCategoryValue, initialVolumeValue, absoluteSoundPosition, radius);
             } else if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
                 newSound = std::make_shared<GlobalSound>(filename, soundCategoryValue, initialVolumeValue);
             } else {

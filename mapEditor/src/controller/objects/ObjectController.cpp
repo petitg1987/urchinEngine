@@ -102,6 +102,7 @@ namespace urchin {
         Model* model = objectEntity.getModel();
 
         Transform<float> oldTransform = model->getTransform();
+        Vector3<float> positionDelta = oldTransform.getPosition().vector(transform.getPosition());
         model->setTransform(transform);
 
         if (objectEntity.getRigidBody()) {
@@ -111,6 +112,18 @@ namespace urchin {
 
             updateObjectPhysicsShape(objectEntity, std::move(scaledCollisionShape));
         }
+
+        if (objectEntity.getLight()) {
+            if (objectEntity.getLight()->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+                auto* omnidirectionalLight = dynamic_cast<OmnidirectionalLight*>(objectEntity.getLight());
+                omnidirectionalLight->setPosition(omnidirectionalLight->getPosition().translate(positionDelta));
+            } else if (objectEntity.getLight()->getLightType() == Light::LightType::SPOT) {
+                auto* spotLight = dynamic_cast<SpotLight*>(objectEntity.getLight());
+                spotLight->setPosition(spotLight->getPosition().translate(positionDelta));
+            }
+        }
+
+        //TODO sound localizable + area shape
 
         markModified();
         return objectEntity;

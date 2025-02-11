@@ -7,7 +7,7 @@
 namespace urchin {
 
     SoundSphereShapeWidget::SoundSphereShapeWidget() {
-        auto* positionLabel = new QLabel("Position:");
+        auto* positionLabel = new QLabel("Position:"); //TODO should be relative
         mainLayout->addWidget(positionLabel, 1, 0);
 
         auto* positionLayout = new QHBoxLayout();

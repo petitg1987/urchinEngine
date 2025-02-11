@@ -132,7 +132,7 @@ namespace urchin {
 
         auto* omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
 
-        auto* positionLabel= new QLabel("Position:");
+        auto* positionLabel= new QLabel("Position rel.:");
         omniLightLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -170,7 +170,7 @@ namespace urchin {
 
         auto* spotLightLayout = new QGridLayout(specificSpotLightGroupBox);
 
-        auto* positionLabel= new QLabel("Position:");
+        auto* positionLabel= new QLabel("Position rel.:");
         spotLightLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -282,9 +282,12 @@ namespace urchin {
         specificOmnidirectionalLightGroupBox->show();
         specificSpotLightGroupBox->hide();
 
-        this->omniPositionX->setValue(light->getPosition().X);
-        this->omniPositionY->setValue(light->getPosition().Y);
-        this->omniPositionZ->setValue(light->getPosition().Z);
+        Point3<float> absoluteLightPosition = light->getPosition();
+        Point3<float> relativeLightPosition = absoluteLightPosition - objectEntity->getModel()->getTransform().getPosition();
+
+        this->omniPositionX->setValue(relativeLightPosition.X);
+        this->omniPositionY->setValue(relativeLightPosition.Y);
+        this->omniPositionZ->setValue(relativeLightPosition.Z);
 
         this->omniAttenuation->setValue(light->getExponentialAttenuation());
     }
@@ -294,9 +297,12 @@ namespace urchin {
         specificOmnidirectionalLightGroupBox->hide();
         specificSpotLightGroupBox->show();
 
-        this->spotPositionX->setValue(light->getPosition().X);
-        this->spotPositionY->setValue(light->getPosition().Y);
-        this->spotPositionZ->setValue(light->getPosition().Z);
+        Point3<float> absoluteLightPosition = light->getPosition();
+        Point3<float> relativeLightPosition = absoluteLightPosition - objectEntity->getModel()->getTransform().getPosition();
+
+        this->spotPositionX->setValue(relativeLightPosition.X);
+        this->spotPositionY->setValue(relativeLightPosition.Y);
+        this->spotPositionZ->setValue(relativeLightPosition.Z);
 
         this->spotDirectionX->setValue(light->getDirections()[0].X);
         this->spotDirectionY->setValue(light->getDirections()[0].Y);
@@ -326,12 +332,14 @@ namespace urchin {
                 Vector3 direction((float)sunDirectionX->value(), (float)sunDirectionY->value(), (float)sunDirectionZ->value());
                 objectController->updateSunLightProperties(*objectEntity, direction);
             } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-                Point3 position((float)omniPositionX->value(), (float)omniPositionY->value(), (float)omniPositionZ->value());
-                objectController->updateOmnidirectionalLightProperties(*objectEntity, (float)omniAttenuation->value(), position);
+                Point3 relativeLightPosition((float)omniPositionX->value(), (float)omniPositionY->value(), (float)omniPositionZ->value());
+                Point3 absoluteLightPosition = objectEntity->getModel()->getTransform().getPosition() + relativeLightPosition;
+                objectController->updateOmnidirectionalLightProperties(*objectEntity, (float)omniAttenuation->value(), absoluteLightPosition);
             } else if (light->getLightType() == Light::LightType::SPOT) {
-                Point3 position((float)spotPositionX->value(), (float)spotPositionY->value(), (float)spotPositionZ->value());
+                Point3 relativeLightPosition((float)spotPositionX->value(), (float)spotPositionY->value(), (float)spotPositionZ->value());
+                Point3 absoluteLightPosition = objectEntity->getModel()->getTransform().getPosition() + relativeLightPosition;
                 Vector3 direction((float)spotDirectionX->value(), (float)spotDirectionY->value(), (float)spotDirectionZ->value());
-                objectController->updateSpotLightProperties(*objectEntity, (float)spotAttenuation->value(), position, direction, (float)spotInnerAngle->value(), (float)spotOuterAngle->value());
+                objectController->updateSpotLightProperties(*objectEntity, (float)spotAttenuation->value(), absoluteLightPosition, direction, (float)spotInnerAngle->value(), (float)spotOuterAngle->value());
             } else {
                 throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string((int)light->getLightType()));
             }
