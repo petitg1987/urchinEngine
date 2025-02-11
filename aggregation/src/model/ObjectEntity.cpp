@@ -77,6 +77,21 @@ namespace urchin {
         setupAIObject();
     }
 
+    void ObjectEntity::updateObjectPhysicsShape(std::unique_ptr<const CollisionShape3D> newCollisionShape) {
+        PhysicsTransform physicsTransform(getModel()->getTransform().getPosition(), getModel()->getTransform().getOrientation());
+
+        auto newRigidBody = std::make_unique<RigidBody>(getName(), physicsTransform, std::move(newCollisionShape));
+        newRigidBody->setMass(getRigidBody()->getMass());
+        newRigidBody->setRestitution(getRigidBody()->getRestitution());
+        newRigidBody->setFriction(getRigidBody()->getFriction());
+        newRigidBody->setRollingFriction(getRigidBody()->getRollingFriction());
+        newRigidBody->setDamping(getRigidBody()->getLinearDamping(), getRigidBody()->getAngularDamping());
+        newRigidBody->setLinearFactor(getRigidBody()->getLinearFactor());
+        newRigidBody->setAngularFactor(getRigidBody()->getAngularFactor());
+
+        setupInteractiveBody(std::move(newRigidBody));
+    }
+
     RigidBody* ObjectEntity::getRigidBody() const {
         return rigidBody.get();
     }
@@ -177,22 +192,41 @@ namespace urchin {
         return newObject;
     }
 
-    void ObjectEntity::updateTransform(const Transform<float>& newTransform) const {
-        model->setPosition(newTransform.getPosition());
+    void ObjectEntity::updateTransform(const Transform<float>& transform) {
+        Transform<float> oldTransform = model->getTransform();
+        Vector3<float> positionDelta = oldTransform.getPosition().vector(transform.getPosition());
+
+        model->setTransform(transform);
         if (rigidBody) {
             rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
+
+            Vector3<float> scaleRatio = transform.getScale() / oldTransform.getScale();
+            auto scaledCollisionShape = rigidBody->getShape().scale(scaleRatio);
+            updateObjectPhysicsShape(std::move(scaledCollisionShape));
         }
 
-        model->setOrientation(newTransform.getOrientation());
-        if (rigidBody) {
-            rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
+        if (light) {
+            if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+                auto* omnidirectionalLight = dynamic_cast<OmnidirectionalLight*>(light.get());
+                omnidirectionalLight->setPosition(omnidirectionalLight->getPosition().translate(positionDelta));
+            } else if (light->getLightType() == Light::LightType::SPOT) {
+                auto* spotLight = dynamic_cast<SpotLight*>(light.get());
+                spotLight->setPosition(spotLight->getPosition().translate(positionDelta));
+            }
         }
 
-        //TODO update light and sound position relatively ?
-        //TODO update scale
+        if (soundComponent) {
+            Sound& sound = soundComponent->getSound();
+            if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
+                auto* localizableSound = dynamic_cast<LocalizableSound*>(&sound);
+                localizableSound->setPosition(localizableSound->getPosition().translate(positionDelta));
+            }
+        }
+
+        //TODO update sound shape position
     }
 
-    void ObjectEntity::updatePosition(const Point3<float>& newPosition) const {
+    void ObjectEntity::updatePosition(const Point3<float>& newPosition) {
         updateTransform(Transform(newPosition, model->getTransform().getOrientation(), model->getTransform().getScale()));
 
         model->setPosition(newPosition);
@@ -202,7 +236,7 @@ namespace urchin {
 
     }
 
-    void ObjectEntity::updateOrientation(const Quaternion<float>& newOrientation) const {
+    void ObjectEntity::updateOrientation(const Quaternion<float>& newOrientation) {
         updateTransform(Transform(model->getTransform().getPosition(), newOrientation, model->getTransform().getScale()));
     }
 

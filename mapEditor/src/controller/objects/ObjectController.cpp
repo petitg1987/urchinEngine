@@ -83,9 +83,11 @@ namespace urchin {
     }
 
     void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity, bool isClonedEntity) {
-        Point3<float> currentPosition = constObjectEntity.getModel()->getTransform().getPosition();
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+
+        Point3<float> currentPosition = objectEntity.getModel()->getTransform().getPosition();
         Point3<float> newPosition = EntityControllerUtil::determineNewPosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
-        constObjectEntity.updatePosition(newPosition);
+        objectEntity.updatePosition(newPosition);
 
         markModified();
     }
@@ -98,40 +100,9 @@ namespace urchin {
     }
 
     const ObjectEntity& ObjectController::updateObjectTransform(const ObjectEntity& constObjectEntity, const Transform<float>& transform) {
-        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
-        //TODO call constObjectEntity.updateTransform to beneficiate of update of all linked entity ?
-
-        Model* model = objectEntity.getModel();
-        Transform<float> oldTransform = model->getTransform();
-        Vector3<float> positionDelta = oldTransform.getPosition().vector(transform.getPosition());
-        model->setTransform(transform);
-
-        if (objectEntity.getRigidBody()) {
-            Vector3<float> scaleRatio = transform.getScale() / oldTransform.getScale();
-            const CollisionShape3D& collisionShape = objectEntity.getRigidBody()->getShape();
-            auto scaledCollisionShape = collisionShape.scale(scaleRatio);
-            updateObjectPhysicsShape(objectEntity, std::move(scaledCollisionShape));
-        }
-
-        if (objectEntity.getLight()) {
-            if (objectEntity.getLight()->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-                auto* omnidirectionalLight = dynamic_cast<OmnidirectionalLight*>(objectEntity.getLight());
-                omnidirectionalLight->setPosition(omnidirectionalLight->getPosition().translate(positionDelta));
-            } else if (objectEntity.getLight()->getLightType() == Light::LightType::SPOT) {
-                auto* spotLight = dynamic_cast<SpotLight*>(objectEntity.getLight());
-                spotLight->setPosition(spotLight->getPosition().translate(positionDelta));
-            }
-        }
-
-        if (objectEntity.getSoundComponent()) {
-            Sound& sound = objectEntity.getSoundComponent()->getSound();
-            if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
-                auto* localizableSound = dynamic_cast<LocalizableSound*>(&sound);
-                localizableSound->setPosition(localizableSound->getPosition().translate(positionDelta));
-            }
-        }
-        //TODO sound localizable + area shape
+        objectEntity.updateTransform(transform);
 
         markModified();
         return objectEntity;
@@ -161,9 +132,8 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ObjectController::updateObjectPhysicsProperties(const ObjectEntity& constObjectEntity, float mass, float restitution,
-            float friction, float rollingFriction, float linearDamping, float angularDamping, const Vector3<float>& linearFactor,
-            const Vector3<float>& angularFactor) {
+    const ObjectEntity& ObjectController::updateObjectPhysicsProperties(const ObjectEntity& constObjectEntity, float mass, float restitution, float friction, float rollingFriction,
+            float linearDamping, float angularDamping, const Vector3<float>& linearFactor, const Vector3<float>& angularFactor) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         RigidBody* rigidBody = objectEntity.getRigidBody();
 
@@ -183,22 +153,7 @@ namespace urchin {
 
     const ObjectEntity& ObjectController::updateObjectPhysicsShape(const ObjectEntity& constObjectEntity, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        const RigidBody* rigidBody = objectEntity.getRigidBody();
-
-        const std::string& bodyId = constObjectEntity.getName();
-        Transform<float> modelTransform = constObjectEntity.getModel()->getTransform();
-        PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
-
-        auto newRigidBody = std::make_unique<RigidBody>(bodyId, physicsTransform, std::move(newCollisionShape));
-        newRigidBody->setMass(rigidBody->getMass());
-        newRigidBody->setRestitution(rigidBody->getRestitution());
-        newRigidBody->setFriction(rigidBody->getFriction());
-        newRigidBody->setRollingFriction(rigidBody->getRollingFriction());
-        newRigidBody->setDamping(rigidBody->getLinearDamping(), rigidBody->getAngularDamping());
-        newRigidBody->setLinearFactor(rigidBody->getLinearFactor());
-        newRigidBody->setAngularFactor(rigidBody->getAngularFactor());
-
-        objectEntity.setupInteractiveBody(std::move(newRigidBody));
+        objectEntity.updateObjectPhysicsShape(std::move(newCollisionShape));
 
         markModified();
         return objectEntity;
