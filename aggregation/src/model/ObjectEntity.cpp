@@ -228,12 +228,6 @@ namespace urchin {
 
     void ObjectEntity::updatePosition(const Point3<float>& newPosition) {
         updateTransform(Transform(newPosition, model->getTransform().getOrientation(), model->getTransform().getScale()));
-
-        model->setPosition(newPosition);
-        if (rigidBody) {
-            rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
-        }
-
     }
 
     void ObjectEntity::updateOrientation(const Quaternion<float>& newOrientation) {
