@@ -99,8 +99,8 @@ namespace urchin {
 
     const ObjectEntity& ObjectController::updateObjectTransform(const ObjectEntity& constObjectEntity, const Transform<float>& transform) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        Model* model = objectEntity.getModel();
 
+        Model* model = objectEntity.getModel();
         Transform<float> oldTransform = model->getTransform();
         Vector3<float> positionDelta = oldTransform.getPosition().vector(transform.getPosition());
         model->setTransform(transform);
@@ -109,7 +109,6 @@ namespace urchin {
             Vector3<float> scaleRatio = transform.getScale() / oldTransform.getScale();
             const CollisionShape3D& collisionShape = objectEntity.getRigidBody()->getShape();
             auto scaledCollisionShape = collisionShape.scale(scaleRatio);
-
             updateObjectPhysicsShape(objectEntity, std::move(scaledCollisionShape));
         }
 
@@ -123,6 +122,13 @@ namespace urchin {
             }
         }
 
+        if (objectEntity.getSoundComponent()) {
+            Sound& sound = objectEntity.getSoundComponent()->getSound();
+            if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
+                auto* localizableSound = dynamic_cast<LocalizableSound*>(&sound);
+                localizableSound->setPosition(localizableSound->getPosition().translate(positionDelta));
+            }
+        }
         //TODO sound localizable + area shape
 
         markModified();
