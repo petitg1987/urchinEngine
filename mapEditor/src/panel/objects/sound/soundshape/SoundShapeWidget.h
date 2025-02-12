@@ -17,7 +17,7 @@ namespace urchin {
             static constexpr char SPHERE_SHAPE_LABEL[] = "Sphere";
             static constexpr char BOX_SHAPE_LABEL[] = "Box";
 
-            SoundShapeWidget();
+            SoundShapeWidget(const ObjectEntity&);
             ~SoundShapeWidget() override = default;
 
             virtual std::string getSoundShapeName() const = 0;
@@ -35,12 +35,14 @@ namespace urchin {
             QGridLayout* mainLayout;
             bool disableShapeEvent;
 
+            const ObjectEntity& getObjectEntity() const;
             float getMarginValue() const;
 
             virtual void doSetupShapePropertiesFrom(const SoundShape&) = 0;
             virtual SoundShape* createSoundShape() const = 0;
 
         private:
+            const ObjectEntity& objectEntity;
             QDoubleSpinBox* margin;
 
             SoundShape* shape;

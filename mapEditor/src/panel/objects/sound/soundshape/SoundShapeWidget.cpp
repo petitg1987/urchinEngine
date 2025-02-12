@@ -5,8 +5,9 @@
 
 namespace urchin {
 
-    SoundShapeWidget::SoundShapeWidget() :
+    SoundShapeWidget::SoundShapeWidget(const ObjectEntity& objectEntity) :
             disableShapeEvent(false),
+            objectEntity(objectEntity),
             shape(nullptr) {
         setContentsMargins(0, 0, 0, 0);
 
@@ -47,6 +48,10 @@ namespace urchin {
 
             emit soundShapeChange(shape);
         }
+    }
+
+    const ObjectEntity& SoundShapeWidget::getObjectEntity() const {
+        return objectEntity;
     }
 
     float SoundShapeWidget::getMarginValue() const {

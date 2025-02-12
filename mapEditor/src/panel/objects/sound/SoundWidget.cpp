@@ -275,7 +275,7 @@ namespace urchin {
     }
 
     SoundShapeWidget& SoundWidget::retrieveSoundShapeWidget(const SoundShape& shape) {
-        soundShapeWidget = SoundShapeWidgetRetriever().retrieveShapeWidget(shape.getShapeType());
+        soundShapeWidget = SoundShapeWidgetRetriever().retrieveShapeWidget(shape.getShapeType(), *objectEntity);
 
         QString soundShapeWidgetName = QString::fromStdString("soundShapeWidget");
 

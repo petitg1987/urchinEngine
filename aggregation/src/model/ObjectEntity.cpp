@@ -221,9 +221,12 @@ namespace urchin {
                 auto* localizableSound = dynamic_cast<LocalizableSound*>(&sound);
                 localizableSound->setPosition(localizableSound->getPosition().translate(positionDelta));
             }
-        }
 
-        //TODO update sound shape position
+            if (soundComponent->getSoundTrigger().getTriggerType() == SoundTrigger::TriggerType::AREA_TRIGGER) {
+                SoundShape& soundShape = soundComponent->getAreaTrigger().getSoundShape();
+                soundShape.updateCenterPosition(soundShape.getCenterPosition().translate(positionDelta));
+            }
+        }
     }
 
     void ObjectEntity::updatePosition(const Point3<float>& newPosition) {

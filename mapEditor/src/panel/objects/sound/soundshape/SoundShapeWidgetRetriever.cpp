@@ -7,11 +7,11 @@
 
 namespace urchin {
 
-    SoundShapeWidget* SoundShapeWidgetRetriever::retrieveShapeWidget(SoundShape::ShapeType shapeType) const {
+    SoundShapeWidget* SoundShapeWidgetRetriever::retrieveShapeWidget(SoundShape::ShapeType shapeType, const ObjectEntity& objectEntity) const {
         if (shapeType == SoundShape::ShapeType::SPHERE_SHAPE) {
-            return new SoundSphereShapeWidget();
+            return new SoundSphereShapeWidget(objectEntity);
         } else if (shapeType == SoundShape::ShapeType::BOX_SHAPE) {
-            return new SoundBoxShapeWidget();
+            return new SoundBoxShapeWidget(objectEntity);
         }
         throw std::invalid_argument("Unknown shape type to retrieve sound shape widget: " + std::to_string(shapeType));
     }

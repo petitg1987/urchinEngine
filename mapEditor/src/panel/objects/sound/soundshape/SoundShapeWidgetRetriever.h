@@ -7,7 +7,7 @@ namespace urchin {
 
     class SoundShapeWidgetRetriever {
         public:
-            SoundShapeWidget* retrieveShapeWidget(SoundShape::ShapeType) const;
+            SoundShapeWidget* retrieveShapeWidget(SoundShape::ShapeType, const ObjectEntity&) const;
     };
 
 }

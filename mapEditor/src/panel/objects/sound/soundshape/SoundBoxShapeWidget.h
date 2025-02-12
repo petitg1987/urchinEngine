@@ -14,7 +14,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            SoundBoxShapeWidget();
+            SoundBoxShapeWidget(const ObjectEntity&);
             ~SoundBoxShapeWidget() override = default;
 
             std::string getSoundShapeName() const override;

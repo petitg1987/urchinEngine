@@ -7,8 +7,9 @@
 
 namespace urchin {
 
-    SoundBoxShapeWidget::SoundBoxShapeWidget() {
-        auto* positionLabel = new QLabel("Position:"); //TODO should be relative
+    SoundBoxShapeWidget::SoundBoxShapeWidget(const ObjectEntity& objectEntity) :
+            SoundShapeWidget(objectEntity) {
+        auto* positionLabel = new QLabel("Position rel.:");
         mainLayout->addWidget(positionLabel, 1, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -78,9 +79,12 @@ namespace urchin {
     void SoundBoxShapeWidget::doSetupShapePropertiesFrom(const SoundShape& shape) {
         const auto& boxShape = static_cast<const SoundBox&>(shape);
 
-        positionX->setValue(boxShape.getCenterPosition().X);
-        positionY->setValue(boxShape.getCenterPosition().Y);
-        positionZ->setValue(boxShape.getCenterPosition().Z);
+        Point3<float> absoluteShapePosition = boxShape.getCenterPosition();
+        Point3<float> relativeShapePosition = absoluteShapePosition - getObjectEntity().getModel()->getTransform().getPosition();
+
+        positionX->setValue(relativeShapePosition.X);
+        positionY->setValue(relativeShapePosition.Y);
+        positionZ->setValue(relativeShapePosition.Z);
 
         halfSizeX->setValue(boxShape.getHalfSizes().X);
         halfSizeY->setValue(boxShape.getHalfSizes().Y);
@@ -109,7 +113,8 @@ namespace urchin {
     }
 
     SoundShape* SoundBoxShapeWidget::createSoundShape() const {
-        Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+        Point3 relativeShapePosition((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+        Point3 absoluteShapePosition = getObjectEntity().getModel()->getTransform().getPosition() + relativeShapePosition;
 
         Vector3 halfSizes((float)halfSizeX->value(), (float)halfSizeY->value(), (float)halfSizeZ->value());
 
@@ -122,6 +127,6 @@ namespace urchin {
         auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
         Quaternion<float> orientation = Quaternion<float>::fromEuler(eulerAngle, rotationSequence);
 
-        return new SoundBox(halfSizes, position, orientation, getMarginValue());
+        return new SoundBox(halfSizes, absoluteShapePosition, orientation, getMarginValue());
     }
 }

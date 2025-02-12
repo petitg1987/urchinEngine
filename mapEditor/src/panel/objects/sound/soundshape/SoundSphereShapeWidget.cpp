@@ -6,8 +6,9 @@
 
 namespace urchin {
 
-    SoundSphereShapeWidget::SoundSphereShapeWidget() {
-        auto* positionLabel = new QLabel("Position:"); //TODO should be relative
+    SoundSphereShapeWidget::SoundSphereShapeWidget(const ObjectEntity& objectEntity) :
+            SoundShapeWidget(objectEntity) {
+        auto* positionLabel = new QLabel("Position rel.:");
         mainLayout->addWidget(positionLabel, 1, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -42,16 +43,20 @@ namespace urchin {
     void SoundSphereShapeWidget::doSetupShapePropertiesFrom(const SoundShape& shape) {
         const auto& sphereShape = static_cast<const SoundSphere&>(shape);
 
-        positionX->setValue(sphereShape.getCenterPosition().X);
-        positionY->setValue(sphereShape.getCenterPosition().Y);
-        positionZ->setValue(sphereShape.getCenterPosition().Z);
+        Point3<float> absoluteShapePosition = sphereShape.getCenterPosition();
+        Point3<float> relativeShapePosition = absoluteShapePosition - getObjectEntity().getModel()->getTransform().getPosition();
+
+        positionX->setValue(relativeShapePosition.X);
+        positionY->setValue(relativeShapePosition.Y);
+        positionZ->setValue(relativeShapePosition.Z);
 
         radius->setValue(sphereShape.getRadius());
     }
 
     SoundShape* SoundSphereShapeWidget::createSoundShape() const {
-        Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+        Point3 relativeShapePosition((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+        Point3 absoluteShapePosition = getObjectEntity().getModel()->getTransform().getPosition() + relativeShapePosition;
 
-        return new SoundSphere((float)radius->value(), position, getMarginValue());
+        return new SoundSphere((float)radius->value(), absoluteShapePosition, getMarginValue());
     }
 }
