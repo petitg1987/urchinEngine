@@ -375,17 +375,27 @@ namespace urchin {
         changeSoundShapeTypeDialog.exec();
 
         if (changeSoundShapeTypeDialog.result() == QDialog::Accepted) {
-            SoundShape::ShapeType shapeType = changeSoundShapeTypeDialog.getShapeType();
-            auto newShape = DefaultSoundShapeCreator(objectEntity->getSoundComponent()->getSound()).createDefaultSoundShape(shapeType);
+            std::shared_ptr clonedSound = objectEntity->getSoundComponent()->getSound().clone();
 
-            objectController->updateSoundShape(*objectEntity, std::move(newShape));
+            std::unique_ptr<SoundTrigger> clonedTrigger = objectEntity->getSoundComponent()->getAreaTrigger().clone(clonedSound);
+            auto areaTrigger = std::unique_ptr<AreaTrigger>(static_cast<AreaTrigger*>(clonedTrigger.release()));
+            SoundShape::ShapeType shapeType = changeSoundShapeTypeDialog.getShapeType();
+            areaTrigger->setSoundShape(DefaultSoundShapeCreator(objectEntity->getSoundComponent()->getSound()).createDefaultSoundShape(shapeType));
+
+            objectController->updateSoundComponent(*objectEntity, std::move(clonedSound), std::move(areaTrigger));
             setupShapeTriggerDataFrom();
         }
     }
 
-    void SoundWidget::soundShapeChanged(SoundShape* soundShape) const {
+    void SoundWidget::soundShapeChanged(SoundShape* newSoundShape) const {
         if (!disableSoundEvent) {
-            objectController->updateSoundShape(*objectEntity, std::unique_ptr<SoundShape>(soundShape));
+            std::shared_ptr clonedSound = objectEntity->getSoundComponent()->getSound().clone();
+
+            std::unique_ptr<SoundTrigger> clonedTrigger = objectEntity->getSoundComponent()->getAreaTrigger().clone(clonedSound);
+            auto areaTrigger = std::unique_ptr<AreaTrigger>(static_cast<AreaTrigger*>(clonedTrigger.release()));
+            areaTrigger->setSoundShape(std::unique_ptr<SoundShape>(newSoundShape));
+
+            objectController->updateSoundComponent(*objectEntity, std::move(clonedSound), std::move(areaTrigger));
         }
     }
 

@@ -247,16 +247,6 @@ namespace urchin {
         markModified();
     }
 
-    const ObjectEntity& ObjectController::updateSoundShape(const ObjectEntity& constObjectEntity, std::unique_ptr<SoundShape> newSoundShape) {
-        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        AreaTrigger& areaTrigger = objectEntity.getSoundComponent()->getAreaTrigger();
-
-        areaTrigger.setSoundShape(std::move(newSoundShape));
-
-        markModified();
-        return objectEntity;
-    }
-
     const ObjectEntity& ObjectController::updateObjectTags(const ObjectEntity& constObjectEntity, std::string_view tagsValues) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
