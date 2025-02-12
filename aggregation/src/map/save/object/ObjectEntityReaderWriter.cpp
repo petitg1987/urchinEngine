@@ -1,5 +1,5 @@
 #include <map/save/object/ObjectEntityReaderWriter.h>
-#include <map/save/object/RigidBodyReaderWriter.h>
+#include <map/save/object/physics/RigidBodyReaderWriter.h>
 #include <map/save/object/ModelReaderWriter.h>
 #include <map/save/common/TagsReaderWriter.h>
 

@@ -92,7 +92,6 @@
 
 # Aggregation
 * Object entity
-  * **NEW FEATURE** (`major`): Attach a sound component to an object entity (or create new game object)
   * **NEW FEATURE** (`major`): Generate collision convex hull shapes from meshes inside a urchinMesh file
 
 # Map editor
