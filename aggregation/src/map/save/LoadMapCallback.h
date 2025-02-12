@@ -5,9 +5,8 @@ namespace urchin {
     class LoadMapCallback {
         public:
             enum Stage {
-                OBJECTS, //TODO rename ?
+                OBJECTS,
                 LANDSCAPE,
-                SOUNDS, //TODO remove
                 AI
             };
 

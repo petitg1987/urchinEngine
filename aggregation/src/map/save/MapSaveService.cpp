@@ -6,7 +6,6 @@
 #include <map/save/ai/NavMeshAgentEntityReaderWriter.h>
 #include <map/save/object/ObjectEntityReaderWriter.h>
 #include <map/save/terrain/TerrainEntityReaderWriter.h>
-#include <map/save/object/sound/SoundEntityReaderWriter.h>
 #include <map/save/water/WaterEntityReaderWriter.h>
 #include <map/save/sky/SkyEntityReaderWriter.h>
 
@@ -50,10 +49,6 @@ namespace urchin {
         loadSkyEntity(map, sceneChunk, udaParser);
         loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::LOADED);
 
-        loadMapCallback.notify(LoadMapCallback::SOUNDS, LoadMapCallback::START_LOADING);
-        loadSoundEntities(map, sceneChunk, udaParser);
-        loadMapCallback.notify(LoadMapCallback::SOUNDS, LoadMapCallback::LOADED);
-
         loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::START_LOADING);
         loadAIConfig(map, sceneChunk, udaParser);
         loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::LOADED);
@@ -95,15 +90,6 @@ namespace urchin {
         map.setSkyEntity(SkyEntityReaderWriter::load(skyChunk, udaParser));
     }
 
-    void MapSaveService::loadSoundEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
-        auto soundElementsListChunk = udaParser.getFirstChunk(true, SOUND_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
-        auto soundElementsChunk = udaParser.getChunks(SOUND_ELEMENT_TAG, UdaAttribute(), soundElementsListChunk);
-
-        for (const auto& soundElementChunk : soundElementsChunk) {
-            map.addSoundEntity(SoundEntityReaderWriter::load(soundElementChunk, udaParser));
-        }
-    }
-
     void MapSaveService::loadAIConfig(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
         auto aiElementsListChunk = udaParser.getFirstChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
 
@@ -129,7 +115,6 @@ namespace urchin {
         writeTerrainEntities(map, sceneChunk, udaParser);
         writeWaterEntities(map, sceneChunk, udaParser);
         writeSkyEntity(map, sceneChunk, udaParser);
-        writeSoundEntities(map, sceneChunk, udaParser);
         writeAIConfig(map, sceneChunk, udaParser);
     }
 
@@ -164,15 +149,6 @@ namespace urchin {
         auto& skyChunk = udaParser.createChunk(SKY_TAG, UdaAttribute(), &sceneChunk);
 
         SkyEntityReaderWriter::write(skyChunk, map.getSkyEntity(), udaParser);
-    }
-
-    void MapSaveService::writeSoundEntities(const Map& map, UdaChunk& sceneChunk, UdaParser& udaParser) const {
-        auto& soundElementsListChunk = udaParser.createChunk(SOUND_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
-
-        for (auto& soundEntity : map.getSoundEntities()) {
-            auto& soundElementsChunk = udaParser.createChunk(SOUND_ELEMENT_TAG, UdaAttribute(), &soundElementsListChunk);
-            SoundEntityReaderWriter::write(soundElementsChunk, *soundEntity, udaParser);
-        }
     }
 
     void MapSaveService::writeAIConfig(const Map& map, UdaChunk& sceneChunk, UdaParser& udaParser) const {

@@ -1,6 +1,7 @@
 #include <map/save/object/ObjectEntityReaderWriter.h>
 #include <map/save/object/physics/RigidBodyReaderWriter.h>
 #include <map/save/object/light/LightReaderWriter.h>
+#include <map/save/object/sound/SoundComponentReaderWriter.h>
 #include <map/save/object/ModelReaderWriter.h>
 #include <map/save/common/TagsReaderWriter.h>
 
@@ -27,7 +28,10 @@ namespace urchin {
             objectEntity->setLight(LightReaderWriter::load(lightChunk, udaParser));
         }
 
-        //TODO impl sound
+        auto soundComponentChunk = udaParser.getFirstChunk(false, SOUND_COMPONENT_TAG, UdaAttribute(), objectEntityChunk);
+        if (soundComponentChunk != nullptr) {
+            objectEntity->setSoundComponent(SoundComponentReaderWriter::load(soundComponentChunk, udaParser));
+        }
 
         auto tagsChunk = udaParser.getFirstChunk(false, TAGS_TAG, UdaAttribute(), objectEntityChunk);
         if (tagsChunk != nullptr) {
@@ -53,7 +57,10 @@ namespace urchin {
             LightReaderWriter::write(lightChunk, *objectEntity.getLight(), udaParser);
         }
 
-        //TODO sound !
+        if (objectEntity.getSoundComponent()) {
+            auto& soundComponentChunk = udaParser.createChunk(SOUND_COMPONENT_TAG, UdaAttribute(), &objectEntityChunk);
+            SoundComponentReaderWriter::write(soundComponentChunk, *objectEntity.getSoundComponent(), udaParser);
+        }
 
         if (!objectEntity.getTags().empty()) {
             auto& tagsChunk = udaParser.createChunk(TAGS_TAG, UdaAttribute(), &objectEntityChunk);

@@ -21,7 +21,6 @@ namespace urchin {
             void loadTerrainEntities(Map&, const UdaChunk*, const UdaParser&) const;
             void loadWaterEntities(Map&, const UdaChunk*, const UdaParser&) const;
             void loadSkyEntity(Map&, const UdaChunk*, const UdaParser&) const;
-            void loadSoundEntities(Map&, const UdaChunk*, const UdaParser&) const;
             void loadAIConfig(Map&, const UdaChunk*, const UdaParser&) const;
 
             void writeMap(const Map&, UdaChunk&, UdaParser&) const;
@@ -29,7 +28,6 @@ namespace urchin {
             void writeTerrainEntities(const Map&, UdaChunk&, UdaParser&) const;
             void writeWaterEntities(const Map&, UdaChunk&, UdaParser&) const;
             void writeSkyEntity(const Map&, UdaChunk&, UdaParser&) const;
-            void writeSoundEntities(const Map& , UdaChunk&, UdaParser&) const;
             void writeAIConfig(const Map&, UdaChunk&, UdaParser&) const;
 
             static constexpr char CONFIG_TAG[] = "config";
@@ -43,8 +41,6 @@ namespace urchin {
             static constexpr char WATERS_TAG[] = "waters";
             static constexpr char WATER_TAG[] = "water";
             static constexpr char SKY_TAG[] = "sky";
-            static constexpr char SOUND_ELEMENTS_TAG[] = "soundElements"; //TODO rmeov
-            static constexpr char SOUND_ELEMENT_TAG[] = "soundElement"; //TODO rmeov
             static constexpr char AI_ELEMENTS_TAG[] = "aiElements";
     };
 
