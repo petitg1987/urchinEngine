@@ -1,7 +1,9 @@
 #include <map/save/object/ObjectEntityReaderWriter.h>
 #include <map/save/object/physics/RigidBodyReaderWriter.h>
+#include <map/save/object/light/LightReaderWriter.h>
 #include <map/save/object/ModelReaderWriter.h>
 #include <map/save/common/TagsReaderWriter.h>
+
 
 namespace urchin {
 
@@ -19,6 +21,13 @@ namespace urchin {
             const Transform<float>& modelTransform = objectEntity->getModel()->getTransform();
             objectEntity->setupInteractiveBody(RigidBodyReaderWriter::load(physicsChunk, rigidBodyId, modelTransform, udaParser));
         }
+
+        auto lightChunk = udaParser.getFirstChunk(false, LIGHT_TAG, UdaAttribute(), objectEntityChunk);
+        if (lightChunk != nullptr) {
+            objectEntity->setLight(LightReaderWriter::load(lightChunk, udaParser));
+        }
+
+        //TODO impl sound
 
         auto tagsChunk = udaParser.getFirstChunk(false, TAGS_TAG, UdaAttribute(), objectEntityChunk);
         if (tagsChunk != nullptr) {
@@ -38,6 +47,13 @@ namespace urchin {
             auto& physicsChunk = udaParser.createChunk(PHYSICS_TAG, UdaAttribute(), &objectEntityChunk);
             RigidBodyReaderWriter::write(physicsChunk, *objectEntity.getRigidBody(), udaParser);
         }
+
+        if (objectEntity.getLight()) {
+            auto& lightChunk = udaParser.createChunk(LIGHT_TAG, UdaAttribute(), &objectEntityChunk);
+            LightReaderWriter::write(lightChunk, *objectEntity.getLight(), udaParser);
+        }
+
+        //TODO sound !
 
         if (!objectEntity.getTags().empty()) {
             auto& tagsChunk = udaParser.createChunk(TAGS_TAG, UdaAttribute(), &objectEntityChunk);

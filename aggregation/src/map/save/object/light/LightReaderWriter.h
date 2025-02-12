@@ -4,14 +4,12 @@
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 
-#include <model/LightEntity.h>
-
 namespace urchin {
 
-    class LightEntityReaderWriter {
+    class LightReaderWriter {
         public:
-            static std::unique_ptr<LightEntity> load(const UdaChunk*, const UdaParser&);
-            static void write(UdaChunk&, const LightEntity&, UdaParser&);
+            static std::unique_ptr<Light> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const Light&, UdaParser&);
 
         private:
             static std::unique_ptr<Light> buildLight(const UdaChunk*, const UdaParser&);
@@ -23,7 +21,6 @@ namespace urchin {
             static void loadFlags(Light&, const UdaChunk*, const UdaParser&);
             static void writeFlags(UdaChunk&, const Light&, UdaParser&);
 
-            static constexpr char NAME_ATTR[] = "name";
             static constexpr char TYPE_ATTR[] = "type";
             static constexpr char SUN_VALUE[] = "SUN";
             static constexpr char OMNIDIRECTIONAL_VALUE[] = "OMNIDIRECTIONAL";

@@ -8,7 +8,6 @@
 #include <UrchinSoundEngine.h>
 #include <UrchinAIEngine.h>
 #include <model/ObjectEntity.h>
-#include <model/LightEntity.h>
 #include <model/TerrainEntity.h>
 #include <model/WaterEntity.h>
 #include <model/SkyEntity.h>
@@ -39,11 +38,6 @@ namespace urchin {
             bool moveUpObjectEntity(ObjectEntity&);
             bool moveDownObjectEntity(ObjectEntity&);
             template<class Compare> void sortObjectEntity(Compare);
-
-            const std::list<std::unique_ptr<LightEntity>>& getLightEntities() const;
-            LightEntity& getLightEntity(std::string_view) const;
-            LightEntity& addLightEntity(std::unique_ptr<LightEntity>);
-            void removeLightEntity(LightEntity&);
 
             const std::list<std::unique_ptr<TerrainEntity>>& getTerrainEntities() const;
             TerrainEntity& getTerrainEntity(std::string_view) const;
@@ -81,7 +75,6 @@ namespace urchin {
             TagHolder objectEntitiesTagHolder;
             mutable std::vector<ObjectEntity*> tmpObjectEntities;
             std::list<std::unique_ptr<ObjectEntity>> objectEntities;
-            std::list<std::unique_ptr<LightEntity>> lightEntities;
             std::list<std::unique_ptr<TerrainEntity>> terrainEntities;
             std::list<std::unique_ptr<WaterEntity>> waterEntities;
             std::unique_ptr<SkyEntity> skyEntity;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <model/ObjectEntity.h>
-#include <model/LightEntity.h>
 #include <model/TerrainEntity.h>
 #include <model/WaterEntity.h>
 #include <model/SoundEntity.h>

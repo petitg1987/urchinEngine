@@ -110,29 +110,6 @@ namespace urchin {
         return false;
     }
 
-    const std::list<std::unique_ptr<LightEntity>>& Map::getLightEntities() const {
-        return lightEntities;
-    }
-
-    LightEntity& Map::getLightEntity(std::string_view name) const {
-        for (auto& lightEntity : lightEntities) {
-            if (lightEntity->getName() == name) {
-                return *lightEntity;
-            }
-        }
-        throw std::invalid_argument("Impossible to find a light entity having name: " + std::string(name));
-    }
-
-    LightEntity& Map::addLightEntity(std::unique_ptr<LightEntity> lightEntity) {
-        lightEntity->setup(renderer3d);
-        lightEntities.push_back(std::move(lightEntity));
-        return *lightEntities.back();
-    }
-
-    void Map::removeLightEntity(LightEntity& lightEntity) {
-        lightEntities.remove_if([&lightEntity](const auto& o){return o.get()==&lightEntity;});
-    }
-
     const std::list<std::unique_ptr<TerrainEntity>>& Map::getTerrainEntities() const {
         return terrainEntities;
     }

@@ -6,7 +6,6 @@
 #include <map/save/ai/NavMeshAgentEntityReaderWriter.h>
 #include <map/save/object/ObjectEntityReaderWriter.h>
 #include <map/save/terrain/TerrainEntityReaderWriter.h>
-#include <map/save/object/light/LightEntityReaderWriter.h>
 #include <map/save/object/sound/SoundEntityReaderWriter.h>
 #include <map/save/water/WaterEntityReaderWriter.h>
 #include <map/save/sky/SkyEntityReaderWriter.h>
@@ -41,13 +40,9 @@ namespace urchin {
             throw std::runtime_error("AI environment should be paused while loading map.");
         }
 
-        loadMapCallback.notify(LoadMapCallback::MODELS, LoadMapCallback::START_LOADING);
+        loadMapCallback.notify(LoadMapCallback::OBJECTS, LoadMapCallback::START_LOADING);
         loadObjectEntities(map, sceneChunk, udaParser);
-        loadMapCallback.notify(LoadMapCallback::MODELS, LoadMapCallback::LOADED);
-
-        loadMapCallback.notify(LoadMapCallback::LIGHTS, LoadMapCallback::START_LOADING);
-        loadLightEntities(map, sceneChunk, udaParser);
-        loadMapCallback.notify(LoadMapCallback::LIGHTS, LoadMapCallback::LOADED);
+        loadMapCallback.notify(LoadMapCallback::OBJECTS, LoadMapCallback::LOADED);
 
         loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::START_LOADING);
         loadTerrainEntities(map, sceneChunk, udaParser);
@@ -73,15 +68,6 @@ namespace urchin {
         }
         if (map.getRenderer3d()) {
             map.getRenderer3d()->preWarmModels();
-        }
-    }
-
-    void MapSaveService::loadLightEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
-        auto lightsListChunk = udaParser.getFirstChunk(true, LIGHTS_TAG, UdaAttribute(), sceneChunk);
-        auto lightsChunk = udaParser.getChunks(LIGHT_TAG, UdaAttribute(), lightsListChunk);
-
-        for (const auto& lightChunk : lightsChunk) {
-            map.addLightEntity(LightEntityReaderWriter::load(lightChunk, udaParser));
         }
     }
 
@@ -140,7 +126,6 @@ namespace urchin {
 
     void MapSaveService::writeMap(const Map& map, UdaChunk& sceneChunk, UdaParser& udaParser) const {
         writeObjectEntities(map, sceneChunk, udaParser);
-        writeLightEntities(map, sceneChunk, udaParser);
         writeTerrainEntities(map, sceneChunk, udaParser);
         writeWaterEntities(map, sceneChunk, udaParser);
         writeSkyEntity(map, sceneChunk, udaParser);
@@ -154,15 +139,6 @@ namespace urchin {
         for (auto& objectEntity : map.getObjectEntities()) {
             auto& objectsChunk = udaParser.createChunk(OBJECT_TAG, UdaAttribute(), &objectsListChunk);
             ObjectEntityReaderWriter::write(objectsChunk, *objectEntity, udaParser);
-        }
-    }
-
-    void MapSaveService::writeLightEntities(const Map& map, UdaChunk& sceneChunk, UdaParser& udaParser) const {
-        auto& lightsListChunk = udaParser.createChunk(LIGHTS_TAG, UdaAttribute(), &sceneChunk);
-
-        for (auto& lightEntity : map.getLightEntities()) {
-            auto& lightsChunk = udaParser.createChunk(LIGHT_TAG, UdaAttribute(), &lightsListChunk);
-            LightEntityReaderWriter::write(lightsChunk, *lightEntity, udaParser);
         }
     }
 
