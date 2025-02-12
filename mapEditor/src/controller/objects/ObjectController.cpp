@@ -4,7 +4,6 @@
 
 #include <controller/objects/ObjectController.h>
 #include <controller/EntityControllerUtil.h>
-#include <panel/objects/sound/soundshape/support/DefaultSoundShapeCreator.h> //TODO ref correct ?
 
 namespace urchin {
 
@@ -114,19 +113,6 @@ namespace urchin {
 
         model->setShadowBehavior(shadowBehavior);
         model->setCullBehavior(cullBehavior);
-
-        markModified();
-        return objectEntity;
-    }
-
-    const ObjectEntity& ObjectController::updateObjectTags(const ObjectEntity& constObjectEntity, std::string_view tagsValues) {
-        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-
-        objectEntity.removeAllTags();
-        std::vector<std::string> tagsList = StringUtil::split(tagsValues, TAGS_SEPARATOR);
-        for (const std::string& tag: tagsList) {
-            objectEntity.addTag(tag);
-        }
 
         markModified();
         return objectEntity;
@@ -261,21 +247,24 @@ namespace urchin {
         markModified();
     }
 
-    void ObjectController::changeSoundShape(const ObjectEntity& constObjectEntity, SoundShape::ShapeType shapeType) {
-        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        AreaTrigger& areaTrigger = objectEntity.getSoundComponent()->getAreaTrigger();
-
-        auto newShape = DefaultSoundShapeCreator(constObjectEntity.getSoundComponent()->getSound()).createDefaultSoundShape(shapeType);
-        areaTrigger.setSoundShape(std::move(newShape));
-
-        markModified();
-    }
-
     const ObjectEntity& ObjectController::updateSoundShape(const ObjectEntity& constObjectEntity, std::unique_ptr<SoundShape> newSoundShape) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         AreaTrigger& areaTrigger = objectEntity.getSoundComponent()->getAreaTrigger();
 
         areaTrigger.setSoundShape(std::move(newSoundShape));
+
+        markModified();
+        return objectEntity;
+    }
+
+    const ObjectEntity& ObjectController::updateObjectTags(const ObjectEntity& constObjectEntity, std::string_view tagsValues) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+
+        objectEntity.removeAllTags();
+        std::vector<std::string> tagsList = StringUtil::split(tagsValues, TAGS_SEPARATOR);
+        for (const std::string& tag: tagsList) {
+            objectEntity.addTag(tag);
+        }
 
         markModified();
         return objectEntity;

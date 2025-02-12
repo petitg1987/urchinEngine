@@ -31,7 +31,6 @@ namespace urchin {
 
             const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
             const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowBehavior, Model::CullBehavior);
-            const ObjectEntity& updateObjectTags(const ObjectEntity&, std::string_view);
             const ObjectEntity& updateObjectPhysicsProperties(const ObjectEntity&, float, float, float, float, float, float, const Vector3<float>&, const Vector3<float>&);
             const ObjectEntity& updateObjectPhysicsShape(const ObjectEntity&, std::unique_ptr<const CollisionShape3D>);
 
@@ -43,8 +42,9 @@ namespace urchin {
 
             void changeSound(const ObjectEntity&, std::optional<Sound::SoundType>, std::string);
             void updateSoundComponent(const ObjectEntity&, std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
-            void changeSoundShape(const ObjectEntity&, SoundShape::ShapeType); //TODO remove ?
             const ObjectEntity& updateSoundShape(const ObjectEntity&, std::unique_ptr<SoundShape>); //TODO remove ?
+
+            const ObjectEntity& updateObjectTags(const ObjectEntity&, std::string_view);
 
         private:
             ObjectEntity& findObjectEntity(const ObjectEntity&) const;

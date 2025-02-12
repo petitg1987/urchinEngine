@@ -376,8 +376,9 @@ namespace urchin {
 
         if (changeSoundShapeTypeDialog.result() == QDialog::Accepted) {
             SoundShape::ShapeType shapeType = changeSoundShapeTypeDialog.getShapeType();
+            auto newShape = DefaultSoundShapeCreator(objectEntity->getSoundComponent()->getSound()).createDefaultSoundShape(shapeType);
 
-            objectController->changeSoundShape(*objectEntity, shapeType);
+            objectController->updateSoundShape(*objectEntity, std::move(newShape));
             setupShapeTriggerDataFrom();
         }
     }
