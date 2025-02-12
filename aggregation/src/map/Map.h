@@ -11,7 +11,6 @@
 #include <model/TerrainEntity.h>
 #include <model/WaterEntity.h>
 #include <model/SkyEntity.h>
-#include <model/SoundEntity.h>
 #include <model/NavMeshAgentEntity.h>
 
 namespace urchin {
@@ -52,11 +51,6 @@ namespace urchin {
             const SkyEntity& getSkyEntity() const;
             void setSkyEntity(std::unique_ptr<SkyEntity>);
 
-            const std::list<std::unique_ptr<SoundEntity>>& getSoundEntities() const;
-            SoundEntity& getSoundEntity(std::string_view) const;
-            SoundEntity& addSoundEntity(std::unique_ptr<SoundEntity>);
-            void removeSoundEntity(SoundEntity&);
-
             const NavMeshAgentEntity& getNavMeshAgentEntity() const;
             void setNavMeshAgentEntity(std::unique_ptr<NavMeshAgentEntity>);
 
@@ -78,7 +72,6 @@ namespace urchin {
             std::list<std::unique_ptr<TerrainEntity>> terrainEntities;
             std::list<std::unique_ptr<WaterEntity>> waterEntities;
             std::unique_ptr<SkyEntity> skyEntity;
-            std::list<std::unique_ptr<SoundEntity>> soundEntities;
             std::unique_ptr<NavMeshAgentEntity> navMeshAgentEntity;
     };
 

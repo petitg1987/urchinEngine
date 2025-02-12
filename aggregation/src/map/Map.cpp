@@ -165,29 +165,6 @@ namespace urchin {
         this->skyEntity = std::move(skyEntity);
     }
 
-    const std::list<std::unique_ptr<SoundEntity>>& Map::getSoundEntities() const {
-        return soundEntities;
-    }
-
-    SoundEntity& Map::getSoundEntity(std::string_view name) const {
-        for (auto& soundEntity : soundEntities) {
-            if (soundEntity->getName() == name) {
-                return *soundEntity;
-            }
-        }
-        throw std::invalid_argument("Impossible to find a sound entity having name: " + std::string(name));
-    }
-
-    SoundEntity& Map::addSoundEntity(std::unique_ptr<SoundEntity> soundEntity) {
-        soundEntity->setup(soundEnvironment);
-        soundEntities.push_back(std::move(soundEntity));
-        return *soundEntities.back();
-    }
-
-    void Map::removeSoundEntity(SoundEntity& soundEntity) {
-        soundEntities.remove_if([&soundEntity](const auto& o){ return o.get()==&soundEntity; });
-    }
-
     const NavMeshAgentEntity& Map::getNavMeshAgentEntity() const {
         return *navMeshAgentEntity;
     }
