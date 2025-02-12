@@ -4,9 +4,9 @@
 #include <memory>
 
 #include <UrchinAggregation.h>
-#include <controller/objects/ObjectController.h>
-#include <controller/terrains/TerrainController.h>
-#include <controller/waters/WaterController.h>
+#include <controller/object/ObjectController.h>
+#include <controller/terrain/TerrainController.h>
+#include <controller/water/WaterController.h>
 #include <controller/sky/SkyController.h>
 #include <controller/ai/AIController.h>
 

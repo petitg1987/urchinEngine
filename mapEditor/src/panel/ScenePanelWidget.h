@@ -4,9 +4,9 @@
 
 #include <UrchinCommon.h>
 #include <controller/SceneController.h>
-#include <panel/objects/ObjectPanelWidget.h>
-#include <panel/terrains/TerrainPanelWidget.h>
-#include <panel/waters/WaterPanelWidget.h>
+#include <panel/object/ObjectPanelWidget.h>
+#include <panel/terrain/TerrainPanelWidget.h>
+#include <panel/water/WaterPanelWidget.h>
 #include <panel/sky/SkyPanelWidget.h>
 #include <panel/ai/AIPanelWidget.h>
 

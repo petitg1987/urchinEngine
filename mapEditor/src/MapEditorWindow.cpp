@@ -11,9 +11,9 @@
 #include <MapEditorWindow.h>
 #include <widget/dialog/NewDialog.h>
 #include <widget/dialog/NotSavedDialog.h>
-#include <panel/objects/ObjectTableView.h>
-#include <panel/objects/physics/bodyshape/BodyCompoundShapeWidget.h>
-#include <panel/objects/physics/bodyshape/support/LocalizedShapeTableView.h>
+#include <panel/object/ObjectTableView.h>
+#include <panel/object/physics/bodyshape/BodyCompoundShapeWidget.h>
+#include <panel/object/physics/bodyshape/support/LocalizedShapeTableView.h>
 #include <StateSaveHelper.h>
 
 namespace urchin {

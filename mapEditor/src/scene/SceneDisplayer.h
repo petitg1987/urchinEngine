@@ -11,10 +11,10 @@
 #include <widget/controller/statusbar/StatusBarController.h>
 #include <controller/SceneController.h>
 #include <scene/SceneFreeCamera.h>
-#include <scene/objects/BodyShapeDisplayer.h>
-#include <scene/objects/move/ObjectMoveController.h>
-#include <scene/objects/light/LightScopeDisplayer.h>
-#include <scene/objects/sound/SoundScopeDisplayer.h>
+#include <scene/object/BodyShapeDisplayer.h>
+#include <scene/object/move/ObjectMoveController.h>
+#include <scene/object/light/LightScopeDisplayer.h>
+#include <scene/object/sound/SoundScopeDisplayer.h>
 
 namespace urchin {
 

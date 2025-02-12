@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    class LightEntity {
+    class LightEntity { //TODO remove
         public:
             friend class Map;
 

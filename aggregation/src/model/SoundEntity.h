@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    class SoundEntity {
+    class SoundEntity { //TODO remove
         public:
             friend class Map;
 

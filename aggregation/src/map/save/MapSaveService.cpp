@@ -6,8 +6,8 @@
 #include <map/save/ai/NavMeshAgentEntityReaderWriter.h>
 #include <map/save/object/ObjectEntityReaderWriter.h>
 #include <map/save/terrain/TerrainEntityReaderWriter.h>
-#include <map/save/light/LightEntityReaderWriter.h>
-#include <map/save/sound/SoundEntityReaderWriter.h>
+#include <map/save/object/light/LightEntityReaderWriter.h>
+#include <map/save/object/sound/SoundEntityReaderWriter.h>
 #include <map/save/water/WaterEntityReaderWriter.h>
 #include <map/save/sky/SkyEntityReaderWriter.h>
 
