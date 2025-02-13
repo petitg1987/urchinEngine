@@ -73,7 +73,7 @@ namespace urchin {
         soundCategory->addItem(EFFECTS_SOUND_LABEL, QVariant((int)Sound::SoundCategory::EFFECTS));
         connect(soundCategory, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundComponent()));
 
-        auto* initialVolumeLabel= new QLabel("Initial volume:");
+        auto* initialVolumeLabel= new QLabel("Initial Volume:");
         generalPropertiesLayout->addWidget(initialVolumeLabel, 2, 0);
         initialVolume = new QDoubleSpinBox();
         generalPropertiesLayout->addWidget(initialVolume);
