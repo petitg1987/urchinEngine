@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-
 #include <Urchin3dEngine.h>
 #include <UrchinAggregation.h>
 

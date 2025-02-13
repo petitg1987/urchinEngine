@@ -5,7 +5,7 @@
 #include <UrchinAggregation.h>
 
 #include <controller/SceneController.h>
-#include <scene/object/move/ObjectMoveAxisDisplayer.h>
+#include <scene/object/ObjectMoveAxisDisplayer.h>
 #include <widget/controller/statusbar/StatusBarController.h>
 #include <widget/controller/mouse/MouseController.h>
 

@@ -10,7 +10,7 @@
 #include <panel/object/dialog/RenameObjectDialog.h>
 #include <panel/object/dialog/ChangeLightTypeDialog.h>
 #include <panel/object/dialog/ChangeSoundDialog.h>
-#include <scene/object/move/ObjectMoveController.h>
+#include <scene/object/ObjectMoveController.h>
 #include <scene/SceneDisplayerWindow.h>
 
 namespace urchin {

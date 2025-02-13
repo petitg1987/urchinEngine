@@ -2,8 +2,6 @@
 
 #include <Urchin3dEngine.h>
 
-#include <widget/controller/statusbar/StatusBarController.h>
-
 namespace urchin {
 
     class ObjectMoveAxisDisplayer {

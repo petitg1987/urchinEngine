@@ -1,4 +1,4 @@
-#include <scene/object/move/ObjectMoveController.h>
+#include <scene/object/ObjectMoveController.h>
 
 namespace urchin {
     ObjectMoveController::ObjectMoveController(Scene& scene, SceneController& sceneController, MouseController& mouseController,
