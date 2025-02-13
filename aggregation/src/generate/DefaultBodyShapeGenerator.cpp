@@ -53,9 +53,15 @@ namespace urchin {
 
     std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape(const Model* model) const {
         std::set<Point3<float>> allVertices;
-        for (const auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
-            for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
-                allVertices.insert(constMesh->getBaseVertices()[i]);
+        if (model->getConstMeshes()) {
+            for (const std::unique_ptr<const ConstMesh>& constMesh : model->getConstMeshes()->getConstMeshes()) {
+                for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
+                    allVertices.insert(constMesh->getBaseVertices()[i]);
+                }
+            }
+        } else {
+            for (const Point3<float>& point : model->getLocalAABBox().getPoints()) {
+                allVertices.insert(point);
             }
         }
 
