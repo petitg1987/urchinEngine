@@ -71,9 +71,6 @@
   * Application **urchinMapEditor**:
     * Target/executable: `urchinMapEditor`
 
-## Clang analyzer configuration
-  * In File > Settings > Languages & Frameworks > C/C++ > Clangd > Clang Errors and Warnings: `-Wno-unused-variable,-Wno-infinite-recursion,-Werror=implicit-function-declaration,-Wno-shadow-field-in-constructor-modified,-Wno-shadow-ivar,-Wuninitialized,-Wunused-label,-Wunused-lambda-capture,-Wno-shadow`
-
 # Development tips
 ## Error handling
 * Use exception (`throw std::runtime_error(...)`) for methods which could be wrongly used by the final user
@@ -123,19 +120,25 @@
     ~/various/tools/nsight/host/linux-desktop-nomad-x64/ngfx-ui
     ```
 
-## Memory profiler: Valgrind - massif
+## VRAM visualizer
+* Launch:
+    ```
+    nvidia-smi -lms=1000
+    ```
+
+## RAM profiler: Valgrind & Massif
 * Install:
     ```
     sudo apt install valgrind massif-visualizer
     ```
 * Launch Valgrind with massif tool (replace 'myAppName --dev'):
-  ```
-  /usr/bin/valgrind --tool=massif ./myAppName --dev
-  ```
+    ```
+    /usr/bin/valgrind --tool=massif ./myAppName --dev
+    ```
 * Execute Massif visualizer and select file produced by Valgrind
-  ```
-  massif-visualizer
-  ```
+    ```
+    massif-visualizer
+    ```
 
 # Memo
 ## Coordinates used
