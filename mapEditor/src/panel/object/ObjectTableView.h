@@ -5,7 +5,6 @@
 
 #include <UrchinCommon.h>
 #include <UrchinAggregation.h>
-#include <controller/SceneController.h>
 
 Q_DECLARE_METATYPE(const urchin::ObjectEntity*)
 
