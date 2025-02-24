@@ -3,7 +3,6 @@
 #include <string>
 #include <QKeyEvent>
 #include <QWindow>
-#include <QVulkanInstance>
 #include <UrchinCommon.h>
 
 #include <scene/SceneDisplayer.h>

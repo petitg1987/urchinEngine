@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QWidget>
 #include <UrchinPhysicsEngine.h>
 #include <UrchinAggregation.h>
 

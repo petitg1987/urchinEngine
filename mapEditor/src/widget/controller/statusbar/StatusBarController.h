@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <QMainWindow>
-#include <QtWidgets/QFrame>
 #include <QtWidgets/QLabel>
 
 #include <widget/controller/statusbar/StatusBarState.h>

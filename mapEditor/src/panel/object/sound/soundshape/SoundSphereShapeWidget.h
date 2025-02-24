@@ -1,10 +1,9 @@
 #pragma once
 
 #include <string>
-#include <QtWidgets/QDoubleSpinBox>
-
 #include <UrchinCommon.h>
 #include <UrchinSoundEngine.h>
+
 #include <panel/object/sound/soundshape/SoundShapeWidget.h>
 
 namespace urchin {
@@ -13,7 +12,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            SoundSphereShapeWidget(const ObjectEntity&);
+            explicit SoundSphereShapeWidget(const ObjectEntity&);
             ~SoundSphereShapeWidget() override = default;
 
             std::string getSoundShapeName() const override;

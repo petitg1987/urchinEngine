@@ -17,7 +17,7 @@ namespace urchin {
             static constexpr char SPHERE_SHAPE_LABEL[] = "Sphere";
             static constexpr char BOX_SHAPE_LABEL[] = "Box";
 
-            SoundShapeWidget(const ObjectEntity&);
+            explicit SoundShapeWidget(const ObjectEntity&);
             ~SoundShapeWidget() override = default;
 
             virtual std::string getSoundShapeName() const = 0;

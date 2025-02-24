@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QtWidgets/QWidget>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QPushButton>

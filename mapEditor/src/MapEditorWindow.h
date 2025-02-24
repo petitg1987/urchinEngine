@@ -2,8 +2,6 @@
 
 #include <string>
 #include <map>
-#include <QMainWindow>
-#include <QtWidgets/QBoxLayout>
 
 #include <scene/SceneDisplayer.h>
 #include <scene/SceneDisplayerWindow.h>

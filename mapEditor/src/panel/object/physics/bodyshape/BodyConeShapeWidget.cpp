@@ -1,5 +1,3 @@
-#include <QtWidgets/QLabel>
-
 #include <panel/object/physics/bodyshape/BodyConeShapeWidget.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 

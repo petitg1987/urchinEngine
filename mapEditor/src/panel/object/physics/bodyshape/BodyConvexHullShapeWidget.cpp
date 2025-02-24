@@ -1,4 +1,3 @@
-#include <QVariant>
 #include <QHeaderView>
 
 #include <panel/object/physics/bodyshape/BodyConvexHullShapeWidget.h>
