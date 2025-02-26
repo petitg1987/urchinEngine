@@ -23,7 +23,7 @@ namespace urchin {
         cameraPlanes.nearPlane = nearPlane;
         cameraPlanes.farPlane = farPlane;
 
-        getTextureRenderer().updateUniformData(CAMERA_PLANES_UNIFORM_BINDING, &cameraPlanes);
+        getTextureRenderer().updateUniformData(CAMERA_PLANES_UNIFORM_BINDING, &cameraPlanes); //TODO use const
     }
 
     std::string GaussianBlurFilter::getShaderName() const {

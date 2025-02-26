@@ -265,7 +265,7 @@ namespace urchin {
         shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
         shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
-        deferredSecondPassRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);
+        deferredSecondPassRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo); //TODO use const
 
         //shadow map offset texture
         if (deferredSecondPassRenderer.getUniformTextureReader(offsetTexUniformBinding)->getTexture() != shadowMapOffsetTexture.get()) {

@@ -17,13 +17,16 @@ namespace urchin {
             void render(unsigned int) const;
 
         private:
+            struct OutputShaderConst {
+                float gammaFactor;
+            };
+
             void createOrUpdateRenderingObjects();
             void clearRenderingObjects();
             void createOrUpdateRenderer();
             void createOrUpdateShaders();
 
-            static constexpr uint32_t GAMMA_UNIFORM_BINDING = 0;
-            static constexpr uint32_t SCENE_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t SCENE_TEX_UNIFORM_BINDING = 0;
 
             RenderTarget& outputRenderTarget;
             float gammaFactor;

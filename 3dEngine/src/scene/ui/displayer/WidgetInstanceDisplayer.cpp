@@ -107,7 +107,7 @@ namespace urchin {
 
     void WidgetInstanceDisplayer::updateAlphaFactor() {
         colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
-        renderer->updateUniformData(COLOR_PARAMS_UNIFORM_BINDING, &colorParams);
+        renderer->updateUniformData(COLOR_PARAMS_UNIFORM_BINDING, &colorParams); //TODO use const
     }
 
     void WidgetInstanceDisplayer::onUiRendererSizeUpdated() const {
@@ -123,7 +123,7 @@ namespace urchin {
 
     void WidgetInstanceDisplayer::onGammaFactorUpdated() {
         colorParams.gammaFactor = uiRenderer.getGammaFactor();
-        renderer->updateUniformData(COLOR_PARAMS_UNIFORM_BINDING, &colorParams);
+        renderer->updateUniformData(COLOR_PARAMS_UNIFORM_BINDING, &colorParams); //TODO use const
     }
 
     const WidgetSetDisplayer& WidgetInstanceDisplayer::getWidgetSetDisplayer() const {

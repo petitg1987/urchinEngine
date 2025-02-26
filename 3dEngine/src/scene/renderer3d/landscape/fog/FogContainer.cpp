@@ -28,7 +28,7 @@ namespace urchin {
         deferredSecondPassRendererBuilder->addUniformData(fogUniformBinding, sizeof(fogData), &fogData);
     }
 
-    void FogContainer::loadFog(GenericRenderer& deferredSecondPassRenderer, uint32_t fogUniformBinding) {
+    void FogContainer::loadFog(GenericRenderer& deferredSecondPassRenderer, uint32_t fogUniformBinding) { //TODO use const
         fogData = {};
         fogData.hasFog = !fogs.empty();
         if (!fogs.empty()) {

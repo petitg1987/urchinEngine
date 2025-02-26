@@ -26,7 +26,7 @@ namespace urchin {
         projectionData.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
 
         if (reflectionColorRenderer) {
-            reflectionColorRenderer->updateUniformData(PROJECTION_DATA_UNIFORM_BINDING, &projectionData);
+            reflectionColorRenderer->updateUniformData(PROJECTION_DATA_UNIFORM_BINDING, &projectionData); //TODO use const
         }
     }
 

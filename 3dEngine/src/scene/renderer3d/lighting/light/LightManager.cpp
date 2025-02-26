@@ -158,7 +158,7 @@ namespace urchin {
             }
         }
 
-        deferredSecondPassRenderer.updateUniformData(lightsDataUniformBinding, &lightsData);
+        deferredSecondPassRenderer.updateUniformData(lightsDataUniformBinding, &lightsData); //TODO cache to not call method everytimes ?
     }
 
     void LightManager::postUpdateVisibleLights() {

@@ -25,9 +25,7 @@ namespace urchin {
     void OutputRenderer::onGammaFactorUpdate(float gammaFactor) {
         this->gammaFactor = gammaFactor;
 
-        if (outputRenderer) {
-            outputRenderer->updateUniformData(GAMMA_UNIFORM_BINDING, &gammaFactor);
-        }
+        createOrUpdateRenderingObjects();
     }
 
     void OutputRenderer::createOrUpdateRenderingObjects() {
@@ -57,13 +55,19 @@ namespace urchin {
         outputRenderer = GenericRendererBuilder::create("output renderer", outputRenderTarget, *outputShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(GAMMA_UNIFORM_BINDING, sizeof(gammaFactor), &gammaFactor)
                 ->addUniformTextureReader(SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
                 ->build();
     }
 
     void OutputRenderer::createOrUpdateShaders() {
-        outputShader = ShaderBuilder::createShader("outputRenderer.vert.spv", "outputRenderer.frag.spv", outputRenderTarget.isTestMode());
+        OutputShaderConst outputConstData {
+            .gammaFactor = gammaFactor
+        };
+        std::vector variablesSize = {
+            sizeof(OutputShaderConst::gammaFactor)
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &outputConstData);
+        outputShader = ShaderBuilder::createShader("outputRenderer.vert.spv", "outputRenderer.frag.spv", std::move(shaderConstants), outputRenderTarget.isTestMode());
     }
 
     void OutputRenderer::render(unsigned int renderingOrder) const {
