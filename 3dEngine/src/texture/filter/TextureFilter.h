@@ -25,13 +25,12 @@ namespace urchin {
             virtual void completeRenderer(const std::shared_ptr<GenericRendererBuilder>&, const std::shared_ptr<TextureReader>&) = 0;
             virtual std::unique_ptr<ShaderConstants> buildShaderConstants() const = 0;
 
+            void createOrUpdateRenderer();
+
             TextureFormat getTextureFormat() const;
             TextureType getTextureType() const;
             unsigned int getTextureWidth() const;
             unsigned int getTextureHeight() const;
-
-            const Shader& getTextureFilterShader() const;
-            GenericRenderer& getTextureRenderer() const;
 
         private:
             void initializeTexture();

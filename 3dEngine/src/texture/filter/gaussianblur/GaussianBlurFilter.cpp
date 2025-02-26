@@ -12,18 +12,21 @@ namespace urchin {
             blurDirection(blurDirection),
             blurRadius(textureFilterBuilder->getBlurRadius()),
             maxBlurDistance(textureFilterBuilder->getMaxBlurDistance()),
-            textureSize((VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()),
-            cameraPlanes({}) {
+            cameraNearPlane(0.01f),
+            cameraFarPlane(100.0f),
+            textureSize((VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()) {
         if (blurRadius <= 0) {
             throw std::invalid_argument("Blur size must be greater than zero. Value: " + std::to_string(blurRadius));
         }
     }
 
     void GaussianBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
-        cameraPlanes.nearPlane = nearPlane;
-        cameraPlanes.farPlane = farPlane;
+        if (cameraNearPlane != nearPlane || cameraFarPlane != farPlane) {
+            cameraNearPlane = nearPlane;
+            cameraFarPlane = farPlane;
 
-        getTextureRenderer().updateUniformData(CAMERA_PLANES_UNIFORM_BINDING, &cameraPlanes); //TODO use const
+            createOrUpdateRenderer();
+        }
     }
 
     std::string GaussianBlurFilter::getShaderName() const {
@@ -49,19 +52,23 @@ namespace urchin {
         }
 
         textureRendererBuilder
-                ->addUniformData(CAMERA_PLANES_UNIFORM_BINDING, sizeof(cameraPlanes), &cameraPlanes)
-                ->addUniformData(BLUR_DATA_UNIFORM_BINDING, sizeof(directionVector), &directionVector)
+                ->addUniformData(BLUR_DATA_UNIFORM_BINDING, sizeof(directionVector), &directionVector) //TODO const ?
                 ->addUniformTextureReader(SRC_TEX_UNIFORM_BINDING, sourceTextureReader)
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildLinear()));
     }
 
     std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {
-        GaussianBlurShaderConst gaussianBlurData{};
-        gaussianBlurData.blurRadius = blurRadius;
-        gaussianBlurData.maxBlurDistance = maxBlurDistance;
+        GaussianBlurShaderConst gaussianBlurData {
+            .blurRadius = blurRadius,
+            .maxBlurDistance = maxBlurDistance,
+            .cameraNearPlane = cameraNearPlane,
+            .cameraFarPlane = cameraFarPlane
+        };
         std::vector variablesSize = {
-                sizeof(GaussianBlurShaderConst::blurRadius),
-                sizeof(GaussianBlurShaderConst::maxBlurDistance)
+            sizeof(GaussianBlurShaderConst::blurRadius),
+            sizeof(GaussianBlurShaderConst::maxBlurDistance),
+            sizeof(GaussianBlurShaderConst::cameraNearPlane),
+            sizeof(GaussianBlurShaderConst::cameraFarPlane)
         };
         return std::make_unique<ShaderConstants>(variablesSize, &gaussianBlurData);
     }

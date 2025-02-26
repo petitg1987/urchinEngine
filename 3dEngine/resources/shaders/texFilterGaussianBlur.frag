@@ -5,16 +5,14 @@
 
 layout(constant_id = 0) const uint BLUR_RADIUS = 1;
 layout(constant_id = 1) const float MAX_BLUR_DISTANCE = 10.0;
+layout(constant_id = 2) const float CAMERA_NEAR_PLANE = 0.01;
+layout(constant_id = 3) const float CAMERA_FAR_PLANE = 100.0;
 
-layout(std140, set = 0, binding = 0) uniform CameraPlanes {
-    float nearPlane;
-    float farPlane;
-} cameraPlanes;
-layout(std140, set = 0, binding = 1) uniform BlurData {
+layout(std140, set = 0, binding = 0) uniform BlurData {
     vec2 direction;
 } blurData;
-layout(binding = 2) uniform sampler2D tex;
-layout(binding = 3) uniform sampler2D depthTex;
+layout(binding = 1) uniform sampler2D tex;
+layout(binding = 2) uniform sampler2D depthTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -37,7 +35,7 @@ void main() {
     vec2 pixelSize = 1.0 / textureSize(tex, 0);
 
     float depth = texture(depthTex, texCoordinates).r;
-    float linearDepth = linearizeDepth(depth, cameraPlanes.nearPlane, cameraPlanes.farPlane) * cameraPlanes.farPlane;
+    float linearDepth = linearizeDepth(depth, CAMERA_NEAR_PLANE, CAMERA_FAR_PLANE) * CAMERA_FAR_PLANE;
     float blurRadius = mix(0.0, BLUR_RADIUS, max(0.0, 1.0 - (linearDepth / MAX_BLUR_DISTANCE)));
     int blurRadiusInt = int(ceil(blurRadius));
 

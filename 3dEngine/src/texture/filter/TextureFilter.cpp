@@ -36,7 +36,14 @@ namespace urchin {
     }
 
     void TextureFilter::initializeDisplay() {
+        assert(!textureRenderer);
+        createOrUpdateRenderer();
+    }
+
+    void TextureFilter::createOrUpdateRenderer() {
         assert(renderTarget);
+        textureRenderer.reset();
+
         std::unique_ptr<ShaderConstants> shaderConstants = buildShaderConstants();
         if (textureType == TextureType::DEFAULT) {
             textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", getShaderName() + ".frag.spv", std::move(shaderConstants), isTestMode);
@@ -79,15 +86,6 @@ namespace urchin {
 
     unsigned int TextureFilter::getTextureHeight() const {
         return textureHeight;
-    }
-
-    const Shader& TextureFilter::getTextureFilterShader() const {
-        assert(textureFilterShader);
-        return *textureFilterShader;
-    }
-
-    GenericRenderer& TextureFilter::getTextureRenderer() const {
-        return *textureRenderer;
     }
 
     void TextureFilter::applyFilter(uint32_t frameIndex, unsigned int numDependenciesToOutputTextures) const {
