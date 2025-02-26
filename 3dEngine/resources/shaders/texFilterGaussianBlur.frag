@@ -3,16 +3,14 @@
 
 #include "_transformFunctions.frag"
 
-layout(constant_id = 0) const uint BLUR_RADIUS = 1;
-layout(constant_id = 1) const float MAX_BLUR_DISTANCE = 10.0;
-layout(constant_id = 2) const float CAMERA_NEAR_PLANE = 0.01;
-layout(constant_id = 3) const float CAMERA_FAR_PLANE = 100.0;
+layout(constant_id = 0) const uint IS_VERTICAL_BLUR = 1;
+layout(constant_id = 1) const uint BLUR_RADIUS = 1;
+layout(constant_id = 2) const float MAX_BLUR_DISTANCE = 10.0;
+layout(constant_id = 3) const float CAMERA_NEAR_PLANE = 0.01;
+layout(constant_id = 4) const float CAMERA_FAR_PLANE = 100.0;
 
-layout(std140, set = 0, binding = 0) uniform BlurData {
-    vec2 direction;
-} blurData;
-layout(binding = 1) uniform sampler2D tex;
-layout(binding = 2) uniform sampler2D depthTex;
+layout(binding = 0) uniform sampler2D tex;
+layout(binding = 1) uniform sampler2D depthTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -42,8 +40,9 @@ void main() {
     float totalWeight = 0.0;
     fragColor = computeBlurWeightedValue(vec2(0.0, 0.0), 0.0, linearDepth, totalWeight);
 
+    vec2 blurDirection = (IS_VERTICAL_BLUR == 1) ? vec2(0.0, 1.0) : vec2 (1.0, 0.0);
     for (int i = 1; i <= blurRadiusInt; ++i) {
-        vec2 uvOffset = i * pixelSize * blurData.direction;
+        vec2 uvOffset = i * pixelSize * blurDirection;
         fragColor += computeBlurWeightedValue(uvOffset, float(i), linearDepth, totalWeight);
         fragColor += computeBlurWeightedValue(-uvOffset, float(i), linearDepth, totalWeight);
     }

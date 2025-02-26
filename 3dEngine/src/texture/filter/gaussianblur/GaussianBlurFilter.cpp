@@ -44,27 +44,21 @@ namespace urchin {
     }
 
     void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
-        Vector2<float> directionVector;
-        if (blurDirection == VERTICAL) {
-            directionVector = Vector2(0.0f, 1.0f);
-        } else {
-            directionVector = Vector2(1.0f, 0.0f);
-        }
-
         textureRendererBuilder
-                ->addUniformData(BLUR_DATA_UNIFORM_BINDING, sizeof(directionVector), &directionVector) //TODO const ?
                 ->addUniformTextureReader(SRC_TEX_UNIFORM_BINDING, sourceTextureReader)
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildLinear()));
     }
 
     std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {
         GaussianBlurShaderConst gaussianBlurData {
+            .isVerticalBlur = (blurDirection == VERTICAL) ? 1u : 0u,
             .blurRadius = blurRadius,
             .maxBlurDistance = maxBlurDistance,
             .cameraNearPlane = cameraNearPlane,
             .cameraFarPlane = cameraFarPlane
         };
         std::vector variablesSize = {
+            sizeof(GaussianBlurShaderConst::isVerticalBlur),
             sizeof(GaussianBlurShaderConst::blurRadius),
             sizeof(GaussianBlurShaderConst::maxBlurDistance),
             sizeof(GaussianBlurShaderConst::cameraNearPlane),
