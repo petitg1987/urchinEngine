@@ -84,7 +84,7 @@ namespace urchin {
 
             Vector2<float> materialsStRepeat = materials->getStRepeat();
             terrainRenderer->updateData(2, materials->getTexCoordinates());
-            terrainRenderer->updateUniformData(ST_UNIFORM_BINDING, &materialsStRepeat); //TODO use const
+            terrainRenderer->updateUniformData(ST_UNIFORM_BINDING, &materialsStRepeat);
             terrainRenderer->updateUniformTextureReader(MASK_TEX_UNIFORM_BINDING, TextureReader::build(materials->getMaskTexture(), TextureParam::buildLinear()));
             for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
                 const auto& material = materials->getMaterials()[i];
@@ -130,7 +130,7 @@ namespace urchin {
         this->position = position;
 
         if (terrainRenderer) {
-            terrainRenderer->updateUniformData(POSITION_UNIFORM_BINDING, &position); //TODO use const
+            terrainRenderer->updateUniformData(POSITION_UNIFORM_BINDING, &position);
         }
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }

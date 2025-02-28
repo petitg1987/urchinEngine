@@ -8,15 +8,14 @@
 namespace urchin {
 
     /**
-     * Wrapper for shader constant variables. Variable size and data doesn't requirement memory alignment but 'bool' type must be of 4 bytes (VkBool32).
+     * Wrapper for shader constant variables.
+     * Variable size and data don't require memory alignment but only 4 bytes scalar can be used as constant ('bool' type must be VkBool32).
      */
     ShaderConstants::ShaderConstants(std::vector<std::size_t> variablesSize, const void* data) :
             variablesSize(std::move(variablesSize)) {
         #ifdef URCHIN_DEBUG
             for (std::size_t variableSize : this->variablesSize) {
-                //Others sizes are not handled due to paddings added by the compiler on the structs.
-                //Moreover, Vulkan spec states that bool constant should use VkBool32.
-                assert(variableSize % 4 == 0);
+                assert(variableSize == 4);
             }
         #endif
 
