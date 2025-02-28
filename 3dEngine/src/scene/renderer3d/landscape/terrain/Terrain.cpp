@@ -14,8 +14,6 @@ namespace urchin {
             materials(std::move(materials)),
             grass(TerrainGrass("")),
             ambient(0.0f) {
-        terrainShader = ShaderBuilder::createShader("terrain.vert.spv", "terrain.frag.spv", false);
-
         setPosition(position);
         setAmbient(0.3f);
     }
@@ -39,11 +37,20 @@ namespace urchin {
         assert(renderTarget);
         this->mesh = std::move(mesh);
 
+        createOrUpdateRenderer();
+    }
+
+    void Terrain::createOrUpdateRenderer() {
         std::vector<Point2<float>> dummyTextureCoordinates;
         dummyTextureCoordinates.resize(this->mesh->getVertices().size(), Point2(0.0f, 0.0f));
 
         Matrix4<float> projViewMatrix;
         Vector2<float> materialsStRepeat = materials->getStRepeat();
+
+        TerrainShaderConst terrainShaderConst {.ambient = ambient};
+        std::vector variablesSize = {sizeof(TerrainShaderConst::ambient)};
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &terrainShaderConst);
+        terrainShader = ShaderBuilder::createShader("terrain.vert.spv", "terrain.frag.spv", std::move(shaderConstants), false);
 
         auto terrainRendererBuilder = GenericRendererBuilder::create("terrain", *renderTarget, *terrainShader, ShapeType::TRIANGLE_STRIP)
                 ->enableDepthTest()
@@ -55,7 +62,6 @@ namespace urchin {
                 ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projViewMatrix), &projViewMatrix)
                 ->addUniformData(POSITION_UNIFORM_BINDING, sizeof(position), &position)
                 ->addUniformData(ST_UNIFORM_BINDING, sizeof(materialsStRepeat), &materialsStRepeat)
-                ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
                 ->addUniformTextureReader(MASK_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyRgba("terrain empty mask"), TextureParam::buildNearest())); //mask texture
         for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
             terrainRendererBuilder->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING[i], TextureReader::build(Texture::buildEmptyRgba("terrain empty material"), TextureParam::buildNearest()));
@@ -149,8 +155,8 @@ namespace urchin {
     void Terrain::setAmbient(float ambient) {
         this->ambient = ambient;
 
-        if (terrainRenderer) {
-            terrainRenderer->updateUniformData(AMBIENT_UNIFORM_BINDING, &ambient); //TODO use const
+        if (isInitialized) {
+            createOrUpdateRenderer();
         }
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }

@@ -1,17 +1,16 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
+layout(constant_id = 0) const float AMBIENT = 0.0;
+
 layout(std140, set = 0, binding = 2) uniform Material {
     vec2 stRepeat;
 } material;
-layout(std140, set = 0, binding = 3) uniform Lighting {
-    float ambient;
-} lighting;
-layout(binding = 4) uniform sampler2D maskTex;
-layout(binding = 5) uniform sampler2D albedoTex1;
-layout(binding = 6) uniform sampler2D albedoTex2;
-layout(binding = 7) uniform sampler2D albedoTex3;
-layout(binding = 8) uniform sampler2D albedoTex4;
+layout(binding = 3) uniform sampler2D maskTex;
+layout(binding = 4) uniform sampler2D albedoTex1;
+layout(binding = 5) uniform sampler2D albedoTex2;
+layout(binding = 6) uniform sampler2D albedoTex3;
+layout(binding = 7) uniform sampler2D albedoTex4;
 
 layout(location = 0) in vec2 texCoordinates;
 layout(location = 1) in vec3 normal;
@@ -39,7 +38,7 @@ void main() {
 
     //normal and ambient
     vec3 texNormal = (normal + 1.0) / 2.0;
-    fragNormalAndAmbient = vec4(texNormal, lighting.ambient);
+    fragNormalAndAmbient = vec4(texNormal, AMBIENT);
 
     //pbr
     fragPbr = vec2(1.0, 0.0);
