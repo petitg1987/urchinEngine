@@ -54,6 +54,7 @@ namespace urchin {
             std::vector<Light*> visibleLights;
 
             Light* lastUpdatedLight;
+            bool globalLightDataUpdated;
 
             struct LightInfo {
                 alignas(4) bool isExist;

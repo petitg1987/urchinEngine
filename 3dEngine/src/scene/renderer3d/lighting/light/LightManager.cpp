@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <cstring>
 
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/lighting/light/sun/SunLight.h>
@@ -11,6 +12,7 @@ namespace urchin {
     LightManager::LightManager() :
             lightOctreeManager(OctreeManager<Light>(ConfigService::instance().getFloatValue("light.octreeMinSize"))),
             lastUpdatedLight(nullptr),
+            globalLightDataUpdated(true),
             lightsData({}) {
         static_assert(MAX_LIGHTS < LIGHTS_SHADER_LIMIT);
         lightsData.globalAmbientColor = Point3(0.0f, 0.0f, 0.0f);
@@ -89,6 +91,8 @@ namespace urchin {
 
     void LightManager::setGlobalAmbientColor(const Point3<float>& globalAmbientColor) {
         this->lightsData.globalAmbientColor = globalAmbientColor;
+
+        globalLightDataUpdated = true;
     }
 
     const Point3<float>& LightManager::getGlobalAmbientColor() const {
@@ -124,41 +128,52 @@ namespace urchin {
     void LightManager::loadVisibleLights(GenericRenderer& deferredSecondPassRenderer, uint32_t lightsDataUniformBinding) {
         std::span<Light* const> lights = getVisibleLights();
 
+        bool lightDataUpdated = false;
         for (unsigned int i = 0; i < MAX_LIGHTS; ++i) {
+            LightInfo currentLightInfo{};
+
             if (lights.size() > i) {
                 const Light* light = lights[i];
 
-                lightsData.lightsInfo[i].isExist = true;
-                lightsData.lightsInfo[i].lightFlags =
+                currentLightInfo.isExist = true;
+                currentLightInfo.lightFlags =
                         (light->isProduceShadow() ? Light::LIGHT_FLAG_PRODUCE_SHADOW : 0) |
                         (light->isPbrEnabled() ? Light::LIGHT_FLAG_PBR_ENABLED : 0);
-                lightsData.lightsInfo[i].lightType = (int)light->getLightType();
-                lightsData.lightsInfo[i].lightColor = light->getLightColor();
+                currentLightInfo.lightType = (int)light->getLightType();
+                currentLightInfo.lightColor = light->getLightColor();
 
                 if (lights[i]->getLightType() == Light::LightType::SUN) {
                     const auto* sunLight = dynamic_cast<const SunLight*>(light);
-                    lightsData.lightsInfo[i].direction = sunLight->getDirections()[0];
+                    currentLightInfo.direction = sunLight->getDirections()[0];
                 } else if (lights[i]->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                     const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
-                    lightsData.lightsInfo[i].position = omnidirectionalLight->getPosition();
-                    lightsData.lightsInfo[i].exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
+                    currentLightInfo.position = omnidirectionalLight->getPosition();
+                    currentLightInfo.exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
                 } else if (lights[i]->getLightType() == Light::LightType::SPOT) {
                     const auto* spotLight = dynamic_cast<const SpotLight*>(light);
-                    lightsData.lightsInfo[i].position = spotLight->getPosition();
-                    lightsData.lightsInfo[i].direction = spotLight->getDirections()[0];
-                    lightsData.lightsInfo[i].exponentialAttenuation = spotLight->getExponentialAttenuation();
-                    lightsData.lightsInfo[i].innerCosAngle = spotLight->getInnerCosAngle();
-                    lightsData.lightsInfo[i].outerCosAngle = spotLight->getOuterCosAngle();
+                    currentLightInfo.position = spotLight->getPosition();
+                    currentLightInfo.direction = spotLight->getDirections()[0];
+                    currentLightInfo.exponentialAttenuation = spotLight->getExponentialAttenuation();
+                    currentLightInfo.innerCosAngle = spotLight->getInnerCosAngle();
+                    currentLightInfo.outerCosAngle = spotLight->getOuterCosAngle();
                 } else {
                     throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string((int)light->getLightType()));
                 }
             } else {
-                lightsData.lightsInfo[i].isExist = false;
+                currentLightInfo.isExist = false;
                 break;
+            }
+
+            if (std::memcmp(&lightsData.lightsInfo[i], &currentLightInfo, sizeof(LightInfo))) {
+                std::memcpy(&lightsData.lightsInfo[i], &currentLightInfo, sizeof(LightInfo));
+                lightDataUpdated = true;
             }
         }
 
-        deferredSecondPassRenderer.updateUniformData(lightsDataUniformBinding, &lightsData); //TODO cache to not call method everytimes ?
+        if (lightDataUpdated || globalLightDataUpdated) {
+            deferredSecondPassRenderer.updateUniformData(lightsDataUniformBinding, &lightsData);
+            globalLightDataUpdated = false;
+        }
     }
 
     void LightManager::postUpdateVisibleLights() {
