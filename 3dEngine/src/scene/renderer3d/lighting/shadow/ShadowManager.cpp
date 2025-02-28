@@ -260,7 +260,7 @@ namespace urchin {
         for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
             splitData[shadowMapIndex] = Point4(splitFrustums[shadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[shadowMapIndex].getBoundingSphere().getRadius());
         }
-        deferredSecondPassRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data()); //TODO use const ?
+        deferredSecondPassRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
 
         shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
