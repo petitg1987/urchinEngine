@@ -28,15 +28,15 @@ namespace urchin {
         deferredSecondPassRendererBuilder->addUniformData(fogUniformBinding, sizeof(fogData), &fogData);
     }
 
-    void FogContainer::loadFog(GenericRenderer& deferredSecondPassRenderer, uint32_t fogUniformBinding) { //TODO use const
-        fogData = {};
-        fogData.hasFog = !fogs.empty();
-        if (!fogs.empty()) {
-            fogData.density = fogs.top()->getDensity();
-            fogData.gradient = fogs.top()->getGradient();
-            fogData.maxHeight = fogs.top()->getMaxHeight();
-            fogData.color = fogs.top()->getColor();
-        }
+    void FogContainer::loadFog(GenericRenderer& deferredSecondPassRenderer, uint32_t fogUniformBinding) {
+        const Fog* activeFog = getActiveFog();
+        bool hasFog = activeFog != nullptr;
+
+        fogData.hasFog = hasFog;
+        fogData.density = hasFog ? activeFog->getDensity() : 0.0f;
+        fogData.gradient = hasFog ? activeFog->getGradient() : 0.0f;
+        fogData.maxHeight = hasFog ? activeFog->getMaxHeight() : 0.0f;
+        fogData.color = hasFog ? activeFog->getColor() : Vector3(0.0f, 0.0f, 0.0f);
 
         deferredSecondPassRenderer.updateUniformData(fogUniformBinding, &fogData);
     }
