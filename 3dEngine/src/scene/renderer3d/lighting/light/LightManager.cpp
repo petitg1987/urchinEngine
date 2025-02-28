@@ -91,8 +91,7 @@ namespace urchin {
 
     void LightManager::setGlobalAmbientColor(const Point3<float>& globalAmbientColor) {
         this->lightsData.globalAmbientColor = globalAmbientColor;
-
-        globalLightDataUpdated = true;
+        this->globalLightDataUpdated = true;
     }
 
     const Point3<float>& LightManager::getGlobalAmbientColor() const {
