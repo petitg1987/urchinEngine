@@ -61,7 +61,7 @@ namespace urchin {
         this->ambient = ambient;
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(AMBIENT_UNIFORM_BINDING, &ambient); //TODO use const ?
+            renderer->updateUniformData(AMBIENT_UNIFORM_BINDING, &ambient);
         }
     }
 

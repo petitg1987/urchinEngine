@@ -157,8 +157,8 @@ namespace urchin {
 
         if (isInitialized) {
             createOrUpdateRenderer();
+            refreshGrassAmbient(); //grass uses ambient value: refresh is required
         }
-        refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
 
     Point3<float> Terrain::findPointAt(const Point2<float>& globalXzCoordinate) const {
