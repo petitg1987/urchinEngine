@@ -25,8 +25,10 @@ namespace urchin {
     }
 
     void ShaderDataContainer::updateData(const void* newDataPtr) {
-        std::memcpy(this->ptr, newDataPtr, dataSize);
-        markDataAsNew();
+        if (std::memcmp(this->ptr, newDataPtr, dataSize)) {
+            std::memcpy(this->ptr, newDataPtr, dataSize);
+            markDataAsNew();
+        }
     }
 
     std::size_t ShaderDataContainer::getDataSize() const {

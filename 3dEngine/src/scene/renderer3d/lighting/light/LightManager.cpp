@@ -12,7 +12,6 @@ namespace urchin {
     LightManager::LightManager() :
             lightOctreeManager(OctreeManager<Light>(ConfigService::instance().getFloatValue("light.octreeMinSize"))),
             lastUpdatedLight(nullptr),
-            globalLightDataUpdated(true),
             lightsData({}) {
         static_assert(MAX_LIGHTS < LIGHTS_SHADER_LIMIT);
         lightsData.globalAmbientColor = Point3(0.0f, 0.0f, 0.0f);
@@ -91,7 +90,6 @@ namespace urchin {
 
     void LightManager::setGlobalAmbientColor(const Point3<float>& globalAmbientColor) {
         this->lightsData.globalAmbientColor = globalAmbientColor;
-        this->globalLightDataUpdated = true;
     }
 
     const Point3<float>& LightManager::getGlobalAmbientColor() const {
@@ -127,9 +125,8 @@ namespace urchin {
     void LightManager::loadVisibleLights(GenericRenderer& deferredSecondPassRenderer, uint32_t lightsDataUniformBinding) {
         std::span<Light* const> lights = getVisibleLights();
 
-        bool lightDataUpdated = false;
         for (unsigned int i = 0; i < MAX_LIGHTS; ++i) {
-            LightInfo currentLightInfo{};
+            LightInfo& currentLightInfo = lightsData.lightsInfo[i];
 
             if (lights.size() > i) {
                 const Light* light = lights[i];
@@ -162,17 +159,9 @@ namespace urchin {
                 currentLightInfo.isExist = false;
                 break;
             }
-
-            if (std::memcmp(&lightsData.lightsInfo[i], &currentLightInfo, sizeof(LightInfo))) {
-                std::memcpy(&lightsData.lightsInfo[i], &currentLightInfo, sizeof(LightInfo));
-                lightDataUpdated = true;
-            }
         }
 
-        if (lightDataUpdated || globalLightDataUpdated) {
-            deferredSecondPassRenderer.updateUniformData(lightsDataUniformBinding, &lightsData);
-            globalLightDataUpdated = false;
-        }
+        deferredSecondPassRenderer.updateUniformData(lightsDataUniformBinding, &lightsData);
     }
 
     void LightManager::postUpdateVisibleLights() {
