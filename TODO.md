@@ -91,7 +91,7 @@
 
 # Aggregation
 * Object entity
-  * **NEW FEATURE** (`major`): Generate collision convex hull shapes from meshes inside a urchinMesh file
+  * **NEW FEATURE** (`major`): Generate compound shape with a convex hull from each mesh of a model
 
 # Map editor
 * Render
