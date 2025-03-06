@@ -22,16 +22,12 @@ namespace urchin {
 
             bool hasObjectEntitySelected() const;
             const ObjectEntity* getSelectedObjectEntity() const;
-            bool isFirstObjectEntitySelected() const;
-            bool isLastObjectEntitySelected() const;
 
             int getObjectEntityRow(const ObjectEntity*) const;
 
-            int addObject(const ObjectEntity&);
+            int addObject(const ObjectEntity&, std::size_t);
             bool removeSelectedObject();
             bool updateSelectedObject(const ObjectEntity&);
-            bool moveUpSelectedObject();
-            bool moveDownSelectedObject();
             void removeAllObjects();
 
         private:

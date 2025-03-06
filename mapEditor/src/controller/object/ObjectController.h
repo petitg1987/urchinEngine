@@ -17,12 +17,10 @@ namespace urchin {
 
             std::list<const ObjectEntity*> getObjectEntities() const;
             const ObjectEntity* findObjectEntityByBodyId(std::string_view) const;
-            ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
+            std::pair<ObjectEntity*, std::size_t> addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(const ObjectEntity&);
-            ObjectEntity& cloneObjectEntity(std::string, const ObjectEntity&);
+            std::pair<ObjectEntity*, std::size_t> cloneObjectEntity(std::string, const ObjectEntity&);
             void renameObjectEntity(const ObjectEntity&, std::string);
-            bool moveUpObjectEntity(const ObjectEntity&);
-            bool moveDownObjectEntity(const ObjectEntity&);
 
             void createDefaultBody(const ObjectEntity&);
             void changeBodyShape(const ObjectEntity&, CollisionShape3D::ShapeType);

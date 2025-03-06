@@ -76,20 +76,6 @@ namespace urchin {
         renameObjectButton->setEnabled(false);
         connect(renameObjectButton, SIGNAL(clicked()), this, SLOT(showRenameObjectDialog()));
 
-        moveUpObjectButton = new QPushButton("▲");
-        buttonsLayout->addWidget(moveUpObjectButton);
-        ButtonStyleHelper::applyNormalStyle(moveUpObjectButton);
-        moveUpObjectButton->setFixedWidth(22);
-        moveUpObjectButton->setEnabled(false);
-        connect(moveUpObjectButton, SIGNAL(clicked()), this, SLOT(moveUpSelectedObject()));
-
-        moveDownObjectButton = new QPushButton("▼");
-        buttonsLayout->addWidget(moveDownObjectButton);
-        ButtonStyleHelper::applyNormalStyle(moveDownObjectButton);
-        moveDownObjectButton->setFixedWidth(22);
-        moveDownObjectButton->setEnabled(false);
-        connect(moveDownObjectButton, SIGNAL(clicked()), this, SLOT(moveDownSelectedObject()));
-
         tabWidget = new QTabWidget();
         mainLayout->addWidget(tabWidget);
         tabWidget->hide();
@@ -343,9 +329,10 @@ namespace urchin {
     void ObjectPanelWidget::load(ObjectController& objectController) {
         this->objectController = &objectController;
 
-        std::list<const ObjectEntity*> objectEntities = this->objectController->getObjectEntities();
-        for (auto& objectEntity : objectEntities) {
-            objectTableView->addObject(*objectEntity);
+        std::size_t insertPosition = 0;
+        for (auto& objectEntity : this->objectController->getObjectEntities()) {
+            objectTableView->addObject(*objectEntity, insertPosition);
+            insertPosition++;
         }
     }
 
@@ -365,15 +352,11 @@ namespace urchin {
                     removeObjectButton->setEnabled(true);
                     cloneObjectButton->setEnabled(true);
                     renameObjectButton->setEnabled(true);
-                    moveUpObjectButton->setEnabled(!objectTableView->isFirstObjectEntitySelected());
-                    moveDownObjectButton->setEnabled(!objectTableView->isLastObjectEntitySelected());
                     tabWidget->show();
                 } else {
                     removeObjectButton->setEnabled(false);
                     cloneObjectButton->setEnabled(false);
                     renameObjectButton->setEnabled(false);
-                    moveUpObjectButton->setEnabled(false);
-                    moveDownObjectButton->setEnabled(false);
                     tabWidget->hide();
                 }
             }
@@ -520,12 +503,11 @@ namespace urchin {
 
         if (newObjectEntityDialog.result() == QDialog::Accepted) {
             std::unique_ptr<ObjectEntity> objectEntity = newObjectEntityDialog.moveObjectEntity();
-            const ObjectEntity* objectEntityPtr = objectEntity.get();
-            objectController->addObjectEntity(std::move(objectEntity));
-            objectController->createDefaultBody(*objectEntityPtr);
-            objectController->moveObjectInFrontOfCamera(*objectEntityPtr, false);
+            std::pair<ObjectEntity*, std::size_t> objectEntityInserted = objectController->addObjectEntity(std::move(objectEntity));
+            objectController->createDefaultBody(*objectEntityInserted.first);
+            objectController->moveObjectInFrontOfCamera(*objectEntityInserted.first, false);
 
-            int row = objectTableView->addObject(*objectEntityPtr);
+            int row = objectTableView->addObject(*objectEntityInserted.first, objectEntityInserted.second);
             objectTableView->selectRow(row);
         }
     }
@@ -547,10 +529,10 @@ namespace urchin {
         if (cloneObjectEntityDialog.result() == QDialog::Accepted) {
             const std::string& newObjectName = cloneObjectEntityDialog.getObjectName();
             const ObjectEntity& toCloneObjectEntity = *objectTableView->getSelectedObjectEntity();
-            const ObjectEntity& newObjectEntity = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
-            objectController->moveObjectInFrontOfCamera(newObjectEntity, true);
+            const std::pair<ObjectEntity*, std::size_t> objectEntityInserted = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
+            objectController->moveObjectInFrontOfCamera(*objectEntityInserted.first, true);
 
-            int row = objectTableView->addObject(newObjectEntity);
+            int row = objectTableView->addObject(*objectEntityInserted.first, objectEntityInserted.second);
             objectTableView->selectRow(row);
         }
     }
@@ -566,30 +548,6 @@ namespace urchin {
             objectController->renameObjectEntity(objectEntity, newObjectName);
 
             objectTableView->updateSelectedObject(objectEntity);
-        }
-    }
-
-    void ObjectPanelWidget::moveUpSelectedObject() const {
-        if (objectTableView->hasObjectEntitySelected()) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            bool controllerMoved = objectController->moveUpObjectEntity(objectEntity);
-            bool viewMoved = objectTableView->moveUpSelectedObject();
-
-            if (controllerMoved != viewMoved) {
-                Logger::instance().logError("Move up fail for: " + objectEntity.getName());
-            }
-        }
-    }
-
-    void ObjectPanelWidget::moveDownSelectedObject() const {
-        if (objectTableView->hasObjectEntitySelected()) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            bool controllerMoved = objectController->moveDownObjectEntity(objectEntity);
-            bool viewMoved = objectTableView->moveDownSelectedObject();
-
-            if (controllerMoved != viewMoved) {
-                Logger::instance().logError("Move down fail for: " + objectEntity.getName());
-            }
         }
     }
 

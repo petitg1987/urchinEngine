@@ -27,8 +27,8 @@ namespace urchin {
         return nullptr;
     }
 
-    ObjectEntity& ObjectController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
-        ObjectEntity& addedObjectEntity = getMap().addObjectEntity(std::move(objectEntity));
+    std::pair<ObjectEntity*, std::size_t> ObjectController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
+        std::pair<ObjectEntity*, std::size_t> addedObjectEntity = getMap().addObjectEntity(std::move(objectEntity));
 
         markModified();
         return addedObjectEntity;
@@ -41,7 +41,7 @@ namespace urchin {
         markModified();
     }
 
-    ObjectEntity& ObjectController::cloneObjectEntity(std::string newObjectName, const ObjectEntity& toCloneObjectEntity) {
+    std::pair<ObjectEntity*, std::size_t> ObjectController::cloneObjectEntity(std::string newObjectName, const ObjectEntity& toCloneObjectEntity) {
         return addObjectEntity(toCloneObjectEntity.clone(std::move(newObjectName)));
     }
 
@@ -50,22 +50,6 @@ namespace urchin {
         objectEntity.setName(std::move(newObjectName));
 
         markModified();
-    }
-
-    bool ObjectController::moveUpObjectEntity(const ObjectEntity& constObjectEntity) {
-        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        bool moved = getMap().moveUpObjectEntity(objectEntity);
-
-        markModified();
-        return moved;
-    }
-
-    bool ObjectController::moveDownObjectEntity(const ObjectEntity& constObjectEntity) {
-        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        bool moved = getMap().moveDownObjectEntity(objectEntity);
-
-        markModified();
-        return moved;
     }
 
     void ObjectController::createDefaultBody(const ObjectEntity& constObjectEntity) {

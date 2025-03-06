@@ -79,26 +79,23 @@ namespace urchin {
         return nullptr;
     }
 
-    bool ObjectTableView::isFirstObjectEntitySelected() const {
-        return hasObjectEntitySelected() && this->currentIndex().row() == 0;
-    }
+    int ObjectTableView::addObject(const ObjectEntity& objectEntity, std::size_t insertPosition) {
+        int insertRow = (int)insertPosition;
+        if (insertRow > objectsListModel->rowCount()) {
+            throw std::runtime_error("Unable to add an object at position " + std::to_string(insertPosition) + " while the list contains only "
+                + std::to_string(objectsListModel->rowCount()) + " objects");
+        }
 
-    bool ObjectTableView::isLastObjectEntitySelected() const {
-        return hasObjectEntitySelected() && this->currentIndex().row() == objectsListModel->rowCount() - 1;
-    }
-
-    int ObjectTableView::addObject(const ObjectEntity& objectEntity) {
-        int nextRow = objectsListModel->rowCount();
-        objectsListModel->insertRow(nextRow);
+        objectsListModel->insertRow(insertRow);
 
         std::vector<QStandardItem*> objectEntityItems = buildObjectEntityItems(objectEntity);
         int column = 0;
         for (QStandardItem* objectEntityItem : objectEntityItems) {
-            objectsListModel->setItem(nextRow, column++, objectEntityItem);
+            objectsListModel->setItem(insertRow, column++, objectEntityItem);
         }
 
         resizeRowsToContents();
-        return nextRow;
+        return insertRow;
     }
 
     bool ObjectTableView::removeSelectedObject() {
@@ -125,34 +122,6 @@ namespace urchin {
             } else {
                 throw std::runtime_error("Update the selected object with a different instance is not allowed");
             }
-        }
-        return false;
-    }
-
-    bool ObjectTableView::moveUpSelectedObject() {
-        if (hasObjectEntitySelected() && !isFirstObjectEntitySelected()) {
-            int currentRow = this->currentIndex().row();
-            int newRow = currentRow - 1;
-            QList<QStandardItem*> itemList = objectsListModel->takeRow(currentRow);
-            objectsListModel->insertRow(newRow, itemList);
-            selectRow(newRow);
-
-            resizeRowsToContents();
-            return true;
-        }
-        return false;
-    }
-
-    bool ObjectTableView::moveDownSelectedObject() {
-        if (hasObjectEntitySelected() && !isLastObjectEntitySelected()) {
-            int currentRow = this->currentIndex().row();
-            int newRow = currentRow + 1;
-            QList<QStandardItem*> itemList = objectsListModel->takeRow(currentRow);
-            objectsListModel->insertRow(newRow, itemList);
-            selectRow(newRow);
-
-            resizeRowsToContents();
-            return true;
         }
         return false;
     }
