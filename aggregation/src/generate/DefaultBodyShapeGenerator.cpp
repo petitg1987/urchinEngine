@@ -59,12 +59,17 @@ namespace urchin {
                     allVertices.insert(constMesh->getBaseVertices()[i]);
                 }
             }
-        } else {
-            for (const Point3<float>& point : model->getLocalAABBox().getPoints()) {
-                allVertices.insert(point);
+
+            try {
+                return std::make_unique<ConvexHullShape3D<float>>(std::vector(allVertices.begin(), allVertices.end()));
+            } catch (const std::invalid_argument&) {
             }
+            allVertices.clear();
         }
 
+        for (const Point3<float>& point : model->getLocalAABBox().getPoints()) {
+            allVertices.insert(point);
+        }
         return std::make_unique<ConvexHullShape3D<float>>(std::vector(allVertices.begin(), allVertices.end()));
     }
 

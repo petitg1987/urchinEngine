@@ -27,7 +27,7 @@ namespace urchin {
 
         localizedShapeTableView = new LocalizedShapeTableView();
         mainLayout->addWidget(localizedShapeTableView, 1, 0);
-        localizedShapeTableView->setFixedHeight(200);
+        localizedShapeTableView->setFixedHeight(165);
         localizedShapeTableView->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
 
         auto* buttonLayout = new QHBoxLayout();
@@ -80,6 +80,10 @@ namespace urchin {
                 if (localizedShapeTableView->hasLocalizedShapeSelected()) {
                     const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
+                    if (localizedShapeDetails != nullptr) {
+                        mainLayout->removeWidget(localizedShapeDetails);
+                        localizedShapeDetails->deleteLater();
+                    }
                     localizedShapeDetails = new QWidget();
                     mainLayout->addWidget(localizedShapeDetails, 3, 0);
 
