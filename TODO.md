@@ -24,7 +24,7 @@
   * ► **OPTIMIZATION**: Models LOD
 * Lighting & Shadow
   * ▲ **NEW FEATURE**: Shadow on spotlight (check Sascha Willems: deferredshadows)
-  * ▲ **NEW FEATURE**: Shadow on omnidirectional light
+  * ► **NEW FEATURE**: Shadow on omnidirectional light
   * ► **OPTIMIZATION**: Avoid to render all the frustum models for each cascade: use the split frustum models instead
   * ► **OPTIMIZATION**: Create shadow map texture only for visible lights
   * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
@@ -99,8 +99,7 @@
   * ► **OPTIMIZATION**: When search start and end triangles: use AABBox Tree algorithm
 
 # Aggregation
-* Object entity
-  * ▲ **NEW FEATURE**: Generate compound shape with a convex hull for each mesh of a model
+* `None`
 
 # Map editor
 * Render

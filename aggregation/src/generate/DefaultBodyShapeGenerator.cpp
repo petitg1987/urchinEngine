@@ -84,7 +84,7 @@ namespace urchin {
                 try {
                     auto localizedShape = std::make_unique<LocalizedCollisionShape>();
                     localizedShape->shapeIndex = shapeIndex++;
-                    localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(std::vector(meshUniqueVertices.begin(), meshUniqueVertices.end()));
+                    localizedShape->shape = buildOptimizedCollisionShape(std::vector(meshUniqueVertices.begin(), meshUniqueVertices.end()));
                     localizedShape->transform = PhysicsTransform();
                     localizedCollisionShapes.push_back(std::move(localizedShape));
                 } catch (const std::invalid_argument&) {
@@ -102,6 +102,16 @@ namespace urchin {
         }
 
         return localizedCollisionShapes;
+    }
+
+    std::unique_ptr<const CollisionShape3D> DefaultBodyShapeGenerator::buildOptimizedCollisionShape(const std::vector<Point3<float>>& uniqueVertices) const {
+        auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(uniqueVertices);
+
+        if (convexHullShape->getConvexHullPoints().size() == 8) {
+            //TODO return box
+        }
+
+        return std::make_unique<const CollisionConvexHullShape>(std::move(convexHullShape));
     }
 
 }

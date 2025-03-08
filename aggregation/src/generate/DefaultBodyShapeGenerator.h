@@ -14,6 +14,8 @@ namespace urchin {
             std::unique_ptr<ConvexHullShape3D<float>> buildConvexHullShape() const;
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> buildLocalizedCollisionShape() const;
 
+            std::unique_ptr<const CollisionShape3D> buildOptimizedCollisionShape(const std::vector<Point3<float>>&) const;
+
             const ObjectEntity& objectEntity;
     };
 
