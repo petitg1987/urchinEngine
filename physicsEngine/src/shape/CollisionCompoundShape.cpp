@@ -13,6 +13,15 @@ namespace urchin {
             throw std::invalid_argument("Compound shape must be composed of at least one shape.");
         }
 
+        std::vector<std::size_t> allShapeIndexes;
+        allShapeIndexes.reserve(this->localizedShapes.size());
+        for (const std::shared_ptr<const LocalizedCollisionShape>& localizedShape : this->localizedShapes) {
+            if (std::ranges::any_of(allShapeIndexes, [&localizedShape](std::size_t shapeIndex) {return shapeIndex == localizedShape->shapeIndex;})) {
+                throw std::invalid_argument("Found duplicate shape index on localized shapes: " + std::to_string(localizedShape->shapeIndex));
+            }
+            allShapeIndexes.push_back(localizedShape->shapeIndex);
+        }
+
         initializeDistances();
     }
 

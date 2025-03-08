@@ -43,28 +43,28 @@ namespace urchin {
     }
 
     std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape() const {
-        std::set<Point3<float>> allVertices;
+        std::set<Point3<float>> uniqueVertices;
 
         if (objectEntity.getModel()->getConstMeshes()) {
             const std::vector<std::unique_ptr<const ConstMesh>>& constMeshes = objectEntity.getModel()->getConstMeshes()->getConstMeshes();
             for (const std::unique_ptr<const ConstMesh>& constMesh : constMeshes) {
                 for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
-                    allVertices.insert(constMesh->getBaseVertices()[i]);
+                    uniqueVertices.insert(constMesh->getBaseVertices()[i]);
                 }
             }
 
             try {
-                return std::make_unique<ConvexHullShape3D<float>>(std::vector(allVertices.begin(), allVertices.end()));
+                return std::make_unique<ConvexHullShape3D<float>>(std::vector(uniqueVertices.begin(), uniqueVertices.end()));
             } catch (const std::invalid_argument&) {
                 //ignore build convex hull errors
             }
-            allVertices.clear();
+            uniqueVertices.clear();
         }
 
         for (const Point3<float>& point : objectEntity.getModel()->getLocalAABBox().getPoints()) {
-            allVertices.insert(point);
+            uniqueVertices.insert(point);
         }
-        return std::make_unique<ConvexHullShape3D<float>>(std::vector(allVertices.begin(), allVertices.end()));
+        return std::make_unique<ConvexHullShape3D<float>>(std::vector(uniqueVertices.begin(), uniqueVertices.end()));
     }
 
     std::vector<std::shared_ptr<const LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildLocalizedCollisionShape() const {
@@ -73,14 +73,27 @@ namespace urchin {
         if (objectEntity.getModel()->getConstMeshes()) {
             const std::vector<std::unique_ptr<const ConstMesh>>& constMeshes = objectEntity.getModel()->getConstMeshes()->getConstMeshes();
             localizedCollisionShapes.reserve(constMeshes.size());
+
+            std::size_t shapeIndex = 0;
             for (const std::unique_ptr<const ConstMesh>& constMesh : constMeshes) {
-                auto localizedShape = std::make_unique<LocalizedCollisionShape>();
-                localizedShape->shapeIndex = 0; //TODO update it ? + assert in CollisionCompoundShape ?
-                localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(constMesh->getBaseVertices()); //TODO wrong for vent ? + handle exception
-                localizedShape->transform = PhysicsTransform();
-                localizedCollisionShapes.push_back(std::move(localizedShape));
+                std::set<Point3<float>> meshUniqueVertices;
+                for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
+                    meshUniqueVertices.insert(constMesh->getBaseVertices()[i]);
+                }
+
+                try {
+                    auto localizedShape = std::make_unique<LocalizedCollisionShape>();
+                    localizedShape->shapeIndex = shapeIndex++;
+                    localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(std::vector(meshUniqueVertices.begin(), meshUniqueVertices.end()));
+                    localizedShape->transform = PhysicsTransform();
+                    localizedCollisionShapes.push_back(std::move(localizedShape));
+                } catch (const std::invalid_argument&) {
+                    //ignore build convex hull errors
+                }
             }
-        } else {
+        }
+
+        if (localizedCollisionShapes.empty()) {
             auto boxLocalizedShape = std::make_unique<LocalizedCollisionShape>();
             boxLocalizedShape->shapeIndex = 0;
             boxLocalizedShape->shape = std::make_unique<const CollisionBoxShape>(objectEntity.getModel()->getLocalAABBox().getHalfSizes());
