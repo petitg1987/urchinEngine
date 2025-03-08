@@ -1,102 +1,103 @@
 # Global
 * Performance
-  * **OPTIMIZATION** (`minor`): Use PGO in g++
+  * ▼ **OPTIMIZATION**: Use PGO in g++
 
 # 3d Engine
 * Graphics API
-  * **OPTIMIZATION** (`medium`): Use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
-  * **OPTIMIZATION** (`medium`): Use sub-passes for deferred rendering (see <https://www.saschawillems.de/blog/2018/07/19/vulkan-input-attachments-and-sub-passes/>)
-  * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
-  * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
+  * ► **OPTIMIZATION**: Use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
+  * ► **OPTIMIZATION**: Use sub-passes for deferred rendering (see <https://www.saschawillems.de/blog/2018/07/19/vulkan-input-attachments-and-sub-passes/>)
+  * ► **OPTIMIZATION**: Check secondary command buffers usage for better performance
+  * ▼ **OPTIMIZATION**: Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
 * Rendering
-  * **NEW FEATURE** (`medium`): Implement a better culling technique (GPU driven rendering: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>, coherent hierarchical culling revisited, software occlusion culling)
-  * **NEW FEATURE** (`medium`): Use sRGB format for color/albedo framebuffers and swap chain
+  * ► **NEW FEATURE**: Implement a better culling technique (GPU driven rendering: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>, coherent hierarchical culling revisited, software occlusion culling)
+  * ► **NEW FEATURE**: Use sRGB format for color/albedo framebuffers and swap chain
 * Model
-  * **OPTIMIZATION** (`major`): Remove the ModelInstanceDisplayer in ModelSetDisplayer#removeModelFromDisplayer() for models not displayed for a long time
-  * **OPTIMIZATION** (`medium`): Draw calls batching
+  * ▲ **OPTIMIZATION**: Remove the ModelInstanceDisplayer in ModelSetDisplayer#removeModelFromDisplayer() for models not displayed for a long time
+  * ► **OPTIMIZATION**: Draw calls batching
     * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
-  * **OPTIMIZATION** (`medium`): Parallelize the creation of the ModelDisplayer
-  * **OPTIMIZATION** (`medium`): Models LOD
+  * ► **OPTIMIZATION**: Parallelize the creation of the ModelDisplayer
+  * ► **OPTIMIZATION**: Models LOD
 * Lighting & Shadow
-  * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
-  * **OPTIMIZATION** (`medium`): Avoid to render all the frustum models for each cascade: use the split frustum models instead
-  * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
-  * **OPTIMIZATION** (`minor`): Use models LOD
-  * **OPTIMIZATION** (`minor`): Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
-  * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
+  * ▲ **NEW FEATURE**: Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
+  * ► **OPTIMIZATION**: Avoid to render all the frustum models for each cascade: use the split frustum models instead
+  * ► **OPTIMIZATION**: Create shadow map texture only for visible lights
+  * ▼ **OPTIMIZATION**: Use models LOD
+  * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
+  * ▼ **NEW FEATURE**: Implement scalable ambient obscurance
 * Anti-aliasing
-  * **NEW FEATURE** (`medium`): Implement TAA (see <https://sugulee.wordpress.com/2021/06/21/temporal-anti-aliasingtaa-tutorial/>)
+  * ► **NEW FEATURE**: Implement TAA (see <https://sugulee.wordpress.com/2021/06/21/temporal-anti-aliasingtaa-tutorial/>)
 * Landscape
-  * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
-  * **NEW FEATURE** (`minor`): Use material textures (normal map...) for terrain
-  * **NEW FEATURE** (`minor`): Add auto shadow on terrain
-  * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
+  * ► **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)
+  * ▼ **NEW FEATURE**: Use material textures (normal map...) for terrain
+  * ▼ **NEW FEATURE**: Add auto shadow on terrain
+  * ▼ **NEW FEATURE**: Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
 * UI
-  * **OPTIMIZATION** (`major`): Remove the WidgetInstanceDisplayer in WidgetSetDisplayer#removeWidgetFromDisplayer() for widgets not displayed for a long time
-  * **NEW FEATURE** (`medium`): Render UI into texture to avoid depth shift in 3d UI
-  * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
-  * **IMPROVEMENT** (`medium`): Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
-  * **IMPROVEMENT** (`minor`): Handle scrollable containers in UI 3d
-  * **NEW FEATURE** (`minor`): Combo list
+  * ▲ **OPTIMIZATION**: Remove the WidgetInstanceDisplayer in WidgetSetDisplayer#removeWidgetFromDisplayer() for widgets not displayed for a long time
+  * ► **NEW FEATURE**: Render UI into texture to avoid depth shift in 3d UI
+  * ► **IMPROVEMENT**: Add missing characters dynamically in the atlas texture(s)
+  * ► **IMPROVEMENT**: Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
+  * ▼ **IMPROVEMENT**: Handle scrollable containers in UI 3d
+  * ▼ **NEW FEATURE**: Combo list
 
 # Physics engine
 * Broad phase
-  * **OPTIMIZATION** (`medium`): Implement double AABBox trees: static and dynamic (see Bullet)
-  * **OPTIMIZATION** (`medium`): Re-balance AABBox tree for better performance
+  * ► **OPTIMIZATION**: Implement double AABBox trees: static and dynamic (see Bullet)
+  * ► **OPTIMIZATION**: Re-balance AABBox tree for better performance
 * Narrow phase
-  * **NEW FEATURE** (`medium`): Support joints between shapes
-  * **OPTIMIZATION** (`minor`): GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC)
-  * **OPTIMIZATION** (`minor`): EPA, add new point on convex hull to improve thanks to adjacent edges: find faster the triangles visible by the new point (see Reactphysics3d code)
+  * ► **NEW FEATURE**: Support joints between shapes
+  * ▼ **OPTIMIZATION**: GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC)
+  * ▼ **OPTIMIZATION**: EPA, add new point on convex hull to improve thanks to adjacent edges: find faster the triangles visible by the new point (see Reactphysics3d code)
 * Island
-  * **BUG** (`medium`): A body balancing from one side to the other side (e.g.: cone on his base) could be disabled when velocity reach zero
+  * ► **BUG**: A body balancing from one side to the other side (e.g.: cone on his base) could be disabled when velocity reach zero
     * Tips: don't disable bodies when there is only one contact point
 * Constraints solver
-  * **BUG** (`medium`): A restitution of 1.0 introduce new force in the system. Example: a superball bounces higher and higher at each collision
+  * ► **BUG**: A restitution of 1.0 introduce new force in the system. Example: a superball bounces higher and higher at each collision
     * Tips: possible cause described in <https://youtu.be/ZOfMA8h4qO8?t=109>
 * Character
-  * **NEW FEATURE** (`medium`): Handle stair for character controller
-  * **NEW FEATURE** (`medium`): Apply impulse on objects hit by character or falling on the character
+  * ► **NEW FEATURE**: Handle stair for character controller
+  * ► **NEW FEATURE**: Apply impulse on objects hit by character or falling on the character
 
 # Sound engine
 * Sound trigger
-  * **NEW FEATURE** (`medium`): Support convex hull sound shape
-  * **NEW FEATURE** (`medium`): Support portal IN and portal OUT to trigger sound
+  * ► **NEW FEATURE**: Support convex hull sound shape
+  * ► **NEW FEATURE**: Support portal IN and portal OUT to trigger sound
 * Listener    
-  * **NEW FEATURE** (`minor`): Define a velocity to the listener
+  * ▼ **NEW FEATURE**: Define a velocity to the listener
 
 # Network engine
 * Multiplayer
-  * **NEW FEATURE** (`medium`): Support for multiplayer
+  * ► **NEW FEATURE**: Support for multiplayer
 
 # AI engine
 * Navigation mesh
-  * **BUG** (`major`): Surrounded faces are not walkable (NavMeshGeneratorTest#surroundedWalkableFace)
-  * **BUG** (`major`): Union of room walls create wrong polygons (PolygonsUnionTest#roomPolygonsUnion)
-  * **NEW FEATURE** (`major`): Add possibility to exclude dynamic objects from navigation mesh
+  * ▲ **BUG**: Surrounded faces are not walkable (NavMeshGeneratorTest#surroundedWalkableFace)
+  * ▲ **BUG**: Union of room walls create wrong polygons (PolygonsUnionTest#roomPolygonsUnion)
+  * ▲ **NEW FEATURE**: Add possibility to exclude dynamic objects from navigation mesh
     * Note: worth it only when steering behaviour will be implemented in pathfinding
-  * **BUG** (`medium`): Jump from an edge created by an obstacle should be allowed only if target is this obstacle and vice versa
-  * **BUG** (`medium`): Jump links visualization are not exact
-  * **OPTIMIZATION** (`medium`): Exclude very small objects from navigation mesh
-  * **NEW FEATURE** (`medium`): Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
-  * **NEW FEATURE** (`medium`): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
-  * **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator#createNavigationPolygon()
-  * **OPTIMIZATION** (`minor`): TerrainObstacleService: apply a rough simplification on self obstacles polygons
-  * **NEW FEATURE** (`minor`): Exclude fast moving objects as walkable face
-  * **OPTIMIZATION** (`minor`): NavMeshGenerator#computePolytopeFootprint: put result in cache
+  * ► **BUG**: Jump from an edge created by an obstacle should be allowed only if target is this obstacle and vice versa
+  * ► **BUG**: Jump links visualization are not exact
+  * ► **OPTIMIZATION**: Exclude very small objects from navigation mesh
+  * ► **NEW FEATURE**: Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
+  * ► **NEW FEATURE**: Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
+  * ▼ **OPTIMIZATION**: Reduce memory allocation in NavMeshGenerator#createNavigationPolygon()
+  * ▼ **OPTIMIZATION**: TerrainObstacleService: apply a rough simplification on self obstacles polygons
+  * ▼ **NEW FEATURE**: Exclude fast moving objects as walkable face
+  * ▼ **OPTIMIZATION**: NavMeshGenerator#computePolytopeFootprint: put result in cache
 * Pathfinding
-  * **NEW FEATURE** (`major`): Implement steering behaviour (see <https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>)
-  * **NEW FEATURE** (`major`): AICharacterController should refresh path points each time the path request is updated 
-  * **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
-  * **OPTIMIZATION** (`medium`): When search start and end triangles: use AABBox Tree algorithm
+  * ▲ **NEW FEATURE**: Implement steering behaviour
+    * See: <https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>
+  * ▲ **NEW FEATURE**: AICharacterController should refresh path points each time the path request is updated 
+  * ► **OPTIMIZATION**: When compute A* G score: avoid to execute funnel algorithm from start each time
+  * ► **OPTIMIZATION**: When search start and end triangles: use AABBox Tree algorithm
 
 # Aggregation
 * Object entity
-  * **NEW FEATURE** (`major`): Generate compound shape with a convex hull for each mesh of a model
+  * ▲ **NEW FEATURE**: Generate compound shape with a convex hull for each mesh of a model
 
 # Map editor
 * Render
-  * **NEW FEATURE** (`medium`): When change orientation of cylinder/capsule: resize physics shape to fit the object size
-  * **NEW FEATURE** (`medium`): Make objects without physics selectable with left click
-  * **NEW FEATURE** (`medium`): Display box around objects which don't have mesh (allow to select them easily with left click)
+  * ► **NEW FEATURE**: When change orientation of cylinder/capsule: resize physics shape to fit the object size
+  * ► **NEW FEATURE**: Make objects without physics selectable with left click
+  * ► **NEW FEATURE**: Display box around objects which don't have mesh (allow to select them easily with left click)
 * UI
-  * **NEW FEATURE** (`minor`): Allow undoing the actions
+  * ▼ **NEW FEATURE**: Allow undoing the actions
