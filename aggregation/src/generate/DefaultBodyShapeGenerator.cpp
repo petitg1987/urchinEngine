@@ -33,7 +33,7 @@ namespace urchin {
         } else if (shapeType == CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE) {
             shape = std::make_unique<CollisionConvexHullShape>(buildConvexHullShape());
         } else if (shapeType == CollisionShape3D::ShapeType::COMPOUND_SHAPE) {
-            shape = std::make_unique<CollisionCompoundShape>(buildCompoundShape());
+            shape = std::make_unique<CollisionCompoundShape>(buildLocalizedCollisionShape());
         } else {
             throw std::invalid_argument("Unknown shape type to create default body shape: " + std::to_string(shapeType));
         }
@@ -67,7 +67,7 @@ namespace urchin {
         return std::make_unique<ConvexHullShape3D<float>>(std::vector(allVertices.begin(), allVertices.end()));
     }
 
-    std::vector<std::shared_ptr<const LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildCompoundShape() const {
+    std::vector<std::shared_ptr<const LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildLocalizedCollisionShape() const {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
 
         if (objectEntity.getModel()->getConstMeshes()) {

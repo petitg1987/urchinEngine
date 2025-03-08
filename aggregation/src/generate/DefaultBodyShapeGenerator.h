@@ -12,7 +12,7 @@ namespace urchin {
 
         private:
             std::unique_ptr<ConvexHullShape3D<float>> buildConvexHullShape() const;
-            std::vector<std::shared_ptr<const LocalizedCollisionShape>> buildCompoundShape() const;
+            std::vector<std::shared_ptr<const LocalizedCollisionShape>> buildLocalizedCollisionShape() const;
 
             const ObjectEntity& objectEntity;
     };
