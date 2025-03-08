@@ -75,7 +75,7 @@ namespace urchin {
             localizedCollisionShapes.reserve(constMeshes.size());
             for (const std::unique_ptr<const ConstMesh>& constMesh : constMeshes) {
                 auto localizedShape = std::make_unique<LocalizedCollisionShape>();
-                localizedShape->shapeIndex = 0;
+                localizedShape->shapeIndex = 0; //TODO update it ? + assert in CollisionCompoundShape ?
                 localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(constMesh->getBaseVertices()); //TODO wrong for vent ? + handle exception
                 localizedShape->transform = PhysicsTransform();
                 localizedCollisionShapes.push_back(std::move(localizedShape));
