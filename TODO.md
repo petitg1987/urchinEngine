@@ -27,7 +27,6 @@
   * ▲ **NEW FEATURE**: Shadow on omnidirectional light
   * ► **OPTIMIZATION**: Avoid to render all the frustum models for each cascade: use the split frustum models instead
   * ► **OPTIMIZATION**: Create shadow map texture only for visible lights
-  * ▼ **OPTIMIZATION**: Use models LOD
   * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
   * ▼ **NEW FEATURE**: Implement scalable ambient obscurance
 * Anti-aliasing
