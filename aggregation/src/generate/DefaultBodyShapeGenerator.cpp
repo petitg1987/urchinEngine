@@ -44,8 +44,10 @@ namespace urchin {
 
     std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape() const {
         std::set<Point3<float>> allVertices;
+
         if (objectEntity.getModel()->getConstMeshes()) {
-            for (const std::unique_ptr<const ConstMesh>& constMesh : objectEntity.getModel()->getConstMeshes()->getConstMeshes()) {
+            const std::vector<std::unique_ptr<const ConstMesh>>& constMeshes = objectEntity.getModel()->getConstMeshes()->getConstMeshes();
+            for (const std::unique_ptr<const ConstMesh>& constMesh : constMeshes) {
                 for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
                     allVertices.insert(constMesh->getBaseVertices()[i]);
                 }
@@ -54,6 +56,7 @@ namespace urchin {
             try {
                 return std::make_unique<ConvexHullShape3D<float>>(std::vector(allVertices.begin(), allVertices.end()));
             } catch (const std::invalid_argument&) {
+                //ignore build convex hull errors
             }
             allVertices.clear();
         }
@@ -65,15 +68,25 @@ namespace urchin {
     }
 
     std::vector<std::shared_ptr<const LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildCompoundShape() const {
-        const AABBox<float>& modelAABBox = objectEntity.getModel()->getLocalAABBox();
-
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
 
-        auto boxLocalizedShape = std::make_unique<LocalizedCollisionShape>();
-        boxLocalizedShape->shapeIndex = 0;
-        boxLocalizedShape->shape = std::make_unique<const CollisionBoxShape>(modelAABBox.getHalfSizes());
-        boxLocalizedShape->transform = PhysicsTransform();
-        localizedCollisionShapes.push_back(std::move(boxLocalizedShape));
+        if (objectEntity.getModel()->getConstMeshes()) {
+            const std::vector<std::unique_ptr<const ConstMesh>>& constMeshes = objectEntity.getModel()->getConstMeshes()->getConstMeshes();
+            localizedCollisionShapes.reserve(constMeshes.size());
+            for (const std::unique_ptr<const ConstMesh>& constMesh : constMeshes) {
+                auto localizedShape = std::make_unique<LocalizedCollisionShape>();
+                localizedShape->shapeIndex = 0;
+                localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(constMesh->getBaseVertices()); //TODO wrong for vent ?
+                localizedShape->transform = PhysicsTransform();
+                localizedCollisionShapes.push_back(std::move(localizedShape));
+            }
+        } else {
+            auto boxLocalizedShape = std::make_unique<LocalizedCollisionShape>();
+            boxLocalizedShape->shapeIndex = 0;
+            boxLocalizedShape->shape = std::make_unique<const CollisionBoxShape>(objectEntity.getModel()->getLocalAABBox().getHalfSizes());
+            boxLocalizedShape->transform = PhysicsTransform();
+            localizedCollisionShapes.push_back(std::move(boxLocalizedShape));
+        }
 
         return localizedCollisionShapes;
     }
