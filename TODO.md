@@ -4,17 +4,22 @@
 
 # 3d Engine
 * Graphics API
-  * ► **OPTIMIZATION**: Use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
-  * ► **OPTIMIZATION**: Use sub-passes for deferred rendering (see <https://www.saschawillems.de/blog/2018/07/19/vulkan-input-attachments-and-sub-passes/>)
+  * ► **OPTIMIZATION**: Use bind-less rendering technique to bind almost everything at frame start
+    * See: <https://www.youtube.com/watch?v=SVm0HanVTRw>
+    * See: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>
+    * See: <https://anki3d.org/resource-uniformity-bindless-access-in-vulkan/>
+  * ► **OPTIMIZATION**: Use sub-passes for deferred rendering
+    * See: <https://www.saschawillems.de/blog/2018/07/19/vulkan-input-attachments-and-sub-passes/>
   * ► **OPTIMIZATION**: Check secondary command buffers usage for better performance
   * ▼ **OPTIMIZATION**: Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
 * Rendering
-  * ► **NEW FEATURE**: Implement a better culling technique (GPU driven rendering: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>, coherent hierarchical culling revisited, software occlusion culling)
+  * ► **NEW FEATURE**: Implement a better culling technique like GPU driven rendering, coherent hierarchical culling revisited or software occlusion culling
+    * GPU driven rendering: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>
   * ► **NEW FEATURE**: Use sRGB format for color/albedo framebuffers and swap chain
 * Model
   * ▲ **OPTIMIZATION**: Remove the ModelInstanceDisplayer in ModelSetDisplayer#removeModelFromDisplayer() for models not displayed for a long time
-  * ► **OPTIMIZATION**: Draw calls batching
-    * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
+  * ► **OPTIMIZATION**: Implement draw calls batching: static, dynamic or specific for shadow map
+    * See: <https://docs.unity3d.com/Manual/DrawCallBatching.html>
   * ► **OPTIMIZATION**: Parallelize the creation of the ModelDisplayer
   * ► **OPTIMIZATION**: Models LOD
 * Lighting & Shadow
@@ -25,17 +30,20 @@
   * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
   * ▼ **NEW FEATURE**: Implement scalable ambient obscurance
 * Anti-aliasing
-  * ► **NEW FEATURE**: Implement TAA (see <https://sugulee.wordpress.com/2021/06/21/temporal-anti-aliasingtaa-tutorial/>)
+  * ► **NEW FEATURE**: Implement TAA
+    * See: <https://sugulee.wordpress.com/2021/06/21/temporal-anti-aliasingtaa-tutorial/>
 * Landscape
   * ► **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)
   * ▼ **NEW FEATURE**: Use material textures (normal map...) for terrain
   * ▼ **NEW FEATURE**: Add auto shadow on terrain
-  * ▼ **NEW FEATURE**: Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
+  * ▼ **NEW FEATURE**: Water transparency
+    * See: <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>
 * UI
   * ▲ **OPTIMIZATION**: Remove the WidgetInstanceDisplayer in WidgetSetDisplayer#removeWidgetFromDisplayer() for widgets not displayed for a long time
   * ► **NEW FEATURE**: Render UI into texture to avoid depth shift in 3d UI
   * ► **IMPROVEMENT**: Add missing characters dynamically in the atlas texture(s)
-  * ► **IMPROVEMENT**: Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
+  * ► **IMPROVEMENT**: Implement dynamic scaling of characters like multichannel signed distance or distance field font
+    * Multichannel signed distance: <https://github.com/Chlumsky/msdfgen>
   * ▼ **IMPROVEMENT**: Handle scrollable containers in UI 3d
   * ▼ **NEW FEATURE**: Combo list
 
@@ -52,7 +60,7 @@
     * Tips: don't disable bodies when there is only one contact point
 * Constraints solver
   * ► **BUG**: A restitution of 1.0 introduce new force in the system. Example: a superball bounces higher and higher at each collision
-    * Tips: possible cause described in <https://youtu.be/ZOfMA8h4qO8?t=109>
+    * See <https://youtu.be/ZOfMA8h4qO8?t=109> for possible cause
 * Character
   * ► **NEW FEATURE**: Handle stair for character controller
   * ► **NEW FEATURE**: Apply impulse on objects hit by character or falling on the character
