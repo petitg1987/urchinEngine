@@ -31,18 +31,9 @@ namespace urchin {
 
             shape = std::make_unique<CollisionConeShape>(radius, height, ConeShape<float>::CONE_X_POSITIVE);
         } else if (shapeType == CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE) {
-            auto convexHullShape = buildConvexHullShape(objectEntity.getModel());
-            shape = std::make_unique<CollisionConvexHullShape>(std::move(convexHullShape));
+            shape = std::make_unique<CollisionConvexHullShape>(buildConvexHullShape());
         } else if (shapeType == CollisionShape3D::ShapeType::COMPOUND_SHAPE) {
-            std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
-
-            auto boxLocalizedShape = std::make_unique<LocalizedCollisionShape>();
-            boxLocalizedShape->shapeIndex = 0;
-            boxLocalizedShape->shape = std::make_unique<const CollisionBoxShape>(modelAABBox.getHalfSizes());
-            boxLocalizedShape->transform = PhysicsTransform();
-            localizedCollisionShapes.push_back(std::move(boxLocalizedShape));
-
-            shape = std::make_unique<CollisionCompoundShape>(std::move(localizedCollisionShapes));
+            shape = std::make_unique<CollisionCompoundShape>(buildCompoundShape());
         } else {
             throw std::invalid_argument("Unknown shape type to create default body shape: " + std::to_string(shapeType));
         }
@@ -51,10 +42,10 @@ namespace urchin {
         return shape->scale(scale);
     }
 
-    std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape(const Model* model) const {
+    std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape() const {
         std::set<Point3<float>> allVertices;
-        if (model->getConstMeshes()) {
-            for (const std::unique_ptr<const ConstMesh>& constMesh : model->getConstMeshes()->getConstMeshes()) {
+        if (objectEntity.getModel()->getConstMeshes()) {
+            for (const std::unique_ptr<const ConstMesh>& constMesh : objectEntity.getModel()->getConstMeshes()->getConstMeshes()) {
                 for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
                     allVertices.insert(constMesh->getBaseVertices()[i]);
                 }
@@ -67,10 +58,24 @@ namespace urchin {
             allVertices.clear();
         }
 
-        for (const Point3<float>& point : model->getLocalAABBox().getPoints()) {
+        for (const Point3<float>& point : objectEntity.getModel()->getLocalAABBox().getPoints()) {
             allVertices.insert(point);
         }
         return std::make_unique<ConvexHullShape3D<float>>(std::vector(allVertices.begin(), allVertices.end()));
+    }
+
+    std::vector<std::shared_ptr<const LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildCompoundShape() const {
+        const AABBox<float>& modelAABBox = objectEntity.getModel()->getLocalAABBox();
+
+        std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
+
+        auto boxLocalizedShape = std::make_unique<LocalizedCollisionShape>();
+        boxLocalizedShape->shapeIndex = 0;
+        boxLocalizedShape->shape = std::make_unique<const CollisionBoxShape>(modelAABBox.getHalfSizes());
+        boxLocalizedShape->transform = PhysicsTransform();
+        localizedCollisionShapes.push_back(std::move(boxLocalizedShape));
+
+        return localizedCollisionShapes;
     }
 
 }
