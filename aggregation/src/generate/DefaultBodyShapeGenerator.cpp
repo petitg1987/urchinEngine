@@ -145,7 +145,7 @@ namespace urchin {
             if (isBox) {
                 Vector3<float> xVector = cornerPoint.vector(points[closestPointIndex]);
                 Quaternion<float> orientation = Quaternion<float>::rotationFromTo(xVector.normalize(), Vector3(1.0f, 0.0f, 0.0f));
-                Vector3 halfSize(xVector.length() / 2.0f, 0.0f, 0.0f); //TODO ???
+                Vector3 halfSize(xVector.length() / 2.0f, 1.0f, 1.0f); //TODO ???
 
                 localizedShape->shape = std::make_unique<const CollisionBoxShape>(halfSize);
                 localizedShape->transform = PhysicsTransform(boxCenterPoint, orientation);
