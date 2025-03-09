@@ -82,10 +82,8 @@ namespace urchin {
                 }
 
                 try {
-                    auto localizedShape = std::make_unique<LocalizedCollisionShape>();
-                    localizedShape->shapeIndex = shapeIndex++;
-                    localizedShape->shape = buildOptimizedCollisionShape(std::vector(meshUniqueVertices.begin(), meshUniqueVertices.end()));
-                    localizedShape->transform = PhysicsTransform();
+                    std::unique_ptr<LocalizedCollisionShape> localizedShape = buildOptimizedCollisionShape(shapeIndex++,
+                        std::vector(meshUniqueVertices.begin(), meshUniqueVertices.end()));
                     localizedCollisionShapes.push_back(std::move(localizedShape));
                 } catch (const std::invalid_argument&) {
                     //ignore build convex hull errors
@@ -105,7 +103,7 @@ namespace urchin {
     }
 
     //TODO improve
-    std::unique_ptr<const CollisionShape3D> DefaultBodyShapeGenerator::buildOptimizedCollisionShape(const std::vector<Point3<float>>& uniqueVertices) const {
+    std::unique_ptr<LocalizedCollisionShape> DefaultBodyShapeGenerator::buildOptimizedCollisionShape(std::size_t shapeIndex, const std::vector<Point3<float>>& uniqueVertices) const {
         auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(uniqueVertices);
 
         if (convexHullShape->getConvexHullPoints().size() == 8) {
@@ -135,12 +133,14 @@ namespace urchin {
 
             if (isAabbox) {
                 std::cout<<"is AABBOX"<<std::endl;
-            } else {
-                std::cout<<"isn't AABBOX"<<std::endl;
             }
         }
 
-        return std::make_unique<const CollisionConvexHullShape>(std::move(convexHullShape));
+        auto localizedShape = std::make_unique<LocalizedCollisionShape>();
+        localizedShape->shapeIndex = shapeIndex;
+        localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(std::move(convexHullShape));
+        localizedShape->transform = PhysicsTransform();
+        return localizedShape;
     }
 
 }
