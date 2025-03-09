@@ -148,7 +148,8 @@ namespace urchin {
                 Vector3 halfSize(xVector.length() / 2.0f, 1.0f, 1.0f); //TODO ???
 
                 localizedShape->shape = std::make_unique<const CollisionBoxShape>(halfSize);
-                localizedShape->transform = PhysicsTransform(boxCenterPoint, orientation);
+                localizedShape->transform = PhysicsTransform(boxCenterPoint, orientation.normalize());
+                return localizedShape;
             }
         }
 
