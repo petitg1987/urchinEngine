@@ -129,26 +129,26 @@ namespace urchin {
                 }
             }
 
-            bool isAabbox = true;
-            Point3<float> aabboxCenterPoint = (cornerPoint + points[farthestPointIndex]) / 2.0f;
-            float expectedDistanceToCenter = cornerPoint.distance(aabboxCenterPoint);
+            bool isBox = true;
+            Point3<float> boxCenterPoint = (cornerPoint + points[farthestPointIndex]) / 2.0f;
+            float expectedDistanceToCenter = cornerPoint.distance(boxCenterPoint);
             float minExpectedDistanceToCenter = expectedDistanceToCenter - (expectedDistanceToCenter * 0.025f);
             float maxExpectedDistanceToCenter = expectedDistanceToCenter + (expectedDistanceToCenter * 0.025f);
             for (std::size_t i = 1; i < points.size(); ++i) {
-                float distanceToCenter = points[i].distance(aabboxCenterPoint);
+                float distanceToCenter = points[i].distance(boxCenterPoint);
                 if (distanceToCenter < minExpectedDistanceToCenter || distanceToCenter > maxExpectedDistanceToCenter) {
-                    isAabbox = false;
+                    isBox = false;
                     break;
                 }
             }
 
-            if (isAabbox) {
+            if (isBox) {
                 Vector3<float> xVector = cornerPoint.vector(points[closestPointIndex]);
                 Quaternion<float> orientation = Quaternion<float>::rotationFromTo(xVector.normalize(), Vector3(1.0f, 0.0f, 0.0f));
                 Vector3 halfSize(xVector.length() / 2.0f, 0.0f, 0.0f); //TODO ???
 
                 localizedShape->shape = std::make_unique<const CollisionBoxShape>(halfSize);
-                localizedShape->transform = PhysicsTransform(aabboxCenterPoint, orientation);
+                localizedShape->transform = PhysicsTransform(boxCenterPoint, orientation);
             }
         }
 
