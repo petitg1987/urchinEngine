@@ -102,7 +102,7 @@ namespace urchin {
         return localizedCollisionShapes;
     }
 
-    //TODO improve
+    //TODO improve + handle sphere
     std::unique_ptr<LocalizedCollisionShape> DefaultBodyShapeGenerator::buildOptimizedCollisionShape(std::size_t shapeIndex, const std::vector<Point3<float>>& uniqueVertices) const {
         auto localizedShape = std::make_unique<LocalizedCollisionShape>();
         localizedShape->shapeIndex = shapeIndex;
@@ -143,9 +143,9 @@ namespace urchin {
             }
 
             if (isAabbox) {
-                Vector3<float> edgeOrientation = cornerPoint.vector(points[closestPointIndex]).normalize();
-                Quaternion<float> orientation = Quaternion<float>::rotationFromTo(edgeOrientation, Vector3(1.0f, 0.0f, 0.0f));
-                Vector3<float> halfSize; //TODO ???
+                Vector3<float> xVector = cornerPoint.vector(points[closestPointIndex]);
+                Quaternion<float> orientation = Quaternion<float>::rotationFromTo(xVector.normalize(), Vector3(1.0f, 0.0f, 0.0f));
+                Vector3 halfSize(xVector.length() / 2.0f, 0.0f, 0.0f); //TODO ???
 
                 localizedShape->shape = std::make_unique<const CollisionBoxShape>(halfSize);
                 localizedShape->transform = PhysicsTransform(aabboxCenterPoint, orientation);
