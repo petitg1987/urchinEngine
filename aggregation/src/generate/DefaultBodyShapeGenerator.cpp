@@ -145,7 +145,7 @@ namespace urchin {
 
             if (isBox) {
                 Vector3<float> xAxis = cornerPoint.vector(points[closestPointIndex]);
-                Vector3<float> xAxisNormalized = xAxis.normalize();
+                Vector3<float> xAxisNormalized = xAxis.normalize(); //TODO length computed 2 times
 
                 std::array<std::size_t, 2> orthogonalVectorsToX = {0, 0};
                 for (std::size_t i = 1; i < points.size(); ++i) {
@@ -171,7 +171,7 @@ namespace urchin {
                 }
 
                 Vector3<float> yAxis = cornerPoint.vector(points[orthogonalVectorsToX[0]]);
-                Vector3<float> yAxisNormalized = yAxis.normalize();
+                Vector3<float> yAxisNormalized = yAxis.normalize(); //TODO length computed 2 times
                 Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorsToX[1]]);
 
                 Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(xAxisNormalized, Vector3(1.0f, 0.0f, 0.0f)).normalize();
