@@ -108,18 +108,26 @@ namespace urchin {
 
         if (convexHullShape->getConvexHullPoints().size() == 8) {
             std::vector<Point3<float>> points = convexHullShape->getPoints();
+
             Point3<float> cornerPoint = points[0];
-            Point3 aabboxCenterPoint(0.0f, 0.0f, 0.0f);
+            std::size_t farthestPointIndex = 0;
+            std::size_t closestPointIndex = 0;
             float maxDistanceToCorner = 0;
+            float minDistanceToCorner = std::numeric_limits<float>::max();
             for (std::size_t i = 1; i < points.size(); ++i) {
-                float distanceToCorner = points[0].squareDistance(points[i]);
+                float distanceToCorner = cornerPoint.squareDistance(points[i]);
                 if (distanceToCorner > maxDistanceToCorner) {
                     maxDistanceToCorner = distanceToCorner;
-                    aabboxCenterPoint = (points[0] + points[i]) / 2.0f;
+                    farthestPointIndex = i;
+                }
+                if (distanceToCorner < minDistanceToCorner) {
+                    minDistanceToCorner = distanceToCorner;
+                    closestPointIndex = i;
                 }
             }
 
             bool isAabbox = true;
+            Point3<float> aabboxCenterPoint = (cornerPoint + points[farthestPointIndex]) / 2.0f;
             float expectedDistanceToCenter = cornerPoint.distance(aabboxCenterPoint);
             float minExpectedDistanceToCenter = expectedDistanceToCenter - (expectedDistanceToCenter * 0.025f);
             float maxExpectedDistanceToCenter = expectedDistanceToCenter + (expectedDistanceToCenter * 0.025f);
