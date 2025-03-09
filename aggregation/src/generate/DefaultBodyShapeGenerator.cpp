@@ -106,82 +106,75 @@ namespace urchin {
     std::unique_ptr<LocalizedCollisionShape> DefaultBodyShapeGenerator::buildOptimizedCollisionShape(std::size_t shapeIndex, const std::vector<Point3<float>>& uniqueVertices) const {
         auto localizedShape = std::make_unique<LocalizedCollisionShape>();
         localizedShape->shapeIndex = shapeIndex;
+        localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(uniqueVertices);
         localizedShape->transform = PhysicsTransform();
 
-        auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(uniqueVertices);
+        std::vector<Point3<float>> points = dynamic_cast<const CollisionConvexHullShape*>(localizedShape->shape.get())->getPoints();
+        if (points.size() != 8) {
+            return localizedShape;
+        }
 
-        if (convexHullShape->getConvexHullPoints().size() == 8) {
-            std::vector<Point3<float>> points = convexHullShape->getPoints();
-
-            Point3<float> cornerPoint = points[0];
-            std::size_t farthestPointIndex = 0;
-            std::size_t closestPointIndex = 0;
-            float maxDistanceToCorner = 0;
-            float minDistanceToCorner = std::numeric_limits<float>::max();
-            for (std::size_t i = 1; i < points.size(); ++i) {
-                float distanceToCorner = cornerPoint.squareDistance(points[i]);
-                if (distanceToCorner > maxDistanceToCorner) {
-                    maxDistanceToCorner = distanceToCorner;
-                    farthestPointIndex = i;
-                }
-                if (distanceToCorner < minDistanceToCorner) {
-                    minDistanceToCorner = distanceToCorner;
-                    closestPointIndex = i;
-                }
+        Point3<float> cornerPoint = points[0];
+        std::size_t farthestPointIndex = 0;
+        std::size_t closestPointIndex = 0;
+        float maxDistanceToCorner = 0;
+        float minDistanceToCorner = std::numeric_limits<float>::max();
+        for (std::size_t i = 1; i < points.size(); ++i) {
+            float distanceToCorner = cornerPoint.squareDistance(points[i]);
+            if (distanceToCorner > maxDistanceToCorner) {
+                maxDistanceToCorner = distanceToCorner;
+                farthestPointIndex = i;
             }
-
-            bool isBox = true;
-            Point3<float> boxCenterPoint = (cornerPoint + points[farthestPointIndex]) / 2.0f;
-            float expectedDistanceToCenter = cornerPoint.distance(boxCenterPoint);
-            float minExpectedDistanceToCenter = expectedDistanceToCenter - (expectedDistanceToCenter * 0.025f);
-            float maxExpectedDistanceToCenter = expectedDistanceToCenter + (expectedDistanceToCenter * 0.025f);
-            for (std::size_t i = 1; i < points.size(); ++i) {
-                float distanceToCenter = points[i].distance(boxCenterPoint);
-                if (distanceToCenter < minExpectedDistanceToCenter || distanceToCenter > maxExpectedDistanceToCenter) {
-                    isBox = false;
-                    break;
-                }
+            if (distanceToCorner < minDistanceToCorner) {
+                minDistanceToCorner = distanceToCorner;
+                closestPointIndex = i;
             }
+        }
 
-            if (isBox) {
-                Vector3<float> xAxis = cornerPoint.vector(points[closestPointIndex]);
-
-                std::array<std::size_t, 2> orthogonalVectorsToX = {0, 0};
-                for (std::size_t i = 1; i < points.size(); ++i) {
-                    if (i != closestPointIndex || i != farthestPointIndex) {
-                        Vector3<float> vector = cornerPoint.vector(points[i]).normalize();
-                        if (xAxis.normalize().dotProduct(vector) < 0.05f) {
-                            if (orthogonalVectorsToX[0] == 0) {
-                                orthogonalVectorsToX[0] = i;
-                            } else if (orthogonalVectorsToX[1] == 0) {
-                                orthogonalVectorsToX[1] = i;
-                            } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToX[0]])) {
-                                orthogonalVectorsToX[0] = i;
-                            } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToX[1]])) {
-                                orthogonalVectorsToX[1] = i;
-                            }
-                        }
-                    }
-                }
-
-                if (orthogonalVectorsToX[0] == 0 || orthogonalVectorsToX[1] == 0) {
-                    localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(std::move(convexHullShape));
-                    return localizedShape;
-                }
-
-                Vector3<float> yAxis = cornerPoint.vector(points[orthogonalVectorsToX[0]]);
-                Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorsToX[1]]);
-                Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(xAxis.normalize(), Vector3(1.0f, 0.0f, 0.0f)).normalize();
-                Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(yAxis.normalize(), Vector3(0.0f, 1.0f, 0.0f)).normalize();
-
-                Vector3 halfSize(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f);
-                localizedShape->shape = std::make_unique<const CollisionBoxShape>(halfSize);
-                localizedShape->transform = PhysicsTransform(boxCenterPoint, xOrientation * yOrientation);
+        Point3<float> boxCenterPoint = (cornerPoint + points[farthestPointIndex]) / 2.0f;
+        float expectedDistanceToCenter = cornerPoint.distance(boxCenterPoint);
+        float minExpectedDistanceToCenter = expectedDistanceToCenter - (expectedDistanceToCenter * 0.025f);
+        float maxExpectedDistanceToCenter = expectedDistanceToCenter + (expectedDistanceToCenter * 0.025f);
+        for (std::size_t i = 1; i < points.size(); ++i) {
+            float distanceToCenter = points[i].distance(boxCenterPoint);
+            if (distanceToCenter < minExpectedDistanceToCenter || distanceToCenter > maxExpectedDistanceToCenter) {
                 return localizedShape;
             }
         }
 
-        localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(std::move(convexHullShape));
+
+        Vector3<float> xAxis = cornerPoint.vector(points[closestPointIndex]);
+
+        std::array<std::size_t, 2> orthogonalVectorsToX = {0, 0};
+        for (std::size_t i = 1; i < points.size(); ++i) {
+            if (i != closestPointIndex || i != farthestPointIndex) {
+                Vector3<float> vector = cornerPoint.vector(points[i]).normalize();
+                if (xAxis.normalize().dotProduct(vector) < 0.05f) {
+                    if (orthogonalVectorsToX[0] == 0) {
+                        orthogonalVectorsToX[0] = i;
+                    } else if (orthogonalVectorsToX[1] == 0) {
+                        orthogonalVectorsToX[1] = i;
+                    } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToX[0]])) {
+                        orthogonalVectorsToX[0] = i;
+                    } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToX[1]])) {
+                        orthogonalVectorsToX[1] = i;
+                    }
+                }
+            }
+        }
+
+        if (orthogonalVectorsToX[0] == 0 || orthogonalVectorsToX[1] == 0) {
+            return localizedShape;
+        }
+
+        Vector3<float> yAxis = cornerPoint.vector(points[orthogonalVectorsToX[0]]);
+        Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorsToX[1]]);
+        Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(xAxis.normalize(), Vector3(1.0f, 0.0f, 0.0f)).normalize();
+        Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(yAxis.normalize(), Vector3(0.0f, 1.0f, 0.0f)).normalize();
+
+        Vector3 halfSize(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f);
+        localizedShape->shape = std::make_unique<const CollisionBoxShape>(halfSize);
+        localizedShape->transform = PhysicsTransform(boxCenterPoint, xOrientation * yOrientation);
         return localizedShape;
     }
 
