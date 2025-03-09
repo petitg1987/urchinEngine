@@ -104,11 +104,40 @@ namespace urchin {
         return localizedCollisionShapes;
     }
 
+    //TODO improve
     std::unique_ptr<const CollisionShape3D> DefaultBodyShapeGenerator::buildOptimizedCollisionShape(const std::vector<Point3<float>>& uniqueVertices) const {
         auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(uniqueVertices);
 
         if (convexHullShape->getConvexHullPoints().size() == 8) {
-            //TODO return box
+            std::vector<Point3<float>> points = convexHullShape->getPoints();
+            Point3<float> cornerPoint = points[0];
+            Point3 aabboxCenterPoint(0.0f, 0.0f, 0.0f);
+            float maxDistanceToCorner = 0;
+            for (std::size_t i = 1; i < points.size(); ++i) {
+                float distanceToCorner = points[0].squareDistance(points[i]);
+                if (distanceToCorner > maxDistanceToCorner) {
+                    maxDistanceToCorner = distanceToCorner;
+                    aabboxCenterPoint = (points[0] + points[i]) / 2.0f;
+                }
+            }
+
+            bool isAabbox = true;
+            float expectedDistanceToCenter = cornerPoint.distance(aabboxCenterPoint);
+            float minExpectedDistanceToCenter = expectedDistanceToCenter - (expectedDistanceToCenter * 0.025f);
+            float maxExpectedDistanceToCenter = expectedDistanceToCenter + (expectedDistanceToCenter * 0.025f);
+            for (std::size_t i = 1; i < points.size(); ++i) {
+                float distanceToCenter = points[i].distance(aabboxCenterPoint);
+                if (distanceToCenter < minExpectedDistanceToCenter || distanceToCenter > maxExpectedDistanceToCenter) {
+                    isAabbox = false;
+                    break;
+                }
+            }
+
+            if (isAabbox) {
+                std::cout<<"is AABBOX"<<std::endl;
+            } else {
+                std::cout<<"isn't AABBOX"<<std::endl;
+            }
         }
 
         return std::make_unique<const CollisionConvexHullShape>(std::move(convexHullShape));
