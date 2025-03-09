@@ -167,13 +167,13 @@ namespace urchin {
 
         Vector3<float> yAxis = cornerPoint.vector(points[orthogonalVectorsToXAxis[0]]);
         Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorsToXAxis[1]]);
-        Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(xAxis.normalize(), Vector3(1.0f, 0.0f, 0.0f)).normalize();
+        Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(Vector3(1.0f, 0.0f, 0.0f), xAxis.normalize()).normalize();
         Vector3<float> yAxisRotated = xOrientation.rotateVector(yAxis.normalize());
-        Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(yAxisRotated.normalize(), Vector3(0.0f, 1.0f, 0.0f)).normalize();
+        Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, 1.0f, 0.0f), yAxisRotated.normalize()).normalize();
 
         Vector3 halfSize(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f);
         localizedShape->shape = std::make_unique<const CollisionBoxShape>(halfSize);
-        localizedShape->transform = PhysicsTransform(boxCenterPoint, (xOrientation * yOrientation).normalize()); //TODO norm useful ?
+        localizedShape->transform = PhysicsTransform(boxCenterPoint, (xOrientation * yOrientation)); //TODO norm useful ?
         return localizedShape;
     }
 
