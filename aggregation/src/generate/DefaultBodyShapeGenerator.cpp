@@ -106,6 +106,7 @@ namespace urchin {
     std::unique_ptr<LocalizedCollisionShape> DefaultBodyShapeGenerator::buildOptimizedCollisionShape(std::size_t shapeIndex, const std::vector<Point3<float>>& uniqueVertices) const {
         auto localizedShape = std::make_unique<LocalizedCollisionShape>();
         localizedShape->shapeIndex = shapeIndex;
+        localizedShape->transform = PhysicsTransform();
 
         auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(uniqueVertices);
 
@@ -143,18 +144,47 @@ namespace urchin {
             }
 
             if (isBox) {
-                Vector3<float> xVector = cornerPoint.vector(points[closestPointIndex]);
-                Quaternion<float> orientation = Quaternion<float>::rotationFromTo(xVector.normalize(), Vector3(1.0f, 0.0f, 0.0f));
-                Vector3 halfSize(xVector.length() / 2.0f, 1.0f, 1.0f); //TODO ???
+                Vector3<float> xAxis = cornerPoint.vector(points[closestPointIndex]);
+                Vector3<float> xAxisNormalized = xAxis.normalize();
 
+                std::array<std::size_t, 2> orthogonalVectorsToX = {0, 0};
+                for (std::size_t i = 1; i < points.size(); ++i) {
+                    if (i != closestPointIndex || i != farthestPointIndex) {
+                        Vector3<float> vector = cornerPoint.vector(points[i]).normalize();
+                        if (xAxisNormalized.dotProduct(vector) < 0.05f) {
+                            if (orthogonalVectorsToX[0] == 0) {
+                                orthogonalVectorsToX[0] = i;
+                            } else if (orthogonalVectorsToX[1] == 0) {
+                                orthogonalVectorsToX[1] = i;
+                            } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToX[0]])) {
+                                orthogonalVectorsToX[0] = i;
+                            } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToX[1]])) {
+                                orthogonalVectorsToX[1] = i;
+                            }
+                        }
+                    }
+                }
+
+                if (orthogonalVectorsToX[0] == 0 || orthogonalVectorsToX[1] == 0) {
+                    localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(std::move(convexHullShape));
+                    return localizedShape;
+                }
+
+                Vector3<float> yAxis = cornerPoint.vector(points[orthogonalVectorsToX[0]]);
+                Vector3<float> yAxisNormalized = yAxis.normalize();
+                Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorsToX[1]]);
+
+                Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(xAxisNormalized, Vector3(1.0f, 0.0f, 0.0f)).normalize();
+                Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(yAxisNormalized, Vector3(0.0f, 1.0f, 0.0f)).normalize();
+
+                Vector3 halfSize(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f);
                 localizedShape->shape = std::make_unique<const CollisionBoxShape>(halfSize);
-                localizedShape->transform = PhysicsTransform(boxCenterPoint, orientation.normalize());
+                localizedShape->transform = PhysicsTransform(boxCenterPoint, xOrientation * yOrientation);
                 return localizedShape;
             }
         }
 
         localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(std::move(convexHullShape));
-        localizedShape->transform = PhysicsTransform();
         return localizedShape;
     }
 
