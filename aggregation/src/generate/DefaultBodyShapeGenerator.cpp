@@ -145,13 +145,12 @@ namespace urchin {
 
             if (isBox) {
                 Vector3<float> xAxis = cornerPoint.vector(points[closestPointIndex]);
-                Vector3<float> xAxisNormalized = xAxis.normalize(); //TODO length computed 2 times
 
                 std::array<std::size_t, 2> orthogonalVectorsToX = {0, 0};
                 for (std::size_t i = 1; i < points.size(); ++i) {
                     if (i != closestPointIndex || i != farthestPointIndex) {
                         Vector3<float> vector = cornerPoint.vector(points[i]).normalize();
-                        if (xAxisNormalized.dotProduct(vector) < 0.05f) {
+                        if (xAxis.normalize().dotProduct(vector) < 0.05f) {
                             if (orthogonalVectorsToX[0] == 0) {
                                 orthogonalVectorsToX[0] = i;
                             } else if (orthogonalVectorsToX[1] == 0) {
@@ -171,11 +170,9 @@ namespace urchin {
                 }
 
                 Vector3<float> yAxis = cornerPoint.vector(points[orthogonalVectorsToX[0]]);
-                Vector3<float> yAxisNormalized = yAxis.normalize(); //TODO length computed 2 times
                 Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorsToX[1]]);
-
-                Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(xAxisNormalized, Vector3(1.0f, 0.0f, 0.0f)).normalize();
-                Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(yAxisNormalized, Vector3(0.0f, 1.0f, 0.0f)).normalize();
+                Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(xAxis.normalize(), Vector3(1.0f, 0.0f, 0.0f)).normalize();
+                Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(yAxis.normalize(), Vector3(0.0f, 1.0f, 0.0f)).normalize();
 
                 Vector3 halfSize(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f);
                 localizedShape->shape = std::make_unique<const CollisionBoxShape>(halfSize);
