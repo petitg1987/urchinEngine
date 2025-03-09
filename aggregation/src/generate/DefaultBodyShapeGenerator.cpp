@@ -144,31 +144,29 @@ namespace urchin {
 
 
         Vector3<float> xAxis = cornerPoint.vector(points[closestPointIndex]);
-
-        std::array<std::size_t, 2> orthogonalVectorsToX = {0, 0};
+        std::array<std::size_t, 2> orthogonalVectorsToXAxis = {0, 0};
         for (std::size_t i = 1; i < points.size(); ++i) {
             if (i != closestPointIndex || i != farthestPointIndex) {
                 Vector3<float> vector = cornerPoint.vector(points[i]).normalize();
                 if (xAxis.normalize().dotProduct(vector) < 0.05f) {
-                    if (orthogonalVectorsToX[0] == 0) {
-                        orthogonalVectorsToX[0] = i;
-                    } else if (orthogonalVectorsToX[1] == 0) {
-                        orthogonalVectorsToX[1] = i;
-                    } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToX[0]])) {
-                        orthogonalVectorsToX[0] = i;
-                    } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToX[1]])) {
-                        orthogonalVectorsToX[1] = i;
+                    if (orthogonalVectorsToXAxis[0] == 0) {
+                        orthogonalVectorsToXAxis[0] = i;
+                    } else if (orthogonalVectorsToXAxis[1] == 0) {
+                        orthogonalVectorsToXAxis[1] = i;
+                    } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToXAxis[0]])) {
+                        orthogonalVectorsToXAxis[0] = i;
+                    } else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToXAxis[1]])) {
+                        orthogonalVectorsToXAxis[1] = i;
                     }
                 }
             }
         }
-
-        if (orthogonalVectorsToX[0] == 0 || orthogonalVectorsToX[1] == 0) {
+        if (orthogonalVectorsToXAxis[0] == 0 || orthogonalVectorsToXAxis[1] == 0) {
             return localizedShape;
         }
 
-        Vector3<float> yAxis = cornerPoint.vector(points[orthogonalVectorsToX[0]]);
-        Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorsToX[1]]);
+        Vector3<float> yAxis = cornerPoint.vector(points[orthogonalVectorsToXAxis[0]]);
+        Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorsToXAxis[1]]);
         Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(xAxis.normalize(), Vector3(1.0f, 0.0f, 0.0f)).normalize();
         Vector3<float> yAxisRotated = xOrientation.rotateVector(yAxis.normalize());
         Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(yAxisRotated.normalize(), Vector3(0.0f, 1.0f, 0.0f)).normalize();
