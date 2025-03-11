@@ -114,7 +114,10 @@ namespace urchin {
             localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(std::move(convexHull));
         } else if (dynamic_cast<BoxShape<float>*>(bestShape.get())) {
             std::unique_ptr<BoxShape<float>> boxShape(dynamic_cast<BoxShape<float>*>(bestShape.release()));
-            localizedShape->shape = std::make_unique<const CollisionBoxShape>(*boxShape);
+            localizedShape->shape = std::make_unique<const CollisionBoxShape>(boxShape->getHalfSizes());
+        } else if (dynamic_cast<SphereShape<float>*>(bestShape.get())) {
+            std::unique_ptr<SphereShape<float>> sphereShape(dynamic_cast<SphereShape<float>*>(bestShape.release()));
+            localizedShape->shape = std::make_unique<const CollisionSphereShape>(sphereShape->getRadius());
         } else {
             throw std::runtime_error("Unknown shape type to build optimized collision shape");
         }
