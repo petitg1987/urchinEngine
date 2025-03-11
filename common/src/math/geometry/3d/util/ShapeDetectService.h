@@ -15,6 +15,7 @@ namespace urchin {
 
         private:
             std::pair<std::size_t, std::size_t> findClosestAndFarthestPoints(const std::vector<Point3<float>>&, const Point3<float>&) const;
+            std::size_t findFarthestPoint(const std::vector<Point3<float>>&, const Point3<float>&) const;
     };
 
 }
