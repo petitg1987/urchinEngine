@@ -17,7 +17,8 @@ namespace urchin {
 		auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(shapeVertices);
 
 		std::vector<Point3<float>> points = convexHullShape->getPoints();
-		if (points.size() == 8) { //box ?
+
+		if (points.size() == 8) { //box shape ?
 			constexpr float DIST_TO_CENTER_TOLERANCE_PERC = 0.025f;
 			constexpr float ORTHOGONAL_TOLERANCE_DOT_PRODUCT = 0.05f;
 
@@ -65,7 +66,9 @@ namespace urchin {
 			position = boxCenterPoint;
 			orientation = yOrientation * xOrientation;
 			return std::make_unique<BoxShape<float>>(Vector3(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f));
-		} else if (points.size() > 35 && points.size() < 2500) { //sphere ?
+		}
+
+		if (points.size() > 35 && points.size() < 2500) { //sphere shape ?
 			constexpr float DIST_TO_CENTER_TOLERANCE_PERC = 0.025f;
 
 			Point3<float> firstPoint = points[0];
