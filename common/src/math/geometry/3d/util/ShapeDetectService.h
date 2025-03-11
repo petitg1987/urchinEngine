@@ -11,7 +11,7 @@ namespace urchin {
 
     class ShapeDetectService {
         public:
-            std::unique_ptr<ConvexShape3D<float>> detect(const std::vector<Point3<float>>&, Point3<float>&, Quaternion<float>&);
+            std::unique_ptr<ConvexShape3D<float>> detect(const std::vector<Point3<float>>&, Point3<float>&, Quaternion<float>&) const;
     };
 
 }

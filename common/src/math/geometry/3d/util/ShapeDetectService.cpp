@@ -11,10 +11,10 @@ namespace urchin {
 	 * @param orientation [out] Shape orientation
 	 */
     //TODO improve + handle sphere
-	std::unique_ptr<ConvexShape3D<float>> ShapeDetectService::detect(const std::vector<Point3<float>>& shapeVertices, Point3<float>& position, Quaternion<float>& orientation) {
-	    auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(shapeVertices);
+	std::unique_ptr<ConvexShape3D<float>> ShapeDetectService::detect(const std::vector<Point3<float>>& shapeVertices, Point3<float>& position, Quaternion<float>& orientation) const {
 	    position = Point3(0.0f, 0.0f, 0.0f);
 	    orientation = Quaternion<float>();
+	    auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(shapeVertices);
 
 	    std::vector<Point3<float>> points = convexHullShape->getPoints();
 	    if (points.size() != 8) {
