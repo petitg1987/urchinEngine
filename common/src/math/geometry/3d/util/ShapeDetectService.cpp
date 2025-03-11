@@ -10,7 +10,7 @@ namespace urchin {
 	 * @param position [out] Shape position
 	 * @param orientation [out] Shape orientation
 	 */
-    //TODO improve + handle sphere
+    //TODO handle sphere
 	std::unique_ptr<ConvexShape3D<float>> ShapeDetectService::detect(const std::vector<Point3<float>>& shapeVertices, Point3<float>& position, Quaternion<float>& orientation) const {
 	    position = Point3(0.0f, 0.0f, 0.0f);
 	    orientation = Quaternion<float>();
@@ -22,21 +22,7 @@ namespace urchin {
         }
 
         Point3<float> cornerPoint = points[0];
-        std::size_t farthestPointIndex = 0;
-        std::size_t closestPointIndex = 0;
-        float maxDistanceToCorner = 0;
-        float minDistanceToCorner = std::numeric_limits<float>::max();
-        for (std::size_t i = 1; i < points.size(); ++i) {
-            float distanceToCorner = cornerPoint.squareDistance(points[i]);
-            if (distanceToCorner > maxDistanceToCorner) {
-                maxDistanceToCorner = distanceToCorner;
-                farthestPointIndex = i;
-            }
-            if (distanceToCorner < minDistanceToCorner) {
-                minDistanceToCorner = distanceToCorner;
-                closestPointIndex = i;
-            }
-        }
+		const auto [closestPointIndex, farthestPointIndex] = findClosestAndFarthestPoints(points, cornerPoint);
 
         Point3<float> boxCenterPoint = (cornerPoint + points[farthestPointIndex]) / 2.0f;
         float expectedDistanceToCenter = cornerPoint.distance(boxCenterPoint);
@@ -48,7 +34,6 @@ namespace urchin {
                 return convexHullShape;
             }
         }
-
 
         Vector3<float> xAxis = cornerPoint.vector(points[closestPointIndex]);
         std::array<std::size_t, 2> orthogonalVectorsToXAxis = {0, 0};
@@ -80,6 +65,29 @@ namespace urchin {
         position = boxCenterPoint;
 	    orientation = yOrientation * xOrientation;
 	    return std::make_unique<BoxShape<float>>(Vector3(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f));
+	}
+
+    std::pair<std::size_t, std::size_t> ShapeDetectService::findClosestAndFarthestPoints(const std::vector<Point3<float>>& points, const Point3<float>& refPoint) const {
+		std::size_t closestPointIndex = 0;
+	    std::size_t farthestPointIndex = 0;
+
+	    float maxDistanceToCorner = 0;
+	    float minDistanceToCorner = std::numeric_limits<float>::max();
+	    for (std::size_t i = 0; i < points.size(); ++i) {
+	        float distanceToCorner = refPoint.squareDistance(points[i]);
+
+	        if (distanceToCorner < minDistanceToCorner) {
+	            minDistanceToCorner = distanceToCorner;
+	            closestPointIndex = i;
+	        }
+
+	        if (distanceToCorner > maxDistanceToCorner) {
+	            maxDistanceToCorner = distanceToCorner;
+	            farthestPointIndex = i;
+	        }
+	    }
+
+		return std::make_pair<>(closestPointIndex, farthestPointIndex);
 	}
 
 }

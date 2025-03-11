@@ -12,6 +12,9 @@ namespace urchin {
     class ShapeDetectService {
         public:
             std::unique_ptr<ConvexShape3D<float>> detect(const std::vector<Point3<float>>&, Point3<float>&, Quaternion<float>&) const;
+
+        private:
+            std::pair<std::size_t, std::size_t> findClosestAndFarthestPoints(const std::vector<Point3<float>>&, const Point3<float>&) const;
     };
 
 }
