@@ -10,6 +10,11 @@ namespace urchin {
         computeSafeMargin();
     }
 
+    CollisionBoxShape::CollisionBoxShape(BoxShape<float> boxShape) :
+            boxShape(std::move(boxShape)) {
+        computeSafeMargin();
+    }
+
     void CollisionBoxShape::computeSafeMargin() {
         float maximumMarginPercentage = ConfigService::instance().getFloatValue("collisionShape.maximumMarginPercentage");
         float maximumSafeMargin = boxShape.getMinHalfSize() * maximumMarginPercentage;

@@ -79,6 +79,7 @@
 #include <math/geometry/3d/util/SortPointsService.h>
 #include <math/geometry/3d/util/ResizeConvexHull3DService.h>
 #include <math/geometry/3d/util/HeightfieldPointHelper.h>
+#include <math/geometry/3d/util/ShapeDetectService.h>
 #include <math/algorithm/MathFunction.h>
 #include <math/algorithm/PascalTriangle.h>
 #include <math/algorithm/MinEnclosingSphere.h>
