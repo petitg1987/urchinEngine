@@ -53,9 +53,10 @@ namespace urchin {
             removeSelectedLocalizedShapeFromMap();
 
             QStandardItem* itemShape = localizedShapesTableModel->item(this->currentIndex().row(), 0);
-
             addLocalizedShapeInMap(newLocalizedShape);
             itemShape->setData(QVariant::fromValue(newLocalizedShape.get()), Qt::UserRole + 1);
+
+            notifyObservers(this, OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
         }
     }
 
