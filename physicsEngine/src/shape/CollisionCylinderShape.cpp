@@ -59,7 +59,7 @@ namespace urchin {
     AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         Vector3 boxHalfSizes(getRadius(), getRadius(), getRadius());
         boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0f;
-        const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
+        Matrix3<float> orientation = physicsTransform.retrieveOrientationMatrix();
         Point3<float> extend(
                 boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
                 boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),

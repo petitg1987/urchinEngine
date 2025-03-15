@@ -121,7 +121,7 @@ namespace urchin {
     }
 
     void BodyAABBTree::controlBoundaries(const AABBNode<std::shared_ptr<AbstractBody>>& leafNode) const {
-        const AABBox<float>& bodyAABBox = leafNode.getNodeData().retrieveObjectAABBox();
+        AABBox<float> bodyAABBox = leafNode.getNodeData().retrieveObjectAABBox();
 
         if (bodyAABBox.getMax().Y < minYBoundary) {
             std::shared_ptr<AbstractBody> body = leafNode.getNodeData().getNodeObject();
