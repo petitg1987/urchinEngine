@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <utility>
+#include <cstring>
 
 #include <texture/render/TextureRenderer.h>
 #include <graphics/render/shader/ShaderBuilder.h>
@@ -20,6 +21,8 @@ namespace urchin {
             texture(std::move(texture)),
             colorType(colorType),
             renderingData({}) {
+        std::memset(&renderingData, 0, sizeof(renderingData));
+
         renderingData.minColorRange = 0.0f;
         renderingData.maxColorRange = 1.0f;
         renderingData.layer = -1;

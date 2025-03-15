@@ -163,17 +163,17 @@ namespace urchin {
             std::unique_ptr<RenderTarget> deferredSecondPassRenderTarget;
             std::unique_ptr<GenericRenderer> deferredSecondPassRenderer;
             std::unique_ptr<Shader> deferredSecondPassShader;
-            struct {
+            struct PositioningData {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Point3<float> viewPosition;
             } positioningData;
-            struct {
+            struct SceneInfo {
                 alignas(8) Point2<float> sceneSize;
                 alignas(4) bool isShadowActivated;
                 alignas(4) bool isAmbientOcclusionActivated;
             } sceneInfo;
 
-            //post processing
+            //post-processing
             AntiAliasingApplier antiAliasingApplier;
             bool isAntiAliasingActivated;
             BloomEffectApplier bloomEffectApplier;

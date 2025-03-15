@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <string>
 #include <ranges>
+#include <cstring>
 
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
@@ -15,6 +16,8 @@ namespace urchin {
             modelOcclusionCuller(modelOcclusionCuller),
             splitData({}),
             shadowMapInfo({}) {
+        std::memset(&shadowMapInfo, 0, sizeof(shadowMapInfo));
+
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
 

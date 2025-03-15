@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <scene/renderer3d/landscape/water/Water.h>
 #include <resources/ResourceRetriever.h>
 #include <graphics/render/GenericRendererBuilder.h>
@@ -16,6 +18,9 @@ namespace urchin {
             tRepeat(0.0f),
             density(0.0f),
             gradient(0.0f) {
+        std::memset((void *)&positioningData, 0, sizeof(positioningData));
+        std::memset((void *)&waterProperties, 0, sizeof(waterProperties));
+
         waterShader = ShaderBuilder::createShader("water.vert.spv", "water.frag.spv", false);
 
         //general properties

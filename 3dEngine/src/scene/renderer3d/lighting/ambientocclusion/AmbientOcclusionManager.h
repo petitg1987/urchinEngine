@@ -100,11 +100,11 @@ namespace urchin {
             //ambient occlusion shader
             std::unique_ptr<Shader> ambientOcclusionShader;
             std::shared_ptr<Texture> noiseTexture;
-            struct {
+            struct Projection {
                 alignas(16) Matrix4<float> inverseProjectionMatrix;
                 alignas(16) Matrix4<float> projectionMatrix;
             } projection;
-            struct {
+            struct PositioningData {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Matrix4<float> viewMatrix;
             } positioningData;

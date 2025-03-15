@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
 
 namespace urchin {
@@ -5,6 +7,8 @@ namespace urchin {
     TransparentModelShaderVariable::TransparentModelShaderVariable(float nearPlane, float fatPlane, LightManager& lightManager) :
             cameraPlanes({}),
             lightManager(lightManager) {
+        std::memset(&cameraPlanes, 0, sizeof(cameraPlanes));
+
         cameraPlanes.nearPlane = nearPlane;
         cameraPlanes.farPlane = fatPlane;
     }

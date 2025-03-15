@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
 #include <scene/renderer3d/VisualConfig.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
@@ -10,8 +12,11 @@ namespace urchin {
             config(config),
             isTestMode(isTestMode),
             nearPlane(0.0f),
-            farPlane(0.0f) {
-
+            farPlane(0.0f),
+            projectionData({}),
+            positioningData({}) {
+        std::memset((void *)&projectionData, 0, sizeof(projectionData));
+        std::memset((void *)&positioningData, 0, sizeof(positioningData));
     }
 
     ReflectionApplier::~ReflectionApplier() {

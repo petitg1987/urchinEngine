@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/ui/displayer/WidgetSetDisplayer.h>
 #include <scene/ui/UIRenderer.h>
@@ -11,7 +13,7 @@ namespace urchin {
             instanceId(WidgetDisplayable::INSTANCING_DENY_ID),
             uiRenderer(uiRenderer),
             colorParams({}) {
-
+        std::memset(&colorParams, 0, sizeof(colorParams));
     }
 
     WidgetInstanceDisplayer::~WidgetInstanceDisplayer() {

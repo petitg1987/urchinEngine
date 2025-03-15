@@ -73,11 +73,11 @@ namespace urchin {
 
             RenderTarget* renderTarget;
             std::unique_ptr<Shader> waterShader;
-            struct {
+            struct PositioningData {
                 alignas(16) Matrix4<float> projectionViewMatrix;
                 alignas(4) float sumTimeStep = 0.0f;
             } positioningData;
-            struct {
+            struct WaterProperties {
                 alignas(16) Vector3<float> color;
                 alignas(4) float waveSpeed;
                 alignas(4) float waveStrength;

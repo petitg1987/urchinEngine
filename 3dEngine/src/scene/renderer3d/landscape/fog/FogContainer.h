@@ -23,7 +23,7 @@ namespace urchin {
 
         private:
             std::stack<const Fog*> fogs;
-            struct {
+            struct FogData {
                 alignas(4) bool hasFog;
                 alignas(4) float density;
                 alignas(4) float gradient;

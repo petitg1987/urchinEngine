@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <scene/renderer3d/Renderer3d.h>
 #include <scene/renderer3d/OpaqueMeshFilter.h>
 #include <graphics/render/shader/ShaderBuilder.h>
@@ -60,6 +62,9 @@ namespace urchin {
             //debug
             refreshDebugFramebuffers(true) {
         ScopeProfiler sp(Profiler::graphic(), "render3dInit");
+
+        std::memset((void *)&positioningData, 0, sizeof(positioningData));
+        std::memset((void *)&sceneInfo, 0, sizeof(sceneInfo));
 
         //scene properties
         assert(this->camera);

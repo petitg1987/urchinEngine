@@ -1,4 +1,5 @@
 #include <bitset>
+#include <cstring>
 
 #include <scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
@@ -7,8 +8,9 @@ namespace urchin {
 
     ShadowModelShaderVariable::ShadowModelShaderVariable(const LightShadowMap* lightShadowMap) :
             CustomModelShaderVariable(),
-            lightShadowMap(lightShadowMap) {
-
+            lightShadowMap(lightShadowMap),
+            shadowData({}) {
+        std::memset((void *)&shadowData, 0, sizeof(shadowData));
     }
 
     void ShadowModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t) {

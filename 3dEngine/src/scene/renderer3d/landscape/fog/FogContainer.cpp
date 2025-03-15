@@ -1,10 +1,12 @@
+#include <cstring>
+
 #include <scene/renderer3d/landscape/fog/FogContainer.h>
 
 namespace urchin {
 
     FogContainer::FogContainer() :
             fogData({}) {
-
+        std::memset((void *)&fogData, 0, sizeof(fogData));
     }
 
     void FogContainer::pushFog(const Fog* fog) {

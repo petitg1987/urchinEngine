@@ -1,5 +1,6 @@
 #include <string>
 #include <random>
+#include <cstring>
 
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
@@ -16,8 +17,10 @@ namespace urchin {
             isTestMode(isTestMode),
             nearPlane(0.0f),
             farPlane(0.0f),
+            projection({}),
             positioningData({}) {
-
+        std::memset((void *)&projection, 0, sizeof(projection));
+        std::memset((void *)&positioningData, 0, sizeof(positioningData));
     }
 
     AmbientOcclusionManager::~AmbientOcclusionManager() {

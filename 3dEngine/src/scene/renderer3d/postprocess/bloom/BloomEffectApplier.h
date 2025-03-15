@@ -70,7 +70,7 @@ namespace urchin {
             std::unique_ptr<RenderTarget> preFilterRenderTarget;
             std::unique_ptr<GenericCompute> preFilterCompute;
             std::unique_ptr<Shader> preFilterShader;
-            struct {
+            struct PreFilterTweak {
                 alignas(16) Vector3<float> softCurveParams;
                 alignas(4) float threshold;
             } preFilterTweak;

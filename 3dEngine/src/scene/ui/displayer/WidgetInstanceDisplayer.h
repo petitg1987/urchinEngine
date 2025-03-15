@@ -54,8 +54,7 @@ namespace urchin {
             struct ColorParams {
                 alignas(4) float alphaFactor;
                 alignas(4) float gammaFactor;
-            };
-            ColorParams colorParams;
+            } colorParams;
             mutable std::vector<Matrix4<float>> instanceModelMatrices;
 
             std::unique_ptr<GenericRenderer> renderer;

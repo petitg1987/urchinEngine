@@ -70,8 +70,7 @@ namespace urchin {
             struct LightsData {
                 alignas(16) std::array<LightInfo, LIGHTS_SHADER_LIMIT> lightsInfo;
                 alignas(16) Point3<float> globalAmbientColor;
-            };
-            LightsData lightsData;
+            } lightsData;
     };
 
 }

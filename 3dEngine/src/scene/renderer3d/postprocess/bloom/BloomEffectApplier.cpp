@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
 #include <graphics/render/shader/ShaderBuilder.h>
@@ -12,6 +14,8 @@ namespace urchin {
             sceneWidth(0),
             sceneHeight(0),
             preFilterTweak({}) {
+        std::memset((void *)&preFilterTweak, 0, sizeof(preFilterTweak));
+
         float filterSoftCurve = ConfigService::instance().getFloatValue("bloom.filterSoftCurve");
         float threshold = ConfigService::instance().getFloatValue("bloom.filterThreshold");
         preFilterTweak.softCurveParams.X = threshold - filterSoftCurve;

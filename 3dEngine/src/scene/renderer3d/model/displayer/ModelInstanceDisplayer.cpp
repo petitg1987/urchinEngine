@@ -1,4 +1,5 @@
 #include <memory>
+#include <cstring>
 
 #include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
@@ -20,7 +21,7 @@ namespace urchin {
             depthWriteEnabled(true),
             enableFaceCull(true),
             enableLayerIndexDataInShader(false) {
-
+        std::memset(&materialData, 0, sizeof(materialData));
     }
 
     ModelInstanceDisplayer::~ModelInstanceDisplayer() {

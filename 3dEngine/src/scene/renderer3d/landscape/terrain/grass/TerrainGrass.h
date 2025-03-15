@@ -76,7 +76,7 @@ namespace urchin {
             RenderTarget* renderTarget;
 
             std::unique_ptr<Shader> terrainGrassShader;
-            struct {
+            struct PositioningData {
                 alignas(16) Matrix4<float> projectionViewMatrix;
                 alignas(16) Point3<float> cameraPosition;
                 alignas(4) float sumTimeStep;
@@ -86,7 +86,7 @@ namespace urchin {
             float grassWidth;
             int numGrassInTex;
             float grassQuantity;
-            struct {
+            struct GrassProperties {
                 alignas(4) float displayDistance;
                 alignas(4) float grassHeight;
                 alignas(4) float windStrength;
