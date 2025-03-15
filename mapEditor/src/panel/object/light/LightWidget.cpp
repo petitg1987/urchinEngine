@@ -259,7 +259,7 @@ namespace urchin {
             this->produceShadowCheckBox->setDisabled(true);
         } else if (light->getLightType() == Light::LightType::SPOT) {
             setupSpotLightDataFrom(static_cast<const SpotLight*>(light));
-            this->produceShadowCheckBox->setDisabled(true);
+            this->produceShadowCheckBox->setDisabled(false);
         } else {
             throw std::invalid_argument("Impossible to setup specific light data for light of type: " + std::to_string((int)light->getLightType()));
         }

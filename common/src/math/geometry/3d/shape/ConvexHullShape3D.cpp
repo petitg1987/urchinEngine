@@ -41,7 +41,7 @@ namespace urchin {
     /**
      * Points of convex hull shape indexed to be used with indexed triangles.
      */
-    template<class T> const std::map<std::size_t, ConvexHullPoint<T>> &ConvexHullShape3D<T>::getConvexHullPoints() const {
+    template<class T> const std::map<std::size_t, ConvexHullPoint<T>>& ConvexHullShape3D<T>::getConvexHullPoints() const {
         return points;
     }
 
@@ -62,7 +62,7 @@ namespace urchin {
     /**
      * Triangles of convex hull shape where points are sorted in counterclockwise direction in a right hand coordinate system (Z+ directed to the observer).
      */
-    template<class T> const std::map<std::size_t, IndexedTriangle3D<T>> &ConvexHullShape3D<T>::getIndexedTriangles() const {
+    template<class T> const std::map<std::size_t, IndexedTriangle3D<T>>& ConvexHullShape3D<T>::getIndexedTriangles() const {
         return indexedTriangles;
     }
 
@@ -92,8 +92,8 @@ namespace urchin {
                     points.at(indexedTriangle.getIndex(1)).point,
                     points.at(indexedTriangle.getIndex(2)).point);
 
-            const Point3<T> &point0 = points.at(indexedTriangle.getIndex(0)).point;
-            const Vector3<T>& triangleToPoint = point0.vector(newPoint);
+            const Point3<T>& point0 = points.at(indexedTriangle.getIndex(0)).point;
+            Vector3<T> triangleToPoint = point0.vector(newPoint);
 
             if (triangleNormal.dotProduct(triangleToPoint) > 0.0) {
                 for (std::size_t i = 0; i < 3; i++) { //each edge
@@ -277,7 +277,7 @@ namespace urchin {
                 continue;
             }
 
-            const Vector3<T>& triangleToPoint = firstPoint.vector(points[i]);
+            Vector3<T> triangleToPoint = firstPoint.vector(points[i]);
             if (firstTriangleNormal.dotProduct(triangleToPoint) != (T)0.0) {
                 addNewPoint(points[i]);
                 pointsUsed.insert(i);

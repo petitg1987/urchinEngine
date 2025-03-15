@@ -36,8 +36,8 @@ namespace urchin {
     }
 
     template<class T> Vector3<T> Triangle3D<T>::computeNormal() const {
-        const Vector3<T>& aux = this->getPoints()[1].vector(this->getPoints()[2]);
-        const Vector3<T>& normal = aux.crossProduct(this->getPoints()[1].vector(this->getPoints()[0]));
+        Vector3<T> aux = this->getPoints()[1].vector(this->getPoints()[2]);
+        Vector3<T> normal = aux.crossProduct(this->getPoints()[1].vector(this->getPoints()[0]));
 
         return normal.normalize();
     }

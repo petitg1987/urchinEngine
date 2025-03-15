@@ -6,7 +6,7 @@ namespace urchin {
 
     template<class T> Rectangle3D<T>::Rectangle3D(const std::array<Point3<T>, 4>& orientedPoints) :
             orientedPoints(orientedPoints) {
-        const Vector3<T>& aux = orientedPoints[1].vector(orientedPoints[2]);
+        Vector3<T> aux = orientedPoints[1].vector(orientedPoints[2]);
         normal = aux.crossProduct(orientedPoints[1].vector(orientedPoints[0])).normalize();
     }
 

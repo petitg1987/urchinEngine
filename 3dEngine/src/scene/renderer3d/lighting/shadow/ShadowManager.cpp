@@ -156,6 +156,7 @@ namespace urchin {
 
     void ShadowManager::addShadowLight(Light& light) {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
+        //TODO adapt for spot !
         lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.viewingShadowDistance, config.shadowMapResolution, config.nbShadowMaps);
     }
 
@@ -188,6 +189,7 @@ namespace urchin {
                 lightSplitShadowMap->update(splitFrustums[i++]);
             }
         } else {
+            //TODO adapt for spot !
             throw std::runtime_error("Shadow not supported on omnidirectional light.");
         }
     }

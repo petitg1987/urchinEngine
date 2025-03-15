@@ -48,7 +48,7 @@ namespace urchin {
             positioningData({}),
             sceneInfo({}),
 
-            //post processing
+            //post-processing
             antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), finalRenderTarget.isTestMode())),
             isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
             bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget.isTestMode())),

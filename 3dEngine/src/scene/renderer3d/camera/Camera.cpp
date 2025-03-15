@@ -268,7 +268,7 @@ namespace urchin {
     }
 
     void Camera::updateComponents() {
-        const Vector3<float>& viewUp = view.crossProduct(up).normalize();
+        const Vector3<float> viewUp = view.crossProduct(up).normalize();
         mView.setValues(
                 viewUp[0],  viewUp[1],  viewUp[2],  viewUp[0] * -position.X + viewUp[1] * -position.Y + viewUp[2] * -position.Z,
                 up[0],      up[1],      up[2],      up[0] * -position.X + up[1] * -position.Y + up[2] * -position.Z,

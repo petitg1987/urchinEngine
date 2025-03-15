@@ -38,6 +38,7 @@ namespace urchin {
     void LightSplitShadowMap::computeLightScope(const SplitFrustum& splitFrustum, const Matrix4<float>& lightViewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "compLightScope");
 
+        //TODO adapt for spot !
         const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum.getFrustum();
         Point3<float> frustumCenter = (lightViewMatrix * Point4(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
         float frustumRadius = splitFrustum.getBoundingSphere().getRadius();

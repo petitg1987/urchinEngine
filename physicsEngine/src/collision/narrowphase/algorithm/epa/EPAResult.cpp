@@ -37,7 +37,7 @@ namespace urchin {
     /**
      * @return Closest point of object A in case of collision
      */
-    template<class T> const Point3<T> &EPAResult<T>::getContactPointA() const {
+    template<class T> const Point3<T>& EPAResult<T>::getContactPointA() const {
         #ifdef URCHIN_DEBUG
             assert(isCollide());
         #endif
@@ -47,7 +47,7 @@ namespace urchin {
     /**
      * @return Closest point of object B in case of collision
      */
-    template<class T> const Point3<T> &EPAResult<T>::getContactPointB() const {
+    template<class T> const Point3<T>& EPAResult<T>::getContactPointB() const {
         #ifdef URCHIN_DEBUG
             assert(isCollide());
         #endif
@@ -57,7 +57,7 @@ namespace urchin {
     /**
      * @return Normal normalized of collision. The normal direction is toward the object B.
      */
-    template<class T> const Vector3<T> &EPAResult<T>::getNormal() const {
+    template<class T> const Vector3<T>& EPAResult<T>::getNormal() const {
         #ifdef URCHIN_DEBUG
             assert(isCollide());
         #endif

@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     template<class T> void Plane<T>::buildFrom3Points(const Point3<T>& p1, const Point3<T>& p2, const Point3<T>& p3) {
-        const Vector3<T>& aux = p2.vector(p3);
+        Vector3<T> aux = p2.vector(p3);
         normal = aux.crossProduct(p2.vector(p1)).normalize();
         d = normal.dotProduct(-Vector3<T>(p2.X, p2.Y, p2.Z));
     }
