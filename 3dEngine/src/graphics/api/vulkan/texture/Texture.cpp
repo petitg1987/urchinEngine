@@ -215,6 +215,7 @@ namespace urchin {
             for (unsigned int imageIndex = 0; imageIndex < dataPtr.size(); ++imageIndex) {
                 auto dataDestinationStartIndex = static_cast<uint8_t*>(dataDestination);
                 std::advance(dataDestinationStartIndex, imageIndex * getImageSize());
+                assert(dataPtr[imageIndex].data() != nullptr);
                 std::memcpy(dataDestinationStartIndex, dataPtr[imageIndex].data(), dataPtr[imageIndex].size());
             }
         }

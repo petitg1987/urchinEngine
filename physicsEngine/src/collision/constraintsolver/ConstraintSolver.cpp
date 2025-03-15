@@ -52,8 +52,8 @@ namespace urchin {
                 RigidBody& body1 = RigidBody::upCast(manifoldResult.getBody1());
                 RigidBody& body2 = RigidBody::upCast(manifoldResult.getBody2());
 
-                const CommonSolvingData& commonSolvingData = fillCommonSolvingData(manifoldResult, contact);
-                const ImpulseSolvingData& impulseSolvingData = fillImpulseSolvingData(commonSolvingData, dt);
+                CommonSolvingData commonSolvingData = fillCommonSolvingData(manifoldResult, contact);
+                ImpulseSolvingData impulseSolvingData = fillImpulseSolvingData(commonSolvingData, dt);
 
                 void* memPtr = constraintSolvingDataPool->allocate(sizeof(ConstraintSolvingData));
                 auto* constraintSolving = new(memPtr) ConstraintSolvingData(body1, body2, contact, commonSolvingData, impulseSolvingData);
