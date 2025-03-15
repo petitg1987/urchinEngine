@@ -46,7 +46,7 @@ namespace urchin {
         if (light.getLightType() == Light::LightType::SUN) {
             Vector3<float> lightDirection = light.getDirections()[0];
 
-            Vector3<float> f = lightDirection.normalize(); //TODO bug + below line ?
+            Vector3<float> f = lightDirection.normalize();
             Vector3<float> s = f.crossProduct(Vector3(0.0f, 1.0f, 0.0f)).normalize();
             Vector3<float> u = s.crossProduct(f).normalize();
             Matrix4 m(
