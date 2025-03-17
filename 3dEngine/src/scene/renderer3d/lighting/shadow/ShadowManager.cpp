@@ -159,8 +159,15 @@ namespace urchin {
 
     void ShadowManager::addShadowLight(Light& light) {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
-        //TODO adapt for spot !
-        lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.viewingShadowDistance, config.shadowMapResolution, config.nbShadowMaps);
+
+        if (light.getLightType() == Light::LightType::SUN) {
+            lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.viewingShadowDistance, config.shadowMapResolution, config.nbShadowMaps);
+        } else if (light.getLightType() == Light::LightType::SPOT) {
+            //TODO review resolution for spot
+            lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, 1024, 1);
+        } else {
+            throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)light.getLightType()));
+        }
     }
 
     void ShadowManager::removeShadowLight(const Light& light) {

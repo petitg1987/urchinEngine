@@ -1,6 +1,8 @@
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 
+#include "scene/renderer3d/lighting/light/spot/SpotLight.h"
+
 namespace urchin {
 
     LightSplitShadowMap::LightSplitShadowMap(const LightShadowMap* lightShadowMap) :
@@ -61,9 +63,31 @@ namespace urchin {
             }
             this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex);
         } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) {
-            //TODO adapt for spot !
+            const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
+
+            // float verticalFovAngle = computeVerticalFovAngle();
+            // float fov = computeFov(verticalFovAngle);
+            // float ratio = (float)sceneWidth / (float)sceneHeight;
+            // mProjection.setValues(
+            //         fov / ratio, 0.0f, 0.0f, 0.0f,
+            //         0.0f, -fov, 0.0f, 0.0f,
+            //         0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
+            //         0.0f, 0.0f, -1.0f, 0.0f);
+            // --------- OR ----------
             // - Compute: projection matrix: glm::perspective(glm::radians(lightFOV), 1.0f, zNear, zFar)
-            // - Compute: shadowCasterReceiverBox
+
+            float nearPlane = 0.1f;
+            float farPlane = 50.0f;
+            //float verticalFovAngle = 0.0f; //TODO computeVerticalFovAngle();
+            float fov = AngleConverter<float>::toRadian(110.0f); //TODO computeFov(verticalFovAngle);
+            float ratio = 1.0f;
+            this->lightProjectionMatrix.setValues(
+                    fov / ratio, 0.0f, 0.0f, 0.0f,
+                    0.0f, -fov, 0.0f, 0.0f,
+                    0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
+                    0.0f, 0.0f, -1.0f, 0.0f);
+
+            this->shadowCasterReceiverBox = spotLight.getAABBoxScope();
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }

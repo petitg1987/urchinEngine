@@ -43,20 +43,18 @@ namespace urchin {
     }
 
     void LightShadowMap::updateLightViewMatrix() {
-        if (light.getLightType() == Light::LightType::SUN) {
+        if (light.getLightType() == Light::LightType::SUN || light.getLightType() == Light::LightType::SPOT) {
             Vector3<float> lightDirection = light.getDirections()[0];
 
             Vector3<float> f = lightDirection.normalize();
             Vector3<float> s = f.crossProduct(Vector3(0.0f, 1.0f, 0.0f)).normalize();
             Vector3<float> u = s.crossProduct(f).normalize();
 
-            this->lightViewMatrix = Matrix4(
+            this->lightViewMatrix.setValues(
                     s[0],    s[1],    s[2],    lightDirection.X,
                     u[0],    u[1],    u[2],    lightDirection.Y,
                     -f[0],   -f[1],   -f[2],   lightDirection.Z,
                     0.0f,    0.0f,    0.0f,    1.0f);
-        } else if (light.getLightType() == Light::LightType::SPOT) {
-            //TODO adapt for spot !
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)light.getLightType()));
         }
