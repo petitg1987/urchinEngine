@@ -49,14 +49,12 @@ namespace urchin {
             Vector3<float> f = lightDirection.normalize();
             Vector3<float> s = f.crossProduct(Vector3(0.0f, 1.0f, 0.0f)).normalize();
             Vector3<float> u = s.crossProduct(f).normalize();
-            Matrix4 m(
-                    s[0],    s[1],    s[2],    0.0f,
-                    u[0],    u[1],    u[2],    0.0f,
-                    -f[0],   -f[1],   -f[2],   0.0f,
-                    0.0f,    0.0f,    0.0f,    1.0f);
 
-            Matrix4<float> eye = Matrix4<float>::buildTranslation(lightDirection.X, lightDirection.Y, lightDirection.Z);
-            this->lightViewMatrix = m * eye;
+            this->lightViewMatrix = Matrix4(
+                    s[0],    s[1],    s[2],    lightDirection.X,
+                    u[0],    u[1],    u[2],    lightDirection.Y,
+                    -f[0],   -f[1],   -f[2],   lightDirection.Z,
+                    0.0f,    0.0f,    0.0f,    1.0f);
         } else if (light.getLightType() == Light::LightType::SPOT) {
             //TODO adapt for spot !
         } else {
