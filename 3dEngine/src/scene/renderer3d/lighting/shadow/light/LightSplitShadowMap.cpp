@@ -13,7 +13,9 @@ namespace urchin {
 
     void LightSplitShadowMap::update(const SplitFrustum& splitFrustum) {
         computeLightScope(splitFrustum, lightShadowMap->getLightViewMatrix());
-        stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
+        if (lightShadowMap->getLight().getLightType() == Light::LightType::SUN) {
+            stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
+        } //TODO apply for spot ?
 
         models.clear();
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox(shadowCasterReceiverBox);

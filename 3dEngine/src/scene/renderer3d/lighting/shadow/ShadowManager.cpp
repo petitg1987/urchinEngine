@@ -193,14 +193,9 @@ namespace urchin {
     void ShadowManager::updateLightSplitsShadowMap(const LightShadowMap& lightShadowMap) const {
         ScopeProfiler sp(Profiler::graphic(), "upFrustumShadow");
 
-        if (lightShadowMap.getLight().getLightType() == Light::LightType::SUN) {
-            unsigned int i = 0;
-            for (const auto& lightSplitShadowMap : lightShadowMap.getLightSplitShadowMaps()) {
-                lightSplitShadowMap->update(splitFrustums[i++]);
-            }
-        } else {
-            //TODO adapt for spot !
-            throw std::runtime_error("Shadow not supported on omnidirectional light.");
+        unsigned int i = 0;
+        for (const auto& lightSplitShadowMap : lightShadowMap.getLightSplitShadowMaps()) {
+            lightSplitShadowMap->update(splitFrustums[i++]);
         }
     }
 
