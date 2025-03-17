@@ -38,28 +38,35 @@ namespace urchin {
     void LightSplitShadowMap::computeLightScope(const SplitFrustum& splitFrustum, const Matrix4<float>& lightViewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "compLightScope");
 
-        //TODO adapt for spot !
-        const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum.getFrustum();
-        Point3<float> frustumCenter = (lightViewMatrix * Point4(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
-        float frustumRadius = splitFrustum.getBoundingSphere().getRadius();
-        float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
+        if (lightShadowMap->getLight().getLightType() == Light::LightType::SUN) {
+            const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum.getFrustum();
+            Point3<float> frustumCenter = (lightViewMatrix * Point4(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
+            float frustumRadius = splitFrustum.getBoundingSphere().getRadius();
+            float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
 
-        std::array<Point3<float>, 4> lightProjectionVertex;
-        lightProjectionVertex[0] = frustumCenter + Point3(frustumRadius, frustumRadius, frustumRadius);
-        lightProjectionVertex[1] = Point3(lightProjectionVertex[0].X, lightProjectionVertex[0].Y, nearCapZ);
-        lightProjectionVertex[2] = frustumCenter - Point3(frustumRadius, frustumRadius, frustumRadius);
-        lightProjectionVertex[3] = Point3(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
-        this->lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
+            std::array<Point3<float>, 4> lightProjectionVertex;
+            lightProjectionVertex[0] = frustumCenter + Point3(frustumRadius, frustumRadius, frustumRadius);
+            lightProjectionVertex[1] = Point3(lightProjectionVertex[0].X, lightProjectionVertex[0].Y, nearCapZ);
+            lightProjectionVertex[2] = frustumCenter - Point3(frustumRadius, frustumRadius, frustumRadius);
+            lightProjectionVertex[3] = Point3(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
+            this->lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
 
-        //determine point belonging to shadow caster/receiver box
-        std::array<Point3<float>, 16> shadowReceiverAndCasterVertex;
-        for (std::size_t i = 0; i < 8; ++i) {
-            const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
+            //determine point belonging to shadow caster/receiver box
+            std::array<Point3<float>, 16> shadowReceiverAndCasterVertex;
+            for (std::size_t i = 0; i < 8; ++i) {
+                const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
 
-            shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver point
-            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
+                shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver point
+                shadowReceiverAndCasterVertex[i * 2 + 1] = Point3(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
+            }
+            this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex);
+        } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) {
+            //TODO adapt for spot !
+            // - Compute: projection matrix: glm::perspective(glm::radians(lightFOV), 1.0f, zNear, zFar)
+            // - Compute: shadowCasterReceiverBox
+        } else {
+            throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
-        this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex);
     }
 
     float LightSplitShadowMap::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {
