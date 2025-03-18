@@ -80,7 +80,7 @@ namespace urchin {
             projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
         }
 
-        T shiftDownHeight = - (getHeight()* static_cast<T>(1.0 / 4.0));
+        T shiftDownHeight = - (getHeight() * static_cast<T>(1.0 / 4.0));
         Point3<T> bottomPosition = centerOfMass.translate(centralAxis * shiftDownHeight);
         return bottomPosition.translate(projectedDirectionOnCircle * getRadius());
     }

@@ -61,6 +61,9 @@ namespace urchin {
         computeScope();
     }
 
+    /**
+     * Return the inner angle in degrees between the symmetry line of the cone and a side of the once
+     */
     float SpotLight::getInnerAngle() const {
         return innerAngleInDegrees;
     }
@@ -69,6 +72,9 @@ namespace urchin {
         return innerCosAngle;
     }
 
+    /**
+     * Return the outer angle in degrees between the symmetry line of the cone and a side of the once
+     */
     float SpotLight::getOuterAngle() const {
         return outerAngleInDegrees;
     }
@@ -119,9 +125,13 @@ namespace urchin {
         Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, -1.0f, 0.0f), directions[0]);
         coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation.normalize());
 
-        float halfHeight = coneHeight / 2.0f;
-        Point3<float> sphereCenter = getPosition().translate(directions[0] * halfHeight);
-        bboxScope = std::make_unique<AABBox<float>>(sphereCenter - halfHeight, sphereCenter + halfHeight);
+        float minX = coneScope->getSupportPoint(Vector3(-1.0f, 0.0f, 0.0f)).X;
+        float maxX = coneScope->getSupportPoint(Vector3(1.0f, 0.0f, 0.0f)).X;
+        float minY = coneScope->getSupportPoint(Vector3(0.0f, -1.0f, 0.0f)).Y;
+        float maxY = coneScope->getSupportPoint(Vector3(0.0f, 1.0f, 0.0f)).Y;
+        float minZ = coneScope->getSupportPoint(Vector3(0.0f, 0.0f, -1.0f)).Z;
+        float maxZ = coneScope->getSupportPoint(Vector3(0.0f, 0.0f, 1.0f)).Z;
+        bboxScope = std::make_unique<AABBox<float>>(Point3(minX, minY, minZ), Point3(maxX, maxY, maxZ));
 
         notifyOctreeableMove();
     }
