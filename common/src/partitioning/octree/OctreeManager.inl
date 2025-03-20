@@ -237,11 +237,12 @@ template<class T> std::vector<std::shared_ptr<T>> OctreeManager<T>::getAllOctree
     return allOctreeables;
 }
 
-template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<float>& convexObject, std::vector<T*>& octreeables) const {
-    getOctreeablesIn(convexObject, octreeables, [](const T* const){ return true; });
+template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<float>& convexObject, std::vector<T*>& octreeables, bool strictFiltering) const {
+    getOctreeablesIn(convexObject, octreeables, strictFiltering, [](const T* const){ return true; });
 }
 
-template<class T> template<class FILTER> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<float>& convexObject, std::vector<T*>& visibleOctreeables, const FILTER& filter) const {
+template<class T> template<class FILTER> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<float>& convexObject, std::vector<T*>& visibleOctreeables,
+        bool strictFiltering, const FILTER& filter) const {
     ScopeProfiler sp(Profiler::graphic(), "getOctreeables");
 
     browseNodes.clear();
@@ -252,8 +253,10 @@ template<class T> template<class FILTER> void OctreeManager<T>::getOctreeablesIn
         if (convexObject.collideWithAABBox(octree->getAABBox())) {
             if (octree->isLeaf()) {
                 for (auto& octreeable : octree->getOctreeables()) {
-                    //note: to filter by individual octreeables (instead of all octreeables belong to an octree): convexObject.collideWithAABBox(octreeable->getAABBox())
-                    if (octreeable->isVisible() && !octreeable->isProcessed() && filter(octreeable.get())) {
+                    if (octreeable->isVisible()
+                            && !octreeable->isProcessed()
+                            && filter(octreeable.get())
+                            && (!strictFiltering || convexObject.collideWithAABBox(octreeable->getAABBox()))) {
                         octreeable->setProcessed(true);
                         visibleOctreeables.push_back(octreeable.get());
                     }

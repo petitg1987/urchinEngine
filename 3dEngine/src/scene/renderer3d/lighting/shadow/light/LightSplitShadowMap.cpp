@@ -19,7 +19,7 @@ namespace urchin {
 
         models.clear();
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox(shadowCasterReceiverBox);
-        lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, [](const Model *const model) {
+        lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, [](const Model *const model) {
             return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
         });
     }
@@ -78,16 +78,29 @@ namespace urchin {
             // --------- OR ----------
             // - Compute: projection matrix: glm::perspective(glm::radians(lightFOV), 1.0f, zNear, zFar)
 
-            float nearPlane = 0.1f;
-            float farPlane = 50.0f;
-            //float verticalFovAngle = 0.0f; //TODO computeVerticalFovAngle();
-            float fov = AngleConverter<float>::toRadian(110.0f); //TODO computeFov(verticalFovAngle);
+            //Camera version: //TODO no tan ?!
+            // float nearPlane = 0.1f;
+            // float farPlane = 50.0f;
+            // //float verticalFovAngle = 0.0f; //TODO computeVerticalFovAngle();
+            // float fov = AngleConverter<float>::toRadian(110.0f); //TODO computeFov(verticalFovAngle);
+            // float ratio = 1.0f;
+            // this->lightProjectionMatrix.setValues(
+            //         fov / ratio, 0.0f, 0.0f, 0.0f,
+            //         0.0f, -fov, 0.0f, 0.0f,
+            //         0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
+            //         0.0f, 0.0f, -1.0f, 0.0f);
+
+            //Sascha version:
+            float nearPlane = 0.01f;
+            float farPlane = 20.0f;
+            float halfFov = AngleConverter<float>::toRadian(spotLight.getOuterAngle());
+            float tanHalfFov = std::tan(halfFov);
             float ratio = 1.0f;
             this->lightProjectionMatrix.setValues(
-                    fov / ratio, 0.0f, 0.0f, 0.0f,
-                    0.0f, -fov, 0.0f, 0.0f,
-                    0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
-                    0.0f, 0.0f, -1.0f, 0.0f);
+                    1.0f / (ratio * tanHalfFov), 0.0f, 0.0f, 0.0f,
+                    0.0f, 1.0f / (tanHalfFov), 0.0f, 0.0f,
+                    0.0f, 0.0f, farPlane / (farPlane - nearPlane), -(farPlane * nearPlane) / (farPlane - nearPlane),
+                    0.0f, 0.0f, 1.0f, 0.0f);
 
             this->shadowCasterReceiverBox = spotLight.getAABBoxScope();
         } else {

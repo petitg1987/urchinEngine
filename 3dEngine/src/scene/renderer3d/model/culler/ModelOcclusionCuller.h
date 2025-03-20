@@ -15,7 +15,7 @@ namespace urchin {
             std::shared_ptr<Model> removeModel(Model*);
 
             void getModelsInFrustum(const Frustum<float>&, std::vector<Model*>&) const;
-            template<class FILTER> void getModelsInOBBox(const OBBox<float>&, std::vector<Model*>&, const FILTER&) const;
+            template<class FILTER> void getModelsInOBBox(const OBBox<float>&, std::vector<Model*>&, bool, const FILTER&) const;
             std::vector<std::shared_ptr<Model>> getAllModels() const;
 
             std::unique_ptr<AABBoxModel> createDebugGeometries() const;

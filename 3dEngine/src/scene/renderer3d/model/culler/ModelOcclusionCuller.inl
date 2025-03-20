@@ -1,10 +1,10 @@
 /**
  * @param modelsInBox [out] models in OBBox
  */
-template<class FILTER> void ModelOcclusionCuller::getModelsInOBBox(const OBBox<float>& box, std::vector<Model*>& modelsInBox, const FILTER& filter) const {
+template<class FILTER> void ModelOcclusionCuller::getModelsInOBBox(const OBBox<float>& box, std::vector<Model*>& modelsInBox, bool strictFiltering, const FILTER& filter) const {
     assert(modelsInBox.empty());
     getNoCullModels(modelsInBox, filter);
-    modelOctreeManager.getOctreeablesIn(box, modelsInBox, filter);
+    modelOctreeManager.getOctreeablesIn(box, modelsInBox, strictFiltering, filter);
 }
 
 /**

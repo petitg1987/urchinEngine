@@ -103,7 +103,7 @@ namespace urchin {
 
         lightOctreeManager.refreshOctreeables();
         lightsInFrustum.clear();
-        lightOctreeManager.getOctreeablesIn(frustum, lightsInFrustum);
+        lightOctreeManager.getOctreeablesIn(frustum, lightsInFrustum, false);
 
         visibleLights.clear();
         for (const auto& sunLight : sunLights) {

@@ -37,8 +37,8 @@ namespace urchin {
             std::vector<const Octree<T>*> getAllLeafOctrees() const;
 
             std::vector<std::shared_ptr<T>> getAllOctreeables() const;
-            void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<T*>&) const;
-            template<class FILTER> void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<T*>&, const FILTER&) const;
+            void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<T*>&, bool) const;
+            template<class FILTER> void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<T*>&, bool, const FILTER&) const;
 
         private:
             void buildOctree(std::vector<std::shared_ptr<T>>&);
