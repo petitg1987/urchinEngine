@@ -21,7 +21,7 @@ namespace urchin {
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox(shadowCasterReceiverBox);
         lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, [](const Model *const model) {
             return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
-        });
+        }); //TODO why laser.urchinMesh is retrieved ?
     }
 
     const AABBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
