@@ -99,7 +99,7 @@ namespace urchin {
             this->lightProjectionMatrix.setValues(
                     1.0f / (ratio * tanHalfFov), 0.0f, 0.0f, 0.0f,
                     0.0f, 1.0f / (tanHalfFov), 0.0f, 0.0f,
-                    0.0f, 0.0f, farPlane / (farPlane - nearPlane), -(farPlane * nearPlane) / (farPlane - nearPlane),
+                    0.0f, 0.0f, farPlane / (nearPlane - farPlane), -(farPlane * nearPlane) / (farPlane - nearPlane),
                     0.0f, 0.0f, 1.0f, 0.0f);
 
             this->shadowCasterReceiverBox = spotLight.getAABBoxScope();
