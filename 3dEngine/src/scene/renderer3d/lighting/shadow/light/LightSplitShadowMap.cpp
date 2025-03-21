@@ -67,30 +67,8 @@ namespace urchin {
         } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) {
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
 
-            // float verticalFovAngle = computeVerticalFovAngle();
-            // float fov = computeFov(verticalFovAngle);
-            // float ratio = (float)sceneWidth / (float)sceneHeight;
-            // mProjection.setValues(
-            //         fov / ratio, 0.0f, 0.0f, 0.0f,
-            //         0.0f, -fov, 0.0f, 0.0f,
-            //         0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
-            //         0.0f, 0.0f, -1.0f, 0.0f);
-            // --------- OR ----------
-            // - Compute: projection matrix: glm::perspective(glm::radians(lightFOV), 1.0f, zNear, zFar)
-
-            //Camera version: //TODO no tan ?!
-            // float nearPlane = 0.1f;
-            // float farPlane = 50.0f;
-            // //float verticalFovAngle = 0.0f; //TODO computeVerticalFovAngle();
-            // float fov = AngleConverter<float>::toRadian(110.0f); //TODO computeFov(verticalFovAngle);
-            // float ratio = 1.0f;
-            // this->lightProjectionMatrix.setValues(
-            //         fov / ratio, 0.0f, 0.0f, 0.0f,
-            //         0.0f, -fov, 0.0f, 0.0f,
-            //         0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
-            //         0.0f, 0.0f, -1.0f, 0.0f);
-
             //Sascha version:
+            //TODO fix problem ?
             float nearPlane = 0.01f;
             float farPlane = 20.0f;
             float halfFov = AngleConverter<float>::toRadian(spotLight.getOuterAngle());
