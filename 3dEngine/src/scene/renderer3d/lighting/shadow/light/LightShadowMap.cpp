@@ -47,7 +47,14 @@ namespace urchin {
             Vector3<float> lightDirection = light.getDirections()[0];
 
             Vector3<float> f = lightDirection.normalize();
-            Vector3<float> s = f.crossProduct(Vector3(0.0f, 1.0f, 0.0f)).normalize();
+
+            //TODO worldUp generate by ChatGPT: is it correct ?
+            Vector3 worldUp(0.0f, 1.0f, 0.0f);
+            if (std::abs(f.dotProduct(worldUp)) > 0.999f) {
+                worldUp = Vector3(1.0f, 0.0f, 0.0f);
+            }
+            Vector3<float> s = f.crossProduct(worldUp).normalize();
+
             Vector3<float> u = s.crossProduct(f).normalize();
 
             this->lightViewMatrix.setValues(

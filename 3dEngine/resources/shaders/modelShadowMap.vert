@@ -23,5 +23,8 @@ layout(location = 1) in mat4 mModel; //use location 1, 2, 3 & 4
 invariant gl_Position;
 
 void main() {
-    gl_Position = shadowData.matrices[pushConstants.layerIndex] * (postioningData.mProjectionView * (mModel * vec4(vertexPosition, 1.0)));
+    vec4 position = shadowData.matrices[pushConstants.layerIndex] * (postioningData.mProjectionView * (mModel * vec4(vertexPosition, 1.0)));
+    position.xyz /= position.w;
+    position.w = 1.0f;
+    gl_Position = position;
 }
