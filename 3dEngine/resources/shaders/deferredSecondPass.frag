@@ -91,7 +91,7 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
         float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
         float frustumRadius = shadowMapData.splitData[i].w;
         if (frustumCenterDist < frustumRadius) {
-            vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * worldPosition;
+            vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * worldPosition; //TODO required to divide by W for spot light shadow ?
             shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
             shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
