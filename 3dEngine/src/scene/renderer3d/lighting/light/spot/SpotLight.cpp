@@ -8,9 +8,10 @@ namespace urchin {
             innerCosAngle(0.0f),
             outerAngleInDegrees(0.0f),
             outerCosAngle(0.0f),
+            aabboxScope(nullptr),
             exponentialAttenuation(0.1f),
             coneScope(nullptr),
-            bboxScope(nullptr) {
+            obboxScope(nullptr) {
         directions.emplace_back(direction.normalize());
         setAngles(innerAngleInDegrees, outerAngleInDegrees);
 
@@ -88,7 +89,8 @@ namespace urchin {
     }
 
     const AABBox<float>& SpotLight::getAABBox() const {
-        return *bboxScope;
+        assert(aabboxScope);
+        return *aabboxScope;
     }
 
     void SpotLight::setAttenuation(float exponentialAttenuation) {
@@ -104,9 +106,9 @@ namespace urchin {
         return exponentialAttenuation;
     }
 
-    const AABBox<float>& SpotLight::getAABBoxScope() const {
-        assert(bboxScope);
-        return *bboxScope;
+    const OBBox<float>& SpotLight::getOBBoxScope() const {
+        assert(obboxScope);
+        return *obboxScope;
     }
 
     const Cone<float>& SpotLight::getConeScope() const {
@@ -122,8 +124,12 @@ namespace urchin {
 
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));
         float coneRadius = coneHeight * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
-        Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, -1.0f, 0.0f), directions[0]);
-        coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation.normalize());
+        Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, -1.0f, 0.0f), directions[0]).normalize();
+        coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation);
+
+        Point3<float> coneCenter = getPosition().translate(directions[0] * (coneHeight * 0.5f));
+        Vector3 halfSizes(coneRadius, coneHeight / 2.0f, coneRadius);
+        obboxScope = std::make_unique<OBBox<float>>(halfSizes, coneCenter, orientation);
 
         float minX = coneScope->getSupportPoint(Vector3(-1.0f, 0.0f, 0.0f)).X;
         float maxX = coneScope->getSupportPoint(Vector3(1.0f, 0.0f, 0.0f)).X;
@@ -131,7 +137,7 @@ namespace urchin {
         float maxY = coneScope->getSupportPoint(Vector3(0.0f, 1.0f, 0.0f)).Y;
         float minZ = coneScope->getSupportPoint(Vector3(0.0f, 0.0f, -1.0f)).Z;
         float maxZ = coneScope->getSupportPoint(Vector3(0.0f, 0.0f, 1.0f)).Z;
-        bboxScope = std::make_unique<AABBox<float>>(Point3(minX, minY, minZ), Point3(maxX, maxY, maxZ));
+        aabboxScope = std::make_unique<AABBox<float>>(Point3(minX, minY, minZ), Point3(maxX, maxY, maxZ));
 
         notifyOctreeableMove();
     }

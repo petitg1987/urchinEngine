@@ -29,7 +29,7 @@ namespace urchin {
             //attenuation methods
             void setAttenuation(float);
             float getExponentialAttenuation() const;
-            const AABBox<float>& getAABBoxScope() const;
+            const OBBox<float>& getOBBoxScope() const;
             const Cone<float>& getConeScope() const;
 
             std::unique_ptr<Light> clone() const override;
@@ -44,11 +44,12 @@ namespace urchin {
             float innerCosAngle;
             float outerAngleInDegrees;
             float outerCosAngle;
+            std::unique_ptr<AABBox<float>> aabboxScope;
 
             //attenuation properties
             float exponentialAttenuation;
             std::unique_ptr<Cone<float>> coneScope;
-            std::unique_ptr<AABBox<float>> bboxScope;
+            std::unique_ptr<OBBox<float>> obboxScope;
     };
 
 }

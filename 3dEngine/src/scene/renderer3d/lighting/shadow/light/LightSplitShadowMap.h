@@ -16,7 +16,7 @@ namespace urchin {
 
             void update(const SplitFrustum&);
 
-            const AABBox<float> &getShadowCasterReceiverBox() const;
+            const OBBox<float> &getShadowCasterReceiverBox() const;
             const Matrix4<float>& getLightProjectionMatrix() const;
             std::span<Model* const> getModels() const;
 
@@ -32,7 +32,7 @@ namespace urchin {
             const LightShadowMap* lightShadowMap;
 
             Matrix4<float> lightProjectionMatrix;
-            AABBox<float> shadowCasterReceiverBox;
+            OBBox<float> shadowCasterReceiverBox;
             Point4<float> previousCenter;
 
             std::vector<Model*> models;

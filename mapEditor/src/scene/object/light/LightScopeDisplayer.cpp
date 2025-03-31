@@ -35,7 +35,7 @@ namespace urchin {
                 coneModel->setPolygonMode(PolygonMode::WIREFRAME);
                 lightScopeModels.push_back(std::move(coneModel));
 
-                auto boundingBoxModel = std::make_unique<AABBoxModel>(spotLight->getAABBox());
+                auto boundingBoxModel = std::make_unique<OBBoxModel>(spotLight->getOBBoxScope());
                 boundingBoxModel->setColor(Vector3(1.0f, 0.5f, 0.0f));
                 boundingBoxModel->setPolygonMode(PolygonMode::WIREFRAME);
                 lightScopeModels.push_back(std::move(boundingBoxModel));

@@ -18,13 +18,13 @@ namespace urchin {
         } //TODO apply for spot ?
 
         models.clear();
-        OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox(shadowCasterReceiverBox);
+        OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * shadowCasterReceiverBox;
         lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, [](const Model *const model) {
             return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
-        }); //TODO why laser.urchinMesh is retrieved ?
+        });
     }
 
-    const AABBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
+    const OBBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
         return shadowCasterReceiverBox;
     }
 
@@ -63,7 +63,7 @@ namespace urchin {
                 shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver point
                 shadowReceiverAndCasterVertex[i * 2 + 1] = Point3(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
             }
-            this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex);
+            this->shadowCasterReceiverBox = OBBox(AABBox<float>(shadowReceiverAndCasterVertex));
         } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) {
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
 
@@ -80,7 +80,7 @@ namespace urchin {
                     0.0f, 0.0f, farPlane / (nearPlane - farPlane), -(farPlane * nearPlane) / (farPlane - nearPlane),
                     0.0f, 0.0f, 1.0f, 0.0f);
 
-            this->shadowCasterReceiverBox = spotLight.getAABBoxScope();
+            this->shadowCasterReceiverBox = spotLight.getOBBoxScope(); //TODO should apply lightViewMatrix (or inverse) to be in light space ? And avoid to display laser.urchinMesh
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
