@@ -21,7 +21,7 @@ namespace urchin {
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * shadowCasterReceiverBox;
         lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, [](const Model *const model) {
             return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
-        });
+        }); //TODO why it return workPlan and supportWhiteScalable ?
     }
 
     const OBBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
@@ -80,7 +80,7 @@ namespace urchin {
                     0.0f, 0.0f, farPlane / (nearPlane - farPlane), -(farPlane * nearPlane) / (farPlane - nearPlane),
                     0.0f, 0.0f, 1.0f, 0.0f);
 
-            this->shadowCasterReceiverBox = spotLight.getOBBoxScope(); //TODO should apply lightViewMatrix (or inverse) to be in light space ? And avoid to display laser.urchinMesh
+            this->shadowCasterReceiverBox = lightViewMatrix * spotLight.getOBBoxScope();
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
