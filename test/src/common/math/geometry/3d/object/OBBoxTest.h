@@ -14,4 +14,6 @@ class OBBoxTest final : public CppUnit::TestFixture {
         void nearToFarLineIntersection();
         void bottomRightToTopLeftLineIntersection();
         void oBBoxObliqueIntersection();
+
+        void matrixMultiplication();
 };

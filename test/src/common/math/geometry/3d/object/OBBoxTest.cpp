@@ -82,6 +82,22 @@ void OBBoxTest::oBBoxObliqueIntersection() {
     AssertHelper::assertPoint3FloatEquals(intersectionPoint, Point3(0.0f, 1.414213f, 0.0f));
 }
 
+void OBBoxTest::matrixMultiplication() {
+    OBBox oBBox(Vector3(2.0f, 3.0f, 1.0f), Point3(5.0f, 0.0f, 0.0f), Quaternion<float>::rotationX(MathValue::PI_FLOAT / 2.0f));
+
+    OBBox oBBoxTranslated = Matrix4<float>::buildTranslation(0.0f, 10.0f, 0.0f) * oBBox;
+    OBBox oBBoxRotated = Matrix4<float>::buildRotationZ(MathValue::PI_FLOAT / 2.0f) * oBBox;
+
+    AssertHelper::assertPoint3FloatEquals(oBBoxRotated.getPoint(0), Point3(1.0f, 7.0f, 3.0f));
+    AssertHelper::assertPoint3FloatEquals(oBBoxRotated.getPoint(1), Point3(-1.0f, 7.0f, 3.0f));
+    AssertHelper::assertPoint3FloatEquals(oBBoxRotated.getPoint(2), Point3(1.0f, 7.0f, -3.0f));
+    AssertHelper::assertPoint3FloatEquals(oBBoxRotated.getPoint(3), Point3(-1.0f, 7.0f, -3.0f));
+    AssertHelper::assertPoint3FloatEquals(oBBoxRotated.getPoint(4), Point3(1.0f, 3.0f, 3.0f));
+    AssertHelper::assertPoint3FloatEquals(oBBoxRotated.getPoint(5), Point3(-1.0f, 3.0f, 3.0f));
+    AssertHelper::assertPoint3FloatEquals(oBBoxRotated.getPoint(6), Point3(1.0f, 3.0f, -3.0f));
+    AssertHelper::assertPoint3FloatEquals(oBBoxRotated.getPoint(7), Point3(-1.0f, 3.0f, -3.0f));
+}
+
 CppUnit::Test* OBBoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("OBBoxTest");
 
@@ -92,6 +108,8 @@ CppUnit::Test* OBBoxTest::suite() {
     suite->addTest(new CppUnit::TestCaller("nearToFarLineIntersection", &OBBoxTest::nearToFarLineIntersection));
     suite->addTest(new CppUnit::TestCaller("bottomRightToTopLeftLineIntersection", &OBBoxTest::bottomRightToTopLeftLineIntersection));
     suite->addTest(new CppUnit::TestCaller("oBBoxObliqueIntersection", &OBBoxTest::oBBoxObliqueIntersection));
+
+    suite->addTest(new CppUnit::TestCaller("matrixMultiplication", &OBBoxTest::matrixMultiplication));
 
     return suite;
 }
