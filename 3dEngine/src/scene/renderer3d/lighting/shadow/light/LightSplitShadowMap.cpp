@@ -21,7 +21,7 @@ namespace urchin {
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * shadowCasterReceiverBox;
         lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, [](const Model *const model) {
             return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
-        }); //TODO why it return workPlan and supportWhiteScalable ?
+        });
     }
 
     const OBBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
@@ -81,6 +81,9 @@ namespace urchin {
                     0.0f, 0.0f, 1.0f, 0.0f);
 
             this->shadowCasterReceiverBox = lightViewMatrix * spotLight.getOBBoxScope();
+
+std::cout<<"Original: "<<spotLight.getOBBoxScope()<<std::endl<<std::endl;
+
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
