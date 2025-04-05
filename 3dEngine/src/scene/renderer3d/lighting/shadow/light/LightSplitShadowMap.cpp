@@ -81,9 +81,6 @@ namespace urchin {
                     0.0f, 0.0f, 1.0f, 0.0f);
 
             this->shadowCasterReceiverBox = lightViewMatrix * spotLight.getOBBoxScope();
-
-std::cout<<"Original: "<<spotLight.getOBBoxScope()<<std::endl<<std::endl;
-
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
