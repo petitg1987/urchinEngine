@@ -179,7 +179,7 @@ namespace urchin {
      * //TODO add comment like on AABBox
      */
     template<class T> Matrix4<T> OBBox<T>::toProjectionMatrix() const {
-        Matrix4<T> rotationMatrix = Matrix4<T>(orientation.toMatrix3().transpose()); //TODO combine to avoid matrix multiplication + check order !
+        Matrix4<T> rotationMatrix = Matrix4<T>(orientation.toMatrix3()); //TODO combine to avoid matrix multiplication + check order !
 
         T left = getCenterOfMass().X - halfSizes[0];
         T right = getCenterOfMass().X + halfSizes[0];
