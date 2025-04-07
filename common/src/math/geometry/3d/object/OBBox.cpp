@@ -179,17 +179,14 @@ namespace urchin {
      * //TODO add comment like on AABBox
      */
     template<class T> Matrix4<T> OBBox<T>::toProjectionMatrix() const {
-        // Create view matrix (world to OBB space)
-        Matrix4<T> translate = Matrix4<T>::buildTranslation(-getCenterOfMass().X, -getCenterOfMass().Y, -getCenterOfMass().Z); //TODO create method accepting vector/point ?
-        //Matrix4<T> view = translate * Matrix4<T>(orientation.toMatrix3().transpose()); //TODO combine to avoid matrix multiplication + check order !
+        Matrix4<T> rotationMatrix = Matrix4<T>(orientation.toMatrix3().transpose()); //TODO combine to avoid matrix multiplication + check order !
 
-        //TODO create method in Matrix4 ?
-        T left = -getHalfSize(0);
-        T right = getHalfSize(0);
-        T bottom = -getHalfSize(1);
-        T top = getHalfSize(1);
-        T near = -getHalfSize(2);
-        T far = getHalfSize(2);
+        T left = getCenterOfMass().X - halfSizes[0];
+        T right = getCenterOfMass().X + halfSizes[0];
+        T bottom = getCenterOfMass().Y - halfSizes[1];
+        T top = getCenterOfMass().Y + halfSizes[1];
+        T near = getCenterOfMass().Z - halfSizes[2];
+        T far = getCenterOfMass().X + halfSizes[2];
 
         T translationX = -((right + left) / (right - left)); //translation
         T translationY = (top + bottom) / (top - bottom);
@@ -205,7 +202,7 @@ namespace urchin {
                 0.0, 0.0, scaleZ, translationZ,
                 0.0, 0.0, 0.0, 1.0);
 
-        return orthographicProjection * translate;
+        return orthographicProjection * rotationMatrix;
     }
 
     template<class T> AABBox<T> OBBox<T>::toAABBox() const {
