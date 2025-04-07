@@ -6,17 +6,17 @@ using namespace urchin;
 
 
 void AABBoxTest::toProjectionMatrix() {
-    AABBox box(Point3(0.0f, 0.0f, 0.0f), Point3(5.0f, 5.0f, 5.0f));
+    AABBox box(Point3(-3.0f, -3.0f, -3.0f), Point3(5.0f, 5.0f, 5.0f));
 
     Matrix4<float> projectionMatrix = box.toProjectionMatrix();
 
-    Point4<float> transformedPointMin = projectionMatrix * Point4(0.0f, 0.0f, 0.0f, 1.0f);
+    Point4<float> transformedPointMin = projectionMatrix * Point4(box.getMin(), 1.0f);
     AssertHelper::assertPoint3FloatEquals(transformedPointMin.toPoint3(), Point3(-1.0f, 1.0f, 1.0f));
 
-    Point4<float> transformedPointMax = projectionMatrix * Point4(5.0f, 5.0f, 5.0f, 1.0f);
+    Point4<float> transformedPointMax = projectionMatrix * Point4(box.getMax(), 1.0f);
     AssertHelper::assertPoint3FloatEquals(transformedPointMax.toPoint3(), Point3(1.0f, -1.0f, 0.0f));
 
-    Point4<float> transformedPointCenter = projectionMatrix * Point4(2.5f, 2.5f, 2.5f, 1.0f);
+    Point4<float> transformedPointCenter = projectionMatrix * Point4(box.getCenterOfMass(), 1.0f);
     AssertHelper::assertPoint3FloatEquals(transformedPointCenter.toPoint3(), Point3(0.0f, 0.0f, 0.5f));
 }
 
