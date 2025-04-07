@@ -35,6 +35,7 @@ namespace urchin {
             Vector3<T> getVectorPoint(unsigned int) const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const override;
+            Matrix4<T> toProjectionMatrix() const;
             AABBox<T> toAABBox() const;
 
             bool collideWithOBBox(const OBBox<T>&) const override;

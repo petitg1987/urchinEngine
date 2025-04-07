@@ -7,6 +7,8 @@ class OBBoxTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
+        void toProjectionMatrix();
+
         void noIntersection();
         void leftToRightLineIntersection();
         void rightToLeftLineIntersection();

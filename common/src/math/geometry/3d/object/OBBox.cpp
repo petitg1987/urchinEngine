@@ -174,6 +174,47 @@ namespace urchin {
         return centerOfMass.translate(bestPointVector);
     }
 
+    /**
+     * @return Orthogonal projection matrix based on OBBox
+     * //TODO add comment like on AABBox
+     */
+    template<class T> Matrix4<T> OBBox<T>::toProjectionMatrix() const {
+        // Create view matrix (world to OBB space)
+        Matrix4<T> translate = Matrix4<T>::buildTranslation(-getCenterOfMass().X, -getCenterOfMass().Y, -getCenterOfMass().Z); //TODO create method accepting vector/point ?
+        Matrix4<T> view = translate * Matrix4<T>(orientation.toMatrix3().transpose()); //TODO combine to avoid matrix multiplication + check order !
+
+        //TODO create method in Matrix4 ?
+        T left = -getHalfSize(0);
+        T right = getHalfSize(0);
+        T bottom = -getHalfSize(1);
+        T top = getHalfSize(1);
+        T near = -getHalfSize(2);
+        T far = getHalfSize(2);
+
+        T translationX = -((right + left) / (right - left)); //translation
+        T translationY = (top + bottom) / (top - bottom);
+        T translationZ = (T)0.5 - (T)0.5 * ((-near - far) / (-near + far));
+
+        T scaleX = (T)2.0 / (right - left);
+        T scaleY = (T)-2.0 / (top - bottom);
+        T scaleZ = (T)-1.0 / (-near + far);
+
+        Matrix4<T> orthographicProjection(
+                scaleX, 0.0, 0.0, translationX,
+                0.0, scaleY, 0.0, translationY,
+                0.0, 0.0, scaleZ, translationZ,
+                0.0, 0.0, 0.0, 1.0);
+
+        // Create orthographic projection matrix for the OBB
+        // glm::mat4 projection = glm::ortho(
+        //     -obb.extents.x, obb.extents.x,
+        //     -obb.extents.y, obb.extents.y,
+        //     -obb.extents.z, obb.extents.z
+        // );
+
+        return orthographicProjection * view;
+    }
+
     template<class T> AABBox<T> OBBox<T>::toAABBox() const {
         Point3<T> min(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max());
         Point3<T> max(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max());
