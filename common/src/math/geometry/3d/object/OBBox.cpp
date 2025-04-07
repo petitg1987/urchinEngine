@@ -181,7 +181,7 @@ namespace urchin {
     template<class T> Matrix4<T> OBBox<T>::toProjectionMatrix() const {
         // Create view matrix (world to OBB space)
         Matrix4<T> translate = Matrix4<T>::buildTranslation(-getCenterOfMass().X, -getCenterOfMass().Y, -getCenterOfMass().Z); //TODO create method accepting vector/point ?
-        Matrix4<T> view = translate * Matrix4<T>(orientation.toMatrix3().transpose()); //TODO combine to avoid matrix multiplication + check order !
+        //Matrix4<T> view = translate * Matrix4<T>(orientation.toMatrix3().transpose()); //TODO combine to avoid matrix multiplication + check order !
 
         //TODO create method in Matrix4 ?
         T left = -getHalfSize(0);
@@ -205,14 +205,7 @@ namespace urchin {
                 0.0, 0.0, scaleZ, translationZ,
                 0.0, 0.0, 0.0, 1.0);
 
-        // Create orthographic projection matrix for the OBB
-        // glm::mat4 projection = glm::ortho(
-        //     -obb.extents.x, obb.extents.x,
-        //     -obb.extents.y, obb.extents.y,
-        //     -obb.extents.z, obb.extents.z
-        // );
-
-        return orthographicProjection * view;
+        return orthographicProjection * translate;
     }
 
     template<class T> AABBox<T> OBBox<T>::toAABBox() const {
