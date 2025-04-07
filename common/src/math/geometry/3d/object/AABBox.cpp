@@ -149,17 +149,22 @@ namespace urchin {
     }
 
     /**
-     * @return Orthogonal projection matrix based on AABBox
+     * @return Orthogonal projection matrix based on AABBox.
+     * Projection convert the AABBox min point to (-1.0f, 1.0f, 1.0f) and the max point to (1.0f, -1.0f, 0.0f).
      */
     template<class T> Matrix4<T> AABBox<T>::toProjectionMatrix() const {
-        T tx = -((max.X + min.X) / (max.X - min.X));
-        T ty = (max.Y + min.Y) / (max.Y - min.Y);
-        T tz = (T)0.5 - (T)0.5 * ((-min.Z - max.Z) / (-min.Z + max.Z));
+        T translationX = -(max.X + min.X) / (max.X - min.X);
+        T translationY = (max.Y + min.Y) / (max.Y - min.Y);
+        T translationZ = (T)0.5 - (T)0.5 * ((-min.Z - max.Z) / (-min.Z + max.Z));
+
+        T scaleX = (T)2.0 / (max.X - min.X);
+        T scaleY = (T)-2.0 / (max.Y - min.Y);
+        T scaleZ = (T)-1.0 / (-min.Z + max.Z);
 
         return Matrix4<T>(
-                (T)2.0 / (max.X - min.X), 0.0, 0.0, tx,
-                0.0, (T)-2.0 / (max.Y - min.Y), 0.0, ty,
-                0.0, 0.0, (T)-1.0 / (-min.Z + max.Z), tz,
+                scaleX, 0.0, 0.0, translationX,
+                0.0, scaleY, 0.0, translationY,
+                0.0, 0.0, scaleZ, translationZ,
                 0.0, 0.0, 0.0, 1.0);
     }
 

@@ -7,15 +7,14 @@ class AABBoxTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
+        void toProjectionMatrix();
+
         void rayRightToBox();
         void rayRightTopToBox();
-
         void rayInsideBox();
-
         void rayThroughXPlanes();
         void rayThroughYPlanes();
         void rayThroughZPlanes();
         void rayThroughXYPlanes();
-
         void rayInsideToXPlane();
 };
