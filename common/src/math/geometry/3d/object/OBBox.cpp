@@ -179,7 +179,7 @@ namespace urchin {
      * //TODO add comment like on AABBox
      */
     template<class T> Matrix4<T> OBBox<T>::toProjectionMatrix() const {
-        Matrix4<T> rotationMatrix = Matrix4<T>(orientation.toMatrix3()); //TODO combine to avoid matrix multiplication + check order !
+        //Matrix4<T> rotationMatrix = Matrix4<T>(orientation.toMatrix3().transpose()); //TODO not needed ?
 
         T left = getCenterOfMass().X - halfSizes[0];
         T right = getCenterOfMass().X + halfSizes[0];
@@ -196,13 +196,11 @@ namespace urchin {
         T scaleY = (T)-2.0 / (top - bottom);
         T scaleZ = (T)-1.0 / (-near + far);
 
-        Matrix4<T> orthographicProjection(
+        return Matrix4<T>(
                 scaleX, 0.0, 0.0, translationX,
                 0.0, scaleY, 0.0, translationY,
                 0.0, 0.0, scaleZ, translationZ,
                 0.0, 0.0, 0.0, 1.0);
-
-        return orthographicProjection * rotationMatrix;
     }
 
     template<class T> AABBox<T> OBBox<T>::toAABBox() const {

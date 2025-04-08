@@ -69,18 +69,19 @@ namespace urchin {
 
             //Sascha version:
             //TODO fix problem ?
-            float nearPlane = 0.01f;
-            float farPlane = 20.0f;
-            float halfFov = AngleConverter<float>::toRadian(spotLight.getOuterAngle());
-            float tanHalfFov = std::tan(halfFov);
-            float ratio = 1.0f;
-            this->lightProjectionMatrix.setValues(
-                    1.0f / (ratio * tanHalfFov), 0.0f, 0.0f, 0.0f,
-                    0.0f, 1.0f / (tanHalfFov), 0.0f, 0.0f,
-                    0.0f, 0.0f, farPlane / (nearPlane - farPlane), -(farPlane * nearPlane) / (farPlane - nearPlane),
-                    0.0f, 0.0f, 1.0f, 0.0f);
+            // float nearPlane = 0.01f;
+            // float farPlane = 20.0f;
+            // float halfFov = AngleConverter<float>::toRadian(spotLight.getOuterAngle());
+            // float tanHalfFov = std::tan(halfFov);
+            // float ratio = 1.0f;
+            // this->lightProjectionMatrix.setValues(
+            //         1.0f / (ratio * tanHalfFov), 0.0f, 0.0f, 0.0f,
+            //         0.0f, 1.0f / (tanHalfFov), 0.0f, 0.0f,
+            //         0.0f, 0.0f, farPlane / (nearPlane - farPlane), -(farPlane * nearPlane) / (farPlane - nearPlane),
+            //         0.0f, 0.0f, 1.0f, 0.0f);
 
             this->shadowCasterReceiverBox = lightViewMatrix * spotLight.getOBBoxScope();
+            this->lightProjectionMatrix = shadowCasterReceiverBox.toProjectionMatrix(); //TODO is it correct ? AABBOX ????
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
