@@ -176,31 +176,21 @@ namespace urchin {
 
     /**
      * @return Orthogonal projection matrix based on OBBox
-     * //TODO add comment like on AABBox
+     * //TODO add comment like on AABBox + indicate that orientation is not used
      */
     template<class T> Matrix4<T> OBBox<T>::toProjectionMatrix() const {
-        //Matrix4<T> rotationMatrix = Matrix4<T>(orientation.toMatrix3().transpose()); //TODO not needed ?
-
-        T left = getCenterOfMass().X - halfSizes[0];
-        T right = getCenterOfMass().X + halfSizes[0];
-        T bottom = getCenterOfMass().Y - halfSizes[1];
-        T top = getCenterOfMass().Y + halfSizes[1];
-        T near = getCenterOfMass().Z - halfSizes[2];
-        T far = getCenterOfMass().X + halfSizes[2];
-
-        T translationX = -((right + left) / (right - left)); //translation
-        T translationY = (top + bottom) / (top - bottom);
-        T translationZ = (T)0.5 - (T)0.5 * ((-near - far) / (-near + far));
+        T left = -halfSizes[0];
+        T right = halfSizes[0];
+        T bottom = -halfSizes[1];
+        T top = halfSizes[1];
+        T near = -halfSizes[2];
+        T far = halfSizes[2];
 
         T scaleX = (T)2.0 / (right - left);
         T scaleY = (T)-2.0 / (top - bottom);
         T scaleZ = (T)-1.0 / (-near + far);
 
-        return Matrix4<T>(
-                scaleX, 0.0, 0.0, translationX,
-                0.0, scaleY, 0.0, translationY,
-                0.0, 0.0, scaleZ, translationZ,
-                0.0, 0.0, 0.0, 1.0);
+        return Matrix4<T>::buildScale(scaleX, scaleY, scaleZ);
     }
 
     template<class T> AABBox<T> OBBox<T>::toAABBox() const {

@@ -127,11 +127,11 @@ namespace urchin {
 
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));
         float coneRadius = coneHeight * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
-        Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, -1.0f, 0.0f), directions[0]).normalize();
-        coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation);
+        Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, 0.0f, -1.0f), directions[0]).normalize();
+        coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE, coneCenterOfMass, orientation);
 
         Point3<float> coneCenter = getPosition().translate(directions[0] * (coneHeight * 0.5f));
-        Vector3 halfSizes(coneRadius, coneHeight / 2.0f, coneRadius); //TODO wrtong bqsed on OBBox/ depth = light height, etc...
+        Vector3 halfSizes(coneRadius, coneRadius, coneHeight / 2.0f);
         obboxScope = std::make_unique<OBBox<float>>(halfSizes, coneCenter, orientation);
 
         float minX = coneScope->getSupportPoint(Vector3(-1.0f, 0.0f, 0.0f)).X;

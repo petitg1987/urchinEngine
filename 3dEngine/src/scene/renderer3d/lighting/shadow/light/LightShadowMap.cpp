@@ -46,22 +46,34 @@ namespace urchin {
         if (light.getLightType() == Light::LightType::SUN || light.getLightType() == Light::LightType::SPOT) {
             Vector3<float> lightDirection = light.getDirections()[0];
 
-            Vector3<float> f = lightDirection.normalize();
-
-            //TODO worldUp generate by ChatGPT: is it correct ?
+            Vector3<float> forward = lightDirection.normalize();
             Vector3 worldUp(0.0f, 1.0f, 0.0f);
-            if (std::abs(f.dotProduct(worldUp)) > 0.999f) {
+            if (std::abs(forward.dotProduct(worldUp)) > 0.999f) {
+                std::cout<<"Not good for test"<<std::endl; //TODO test if it work in this situation !
                 worldUp = Vector3(1.0f, 0.0f, 0.0f);
             }
-            Vector3<float> s = f.crossProduct(worldUp).normalize();
+            Vector3<float> side = forward.crossProduct(worldUp).normalize();
+            Vector3<float> up = side.crossProduct(forward).normalize();
 
-            Vector3<float> u = s.crossProduct(f).normalize();
+            float translationOnSide = 0.0f;
+            float translationOnUp = 0.0f;
+            float translationOnForward = 0.0f;
+            if (light.getLightType() == Light::LightType::SUN) {
+                translationOnSide = lightDirection.X;
+                translationOnUp = lightDirection.Y;
+                translationOnForward = lightDirection.Z;
+            } else if (light.getLightType() == Light::LightType::SPOT) {
+                Vector3<float> pos = light.getPosition().toVector();
+                translationOnSide = -side.dotProduct(pos);
+                translationOnUp = -up.dotProduct(pos);
+                translationOnForward = forward.dotProduct(pos);
+            }
 
             this->lightViewMatrix.setValues(
-                    s[0],    s[1],    s[2],    lightDirection.X,
-                    u[0],    u[1],    u[2],    lightDirection.Y,
-                    -f[0],   -f[1],   -f[2],   lightDirection.Z,
-                    0.0f,    0.0f,    0.0f,    1.0f);
+                    side[0],        side[1],        side[2],        translationOnSide,
+                    up[0],          up[1],          up[2],          translationOnUp,
+                    -forward[0],    -forward[1],    -forward[2],    translationOnForward,
+                    0.0f,           0.0f,           0.0f,           1.0f);
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)light.getLightType()));
         }

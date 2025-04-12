@@ -152,7 +152,7 @@ namespace urchin {
      * @return Orthogonal projection matrix based on AABBox.
      * Projection convert the AABBox min point to (-1.0f, 1.0f, 1.0f) and the max point to (1.0f, -1.0f, 0.0f).
      */
-    template<class T> Matrix4<T> AABBox<T>::toProjectionMatrix() const {
+    template<class T> Matrix4<T> AABBox<T>::toProjectionMatrix() const { //TODO why translation on projection matrix ?!
         T translationX = -(max.X + min.X) / (max.X - min.X);
         T translationY = (max.Y + min.Y) / (max.Y - min.Y);
         T translationZ = (T)0.5 - (T)0.5 * ((-min.Z - max.Z) / (-min.Z + max.Z));
