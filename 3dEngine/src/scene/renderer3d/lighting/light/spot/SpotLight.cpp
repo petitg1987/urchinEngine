@@ -31,6 +31,9 @@ namespace urchin {
     }
 
     void SpotLight::setDirection(const Vector3<float>& direction) {
+        if (direction.squareLength() < std::numeric_limits<float>::epsilon()) {
+            throw std::invalid_argument("Invalid zero length direction for spot light");
+        }
         this->directions.clear();
         this->directions.emplace_back(direction.normalize());
 
@@ -128,7 +131,7 @@ namespace urchin {
         coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation);
 
         Point3<float> coneCenter = getPosition().translate(directions[0] * (coneHeight * 0.5f));
-        Vector3 halfSizes(coneRadius, coneHeight / 2.0f, coneRadius);
+        Vector3 halfSizes(coneRadius, coneHeight / 2.0f, coneRadius); //TODO wrtong bqsed on OBBox/ depth = light height, etc...
         obboxScope = std::make_unique<OBBox<float>>(halfSizes, coneCenter, orientation);
 
         float minX = coneScope->getSupportPoint(Vector3(-1.0f, 0.0f, 0.0f)).X;

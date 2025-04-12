@@ -1,6 +1,7 @@
 #include <panel/object/light/LightWidget.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
+#include <widget/style/LabelStyleHelper.h>
 #include <panel/object/dialog/ChangeLightTypeDialog.h>
 
 namespace urchin {
@@ -17,6 +18,7 @@ namespace urchin {
             colorB(nullptr),
             enablePbrCheckBox(nullptr),
             produceShadowCheckBox(nullptr),
+            sunDirectionLabel(nullptr),
             sunDirectionX(nullptr),
             sunDirectionY(nullptr),
             sunDirectionZ(nullptr),
@@ -24,6 +26,7 @@ namespace urchin {
             omniPositionY(nullptr),
             omniPositionZ(nullptr),
             omniAttenuation(nullptr),
+            spotDirectionLabel(nullptr),
             spotDirectionX(nullptr),
             spotDirectionY(nullptr),
             spotDirectionZ(nullptr),
@@ -104,8 +107,8 @@ namespace urchin {
 
         auto* sunLightLayout = new QGridLayout(specificSunLightGroupBox);
 
-        auto* directionLabel= new QLabel("Direction:");
-        sunLightLayout->addWidget(directionLabel, 0, 0);
+        sunDirectionLabel = new QLabel("Direction:");
+        sunLightLayout->addWidget(sunDirectionLabel, 0, 0);
 
         auto* directionLayout = new QHBoxLayout();
         sunLightLayout->addLayout(directionLayout, 0, 1);
@@ -132,7 +135,7 @@ namespace urchin {
 
         auto* omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
 
-        auto* positionLabel= new QLabel("Position rel.:");
+        auto* positionLabel = new QLabel("Position rel.:");
         omniLightLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -150,7 +153,7 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(omniPositionZ);
         connect(omniPositionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-        auto* attenuationLabel= new QLabel("Expo. Att.:");
+        auto* attenuationLabel = new QLabel("Expo. Att.:");
         omniLightLayout->addWidget(attenuationLabel, 1, 0);
 
         omniAttenuation = new QDoubleSpinBox();
@@ -170,7 +173,7 @@ namespace urchin {
 
         auto* spotLightLayout = new QGridLayout(specificSpotLightGroupBox);
 
-        auto* positionLabel= new QLabel("Position rel.:");
+        auto* positionLabel = new QLabel("Position rel.:");
         spotLightLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -188,8 +191,8 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(spotPositionZ);
         connect(spotPositionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-        auto* directionLabel= new QLabel("Direction:");
-        spotLightLayout->addWidget(directionLabel, 1, 0);
+        spotDirectionLabel = new QLabel("Direction:");
+        spotLightLayout->addWidget(spotDirectionLabel, 1, 0);
 
         auto* directionLayout = new QHBoxLayout();
         spotLightLayout->addLayout(directionLayout, 1, 1);
@@ -206,7 +209,7 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(spotDirectionZ);
         connect(spotDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-        auto* innerAngleLabel= new QLabel("Inner angle (°):");
+        auto* innerAngleLabel = new QLabel("Inner angle (°):");
         spotLightLayout->addWidget(innerAngleLabel, 2, 0);
 
         spotInnerAngle = new QDoubleSpinBox();
@@ -228,7 +231,7 @@ namespace urchin {
         spotOuterAngle->setSingleStep(1.0);
         connect(spotOuterAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-        auto* attenuationLabel= new QLabel("Expo. Att.:");
+        auto* attenuationLabel = new QLabel("Expo. Att.:");
         spotLightLayout->addWidget(attenuationLabel, 4, 0);
 
         spotAttenuation = new QDoubleSpinBox();
@@ -330,7 +333,11 @@ namespace urchin {
 
             if (light->getLightType() == Light::LightType::SUN) {
                 Vector3 direction((float)sunDirectionX->value(), (float)sunDirectionY->value(), (float)sunDirectionZ->value());
-                objectController->updateSunLightProperties(*objectEntity, direction);
+                try {
+                    objectController->updateSunLightProperties(*objectEntity, direction);
+                } catch (const std::invalid_argument& e) {
+                    LabelStyleHelper::applyErrorStyle(spotDirectionLabel, std::string(e.what()));
+                }
             } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                 Point3 relativeLightPosition((float)omniPositionX->value(), (float)omniPositionY->value(), (float)omniPositionZ->value());
                 Point3 absoluteLightPosition = objectEntity->getModel()->getTransform().getPosition() + relativeLightPosition;
@@ -339,7 +346,11 @@ namespace urchin {
                 Point3 relativeLightPosition((float)spotPositionX->value(), (float)spotPositionY->value(), (float)spotPositionZ->value());
                 Point3 absoluteLightPosition = objectEntity->getModel()->getTransform().getPosition() + relativeLightPosition;
                 Vector3 direction((float)spotDirectionX->value(), (float)spotDirectionY->value(), (float)spotDirectionZ->value());
-                objectController->updateSpotLightProperties(*objectEntity, (float)spotAttenuation->value(), absoluteLightPosition, direction, (float)spotInnerAngle->value(), (float)spotOuterAngle->value());
+                try {
+                    objectController->updateSpotLightProperties(*objectEntity, (float)spotAttenuation->value(), absoluteLightPosition, direction, (float)spotInnerAngle->value(), (float)spotOuterAngle->value());
+                } catch (const std::invalid_argument& e) {
+                    LabelStyleHelper::applyErrorStyle(spotDirectionLabel, std::string(e.what()));
+                }
             } else {
                 throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string((int)light->getLightType()));
             }

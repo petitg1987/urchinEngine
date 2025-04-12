@@ -47,6 +47,7 @@ namespace urchin {
             QCheckBox* produceShadowCheckBox;
 
             //specific properties
+            QLabel* sunDirectionLabel;
             QDoubleSpinBox* sunDirectionX;
             QDoubleSpinBox* sunDirectionY;
             QDoubleSpinBox* sunDirectionZ;
@@ -54,6 +55,7 @@ namespace urchin {
             QDoubleSpinBox* omniPositionY;
             QDoubleSpinBox* omniPositionZ;
             QDoubleSpinBox* omniAttenuation;
+            QLabel* spotDirectionLabel;
             QDoubleSpinBox* spotDirectionX;
             QDoubleSpinBox* spotDirectionY;
             QDoubleSpinBox* spotDirectionZ;

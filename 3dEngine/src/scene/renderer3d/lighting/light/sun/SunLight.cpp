@@ -9,6 +9,9 @@ namespace urchin {
     }
 
     void SunLight::setDirection(const Vector3<float>& direction) {
+        if (direction.squareLength() < std::numeric_limits<float>::epsilon()) {
+            throw std::invalid_argument("Invalid zero length direction for sun light");
+        }
         this->directions.clear();
         this->directions.emplace_back(direction);
 
