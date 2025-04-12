@@ -178,7 +178,7 @@ namespace urchin {
      * @return Orthogonal projection matrix based on OBBox
      * //TODO add comment like on AABBox + indicate that orientation is not used
      */
-    template<class T> Matrix4<T> OBBox<T>::toProjectionMatrix() const {
+    template<class T> Matrix4<T> OBBox<T>::toProjectionMatrix() const { //TODO add unit test
         T left = -halfSizes[0];
         T right = halfSizes[0];
         T bottom = -halfSizes[1];

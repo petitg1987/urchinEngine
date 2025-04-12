@@ -67,7 +67,6 @@ namespace urchin {
         } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) {
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
 
-            //Sascha version:
             this->shadowCasterReceiverBox = lightViewMatrix * spotLight.getOBBoxScope();
             this->lightProjectionMatrix = spotLight.getOBBoxScope().toProjectionMatrix(); //TODO is it correct in all situation ?
         } else {
