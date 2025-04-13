@@ -243,11 +243,14 @@ namespace urchin {
                     deferredSecondPassRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getShadowMapTexture(), std::move(textureParam)));
                 }
 
-                unsigned int shadowMapIndex = 0;
-                for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+                for (unsigned int shadowMapIndex = 0; shadowMapIndex < config.nbShadowMaps; ++shadowMapIndex) {
                     std::size_t matrixIndex = shadowLightIndex * config.nbShadowMaps + shadowMapIndex;
-                    lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
-                    shadowMapIndex++;
+                    if (lightShadowMap->getLightSplitShadowMaps().size() > shadowMapIndex) {
+                        const std::unique_ptr<LightSplitShadowMap>& lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[shadowMapIndex];
+                        lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
+                    } else {
+                        lightProjectionViewMatrices[matrixIndex] = Matrix4<float>();
+                    }
                 }
 
                 shadowLightIndex++;
