@@ -71,6 +71,9 @@
   * Application **urchinMapEditor**:
     * Target/executable: `urchinMapEditor`
 
+## TODO menu
+* Scope: `(file[urchinEngine]:*.h||file[urchinEngine]:*.cpp||file[urchinEngine]:*.inl||file[urchinEngine]:*.frag||file[urchinEngine]:*.vert||file[urchinEngine]:*.comp||file[urchinEngine]:*.properties)&&!file[urchinEngine]:.build//*&&!file[urchinEngine]:.idea//*`
+
 # Development tips
 ## Error handling
 * Use exception (`throw std::runtime_error(...)`) for methods which could be wrongly used by the final user
