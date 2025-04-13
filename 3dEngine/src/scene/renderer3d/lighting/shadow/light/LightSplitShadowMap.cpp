@@ -44,14 +44,14 @@ namespace urchin {
 
         if (lightShadowMap->getLight().getLightType() == Light::LightType::SUN) {
             const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum.getFrustum();
-            Point3<float> frustumCenter = (lightViewMatrix * Point4(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
-            float frustumRadius = splitFrustum.getBoundingSphere().getRadius();
+            Point3<float> splitFrustumCenter = (lightViewMatrix * Point4(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
+            float splitFrustumRadius = splitFrustum.getBoundingSphere().getRadius();
             float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
 
             std::array<Point3<float>, 4> lightProjectionVertex;
-            lightProjectionVertex[0] = frustumCenter + Point3(frustumRadius, frustumRadius, frustumRadius);
+            lightProjectionVertex[0] = splitFrustumCenter + Point3(splitFrustumRadius, splitFrustumRadius, splitFrustumRadius);
             lightProjectionVertex[1] = Point3(lightProjectionVertex[0].X, lightProjectionVertex[0].Y, nearCapZ);
-            lightProjectionVertex[2] = frustumCenter - Point3(frustumRadius, frustumRadius, frustumRadius);
+            lightProjectionVertex[2] = splitFrustumCenter - Point3(splitFrustumRadius, splitFrustumRadius, splitFrustumRadius);
             lightProjectionVertex[3] = Point3(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
             this->lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
 
@@ -66,9 +66,21 @@ namespace urchin {
             this->shadowCasterReceiverBox = OBBox(AABBox<float>(shadowReceiverAndCasterVertex));
         } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) {
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
+            const OBBox<float>& lightOBBox = spotLight.getOBBoxScope();
 
-            this->shadowCasterReceiverBox = lightViewMatrix * spotLight.getOBBoxScope();
-            this->lightProjectionMatrix = spotLight.getOBBoxScope().toProjectionMatrix(); //TODO is it correct in all situation ?
+            float left = -lightOBBox.getHalfSize(0);
+            float right = lightOBBox.getHalfSize(0);
+            float bottom = -lightOBBox.getHalfSize(1);
+            float top = lightOBBox.getHalfSize(1);
+            float near = -lightOBBox.getHalfSize(2);
+            float far = lightOBBox.getHalfSize(2);
+
+            float scaleX = 2.0f / (right - left);
+            float scaleY = -2.0f / (top - bottom);
+            float scaleZ = -1.0f / (-near + far);
+
+            this->lightProjectionMatrix = Matrix4<float>::buildScale(scaleX, scaleY, scaleZ);
+            this->shadowCasterReceiverBox = lightViewMatrix * lightOBBox;
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }

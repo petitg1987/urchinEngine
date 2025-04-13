@@ -174,25 +174,6 @@ namespace urchin {
         return centerOfMass.translate(bestPointVector);
     }
 
-    /**
-     * @return Orthogonal projection matrix based on OBBox
-     * //TODO add comment like on AABBox + indicate that orientation is not used
-     */
-    template<class T> Matrix4<T> OBBox<T>::toProjectionMatrix() const { //TODO add unit test
-        T left = -halfSizes[0];
-        T right = halfSizes[0];
-        T bottom = -halfSizes[1];
-        T top = halfSizes[1];
-        T near = -halfSizes[2];
-        T far = halfSizes[2];
-
-        T scaleX = (T)2.0 / (right - left);
-        T scaleY = (T)-2.0 / (top - bottom);
-        T scaleZ = (T)-1.0 / (-near + far);
-
-        return Matrix4<T>::buildScale(scaleX, scaleY, scaleZ);
-    }
-
     template<class T> AABBox<T> OBBox<T>::toAABBox() const {
         Point3<T> min(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max());
         Point3<T> max(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max());

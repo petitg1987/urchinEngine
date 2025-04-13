@@ -5,36 +5,6 @@
 #include <AssertHelper.h>
 using namespace urchin;
 
-void OBBoxTest::toProjectionMatrix() { //TODO adapt
-    OBBox box(Vector3(4.0f, 4.0f, 4.0f), Point3(1.0f, 1.0f, 1.0f), Quaternion<float>::rotationX(0.0f));
-
-    Matrix4<float> projectionMatrix = box.toProjectionMatrix();
-
-    Point4<float> transformedPointMin = projectionMatrix * Point4(-3.0f, -3.0f, -3.0f, 1.0f);
-    AssertHelper::assertPoint3FloatEquals(transformedPointMin.toPoint3(), Point3(-1.0f, 1.0f, 1.0f));
-
-    Point4<float> transformedPointMax = projectionMatrix * Point4(5.0f, 5.0f, 5.0f, 1.0f);
-    AssertHelper::assertPoint3FloatEquals(transformedPointMax.toPoint3(), Point3(1.0f, -1.0f, 0.0f));
-
-    Point4<float> transformedPointCenter = projectionMatrix * Point4(box.getCenterOfMass(), 1.0f);
-    AssertHelper::assertPoint3FloatEquals(transformedPointCenter.toPoint3(), Point3(0.0f, 0.0f, 0.5f));
-}
-
-void OBBoxTest::toProjectionMatrix2() { //TODO adapt
-    OBBox box(Vector3(4.0f, 4.0f, 4.0f), Point3(1.0f, 1.0f, 1.0f), Quaternion<float>::rotationX(MathValue::PI_FLOAT / 2.0f));
-
-    Matrix4<float> projectionMatrix = box.toProjectionMatrix();
-
-    Point4<float> transformedPointMin = projectionMatrix * Point4(-3.0f, -3.0f, -3.0f, 1.0f);
-    AssertHelper::assertPoint3FloatEquals(transformedPointMin.toPoint3(), Point3(-1.0f, 1.0f, 1.0f));
-
-    Point4<float> transformedPointMax = projectionMatrix * Point4(5.0f, 5.0f, 5.0f, 1.0f);
-    AssertHelper::assertPoint3FloatEquals(transformedPointMax.toPoint3(), Point3(1.0f, -1.0f, 0.0f));
-
-    Point4<float> transformedPointCenter = projectionMatrix * Point4(box.getCenterOfMass(), 1.0f);
-    AssertHelper::assertPoint3FloatEquals(transformedPointCenter.toPoint3(), Point3(0.0f, 0.0f, 0.5f));
-}
-
 void OBBoxTest::noIntersection() {
     OBBox oBBox(AABBox(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3(-2.0f, 4.0f, 4.0f), Point3(2.0f, 1.0f, 1.0f));
@@ -130,9 +100,6 @@ void OBBoxTest::matrixMultiplication() {
 
 CppUnit::Test* OBBoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("OBBoxTest");
-
-    suite->addTest(new CppUnit::TestCaller("toProjectionMatrix", &OBBoxTest::toProjectionMatrix));
-    suite->addTest(new CppUnit::TestCaller("toProjectionMatrix2", &OBBoxTest::toProjectionMatrix2));
 
     suite->addTest(new CppUnit::TestCaller("noIntersection", &OBBoxTest::noIntersection));
     suite->addTest(new CppUnit::TestCaller("leftToRightLineIntersection", &OBBoxTest::leftToRightLineIntersection));
