@@ -245,7 +245,7 @@ namespace urchin {
 
                 unsigned int shadowMapIndex = 0;
                 for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                    std::size_t matrixIndex = shadowLightIndex * getMaxShadowLights() + shadowMapIndex;
+                    std::size_t matrixIndex = shadowLightIndex * config.nbShadowMaps + shadowMapIndex;
                     lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
                     shadowMapIndex++;
                 }

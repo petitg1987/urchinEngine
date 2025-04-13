@@ -85,13 +85,13 @@ float maxComponent(vec3 components) {
     return max(max(components.x, components.y), components.z);
 }
 
-float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
+float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) { //TODO review for spot
     float totalShadow = 0.0f;
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
         float frustumRadius = shadowMapData.splitData[i].w;
         if (frustumCenterDist < frustumRadius) {
-            vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * worldPosition; //TODO required to divide by W for spot light shadow ?
+            vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * NUMBER_SHADOW_MAPS + i] * worldPosition;
             shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
             shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
