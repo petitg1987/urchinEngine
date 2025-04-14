@@ -85,7 +85,7 @@ float maxComponent(vec3 components) {
     return max(max(components.x, components.y), components.z);
 }
 
-float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 worldPosition, float NdotL) {
+float computeShadowQuantity(int shadowLightIndex, int shadowMapIndex, vec4 worldPosition, float NdotL) {
     float totalShadow = 0.0f;
 
     vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * NUMBER_SHADOW_MAPS + shadowMapIndex] * worldPosition;
@@ -132,18 +132,24 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
         totalShadow = 1.0f;
     } */
 
-    return 1.0 - (totalShadow * shadowMapInfo.shadowStrengthFactor);
-}
+    return totalShadow;
+} //TODO fix problem: shadow of cube is visible but the cube is not in the light cone !
 
 float computeSunShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
         float frustumRadius = shadowMapData.splitData[i].w;
         if (frustumCenterDist < frustumRadius) {
-            return computeShadowAttenuation(shadowLightIndex, i, worldPosition, NdotL);
+            float shadowQuantity = computeShadowQuantity(shadowLightIndex, i, worldPosition, NdotL);
+            return 1.0 - (shadowQuantity * shadowMapInfo.shadowStrengthFactor); //TODO rename shadowStrengthFactor for sun only
         }
     }
     return 1.0;
+}
+
+float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 worldPosition, float NdotL) {
+    float shadowQuantity = computeShadowQuantity(shadowLightIndex, shadowMapIndex, worldPosition, NdotL);
+    return 1.0 - shadowQuantity;
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
