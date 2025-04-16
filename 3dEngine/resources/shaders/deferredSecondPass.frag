@@ -89,6 +89,7 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
     float totalShadow = 0.0f;
 
     vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * NUMBER_SHADOW_MAPS + shadowMapIndex] * worldPosition;
+    shadowCoord.xyz /= shadowCoord.w;
     shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
     shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 

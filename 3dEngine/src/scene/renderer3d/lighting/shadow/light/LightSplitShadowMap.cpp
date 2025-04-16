@@ -68,18 +68,16 @@ namespace urchin {
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
             const OBBox<float>& lightOBBox = spotLight.getOBBoxScope();
 
-            float left = -lightOBBox.getHalfSize(0);
-            float right = lightOBBox.getHalfSize(0);
-            float bottom = -lightOBBox.getHalfSize(1);
-            float top = lightOBBox.getHalfSize(1);
-            float near = -lightOBBox.getHalfSize(2);
-            float far = lightOBBox.getHalfSize(2);
+            float lightFov = AngleConverter<float>::toRadian(spotLight.getOuterAngle() * 2.0f);
+            float fov = 1.0f / std::tan(lightFov);
+            float nearPlane = 0.1f; //TODO 0.01f => no shadow !
+            float farPlane = lightOBBox.getHalfSize(2) * 2.0f;
 
-            float scaleX = 2.0f / (right - left);
-            float scaleY = -2.0f / (top - bottom);
-            float scaleZ = -1.0f / (-near + far);
-
-            this->lightProjectionMatrix = Matrix4<float>::buildScale(scaleX, scaleY, scaleZ);
+            this->lightProjectionMatrix.setValues(
+                    fov, 0.0f, 0.0f, 0.0f,
+                    0.0f, -fov, 0.0f, 0.0f,
+                    0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
+                    0.0f, 0.0f, -1.0f, 0.0f);
             this->shadowCasterReceiverBox = lightViewMatrix * lightOBBox;
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
