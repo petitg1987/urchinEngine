@@ -13,7 +13,7 @@ template<typename K> K* EverGrowHashSet<K>::Iterator::operator->() const {
     return &set.table[bucketIndex][elementIndex];
 }
 
-template<typename K> EverGrowHashSet<K>::Iterator& EverGrowHashSet<K>::Iterator::operator++() {
+template<typename K> typename EverGrowHashSet<K>::Iterator& EverGrowHashSet<K>::Iterator::operator++() {
     ++elementIndex;
     while (bucketIndex < set.table.size() && elementIndex >= set.table[bucketIndex].size()) {
         ++bucketIndex;
@@ -92,7 +92,7 @@ template<typename K> void EverGrowHashSet<K>::clear() {
     currentSize = 0;
 }
 
-template<typename K> EverGrowHashSet<K>::Iterator EverGrowHashSet<K>::begin() {
+template<typename K> typename EverGrowHashSet<K>::Iterator EverGrowHashSet<K>::begin() {
     std::size_t bucketIndex = 0;
     while (bucketIndex < table.size() && table[bucketIndex].empty()) {
         ++bucketIndex;
@@ -100,7 +100,7 @@ template<typename K> EverGrowHashSet<K>::Iterator EverGrowHashSet<K>::begin() {
     return Iterator(*this, bucketIndex, 0);
 }
 
-template<typename K> EverGrowHashSet<K>::Iterator EverGrowHashSet<K>::end() {
+template<typename K> typename EverGrowHashSet<K>::Iterator EverGrowHashSet<K>::end() {
     return Iterator(*this, table.size(), 0);
 }
 
