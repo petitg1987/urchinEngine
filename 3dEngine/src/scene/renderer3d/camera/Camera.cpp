@@ -51,7 +51,7 @@ namespace urchin {
         mProjection.setValues(
                 fov / ratio, 0.0f, 0.0f, 0.0f,
                 0.0f, -fov, 0.0f, 0.0f,
-                0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
+                0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
                 0.0f, 0.0f, -1.0f, 0.0f);
 
         baseFrustum.buildFrustum(verticalFovAngle, ratio, nearPlane, farPlane);

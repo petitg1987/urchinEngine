@@ -68,15 +68,16 @@ namespace urchin {
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
             const OBBox<float>& lightOBBox = spotLight.getOBBoxScope();
 
-            float lightFov = AngleConverter<float>::toRadian(spotLight.getOuterAngle() * 2.0f);
-            float fov = 1.0f / std::tan(lightFov);
-            float nearPlane = 0.1f; //TODO 0.01f => no shadow !
+            //TODO extend near + far + update light position !
+            float ratio = 1.0f;
+            float tanFov = std::tan(AngleConverter<float>::toRadian(spotLight.getOuterAngle()));
+            float nearPlane = 0.02f; //TODO 0.01f => no shadow !
             float farPlane = lightOBBox.getHalfSize(2) * 2.0f;
 
             this->lightProjectionMatrix.setValues(
-                    fov, 0.0f, 0.0f, 0.0f,
-                    0.0f, -fov, 0.0f, 0.0f,
-                    0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
+                    1.0f / (tanFov * ratio), 0.0f, 0.0f, 0.0f,
+                    0.0f, -1.0f / tanFov, 0.0f, 0.0f,
+                    0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
                     0.0f, 0.0f, -1.0f, 0.0f);
             this->shadowCasterReceiverBox = lightViewMatrix * lightOBBox;
         } else {
