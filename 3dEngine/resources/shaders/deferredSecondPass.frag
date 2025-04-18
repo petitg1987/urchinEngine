@@ -134,7 +134,7 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
     } */
 
     return 1.0 - (totalShadow * shadowMapInfo.shadowStrengthFactor);
-} //TODO fix problem: shadow of cube is visible but the cube is not in the light cone !
+}
 
 float computeSunShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
