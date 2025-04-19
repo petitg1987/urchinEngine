@@ -24,10 +24,6 @@ namespace urchin {
         });
     }
 
-    const OBBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
-        return shadowCasterReceiverBox;
-    }
-
     const Matrix4<float>& LightSplitShadowMap::getLightProjectionMatrix() const {
         return lightProjectionMatrix;
     }
@@ -63,7 +59,7 @@ namespace urchin {
                 shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver point
                 shadowReceiverAndCasterVertex[i * 2 + 1] = Point3(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
             }
-            this->shadowCasterReceiverBox = OBBox(AABBox<float>(shadowReceiverAndCasterVertex));
+            this->shadowCasterReceiverBox = OBBox(AABBox<float>(shadowReceiverAndCasterVertex)); //TODO use AABBox
         } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) {
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
             const OBBox<float>& lightOBBox = spotLight.getOBBoxScope();
@@ -79,7 +75,7 @@ namespace urchin {
                     0.0f, -1.0f / tanFov, 0.0f, 0.0f,
                     0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
                     0.0f, 0.0f, -1.0f, 0.0f);
-            this->shadowCasterReceiverBox = lightViewMatrix * lightOBBox;
+            this->shadowCasterReceiverBox = lightViewMatrix * lightOBBox; //TODO use Frustum
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }

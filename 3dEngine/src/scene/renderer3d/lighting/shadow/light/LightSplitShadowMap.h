@@ -16,7 +16,6 @@ namespace urchin {
 
             void update(const SplitFrustum&);
 
-            const OBBox<float> &getShadowCasterReceiverBox() const;
             const Matrix4<float>& getLightProjectionMatrix() const;
             std::span<Model* const> getModels() const;
 
