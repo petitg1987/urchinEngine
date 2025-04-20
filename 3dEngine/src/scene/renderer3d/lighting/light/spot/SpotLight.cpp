@@ -147,7 +147,6 @@ namespace urchin {
         float minZ = coneScope->getSupportPoint(Vector3(0.0f, 0.0f, -1.0f)).Z;
         float maxZ = coneScope->getSupportPoint(Vector3(0.0f, 0.0f, 1.0f)).Z;
         aabboxScope = std::make_unique<AABBox<float>>(Point3(minX, minY, minZ), Point3(maxX, maxY, maxZ));
-
         notifyOctreeableMove();
     }
 
