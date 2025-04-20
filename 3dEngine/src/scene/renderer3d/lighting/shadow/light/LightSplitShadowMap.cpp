@@ -47,7 +47,6 @@ namespace urchin {
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
             const Frustum<float>& frustumScope = spotLight.getFrustumScope();
 
-            //TODO fix crash when light no on scene ? "Not all submit semaphores (remaining: 1) has been consumed on render target"
             float ratio = 1.0f;
             float tanFov = std::tan(AngleConverter<float>::toRadian(spotLight.getOuterAngle()));
             float nearPlane = frustumScope.computeNearDistance();

@@ -221,8 +221,11 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
 
         unsigned int renderingOrder = 0;
-        for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
-            lightShadowMap->renderModels(frameIndex, numDependenciesToShadowMaps, renderingOrder);
+        for (const Light* visibleLight : lightManager.getVisibleLights()) {
+            if (visibleLight->isProduceShadow()) {
+                const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;
+                lightShadowMap->renderModels(frameIndex, numDependenciesToShadowMaps, renderingOrder);
+            }
         }
     }
 

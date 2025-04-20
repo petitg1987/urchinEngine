@@ -23,7 +23,7 @@
   * ► **OPTIMIZATION**: Parallelize the creation of the ModelDisplayer
   * ► **OPTIMIZATION**: Models LOD
 * Lighting & Shadow
-  * ▲ **NEW FEATURE**: Shadow on spotlight (check Sascha Willems: deferredshadows)
+  * ▲ **OPTIMIZATION**: Free shadow map memory when light is not displayed on the scene
   * ► **NEW FEATURE**: Shadow on omnidirectional light
   * ► **OPTIMIZATION**: Avoid to render all the frustum models for each cascade: use the split frustum models instead
   * ► **OPTIMIZATION**: Create shadow map texture only for visible lights
