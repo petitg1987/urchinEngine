@@ -128,17 +128,17 @@ namespace urchin {
      */
     void SpotLight::computeScope() {
         float coneHeight = computeIlluminationRange();
+        Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, 0.0f, -1.0f), directions[0]).normalize();
 
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));
         float coneRadius = coneHeight * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
-        Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, 0.0f, -1.0f), directions[0]).normalize();
         coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE, coneCenterOfMass, orientation);
 
-        //TODO can do better ? avoid mat4 ?
-        float nearPlane = 0.02f; //TODO change to 0.05f ? 0.02f ?
+        float nearPlane = 0.025f;
         float farPlane = coneHeight + nearPlane;
-        Matrix4<float> translationMatrix = Matrix4<float>::buildTranslation(getPosition().X, getPosition().Y, getPosition().Z);
-        frustumScope = std::make_unique<Frustum<float>>(translationMatrix * orientation.toMatrix4() * Frustum(outerAngleInDegrees * 2.0f, 1.0f, nearPlane, farPlane));
+        Matrix4<float> transformMatrix = Matrix4<float>::buildTranslation(getPosition().X, getPosition().Y, getPosition().Z) * orientation.toMatrix4();
+        Frustum frustum(outerAngleInDegrees * 2.0f, 1.0f, nearPlane, farPlane);
+        frustumScope = std::make_unique<Frustum<float>>(transformMatrix * frustum);
 
         float minX = coneScope->getSupportPoint(Vector3(-1.0f, 0.0f, 0.0f)).X;
         float maxX = coneScope->getSupportPoint(Vector3(1.0f, 0.0f, 0.0f)).X;

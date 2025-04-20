@@ -46,12 +46,13 @@ namespace urchin {
             lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, modelsFilter);
         } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) { //TODO do no recompute at each frame -> always the same !
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
+            const Frustum<float>& frustumScope = spotLight.getFrustumScope();
 
             //TODO fix crash when light no on scene ? "Not all submit semaphores (remaining: 1) has been consumed on render target"
             float ratio = 1.0f;
             float tanFov = std::tan(AngleConverter<float>::toRadian(spotLight.getOuterAngle()));
-            float nearPlane = 0.02f; //TODO use one used in spotLight.getFrustumScope()
-            float farPlane = spotLight.computeIlluminationRange() + nearPlane;
+            float nearPlane = frustumScope.computeNearDistance();
+            float farPlane = frustumScope.computeFarDistance();
 
             this->lightProjectionMatrix.setValues(
                     1.0f / (tanFov * ratio), 0.0f, 0.0f, 0.0f,
@@ -59,7 +60,7 @@ namespace urchin {
                     0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
                     0.0f, 0.0f, -1.0f, 0.0f);
 
-            lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(spotLight.getFrustumScope(), models, true, modelsFilter);
+            lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(frustumScope, models, true, modelsFilter);
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
