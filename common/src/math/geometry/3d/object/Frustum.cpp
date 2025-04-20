@@ -16,8 +16,8 @@ namespace urchin {
     /**
     * Frustum constructor from angle, ratio and near/far distances.
     * Default frustum position: x = 0, y = 0, z = 0
-    * Default frustum view direction: z axis
-    * Default frustum up vector: y axis
+    * Default frustum view direction: Z- axis
+    * Default frustum up vector: Y axis
     */
     template<class T> Frustum<T>::Frustum(T verticalFovAngle, T ratio, T nearDistance, T farDistance) :
             ConvexObject3D<T>(ConvexObjectType::FRUSTUM) {
@@ -43,8 +43,8 @@ namespace urchin {
     /**
     * Frustum builder from angle, ratio and near/far distances.
     * Default frustum position: x = 0, y = 0, z = 0
-    * Default frustum view direction: z axis
-    * Default frustum up vector: y axis
+    * Default frustum view direction: Z- axis
+    * Default frustum up vector: Y+ axis
     */
     template<class T> void Frustum<T>::buildFrustum(T verticalFovAngle, T ratio, T nearDistance, T farDistance) {
         //half distance of near and far planes

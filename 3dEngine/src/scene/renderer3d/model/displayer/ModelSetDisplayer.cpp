@@ -188,6 +188,8 @@ namespace urchin {
         for (Model* model : models) {
             if (meshFilter && !meshFilter->isAccepted(*model)) {
                 continue;
+            } else if (!model->getConstMeshes()) {
+                continue;
             }
 
             this->models.push_back(model);
