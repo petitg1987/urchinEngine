@@ -11,7 +11,7 @@ namespace urchin {
             aabboxScope(nullptr),
             exponentialAttenuation(0.1f),
             coneScope(nullptr),
-            obboxScope(nullptr) {
+            frustumScope(nullptr) {
         directions.emplace_back(direction.normalize());
         setAngles(innerAngleInDegrees, outerAngleInDegrees);
 
@@ -109,9 +109,8 @@ namespace urchin {
         return exponentialAttenuation;
     }
 
-    const OBBox<float>& SpotLight::getOBBoxScope() const {
-        assert(obboxScope);
-        return *obboxScope;
+    float SpotLight::computeIlluminationRange() const {
+        return -std::log(ATTENUATION_NO_EFFECT) / exponentialAttenuation;
     }
 
     const Cone<float>& SpotLight::getConeScope() const {
@@ -127,8 +126,8 @@ namespace urchin {
     /**
      * Computes the cone scope representing light affectation zone
      */
-    void SpotLight::computeScope() { //TODO remove useless
-        float coneHeight = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
+    void SpotLight::computeScope() {
+        float coneHeight = computeIlluminationRange();
 
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));
         float coneRadius = coneHeight * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
@@ -136,14 +135,10 @@ namespace urchin {
         coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE, coneCenterOfMass, orientation);
 
         //TODO can do better ? avoid mat4 ?
-        float nearPlane = 0.15f; //TODO change to 0.05f ? 0.02f ?
+        float nearPlane = 0.02f; //TODO change to 0.05f ? 0.02f ?
         float farPlane = coneHeight + nearPlane;
         Matrix4<float> translationMatrix = Matrix4<float>::buildTranslation(getPosition().X, getPosition().Y, getPosition().Z);
         frustumScope = std::make_unique<Frustum<float>>(translationMatrix * orientation.toMatrix4() * Frustum(outerAngleInDegrees * 2.0f, 1.0f, nearPlane, farPlane));
-
-        Point3<float> coneCenter = getPosition().translate(directions[0] * (coneHeight * 0.5f));
-        Vector3 halfSizes(coneRadius, coneRadius, coneHeight / 2.0f);
-        obboxScope = std::make_unique<OBBox<float>>(halfSizes, coneCenter, orientation);
 
         float minX = coneScope->getSupportPoint(Vector3(-1.0f, 0.0f, 0.0f)).X;
         float maxX = coneScope->getSupportPoint(Vector3(1.0f, 0.0f, 0.0f)).X;

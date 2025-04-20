@@ -29,7 +29,7 @@ namespace urchin {
             //attenuation methods
             void setAttenuation(float);
             float getExponentialAttenuation() const;
-            const OBBox<float>& getOBBoxScope() const;
+            float computeIlluminationRange() const;
             const Cone<float>& getConeScope() const;
             const Frustum<float>& getFrustumScope() const;
 
@@ -51,7 +51,6 @@ namespace urchin {
             float exponentialAttenuation;
             std::unique_ptr<Cone<float>> coneScope;
             std::unique_ptr<Frustum<float>> frustumScope;
-            std::unique_ptr<OBBox<float>> obboxScope;
     };
 
 }
