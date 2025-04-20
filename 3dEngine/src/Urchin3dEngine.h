@@ -62,6 +62,7 @@
 #include <resources/geometry/triangles/TrianglesModel.h>
 #include <resources/geometry/sphere/SphereModel.h>
 #include <resources/geometry/convexhull/ConvexHullModel.h>
+#include <resources/geometry/frustum/FrustumModel.h>
 
 #include <loader/image/LoaderPNG.h>
 

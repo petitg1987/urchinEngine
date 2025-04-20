@@ -48,7 +48,6 @@ namespace urchin {
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
             const OBBox<float>& lightOBBox = spotLight.getOBBoxScope();
 
-            //TODO fix no shadow visible in current config !
             float ratio = 1.0f;
             float tanFov = std::tan(AngleConverter<float>::toRadian(spotLight.getOuterAngle()));
             float nearPlane = 0.15f; //TODO change to 0.05f ? 0.02f ?
@@ -60,10 +59,7 @@ namespace urchin {
                     0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
                     0.0f, 0.0f, -1.0f, 0.0f);
 
-            Frustum frustum(spotLight.getOuterAngle(), ratio, nearPlane, farPlane);
-            Frustum shadowCasterReceiverShape = lightShadowMap->getLightViewMatrix() * frustum;
-
-            lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(shadowCasterReceiverShape, models, true, shadowModelsFilter);
+            lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(spotLight.getFrustumScope(), models, true, shadowModelsFilter);
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }

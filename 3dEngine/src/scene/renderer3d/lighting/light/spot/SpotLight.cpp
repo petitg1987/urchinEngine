@@ -119,16 +119,27 @@ namespace urchin {
         return *coneScope;
     }
 
+    const Frustum<float>& SpotLight::getFrustumScope() const {
+        assert(frustumScope);
+        return *frustumScope;
+    }
+
     /**
      * Computes the cone scope representing light affectation zone
      */
-    void SpotLight::computeScope() {
+    void SpotLight::computeScope() { //TODO remove useless
         float coneHeight = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
 
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));
         float coneRadius = coneHeight * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
         Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, 0.0f, -1.0f), directions[0]).normalize();
         coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE, coneCenterOfMass, orientation);
+
+        //TODO can do better ? avoid mat4 ?
+        float nearPlane = 0.15f; //TODO change to 0.05f ? 0.02f ?
+        float farPlane = coneHeight + nearPlane;
+        Matrix4<float> translationMatrix = Matrix4<float>::buildTranslation(getPosition().X, getPosition().Y, getPosition().Z);
+        frustumScope = std::make_unique<Frustum<float>>(translationMatrix * orientation.toMatrix4() * Frustum(outerAngleInDegrees * 2.0f, 1.0f, nearPlane, farPlane));
 
         Point3<float> coneCenter = getPosition().translate(directions[0] * (coneHeight * 0.5f));
         Vector3 halfSizes(coneRadius, coneRadius, coneHeight / 2.0f);

@@ -31,6 +31,7 @@ namespace urchin {
             float getExponentialAttenuation() const;
             const OBBox<float>& getOBBoxScope() const;
             const Cone<float>& getConeScope() const;
+            const Frustum<float>& getFrustumScope() const;
 
             std::unique_ptr<Light> clone() const override;
 
@@ -49,6 +50,7 @@ namespace urchin {
             //attenuation properties
             float exponentialAttenuation;
             std::unique_ptr<Cone<float>> coneScope;
+            std::unique_ptr<Frustum<float>> frustumScope;
             std::unique_ptr<OBBox<float>> obboxScope;
     };
 

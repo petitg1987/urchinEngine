@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    class OBBoxModel final : public GeometryModel {
+    class FrustumModel final : public GeometryModel {
         public:
-            explicit OBBoxModel(OBBox<float>);
+            explicit FrustumModel(Frustum<float>);
 
         protected:
             std::vector<Point3<float>> retrieveVertexArray(std::vector<uint32_t>&) const override;
@@ -16,7 +16,7 @@ namespace urchin {
             ShapeType getShapeType() const override;
 
         private:
-            OBBox<float> obbox;
+            Frustum<float> frustum;
     };
 
 }
