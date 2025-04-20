@@ -82,14 +82,14 @@ namespace urchin {
     template<class T> void Frustum<T>::buildFrustum(const Point3<T>& ntl, const Point3<T>& ntr, const Point3<T>& nbl, const Point3<T>& nbr,
         const Point3<T>& ftl, const Point3<T>& ftr, const Point3<T>& fbl, const Point3<T>& fbr) {
         //building frustum points
-        frustumPoints[0] = ntl;
-        frustumPoints[1] = ntr;
-        frustumPoints[2] = nbl;
-        frustumPoints[3] = nbr;
-        frustumPoints[4] = ftl;
-        frustumPoints[5] = ftr;
-        frustumPoints[6] = fbl;
-        frustumPoints[7] = fbr;
+        frustumPoints[NTL] = ntl;
+        frustumPoints[NTR] = ntr;
+        frustumPoints[NBL] = nbl;
+        frustumPoints[NBR] = nbr;
+        frustumPoints[FTL] = ftl;
+        frustumPoints[FTR] = ftr;
+        frustumPoints[FBL] = fbl;
+        frustumPoints[FBR] = fbr;
 
         //building frustum data
         buildData();
