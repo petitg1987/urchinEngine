@@ -15,6 +15,8 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upSM");
 
         models.clear();
+        const auto& shadowModelsFilter = [](const Model *const model) { return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER; };
+
         if (lightShadowMap->getLight().getLightType() == Light::LightType::SUN) {
             const Frustum<float>& frustumLightSpace = lightShadowMap->getLightViewMatrix() * splitFrustum.getFrustum();
             Point3<float> splitFrustumCenter = (lightShadowMap->getLightViewMatrix() * Point4(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
@@ -41,9 +43,7 @@ namespace urchin {
             stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
 
             OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox(shadowCasterReceiverShape);
-            lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, [](const Model *const model) {
-                return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
-            });
+            lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, shadowModelsFilter);
         } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) { //TODO do no recompute at each frame -> always the same !
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
             const OBBox<float>& lightOBBox = spotLight.getOBBoxScope();
@@ -54,21 +54,16 @@ namespace urchin {
             float nearPlane = 0.15f; //TODO change to 0.05f ? 0.02f ?
             float farPlane = (lightOBBox.getHalfSize(2) * 2.0f) + nearPlane;
 
-            Frustum frustum(spotLight.getOuterAngle(), ratio, nearPlane, farPlane);
-            Frustum frustumLightSpace = lightShadowMap->getLightViewMatrix() * frustum;
-
             this->lightProjectionMatrix.setValues(
                     1.0f / (tanFov * ratio), 0.0f, 0.0f, 0.0f,
                     0.0f, -1.0f / tanFov, 0.0f, 0.0f,
                     0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
                     0.0f, 0.0f, -1.0f, 0.0f);
 
-            Frustum shadowCasterReceiverShape(frustumLightSpace); //TODO can be in global space instead of light space to avoid mul + mul.inverse() ?
-            Frustum shadowCasterReceiverShapeViewSpace = lightShadowMap->getLightViewMatrix().inverse() * shadowCasterReceiverShape;
+            Frustum frustum(spotLight.getOuterAngle(), ratio, nearPlane, farPlane);
+            Frustum shadowCasterReceiverShape = lightShadowMap->getLightViewMatrix() * frustum;
 
-            lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(shadowCasterReceiverShapeViewSpace, models, true, [](const Model *const model) {
-                return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
-            });
+            lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(shadowCasterReceiverShape, models, true, shadowModelsFilter);
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
