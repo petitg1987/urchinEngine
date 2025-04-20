@@ -68,8 +68,7 @@ namespace urchin {
     void ModelOcclusionCuller::getModelsInFrustum(const Frustum<float>& frustum, std::vector<Model*>& modelsInFrustum) const {
         assert(modelsInFrustum.empty());
         auto acceptAllFilter = [](const Model* const){ return true; };
-        getNoCullModels(modelsInFrustum, acceptAllFilter);
-        modelOctreeManager.getOctreeablesIn(frustum, modelsInFrustum, false, acceptAllFilter);
+        getModelsInFrustum(frustum, modelsInFrustum, false, acceptAllFilter);
     }
 
     std::vector<std::shared_ptr<Model>> ModelOcclusionCuller::getAllModels() const {

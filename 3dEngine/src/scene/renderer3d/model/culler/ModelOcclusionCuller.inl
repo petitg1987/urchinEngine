@@ -1,4 +1,13 @@
 /**
+ * @param modelsInFrustum [out] models in frustum
+ */
+template<class FILTER> void ModelOcclusionCuller::getModelsInFrustum(const Frustum<float>& frustum, std::vector<Model*>& modelsInFrustum, bool strictFiltering, const FILTER& filter) const {
+    assert(modelsInFrustum.empty());
+    getNoCullModels(modelsInFrustum, filter);
+    modelOctreeManager.getOctreeablesIn(frustum, modelsInFrustum, strictFiltering, filter);
+}
+
+/**
  * @param modelsInBox [out] models in OBBox
  */
 template<class FILTER> void ModelOcclusionCuller::getModelsInOBBox(const OBBox<float>& box, std::vector<Model*>& modelsInBox, bool strictFiltering, const FILTER& filter) const {

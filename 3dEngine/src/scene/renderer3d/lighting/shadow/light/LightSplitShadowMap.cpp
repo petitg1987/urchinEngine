@@ -64,15 +64,11 @@ namespace urchin {
                     0.0f, 0.0f, -1.0f, 0.0f);
 
             Frustum shadowCasterReceiverShape(frustumLightSpace); //TODO can be in global space instead of light space to avoid mul + mul.inverse() ?
-
             Frustum shadowCasterReceiverShapeViewSpace = lightShadowMap->getLightViewMatrix().inverse() * shadowCasterReceiverShape;
 
-            lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(shadowCasterReceiverShapeViewSpace, models);
-
-            //TODO use filter method but for frustum
-            // lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, [](const Model *const model) {
-            //     return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
-            // });
+            lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(shadowCasterReceiverShapeViewSpace, models, true, [](const Model *const model) {
+                return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
+            });
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
