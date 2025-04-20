@@ -29,6 +29,7 @@ namespace urchin {
             lightProjectionVertex[2] = splitFrustumCenter - Point3(splitFrustumRadius, splitFrustumRadius, splitFrustumRadius);
             lightProjectionVertex[3] = Point3(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
             this->lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
+            stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
 
             //determine point belonging to shadow caster/receiver box
             std::array<Point3<float>, 16> shadowReceiverAndCasterVertex;
@@ -39,8 +40,6 @@ namespace urchin {
                 shadowReceiverAndCasterVertex[i * 2 + 1] = Point3(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
             }
             AABBox<float> shadowCasterReceiverShape(shadowReceiverAndCasterVertex);
-
-            stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
 
             OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox(shadowCasterReceiverShape);
             lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, modelsFilter);
