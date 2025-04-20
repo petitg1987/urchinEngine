@@ -94,7 +94,7 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
     shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
     float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
-    float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias; //TODO fix bias for spot light ?
+    float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias; //TODO fix bias for spot light (should be max 0.000025)?
 
     const float SOFT_EDGE_LENGTH = 1.5f;
     int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
