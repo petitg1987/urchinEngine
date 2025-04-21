@@ -155,7 +155,7 @@ namespace urchin {
     template<class T> Matrix4<T> AABBox<T>::toProjectionMatrix() const {
         T offsetX = -(max.X + min.X) / (max.X - min.X);
         T offsetY = (max.Y + min.Y) / (max.Y - min.Y);
-        T offsetZ = (T)0.5 - (T)0.5 * ((-min.Z - max.Z) / (-min.Z + max.Z));
+        T offsetZ = max.Z / (-min.Z + max.Z);
 
         T scaleX = (T)2.0 / (max.X - min.X);
         T scaleY = (T)-2.0 / (max.Y - min.Y);
