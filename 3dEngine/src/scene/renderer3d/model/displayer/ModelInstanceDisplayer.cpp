@@ -86,13 +86,13 @@ namespace urchin {
             const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(i);
             auto meshName = getReferenceModel().getMeshes()->getConstMeshes().getMeshesName();
 
-            Matrix4<float> projectionMatrix;
+            Matrix4<float> projectionViewMatrix;
             fillMaterialData(mesh);
 
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
                     ->indices(constMesh.getTrianglesIndices())
-                    ->addUniformData(PROJ_MATRIX_UNIFORM_BINDING, sizeof(projectionMatrix), &projectionMatrix)
+                    ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projectionViewMatrix), &projectionViewMatrix)
                     ->addUniformData(MAT_DATA_UNIFORM_BINDING, sizeof(materialData), &materialData); //only used in DEFAULT_MODE
 
             if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
@@ -333,7 +333,7 @@ namespace urchin {
             } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
                 meshRenderer->updateInstanceData(instanceModelMatrices.size(), (const float*) instanceModelMatrices.data());
             }
-            meshRenderer->updateUniformData(PROJ_MATRIX_UNIFORM_BINDING, &projectionViewMatrix);
+            meshRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &projectionViewMatrix);
             if (customShaderVariable) {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer, CUSTOM1_UNIFORM_BINDING, CUSTOM2_UNIFORM_BINDING);
             }

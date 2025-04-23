@@ -52,7 +52,6 @@ namespace urchin {
             float nearPlane = frustumScope.computeNearDistance();
             float farPlane = frustumScope.computeFarDistance();
 
-            //TODO use linear depth
             this->lightProjectionMatrix.setValues(
                     1.0f / (tanFov * ratio), 0.0f, 0.0f, 0.0f,
                     0.0f, -1.0f / tanFov, 0.0f, 0.0f,

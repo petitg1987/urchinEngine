@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_set>
 #include <UrchinCommon.h>
 
 #include <scene/Renderer.h>

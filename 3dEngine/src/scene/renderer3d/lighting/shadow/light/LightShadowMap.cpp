@@ -3,7 +3,10 @@
 
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
-#include <scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h>
+#include <scene/renderer3d/lighting/shadow/display/ModelShadowSunShaderVariable.h>
+#include <scene/renderer3d/lighting/shadow/display/ModelShadowSpotShaderVariable.h>
+
+#include "scene/renderer3d/lighting/light/Light.h"
 
 namespace urchin {
 
@@ -22,10 +25,19 @@ namespace urchin {
             std::vector variablesDescriptions = {sizeof(nbShadowMaps)};
             auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
             shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
-            shadowModelSetDisplayer->setupShader("modelShadowMap.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
-            shadowModelSetDisplayer->initialize(*renderTarget);
-            shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ShadowModelShaderVariable>(this));
-            shadowModelSetDisplayer->setupLayerIndexDataInShader(true);
+            if (light.getLightType() == Light::LightType::SUN) {
+                shadowModelSetDisplayer->setupShader("modelShadowMapSun.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
+                shadowModelSetDisplayer->initialize(*renderTarget);
+                shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ModelShadowSunShaderVariable>(this));
+                shadowModelSetDisplayer->setupLayerIndexDataInShader(true);
+            } else if (light.getLightType() == Light::LightType::SPOT) {
+                shadowModelSetDisplayer->setupShader("modelShadowMapSpot.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
+                shadowModelSetDisplayer->initialize(*renderTarget);
+                shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ModelShadowSpotShaderVariable>(this));
+                shadowModelSetDisplayer->setupLayerIndexDataInShader(false);
+            } else {
+                throw std::runtime_error("Unknown light type to setup shadow model set displayer: " + std::to_string((int)light.getLightType()));
+            }
         }
 
         for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye.

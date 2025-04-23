@@ -52,7 +52,7 @@ namespace urchin {
             std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const std::vector<Vector3<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
-            static constexpr uint32_t PROJ_MATRIX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t PROJ_VIEW_MATRIX_UNIFORM_BINDING = 0;
             static constexpr uint32_t MAT_DATA_UNIFORM_BINDING = 1;
             static constexpr uint32_t CUSTOM1_UNIFORM_BINDING = 2;
             static constexpr uint32_t CUSTOM2_UNIFORM_BINDING = 3;

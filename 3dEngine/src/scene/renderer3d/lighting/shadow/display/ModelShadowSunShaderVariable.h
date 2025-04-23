@@ -8,12 +8,9 @@
 
 namespace urchin {
 
-    /**
-    * Load custom model shader variables for shadow model displayer
-    */
-    class ShadowModelShaderVariable final : public CustomModelShaderVariable {
+    class ModelShadowSunShaderVariable final : public CustomModelShaderVariable {
         public:
-            explicit ShadowModelShaderVariable(const LightShadowMap*);
+            explicit ModelShadowSunShaderVariable(const LightShadowMap*);
 
             void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t) override;
             void loadCustomShaderVariables(GenericRenderer&, uint32_t, uint32_t) override;
@@ -24,7 +21,7 @@ namespace urchin {
             const LightShadowMap* lightShadowMap;
 
             struct ShadowData {
-                alignas(16) std::array<Matrix4<float>, 10> projectionMatrices;
+                alignas(16) std::array<Matrix4<float>, 10> lightProjectionMatrices;
             } shadowData;
     };
 
