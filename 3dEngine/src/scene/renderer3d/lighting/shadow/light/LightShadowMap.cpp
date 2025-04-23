@@ -61,7 +61,6 @@ namespace urchin {
             Vector3<float> forward = lightDirection.normalize();
             Vector3 worldUp(0.0f, 1.0f, 0.0f);
             if (std::abs(forward.dotProduct(worldUp)) > 0.999f) {
-                std::cout<<"Not good for test"<<std::endl; //TODO test if it work in this situation !
                 worldUp = Vector3(1.0f, 0.0f, 0.0f);
             }
             Vector3<float> side = forward.crossProduct(worldUp).normalize();

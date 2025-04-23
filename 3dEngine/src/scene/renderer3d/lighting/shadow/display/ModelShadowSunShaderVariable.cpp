@@ -26,7 +26,6 @@ namespace urchin {
 
     void ModelShadowSunShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t uniformBinding1, uint32_t) {
         refreshShaderVariables();
-
         meshRenderer.updateUniformData(uniformBinding1, &shadowData);
     }
 

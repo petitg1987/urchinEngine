@@ -7,7 +7,9 @@ namespace urchin {
 
     LightSplitShadowMap::LightSplitShadowMap(const LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
-            previousCenter(Point4(0.0f, 0.0f, 0.0f, 1.0f)) {
+            previousCenter(Point4(0.0f, 0.0f, 0.0f, 1.0f)),
+            spotNearPlane(std::numeric_limits<float>::max()),
+            spotFarPlane(std::numeric_limits<float>::max()) {
 
     }
 
@@ -49,13 +51,13 @@ namespace urchin {
 
             float ratio = 1.0f;
             float tanFov = std::tan(AngleConverter<float>::toRadian(spotLight.getOuterAngle()));
-            float nearPlane = frustumScope.computeNearDistance();
-            float farPlane = frustumScope.computeFarDistance();
+            spotNearPlane = frustumScope.computeNearDistance();
+            spotFarPlane = frustumScope.computeFarDistance();
 
             this->lightProjectionMatrix.setValues(
                     1.0f / (tanFov * ratio), 0.0f, 0.0f, 0.0f,
                     0.0f, -1.0f / tanFov, 0.0f, 0.0f,
-                    0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
+                    0.0f, 0.0f, spotFarPlane / (spotNearPlane - spotFarPlane), (spotFarPlane * spotNearPlane) / (spotNearPlane - spotFarPlane),
                     0.0f, 0.0f, -1.0f, 0.0f);
 
             lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(frustumScope, models, true, modelsFilter);
@@ -66,6 +68,16 @@ namespace urchin {
 
     const Matrix4<float>& LightSplitShadowMap::getLightProjectionMatrix() const {
         return lightProjectionMatrix;
+    }
+
+    float LightSplitShadowMap::getSpotNearPlane() const {
+        assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT);
+        return spotNearPlane;
+    }
+
+    float LightSplitShadowMap::getSpotFarPlane() const {
+        assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT);
+        return spotFarPlane;
     }
 
     /**

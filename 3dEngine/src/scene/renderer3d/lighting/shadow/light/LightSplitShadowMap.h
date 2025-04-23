@@ -17,6 +17,9 @@ namespace urchin {
             void update(const SplitFrustum&);
 
             const Matrix4<float>& getLightProjectionMatrix() const;
+            float getSpotNearPlane() const;
+            float getSpotFarPlane() const;
+
             std::span<Model* const> getModels() const;
 
         private:
@@ -31,6 +34,8 @@ namespace urchin {
 
             Matrix4<float> lightProjectionMatrix;
             Point4<float> previousCenter;
+            float spotNearPlane;
+            float spotFarPlane;
 
             std::vector<Model*> models;
     };
