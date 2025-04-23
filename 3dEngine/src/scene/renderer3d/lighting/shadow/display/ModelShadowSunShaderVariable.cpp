@@ -31,7 +31,7 @@ namespace urchin {
 
     void ModelShadowSunShaderVariable::refreshShaderVariables() {
         const std::vector<std::unique_ptr<LightSplitShadowMap>>& lightSplitShadowMaps = lightShadowMap->getLightSplitShadowMaps();
-        for (unsigned int i = 0 ; i < lightSplitShadowMaps.size(); ++i) {
+        for (unsigned int i = 0; i < lightSplitShadowMaps.size(); ++i) {
             shadowData.lightProjectionMatrices[i] = lightSplitShadowMaps[i]->getLightProjectionMatrix();
         }
     }
