@@ -10,10 +10,10 @@
 
 namespace urchin {
 
-    LightShadowMap::LightShadowMap(bool isTestMode, Light& light, const ModelOcclusionCuller& modelOcclusionCuller, float viewingShadowDistance, unsigned int shadowMapResolution, unsigned int nbShadowMaps) :
+    LightShadowMap::LightShadowMap(bool isTestMode, Light& light, const ModelOcclusionCuller& modelOcclusionCuller, float shadowViewDistance, unsigned int shadowMapResolution, unsigned int nbShadowMaps) :
             light(light),
             modelOcclusionCuller(modelOcclusionCuller),
-            viewingShadowDistance(viewingShadowDistance),
+            shadowViewDistance(shadowViewDistance),
             shadowMapResolution(shadowMapResolution),
             nbShadowMaps(nbShadowMaps) {
 
@@ -106,8 +106,8 @@ namespace urchin {
         return modelOcclusionCuller;
     }
 
-    float LightShadowMap::getViewingShadowDistance() const {
-        return viewingShadowDistance;
+    float LightShadowMap::getShadowViewDistance() const {
+        return shadowViewDistance;
     }
 
     unsigned int LightShadowMap::getNumberShadowMaps() const {

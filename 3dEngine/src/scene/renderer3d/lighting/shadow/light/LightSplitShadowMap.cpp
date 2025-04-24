@@ -94,7 +94,7 @@ namespace urchin {
                 nearestPointFromLight = splitFrustumLightSpace.getFrustumPoints()[i].Z;
             }
         }
-        return nearestPointFromLight + lightShadowMap->getViewingShadowDistance();
+        return nearestPointFromLight + lightShadowMap->getShadowViewDistance();
     }
 
     void LightSplitShadowMap::stabilizeShadow(const Point3<float>& splitFrustumCenter) {

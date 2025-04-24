@@ -26,11 +26,11 @@ namespace urchin {
             };
 
             struct Config {
-                unsigned int nbShadowMapsForSun = 5;
-                unsigned int shadowMapResolutionForSun = 1024;
                 unsigned int blurFilterBoxSize = 3;
                 float shadowStrengthFactor = 1.0f;
-                float viewingShadowDistance = 75.0f;
+                unsigned int nbSunShadowMaps = 5;
+                unsigned int sunShadowMapResolution = 1024;
+                float sunShadowViewDistance = 75.0f;
             };
 
             ShadowManager(const Config&, LightManager&, ModelOcclusionCuller&);

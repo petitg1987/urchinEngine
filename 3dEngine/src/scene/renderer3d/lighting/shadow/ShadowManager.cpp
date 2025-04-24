@@ -27,7 +27,7 @@ namespace urchin {
 
     void ShadowManager::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t projViewMatricesUniformBinding,
                                               uint32_t shadowMapDataUniformBinding, uint32_t shadowMapInfoUniformBinding) {
-        std::size_t maxMatricesLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * std::max(1u /* one SM for spot */, config.nbShadowMapsForSun);
+        std::size_t maxMatricesLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * std::max(1u /* one SM for spot */, config.nbSunShadowMaps);
         lightProjectionViewMatrices.resize(maxMatricesLightProjectionViewSize, Matrix4<float>{});
 
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
@@ -35,7 +35,7 @@ namespace urchin {
 
         deferredSecondPassRendererBuilder
                 ->addUniformData(projViewMatricesUniformBinding, maxMatricesLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
-                ->addUniformData(shadowMapDataUniformBinding, config.nbShadowMapsForSun * sizeof(Point4<float>), splitData.data())
+                ->addUniformData(shadowMapDataUniformBinding, config.nbSunShadowMaps * sizeof(Point4<float>), splitData.data())
                 ->addUniformData(shadowMapInfoUniformBinding, sizeof(shadowMapInfo), &shadowMapInfo);
     }
 
@@ -86,18 +86,19 @@ namespace urchin {
     }
 
     void ShadowManager::updateConfig(const Config& config) {
-        if (this->config.nbShadowMapsForSun != config.nbShadowMapsForSun ||
-                this->config.shadowMapResolutionForSun != config.shadowMapResolutionForSun ||
-                this->config.viewingShadowDistance != config.viewingShadowDistance ||
-                this->config.blurFilterBoxSize != config.blurFilterBoxSize) { //TODO update with new param
-            bool nbShadowMapForSunUpdated = this->config.nbShadowMapsForSun != config.nbShadowMapsForSun;
+        if (this->config.blurFilterBoxSize != config.blurFilterBoxSize ||
+                this->config.shadowStrengthFactor != config.shadowStrengthFactor ||
+                this->config.nbSunShadowMaps != config.nbSunShadowMaps ||
+                this->config.sunShadowMapResolution != config.sunShadowMapResolution ||
+                this->config.sunShadowViewDistance != config.sunShadowViewDistance) {
+            bool nbSunShadowMapUpdated = this->config.nbSunShadowMaps != config.nbSunShadowMaps;
             bool blurFilterUpdated = this->config.blurFilterBoxSize != config.blurFilterBoxSize;
 
             this->config = config;
             checkConfig();
 
             updateShadowLights();
-            if (nbShadowMapForSunUpdated) {
+            if (nbSunShadowMapUpdated) {
                 notifyObservers(this, NUMBER_SHADOW_MAPS_UPDATE);
             }
             if (blurFilterUpdated) {
@@ -111,10 +112,10 @@ namespace urchin {
     }
 
     void ShadowManager::checkConfig() const {
-        if (config.nbShadowMapsForSun <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
-            throw std::invalid_argument("Number of shadow maps for sun must be greater than one. Value: " + std::to_string(config.nbShadowMapsForSun));
-        } else if (config.nbShadowMapsForSun > SHADOW_MAPS_SHADER_LIMIT) {
-            throw std::invalid_argument("Number of shadow maps for sun must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbShadowMapsForSun));
+        if (config.nbSunShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
+            throw std::invalid_argument("Number of sun shadow maps must be greater than one. Value: " + std::to_string(config.nbSunShadowMaps));
+        } else if (config.nbSunShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
+            throw std::invalid_argument("Number of sun shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbSunShadowMaps));
         } else if (config.blurFilterBoxSize == 0) {
             throw std::invalid_argument("Size of the blur filter box must be greater or equal to 1. Value: " + std::to_string(config.blurFilterBoxSize));
         }
@@ -160,8 +161,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
 
         if (light.getLightType() == Light::LightType::SUN) {
-            lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.viewingShadowDistance,
-                config.shadowMapResolutionForSun, config.nbShadowMapsForSun);
+            lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.sunShadowViewDistance, config.sunShadowMapResolution, config.nbSunShadowMaps);
         } else if (light.getLightType() == Light::LightType::SPOT) {
             //TODO review resolution for spot
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, 1024, 1);
@@ -204,16 +204,16 @@ namespace urchin {
 
         constexpr float ADJUSTMENT_EXPONENT = 1.4f; //1.0 = linear distribution, >1.0 = exponential distribution
         float previousSplitDistance = 0.0f;
-        for (unsigned int i = 1; i <= config.nbShadowMapsForSun; ++i) {
-            float linearSplitPerc = (float)i / (float)config.nbShadowMapsForSun;
+        for (unsigned int i = 1; i <= config.nbSunShadowMaps; ++i) {
+            float linearSplitPerc = (float)i / (float)config.nbSunShadowMaps;
             float splitPerc = std::pow(linearSplitPerc, ADJUSTMENT_EXPONENT);
-            float splitDistance = config.viewingShadowDistance * splitPerc;
+            float splitDistance = config.sunShadowViewDistance * splitPerc;
 
             splitFrustums.emplace_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
             previousSplitDistance = splitDistance;
         }
         #ifdef URCHIN_DEBUG
-            assert(MathFunction::isEqual(config.viewingShadowDistance, previousSplitDistance, 0.01f));
+            assert(MathFunction::isEqual(config.sunShadowViewDistance, previousSplitDistance, 0.01f));
         #endif
     }
 
@@ -246,7 +246,7 @@ namespace urchin {
                     deferredSecondPassRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getShadowMapTexture(), std::move(textureParam)));
                 }
 
-                unsigned int maxNbShadowMaps = std::max(1u /* one SM for spot */, config.nbShadowMapsForSun);
+                unsigned int maxNbShadowMaps = std::max(1u /* one SM for spot */, config.nbSunShadowMaps);
                 for (unsigned int shadowMapIndex = 0; shadowMapIndex < maxNbShadowMaps; ++shadowMapIndex) {
                     std::size_t matrixIndex = shadowLightIndex * maxNbShadowMaps + shadowMapIndex;
                     if (lightShadowMap->getLightSplitShadowMaps().size() > shadowMapIndex) {
@@ -271,7 +271,7 @@ namespace urchin {
         //uniform data
         deferredSecondPassRenderer.updateUniformData(viewProjMatricesUniformBinding, lightProjectionViewMatrices.data());
 
-        for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMapsForSun; ++shadowMapIndex) {
+        for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbSunShadowMaps; ++shadowMapIndex) {
             splitData[shadowMapIndex] = Point4(splitFrustums[shadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[shadowMapIndex].getBoundingSphere().getRadius());
         }
         deferredSecondPassRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
