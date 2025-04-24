@@ -10,7 +10,7 @@ namespace urchin {
 
             template<class T> static T sign(T);
 
-            static unsigned int powerOfTwo(unsigned int);
+            static unsigned int nearestPowerOfTwo(unsigned int);
             static int pow(int, unsigned int);
 
             template<class T> static bool isEqual(T, T, T tolerance = std::numeric_limits<T>::epsilon());

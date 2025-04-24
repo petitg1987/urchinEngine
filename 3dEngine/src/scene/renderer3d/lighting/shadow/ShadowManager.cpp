@@ -5,6 +5,7 @@
 #include <cstring>
 
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
+#include <scene/renderer3d/lighting/light/spot/SpotLight.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/OffsetTextureGenerator.h>
 
@@ -49,17 +50,19 @@ namespace urchin {
             Light* light = lightManager.getLastUpdatedLight();
             if (notificationType == LightManager::ADD_LIGHT) {
                 light->addObserver(this, Light::PRODUCE_SHADOW);
+                light->addObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
                 if (light->isProduceShadow()) {
                     addShadowLight(*light);
                 }
             } else if (notificationType == LightManager::REMOVE_LIGHT) {
                 light->removeObserver(this, Light::PRODUCE_SHADOW);
+                light->removeObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
                 if (light->isProduceShadow()) {
                     removeShadowLight(*light);
                 }
             }
         } else if (auto* light = dynamic_cast<Light*>(observable)) {
-            if (notificationType == Light::PRODUCE_SHADOW) {
+            if (notificationType == Light::PRODUCE_SHADOW || notificationType == Light::ILLUMINATED_AREA_SIZE_UPDATED) {
                 if (light->isProduceShadow()) {
                     addShadowLight(*light);
                 } else {
@@ -160,11 +163,20 @@ namespace urchin {
     void ShadowManager::addShadowLight(Light& light) {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
 
+        removeShadowLight(light);
+
         if (light.getLightType() == Light::LightType::SUN) {
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.sunShadowViewDistance, config.sunShadowMapResolution, config.nbSunShadowMaps);
         } else if (light.getLightType() == Light::LightType::SPOT) {
-            //TODO review resolution for spot
-            lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, 1024, 1);
+            const auto& spotLight = static_cast<SpotLight&>(light);
+            unsigned int realShadowMapResolution = (unsigned int)(spotLight.computeEndRadius() * config.spotShadowMapResolutionFactor);
+            unsigned int shadowMapResolution = std::max(32u, MathFunction::nearestPowerOfTwo(realShadowMapResolution));
+            //TODO add in games config
+
+            //TODO remove
+            std::cout<<"Shadow map res: "<<realShadowMapResolution<<"||"<<shadowMapResolution<<", radius: "<<spotLight.computeEndRadius()<<std::endl;
+
+            lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, shadowMapResolution, 1);
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)light.getLightType()));
         }

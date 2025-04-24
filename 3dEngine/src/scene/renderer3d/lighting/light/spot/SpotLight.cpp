@@ -63,6 +63,8 @@ namespace urchin {
         this->outerCosAngle = std::cos(AngleConverter<float>::toRadian(outerAngleInDegrees));
 
         computeScope();
+
+        notifyObservers(this, ILLUMINATED_AREA_SIZE_UPDATED);
     }
 
     /**
@@ -103,6 +105,8 @@ namespace urchin {
         this->exponentialAttenuation = exponentialAttenuation;
 
         computeScope();
+
+        notifyObservers(this, ILLUMINATED_AREA_SIZE_UPDATED);
     }
 
     float SpotLight::getExponentialAttenuation() const {
@@ -111,6 +115,10 @@ namespace urchin {
 
     float SpotLight::computeIlluminationRange() const {
         return -std::log(ATTENUATION_NO_EFFECT) / exponentialAttenuation;
+    }
+
+    float SpotLight::computeEndRadius() const {
+        return computeIlluminationRange() * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
     }
 
     const Cone<float>& SpotLight::getConeScope() const {

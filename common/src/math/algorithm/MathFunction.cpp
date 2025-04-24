@@ -19,8 +19,13 @@ namespace urchin {
         return 0;
     }
 
-    unsigned int MathFunction::powerOfTwo(unsigned int exponent) {
-        return 1u << exponent;
+    unsigned int MathFunction::nearestPowerOfTwo(unsigned int value) {
+        if (value == 0) {
+            return 1;
+        }
+        unsigned int lower = 1 << (unsigned int)(std::floor(std::log2(value)));
+        unsigned int upper = 1 << (unsigned int)(std::ceil(std::log2(value)));
+        return (value - lower < upper - value) ? lower : upper;
     }
 
     int MathFunction::pow(int base, unsigned int exp) {

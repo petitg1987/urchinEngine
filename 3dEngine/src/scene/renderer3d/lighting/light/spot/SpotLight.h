@@ -30,6 +30,7 @@ namespace urchin {
             void setAttenuation(float);
             float getExponentialAttenuation() const;
             float computeIlluminationRange() const;
+            float computeEndRadius() const;
             const Cone<float>& getConeScope() const;
             const Frustum<float>& getFrustumScope() const;
 

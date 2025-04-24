@@ -23,6 +23,7 @@ namespace urchin {
             enum NotificationType {
                 LIGHT_MOVE, //A light has been moved (position, direction...)
                 PRODUCE_SHADOW, //Produce shadow flag has been updated
+                ILLUMINATED_AREA_SIZE_UPDATED, //Light illuminated area size has been updated
             };
 
             virtual const std::vector<Vector3<float>>& getDirections() const = 0;
