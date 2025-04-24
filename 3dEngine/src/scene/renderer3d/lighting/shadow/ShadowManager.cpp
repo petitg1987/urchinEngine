@@ -27,16 +27,15 @@ namespace urchin {
 
     void ShadowManager::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t projViewMatricesUniformBinding,
                                               uint32_t shadowMapDataUniformBinding, uint32_t shadowMapInfoUniformBinding) {
-        std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * config.nbShadowMaps;
-        lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
+        std::size_t maxMatricesLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * std::max(1u /* one SM for spot */, config.nbShadowMapsForSun);
+        lightProjectionViewMatrices.resize(maxMatricesLightProjectionViewSize, Matrix4<float>{});
 
-        shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
         shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
 
         deferredSecondPassRendererBuilder
-                ->addUniformData(projViewMatricesUniformBinding, mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
-                ->addUniformData(shadowMapDataUniformBinding, config.nbShadowMaps * sizeof(Point4<float>), splitData.data())
+                ->addUniformData(projViewMatricesUniformBinding, maxMatricesLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
+                ->addUniformData(shadowMapDataUniformBinding, config.nbShadowMapsForSun * sizeof(Point4<float>), splitData.data())
                 ->addUniformData(shadowMapInfoUniformBinding, sizeof(shadowMapInfo), &shadowMapInfo);
     }
 
@@ -87,18 +86,18 @@ namespace urchin {
     }
 
     void ShadowManager::updateConfig(const Config& config) {
-        if (this->config.nbShadowMaps != config.nbShadowMaps ||
-                this->config.shadowMapResolution != config.shadowMapResolution ||
+        if (this->config.nbShadowMapsForSun != config.nbShadowMapsForSun ||
+                this->config.shadowMapResolutionForSun != config.shadowMapResolutionForSun ||
                 this->config.viewingShadowDistance != config.viewingShadowDistance ||
-                this->config.blurFilterBoxSize != config.blurFilterBoxSize) {
-            bool nbShadowMapUpdated = this->config.nbShadowMaps != config.nbShadowMaps;
+                this->config.blurFilterBoxSize != config.blurFilterBoxSize) { //TODO update with new param
+            bool nbShadowMapForSunUpdated = this->config.nbShadowMapsForSun != config.nbShadowMapsForSun;
             bool blurFilterUpdated = this->config.blurFilterBoxSize != config.blurFilterBoxSize;
 
             this->config = config;
             checkConfig();
 
             updateShadowLights();
-            if (nbShadowMapUpdated) {
+            if (nbShadowMapForSunUpdated) {
                 notifyObservers(this, NUMBER_SHADOW_MAPS_UPDATE);
             }
             if (blurFilterUpdated) {
@@ -112,10 +111,10 @@ namespace urchin {
     }
 
     void ShadowManager::checkConfig() const {
-        if (config.nbShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
-            throw std::invalid_argument("Number of shadow maps must be greater than one. Value: " + std::to_string(config.nbShadowMaps));
-        } else if (config.nbShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
-            throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbShadowMaps));
+        if (config.nbShadowMapsForSun <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
+            throw std::invalid_argument("Number of shadow maps for sun must be greater than one. Value: " + std::to_string(config.nbShadowMapsForSun));
+        } else if (config.nbShadowMapsForSun > SHADOW_MAPS_SHADER_LIMIT) {
+            throw std::invalid_argument("Number of shadow maps for sun must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbShadowMapsForSun));
         } else if (config.blurFilterBoxSize == 0) {
             throw std::invalid_argument("Size of the blur filter box must be greater or equal to 1. Value: " + std::to_string(config.blurFilterBoxSize));
         }
@@ -161,7 +160,8 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
 
         if (light.getLightType() == Light::LightType::SUN) {
-            lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.viewingShadowDistance, config.shadowMapResolution, config.nbShadowMaps);
+            lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.viewingShadowDistance,
+                config.shadowMapResolutionForSun, config.nbShadowMapsForSun);
         } else if (light.getLightType() == Light::LightType::SPOT) {
             //TODO review resolution for spot
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, 1024, 1);
@@ -204,8 +204,8 @@ namespace urchin {
 
         constexpr float ADJUSTMENT_EXPONENT = 1.4f; //1.0 = linear distribution, >1.0 = exponential distribution
         float previousSplitDistance = 0.0f;
-        for (unsigned int i = 1; i <= config.nbShadowMaps; ++i) {
-            float linearSplitPerc = (float)i / (float)config.nbShadowMaps;
+        for (unsigned int i = 1; i <= config.nbShadowMapsForSun; ++i) {
+            float linearSplitPerc = (float)i / (float)config.nbShadowMapsForSun;
             float splitPerc = std::pow(linearSplitPerc, ADJUSTMENT_EXPONENT);
             float splitDistance = config.viewingShadowDistance * splitPerc;
 
@@ -246,8 +246,9 @@ namespace urchin {
                     deferredSecondPassRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getShadowMapTexture(), std::move(textureParam)));
                 }
 
-                for (unsigned int shadowMapIndex = 0; shadowMapIndex < config.nbShadowMaps; ++shadowMapIndex) {
-                    std::size_t matrixIndex = shadowLightIndex * config.nbShadowMaps + shadowMapIndex;
+                unsigned int maxNbShadowMaps = std::max(1u /* one SM for spot */, config.nbShadowMapsForSun);
+                for (unsigned int shadowMapIndex = 0; shadowMapIndex < maxNbShadowMaps; ++shadowMapIndex) {
+                    std::size_t matrixIndex = shadowLightIndex * maxNbShadowMaps + shadowMapIndex;
                     if (lightShadowMap->getLightSplitShadowMaps().size() > shadowMapIndex) {
                         const std::unique_ptr<LightSplitShadowMap>& lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[shadowMapIndex];
                         lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
@@ -270,12 +271,11 @@ namespace urchin {
         //uniform data
         deferredSecondPassRenderer.updateUniformData(viewProjMatricesUniformBinding, lightProjectionViewMatrices.data());
 
-        for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
+        for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMapsForSun; ++shadowMapIndex) {
             splitData[shadowMapIndex] = Point4(splitFrustums[shadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[shadowMapIndex].getBoundingSphere().getRadius());
         }
         deferredSecondPassRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
 
-        shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
         shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
         deferredSecondPassRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);

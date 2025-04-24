@@ -26,8 +26,8 @@ namespace urchin {
             };
 
             struct Config {
-                unsigned int nbShadowMaps = 5;
-                unsigned int shadowMapResolution = 1024;
+                unsigned int nbShadowMapsForSun = 5;
+                unsigned int shadowMapResolutionForSun = 1024;
                 unsigned int blurFilterBoxSize = 3;
                 float shadowStrengthFactor = 1.0f;
                 float viewingShadowDistance = 75.0f;
@@ -90,7 +90,6 @@ namespace urchin {
             std::array<Point4<float>, (std::size_t)SHADOW_MAPS_SHADER_LIMIT> splitData;
             std::shared_ptr<Texture> shadowMapOffsetTexture;
             struct {
-                alignas(4) float shadowMapInvSize;
                 alignas(4) int offsetSampleCount;
                 alignas(4) float shadowStrengthFactor;
             } shadowMapInfo;
