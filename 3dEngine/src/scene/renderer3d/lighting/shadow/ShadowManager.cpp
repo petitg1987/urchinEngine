@@ -67,10 +67,12 @@ namespace urchin {
             }
         } else if (auto* light = dynamic_cast<Light*>(observable)) {
             if (notificationType == Light::AFFECTED_ZONE_UPDATED) {
-                for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
-                    unsigned int i = 0;
-                    for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                        lightSplitShadowMap->onLightAffectedZoneUpdated(splitFrustums[i++]);
+                if (lightShadowMaps.contains(light)) {
+                    std::cout<<"light affected zone changed"<<std::endl; //TODO why so many call ?
+
+                    unsigned int splitIndex = 0;
+                    for (const auto& lightSplitShadowMap : getLightShadowMap(light).getLightSplitShadowMaps()) {
+                        lightSplitShadowMap->onLightAffectedZoneUpdated(splitFrustums[splitIndex++]); //TODO
                     }
                 }
             } else if (notificationType == Light::PRODUCE_SHADOW) {
@@ -85,6 +87,7 @@ namespace urchin {
                     unsigned int oldSpotShadowMapResolution = getLightShadowMap(light).getShadowMapSize();
                     unsigned int newSpotShadowMapResolution = computeSpotShadowMapResolution(*spotLight);
                     if (oldSpotShadowMapResolution != newSpotShadowMapResolution) {
+                        std::cout<<"spot light res changed"<<std::endl; //TODO bug: no shadow displayed
                         addShadowLight(*light);
                     }
                 }
@@ -162,9 +165,9 @@ namespace urchin {
 
         splitFrustum(frustum);
         for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
-            unsigned int i = 0;
+            unsigned int splitIndex = 0;
             for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                lightSplitShadowMap->onSplitFrustumUpdated(splitFrustums[i++]);
+                lightSplitShadowMap->onSplitFrustumUpdated(splitFrustums[splitIndex++]);
             }
         }
 
@@ -226,7 +229,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
+    void ShadowManager::splitFrustum(const Frustum<float>& frustum) { //TODO not correct for spot ! or not call for spot ?
         splitFrustums.clear();
 
         constexpr float ADJUSTMENT_EXPONENT = 1.4f; //1.0 = linear distribution, >1.0 = exponential distribution
