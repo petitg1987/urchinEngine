@@ -26,7 +26,7 @@ namespace urchin {
 
         computeScope();
 
-        notifyObservers(this, LIGHT_MOVE);
+        notifyObservers(this, AFFECTED_ZONE_UPDATED);
     }
 
     const Point3<float>& OmnidirectionalLight::getPosition() const {
@@ -56,6 +56,9 @@ namespace urchin {
         this->exponentialAttenuation = exponentialAttenuation;
 
         computeScope();
+
+        notifyObservers(this, AFFECTED_ZONE_UPDATED);
+        notifyObservers(this, ILLUMINATED_AREA_SIZE_UPDATED);
     }
 
     float OmnidirectionalLight::getExponentialAttenuation() const {

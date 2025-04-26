@@ -57,7 +57,7 @@ namespace urchin {
         baseFrustum.buildFrustum(verticalFovAngle, ratio, nearPlane, farPlane);
 
         updateComponents();
-        notifyObservers(this, PROJECTION_UPDATE);
+        notifyObservers(this, PROJECTION_UPDATED);
     }
 
     float Camera::computeVerticalFovAngle() const {

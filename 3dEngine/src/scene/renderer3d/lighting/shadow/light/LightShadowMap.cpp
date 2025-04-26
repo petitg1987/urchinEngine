@@ -44,11 +44,11 @@ namespace urchin {
             lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(this));
         }
         updateLightViewMatrix();
-        light.addObserver(this, Light::LIGHT_MOVE);
+        light.addObserver(this, Light::AFFECTED_ZONE_UPDATED);
     }
 
     LightShadowMap::~LightShadowMap() {
-        light.removeObserver(this, Light::LIGHT_MOVE);
+        light.removeObserver(this, Light::AFFECTED_ZONE_UPDATED);
         if (renderTarget) {
             renderTarget->cleanup();
         }
@@ -92,7 +92,7 @@ namespace urchin {
 
     void LightShadowMap::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<Light*>(observable)) {
-            if (notificationType == Light::LIGHT_MOVE) {
+            if (notificationType == Light::AFFECTED_ZONE_UPDATED) {
                 updateLightViewMatrix();
             }
         }

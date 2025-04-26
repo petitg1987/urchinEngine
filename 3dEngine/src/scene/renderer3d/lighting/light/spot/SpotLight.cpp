@@ -23,7 +23,7 @@ namespace urchin {
 
         computeScope();
 
-        notifyObservers(this, LIGHT_MOVE);
+        notifyObservers(this, AFFECTED_ZONE_UPDATED);
     }
 
     const Point3<float>& SpotLight::getPosition() const {
@@ -39,7 +39,7 @@ namespace urchin {
 
         computeScope();
 
-        notifyObservers(this, LIGHT_MOVE);
+        notifyObservers(this, AFFECTED_ZONE_UPDATED);
     }
 
     const std::vector<Vector3<float>>& SpotLight::getDirections() const {
@@ -64,6 +64,7 @@ namespace urchin {
 
         computeScope();
 
+        notifyObservers(this, AFFECTED_ZONE_UPDATED);
         notifyObservers(this, ILLUMINATED_AREA_SIZE_UPDATED);
     }
 
@@ -110,6 +111,7 @@ namespace urchin {
 
         computeScope();
 
+        notifyObservers(this, AFFECTED_ZONE_UPDATED);
         notifyObservers(this, ILLUMINATED_AREA_SIZE_UPDATED);
     }
 

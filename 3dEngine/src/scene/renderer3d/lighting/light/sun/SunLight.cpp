@@ -15,7 +15,7 @@ namespace urchin {
         this->directions.clear();
         this->directions.emplace_back(direction);
 
-        notifyObservers(this, LIGHT_MOVE);
+        notifyObservers(this, AFFECTED_ZONE_UPDATED);
     }
 
     const std::vector<Vector3<float>>& SunLight::getDirections() const {

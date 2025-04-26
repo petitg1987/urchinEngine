@@ -68,7 +68,7 @@ namespace urchin {
 
         //scene properties
         assert(this->camera);
-        this->camera->addObserver(this, Camera::PROJECTION_UPDATE);
+        this->camera->addObserver(this, Camera::PROJECTION_UPDATED);
         this->camera->initialize(sceneWidth, sceneHeight);
 
         //deferred passes
@@ -111,7 +111,7 @@ namespace urchin {
                 createOrUpdateDeferredPasses();
             }
         } else if (dynamic_cast<Camera*>(observable)) {
-            if (notificationType == Camera::PROJECTION_UPDATE) {
+            if (notificationType == Camera::PROJECTION_UPDATED) {
                 onCameraProjectionUpdate();
             }
         } else if (auto* model = dynamic_cast<Model*>(observable)) {
