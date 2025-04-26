@@ -201,24 +201,8 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> T& Matrix3<T>::operator ()(size_t line, size_t column) {
+    template<class T> T Matrix3<T>::operator ()(size_t line, size_t column) const {
         return (&a11)[column * 3 + line];
-    }
-
-    template<class T> const T& Matrix3<T>::operator ()(size_t line, size_t column) const {
-        return (&a11)[column * 3 + line];
-    }
-
-    template<class T> T& Matrix3<T>::operator ()(std::size_t index) {
-        return (&a11)[index];
-    }
-
-    template<class T> const T& Matrix3<T>::operator ()(std::size_t index) const {
-        return (&a11)[index];
-    }
-
-    template<class T> Matrix3<T>::operator T*() {
-        return &a11;
     }
 
     template<class T> Matrix3<T>::operator const T*() const {

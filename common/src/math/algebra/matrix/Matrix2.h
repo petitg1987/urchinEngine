@@ -37,12 +37,7 @@ namespace urchin {
             const Matrix2<T>& operator *=(T);
             const Matrix2<T>& operator /=(T);
 
-            T& operator ()(std::size_t, std::size_t);
-            const T& operator ()(std::size_t, std::size_t) const;
-            T& operator ()(std::size_t);
-            const T& operator ()(std::size_t) const;
-
-            explicit operator T*();
+            T operator ()(std::size_t, std::size_t) const;
             explicit operator const T*() const;
 
             //column major layout

@@ -60,10 +60,10 @@ namespace urchin {
         Vector3 boxHalfSizes(getRadius(), getRadius(), getRadius());
         boxHalfSizes[getConeOrientation() / 2] = getHeight() / 2.0f;
         Matrix3<float> orientation = physicsTransform.retrieveOrientationMatrix();
-        Point3<float> extend(
-                boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
-                boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
-                boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
+        Point3 extend(
+                boxHalfSizes.X * std::abs(orientation(0, 0)) + boxHalfSizes.Y * std::abs(orientation(0, 1)) + boxHalfSizes.Z * std::abs(orientation(0, 2)),
+                boxHalfSizes.X * std::abs(orientation(1, 0)) + boxHalfSizes.Y * std::abs(orientation(1, 1)) + boxHalfSizes.Z * std::abs(orientation(1, 2)),
+                boxHalfSizes.X * std::abs(orientation(2, 0)) + boxHalfSizes.Y * std::abs(orientation(2, 1)) + boxHalfSizes.Z * std::abs(orientation(2, 2))
         );
 
         const Point3<float>& centerOfMass = physicsTransform.getPosition();

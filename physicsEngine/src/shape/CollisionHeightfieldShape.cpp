@@ -74,10 +74,10 @@ namespace urchin {
 
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         Matrix3<float> orientation = physicsTransform.retrieveOrientationMatrix();
-        Point3<float> extend(
-                localAABBox.getHalfSize(0) * std::abs(orientation(0)) + localAABBox.getHalfSize(1) * std::abs(orientation(3)) + localAABBox.getHalfSize(2) * std::abs(orientation(6)),
-                localAABBox.getHalfSize(0) * std::abs(orientation(1)) + localAABBox.getHalfSize(1) * std::abs(orientation(4)) + localAABBox.getHalfSize(2) * std::abs(orientation(7)),
-                localAABBox.getHalfSize(0) * std::abs(orientation(2)) + localAABBox.getHalfSize(1) * std::abs(orientation(5)) + localAABBox.getHalfSize(2) * std::abs(orientation(8))
+        Point3 extend(
+                localAABBox.getHalfSize(0) * std::abs(orientation(0, 0)) + localAABBox.getHalfSize(1) * std::abs(orientation(0, 1)) + localAABBox.getHalfSize(2) * std::abs(orientation(0, 2)),
+                localAABBox.getHalfSize(0) * std::abs(orientation(1, 0)) + localAABBox.getHalfSize(1) * std::abs(orientation(1, 1)) + localAABBox.getHalfSize(2) * std::abs(orientation(1, 2)),
+                localAABBox.getHalfSize(0) * std::abs(orientation(2, 0)) + localAABBox.getHalfSize(1) * std::abs(orientation(2, 1)) + localAABBox.getHalfSize(2) * std::abs(orientation(2, 2))
         );
 
         const Point3<float>& position = physicsTransform.getPosition();
