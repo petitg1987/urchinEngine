@@ -67,7 +67,7 @@ namespace urchin {
             //light handling
             void addShadowLight(Light&);
             unsigned int computeSpotShadowMapResolution(const SpotLight&) const;
-            void removeShadowLight(const Light&);
+            void removeShadowLight(Light&);
             void updateShadowLights();
 
             //splits handling

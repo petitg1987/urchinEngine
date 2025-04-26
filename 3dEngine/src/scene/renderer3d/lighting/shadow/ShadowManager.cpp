@@ -51,16 +51,12 @@ namespace urchin {
         if (dynamic_cast<LightManager*>(observable)) {
             Light* light = lightManager.getLastUpdatedLight();
             if (notificationType == LightManager::ADD_LIGHT) {
-                light->addObserver(this, Light::AFFECTED_ZONE_UPDATED);
                 light->addObserver(this, Light::PRODUCE_SHADOW);
-                light->addObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
                 if (light->isProduceShadow()) {
                     addShadowLight(*light);
                 }
             } else if (notificationType == LightManager::REMOVE_LIGHT) {
-                light->removeObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
                 light->removeObserver(this, Light::PRODUCE_SHADOW);
-                light->removeObserver(this, Light::AFFECTED_ZONE_UPDATED);
                 if (light->isProduceShadow()) {
                     removeShadowLight(*light);
                 }
@@ -72,7 +68,7 @@ namespace urchin {
 
                     unsigned int splitIndex = 0;
                     for (const auto& lightSplitShadowMap : getLightShadowMap(light).getLightSplitShadowMaps()) {
-                        lightSplitShadowMap->onLightAffectedZoneUpdated(splitFrustums[splitIndex++]); //TODO
+                        lightSplitShadowMap->onLightAffectedZoneUpdated(splitFrustums[splitIndex++]);
                     }
                 }
             } else if (notificationType == Light::PRODUCE_SHADOW) {
@@ -83,7 +79,7 @@ namespace urchin {
                 }
             } else if (notificationType == Light::ILLUMINATED_AREA_SIZE_UPDATED) {
                 const auto* spotLight = dynamic_cast<const SpotLight*>(light);
-                if (spotLight && lightShadowMaps.contains(spotLight)) {
+                if (spotLight && lightShadowMaps.contains(light)) {
                     unsigned int oldSpotShadowMapResolution = getLightShadowMap(light).getShadowMapSize();
                     unsigned int newSpotShadowMapResolution = computeSpotShadowMapResolution(*spotLight);
                     if (oldSpotShadowMapResolution != newSpotShadowMapResolution) {
@@ -193,6 +189,9 @@ namespace urchin {
 
         removeShadowLight(light);
 
+        light.addObserver(this, Light::AFFECTED_ZONE_UPDATED);
+        light.addObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
+
         if (light.getLightType() == Light::LightType::SUN) {
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.sunShadowViewDistance, config.sunShadowMapResolution, config.nbSunShadowMaps);
         } else if (light.getLightType() == Light::LightType::SPOT) {
@@ -209,7 +208,10 @@ namespace urchin {
         return std::min(config.spotShadowMapMaxResolution, std::max(64u, MathFunction::nearestPowerOfTwo(expectedShadowMapResolution)));
     }
 
-    void ShadowManager::removeShadowLight(const Light& light) {
+    void ShadowManager::removeShadowLight(Light& light) {
+        light.removeObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
+        light.removeObserver(this, Light::AFFECTED_ZONE_UPDATED);
+
         lightShadowMaps.erase(&light);
     }
 
