@@ -71,12 +71,16 @@ namespace urchin {
     }
 
     float LightSplitShadowMap::getSpotNearPlane() const {
-        assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT);
+        #ifdef URCHIN_DEBUG
+            assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT);
+        #endif
         return spotNearPlane;
     }
 
     float LightSplitShadowMap::getSpotFarPlane() const {
-        assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT);
+        #ifdef URCHIN_DEBUG
+            assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT);
+        #endif
         return spotFarPlane;
     }
 
