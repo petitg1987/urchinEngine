@@ -48,9 +48,9 @@ namespace urchin {
 
     void SpotLight::setAngles(float innerAngleInDegrees, float outerAngleInDegrees) {
         if (innerAngleInDegrees > MAX_ANGLE_DEGREE) {
-            throw std::out_of_range("Inner angle for a spot light must be below 89°: " + std::to_string(innerAngleInDegrees));
+            throw std::out_of_range("Inner angle for a spot light must be below " + std::to_string(MAX_ANGLE_DEGREE) + "°: " + std::to_string(innerAngleInDegrees));
         } else if (outerAngleInDegrees > MAX_ANGLE_DEGREE) {
-            throw std::out_of_range("Outer angle for a spot light must be below 89°: " + std::to_string(outerAngleInDegrees));
+            throw std::out_of_range("Outer angle for a spot light must be below " + std::to_string(MAX_ANGLE_DEGREE) + "°: " + std::to_string(outerAngleInDegrees));
         }
 
         if (innerAngleInDegrees > outerAngleInDegrees) {
