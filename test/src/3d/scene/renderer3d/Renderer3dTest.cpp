@@ -7,7 +7,7 @@ using namespace urchin;
 
 void Renderer3dTest::modelPreWarm() {
     OffscreenRender renderTarget("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
-    renderTarget.setOutputSize(1920, 1080, 1);
+    renderTarget.setOutputSize(1920, 1080, 1, false);
     I18nService nullI18nService;
     auto camera = std::make_unique<FreeCamera>(90.0f, 0.01f, 1000.0f);
     Renderer3d renderer3D(1.0f, renderTarget, std::move(camera), VisualConfig(), nullI18nService);

@@ -126,10 +126,6 @@ namespace urchin {
         }
     }
 
-    const std::vector<SplitFrustum>& ShadowManager::getSplitFrustums() const {
-        return splitFrustums;
-    }
-
     const std::shared_ptr<Texture>& ShadowManager::getEmptyShadowMapTexture() const {
         return emptyShadowMapTexture;
     }
@@ -147,8 +143,12 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
 
         splitFrustum(frustum);
+
         for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
-            updateLightSplitsShadowMap(*lightShadowMap);
+            unsigned int i = 0;
+            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+                lightSplitShadowMap->update(splitFrustums[i++]);
+            }
         }
     }
 
@@ -197,15 +197,6 @@ namespace urchin {
         for (Light* light : allLights) {
             removeShadowLight(*light);
             addShadowLight(*light);
-        }
-    }
-
-    void ShadowManager::updateLightSplitsShadowMap(const LightShadowMap& lightShadowMap) const {
-        ScopeProfiler sp(Profiler::graphic(), "upFrustumShadow");
-
-        unsigned int i = 0;
-        for (const auto& lightSplitShadowMap : lightShadowMap.getLightSplitShadowMaps()) {
-            lightSplitShadowMap->update(splitFrustums[i++]);
         }
     }
 

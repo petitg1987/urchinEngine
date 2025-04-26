@@ -50,7 +50,6 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            const std::vector<SplitFrustum>& getSplitFrustums() const;
             const std::shared_ptr<Texture>& getEmptyShadowMapTexture() const;
             const LightShadowMap& getLightShadowMap(const Light*) const;
 
@@ -70,7 +69,6 @@ namespace urchin {
             void updateShadowLights();
 
             //splits handling
-            void updateLightSplitsShadowMap(const LightShadowMap&) const;
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality

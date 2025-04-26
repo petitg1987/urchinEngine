@@ -235,7 +235,7 @@ void UIRendererTest::windowChildRenderingOrder() {
 
 std::unique_ptr<UIRenderer> UIRendererTest::setupUiRenderer() {
     renderTarget = std::make_unique<OffscreenRender>("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
-    renderTarget->setOutputSize(1920, 1080, 1);
+    renderTarget->setOutputSize(1920, 1080, 1, false);
     i18nService = std::make_unique<I18nService>();
     UISkinService::instance().setSkin("ui/skinDefinition.uda");
 
