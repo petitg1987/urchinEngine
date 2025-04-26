@@ -12,6 +12,7 @@ namespace urchin {
             width(0),
             height(0),
             layer(0),
+            bIsArrayOutput(false),
             commandBufferFence(nullptr),
             submitSemaphores({}),
             submitSemaphoresFrameIndex(0),
@@ -28,12 +29,14 @@ namespace urchin {
         resetOutput();
     }
 
-    void OffscreenRender::setOutputSize(unsigned int width, unsigned int height, unsigned int layer) {
+    void OffscreenRender::setOutputSize(unsigned int width, unsigned int height, unsigned int layer, bool bIsArrayOutput) {
         assert(!isInitialized());
+        assert(bIsArrayOutput || layer == 1);
 
         this->width = width;
         this->height = height;
         this->layer = layer;
+        this->bIsArrayOutput = bIsArrayOutput;
     }
 
     void OffscreenRender::addOutputTexture(const std::shared_ptr<Texture>& texture, LoadType loadType, const std::optional<Vector4<float>>& clearColor, OutputUsage outputUsage) {
@@ -45,6 +48,7 @@ namespace urchin {
             width = texture->getWidth();
             height = texture->getHeight();
             layer = texture->getLayer();
+            bIsArrayOutput = texture->getTextureType() == TextureType::ARRAY;
         }
 
         if (loadType == LoadType::LOAD_CONTENT) {
@@ -88,6 +92,7 @@ namespace urchin {
         width = 0;
         height = 0;
         layer = 0;
+        bIsArrayOutput = false;
     }
 
     void OffscreenRender::initialize() {
@@ -148,6 +153,12 @@ namespace urchin {
     unsigned int OffscreenRender::getLayer() const {
         assert(layer != 0);
         return layer;
+    }
+
+    bool OffscreenRender::isArrayOutput() const {
+        assert(layer != 0);
+        assert(bIsArrayOutput || layer == 1);
+        return bIsArrayOutput;
     }
 
     std::size_t OffscreenRender::getNumColorAttachment() const {

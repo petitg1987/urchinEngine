@@ -105,6 +105,10 @@ namespace urchin {
         return 1;
     }
 
+    bool ScreenRender::isArrayOutput() const {
+        return false;
+    }
+
     std::size_t ScreenRender::getNumFramebuffer() const {
         return swapChainHandler.getSwapChainImages().size();
     }

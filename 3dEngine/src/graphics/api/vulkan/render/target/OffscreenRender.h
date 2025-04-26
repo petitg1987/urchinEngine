@@ -29,7 +29,7 @@ namespace urchin {
             explicit OffscreenRender(std::string, bool, DepthAttachmentType);
             ~OffscreenRender() override;
 
-            void setOutputSize(unsigned int, unsigned int, unsigned int);
+            void setOutputSize(unsigned int, unsigned int, unsigned int, bool);
             void addOutputTexture(const std::shared_ptr<Texture>&, LoadType = LoadType::NO_LOAD, const std::optional<Vector4<float>>& = std::nullopt, OutputUsage = OutputUsage::GRAPHICS);
             std::shared_ptr<Texture>& getOutputTexture(std::size_t);
             void resetOutput();
@@ -40,6 +40,7 @@ namespace urchin {
             unsigned int getWidth() const override;
             unsigned int getHeight() const override;
             unsigned int getLayer() const override;
+            bool isArrayOutput() const override;
             std::size_t getNumFramebuffer() const override;
             std::size_t getNumColorAttachment() const override;
 
@@ -68,6 +69,7 @@ namespace urchin {
             unsigned int width;
             unsigned int height;
             unsigned int layer;
+            bool bIsArrayOutput;
 
             std::vector<VkClearValue> clearValues;
             std::vector<OutputTexture> outputTextures;

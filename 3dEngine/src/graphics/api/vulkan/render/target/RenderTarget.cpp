@@ -304,10 +304,10 @@ namespace urchin {
                 }
                 depthTexture = externalDepthTexture;
             } else {
-                if (getLayer() == 1 && name != "shadow map - spot") { //TODO review to do better
-                    depthTexture = Texture::build(name + " - depth", getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT);
-                } else {
+                if (isArrayOutput()) {
                     depthTexture = Texture::buildArray(name + " - depth", getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT);
+                } else {
+                    depthTexture = Texture::build(name + " - depth", getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT);
                 }
                 depthTexture->enableTextureWriting(OutputUsage::GRAPHICS);
                 if (!isTestMode()) {

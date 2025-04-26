@@ -35,6 +35,7 @@ namespace urchin {
             virtual unsigned int getWidth() const = 0;
             virtual unsigned int getHeight() const = 0;
             virtual unsigned int getLayer() const = 0;
+            virtual bool isArrayOutput() const = 0;
             virtual std::size_t getNumFramebuffer() const = 0;
             virtual std::size_t getNumColorAttachment() const = 0;
             std::size_t getRenderPassCompatibilityId() const;

@@ -24,6 +24,7 @@ namespace urchin {
             unsigned int getWidth() const override;
             unsigned int getHeight() const override;
             unsigned int getLayer() const override;
+            bool isArrayOutput() const override;
             std::size_t getNumFramebuffer() const override;
             std::size_t getNumColorAttachment() const override;
 
