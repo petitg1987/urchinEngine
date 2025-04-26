@@ -13,14 +13,14 @@ void ModelOcclusionCullerTest::movingModel() {
 
     std::vector<Model*> models;
     modelOcclusionCuller->refresh();
-    modelOcclusionCuller->getModelsInFrustum(frustum, models);
+    modelOcclusionCuller->getModelsInConvexObject(frustum, models);
     modelOcclusionCuller->postRefresh();
     AssertHelper::assertUnsignedIntEquals(models.size(), 0);
 
     model->setTransform(Transform(Point3(0.0f, 2.0f, -3.0f), Quaternion<float>())); //model inside frustum
     models.clear();
     modelOcclusionCuller->refresh();
-    modelOcclusionCuller->getModelsInFrustum(frustum, models);
+    modelOcclusionCuller->getModelsInConvexObject(frustum, models);
     modelOcclusionCuller->postRefresh();
     AssertHelper::assertUnsignedIntEquals(models.size(), 1);
 }
@@ -33,21 +33,21 @@ void ModelOcclusionCullerTest::updateCullBehavior() {
 
     std::vector<Model*> models;
     modelOcclusionCuller->refresh();
-    modelOcclusionCuller->getModelsInFrustum(frustum, models);
+    modelOcclusionCuller->getModelsInConvexObject(frustum, models);
     modelOcclusionCuller->postRefresh();
     AssertHelper::assertUnsignedIntEquals(models.size(), 0);
 
     model->setCullBehavior(Model::CullBehavior::NO_CULL);
     models.clear();
     modelOcclusionCuller->refresh();
-    modelOcclusionCuller->getModelsInFrustum(frustum, models);
+    modelOcclusionCuller->getModelsInConvexObject(frustum, models);
     modelOcclusionCuller->postRefresh();
     AssertHelper::assertUnsignedIntEquals(models.size(), 1);
 
     model->setCullBehavior(Model::CullBehavior::CULL);
     models.clear();
     modelOcclusionCuller->refresh();
-    modelOcclusionCuller->getModelsInFrustum(frustum, models);
+    modelOcclusionCuller->getModelsInConvexObject(frustum, models);
     modelOcclusionCuller->postRefresh();
     AssertHelper::assertUnsignedIntEquals(models.size(), 0);
 }

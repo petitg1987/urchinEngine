@@ -63,12 +63,12 @@ namespace urchin {
     }
 
     /**
-     * @param modelsInFrustum [out] models in frustum
+     * @param models [out] models in convex objects
      */
-    void ModelOcclusionCuller::getModelsInFrustum(const Frustum<float>& frustum, std::vector<Model*>& modelsInFrustum) const {
-        assert(modelsInFrustum.empty());
+    void ModelOcclusionCuller::getModelsInConvexObject(const ConvexObject3D<float>& convexObject, std::vector<Model*>& models) const {
+        assert(models.empty());
         auto acceptAllFilter = [](const Model* const){ return true; };
-        getModelsInFrustum(frustum, modelsInFrustum, false, acceptAllFilter);
+        getModelsInConvexObject(convexObject, models, false, acceptAllFilter);
     }
 
     std::vector<std::shared_ptr<Model>> ModelOcclusionCuller::getAllModels() const {

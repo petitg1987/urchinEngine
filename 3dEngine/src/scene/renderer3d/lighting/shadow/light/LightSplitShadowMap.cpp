@@ -44,7 +44,7 @@ namespace urchin {
             AABBox<float> shadowCasterReceiverShape(shadowReceiverAndCasterVertex);
 
             OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox(shadowCasterReceiverShape);
-            lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, true, modelsFilter);
+            lightShadowMap->getModelOcclusionCuller().getModelsInConvexObject(obboxSceneIndependentViewSpace, models, true, modelsFilter);
         } else if (lightShadowMap->getLight().getLightType() == Light::LightType::SPOT) { //TODO do no recompute at each frame -> always the same !
             const auto& spotLight = static_cast<SpotLight&>(lightShadowMap->getLight());
             const Frustum<float>& frustumScope = spotLight.getFrustumScope();
@@ -53,14 +53,13 @@ namespace urchin {
             float tanFov = std::tan(AngleConverter<float>::toRadian(spotLight.getOuterAngle()));
             spotNearPlane = SpotLight::FRUSTUM_NEAR_PLANE;
             spotFarPlane = frustumScope.computeFarDistance();
-
             lightProjectionMatrix.setValues(
                     1.0f / (tanFov * ratio), 0.0f, 0.0f, 0.0f,
                     0.0f, -1.0f / tanFov, 0.0f, 0.0f,
                     0.0f, 0.0f, spotFarPlane / (spotNearPlane - spotFarPlane), (spotFarPlane * spotNearPlane) / (spotNearPlane - spotFarPlane),
                     0.0f, 0.0f, -1.0f, 0.0f);
 
-            lightShadowMap->getModelOcclusionCuller().getModelsInFrustum(frustumScope, models, true, modelsFilter);
+            lightShadowMap->getModelOcclusionCuller().getModelsInConvexObject(frustumScope, models, true, modelsFilter);
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)lightShadowMap->getLight().getLightType()));
         }
