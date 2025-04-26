@@ -12,7 +12,8 @@ namespace urchin {
     template<class T> class Matrix4 {
         public:
             Matrix4();
-            explicit Matrix4(T m11, T m12, T m13, T m14,
+            explicit Matrix4(
+                    T m11, T m12, T m13, T m14,
                     T m21, T m22, T m23, T m24,
                     T m31, T m32, T m33, T m34,
                     T m41, T m42, T m43, T m44);
@@ -24,7 +25,8 @@ namespace urchin {
             [[nodiscard]] static Matrix4<T> buildRotationY(T);
             [[nodiscard]] static Matrix4<T> buildRotationZ(T);
 
-            void setValues(T m11, T m12, T m13, T m14,
+            void setValues(
+                    T m11, T m12, T m13, T m14,
                     T m21, T m22, T m23, T m24,
                     T m31, T m32, T m33, T m34,
                     T m41, T m42, T m43, T m44);
@@ -55,22 +57,11 @@ namespace urchin {
             explicit operator T*();
             explicit operator const T*() const;
 
-            T a11;
-            T a21;
-            T a31;
-            T a41;
-            T a12;
-            T a22;
-            T a32;
-            T a42;
-            T a13;
-            T a23;
-            T a33;
-            T a43;
-            T a14;
-            T a24;
-            T a34;
-            T a44;
+            //column major layout
+            T a11, a21, a31, a41;
+            T a12, a22, a32, a42;
+            T a13, a23, a33, a43;
+            T a14, a24, a34, a44;
     };
 
     template<class T> Matrix4<T> operator *(const Matrix4<T>&, T);

@@ -5,9 +5,6 @@
 
 namespace urchin {
 
-    /**
-     * Construct an identify matrix
-     */
     template<class T> Matrix4<T>::Matrix4() :
             a11(1.0), a21(0.0), a31(0.0), a41(0.0),
             a12(0.0), a22(1.0), a32(0.0), a42(0.0),
@@ -20,11 +17,12 @@ namespace urchin {
             a11(mat3.a11), a21(mat3.a21), a31(mat3.a31), a41(0.0),
             a12(mat3.a12), a22(mat3.a22), a32(mat3.a32), a42(0.0),
             a13(mat3.a13), a23(mat3.a23), a33(mat3.a33), a43(0.0),
-            a14(0.0), a24(0.0), a34(0.0), a44(1.0) {
+            a14(0.0),      a24(0.0),      a34(0.0),      a44(1.0) {
 
     }
 
-    template<class T> Matrix4<T>::Matrix4(T m11, T m12, T m13, T m14,
+    template<class T> Matrix4<T>::Matrix4(
+        T m11, T m12, T m13, T m14,
         T m21, T m22, T m23, T m24,
         T m31, T m32, T m33, T m34,
         T m41, T m42, T m43, T m44) :
@@ -36,47 +34,52 @@ namespace urchin {
     }
 
     template<class T> Matrix4<T> Matrix4<T>::buildTranslation(T x, T y, T z) {
-        return Matrix4<T>(1.0, 0.0, 0.0, x,
-                          0.0, 1.0, 0.0, y,
-                          0.0, 0.0, 1.0, z,
-                          0.0, 0.0, 0.0, 1.0);
+        return Matrix4<T>(
+                1.0, 0.0, 0.0, x,
+                0.0, 1.0, 0.0, y,
+                0.0, 0.0, 1.0, z,
+                0.0, 0.0, 0.0, 1.0);
     }
 
     template<class T> Matrix4<T> Matrix4<T>::buildScale(T x, T y, T z) {
-        return Matrix4<T>(x, 0.0, 0.0, 0.0,
-                          0.0, y, 0.0, 0.0,
-                          0.0, 0.0, z, 0.0,
-                          0.0, 0.0, 0.0, 1.0);
+        return Matrix4<T>(
+                x, 0.0, 0.0, 0.0,
+                0.0, y, 0.0, 0.0,
+                0.0, 0.0, z, 0.0,
+                0.0, 0.0, 0.0, 1.0);
     }
 
     template<class T> Matrix4<T> Matrix4<T>::buildRotationX(T angle) {
         const auto cos = (T)std::cos(angle);
         const auto sin = (T)std::sin(angle);
 
-        return Matrix4<T>(1.0, 0.0, 0.0, 0.0,
-                          0.0, cos, -sin, 0.0,
-                          0.0, sin, cos, 0.0,
-                          0.0, 0.0, 0.0, 1.0);
+        return Matrix4<T>(
+                1.0, 0.0, 0.0, 0.0,
+                0.0, cos, -sin, 0.0,
+                0.0, sin, cos, 0.0,
+                0.0, 0.0, 0.0, 1.0);
     }
 
     template<class T> Matrix4<T> Matrix4<T>::buildRotationY(T angle) {
         const auto cos = (T)std::cos(angle);
         const auto sin = (T)std::sin(angle);
 
-        return Matrix4<T>(cos, 0.0, sin, 0.0,
-                          0.0, 1.0, 0.0, 0.0,
-                          -sin, 0.0, cos, 0.0,
-                          0.0, 0.0, 0.0, 1.0);
+        return Matrix4<T>(
+                cos, 0.0, sin, 0.0,
+                0.0, 1.0, 0.0, 0.0,
+                -sin, 0.0, cos, 0.0,
+                0.0, 0.0, 0.0, 1.0);
     }
 
     template<class T> Matrix4<T> Matrix4<T>::buildRotationZ(T angle) {
         const auto cos = (T)std::cos(angle);
         const auto sin = (T)std::sin(angle);
 
-        return Matrix4<T>(cos, -sin, 0.0, 0.0,
-                          sin, cos, 0.0, 0.0,
-                          0.0, 0.0, 1.0, 0.0,
-                          0.0, 0.0, 0.0, 1.0);
+        return Matrix4<T>(
+                cos, -sin, 0.0, 0.0,
+                sin, cos, 0.0, 0.0,
+                0.0, 0.0, 1.0, 0.0,
+                0.0, 0.0, 0.0, 1.0);
     }
 
     template<class T> void Matrix4<T>::setValues(T m11, T m12, T m13, T m14,
@@ -166,24 +169,27 @@ namespace urchin {
     }
 
     template<class T> Matrix4<T> Matrix4<T>::operator -() const {
-        return Matrix4<T>(    -a11, -a12, -a13, -a14,
+        return Matrix4<T>(
+                -a11, -a12, -a13, -a14,
                 -a21, -a22, -a23, -a24,
                 -a31, -a32, -a33, -a34,
                 -a41, -a42, -a43, -a44);
     }
 
     template<class T> Matrix4<T> Matrix4<T>::operator +(const Matrix4& m) const {
-        return Matrix4<T>(a11 + m.a11, a12 + m.a12, a13 + m.a13, a14 + m.a14,
-                          a21 + m.a21, a22 + m.a22, a23 + m.a23, a24 + m.a24,
-                          a31 + m.a31, a32 + m.a32, a33 + m.a33, a34 + m.a34,
-                          a41 + m.a41, a42 + m.a42, a43 + m.a43, a44 + m.a44);
+        return Matrix4<T>(
+                a11 + m.a11, a12 + m.a12, a13 + m.a13, a14 + m.a14,
+                a21 + m.a21, a22 + m.a22, a23 + m.a23, a24 + m.a24,
+                a31 + m.a31, a32 + m.a32, a33 + m.a33, a34 + m.a34,
+                a41 + m.a41, a42 + m.a42, a43 + m.a43, a44 + m.a44);
     }
 
     template<class T> Matrix4<T> Matrix4<T>::operator -(const Matrix4<T>& m) const {
-        return Matrix4(a11 - m.a11, a12 - m.a12, a13 - m.a13, a14 - m.a14,
-                       a21 - m.a21, a22 - m.a22, a23 - m.a23, a24 - m.a24,
-                       a31 - m.a31, a32 - m.a32, a33 - m.a33, a34 - m.a34,
-                       a41 - m.a41, a42 - m.a42, a43 - m.a43, a44 - m.a44);
+        return Matrix4(
+                a11 - m.a11, a12 - m.a12, a13 - m.a13, a14 - m.a14,
+                a21 - m.a21, a22 - m.a22, a23 - m.a23, a24 - m.a24,
+                a31 - m.a31, a32 - m.a32, a33 - m.a33, a34 - m.a34,
+                a41 - m.a41, a42 - m.a42, a43 - m.a43, a44 - m.a44);
     }
 
     template<class T> const Matrix4<T>& Matrix4<T>::operator +=(const Matrix4<T>& m) {
@@ -276,10 +282,11 @@ namespace urchin {
     }
 
     template<class T> Matrix4<T> operator *(const Matrix4<T>& m, T t) {
-        return Matrix4<T>(m.a11 * t, m.a12 * t, m.a13 * t, m.a14 * t,
-                          m.a21 * t, m.a22 * t, m.a23 * t, m.a24 * t,
-                          m.a31 * t, m.a32 * t, m.a33 * t, m.a34 * t,
-                          m.a41 * t, m.a42 * t, m.a43 * t, m.a44 * t);
+        return Matrix4<T>(
+                m.a11 * t, m.a12 * t, m.a13 * t, m.a14 * t,
+                m.a21 * t, m.a22 * t, m.a23 * t, m.a24 * t,
+                m.a31 * t, m.a32 * t, m.a33 * t, m.a34 * t,
+                m.a41 * t, m.a42 * t, m.a43 * t, m.a44 * t);
     }
 
     template<class T> Matrix4<T> operator *(T t, const Matrix4<T>& m) {
@@ -287,10 +294,11 @@ namespace urchin {
     }
 
     template<class T> Matrix4<T> operator /(const Matrix4<T>& m, T t) {
-        return Matrix4<T>(m.a11 / t, m.a12 / t, m.a13 / t, m.a14 / t,
-                          m.a21 / t, m.a22 / t, m.a23 / t, m.a24 / t,
-                          m.a31 / t, m.a32 / t, m.a33 / t, m.a34 / t,
-                          m.a41 / t, m.a42 / t, m.a43 / t, m.a44 / t);
+        return Matrix4<T>(
+                m.a11 / t, m.a12 / t, m.a13 / t, m.a14 / t,
+                m.a21 / t, m.a22 / t, m.a23 / t, m.a24 / t,
+                m.a31 / t, m.a32 / t, m.a33 / t, m.a34 / t,
+                m.a41 / t, m.a42 / t, m.a43 / t, m.a44 / t);
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const Matrix4<T>& m) {

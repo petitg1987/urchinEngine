@@ -5,9 +5,6 @@
 
 namespace urchin {
 
-    /**
-     * Construct an identify matrix
-     */
     template<class T> Matrix3<T>::Matrix3() :
             a11(1.0), a21(0.0), a31(0.0),
             a12(0.0), a22(1.0), a32(0.0),
@@ -25,42 +22,47 @@ namespace urchin {
     }
 
     template<class T> Matrix3<T> Matrix3<T>::buildTranslation(T x, T y) {
-        return Matrix3<T>(1.0, 0.0, x,
-                          0.0, 1.0, y,
-                          0.0, 0.0, 1.0);
+        return Matrix3<T>(
+                1.0, 0.0, x,
+                0.0, 1.0, y,
+                0.0, 0.0, 1.0);
     }
 
     template<class T> Matrix3<T> Matrix3<T>::buildScale(T x, T y, T z) {
-        return Matrix3<T>(x, 0.0, 0.0,
-                          0.0, y, 0.0,
-                          0.0, 0.0, z);
+        return Matrix3<T>(
+                x, 0.0, 0.0,
+                0.0, y, 0.0,
+                0.0, 0.0, z);
     }
 
     template<class T> Matrix3<T> Matrix3<T>::buildRotationX(T angle) {
         const auto cos = (T)std::cos(angle);
         const auto sin = (T)std::sin(angle);
 
-        return Matrix3<T>(1.0, 0.0, 0.0,
-                          0.0, cos, -sin,
-                          0.0, sin, cos);
+        return Matrix3<T>(
+                1.0, 0.0, 0.0,
+                0.0, cos, -sin,
+                0.0, sin, cos);
     }
 
     template<class T> Matrix3<T> Matrix3<T>::buildRotationY(T angle) {
         const auto cos = (T)std::cos(angle);
         const auto sin = (T)std::sin(angle);
 
-        return Matrix3<T>(cos, 0.0, sin,
-                          0.0, 1.0, 0.0,
-                          -sin, 0.0, cos);
+        return Matrix3<T>(
+                cos, 0.0, sin,
+                0.0, 1.0, 0.0,
+                -sin, 0.0, cos);
     }
 
     template<class T> Matrix3<T> Matrix3<T>::buildRotationZ(T angle) {
         const auto cos = (T)std::cos(angle);
         const auto sin = (T)std::sin(angle);
 
-        return Matrix3<T>(cos, -sin, 0.0,
-                          sin, cos, 0.0,
-                          0.0, 0.0, 1.0);
+        return Matrix3<T>(
+                cos, -sin, 0.0,
+                sin, cos, 0.0,
+                0.0, 0.0, 1.0);
     }
 
     template<class T> void Matrix3<T>::setValues(T m11, T m12, T m13,
@@ -126,21 +128,24 @@ namespace urchin {
     }
 
     template<class T> Matrix3<T> Matrix3<T>::operator -() const {
-        return Matrix3<T>(    -a11, -a12, -a13,
+        return Matrix3<T>(
+                -a11, -a12, -a13,
                 -a21, -a22, -a23,
                 -a31, -a32, -a33);
     }
 
     template<class T> Matrix3<T> Matrix3<T>::operator +(const Matrix3<T>& m) const {
-        return Matrix3<T>(a11 + m.a11, a12 + m.a12, a13 + m.a13,
-                          a21 + m.a21, a22 + m.a22, a23 + m.a23,
-                          a31 + m.a31, a32 + m.a32, a33 + m.a33);
+        return Matrix3<T>(
+                a11 + m.a11, a12 + m.a12, a13 + m.a13,
+                a21 + m.a21, a22 + m.a22, a23 + m.a23,
+                a31 + m.a31, a32 + m.a32, a33 + m.a33);
     }
 
     template<class T> Matrix3<T> Matrix3<T>::operator -(const Matrix3& m) const {
-        return Matrix3(a11 - m.a11, a12 - m.a12, a13 - m.a13,
-                       a21 - m.a21, a22 - m.a22, a23 - m.a23,
-                       a31 - m.a31, a32 - m.a32, a33 - m.a33);
+        return Matrix3(
+                a11 - m.a11, a12 - m.a12, a13 - m.a13,
+                a21 - m.a21, a22 - m.a22, a23 - m.a23,
+                a31 - m.a31, a32 - m.a32, a33 - m.a33);
     }
 
     template<class T> const Matrix3<T>& Matrix3<T>::operator +=(const Matrix3<T>& m) {
@@ -221,9 +226,10 @@ namespace urchin {
     }
 
     template<class T> Matrix3<T> operator *(const Matrix3<T>& m, T t) {
-        return Matrix3<T>(m.a11 * t, m.a12 * t, m.a13 * t,
-                          m.a21 * t, m.a22 * t, m.a23 * t,
-                          m.a31 * t, m.a32 * t, m.a33 * t);
+        return Matrix3<T>(
+                m.a11 * t, m.a12 * t, m.a13 * t,
+                m.a21 * t, m.a22 * t, m.a23 * t,
+                m.a31 * t, m.a32 * t, m.a33 * t);
     }
 
     template<class T> Matrix3<T> operator *(T t, const Matrix3<T>& m) {
@@ -231,9 +237,10 @@ namespace urchin {
     }
 
     template<class T> Matrix3<T> operator /(const Matrix3<T>& m, T t) {
-        return Matrix3<T>(m.a11 / t, m.a12 / t, m.a13 / t,
-                          m.a21 / t, m.a22 / t, m.a23 / t,
-                          m.a31 / t, m.a32 / t, m.a33 / t);
+        return Matrix3<T>(
+                m.a11 / t, m.a12 / t, m.a13 / t,
+                m.a21 / t, m.a22 / t, m.a23 / t,
+                m.a31 / t, m.a32 / t, m.a33 / t);
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const Matrix3<T>& m) {

@@ -5,9 +5,6 @@
 
 namespace urchin {
 
-    /**
-     * Construct an identify matrix
-     */
     template<class T> Matrix2<T>::Matrix2() :
             a11(1.0), a21(0.0),
             a12(0.0), a22(1.0) {
@@ -22,11 +19,13 @@ namespace urchin {
     }
 
     template<class T> Matrix2<T> Matrix2<T>::buildScale(T x, T y) {
-        return Matrix2<T>(x, 0.0,
-                          0.0, y);
+        return Matrix2<T>(
+                x, 0.0,
+                0.0, y);
     }
 
-    template<class T> void Matrix2<T>::setValues(T m11, T m12,
+    template<class T> void Matrix2<T>::setValues(
+            T m11, T m12,
             T m21, T m22) {
         a11 = m11; a12 = m12;
         a21 = m21; a22 = m22;
@@ -78,18 +77,21 @@ namespace urchin {
     }
 
     template<class T> Matrix2<T> Matrix2<T>::operator -() const {
-        return Matrix2<T>(-a11, -a12,
-                          -a21, -a22);
+        return Matrix2<T>(
+                -a11, -a12,
+                -a21, -a22);
     }
 
     template<class T> Matrix2<T> Matrix2<T>::operator +(const Matrix2<T>& m) const {
-        return Matrix2<T>(a11 + m.a11, a12 + m.a12,
-                          a21 + m.a21, a22 + m.a22);
+        return Matrix2<T>(
+                a11 + m.a11, a12 + m.a12,
+                a21 + m.a21, a22 + m.a22);
     }
 
     template<class T> Matrix2<T> Matrix2<T>::operator -(const Matrix2& m) const {
-        return Matrix2(a11 - m.a11, a12 - m.a12,
-                       a21 - m.a21, a22 - m.a22);
+        return Matrix2(
+                a11 - m.a11, a12 - m.a12,
+                a21 - m.a21, a22 - m.a22);
     }
 
     template<class T> const Matrix2<T>& Matrix2<T>::operator +=(const Matrix2<T>& m) {

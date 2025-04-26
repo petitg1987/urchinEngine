@@ -10,12 +10,14 @@ namespace urchin {
     template<class T> class Matrix2 {
         public:
             Matrix2();
-            explicit Matrix2(T m11, T m12,
+            explicit Matrix2(
+                    T m11, T m12,
                     T m21, T m22);
 
             [[nodiscard]] static Matrix2<T> buildScale(T, T);
 
-            void setValues(T m11, T m12,
+            void setValues(
+                    T m11, T m12,
                     T m21, T m22);
 
             void setIdentity();
@@ -43,10 +45,9 @@ namespace urchin {
             explicit operator T*();
             explicit operator const T*() const;
 
-            T a11;
-            T a21;
-            T a12;
-            T a22;
+            //column major layout
+            T a11, a21;
+            T a12, a22;
     };
 
     template<class T> Matrix2<T> operator *(const Matrix2<T>&, T);
