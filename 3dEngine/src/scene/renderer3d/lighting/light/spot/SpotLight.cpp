@@ -93,6 +93,10 @@ namespace urchin {
         return LightType::SPOT;
     }
 
+    std::string SpotLight::getLightTypeName() const {
+        return "spot";
+    }
+
     const AABBox<float>& SpotLight::getAABBox() const {
         assert(aabboxScope);
         return *aabboxScope;

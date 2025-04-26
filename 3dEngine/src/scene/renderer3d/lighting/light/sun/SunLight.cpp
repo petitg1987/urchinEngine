@@ -30,6 +30,10 @@ namespace urchin {
         return LightType::SUN;
     }
 
+    std::string SunLight::getLightTypeName() const {
+        return "sun";
+    }
+
     const AABBox<float>& SunLight::getAABBox() const {
         throw std::runtime_error("No bounding box for sun light.");
     }

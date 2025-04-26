@@ -25,6 +25,7 @@ namespace urchin {
             float getOuterAngle() const;
             float getOuterCosAngle() const;
             LightType getLightType() const override;
+            std::string getLightTypeName() const override;
             const AABBox<float>& getAABBox() const override;
 
             //attenuation methods

@@ -18,7 +18,7 @@ namespace urchin {
             nbShadowMaps(nbShadowMaps) {
 
         if (!isTestMode) {
-            renderTarget = std::make_unique<OffscreenRender>("shadow map", false, RenderTarget::SHARED_DEPTH_ATTACHMENT);
+            renderTarget = std::make_unique<OffscreenRender>("shadow map - " + light.getLightTypeName(), false, RenderTarget::SHARED_DEPTH_ATTACHMENT);
             renderTarget->setOutputSize(shadowMapResolution, shadowMapResolution, nbShadowMaps);
             renderTarget->initialize();
 

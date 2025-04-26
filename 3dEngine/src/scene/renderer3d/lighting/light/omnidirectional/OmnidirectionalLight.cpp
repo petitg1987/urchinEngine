@@ -41,6 +41,10 @@ namespace urchin {
         return LightType::OMNIDIRECTIONAL;
     }
 
+    std::string OmnidirectionalLight::getLightTypeName() const {
+        return "omnidirectional";
+    }
+
     const AABBox<float>& OmnidirectionalLight::getAABBox() const {
         return *bboxScope;
     }

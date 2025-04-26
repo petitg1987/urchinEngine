@@ -16,6 +16,7 @@ namespace urchin {
             const Point3<float>& getPosition() const override;
             const std::vector<Vector3<float>>& getDirections() const override;
             LightType getLightType() const override;
+            std::string getLightTypeName() const override;
             const AABBox<float>& getAABBox() const override;
 
             //attenuation methods

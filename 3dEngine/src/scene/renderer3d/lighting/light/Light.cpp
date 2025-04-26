@@ -10,6 +10,9 @@ namespace urchin {
     }
 
     std::string Light::getName() const {
+        if (getLightType() == LightType::SUN) {
+            return std::to_string(getDirections()[0].X) + "@" + std::to_string(getDirections()[0].Y) + "@" + std::to_string(getDirections()[0].Z) + "_" + std::to_string((int)getLightType());
+        }
         return std::to_string(getPosition().X) + "@" + std::to_string(getPosition().Y) + "@" + std::to_string(getPosition().Z) + "_" + std::to_string((int)getLightType());
     }
 
