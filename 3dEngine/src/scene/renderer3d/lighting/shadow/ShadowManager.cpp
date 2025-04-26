@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
-        splitFrustum(camera.getFrustum());
+        splitFrustum(camera.getFrustum()); //TODO useful ?
         updateShadowLights();
     }
 
@@ -82,7 +82,6 @@ namespace urchin {
                         unsigned int oldSpotShadowMapResolution = getLightShadowMap(light).getShadowMapSize();
                         unsigned int newSpotShadowMapResolution = computeSpotShadowMapResolution(*spotLight);
                         if (oldSpotShadowMapResolution != newSpotShadowMapResolution) {
-                            std::cout<<"spot light res changed"<<std::endl; //TODO bug: no shadow displayed
                             addShadowLight(*light);
                         }
                     }
@@ -190,7 +189,7 @@ namespace urchin {
         removeShadowLight(light);
 
         light.addObserver(this, Light::AFFECTED_ZONE_UPDATED);
-        light.addObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
+        light.addObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED); //TODO does no call onLightAffectedZoneUpdated at init
 
         if (light.getLightType() == Light::LightType::SUN) {
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.sunShadowViewDistance, config.sunShadowMapResolution, config.nbSunShadowMaps);
