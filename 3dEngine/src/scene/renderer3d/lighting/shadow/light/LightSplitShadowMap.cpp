@@ -51,7 +51,7 @@ namespace urchin {
 
             float ratio = 1.0f;
             float tanFov = std::tan(AngleConverter<float>::toRadian(spotLight.getOuterAngle()));
-            spotNearPlane = frustumScope.computeNearDistance();
+            spotNearPlane = SpotLight::FRUSTUM_NEAR_PLANE;
             spotFarPlane = frustumScope.computeFarDistance();
 
             this->lightProjectionMatrix.setValues(

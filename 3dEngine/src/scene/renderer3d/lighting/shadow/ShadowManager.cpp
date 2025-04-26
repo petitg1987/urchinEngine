@@ -93,7 +93,9 @@ namespace urchin {
                 this->config.shadowStrengthFactor != config.shadowStrengthFactor ||
                 this->config.nbSunShadowMaps != config.nbSunShadowMaps ||
                 this->config.sunShadowMapResolution != config.sunShadowMapResolution ||
-                this->config.sunShadowViewDistance != config.sunShadowViewDistance) {
+                this->config.sunShadowViewDistance != config.sunShadowViewDistance ||
+                this->config.spotShadowMapResolutionFactor != config.spotShadowMapResolutionFactor ||
+                this->config.spotShadowMapMaxResolution != config.spotShadowMapMaxResolution) {
             bool nbSunShadowMapUpdated = this->config.nbSunShadowMaps != config.nbSunShadowMaps;
             bool blurFilterUpdated = this->config.blurFilterBoxSize != config.blurFilterBoxSize;
 
@@ -169,13 +171,9 @@ namespace urchin {
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.sunShadowViewDistance, config.sunShadowMapResolution, config.nbSunShadowMaps);
         } else if (light.getLightType() == Light::LightType::SPOT) {
             const auto& spotLight = static_cast<SpotLight&>(light);
-            unsigned int realShadowMapResolution = (unsigned int)(spotLight.computeEndRadius() * config.spotShadowMapResolutionFactor);
-            unsigned int shadowMapResolution = std::max(32u, MathFunction::nearestPowerOfTwo(realShadowMapResolution));
-            //TODO add in games config
-
-            //TODO remove
-            std::cout<<"Shadow map res: "<<realShadowMapResolution<<"||"<<shadowMapResolution<<", radius: "<<spotLight.computeEndRadius()<<std::endl;
-
+            unsigned int expectedShadowMapResolution = (unsigned int)(spotLight.computeEndRadius() * config.spotShadowMapResolutionFactor);
+            unsigned int shadowMapResolution = std::min(config.spotShadowMapMaxResolution, std::max(64u, MathFunction::nearestPowerOfTwo(expectedShadowMapResolution)));
+            //TODO why ultra has better look than high ?
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, shadowMapResolution, 1);
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)light.getLightType()));

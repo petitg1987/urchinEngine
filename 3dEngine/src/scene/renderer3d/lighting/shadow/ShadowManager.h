@@ -32,6 +32,7 @@ namespace urchin {
                 unsigned int sunShadowMapResolution = 1024;
                 float sunShadowViewDistance = 75.0f;
                 float spotShadowMapResolutionFactor = 20.0f;
+                unsigned int spotShadowMapMaxResolution = 1024;
             };
 
             ShadowManager(const Config&, LightManager&, ModelOcclusionCuller&);
