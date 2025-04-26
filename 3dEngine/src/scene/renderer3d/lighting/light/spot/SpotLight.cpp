@@ -142,7 +142,7 @@ namespace urchin {
         float coneRadius = coneHeight * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
         coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE, coneCenterOfMass, orientation);
 
-        float nearPlane = 0.025f;
+        float nearPlane = FRUSTUM_NEAR_PLANE;
         float farPlane = coneHeight + nearPlane;
         Matrix4<float> transformMatrix = Matrix4<float>::buildTranslation(getPosition().X, getPosition().Y, getPosition().Z) * orientation.toMatrix4();
         Frustum frustum(outerAngleInDegrees * 2.0f, 1.0f, nearPlane, farPlane);

@@ -9,7 +9,8 @@ namespace urchin {
 
     class SpotLight final : public Light {
         public:
-            static constexpr float MAX_ANGLE_DEGREE = 89.0f;
+            static constexpr float MAX_ANGLE_DEGREE = 80.0f;
+            static constexpr float FRUSTUM_NEAR_PLANE = 0.025f;
 
             explicit SpotLight(const Point3<float>&, const Vector3<float>&, float, float);
 
