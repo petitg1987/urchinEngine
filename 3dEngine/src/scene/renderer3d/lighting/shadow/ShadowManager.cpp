@@ -195,7 +195,7 @@ namespace urchin {
         if (light.getLightType() == Light::LightType::SUN) {
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.sunShadowViewDistance, config.sunShadowMapResolution, config.nbSunShadowMaps);
         } else if (light.getLightType() == Light::LightType::SPOT) {
-            const auto& spotLight = dynamic_cast<const SpotLight&>(light);
+            const auto& spotLight = static_cast<const SpotLight&>(light);
             unsigned int shadowMapResolution = computeSpotShadowMapResolution(spotLight);
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, shadowMapResolution, 1);
         } else {
@@ -209,10 +209,10 @@ namespace urchin {
     }
 
     void ShadowManager::removeShadowLight(Light& light) {
-        light.removeObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
-        light.removeObserver(this, Light::AFFECTED_ZONE_UPDATED);
-
-        lightShadowMaps.erase(&light);
+        if (lightShadowMaps.erase(&light) != 0) {
+            light.removeObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
+            light.removeObserver(this, Light::AFFECTED_ZONE_UPDATED);
+        }
     }
 
     /**
