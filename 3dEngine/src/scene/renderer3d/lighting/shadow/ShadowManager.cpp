@@ -64,8 +64,6 @@ namespace urchin {
         } else if (auto* light = dynamic_cast<Light*>(observable)) {
             if (notificationType == Light::AFFECTED_ZONE_UPDATED) {
                 if (lightShadowMaps.contains(light)) {
-                    std::cout<<"light affected zone changed"<<std::endl; //TODO why so many call ?
-
                     unsigned int splitIndex = 0;
                     for (const auto& lightSplitShadowMap : getLightShadowMap(light).getLightSplitShadowMaps()) {
                         lightSplitShadowMap->onLightAffectedZoneUpdated(splitFrustums[splitIndex++]);
@@ -78,13 +76,15 @@ namespace urchin {
                     removeShadowLight(*light);
                 }
             } else if (notificationType == Light::ILLUMINATED_AREA_SIZE_UPDATED) {
-                const auto* spotLight = dynamic_cast<const SpotLight*>(light);
-                if (spotLight && lightShadowMaps.contains(light)) {
-                    unsigned int oldSpotShadowMapResolution = getLightShadowMap(light).getShadowMapSize();
-                    unsigned int newSpotShadowMapResolution = computeSpotShadowMapResolution(*spotLight);
-                    if (oldSpotShadowMapResolution != newSpotShadowMapResolution) {
-                        std::cout<<"spot light res changed"<<std::endl; //TODO bug: no shadow displayed
-                        addShadowLight(*light);
+                if (lightShadowMaps.contains(light)) {
+                    const auto* spotLight = dynamic_cast<const SpotLight*>(light);
+                    if (spotLight) {
+                        unsigned int oldSpotShadowMapResolution = getLightShadowMap(light).getShadowMapSize();
+                        unsigned int newSpotShadowMapResolution = computeSpotShadowMapResolution(*spotLight);
+                        if (oldSpotShadowMapResolution != newSpotShadowMapResolution) {
+                            std::cout<<"spot light res changed"<<std::endl; //TODO bug: no shadow displayed
+                            addShadowLight(*light);
+                        }
                     }
                 }
             }
