@@ -14,7 +14,10 @@ namespace urchin {
 
             explicit LightSplitShadowMap(const LightShadowMap*);
 
-            void update(const SplitFrustum&);
+            void onLightAffectedZoneUpdated(const SplitFrustum&);
+            void onSplitFrustumUpdated(const SplitFrustum&);
+
+            void updateVisibleModels();
 
             const Matrix4<float>& getLightProjectionMatrix() const;
             float getSpotNearPlane() const;
@@ -23,8 +26,10 @@ namespace urchin {
             std::span<Model* const> getModels() const;
 
         private:
-            float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
+            void updateSunLightScopeData(const SplitFrustum& splitFrustum);
+            void updateSpotLightScopeData();
 
+            float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
             void stabilizeShadow(const Point3<float>&);
             Point2<float> computePixelCenteringDelta(const Matrix4<float>&, const Point4<float>&) const;
             Point4<float> adjustPointOnShadowMapPixel(const Matrix4<float>&, const Point4<float>&) const;
@@ -36,6 +41,7 @@ namespace urchin {
             Point4<float> previousCenter;
             float spotNearPlane;
             float spotFarPlane;
+            std::unique_ptr<ConvexObject3D<float>> lightScopeConvexObject;
 
             std::vector<Model*> models;
     };

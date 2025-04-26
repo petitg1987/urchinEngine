@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
-        splitFrustum(camera.getFrustum());
+        splitFrustum(camera.getFrustum()); //TODO useless ?
         updateShadowLights();
     }
 
@@ -51,24 +51,33 @@ namespace urchin {
         if (dynamic_cast<LightManager*>(observable)) {
             Light* light = lightManager.getLastUpdatedLight();
             if (notificationType == LightManager::ADD_LIGHT) {
+                light->addObserver(this, Light::AFFECTED_ZONE_UPDATED);
                 light->addObserver(this, Light::PRODUCE_SHADOW);
                 light->addObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
                 if (light->isProduceShadow()) {
                     addShadowLight(*light);
                 }
             } else if (notificationType == LightManager::REMOVE_LIGHT) {
-                light->removeObserver(this, Light::PRODUCE_SHADOW);
                 light->removeObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
+                light->removeObserver(this, Light::PRODUCE_SHADOW);
+                light->removeObserver(this, Light::AFFECTED_ZONE_UPDATED);
                 if (light->isProduceShadow()) {
                     removeShadowLight(*light);
                 }
             }
         } else if (auto* light = dynamic_cast<Light*>(observable)) {
-            if (notificationType == Light::PRODUCE_SHADOW || notificationType == Light::ILLUMINATED_AREA_SIZE_UPDATED) {
+            if (notificationType == Light::PRODUCE_SHADOW || notificationType == Light::ILLUMINATED_AREA_SIZE_UPDATED /* TODO only for resolution change ? */) {
                 if (light->isProduceShadow()) {
                     addShadowLight(*light);
                 } else {
                     removeShadowLight(*light);
+                }
+            } else if (notificationType == Light::AFFECTED_ZONE_UPDATED) {
+                for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
+                    unsigned int i = 0;
+                    for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+                        lightSplitShadowMap->onLightAffectedZoneUpdated(splitFrustums[i++]);
+                    }
                 }
             }
         }
@@ -143,11 +152,16 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
 
         splitFrustum(frustum);
-
         for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
             unsigned int i = 0;
             for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                lightSplitShadowMap->update(splitFrustums[i++]);
+                lightSplitShadowMap->onSplitFrustumUpdated(splitFrustums[i++]);
+            }
+        }
+
+        for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
+            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+                lightSplitShadowMap->updateVisibleModels();
             }
         }
     }
