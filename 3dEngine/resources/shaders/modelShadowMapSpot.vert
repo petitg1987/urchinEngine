@@ -24,11 +24,9 @@ invariant gl_Position;
 
 void main() {
     vec4 position = shadowData.lightProjectionMatrix * (postioningData.mProjectionView * (mModel * vec4(vertexPosition, 1.0)));
-    position.xyz /= position.w;
-    position.w = 1.0f;
 
     //depth linearization could be done directly via "shadowData.lightProjectionMatrix" but I didn't find how to do it !
-    position.z = linearizeDepth(position.z, shadowData.spotNearPlane, shadowData.spotFarPlane);
+    position.z = linearizeDepth(position.z / position.w, shadowData.spotNearPlane, shadowData.spotFarPlane) * position.w;
 
     gl_Position = position;
 }
