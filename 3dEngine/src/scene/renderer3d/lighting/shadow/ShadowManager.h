@@ -8,6 +8,7 @@
 #include <scene/renderer3d/lighting/shadow/SplitFrustum.h>
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/light/Light.h>
+#include <scene/renderer3d/lighting/light/spot/SpotLight.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>
@@ -65,6 +66,7 @@ namespace urchin {
 
             //light handling
             void addShadowLight(Light&);
+            unsigned int computeSpotShadowMapResolution(const SpotLight&) const;
             void removeShadowLight(const Light&);
             void updateShadowLights();
 
