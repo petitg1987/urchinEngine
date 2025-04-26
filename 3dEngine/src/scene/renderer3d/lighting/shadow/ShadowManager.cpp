@@ -117,6 +117,7 @@ namespace urchin {
     }
 
     void ShadowManager::checkConfig() const {
+        //TODO not check for spot and cause error (required to track "one SM for spot" )!
         if (config.nbSunShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
             throw std::invalid_argument("Number of sun shadow maps must be greater than one. Value: " + std::to_string(config.nbSunShadowMaps));
         } else if (config.nbSunShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
