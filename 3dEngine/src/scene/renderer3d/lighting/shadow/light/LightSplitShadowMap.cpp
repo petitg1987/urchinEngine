@@ -30,7 +30,7 @@ namespace urchin {
             lightProjectionVertex[1] = Point3(lightProjectionVertex[0].X, lightProjectionVertex[0].Y, nearCapZ);
             lightProjectionVertex[2] = splitFrustumCenter - Point3(splitFrustumRadius, splitFrustumRadius, splitFrustumRadius);
             lightProjectionVertex[3] = Point3(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
-            this->lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
+            lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
             stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
 
             //determine point belonging to shadow caster/receiver box
@@ -54,7 +54,7 @@ namespace urchin {
             spotNearPlane = SpotLight::FRUSTUM_NEAR_PLANE;
             spotFarPlane = frustumScope.computeFarDistance();
 
-            this->lightProjectionMatrix.setValues(
+            lightProjectionMatrix.setValues(
                     1.0f / (tanFov * ratio), 0.0f, 0.0f, 0.0f,
                     0.0f, -1.0f / tanFov, 0.0f, 0.0f,
                     0.0f, 0.0f, spotFarPlane / (spotNearPlane - spotFarPlane), (spotFarPlane * spotNearPlane) / (spotNearPlane - spotFarPlane),
