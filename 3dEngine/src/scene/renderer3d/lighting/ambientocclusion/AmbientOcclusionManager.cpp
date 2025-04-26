@@ -21,6 +21,8 @@ namespace urchin {
             positioningData({}) {
         std::memset((void *)&projection, 0, sizeof(projection));
         std::memset((void *)&positioningData, 0, sizeof(positioningData));
+
+        checkConfig();
     }
 
     AmbientOcclusionManager::~AmbientOcclusionManager() {

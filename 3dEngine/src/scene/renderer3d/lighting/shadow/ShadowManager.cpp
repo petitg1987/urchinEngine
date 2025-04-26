@@ -19,6 +19,8 @@ namespace urchin {
             shadowMapInfo({}) {
         std::memset(&shadowMapInfo, 0, sizeof(shadowMapInfo));
 
+        checkConfig();
+
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
 
@@ -117,10 +119,7 @@ namespace urchin {
     }
 
     void ShadowManager::checkConfig() const {
-        //TODO remove this first check ?
-        if (config.nbSunShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
-            throw std::invalid_argument("Number of sun shadow maps must be greater than one. Value: " + std::to_string(config.nbSunShadowMaps));
-        } else if (config.nbSunShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
+        if (config.nbSunShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
             throw std::invalid_argument("Number of sun shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbSunShadowMaps));
         } else if (config.blurFilterBoxSize == 0) {
             throw std::invalid_argument("Size of the blur filter box must be greater or equal to 1. Value: " + std::to_string(config.blurFilterBoxSize));

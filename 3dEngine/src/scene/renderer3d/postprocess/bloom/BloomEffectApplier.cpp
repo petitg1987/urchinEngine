@@ -16,6 +16,8 @@ namespace urchin {
             preFilterTweak({}) {
         std::memset((void *)&preFilterTweak, 0, sizeof(preFilterTweak));
 
+        checkConfig();
+
         float filterSoftCurve = ConfigService::instance().getFloatValue("bloom.filterSoftCurve");
         float threshold = ConfigService::instance().getFloatValue("bloom.filterThreshold");
         preFilterTweak.softCurveParams.X = threshold - filterSoftCurve;
