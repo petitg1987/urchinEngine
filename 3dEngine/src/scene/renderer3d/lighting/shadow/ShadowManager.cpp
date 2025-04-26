@@ -173,7 +173,7 @@ namespace urchin {
             const auto& spotLight = static_cast<SpotLight&>(light);
             unsigned int expectedShadowMapResolution = (unsigned int)(spotLight.computeEndRadius() * config.spotShadowMapResolutionFactor);
             unsigned int shadowMapResolution = std::min(config.spotShadowMapMaxResolution, std::max(64u, MathFunction::nearestPowerOfTwo(expectedShadowMapResolution)));
-            //TODO why ultra has better look than high ?
+
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, shadowMapResolution, 1);
         } else {
             throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)light.getLightType()));

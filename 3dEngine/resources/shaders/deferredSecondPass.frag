@@ -96,7 +96,7 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
     float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
 
     const float SOFT_EDGE_LENGTH = 1.5f;
-    float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[0], 0));
+    float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[shadowLightIndex], 0));
     int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
     float singleShadowQuantity = (1.0 - max(0.0, NdotL / 5.0)); //NdotL is a hijack to apply normal map in shadow
     ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneInfo.sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
