@@ -64,9 +64,8 @@ namespace urchin {
         } else if (auto* light = dynamic_cast<Light*>(observable)) {
             if (notificationType == Light::AFFECTED_ZONE_UPDATED) {
                 if (lightShadowMaps.contains(light)) {
-                    unsigned int splitIndex = 0;
                     for (const auto& lightSplitShadowMap : getLightShadowMap(light).getLightSplitShadowMaps()) {
-                        lightSplitShadowMap->onLightAffectedZoneUpdated(splitFrustums[splitIndex++]);
+                        lightSplitShadowMap->onLightAffectedZoneUpdated();
                     }
                 }
             } else if (notificationType == Light::PRODUCE_SHADOW) {
@@ -158,7 +157,7 @@ namespace urchin {
     void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
         ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
 
-        splitFrustum(frustum);
+        splitFrustum(frustum); //TODO onSplitFrustumUpdated inside splitFrustum ?
         for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
             unsigned int splitIndex = 0;
             for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
@@ -189,7 +188,7 @@ namespace urchin {
         removeShadowLight(light);
 
         light.addObserver(this, Light::AFFECTED_ZONE_UPDATED);
-        light.addObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED); //TODO does no call onLightAffectedZoneUpdated at init
+        light.addObserver(this, Light::ILLUMINATED_AREA_SIZE_UPDATED);
 
         if (light.getLightType() == Light::LightType::SUN) {
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.sunShadowViewDistance, config.sunShadowMapResolution, config.nbSunShadowMaps);
@@ -230,7 +229,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::splitFrustum(const Frustum<float>& frustum) { //TODO not correct for spot ! or not call for spot ?
+    void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
         splitFrustums.clear();
 
         constexpr float ADJUSTMENT_EXPONENT = 1.4f; //1.0 = linear distribution, >1.0 = exponential distribution

@@ -14,7 +14,7 @@ namespace urchin {
 
             explicit LightSplitShadowMap(const LightShadowMap*);
 
-            void onLightAffectedZoneUpdated(const SplitFrustum&);
+            void onLightAffectedZoneUpdated();
             void onSplitFrustumUpdated(const SplitFrustum&);
 
             void updateVisibleModels();

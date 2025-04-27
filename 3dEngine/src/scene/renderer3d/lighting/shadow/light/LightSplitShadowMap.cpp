@@ -18,16 +18,14 @@ namespace urchin {
         } else {
             throw std::invalid_argument("Unknown light type to initialize light scope convex object: " + std::to_string((int)lightType));
         }
+
+        onLightAffectedZoneUpdated();
     }
 
-    void LightSplitShadowMap::onLightAffectedZoneUpdated(const SplitFrustum& splitFrustum) {
+    void LightSplitShadowMap::onLightAffectedZoneUpdated() {
         Light::LightType lightType = lightShadowMap->getLight().getLightType();
-        if (lightType == Light::LightType::SUN) {
-            updateSunLightScopeData(splitFrustum);
-        } else if (lightType == Light::LightType::SPOT) {
+        if (lightType == Light::LightType::SPOT) {
             updateSpotLightScopeData();
-        } else {
-            throw std::invalid_argument("Unknown light type to update light scope data: " + std::to_string((int)lightType));
         }
     }
 
