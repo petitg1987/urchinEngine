@@ -16,7 +16,8 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
     const auto &lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[0];
 
     SplitFrustum splitFrustum(Frustum(90.0f, 1.0f, 0.01f, 100.0f));
-    lightSplitShadowMap->update(splitFrustum);
+    lightSplitShadowMap->onSplitFrustumUpdated(splitFrustum);
+    lightSplitShadowMap->updateVisibleModels();
 
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 2);
 }
@@ -33,7 +34,8 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
     const auto &lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[0];
 
     SplitFrustum splitFrustum(Frustum(90.0f, 1.0f, 0.01f, 100.0f));
-    lightSplitShadowMap->update(splitFrustum);
+    lightSplitShadowMap->onSplitFrustumUpdated(splitFrustum);
+    lightSplitShadowMap->updateVisibleModels();
 
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 0);
 }
@@ -48,7 +50,8 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
     const auto &lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[0];
 
     SplitFrustum splitFrustum(Frustum(90.0f, 1.0f, 0.01f, 100.0f));
-    lightSplitShadowMap->update(splitFrustum);
+    lightSplitShadowMap->onSplitFrustumUpdated(splitFrustum);
+    lightSplitShadowMap->updateVisibleModels();
 
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 1);
 }
