@@ -42,9 +42,8 @@ namespace urchin {
                 ->addUniformData(shadowMapInfoUniformBinding, sizeof(shadowMapInfo), &shadowMapInfo);
     }
 
-    void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
-        splitFrustum(camera.getFrustum()); //TODO useful ?
-        updateShadowLights();
+    void ShadowManager::onCameraProjectionUpdate(const Camera&) const {
+        //nothing to update
     }
 
     void ShadowManager::notify(Observable* observable, int notificationType) {
@@ -157,13 +156,7 @@ namespace urchin {
     void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
         ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
 
-        splitFrustum(frustum); //TODO onSplitFrustumUpdated inside splitFrustum ?
-        for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
-            unsigned int splitIndex = 0;
-            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                lightSplitShadowMap->onSplitFrustumUpdated(splitFrustums[splitIndex++]);
-            }
-        }
+        updateSplitFrustum(frustum);
 
         for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
             for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
@@ -229,17 +222,23 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
+    void ShadowManager::updateSplitFrustum(const Frustum<float>& frustum) {
         splitFrustums.clear();
 
         constexpr float ADJUSTMENT_EXPONENT = 1.4f; //1.0 = linear distribution, >1.0 = exponential distribution
         float previousSplitDistance = 0.0f;
-        for (unsigned int i = 1; i <= config.nbSunShadowMaps; ++i) {
-            float linearSplitPerc = (float)i / (float)config.nbSunShadowMaps;
+        for (unsigned int i = 0; i < config.nbSunShadowMaps; ++i) {
+            float linearSplitPerc = (((float)i) + 1.0f) / (float)config.nbSunShadowMaps;
             float splitPerc = std::pow(linearSplitPerc, ADJUSTMENT_EXPONENT);
             float splitDistance = config.sunShadowViewDistance * splitPerc;
 
             splitFrustums.emplace_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
+            for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
+                if (lightShadowMap->getLight().getLightType() == Light::LightType::SUN) {
+                    lightShadowMap->getLightSplitShadowMaps()[i]->onSplitFrustumUpdated(splitFrustums[i]);
+                }
+            }
+
             previousSplitDistance = splitDistance;
         }
         #ifdef URCHIN_DEBUG

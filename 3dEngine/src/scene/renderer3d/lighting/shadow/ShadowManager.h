@@ -40,7 +40,7 @@ namespace urchin {
             ~ShadowManager() override = default;
 
             void setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t, uint32_t);
-            void onCameraProjectionUpdate(const Camera&);
+            void onCameraProjectionUpdate(const Camera&) const;
             void notify(Observable*, int) override;
 
             unsigned int getMaxShadowLights() const;
@@ -71,7 +71,7 @@ namespace urchin {
             void updateShadowLights();
 
             //splits handling
-            void splitFrustum(const Frustum<float>&);
+            void updateSplitFrustum(const Frustum<float>&);
 
             //shadow map quality
             void checkConfig() const;
