@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <array>
 #include <vulkan/vulkan.h>
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
@@ -55,9 +56,9 @@ namespace urchin {
             static constexpr unsigned int MAX_ERRORS_LOG = 20;
             std::size_t currentFrameIndex;
 
-            std::vector<VkSemaphore> imageAvailableSemaphores;
-            std::vector<VkSemaphore> renderFinishedSemaphores;
-            std::vector<VkFence> commandBufferFences;
+            std::array<VkSemaphore, MAX_CONCURRENT_FRAMES> presentCompleteSemaphores;
+            std::vector<std::array<VkSemaphore, MAX_CONCURRENT_FRAMES>> renderCompleteSemaphores;
+            std::array<VkFence, MAX_CONCURRENT_FRAMES> commandBufferFences;
             std::vector<VkFence> imagesFences;
     };
 

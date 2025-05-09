@@ -14,7 +14,10 @@ namespace urchin {
             RenderTarget(std::move(name), isTestMode, depthAttachmentType),
             verticalSyncEnabled(true),
             vkImageIndex(std::numeric_limits<uint32_t>::max()),
-            currentFrameIndex(0) {
+            currentFrameIndex(0),
+            presentCompleteSemaphores({}),
+            renderCompleteSemaphores({}),
+            commandBufferFences({}) {
 
     }
 
@@ -189,9 +192,7 @@ namespace urchin {
     void ScreenRender::createSyncObjects() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        imageAvailableSemaphores.resize(MAX_CONCURRENT_FRAMES);
-        renderFinishedSemaphores.resize(MAX_CONCURRENT_FRAMES);
-        commandBufferFences.resize(MAX_CONCURRENT_FRAMES);
+        renderCompleteSemaphores.resize(swapChainImageViews.size());
         imagesFences.resize(swapChainImageViews.size(), VK_NULL_HANDLE);
 
         VkSemaphoreCreateInfo semaphoreInfo{};
@@ -202,19 +203,23 @@ namespace urchin {
         fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
         for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
-            VkResult imageAvailableSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]);
+            VkResult imageAvailableSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &presentCompleteSemaphores[i]);
             if (imageAvailableSemaphoreResult != VK_SUCCESS) {
                 throw std::runtime_error("Failed to create image available semaphore with error code '" + std::string(string_VkResult(imageAvailableSemaphoreResult)) + "' on render target: " + getName());
-            }
-
-            VkResult renderFinishedSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]);
-            if (renderFinishedSemaphoreResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create render finished semaphore with error code '" + std::string(string_VkResult(renderFinishedSemaphoreResult)) + "' on render target: " + getName());
             }
 
             VkResult fenceResult = vkCreateFence(logicalDevice, &fenceInfo, nullptr, &commandBufferFences[i]);
             if (fenceResult != VK_SUCCESS) {
                 throw std::runtime_error("Failed to create fences with error code '" + std::string(string_VkResult(fenceResult)) + "' on render target: " + getName());
+            }
+        }
+
+        for (std::size_t imageIndex = 0; imageIndex < swapChainImageViews.size(); imageIndex++) {
+            for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
+                VkResult renderFinishedSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &renderCompleteSemaphores[imageIndex][i]);
+                if (renderFinishedSemaphoreResult != VK_SUCCESS) {
+                    throw std::runtime_error("Failed to create render finished semaphore with error code '" + std::string(string_VkResult(renderFinishedSemaphoreResult)) + "' on render target: " + getName());
+                }
             }
         }
     }
@@ -223,9 +228,13 @@ namespace urchin {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         imagesFences.clear();
+        for (std::size_t imageIndex = 0; imageIndex < swapChainImageViews.size(); imageIndex++) {
+            for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
+                vkDestroySemaphore(logicalDevice, renderCompleteSemaphores[imageIndex][i], nullptr);
+            }
+        }
         for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
-            vkDestroySemaphore(logicalDevice, renderFinishedSemaphores[i], nullptr);
-            vkDestroySemaphore(logicalDevice, imageAvailableSemaphores[i], nullptr);
+            vkDestroySemaphore(logicalDevice, presentCompleteSemaphores[i], nullptr);
             vkDestroyFence(logicalDevice, commandBufferFences[i], nullptr);
         }
     }
@@ -244,7 +253,7 @@ namespace urchin {
             throw std::runtime_error("No dependencies to outputs expected on screen render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
-        VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, imageAvailableSemaphores[currentFrameIndex], VK_NULL_HANDLE, &vkImageIndex);
+        VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, presentCompleteSemaphores[currentFrameIndex], VK_NULL_HANDLE, &vkImageIndex);
         if (resultAcquireImage == VK_ERROR_OUT_OF_DATE_KHR) { //after window resize (never had the case !) or when window is minimized with Alt+Tab or Win+D
             onResize();
             std::ranges::for_each(getOffscreenRenderDependencies(), [frameIndex](OffscreenRender* ord){ ord->markSubmitSemaphoreUnused(frameIndex); });
@@ -270,14 +279,14 @@ namespace urchin {
         //Semaphores (GPU-GPU sync) to wait command buffers execution before present the image.
         VkSemaphoreSubmitInfo semaphoreSubmitInfo{};
         semaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
-        semaphoreSubmitInfo.semaphore = renderFinishedSemaphores[currentFrameIndex];
+        semaphoreSubmitInfo.semaphore = renderCompleteSemaphores[vkImageIndex][currentFrameIndex];
         semaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
         semaphoreSubmitInfo.deviceIndex = 0;
 
         //Semaphores (GPU-GPU sync) to wait image available before executing command buffers.
         VkSemaphoreSubmitInfo imageAvailableSemaphoreSubmitInfo{};
         imageAvailableSemaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
-        imageAvailableSemaphoreSubmitInfo.semaphore = imageAvailableSemaphores[currentFrameIndex];
+        imageAvailableSemaphoreSubmitInfo.semaphore = presentCompleteSemaphores[currentFrameIndex];
         imageAvailableSemaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
         imageAvailableSemaphoreSubmitInfo.deviceIndex = 0;
 
@@ -307,7 +316,7 @@ namespace urchin {
         VkPresentInfoKHR presentInfo{};
         presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         presentInfo.waitSemaphoreCount = 1;
-        presentInfo.pWaitSemaphores = &renderFinishedSemaphores[currentFrameIndex];
+        presentInfo.pWaitSemaphores = &renderCompleteSemaphores[vkImageIndex][currentFrameIndex];
         presentInfo.swapchainCount = 1;
         presentInfo.pSwapchains = swapChains.data();
         presentInfo.pImageIndices = &vkImageIndex;
@@ -326,7 +335,10 @@ namespace urchin {
             throw std::runtime_error("Failed to queue an image for presentation with error code '" + std::string(string_VkResult(queuePresentResult)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
-        currentFrameIndex = (currentFrameIndex + 1) % MAX_CONCURRENT_FRAMES;
+        currentFrameIndex++;
+        if (currentFrameIndex >= MAX_CONCURRENT_FRAMES) {
+            currentFrameIndex = 0;
+        }
     }
 
     bool ScreenRender::needCommandBufferRefresh(std::size_t /*cmdBufferIndex*/) const {
