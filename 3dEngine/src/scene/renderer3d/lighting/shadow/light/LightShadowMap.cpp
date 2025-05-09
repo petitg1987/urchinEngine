@@ -5,8 +5,8 @@
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/display/ModelShadowSunShaderVariable.h>
 #include <scene/renderer3d/lighting/shadow/display/ModelShadowSpotShaderVariable.h>
-
-#include "scene/renderer3d/lighting/light/Light.h"
+#include <scene/renderer3d/lighting/light/Light.h>
+#include <scene/renderer3d/model/builder/ModelBuilder.h>
 
 namespace urchin {
 
@@ -15,7 +15,14 @@ namespace urchin {
             modelOcclusionCuller(modelOcclusionCuller),
             shadowViewDistance(shadowViewDistance),
             shadowMapResolution(shadowMapResolution),
-            nbShadowMaps(nbShadowMaps) {
+            nbShadowMaps(nbShadowMaps),
+            defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")) {
+
+        for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye.
+            lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(this));
+        }
+        updateLightViewMatrix();
+        light.addObserver(this, Light::AFFECTED_ZONE_UPDATED);
 
         if (!isTestMode) {
             renderTarget = std::make_unique<OffscreenRender>("shadow map - " + light.getLightTypeName(), false, RenderTarget::SHARED_DEPTH_ATTACHMENT);
@@ -39,12 +46,6 @@ namespace urchin {
                 throw std::runtime_error("Unknown light type to setup shadow model set displayer: " + std::to_string((int)light.getLightType()));
             }
         }
-
-        for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye.
-            lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(this));
-        }
-        updateLightViewMatrix();
-        light.addObserver(this, Light::AFFECTED_ZONE_UPDATED);
     }
 
     LightShadowMap::~LightShadowMap() {
@@ -142,6 +143,10 @@ namespace urchin {
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
             std::span<Model* const> frustumSplitModels = lightSplitShadowMap->getModels();
             OctreeableHelper<Model>::merge(models, frustumSplitModels);
+        }
+
+        if (models.empty()) { //TODO comment
+            models.push_back(defaultEmptyModel.get());
         }
 
         return models;

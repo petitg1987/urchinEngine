@@ -46,12 +46,13 @@ namespace urchin {
             unsigned int shadowMapResolution;
             unsigned int nbShadowMaps;
 
-            std::unique_ptr<OffscreenRender> renderTarget;
-            std::unique_ptr<ModelSetDisplayer> shadowModelSetDisplayer;
-
             Matrix4<float> lightViewMatrix;
             std::vector<std::unique_ptr<LightSplitShadowMap>> lightSplitShadowMaps;
             mutable std::vector<Model*> models;
+            std::unique_ptr<Model> defaultEmptyModel;
+
+            std::unique_ptr<OffscreenRender> renderTarget;
+            std::unique_ptr<ModelSetDisplayer> shadowModelSetDisplayer;
     };
 
 }

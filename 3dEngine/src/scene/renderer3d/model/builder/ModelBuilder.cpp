@@ -1,19 +1,34 @@
 #include <scene/renderer3d/model/builder/ModelBuilder.h>
 #include <resources/ResourceRetriever.h>
+#include <resources/material/MaterialBuilder.h>
 
 namespace urchin {
 
     //static
     unsigned long ModelBuilder::nextId = 0;
 
+    ModelBuilder::ModelBuilder() {
+        std::vector<unsigned char> defaultAlbedoColor({0, 0, 0, 255});
+        std::shared_ptr<Texture> albedoTexture = Texture::build("defaultAlbedo", 1, 1, TextureFormat::RGBA_8_INT, defaultAlbedoColor.data(), TextureDataType::INT_8);
+        material = MaterialBuilder::create("defaultMaterial", std::move(albedoTexture), false)->build();
+    }
+
     ModelBuilder::ModelBuilder(std::shared_ptr<Material> material) :
-        material(std::move(material)) {
+            material(std::move(material)) {
 
     }
 
     ModelBuilder::ModelBuilder(const std::string& materialFilename) :
             material(ResourceRetriever::instance().getResource<Material>(materialFilename, {})) {
 
+    }
+
+    std::unique_ptr<Model> ModelBuilder::newEmptyModel(const std::string& meshesName) const {
+        std::vector vertices = {Point3(0.1f, 0.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)};
+        std::vector triangleIndices = {0u, 1u, 2u};
+        std::vector uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
+
+        return newModel(meshesName, vertices, triangleIndices, uvTexture);
     }
 
     std::unique_ptr<Model> ModelBuilder::newModel(const std::string& meshesName, const std::vector<Point3<float>>& vertices,

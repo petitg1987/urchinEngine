@@ -1,5 +1,5 @@
 #include <player/filereader/ChunkPreLoader.h>
-#include "SoundFileReader.h"
+#include <player/filereader/SoundFileReader.h>
 
 namespace urchin {
 
