@@ -145,7 +145,8 @@ namespace urchin {
             OctreeableHelper<Model>::merge(models, frustumSplitModels);
         }
 
-        if (models.empty()) { //TODO comment
+        if (models.empty()) {
+            //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
             models.push_back(defaultEmptyModel.get());
         }
 
