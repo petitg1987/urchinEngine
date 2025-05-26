@@ -476,8 +476,8 @@ def generate_bounding_box(urchin_animation, frame_range):
             if mesh_to_export.data.polygons:
                 bbox = mesh_to_export.bound_box
                 corners += bbox
-        (min, max) = get_min_max(corners)
-        urchin_animation.bounds.append((min[0], min[1], min[2], max[0], max[1], max[2]))
+        (min_point, max_point) = get_min_max(corners)
+        urchin_animation.bounds.append((min_point[0], min_point[1], min_point[2], max_point[0], max_point[1], max_point[2]))
     scene.frame_set(frame_range[0])
 
 
@@ -612,12 +612,12 @@ def export_all(settings):
                                 if sum_weight != 0:
                                     try:
                                         vertex.influences.append(Influence(bones[bone_name], weight / sum_weight))
-                                    except:
+                                    except KeyError:
                                         continue
                                 else:  # we have a vertex that is probably not skinned. export anyway
                                     try:
                                         vertex.influences.append(Influence(bones[bone_name], weight))
-                                    except:
+                                    except KeyError:
                                         continue
 
                         elif not face.use_smooth:
@@ -698,7 +698,7 @@ def export_all(settings):
 
                     try:
                         bone = bones[bone_name]
-                    except:
+                    except KeyError:
                         reporter.report({'ERROR'}, "Found a posebone animating a bone that is not part of the exported armature: " + bone_name)
                         continue
                     if bone.parent:
@@ -754,6 +754,7 @@ class ExportUrchin(bpy.types.Operator):
     anim_start_index: bpy.props.IntProperty(name="Anim Start", description="Animation start index", default=-1)
     anim_end_index: bpy.props.IntProperty(name="Anim End", description="Animation end index", default=-1)
 
+    # noinspection PyUnusedLocal
     def execute(self, context):
         global reporter
         reporter = self
@@ -761,11 +762,13 @@ class ExportUrchin(bpy.types.Operator):
         export_urchin(settings)
         return {'FINISHED'}
 
+    # noinspection PyUnusedLocal
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
         return {"RUNNING_MODAL"}
 
 
+# noinspection PyUnusedLocal
 def export_menu_func(self, context):
     default_path = os.path.splitext(bpy.data.filepath)[0]
     self.layout.operator(ExportUrchin.bl_idname, text="Urchin Engine (.urchinMesh .urchinAnim)", icon='BLENDER').filepath = default_path
@@ -785,6 +788,7 @@ class AdjustMeshOrigin(bpy.types.Operator):
     bl_label = "[Urchin] Adjust Mesh Origin"
     bl_options = {'REGISTER', 'UNDO'}
 
+    # noinspection PyMethodMayBeStatic,PyUnusedLocal
     def execute(self, context):
         # Apply transform
         select_all_meshes()
@@ -812,6 +816,7 @@ class AdjustArmatureOrigin(bpy.types.Operator):
     bl_label = "[Urchin] Adjust Armature Origin"
     bl_options = {'REGISTER', 'UNDO'}
 
+    # noinspection PyMethodMayBeStatic,PyUnusedLocal
     def execute(self, context):
         # Apply transform
         bpy.ops.object.select_by_type(type='ARMATURE')
@@ -823,7 +828,7 @@ class AdjustArmatureOrigin(bpy.types.Operator):
 
         return {'FINISHED'}
 
-
+# noinspection PyUnusedLocal
 def object_menu_func(self, context):
     self.layout.separator()
     self.layout.operator(AdjustMeshOrigin.bl_idname)
