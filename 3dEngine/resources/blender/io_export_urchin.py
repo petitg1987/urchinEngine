@@ -425,17 +425,17 @@ def treat_bone(skeleton, b, w_matrix, parent=None):
 def get_min_max(list_of_points):
     if len(list_of_points) == 0:
         return [0, 0, 0], [0, 0, 0]
-    min = [list_of_points[0][0], list_of_points[0][1], list_of_points[0][2]]
-    max = [list_of_points[0][0], list_of_points[0][1], list_of_points[0][2]]
+    min_point = [list_of_points[0][0], list_of_points[0][1], list_of_points[0][2]]
+    max_point = [list_of_points[0][0], list_of_points[0][1], list_of_points[0][2]]
     for i in range(1, len(list_of_points)):
         if len(list_of_points[i]) == 3:
-            if list_of_points[i][0] > max[0]: max[0] = list_of_points[i][0]
-            if list_of_points[i][1] > max[1]: max[1] = list_of_points[i][1]
-            if list_of_points[i][2] > max[2]: max[2] = list_of_points[i][2]
-            if list_of_points[i][0] < min[0]: min[0] = list_of_points[i][0]
-            if list_of_points[i][1] < min[1]: min[1] = list_of_points[i][1]
-            if list_of_points[i][2] < min[2]: min[2] = list_of_points[i][2]
-    return min, max
+            if list_of_points[i][0] > max_point[0]: max_point[0] = list_of_points[i][0]
+            if list_of_points[i][1] > max_point[1]: max_point[1] = list_of_points[i][1]
+            if list_of_points[i][2] > max_point[2]: max_point[2] = list_of_points[i][2]
+            if list_of_points[i][0] < min_point[0]: min_point[0] = list_of_points[i][0]
+            if list_of_points[i][1] < min_point[1]: min_point[1] = list_of_points[i][1]
+            if list_of_points[i][2] < min_point[2]: min_point[2] = list_of_points[i][2]
+    return min_point, max_point
 
 
 def get_meshes_to_export():
@@ -603,14 +603,14 @@ def export_all(settings):
 
                             if not influences:
                                 reporter.report({'WARNING'}, "There is a vertex without bone attachment in mesh: " + mesh.name)
-                            sum = 0.0
+                            sum_weight = 0.0
                             for bone_name, weight in influences:
-                                sum += weight
+                                sum_weight += weight
 
                             for bone_name, weight in influences:
-                                if sum != 0:
+                                if sum_weight != 0:
                                     try:
-                                        vertex.influences.append(Influence(bones[bone_name], weight / sum))
+                                        vertex.influences.append(Influence(bones[bone_name], weight / sum_weight))
                                     except:
                                         continue
                                 else:  # we have a vertex that is probably not skinned. export anyway
