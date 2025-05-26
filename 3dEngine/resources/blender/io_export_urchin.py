@@ -4,8 +4,7 @@ from enum import Enum
 bl_info = {
     "name": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
     "version": (1, 0, 0),
-    "blender": (2, 80, 0),
-    "api": 31847,
+    "blender": (4, 0, 0),
     "location": "File > Export",
     "description": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
     "category": "Import-Export"}
