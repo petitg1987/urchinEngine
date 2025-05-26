@@ -167,7 +167,7 @@ class CloneReason(Enum):
 
 
 class Vertex:
-    def __init__(self, sub_mesh, coord, cloned_from=None, clone_reason=CloneReason.NOT_CLONED):
+    def __init__(self, sub_mesh, coord, cloned_from=None, clone_reason:CloneReason=CloneReason.NOT_CLONED):
         self.id = sub_mesh.next_vertex_id
         self.coord = coord
         self.texture_coord = None
@@ -353,7 +353,7 @@ class UrchinAnimation:
                 qz = rot.z
                 if rot.w > 0:
                     qx, qy, qz = -qx, -qy, -qz
-                self.base_frame.col[bone.id] = (bone.matrix.col[3][0], bone.matrix.col[3][1], bone.matrix.col[3][2], qx, qy, qz)
+                self.base_frame[bone.id] = (bone.matrix.col[3][0], bone.matrix.col[3][1], bone.matrix.col[3][2], qx, qy, qz)
 
         buf = "numFrames %i\n" % self.num_frames
         buf = buf + "numJoints %i\n" % (len(self.skeleton.bones))
@@ -480,7 +480,7 @@ def generate_bounding_box(urchin_animation, frame_range):
     scene.frame_set(frame_range[0])
 
 
-def rotate_axis(obj_to_rotate, rotate_angle, rotate_axis):
+def rotate_axis(obj_to_rotate, angle, axis):
     # Save selected and active objects
     saved_selected_objects = bpy.context.selected_objects
     saved_active_object = bpy.context.view_layer.objects.active
@@ -491,7 +491,7 @@ def rotate_axis(obj_to_rotate, rotate_angle, rotate_axis):
     obj_to_rotate.select_set(True)
 
     # Rotate
-    bpy.ops.transform.rotate(value=math.radians(rotate_angle), orient_axis=rotate_axis, orient_type='GLOBAL')
+    bpy.ops.transform.rotate(value=math.radians(angle), orient_axis=axis, orient_type='GLOBAL')
 
     # Apply rotation
     for child in bpy.context.object.children:
