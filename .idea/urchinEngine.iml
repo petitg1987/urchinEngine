@@ -2,7 +2,7 @@
 <module classpath="CMake" type="CPP_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Python" name="Python facet">
-      <configuration sdkName="Python 3.12 (urchinEngine)" />
+      <configuration sdkName="Python 3.10 (.pythonUrchinEngine)" />
     </facet>
   </component>
 </module>

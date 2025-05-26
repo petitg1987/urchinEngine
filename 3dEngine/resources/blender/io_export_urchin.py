@@ -1,4 +1,4 @@
-import bpy, struct, math, os, time, sys, mathutils, enum
+import bpy, math, os, mathutils
 from enum import Enum
 
 bl_info = {
@@ -27,6 +27,7 @@ def matrix_invert(m):
     if det == 0.0: return None
     det = 1.0 / det
 
+    # noinspection PyListCreation
     r = [[
         det * (m.col[1][1] * m.col[2][2] - m.col[2][1] * m.col[1][2]),
         - det * (m.col[0][1] * m.col[2][2] - m.col[2][1] * m.col[0][2]),
@@ -56,7 +57,7 @@ def matrix_invert(m):
 # GLOBAL VARIABLES
 # ---------------------------------------------------------------------------
 bones = {}
-reporter = None
+reporter = bpy.types.Operator
 
 
 # ---------------------------------------------------------------------------
