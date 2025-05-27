@@ -1,5 +1,7 @@
 import bpy, math, os, mathutils
 from enum import Enum
+from mathutils import Vector
+from mathutils import Matrix
 
 bl_info = {
     "name": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
@@ -781,6 +783,31 @@ def select_all_meshes():
     bpy.context.view_layer.objects.active = bpy.context.selected_objects[0]  # Active one random mesh otherwise some scripts do not work correctly
 
 
+def get_global_bbox_center(objs):
+    if not objs:
+        return Vector((0, 0, 0))
+    min_corner = Vector((float('inf'), float('inf'), float('inf')))
+    max_corner = Vector((float('-inf'), float('-inf'), float('-inf')))
+    for obj in objs:
+        for v in obj.bound_box:
+            world_v = obj.matrix_world @ Vector(v)
+            min_corner.x = min(min_corner.x, world_v.x)
+            min_corner.y = min(min_corner.y, world_v.y)
+            min_corner.z = min(min_corner.z, world_v.z)
+            max_corner.x = max(max_corner.x, world_v.x)
+            max_corner.y = max(max_corner.y, world_v.y)
+            max_corner.z = max(max_corner.z, world_v.z)
+    return (min_corner + max_corner) / 2
+
+
+def set_object_origin_world(obj, new_origin_world):
+    current_origin_world = obj.matrix_world.translation
+    delta = current_origin_world - new_origin_world
+    mesh = obj.data
+    mesh.transform(Matrix.Translation(delta))
+    obj.location -= delta
+
+
 class AdjustMeshOrigin(bpy.types.Operator):
     """Adjust Mesh Origin: move all the meshes origins to the center of the global bounding box"""
     bl_idname = "object.adjust_mesh_origin"
@@ -793,18 +820,10 @@ class AdjustMeshOrigin(bpy.types.Operator):
         select_all_meshes()
         bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
-        # Move the 3D cursor to the center of the global bounding box
-        bpy.ops.object.duplicate_move()
-        if len(bpy.context.selected_objects) > 1:
-            bpy.context.view_layer.objects.active = bpy.context.selected_objects[0] # Active one random mesh otherwise 'join()' method is not working
-            bpy.ops.object.join()
-        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
-        bpy.ops.view3d.snap_cursor_to_selected()
-        bpy.ops.object.delete() # Remove the duplicate meshes
-
-        # Move all meshes origin to 3D cursor
-        select_all_meshes()
-        bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
+        # Move the origin to the center of the global bounding box
+        bbox_center = get_global_bbox_center(bpy.context.selected_objects)
+        for obj in bpy.context.selected_objects:
+          set_object_origin_world(obj, bbox_center)
 
         return {'FINISHED'}
 
@@ -822,10 +841,11 @@ class AdjustArmatureOrigin(bpy.types.Operator):
         bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
 
         # Move armature to world origin (0, 0, 0)
-        bpy.ops.view3d.snap_cursor_to_center()
-        bpy.ops.view3d.snap_selected_to_cursor()
+        for obj in bpy.context.selected_objects:
+          obj.location = Vector((0.0, 0.0, 0.0))
 
         return {'FINISHED'}
+
 
 # noinspection PyUnusedLocal
 def object_menu_func(self, context):
