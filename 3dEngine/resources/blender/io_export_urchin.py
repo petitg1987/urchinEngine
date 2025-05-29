@@ -817,6 +817,7 @@ class AdjustMeshOrigin(bpy.types.Operator):
     # noinspection PyMethodMayBeStatic,PyUnusedLocal
     def execute(self, context):
         # Apply transform
+        bpy.ops.object.mode_set(mode='OBJECT')
         select_all_meshes()
         bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
@@ -837,6 +838,7 @@ class AdjustArmatureOrigin(bpy.types.Operator):
     # noinspection PyMethodMayBeStatic,PyUnusedLocal
     def execute(self, context):
         # Apply transform
+        bpy.ops.object.mode_set(mode='OBJECT')
         bpy.ops.object.select_by_type(type='ARMATURE')
         bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
 
