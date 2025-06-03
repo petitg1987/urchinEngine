@@ -414,7 +414,7 @@ class UrchinSettings:
 
 
 def treat_bone(skeleton, b, w_matrix, parent=None):
-    print("[INFO] Processing bone: " + b.name)
+    print("Processing bone: " + b.name)
     if parent and not b.parent.name == parent.name:
         return  # only catch direct children
     mat = mathutils.Matrix(w_matrix) @ mathutils.Matrix(b.matrix_local)
@@ -467,7 +467,7 @@ def find_armature(meshes_to_export):
 
 
 def generate_bounding_box(urchin_animation, frame_range):
-    print("[INFO] Generating animation bounding box")
+    print("Generating animation bounding box")
     scene = bpy.context.scene
     for i in range(frame_range[0], frame_range[1] + 1):
         corners = []
@@ -508,7 +508,7 @@ def rotate_axis(obj_to_rotate, angle, axis):
 
 
 def export_urchin(settings):
-    print("[INFO] Exporting selected objects...")
+    print("Exporting all the objects")
 
     bpy.ops.object.mode_set(mode='OBJECT')
     bpy.context.scene.frame_set(bpy.context.scene.frame_start)
@@ -527,7 +527,7 @@ def export_all(settings):
     curr_armature = find_armature(get_meshes_to_export())
     if curr_armature and curr_armature is not None:
         w_matrix = curr_armature.matrix_world
-        print("[INFO] Processing armature: " + curr_armature.name)
+        print("Processing armature: " + curr_armature.name)
         for b in curr_armature.data.bones:
             if not b.parent:  # only treat root bones
                 treat_bone(skeleton, b, w_matrix)
@@ -542,7 +542,7 @@ def export_all(settings):
         modified_mesh = mesh_eval.to_mesh()
 
         mesh = Mesh(modified_mesh.name)
-        print("[INFO] Processing mesh: " + modified_mesh.name)
+        print("Processing mesh: " + modified_mesh.name)
         meshes.append(mesh)
 
         num_tris = 0
@@ -648,7 +648,7 @@ def export_all(settings):
                         Face(sub_mesh, face_vertices[0], face_vertices[i], face_vertices[i + 1])
                 else:
                     reporter.report({'ERROR'}, "Found face with invalid material on mesh: " + mesh_to_export.name)
-        print("[INFO] Created vertices: A " + str(create_vertex_a) + ", B " + str(create_vertex_b) + ", C " + str(create_vertex_c))
+        print("Created vertices: A " + str(create_vertex_a) + ", B " + str(create_vertex_b) + ", C " + str(create_vertex_c))
 
     if settings.export_mode == "mesh & anim" or settings.export_mode == "mesh only":
         urchin_mesh_filename = settings.save_path
@@ -666,7 +666,7 @@ def export_all(settings):
             buffer = buffer + meshes[0].to_urchin_mesh()
             file.write(buffer)
             file.close()
-            print("[INFO] Saved mesh to " + urchin_mesh_filename)
+            print("Saved mesh to " + urchin_mesh_filename)
         except IOError:
             reporter.report({'ERROR'}, "IOError to write in: " + urchin_mesh_filename)
 
@@ -684,8 +684,8 @@ def export_all(settings):
                 frame_min = max(frame_min, settings.anim_start_index)
             if settings.anim_end_index != -1:
                 frame_max = min(frame_max, settings.anim_end_index)
-            print("[INFO] Frame start: " + str(frame_min))
-            print("[INFO] Frame end: " + str(frame_max))
+            print("Frame start: " + str(frame_min))
+            print("Frame end: " + str(frame_max))
             range_start = int(frame_min)
             range_end = int(frame_max)
 
@@ -731,7 +731,7 @@ def export_all(settings):
                 buffer = anim.to_urchin_anim()
                 file.write(buffer)
                 file.close()
-                print("[INFO] Saved anim to " + urchin_anim_filename)
+                print("Saved anim to " + urchin_anim_filename)
             except IOError:
                 reporter.report({'ERROR'}, "IOError to write in: " + urchin_anim_filename)
         else:
