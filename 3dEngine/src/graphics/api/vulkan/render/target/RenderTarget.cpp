@@ -21,7 +21,7 @@ namespace urchin {
             commandPool(nullptr),
             copiersDirty(false),
             processorsDirty(false) {
-        Logger::instance().logInfo("Create render target: " + this->name);
+        Logger::instance().logInfo("Creating a render target: " + this->name);
     }
 
     RenderTarget::~RenderTarget() {

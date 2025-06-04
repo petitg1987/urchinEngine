@@ -13,7 +13,7 @@ namespace urchin {
     AudioDevice::AudioDevice() :
             device(nullptr),
             context(nullptr) {
-        Logger::instance().logInfo("Create audio device");
+        Logger::instance().logInfo("Creating an audio device");
 
         device = alcOpenDevice(nullptr);
         if (!device) {

@@ -15,7 +15,7 @@ namespace urchin {
      * @param map [out] Map to load the entities (must be empty)
      */
     void MapSaveService::loadMap(const std::string& filename, LoadMapCallback& loadMapCallback, Map& map) const {
-        Logger::instance().logInfo("Load map: " + filename);
+        Logger::instance().logInfo("Loading the map: " + filename);
 
         std::string mapPath = FileUtil::isAbsolutePath(filename) ? filename : FileSystem::instance().getResourcesDirectory() + filename;
         UdaParser udaParser(mapPath, UdaLoadType::LOAD_FILE);

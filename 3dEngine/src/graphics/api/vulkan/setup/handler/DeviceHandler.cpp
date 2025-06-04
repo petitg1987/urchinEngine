@@ -12,14 +12,17 @@ using namespace urchin;
 
 namespace urchin {
 
-    PhysicalDeviceSuitability::PhysicalDeviceSuitability(VkPhysicalDevice physicalDevice, int score) :
+    PhysicalDeviceSuitability::PhysicalDeviceSuitability(VkPhysicalDevice physicalDevice, std::string deviceName, int score) :
             physicalDevice(physicalDevice),
-            score(score) {
+            deviceName(std::move(deviceName)),
+            score(score),
+            missingRequisiteDescription(std::nullopt) {
 
     }
 
     PhysicalDeviceSuitability::PhysicalDeviceSuitability(VkPhysicalDevice physicalDevice, std::string missingRequisiteDescription) :
             physicalDevice(physicalDevice),
+            deviceName(std::nullopt),
             score(-1),
             missingRequisiteDescription(missingRequisiteDescription) {
 
@@ -110,7 +113,7 @@ namespace urchin {
      * Returns the most suitable physical device (=graphic card) to run the engine
      */
     VkPhysicalDevice DeviceHandler::findPhysicalDevice(VkInstance instance) {
-        Logger::instance().logInfo("Find Vulkan physical device");
+        Logger::instance().logInfo("Finding a Vulkan physical device");
 
         uint32_t deviceCount = 0;
         VkResult resultEnumDevices = vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
@@ -139,6 +142,9 @@ namespace urchin {
             std::string noDeviceFoundReason = bestPhysicalDevice->second.missingRequisiteDescription.value();
             throw UserAuthorityException("Failed to find a suitable graphic card: " + noDeviceFoundReason, "Make sure your graphic card matches the minimum requirements and/or upgrade your graphic drivers");
         }
+
+        assert(bestPhysicalDevice->second.deviceName.has_value());
+        Logger::instance().logInfo("Physical device with a score of " + std::to_string(bestPhysicalDevice->second.score) + " found: " + bestPhysicalDevice->second.deviceName.value());
 
         return bestPhysicalDevice->second.physicalDevice;
     }
@@ -206,7 +212,7 @@ namespace urchin {
             score += 10000;
         }
         score += (int)deviceProperties.limits.maxImageDimension2D; //indicator of the device performance/quality
-        return {physicalDeviceToCheck, score};
+        return {physicalDeviceToCheck, std::string(deviceProperties.deviceName), score};
     }
 
     bool DeviceHandler::checkPhysicalDeviceExtensionSupport(VkPhysicalDevice physicalDeviceToCheck, const char* extensionName) const {
@@ -228,7 +234,7 @@ namespace urchin {
     }
 
     VkDevice DeviceHandler::createLogicalDevice() {
-        Logger::instance().logInfo("Create Vulkan logical device");
+        Logger::instance().logInfo("Creating a Vulkan logical device");
 
         QueueHandler queueFamilyHandler;
         queueFamilyHandler.initializeQueueFamilies(physicalDevice, surface);

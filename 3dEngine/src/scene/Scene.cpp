@@ -57,7 +57,7 @@ namespace urchin {
         framebufferSizeRetriever->getFramebufferSizeInPixel(newSceneWidth, newSceneHeight);
 
         if ((newSceneWidth != 0 && newSceneHeight != 0) && (sceneWidth != newSceneWidth || sceneHeight != newSceneHeight)) {
-            Logger::instance().logInfo("Resize scene to " + std::to_string(newSceneWidth) + "x" + std::to_string(newSceneHeight));
+            Logger::instance().logInfo("Resizing the scene to " + std::to_string(newSceneWidth) + "x" + std::to_string(newSceneHeight));
 
             //scene properties
             this->sceneWidth = newSceneWidth;
