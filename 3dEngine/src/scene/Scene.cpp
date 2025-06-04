@@ -111,6 +111,10 @@ namespace urchin {
         resetFps();
     }
 
+    const FpsStats& Scene::getFpsStats() const {
+        return fpsStats;
+    }
+
     void Scene::handleFpsLimiter() {
         if (fpsLimit > 0 && !screenRenderTarget.isVerticalSyncEnabled()) {
             if (fpsLimitPreviousTime == MIN_TIME_POINT) [[unlikely]] {
@@ -143,6 +147,8 @@ namespace urchin {
                 fps = (float) (1000000.0 / deltaTimeInUs) * (float) frameCount;
                 fpsPreviousTime = currentTime;
                 frameCount = 0;
+
+                fpsStats.registerFps((unsigned int)fps);
             }
         }
     }

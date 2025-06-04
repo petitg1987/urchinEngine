@@ -113,6 +113,10 @@ namespace urchin {
         }
     }
 
+    const FpsStats& PhysicsWorld::getFpsStats() const {
+        return fpsStats;
+    }
+
     void PhysicsWorld::startPhysicsUpdate() {
         try {
             Logger::instance().logInfo("Physics thread started with time step of " + std::to_string(timeStep) + " sec");
@@ -129,7 +133,10 @@ namespace urchin {
                     additionalTimeStep = maxAdditionalTimeStep;
                 }
 
-                processPhysicsUpdate(timeStep + additionalTimeStep);
+                float dt = timeStep + additionalTimeStep;
+                fpsStats.registerDt(dt);
+
+                processPhysicsUpdate(dt);
 
                 auto frameEndTime = std::chrono::steady_clock::now();
                 auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
@@ -139,7 +146,7 @@ namespace urchin {
                     deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
                 }
 
-                remainingTime = (timeStep + additionalTimeStep) - (float)((double)deltaTimeInUs / 1000000.0);
+                remainingTime = dt - (float)((double)deltaTimeInUs / 1000000.0);
                 if (remainingTime >= 0.0f) {
                     std::this_thread::sleep_for(std::chrono::milliseconds((int)(remainingTime * 1000.0f)));
                     remainingTime = 0.0f;
