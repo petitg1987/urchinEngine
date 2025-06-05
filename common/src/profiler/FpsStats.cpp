@@ -3,8 +3,8 @@
 namespace urchin {
 
     FpsStats::FpsStats() :
-        fpsMaxThresholds({5, 15, 30, 60, 10000}),
-        counts({0l, 0l, 0l, 0l, 0l}) {
+        fpsMaxThresholds({4, 10, 15, 25, 40, 55, 100, 10000}),
+        counts({0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l}) {
 
     }
 
@@ -28,7 +28,7 @@ namespace urchin {
         for (unsigned int i = 0; i < fpsMaxThresholds.size(); ++i) {
             unsigned int maxFps = fpsMaxThresholds[i];
 
-            result += "[" + std::to_string(minFps) + "fps-" + std::to_string(maxFps) + "fps]: " + std::to_string(counts[i]);
+            result += "[" + std::to_string(minFps) + "-" + std::to_string(maxFps) + "fps]: " + std::to_string(counts[i]);
             if (i + 1 != fpsMaxThresholds.size()) {
                 result += ", ";
             }

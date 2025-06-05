@@ -15,8 +15,9 @@ namespace urchin {
             std::string toString() const;
 
         private:
-            std::array<unsigned int, 5> fpsMaxThresholds;
-            std::array<long, 5> counts;
+            constexpr static std::size_t NUM_THRESHOLDS = 8;
+            std::array<unsigned int, NUM_THRESHOLDS> fpsMaxThresholds;
+            std::array<long, NUM_THRESHOLDS> counts;
     };
 
 }
