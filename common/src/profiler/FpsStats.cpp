@@ -3,7 +3,7 @@
 namespace urchin {
 
     FpsStats::FpsStats() :
-        fpsMaxThresholds({4, 10, 15, 25, 40, 55, 100, 10000}),
+        fpsMaxThresholds({4, 10, 15, 25, 40, 55, 100, 9999}),
         counts({0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l}) {
 
     }
