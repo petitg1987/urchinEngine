@@ -1,4 +1,5 @@
 #include <profiler/FpsStats.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
@@ -9,7 +10,7 @@ namespace urchin {
     }
 
     void FpsStats::registerDt(float dt) {
-        registerFps((unsigned int)(1.0f / dt));
+        registerFps(MathFunction::roundToUInt(1.0f / dt));
     }
 
     void FpsStats::registerFps(unsigned int fps) {
