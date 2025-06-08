@@ -9,8 +9,8 @@ namespace urchin {
 
     }
 
-    void FpsStats::registerDt(float dt) {
-        registerFps(MathFunction::roundToUInt(1.0f / dt));
+    void FpsStats::registerDt(float dtInSec) {
+        registerFps(MathFunction::roundToUInt(1.0f / dtInSec));
     }
 
     void FpsStats::registerFps(unsigned int fps) {

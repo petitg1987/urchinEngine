@@ -134,7 +134,6 @@ namespace urchin {
                 }
 
                 float dt = timeStep + additionalTimeStep;
-                fpsStats.registerDt(dt);
 
                 processPhysicsUpdate(dt);
 
@@ -146,7 +145,10 @@ namespace urchin {
                     deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
                 }
 
-                remainingTime = dt - (float)((double)deltaTimeInUs / 1000000.0);
+                float frameTimeInSec = (float)((double)deltaTimeInUs / 1000000.0);
+                fpsStats.registerDt(frameTimeInSec);
+
+                remainingTime = dt - frameTimeInSec;
                 if (remainingTime >= 0.0f) {
                     std::this_thread::sleep_for(std::chrono::milliseconds((int)(remainingTime * 1000.0f)));
                     remainingTime = 0.0f;
