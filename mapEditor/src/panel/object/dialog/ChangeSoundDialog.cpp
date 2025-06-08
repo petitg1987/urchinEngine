@@ -79,12 +79,12 @@ namespace urchin {
 
             LabelStyleHelper::applyNormalStyle(soundFilenameLabel);
 
-            if (soundFilename.empty()) {
+            int soundTypeIndex = soundTypeComboBox->currentData().toInt();
+            if (soundFilename.empty() && soundTypeIndex != -1) {
                 LabelStyleHelper::applyErrorStyle(soundFilenameLabel, "Sound file is mandatory");
                 hasError = true;
             } else {
-                QVariant soundTypeVariant = soundTypeComboBox->currentData();
-                auto soundType = static_cast<Sound::SoundType>(soundTypeVariant.toInt());
+                auto soundType = static_cast<Sound::SoundType>(soundTypeIndex);
                 if (soundType == Sound::SoundType::LOCALIZABLE) {
                     SoundFileReader soundFileReader(soundFilename);
                     if (soundFileReader.getNumberOfChannels() != 1) {
@@ -95,7 +95,6 @@ namespace urchin {
             }
 
             if (!hasError) {
-                int soundTypeIndex = soundTypeComboBox->currentData().toInt();
                 if (soundTypeIndex == -1) {
                     soundType = std::nullopt;
                 } else {

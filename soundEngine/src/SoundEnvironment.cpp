@@ -36,9 +36,9 @@ namespace urchin {
     }
 
     void SoundEnvironment::addSoundComponent(std::shared_ptr<SoundComponent> soundComponent) {
-        ScopeProfiler sp(Profiler::sound(), "addSoundComp");
-
-        audioControllers.push_back(std::make_unique<AudioController>(std::move(soundComponent), streamUpdateWorker));
+        if (soundComponent) {
+            audioControllers.push_back(std::make_unique<AudioController>(std::move(soundComponent), streamUpdateWorker));
+        }
     }
 
     void SoundEnvironment::removeSoundComponent(const SoundComponent* soundComponent) {
