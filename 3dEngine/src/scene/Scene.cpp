@@ -116,6 +116,7 @@ namespace urchin {
     }
 
     void Scene::handleFpsLimiter() {
+        ScopeProfiler sp(Profiler::graphic(), "fpsLimit");
         if (fpsLimit > 0 && !screenRenderTarget.isVerticalSyncEnabled()) {
             if (fpsLimitPreviousTime == MIN_TIME_POINT) [[unlikely]] {
                 fpsLimitPreviousTime = std::chrono::steady_clock::now();
@@ -148,6 +149,7 @@ namespace urchin {
                 fpsPreviousTime = currentTime;
                 frameCount = 0;
 
+                //Can contain bad statistics: map loading, first call on ModelSetDisplayer#updateModels
                 fpsStats.registerFps((unsigned int)fps);
             }
         }

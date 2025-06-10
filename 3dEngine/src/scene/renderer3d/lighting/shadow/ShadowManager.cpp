@@ -154,7 +154,7 @@ namespace urchin {
     }
 
     void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
-        ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
+        ScopeProfiler sp(Profiler::graphic(), "smUpVisModel");
 
         updateSplitFrustum(frustum);
 

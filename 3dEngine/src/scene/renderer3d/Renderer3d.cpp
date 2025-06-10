@@ -259,9 +259,11 @@ namespace urchin {
 
     /**
      * Pre-warm the models. Pre-warming avoid low frame rate on the first frame.
-     * This method must be called once all the models and the camera have been setup.
+     * This method must be called once all the models and the camera have been set up.
      */
     void Renderer3d::preWarmModels() {
+        ScopeProfiler sp(Profiler::graphic(), "warmModels");
+
         updateScene(0.0f);
         postUpdateScene();
     }
