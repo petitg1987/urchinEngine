@@ -162,6 +162,7 @@ namespace urchin {
             for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
                 lightSplitShadowMap->updateVisibleModels();
             }
+            lightShadowMap->updateVisibleModels();
         }
     }
 

@@ -138,7 +138,7 @@ namespace urchin {
         shadowModelSetDisplayer->removeModel(model);
     }
 
-    std::span<Model*> LightShadowMap::retrieveModels() const {
+    void LightShadowMap::updateVisibleModels() const {
         models.clear();
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
             std::span<Model* const> frustumSplitModels = lightSplitShadowMap->getModels();
@@ -150,12 +150,10 @@ namespace urchin {
             models.push_back(defaultEmptyModel.get());
         }
 
-        return models;
+        shadowModelSetDisplayer->updateModels(models);
     }
 
     void LightShadowMap::renderModels(uint32_t frameIndex, unsigned int numDependenciesToShadowMaps, unsigned int renderingOrder) const {
-        shadowModelSetDisplayer->updateModels(retrieveModels());
-
         renderTarget->disableAllProcessors();
         shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
         renderTarget->render(frameIndex, numDependenciesToShadowMaps);
