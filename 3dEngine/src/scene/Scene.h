@@ -27,7 +27,7 @@ namespace urchin {
             unsigned int getFpsForDisplay();
             float getDeltaTime() const;
             void setFpsLimit(int);
-            const FpsStats& getFpsStats() const;
+            const FpsStats& getFpsStatsIncluding3d() const;
 
             //renderer
             Renderer3d& newRenderer3d(std::shared_ptr<Camera>, const VisualConfig&, bool);
@@ -75,7 +75,7 @@ namespace urchin {
             float fps;
             unsigned int fpsForDisplay;
             int fpsLimit;
-            FpsStats fpsStats;
+            FpsStats fpsStatsIncluding3d;
 
             //renderer
             std::unique_ptr<GraphicsApiService> graphicsApiService;
