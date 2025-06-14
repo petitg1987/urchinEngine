@@ -16,8 +16,8 @@ namespace urchin {
 
     AlterableBufferHandler::~AlterableBufferHandler() {
         if (isInitialized) {
-            static unsigned int numWarningLogged = 0;
-            if (numWarningLogged++ < MAX_WARNINGS_LOG) {
+            static unsigned int numWarningsLogged = 0;
+            if (numWarningsLogged++ < MAX_WARNINGS_LOG) {
                 Logger::instance().logWarning("Alterable buffer handler not cleanup before destruction");
             }
             cleanup();
