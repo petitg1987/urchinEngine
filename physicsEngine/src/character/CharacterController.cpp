@@ -138,7 +138,7 @@ namespace urchin {
                 remainingDt -= stepDt;
             } else {
                 static unsigned int numErrorsLogged = 0;
-                if (numErrorsLogged++ < MAX_ERRORS_LOG) [[unlikely]] {
+                if (numErrorsLogged++ < MAX_ERRORS_LOG) {
                     Logger::instance().logWarning("Maximum of iteration reached on character update (dt: " + std::to_string(dt) + ", remaining dt: " + std::to_string(remainingDt) + ")");
                 }
                 stepDt = remainingDt;

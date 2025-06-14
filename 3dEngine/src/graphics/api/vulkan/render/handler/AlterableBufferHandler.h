@@ -27,6 +27,8 @@ namespace urchin {
             void cleanupBuffers();
             void createDynamicBuffers(std::size_t, const void*);
 
+            static constexpr unsigned int MAX_WARNINGS_LOG = 10;
+
             bool isInitialized;
             bool isStaticBuffer;
             std::string name;

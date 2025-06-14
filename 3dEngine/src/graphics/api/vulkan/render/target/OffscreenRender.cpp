@@ -119,7 +119,7 @@ namespace urchin {
         if (!isTestMode()) {
             VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (result != VK_SUCCESS) {
-                Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
+                Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on offscreen render: " + getName());
             }
         }
 
@@ -290,7 +290,7 @@ namespace urchin {
         } else if (submitSemaphoresStale) {
             VkResult resultDeviceWait = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (resultDeviceWait != VK_SUCCESS) {
-                Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(resultDeviceWait)) + "' on render target: " + getName());
+                Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(resultDeviceWait)) + "' on offscreen render: " + getName());
             }
             destroySemaphores();
             createSemaphores();
