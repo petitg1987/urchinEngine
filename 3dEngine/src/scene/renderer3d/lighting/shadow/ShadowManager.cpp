@@ -226,7 +226,7 @@ namespace urchin {
     void ShadowManager::updateSplitFrustum(const Frustum<float>& frustum) {
         splitFrustums.clear();
 
-        constexpr float ADJUSTMENT_EXPONENT = 1.4f; //1.0 = linear distribution, >1.0 = exponential distribution
+        constexpr float ADJUSTMENT_EXPONENT = 1.8f; //1.0 = linear distribution, >1.0 = exponential distribution
         float previousSplitDistance = 0.0f;
         for (unsigned int i = 0; i < config.nbSunShadowMaps; ++i) {
             float linearSplitPerc = (((float)i) + 1.0f) / (float)config.nbSunShadowMaps;
