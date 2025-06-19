@@ -260,8 +260,13 @@ void main() {
                 shadowLightIndex++;
             }
 
-            fragColor.rgb += modelAmbient * lightValues.lightAttenuation; //add ambient
-            fragColor.rgb += shadowAttenuation * (bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL); //update with PBR formula
+            //add ambient
+            fragColor.rgb += modelAmbient * lightValues.lightAttenuation;
+
+            //update with PBR formula
+            vec3 pbrFragColor = bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL;
+            pbrFragColor = reduceColorBanding(pbrFragColor, 0.004);
+            fragColor.rgb += shadowAttenuation * pbrFragColor;
         }
     } else { //do not apply lighting (e.g. skybox, geometry models...)
         fragColor.rgba = vec4(albedo * (1.0 + emissiveFactor), alphaValue); //albedo + add emissive lighting

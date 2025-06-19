@@ -1,6 +1,8 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
+#include "_lightingFunctions.frag"
+
 layout(constant_id = 0) const float REFLECTION_STRENGTH = 0.0;
 
 layout(binding = 0) uniform sampler2D sceneTex;
@@ -17,4 +19,5 @@ void main() {
     float visibility = reflectionColorAndVisibility.a * REFLECTION_STRENGTH;
 
     fragColor = vec4(mix(color, reflectionColorAndVisibility.rgb, visibility), 1.0);
+    fragColor.rgb = reduceColorBanding(fragColor.rgb, 1.0 / 255.0f);
 }
