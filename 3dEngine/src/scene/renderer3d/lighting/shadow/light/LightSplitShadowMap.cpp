@@ -5,7 +5,8 @@
 
 namespace urchin {
 
-    LightSplitShadowMap::LightSplitShadowMap(const LightShadowMap* lightShadowMap) :
+    LightSplitShadowMap::LightSplitShadowMap(unsigned int splitIndex, const LightShadowMap* lightShadowMap) :
+            splitIndex(splitIndex),
             lightShadowMap(lightShadowMap),
             previousCenter(Point4(0.0f, 0.0f, 0.0f, 1.0f)),
             spotNearPlane(std::numeric_limits<float>::max()),
@@ -44,42 +45,40 @@ namespace urchin {
 
     void LightSplitShadowMap::updateLightViewMatrix() {
         Light::LightType lightType = lightShadowMap->getLight().getLightType();
-        if (lightType == Light::LightType::SUN || lightType == Light::LightType::SPOT) {
-            Vector3<float> lightDirection = lightShadowMap->getLight().getDirections()[0];
 
-            Vector3<float> forward = lightDirection.normalize();
-            Vector3 worldUp(0.0f, 1.0f, 0.0f);
-            if (std::abs(forward.dotProduct(worldUp)) > 0.999f) {
-                worldUp = Vector3(1.0f, 0.0f, 0.0f);
-            }
-            Vector3<float> side = forward.crossProduct(worldUp).normalize();
-            Vector3<float> up = side.crossProduct(forward).normalize();
-
-            float translationOnSide = 0.0f;
-            float translationOnUp = 0.0f;
-            float translationOnForward = 0.0f;
-            if (lightType == Light::LightType::SUN) {
-                translationOnSide = lightDirection.X;
-                translationOnUp = lightDirection.Y;
-                translationOnForward = lightDirection.Z;
-            } else {
-                assert(lightType == Light::LightType::SPOT);
-                Vector3<float> pos = lightShadowMap->getLight().getPosition().toVector();
-                translationOnSide = -side.dotProduct(pos);
-                translationOnUp = -up.dotProduct(pos);
-                translationOnForward = forward.dotProduct(pos);
-            }
-
-            this->lightViewMatrix.setValues(
-                    side[0],        side[1],        side[2],        translationOnSide,
-                    up[0],          up[1],          up[2],          translationOnUp,
-                    -forward[0],    -forward[1],    -forward[2],    translationOnForward,
-                    0.0f,           0.0f,           0.0f,           1.0f);
-        } else if (lightType == Light::LightType::OMNIDIRECTIONAL) {
-            //TODO impl
-        } else {
-            throw std::runtime_error("Shadow not supported for light of type: " + std::to_string((int)lightType));
+        Vector3<float> lightDirection = lightShadowMap->getLight().getDirections()[0];
+        if (lightType == Light::LightType::OMNIDIRECTIONAL) {
+            lightDirection = lightShadowMap->getLight().getDirections()[splitIndex];
         }
+
+        Vector3<float> forward = lightDirection.normalize();
+        Vector3 worldUp(0.0f, 1.0f, 0.0f);
+        if (std::abs(forward.dotProduct(worldUp)) > 0.999f) {
+            worldUp = Vector3(1.0f, 0.0f, 0.0f);
+        }
+        Vector3<float> side = forward.crossProduct(worldUp).normalize();
+        Vector3<float> up = side.crossProduct(forward).normalize();
+
+        float translationOnSide = 0.0f;
+        float translationOnUp = 0.0f;
+        float translationOnForward = 0.0f;
+        if (lightType == Light::LightType::SUN) {
+            translationOnSide = lightDirection.X;
+            translationOnUp = lightDirection.Y;
+            translationOnForward = lightDirection.Z;
+        } else {
+            assert(lightType == Light::LightType::SPOT || lightType == Light::LightType::OMNIDIRECTIONAL);
+            Vector3<float> pos = lightShadowMap->getLight().getPosition().toVector();
+            translationOnSide = -side.dotProduct(pos);
+            translationOnUp = -up.dotProduct(pos);
+            translationOnForward = forward.dotProduct(pos);
+        }
+
+        this->lightViewMatrix.setValues(
+                side[0],        side[1],        side[2],        translationOnSide,
+                up[0],          up[1],          up[2],          translationOnUp,
+                -forward[0],    -forward[1],    -forward[2],    translationOnForward,
+                0.0f,           0.0f,           0.0f,           1.0f);
     }
 
     void LightSplitShadowMap::updateSunLightScopeData(const SplitFrustum& splitFrustum) {
