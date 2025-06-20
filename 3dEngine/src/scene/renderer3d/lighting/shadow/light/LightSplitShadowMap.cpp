@@ -9,8 +9,8 @@ namespace urchin {
             splitIndex(splitIndex),
             lightShadowMap(lightShadowMap),
             previousCenter(Point4(0.0f, 0.0f, 0.0f, 1.0f)),
-            spotNearPlane(std::numeric_limits<float>::max()),
-            spotFarPlane(std::numeric_limits<float>::max()) {
+            nearPlane(std::numeric_limits<float>::max()),
+            farPlane(std::numeric_limits<float>::max()) {
         Light::LightType lightType = lightShadowMap->getLight().getLightType();
         if (lightType == Light::LightType::SUN) {
             lightScopeConvexObject = std::make_unique<OBBox<float>>();
@@ -121,13 +121,13 @@ namespace urchin {
 
         float ratio = 1.0f;
         float tanFov = std::tan(AngleConverter<float>::toRadian(spotLight.getOuterAngle()));
-        spotNearPlane = SpotLight::FRUSTUM_NEAR_PLANE;
-        spotFarPlane = spotLight.getFrustumScope().computeFarDistance();
+        nearPlane = SpotLight::FRUSTUM_NEAR_PLANE;
+        farPlane = spotLight.getFrustumScope().computeFarDistance();
 
         lightProjectionMatrix.setValues(
                 1.0f / (tanFov * ratio), 0.0f, 0.0f, 0.0f,
                 0.0f, -1.0f / tanFov, 0.0f, 0.0f,
-                0.0f, 0.0f, spotFarPlane / (spotNearPlane - spotFarPlane), (spotFarPlane * spotNearPlane) / (spotNearPlane - spotFarPlane),
+                0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
                 0.0f, 0.0f, -1.0f, 0.0f);
 
         auto oldFrustum = dynamic_cast<Frustum<float>*>(lightScopeConvexObject.get());
@@ -149,18 +149,18 @@ namespace urchin {
         return lightViewMatrix;
     }
 
-    float LightSplitShadowMap::getSpotNearPlane() const {
+    float LightSplitShadowMap::getNearPlane() const {
         #ifdef URCHIN_DEBUG
-            assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT);
+            assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT || lightShadowMap->getLight().getLightType() == Light::LightType::OMNIDIRECTIONAL);
         #endif
-        return spotNearPlane;
+        return nearPlane;
     }
 
-    float LightSplitShadowMap::getSpotFarPlane() const {
+    float LightSplitShadowMap::getFarPlane() const {
         #ifdef URCHIN_DEBUG
-            assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT);
+            assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT || lightShadowMap->getLight().getLightType() == Light::LightType::OMNIDIRECTIONAL);
         #endif
-        return spotFarPlane;
+        return farPlane;
     }
 
     /**

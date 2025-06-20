@@ -4,6 +4,7 @@
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/display/ModelShadowSunShaderVariable.h>
+#include <scene/renderer3d/lighting/shadow/display/ModelShadowOmnidirectionalShaderVariable.h>
 #include <scene/renderer3d/lighting/shadow/display/ModelShadowSpotShaderVariable.h>
 #include <scene/renderer3d/lighting/light/Light.h>
 #include <scene/renderer3d/model/builder/ModelBuilder.h>
@@ -36,7 +37,10 @@ namespace urchin {
                 shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ModelShadowSunShaderVariable>(this));
                 shadowModelSetDisplayer->setupLayerIndexDataInShader(true);
             } else if (light.getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-                //TODO impl
+                shadowModelSetDisplayer->setupShader("modelShadowMapOmnidirectional.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
+                shadowModelSetDisplayer->initialize(*renderTarget);
+                shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ModelShadowOmnidirectionalShaderVariable>(this));
+                shadowModelSetDisplayer->setupLayerIndexDataInShader(true);
             } else if (light.getLightType() == Light::LightType::SPOT) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapSpot.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
                 shadowModelSetDisplayer->initialize(*renderTarget);

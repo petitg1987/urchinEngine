@@ -1,0 +1,30 @@
+#pragma once
+
+#include <array>
+#include <UrchinCommon.h>
+
+#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
+#include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
+
+namespace urchin {
+
+    class ModelShadowOmnidirectionalShaderVariable final : public CustomModelShaderVariable {
+        public:
+            explicit ModelShadowOmnidirectionalShaderVariable(const LightShadowMap*);
+
+            void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t) override;
+            void loadCustomShaderVariables(GenericRenderer&, uint32_t, uint32_t) override;
+
+        private:
+            void refreshShaderVariables();
+
+            const LightShadowMap* lightShadowMap;
+
+            struct ShadowData {
+                alignas(16) std::array<Matrix4<float>, 10> lightProjectionViewMatrices;
+                alignas(4) float omnidirectionalNearPlane;
+                alignas(4) float omnidirectionalFarPlane;
+            } shadowData;
+    };
+
+}

@@ -21,8 +21,8 @@ namespace urchin {
 
             const Matrix4<float>& getLightProjectionMatrix() const;
             const Matrix4<float>& getLightViewMatrix() const;
-            float getSpotNearPlane() const;
-            float getSpotFarPlane() const;
+            float getNearPlane() const;
+            float getFarPlane() const;
 
             std::span<Model* const> getModels() const;
 
@@ -44,8 +44,8 @@ namespace urchin {
             Matrix4<float> lightProjectionMatrix;
             Matrix4<float> lightViewMatrix;
             Point4<float> previousCenter;
-            float spotNearPlane;
-            float spotFarPlane;
+            float nearPlane;
+            float farPlane;
             std::unique_ptr<ConvexObject3D<float>> lightScopeConvexObject;
 
             std::vector<Model*> models;
