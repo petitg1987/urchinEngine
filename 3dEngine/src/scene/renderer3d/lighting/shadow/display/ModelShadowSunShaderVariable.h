@@ -21,7 +21,7 @@ namespace urchin {
             const LightShadowMap* lightShadowMap;
 
             struct ShadowData {
-                alignas(16) std::array<Matrix4<float>, 10> lightProjectionMatrices;
+                alignas(16) std::array<Matrix4<float>, 10> lightProjectionViewMatrices;
             } shadowData;
     };
 

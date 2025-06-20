@@ -25,7 +25,7 @@ namespace urchin {
     void ModelShadowSpotShaderVariable::refreshShaderVariables() {
         const std::vector<std::unique_ptr<LightSplitShadowMap>>& lightSplitShadowMaps = lightShadowMap->getLightSplitShadowMaps();
         assert(lightSplitShadowMaps.size() == 1);
-        shadowData.lightProjectionMatrix = lightSplitShadowMaps[0]->getLightProjectionMatrix();
+        shadowData.lightProjectionViewMatrix = lightSplitShadowMaps[0]->getLightProjectionMatrix() * lightSplitShadowMaps[0]->getLightViewMatrix();
         shadowData.spotNearPlane = lightSplitShadowMaps[0]->getSpotNearPlane();
         shadowData.spotFarPlane = lightSplitShadowMaps[0]->getSpotFarPlane();
     }

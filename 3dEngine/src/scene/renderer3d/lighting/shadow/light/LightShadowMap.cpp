@@ -21,8 +21,6 @@ namespace urchin {
         for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye.
             lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(this));
         }
-        updateLightViewMatrix();
-        light.addObserver(this, Light::AFFECTED_ZONE_UPDATED);
 
         if (!isTestMode) {
             renderTarget = std::make_unique<OffscreenRender>("shadow map - " + light.getLightTypeName(), false, RenderTarget::SHARED_DEPTH_ATTACHMENT);
@@ -51,55 +49,8 @@ namespace urchin {
     }
 
     LightShadowMap::~LightShadowMap() {
-        light.removeObserver(this, Light::AFFECTED_ZONE_UPDATED);
         if (renderTarget) {
             renderTarget->cleanup();
-        }
-    }
-
-    void LightShadowMap::updateLightViewMatrix() {
-        if (light.getLightType() == Light::LightType::SUN || light.getLightType() == Light::LightType::SPOT) {
-            Vector3<float> lightDirection = light.getDirections()[0];
-
-            Vector3<float> forward = lightDirection.normalize();
-            Vector3 worldUp(0.0f, 1.0f, 0.0f);
-            if (std::abs(forward.dotProduct(worldUp)) > 0.999f) {
-                worldUp = Vector3(1.0f, 0.0f, 0.0f);
-            }
-            Vector3<float> side = forward.crossProduct(worldUp).normalize();
-            Vector3<float> up = side.crossProduct(forward).normalize();
-
-            float translationOnSide = 0.0f;
-            float translationOnUp = 0.0f;
-            float translationOnForward = 0.0f;
-            if (light.getLightType() == Light::LightType::SUN) {
-                translationOnSide = lightDirection.X;
-                translationOnUp = lightDirection.Y;
-                translationOnForward = lightDirection.Z;
-            } else if (light.getLightType() == Light::LightType::SPOT) {
-                Vector3<float> pos = light.getPosition().toVector();
-                translationOnSide = -side.dotProduct(pos);
-                translationOnUp = -up.dotProduct(pos);
-                translationOnForward = forward.dotProduct(pos);
-            }
-
-            this->lightViewMatrix.setValues(
-                    side[0],        side[1],        side[2],        translationOnSide,
-                    up[0],          up[1],          up[2],          translationOnUp,
-                    -forward[0],    -forward[1],    -forward[2],    translationOnForward,
-                    0.0f,           0.0f,           0.0f,           1.0f);
-        } else if (light.getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-            //TODO impl
-        } else {
-            throw std::runtime_error("Shadow not supported for light of type: " + std::to_string((int)light.getLightType()));
-        }
-    }
-
-    void LightShadowMap::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<Light*>(observable)) {
-            if (notificationType == Light::AFFECTED_ZONE_UPDATED) {
-                updateLightViewMatrix();
-            }
         }
     }
 
@@ -134,10 +85,6 @@ namespace urchin {
         return lightSplitShadowMaps;
     }
 
-    const Matrix4<float>& LightShadowMap::getLightViewMatrix() const {
-        return lightViewMatrix; //TODO move in split ?
-    }
-
     void LightShadowMap::removeModel(Model* model) const {
         shadowModelSetDisplayer->removeModel(model);
     }
@@ -145,8 +92,8 @@ namespace urchin {
     void LightShadowMap::updateVisibleModels() const {
         models.clear();
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
-            std::span<Model* const> frustumSplitModels = lightSplitShadowMap->getModels();
-            OctreeableHelper<Model>::merge(models, frustumSplitModels);
+            std::span<Model* const> modelsBySplit = lightSplitShadowMap->getModels();
+            OctreeableHelper<Model>::merge(models, modelsBySplit);
         }
 
         if (models.empty()) {
@@ -159,7 +106,7 @@ namespace urchin {
 
     void LightShadowMap::renderModels(uint32_t frameIndex, unsigned int numDependenciesToShadowMaps, unsigned int renderingOrder) const {
         renderTarget->disableAllProcessors();
-        shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
+        shadowModelSetDisplayer->prepareRendering(renderingOrder, Matrix4<float>() /* not used for shadow */);
         renderTarget->render(frameIndex, numDependenciesToShadowMaps);
     }
 }

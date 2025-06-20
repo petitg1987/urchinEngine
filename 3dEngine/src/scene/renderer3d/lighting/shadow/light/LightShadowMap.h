@@ -15,12 +15,10 @@ namespace urchin {
     class LightSplitShadowMap;
     class ShadowModelShaderVariable;
 
-    class LightShadowMap final : public Observer {
+    class LightShadowMap final {
         public:
             LightShadowMap(bool, Light&, const ModelOcclusionCuller&, float, unsigned int, unsigned int);
-            ~LightShadowMap() override;
-
-            void notify(Observable*, int) override;
+            ~LightShadowMap();
 
             Light& getLight() const;
             const ModelOcclusionCuller& getModelOcclusionCuller() const;
@@ -31,23 +29,18 @@ namespace urchin {
 
             const std::vector<std::unique_ptr<LightSplitShadowMap>>& getLightSplitShadowMaps() const;
 
-            const Matrix4<float>& getLightViewMatrix() const;
             void removeModel(Model* model) const;
-
             void updateVisibleModels() const;
 
             void renderModels(uint32_t, unsigned int, unsigned int) const;
 
         private:
-            void updateLightViewMatrix();
-
             Light& light;
             const ModelOcclusionCuller& modelOcclusionCuller;
             float shadowViewDistance;
             unsigned int shadowMapResolution;
             unsigned int nbShadowMaps;
 
-            Matrix4<float> lightViewMatrix;
             std::vector<std::unique_ptr<LightSplitShadowMap>> lightSplitShadowMaps;
             mutable std::vector<Model*> models;
             std::unique_ptr<Model> defaultEmptyModel;

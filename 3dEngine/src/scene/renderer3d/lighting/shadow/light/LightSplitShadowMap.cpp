@@ -25,6 +25,8 @@ namespace urchin {
     }
 
     void LightSplitShadowMap::onLightAffectedZoneUpdated() {
+        updateLightViewMatrix();
+
         Light::LightType lightType = lightShadowMap->getLight().getLightType();
         if (lightType == Light::LightType::OMNIDIRECTIONAL) {
             updateOmnidirectionalLightScopeData();
@@ -40,9 +42,49 @@ namespace urchin {
         }
     }
 
+    void LightSplitShadowMap::updateLightViewMatrix() {
+        Light::LightType lightType = lightShadowMap->getLight().getLightType();
+        if (lightType == Light::LightType::SUN || lightType == Light::LightType::SPOT) {
+            Vector3<float> lightDirection = lightShadowMap->getLight().getDirections()[0];
+
+            Vector3<float> forward = lightDirection.normalize();
+            Vector3 worldUp(0.0f, 1.0f, 0.0f);
+            if (std::abs(forward.dotProduct(worldUp)) > 0.999f) {
+                worldUp = Vector3(1.0f, 0.0f, 0.0f);
+            }
+            Vector3<float> side = forward.crossProduct(worldUp).normalize();
+            Vector3<float> up = side.crossProduct(forward).normalize();
+
+            float translationOnSide = 0.0f;
+            float translationOnUp = 0.0f;
+            float translationOnForward = 0.0f;
+            if (lightType == Light::LightType::SUN) {
+                translationOnSide = lightDirection.X;
+                translationOnUp = lightDirection.Y;
+                translationOnForward = lightDirection.Z;
+            } else {
+                assert(lightType == Light::LightType::SPOT);
+                Vector3<float> pos = lightShadowMap->getLight().getPosition().toVector();
+                translationOnSide = -side.dotProduct(pos);
+                translationOnUp = -up.dotProduct(pos);
+                translationOnForward = forward.dotProduct(pos);
+            }
+
+            this->lightViewMatrix.setValues(
+                    side[0],        side[1],        side[2],        translationOnSide,
+                    up[0],          up[1],          up[2],          translationOnUp,
+                    -forward[0],    -forward[1],    -forward[2],    translationOnForward,
+                    0.0f,           0.0f,           0.0f,           1.0f);
+        } else if (lightType == Light::LightType::OMNIDIRECTIONAL) {
+            //TODO impl
+        } else {
+            throw std::runtime_error("Shadow not supported for light of type: " + std::to_string((int)lightType));
+        }
+    }
+
     void LightSplitShadowMap::updateSunLightScopeData(const SplitFrustum& splitFrustum) {
-        const Frustum<float>& frustumLightSpace = lightShadowMap->getLightViewMatrix() * splitFrustum.getFrustum();
-        Point3<float> splitFrustumCenter = (lightShadowMap->getLightViewMatrix() * Point4(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
+        const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum.getFrustum();
+        Point3<float> splitFrustumCenter = (lightViewMatrix * Point4(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
         float splitFrustumRadius = splitFrustum.getBoundingSphere().getRadius();
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
 
@@ -63,7 +105,7 @@ namespace urchin {
             shadowReceiverAndCasterVertex[i * 2 + 1] = Point3(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
         }
         AABBox<float> shadowCasterReceiverShape(shadowReceiverAndCasterVertex);
-        OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox(shadowCasterReceiverShape);
+        OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox(shadowCasterReceiverShape);
 
         auto oldObbox = dynamic_cast<OBBox<float>*>(lightScopeConvexObject.get());
         *oldObbox = obboxSceneIndependentViewSpace;
@@ -104,6 +146,10 @@ namespace urchin {
         return lightProjectionMatrix;
     }
 
+    const Matrix4<float>& LightSplitShadowMap::getLightViewMatrix() const {
+        return lightViewMatrix;
+    }
+
     float LightSplitShadowMap::getSpotNearPlane() const {
         #ifdef URCHIN_DEBUG
             assert(lightShadowMap->getLight().getLightType() == Light::LightType::SPOT);
@@ -137,13 +183,13 @@ namespace urchin {
 
     void LightSplitShadowMap::stabilizeShadow(const Point3<float>& splitFrustumCenter) {
         //1. use previousCenter to recalibrate the matrix
-        Point2<float> centerWorldPointDelta = computePixelCenteringDelta(lightProjectionMatrix * lightShadowMap->getLightViewMatrix(), previousCenter);
+        Point2<float> centerWorldPointDelta = computePixelCenteringDelta(lightProjectionMatrix * lightViewMatrix, previousCenter);
         lightProjectionMatrix.a14 += centerWorldPointDelta.X;
         lightProjectionMatrix.a24 += centerWorldPointDelta.Y;
 
-        //2. compute previousCenter to match perfectly a pixel on shadow map
+        //2. compute previousCenter to match perfectly a pixel on the shadow map
         previousCenter = Point4(splitFrustumCenter, 1.0f);
-        previousCenter = adjustPointOnShadowMapPixel(lightProjectionMatrix * lightShadowMap->getLightViewMatrix(), previousCenter);
+        previousCenter = adjustPointOnShadowMapPixel(lightProjectionMatrix * lightViewMatrix, previousCenter);
     }
 
     Point2<float> LightSplitShadowMap::computePixelCenteringDelta(const Matrix4<float>& lightProjectionViewMatrix, const Point4<float>& worldPoint) const {
