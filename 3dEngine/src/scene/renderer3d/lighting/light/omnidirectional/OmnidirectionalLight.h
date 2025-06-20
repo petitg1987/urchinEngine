@@ -9,6 +9,8 @@ namespace urchin {
 
     class OmnidirectionalLight final : public Light {
         public:
+            static constexpr float FRUSTUM_NEAR_PLANE = 0.025f;
+
             explicit OmnidirectionalLight(const Point3<float>&);
 
             //general methods
@@ -25,6 +27,7 @@ namespace urchin {
             float computeRadius() const;
             const AABBox<float>& getAABBoxScope() const;
             const Sphere<float>& getSphereScope() const;
+            const Frustum<float>& getFrustumScope(unsigned int) const;
 
             std::unique_ptr<Light> clone() const override;
 
@@ -37,8 +40,9 @@ namespace urchin {
 
             //attenuation properties
             float exponentialAttenuation;
-            std::unique_ptr<Sphere<float>> sphereScope;
+            std::unique_ptr<Sphere<float>> sphereScope; //TODO use optional for next 3, same in spotLight ?
             std::unique_ptr<AABBox<float>> bboxScope;
+            std::unique_ptr<std::array<Frustum<float>, 6>> frustumScopes;
     };
 
 }

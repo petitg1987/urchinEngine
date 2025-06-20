@@ -69,7 +69,7 @@ namespace urchin {
     }
 
     /**
-     * Return the inner angle in degrees between the symmetry line of the cone and a side of the once
+     * Return the inner angle in degrees between the symmetry line of the cone and a side of the cone
      */
     float SpotLight::getInnerAngle() const {
         return innerAngleInDegrees;
@@ -80,7 +80,7 @@ namespace urchin {
     }
 
     /**
-     * Return the outer angle in degrees between the symmetry line of the cone and a side of the once
+     * Return the outer angle in degrees between the symmetry line of the cone and a side of the cone
      */
     float SpotLight::getOuterAngle() const {
         return outerAngleInDegrees;

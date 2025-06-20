@@ -15,7 +15,7 @@ namespace urchin {
         if (lightType == Light::LightType::SUN) {
             lightScopeConvexObject = std::make_unique<OBBox<float>>();
         } else if (lightType == Light::LightType::OMNIDIRECTIONAL) {
-            lightScopeConvexObject = std::make_unique<Sphere<float>>();
+            lightScopeConvexObject = std::make_unique<Frustum<float>>();
         } else if (lightType == Light::LightType::SPOT) {
             lightScopeConvexObject = std::make_unique<Frustum<float>>();
         } else {
@@ -111,9 +111,21 @@ namespace urchin {
     }
 
     void LightSplitShadowMap::updateOmnidirectionalLightScopeData() {
-        //const auto& omnidirectionalLight = static_cast<OmnidirectionalLight&>(lightShadowMap->getLight());
+        const auto& omnidirectionalLight = static_cast<OmnidirectionalLight&>(lightShadowMap->getLight());
 
-        //TODO impl
+        float ratio = 1.0f;
+        float tanFov = std::tan(AngleConverter<float>::toRadian(45.0f));
+        nearPlane = OmnidirectionalLight::FRUSTUM_NEAR_PLANE;
+        farPlane = omnidirectionalLight.getFrustumScope(splitIndex).computeFarDistance();
+
+        lightProjectionMatrix.setValues(
+                1.0f / (tanFov * ratio), 0.0f, 0.0f, 0.0f,
+                0.0f, -1.0f / tanFov, 0.0f, 0.0f,
+                0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
+                0.0f, 0.0f, -1.0f, 0.0f);
+
+        auto oldFrustum = dynamic_cast<Frustum<float>*>(lightScopeConvexObject.get());
+        *oldFrustum = omnidirectionalLight.getFrustumScope(splitIndex);
     }
 
     void LightSplitShadowMap::updateSpotLightScopeData() {

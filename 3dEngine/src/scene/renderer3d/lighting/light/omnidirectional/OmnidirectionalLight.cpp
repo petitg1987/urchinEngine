@@ -79,13 +79,25 @@ namespace urchin {
         return *sphereScope;
     }
 
-    /**
-     * Computes the sphere scope representing light affectation area
-     */
+    const Frustum<float>& OmnidirectionalLight::getFrustumScope(unsigned int index) const {
+        assert(frustumScopes);
+        return (*frustumScopes)[index];
+    }
+
     void OmnidirectionalLight::computeScope() {
         float radius = computeRadius();
         sphereScope = std::make_unique<Sphere<float>>(radius, getPosition());
         bboxScope = std::make_unique<AABBox<float>>(getPosition() - radius, getPosition() + radius);
+
+        frustumScopes = std::make_unique<std::array<Frustum<float>, 6>>();
+        for (unsigned int i = 0; i < directions.size(); ++i) {
+            float nearPlane = FRUSTUM_NEAR_PLANE;
+            float farPlane = computeRadius() + nearPlane;
+            Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, 0.0f, -1.0f), directions[i]).normalize();
+            Matrix4<float> transformMatrix = Matrix4<float>::buildTranslation(getPosition().X, getPosition().Y, getPosition().Z) * orientation.toMatrix4();
+            Frustum frustum(90.0f, 1.0f, nearPlane, farPlane);
+            (*frustumScopes)[i] = transformMatrix * frustum;
+        }
 
         notifyOctreeableMove();
     }
