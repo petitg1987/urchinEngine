@@ -48,12 +48,12 @@ namespace urchin {
             float innerCosAngle;
             float outerAngleInDegrees;
             float outerCosAngle;
-            std::unique_ptr<AABBox<float>> aabboxScope;
+            std::optional<AABBox<float>> aabboxScope;
 
             //attenuation properties
             float exponentialAttenuation;
-            std::unique_ptr<Cone<float>> coneScope;
-            std::unique_ptr<Frustum<float>> frustumScope;
+            std::optional<Cone<float>> coneScope;
+            std::optional<Frustum<float>> frustumScope;
     };
 
 }

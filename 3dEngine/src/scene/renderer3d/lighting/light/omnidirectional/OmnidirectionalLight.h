@@ -40,9 +40,9 @@ namespace urchin {
 
             //attenuation properties
             float exponentialAttenuation;
-            std::unique_ptr<Sphere<float>> sphereScope; //TODO use optional for next 3, same in spotLight ?
-            std::unique_ptr<AABBox<float>> bboxScope;
-            std::unique_ptr<std::array<Frustum<float>, 6>> frustumScopes;
+            std::optional<Sphere<float>> sphereScope;
+            std::optional<AABBox<float>> bboxScope;
+            std::optional<std::array<Frustum<float>, 6>> frustumScopes;
     };
 
 }

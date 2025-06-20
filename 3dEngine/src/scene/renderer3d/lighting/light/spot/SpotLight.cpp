@@ -8,10 +8,10 @@ namespace urchin {
             innerCosAngle(0.0f),
             outerAngleInDegrees(0.0f),
             outerCosAngle(0.0f),
-            aabboxScope(nullptr),
+            aabboxScope(std::nullopt),
             exponentialAttenuation(0.1f),
-            coneScope(nullptr),
-            frustumScope(nullptr) {
+            coneScope(std::nullopt),
+            frustumScope(std::nullopt) {
         directions.emplace_back(direction.normalize());
         setAngles(innerAngleInDegrees, outerAngleInDegrees);
 
@@ -146,13 +146,13 @@ namespace urchin {
 
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));
         float coneRadius = coneHeight * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
-        coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE, coneCenterOfMass, orientation);
+        coneScope = std::make_optional<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE, coneCenterOfMass, orientation);
 
         float nearPlane = FRUSTUM_NEAR_PLANE;
         float farPlane = coneHeight + nearPlane;
         Matrix4<float> transformMatrix = Matrix4<float>::buildTranslation(getPosition().X, getPosition().Y, getPosition().Z) * orientation.toMatrix4();
         Frustum frustum(outerAngleInDegrees * 2.0f, 1.0f, nearPlane, farPlane);
-        frustumScope = std::make_unique<Frustum<float>>(transformMatrix * frustum);
+        frustumScope = std::make_optional<Frustum<float>>(transformMatrix * frustum);
 
         float minX = coneScope->getSupportPoint(Vector3(-1.0f, 0.0f, 0.0f)).X;
         float maxX = coneScope->getSupportPoint(Vector3(1.0f, 0.0f, 0.0f)).X;
@@ -160,7 +160,7 @@ namespace urchin {
         float maxY = coneScope->getSupportPoint(Vector3(0.0f, 1.0f, 0.0f)).Y;
         float minZ = coneScope->getSupportPoint(Vector3(0.0f, 0.0f, -1.0f)).Z;
         float maxZ = coneScope->getSupportPoint(Vector3(0.0f, 0.0f, 1.0f)).Z;
-        aabboxScope = std::make_unique<AABBox<float>>(Point3(minX, minY, minZ), Point3(maxX, maxY, maxZ));
+        aabboxScope = std::make_optional<AABBox<float>>(Point3(minX, minY, minZ), Point3(maxX, maxY, maxZ));
         notifyOctreeableMove();
     }
 
