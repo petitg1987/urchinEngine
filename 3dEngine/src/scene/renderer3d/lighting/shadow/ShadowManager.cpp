@@ -6,6 +6,7 @@
 
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/light/spot/SpotLight.h>
+#include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/OffsetTextureGenerator.h>
 
@@ -52,7 +53,7 @@ namespace urchin {
             if (notificationType == LightManager::ADD_LIGHT) {
                 light->addObserver(this, Light::PRODUCE_SHADOW);
                 if (light->isProduceShadow()) {
-                    addShadowLight(*light);
+                    addOrReplaceShadowLight(*light);
                 }
             } else if (notificationType == LightManager::REMOVE_LIGHT) {
                 light->removeObserver(this, Light::PRODUCE_SHADOW);
@@ -69,18 +70,22 @@ namespace urchin {
                 }
             } else if (notificationType == Light::PRODUCE_SHADOW) {
                 if (light->isProduceShadow()) {
-                    addShadowLight(*light);
+                    addOrReplaceShadowLight(*light);
                 } else {
                     removeShadowLight(*light);
                 }
             } else if (notificationType == Light::ILLUMINATED_AREA_SIZE_UPDATED) {
                 if (lightShadowMaps.contains(light)) {
-                    const auto* spotLight = dynamic_cast<const SpotLight*>(light);
-                    if (spotLight) {
-                        unsigned int oldSpotShadowMapResolution = getLightShadowMap(light).getShadowMapSize();
-                        unsigned int newSpotShadowMapResolution = computeSpotShadowMapResolution(*spotLight);
+                    unsigned int oldSpotShadowMapResolution = getLightShadowMap(light).getShadowMapSize();
+                    if (const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light)) {
+                        unsigned int newSpotShadowMapResolution = computeShadowMapResolution(*omnidirectionalLight);
                         if (oldSpotShadowMapResolution != newSpotShadowMapResolution) {
-                            addShadowLight(*light);
+                            addOrReplaceShadowLight(*light);
+                        }
+                    } else if (const auto* spotLight = dynamic_cast<const SpotLight*>(light)) {
+                        unsigned int newSpotShadowMapResolution = computeShadowMapResolution(*spotLight);
+                        if (oldSpotShadowMapResolution != newSpotShadowMapResolution) {
+                            addOrReplaceShadowLight(*light);
                         }
                     }
                 }
@@ -110,6 +115,8 @@ namespace urchin {
                 this->config.nbSunShadowMaps != config.nbSunShadowMaps ||
                 this->config.sunShadowMapResolution != config.sunShadowMapResolution ||
                 this->config.sunShadowViewDistance != config.sunShadowViewDistance ||
+                this->config.omniShadowMapResolutionFactor != config.omniShadowMapResolutionFactor ||
+                this->config.omniShadowMapMaxResolution != config.omniShadowMapMaxResolution ||
                 this->config.spotShadowMapResolutionFactor != config.spotShadowMapResolutionFactor ||
                 this->config.spotShadowMapMaxResolution != config.spotShadowMapMaxResolution) {
             bool nbSunShadowMapUpdated = this->config.nbSunShadowMaps != config.nbSunShadowMaps;
@@ -176,7 +183,7 @@ namespace urchin {
         shadowMapOffsetTexture = OffsetTextureGenerator(getShadowMapOffsetTexSize(), config.blurFilterBoxSize).getOffsetTexture();
     }
 
-    void ShadowManager::addShadowLight(Light& light) {
+    void ShadowManager::addOrReplaceShadowLight(Light& light) {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
 
         removeShadowLight(light);
@@ -186,16 +193,25 @@ namespace urchin {
 
         if (light.getLightType() == Light::LightType::SUN) {
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, config.sunShadowViewDistance, config.sunShadowMapResolution, config.nbSunShadowMaps);
+        } else if (light.getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+            const auto& omnidirectionalLight = static_cast<const OmnidirectionalLight&>(light);
+            unsigned int shadowMapResolution = computeShadowMapResolution(omnidirectionalLight);
+            lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, shadowMapResolution, 6);
         } else if (light.getLightType() == Light::LightType::SPOT) {
             const auto& spotLight = static_cast<const SpotLight&>(light);
-            unsigned int shadowMapResolution = computeSpotShadowMapResolution(spotLight);
+            unsigned int shadowMapResolution = computeShadowMapResolution(spotLight);
             lightShadowMaps[&light] = std::make_unique<LightShadowMap>(false, light, modelOcclusionCuller, -1.0f, shadowMapResolution, 1);
         } else {
-            throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)light.getLightType()));
+            throw std::runtime_error("Shadow not supported for light of type: " + std::to_string((int)light.getLightType()));
         }
     }
 
-    unsigned int ShadowManager::computeSpotShadowMapResolution(const SpotLight& spotLight) const {
+    unsigned int ShadowManager::computeShadowMapResolution(const OmnidirectionalLight& omnidirectionalLight) const {
+        unsigned int expectedShadowMapResolution = (unsigned int)(omnidirectionalLight.computeRadius() * config.omniShadowMapResolutionFactor);
+        return std::min(config.omniShadowMapMaxResolution, std::max(64u, MathFunction::nearestPowerOfTwo(expectedShadowMapResolution)));
+    }
+
+    unsigned int ShadowManager::computeShadowMapResolution(const SpotLight& spotLight) const {
         unsigned int expectedShadowMapResolution = (unsigned int)(spotLight.computeEndRadius() * config.spotShadowMapResolutionFactor);
         return std::min(config.spotShadowMapMaxResolution, std::max(64u, MathFunction::nearestPowerOfTwo(expectedShadowMapResolution)));
     }
@@ -218,8 +234,7 @@ namespace urchin {
         }
 
         for (Light* light : allLights) {
-            removeShadowLight(*light);
-            addShadowLight(*light);
+            addOrReplaceShadowLight(*light);
         }
     }
 

@@ -65,6 +65,10 @@ namespace urchin {
         return exponentialAttenuation;
     }
 
+    float OmnidirectionalLight::computeRadius() const {
+        return -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
+    }
+
     const AABBox<float>& OmnidirectionalLight::getAABBoxScope() const {
         assert(bboxScope);
         return *bboxScope;
@@ -79,7 +83,7 @@ namespace urchin {
      * Computes the sphere scope representing light affectation area
      */
     void OmnidirectionalLight::computeScope() {
-        float radius = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
+        float radius = computeRadius();
         sphereScope = std::make_unique<Sphere<float>>(radius, getPosition());
         bboxScope = std::make_unique<AABBox<float>>(getPosition() - radius, getPosition() + radius);
 

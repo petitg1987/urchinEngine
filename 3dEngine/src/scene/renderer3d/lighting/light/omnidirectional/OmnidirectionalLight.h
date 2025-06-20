@@ -22,6 +22,7 @@ namespace urchin {
             //attenuation methods
             void setAttenuation(float);
             float getExponentialAttenuation() const;
+            float computeRadius() const;
             const AABBox<float>& getAABBoxScope() const;
             const Sphere<float>& getSphereScope() const;
 

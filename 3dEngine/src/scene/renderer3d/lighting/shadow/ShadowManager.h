@@ -9,6 +9,7 @@
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/light/Light.h>
 #include <scene/renderer3d/lighting/light/spot/SpotLight.h>
+#include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>
@@ -32,6 +33,8 @@ namespace urchin {
                 unsigned int nbSunShadowMaps = 5;
                 unsigned int sunShadowMapResolution = 1024;
                 float sunShadowViewDistance = 75.0f;
+                float omniShadowMapResolutionFactor = 30.0f;
+                unsigned int omniShadowMapMaxResolution = 1024;
                 float spotShadowMapResolutionFactor = 20.0f;
                 unsigned int spotShadowMapMaxResolution = 1024;
             };
@@ -65,8 +68,9 @@ namespace urchin {
             void updateShadowMapOffsets();
 
             //light handling
-            void addShadowLight(Light&);
-            unsigned int computeSpotShadowMapResolution(const SpotLight&) const;
+            void addOrReplaceShadowLight(Light&);
+            unsigned int computeShadowMapResolution(const SpotLight&) const;
+            unsigned int computeShadowMapResolution(const OmnidirectionalLight&) const;
             void removeShadowLight(Light&);
             void updateShadowLights();
 

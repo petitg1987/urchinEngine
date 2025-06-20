@@ -87,7 +87,7 @@ namespace urchin {
                     -forward[0],    -forward[1],    -forward[2],    translationOnForward,
                     0.0f,           0.0f,           0.0f,           1.0f);
         } else {
-            throw std::runtime_error("Shadow currently not supported for light of type: " + std::to_string((int)light.getLightType()));
+            throw std::runtime_error("Shadow not supported for light of type: " + std::to_string((int)light.getLightType()));
         }
     }
 
