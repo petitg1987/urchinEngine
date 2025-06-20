@@ -37,6 +37,8 @@ namespace urchin {
                 shadowModelSetDisplayer->initialize(*renderTarget);
                 shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ModelShadowSunShaderVariable>(this));
                 shadowModelSetDisplayer->setupLayerIndexDataInShader(true);
+            } else if (light.getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+                //TODO impl
             } else if (light.getLightType() == Light::LightType::SPOT) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapSpot.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
                 shadowModelSetDisplayer->initialize(*renderTarget);
@@ -86,6 +88,8 @@ namespace urchin {
                     up[0],          up[1],          up[2],          translationOnUp,
                     -forward[0],    -forward[1],    -forward[2],    translationOnForward,
                     0.0f,           0.0f,           0.0f,           1.0f);
+        } else if (light.getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+            //TODO impl
         } else {
             throw std::runtime_error("Shadow not supported for light of type: " + std::to_string((int)light.getLightType()));
         }
@@ -131,7 +135,7 @@ namespace urchin {
     }
 
     const Matrix4<float>& LightShadowMap::getLightViewMatrix() const {
-        return lightViewMatrix;
+        return lightViewMatrix; //TODO move in split ?
     }
 
     void LightShadowMap::removeModel(Model* model) const {

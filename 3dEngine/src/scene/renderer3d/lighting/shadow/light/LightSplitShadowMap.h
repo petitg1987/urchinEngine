@@ -27,6 +27,7 @@ namespace urchin {
 
         private:
             void updateSunLightScopeData(const SplitFrustum& splitFrustum);
+            void updateOmnidirectionalLightScopeData();
             void updateSpotLightScopeData();
 
             float computeNearZForSceneIndependentBox(const Frustum<float>&) const;

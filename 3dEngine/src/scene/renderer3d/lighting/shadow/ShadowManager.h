@@ -8,8 +8,8 @@
 #include <scene/renderer3d/lighting/shadow/SplitFrustum.h>
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/light/Light.h>
-#include <scene/renderer3d/lighting/light/spot/SpotLight.h>
 #include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
+#include <scene/renderer3d/lighting/light/spot/SpotLight.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>

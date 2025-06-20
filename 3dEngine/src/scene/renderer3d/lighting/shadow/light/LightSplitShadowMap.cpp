@@ -1,5 +1,6 @@
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
+#include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
 #include <scene/renderer3d/lighting/light/spot/SpotLight.h>
 
 namespace urchin {
@@ -12,6 +13,8 @@ namespace urchin {
         Light::LightType lightType = lightShadowMap->getLight().getLightType();
         if (lightType == Light::LightType::SUN) {
             lightScopeConvexObject = std::make_unique<OBBox<float>>();
+        } else if (lightType == Light::LightType::OMNIDIRECTIONAL) {
+            lightScopeConvexObject = std::make_unique<Sphere<float>>();
         } else if (lightType == Light::LightType::SPOT) {
             lightScopeConvexObject = std::make_unique<Frustum<float>>();
         } else {
@@ -23,7 +26,9 @@ namespace urchin {
 
     void LightSplitShadowMap::onLightAffectedZoneUpdated() {
         Light::LightType lightType = lightShadowMap->getLight().getLightType();
-        if (lightType == Light::LightType::SPOT) {
+        if (lightType == Light::LightType::OMNIDIRECTIONAL) {
+            updateOmnidirectionalLightScopeData();
+        } else if (lightType == Light::LightType::SPOT) {
             updateSpotLightScopeData();
         }
     }
@@ -62,6 +67,12 @@ namespace urchin {
 
         auto oldObbox = dynamic_cast<OBBox<float>*>(lightScopeConvexObject.get());
         *oldObbox = obboxSceneIndependentViewSpace;
+    }
+
+    void LightSplitShadowMap::updateOmnidirectionalLightScopeData() {
+        //const auto& omnidirectionalLight = static_cast<OmnidirectionalLight&>(lightShadowMap->getLight());
+
+        //TODO impl
     }
 
     void LightSplitShadowMap::updateSpotLightScopeData() {
