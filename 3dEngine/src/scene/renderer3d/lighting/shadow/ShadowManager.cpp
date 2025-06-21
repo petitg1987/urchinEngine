@@ -296,7 +296,7 @@ namespace urchin {
                     std::size_t matrixIndex = shadowLightIndex * maxNbShadowMaps + shadowMapIndex;
                     if (lightShadowMap->getLightSplitShadowMaps().size() > shadowMapIndex) {
                         const std::unique_ptr<LightSplitShadowMap>& lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[shadowMapIndex];
-                        lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionMatrix() * lightSplitShadowMap->getLightViewMatrix();
+                        lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionViewMatrix();
                     } else {
                         lightProjectionViewMatrices[matrixIndex] = Matrix4<float>();
                     }

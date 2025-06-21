@@ -1,4 +1,3 @@
-#include <bitset>
 #include <cstring>
 
 #include <scene/renderer3d/lighting/shadow/display/ModelShadowOmnidirectionalShaderVariable.h>
@@ -32,7 +31,7 @@ namespace urchin {
     void ModelShadowOmnidirectionalShaderVariable::refreshShaderVariables() {
         const std::vector<std::unique_ptr<LightSplitShadowMap>>& lightSplitShadowMaps = lightShadowMap->getLightSplitShadowMaps();
         for (unsigned int i = 0; i < lightSplitShadowMaps.size(); ++i) {
-            shadowData.lightProjectionViewMatrices[i] = lightSplitShadowMaps[i]->getLightProjectionMatrix() * lightSplitShadowMaps[i]->getLightViewMatrix(); //TODO can be pre-multiplied ?
+            shadowData.lightProjectionViewMatrices[i] = lightSplitShadowMaps[i]->getLightProjectionViewMatrix();
         }
         shadowData.omnidirectionalNearPlane = lightSplitShadowMaps[0]->getNearPlane();
         shadowData.omnidirectionalFarPlane = lightSplitShadowMaps[0]->getFarPlane();

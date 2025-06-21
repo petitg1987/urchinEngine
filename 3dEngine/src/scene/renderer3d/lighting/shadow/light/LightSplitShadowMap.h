@@ -19,8 +19,7 @@ namespace urchin {
 
             void updateVisibleModels();
 
-            const Matrix4<float>& getLightProjectionMatrix() const;
-            const Matrix4<float>& getLightViewMatrix() const;
+            const Matrix4<float>& getLightProjectionViewMatrix() const;
             float getNearPlane() const;
             float getFarPlane() const;
 
@@ -43,6 +42,7 @@ namespace urchin {
 
             Matrix4<float> lightProjectionMatrix;
             Matrix4<float> lightViewMatrix;
+            Matrix4<float> lightProjectionViewMatrix;
             Point4<float> previousCenter;
             float nearPlane;
             float farPlane;

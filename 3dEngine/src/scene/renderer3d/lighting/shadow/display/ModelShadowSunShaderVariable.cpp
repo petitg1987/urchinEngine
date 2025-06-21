@@ -1,4 +1,3 @@
-#include <bitset>
 #include <cstring>
 
 #include <scene/renderer3d/lighting/shadow/display/ModelShadowSunShaderVariable.h>
@@ -32,7 +31,7 @@ namespace urchin {
     void ModelShadowSunShaderVariable::refreshShaderVariables() {
         const std::vector<std::unique_ptr<LightSplitShadowMap>>& lightSplitShadowMaps = lightShadowMap->getLightSplitShadowMaps();
         for (unsigned int i = 0; i < lightSplitShadowMaps.size(); ++i) {
-            shadowData.lightProjectionViewMatrices[i] = lightSplitShadowMaps[i]->getLightProjectionMatrix() * lightSplitShadowMaps[i]->getLightViewMatrix();
+            shadowData.lightProjectionViewMatrices[i] = lightSplitShadowMaps[i]->getLightProjectionViewMatrix();
         }
     }
 

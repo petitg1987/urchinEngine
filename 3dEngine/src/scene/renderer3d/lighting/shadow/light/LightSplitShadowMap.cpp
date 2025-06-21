@@ -67,18 +67,18 @@ namespace urchin {
             translationOnUp = lightDirection.Y;
             translationOnForward = lightDirection.Z;
         } else {
-            assert(lightType == Light::LightType::SPOT || lightType == Light::LightType::OMNIDIRECTIONAL);
             Vector3<float> pos = lightShadowMap->getLight().getPosition().toVector();
             translationOnSide = -side.dotProduct(pos);
             translationOnUp = -up.dotProduct(pos);
             translationOnForward = forward.dotProduct(pos);
         }
 
-        this->lightViewMatrix.setValues(
+        lightViewMatrix.setValues(
                 side[0],        side[1],        side[2],        translationOnSide,
                 up[0],          up[1],          up[2],          translationOnUp,
                 -forward[0],    -forward[1],    -forward[2],    translationOnForward,
                 0.0f,           0.0f,           0.0f,           1.0f);
+        lightProjectionViewMatrix = lightProjectionMatrix * lightViewMatrix;
     }
 
     void LightSplitShadowMap::updateSunLightScopeData(const SplitFrustum& splitFrustum) {
@@ -94,6 +94,7 @@ namespace urchin {
         lightProjectionVertex[3] = Point3(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
         lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
         stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
+        lightProjectionViewMatrix = lightProjectionMatrix * lightViewMatrix;
 
         //determine point belonging to shadow caster/receiver box
         std::array<Point3<float>, 16> shadowReceiverAndCasterVertex;
@@ -123,6 +124,7 @@ namespace urchin {
                 0.0f, -1.0f / tanFov, 0.0f, 0.0f,
                 0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
                 0.0f, 0.0f, -1.0f, 0.0f);
+        lightProjectionViewMatrix = lightProjectionMatrix * lightViewMatrix;
 
         auto oldFrustum = dynamic_cast<Frustum<float>*>(lightScopeConvexObject.get());
         *oldFrustum = omnidirectionalLight.getFrustumScope(splitIndex);
@@ -141,6 +143,7 @@ namespace urchin {
                 0.0f, -1.0f / tanFov, 0.0f, 0.0f,
                 0.0f, 0.0f, farPlane / (nearPlane - farPlane), (farPlane * nearPlane) / (nearPlane - farPlane),
                 0.0f, 0.0f, -1.0f, 0.0f);
+        lightProjectionViewMatrix = lightProjectionMatrix * lightViewMatrix;
 
         auto oldFrustum = dynamic_cast<Frustum<float>*>(lightScopeConvexObject.get());
         *oldFrustum = spotLight.getFrustumScope();
@@ -153,12 +156,8 @@ namespace urchin {
         });
     }
 
-    const Matrix4<float>& LightSplitShadowMap::getLightProjectionMatrix() const {
-        return lightProjectionMatrix;
-    }
-
-    const Matrix4<float>& LightSplitShadowMap::getLightViewMatrix() const {
-        return lightViewMatrix;
+    const Matrix4<float>& LightSplitShadowMap::getLightProjectionViewMatrix() const {
+        return lightProjectionViewMatrix;
     }
 
     float LightSplitShadowMap::getNearPlane() const {
