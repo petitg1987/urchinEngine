@@ -19,7 +19,7 @@ namespace urchin {
             nbShadowMaps(nbShadowMaps),
             defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")) {
 
-        for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye.
+        for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye for sunlight.
             lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(i, this));
         }
 

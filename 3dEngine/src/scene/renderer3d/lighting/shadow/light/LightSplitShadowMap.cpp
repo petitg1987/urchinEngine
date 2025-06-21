@@ -107,8 +107,7 @@ namespace urchin {
         AABBox<float> shadowCasterReceiverShape(shadowReceiverAndCasterVertex);
         OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox(shadowCasterReceiverShape);
 
-        auto oldObbox = dynamic_cast<OBBox<float>*>(lightScopeConvexObject.get());
-        *oldObbox = obboxSceneIndependentViewSpace;
+        *dynamic_cast<OBBox<float>*>(lightScopeConvexObject.get()) = obboxSceneIndependentViewSpace;
     }
 
     void LightSplitShadowMap::updateOmnidirectionalLightScopeData() {
@@ -126,8 +125,7 @@ namespace urchin {
                 0.0f, 0.0f, -1.0f, 0.0f);
         lightProjectionViewMatrix = lightProjectionMatrix * lightViewMatrix;
 
-        auto oldFrustum = dynamic_cast<Frustum<float>*>(lightScopeConvexObject.get());
-        *oldFrustum = omnidirectionalLight.getFrustumScope(splitIndex);
+        *dynamic_cast<Frustum<float>*>(lightScopeConvexObject.get()) = omnidirectionalLight.getFrustumScope(splitIndex);
     }
 
     void LightSplitShadowMap::updateSpotLightScopeData() {
@@ -145,8 +143,7 @@ namespace urchin {
                 0.0f, 0.0f, -1.0f, 0.0f);
         lightProjectionViewMatrix = lightProjectionMatrix * lightViewMatrix;
 
-        auto oldFrustum = dynamic_cast<Frustum<float>*>(lightScopeConvexObject.get());
-        *oldFrustum = spotLight.getFrustumScope();
+        *dynamic_cast<Frustum<float>*>(lightScopeConvexObject.get()) = spotLight.getFrustumScope();
     }
 
     void LightSplitShadowMap::updateVisibleModels() {
