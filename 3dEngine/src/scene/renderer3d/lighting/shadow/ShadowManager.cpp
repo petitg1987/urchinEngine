@@ -31,7 +31,7 @@ namespace urchin {
 
     void ShadowManager::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t projViewMatricesUniformBinding,
                                               uint32_t shadowMapDataUniformBinding, uint32_t shadowMapInfoUniformBinding) {
-        std::size_t maxMatricesLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * std::max(1u /* one SM for spot */, config.nbSunShadowMaps);
+        std::size_t maxMatricesLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * std::max(6u /* 1 SM for spot, 6 for omni */, config.nbSunShadowMaps);
         lightProjectionViewMatrices.resize(maxMatricesLightProjectionViewSize, Matrix4<float>{});
 
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
@@ -291,7 +291,7 @@ namespace urchin {
                     deferredSecondPassRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getShadowMapTexture(), std::move(textureParam)));
                 }
 
-                unsigned int maxNbShadowMaps = std::max(1u /* one SM for spot */, config.nbSunShadowMaps);
+                unsigned int maxNbShadowMaps = std::max(6u /* 1 SM for spot, 6 for omni */, config.nbSunShadowMaps);
                 for (unsigned int shadowMapIndex = 0; shadowMapIndex < maxNbShadowMaps; ++shadowMapIndex) {
                     std::size_t matrixIndex = shadowLightIndex * maxNbShadowMaps + shadowMapIndex;
                     if (lightShadowMap->getLightSplitShadowMaps().size() > shadowMapIndex) {
