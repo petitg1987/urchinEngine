@@ -147,6 +147,22 @@ float computeSunShadowAttenuation(int shadowLightIndex, vec4 worldPosition, floa
     return 1.0;
 }
 
+float computeOmnidirectionalShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL, vec3 lightPosition) {
+    vec3 lightToFragment = vec3(worldPosition) - lightPosition;
+    vec3 absDir = abs(lightToFragment);
+
+    int faceIndex = 0;
+    if (absDir.x > absDir.y && absDir.x > absDir.z) {
+        faceIndex = lightToFragment.x > 0.0 ? 0 /* Right (X+) */ : 1 /* Left (X-) */;
+    } else if (absDir.y > absDir.x && absDir.y > absDir.z) {
+        faceIndex = lightToFragment.y > 0.0 ? 2 /* Top (Y+) */ : 3 /* Bottom (Y-) */;
+    } else {
+        faceIndex = lightToFragment.z > 0.0 ? 4 /* Front (Z+) */ : 5 /* Back (Z-) */;
+    }
+
+    return computeShadowAttenuation(shadowLightIndex, faceIndex, worldPosition, NdotL);
+}
+
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
     if (!fog.hasFog || positioningData.viewPosition.y > fog.maxHeight) {
         return baseColor;
@@ -254,6 +270,9 @@ void main() {
             if (sceneInfo.hasShadow && (lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0) {
                 if (lightsData.lightsInfo[lightIndex].lightType == 0) { //sun
                     shadowAttenuation = computeSunShadowAttenuation(shadowLightIndex, worldPosition, lightValues.NdotL);
+                } else if (lightsData.lightsInfo[lightIndex].lightType == 1) { //omnidirectional
+                    vec3 lightPosition = lightsData.lightsInfo[lightIndex].position;
+                    shadowAttenuation = computeOmnidirectionalShadowAttenuation(shadowLightIndex, worldPosition, lightValues.NdotL, lightPosition);
                 } else {
                     shadowAttenuation = computeShadowAttenuation(shadowLightIndex, 0, worldPosition, lightValues.NdotL);
                 }
