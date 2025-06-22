@@ -23,6 +23,11 @@ namespace urchin {
     */
     class ShadowManager final : public Observer, public Observable {
         public:
+            static constexpr unsigned int SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
+            static constexpr float SHADOW_MAP_CONSTANT_BIAS = 0.00008f;
+            static constexpr float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0011f;
+            static constexpr unsigned int SHADOW_MAP_OFFSET_TEX_SIZE = 10;
+
             enum NotificationType {
                 NUMBER_SHADOW_MAPS_UPDATE
             };
@@ -79,10 +84,6 @@ namespace urchin {
 
             //shadow map quality
             void checkConfig() const;
-            static constexpr unsigned int SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
-            static constexpr float SHADOW_MAP_CONSTANT_BIAS = 0.00008f;
-            static constexpr float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0011f;
-            static constexpr unsigned int SHADOW_MAP_OFFSET_TEX_SIZE = 10;
             Config config;
 
             //scene information

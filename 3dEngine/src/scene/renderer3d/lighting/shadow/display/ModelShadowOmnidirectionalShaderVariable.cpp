@@ -8,33 +8,34 @@ namespace urchin {
     ModelShadowOmnidirectionalShaderVariable::ModelShadowOmnidirectionalShaderVariable(const LightShadowMap* lightShadowMap) :
             CustomModelShaderVariable(),
             lightShadowMap(lightShadowMap),
-            shadowData({}) {
-        std::memset((void *)&shadowData, 0, sizeof(shadowData));
+            shadowMatrixData({}),
+            shadowScopeData({}) {
+        std::memset((void *)&shadowMatrixData, 0, sizeof(shadowMatrixData));
+        std::memset((void *)&shadowScopeData, 0, sizeof(shadowScopeData));
     }
 
-    void ModelShadowOmnidirectionalShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t) {
+    void ModelShadowOmnidirectionalShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t uniformBinding2) {
         assert(meshRendererBuilder->getUniformData().size() == 2);
-
-        if (shadowData.lightProjectionViewMatrices.size() < lightShadowMap->getNumberShadowMaps()) {
-            throw std::runtime_error("Number of shadow maps (" + std::to_string(lightShadowMap->getNumberShadowMaps())
-                    + ") is not expected to exceed " + std::to_string(shadowData.lightProjectionViewMatrices.size()));
-        }
         std::size_t shadowDataSize = lightShadowMap->getNumberShadowMaps() * sizeof(Matrix4<float>);
-        meshRendererBuilder->addUniformData(uniformBinding1, shadowDataSize, &shadowData);
+        meshRendererBuilder->addUniformData(uniformBinding1, shadowDataSize, &shadowMatrixData);
+
+        meshRendererBuilder->addUniformData(uniformBinding2, sizeof(shadowScopeData), &shadowScopeData);
     }
 
-    void ModelShadowOmnidirectionalShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t uniformBinding1, uint32_t) {
+    void ModelShadowOmnidirectionalShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t uniformBinding1, uint32_t uniformBinding2) {
         refreshShaderVariables();
-        meshRenderer.updateUniformData(uniformBinding1, &shadowData);
+        meshRenderer.updateUniformData(uniformBinding1, &shadowMatrixData);
+        meshRenderer.updateUniformData(uniformBinding2, &shadowScopeData);
     }
 
     void ModelShadowOmnidirectionalShaderVariable::refreshShaderVariables() {
         const std::vector<std::unique_ptr<LightSplitShadowMap>>& lightSplitShadowMaps = lightShadowMap->getLightSplitShadowMaps();
         for (unsigned int i = 0; i < lightSplitShadowMaps.size(); ++i) {
-            shadowData.lightProjectionViewMatrices[i] = lightSplitShadowMaps[i]->getLightProjectionViewMatrix();
+            shadowMatrixData.lightProjectionViewMatrices[i] = lightSplitShadowMaps[i]->getLightProjectionViewMatrix();
         }
-        shadowData.omnidirectionalNearPlane = lightSplitShadowMaps[0]->getNearPlane();
-        shadowData.omnidirectionalFarPlane = lightSplitShadowMaps[0]->getFarPlane();
+
+        shadowScopeData.omnidirectionalNearPlane = lightSplitShadowMaps[0]->getNearPlane();
+        shadowScopeData.omnidirectionalFarPlane = lightSplitShadowMaps[0]->getFarPlane();
     }
 
 }

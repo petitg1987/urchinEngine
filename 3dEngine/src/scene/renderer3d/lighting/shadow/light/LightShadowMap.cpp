@@ -19,6 +19,10 @@ namespace urchin {
             nbShadowMaps(nbShadowMaps),
             defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")) {
 
+        if (nbShadowMaps > ShadowManager::SHADOW_MAPS_SHADER_LIMIT) {
+            throw std::invalid_argument("Number of sun shadow maps must be lower than " + std::to_string(ShadowManager::SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(nbShadowMaps));
+        }
+
         for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye for sunlight.
             lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(i, this));
         }
@@ -97,7 +101,7 @@ namespace urchin {
         models.clear();
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
             std::span<Model* const> modelsBySplit = lightSplitShadowMap->getModels();
-            OctreeableHelper<Model>::merge(models, modelsBySplit);
+            OctreeableHelper<Model>::merge(models, modelsBySplit); //TODO is it the best option to merge for omnidirectional light ?
         }
 
         if (models.empty()) {

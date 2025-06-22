@@ -14,11 +14,6 @@ namespace urchin {
 
     void ModelShadowSunShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t) {
         assert(meshRendererBuilder->getUniformData().size() == 2);
-
-        if (shadowData.lightProjectionViewMatrices.size() < lightShadowMap->getNumberShadowMaps()) {
-            throw std::runtime_error("Number of shadow maps (" + std::to_string(lightShadowMap->getNumberShadowMaps())
-                    + ") is not expected to exceed " + std::to_string(shadowData.lightProjectionViewMatrices.size()));
-        }
         std::size_t shadowDataSize = lightShadowMap->getNumberShadowMaps() * sizeof(Matrix4<float>);
         meshRendererBuilder->addUniformData(uniformBinding1, shadowDataSize, &shadowData);
     }

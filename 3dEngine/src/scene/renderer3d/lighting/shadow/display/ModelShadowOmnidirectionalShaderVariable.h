@@ -3,6 +3,7 @@
 #include <array>
 #include <UrchinCommon.h>
 
+#include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
 
@@ -20,11 +21,14 @@ namespace urchin {
 
             const LightShadowMap* lightShadowMap;
 
-            struct ShadowData {
-                alignas(16) std::array<Matrix4<float>, 10> lightProjectionViewMatrices;
+            struct ShadowMatrixData {
+                alignas(16) std::array<Matrix4<float>, ShadowManager::SHADOW_MAPS_SHADER_LIMIT> lightProjectionViewMatrices;
+            } shadowMatrixData;
+
+            struct ShadowScopeData {
                 alignas(4) float omnidirectionalNearPlane;
                 alignas(4) float omnidirectionalFarPlane;
-            } shadowData;
+            } shadowScopeData;
     };
 
 }
