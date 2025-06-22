@@ -151,16 +151,16 @@ float computeOmnidirectionalShadowAttenuation(int shadowLightIndex, vec4 worldPo
     vec3 lightToFragment = vec3(worldPosition) - lightPosition;
     vec3 absDir = abs(lightToFragment);
 
-    int faceIndex = 0;
+    int shadowMapIndex = 0;
     if (absDir.x > absDir.y && absDir.x > absDir.z) {
-        faceIndex = lightToFragment.x > 0.0 ? 0 /* Right (X+) */ : 1 /* Left (X-) */;
+        shadowMapIndex = lightToFragment.x > 0.0 ? 0 /* Right (X+) */ : 1 /* Left (X-) */;
     } else if (absDir.y > absDir.x && absDir.y > absDir.z) {
-        faceIndex = lightToFragment.y > 0.0 ? 2 /* Top (Y+) */ : 3 /* Bottom (Y-) */;
+        shadowMapIndex = lightToFragment.y > 0.0 ? 2 /* Top (Y+) */ : 3 /* Bottom (Y-) */;
     } else {
-        faceIndex = lightToFragment.z > 0.0 ? 4 /* Front (Z+) */ : 5 /* Back (Z-) */;
+        shadowMapIndex = lightToFragment.z > 0.0 ? 4 /* Front (Z+) */ : 5 /* Back (Z-) */;
     }
 
-    return computeShadowAttenuation(shadowLightIndex, faceIndex, worldPosition, NdotL);
+    return computeShadowAttenuation(shadowLightIndex, shadowMapIndex, worldPosition, NdotL);
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
