@@ -101,7 +101,7 @@ namespace urchin {
         models.clear();
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
             std::span<Model* const> modelsBySplit = lightSplitShadowMap->getModels();
-            OctreeableHelper<Model>::merge(models, modelsBySplit); //TODO is it the best option to merge for omnidirectional light ?
+            OctreeableHelper<Model>::merge(models, modelsBySplit);
         }
 
         if (models.empty()) {
