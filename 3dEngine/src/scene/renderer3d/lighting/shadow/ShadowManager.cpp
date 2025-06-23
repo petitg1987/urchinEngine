@@ -208,12 +208,12 @@ namespace urchin {
 
     unsigned int ShadowManager::computeShadowMapResolution(const OmnidirectionalLight& omnidirectionalLight) const {
         unsigned int expectedShadowMapResolution = (unsigned int)(omnidirectionalLight.computeRadius() * config.omniShadowMapResolutionFactor);
-        return std::min(config.omniShadowMapMaxResolution, std::max(64u, MathFunction::nearestPowerOfTwo(expectedShadowMapResolution)));
+        return std::min(config.omniShadowMapMaxResolution, std::max(64u, expectedShadowMapResolution));
     }
 
     unsigned int ShadowManager::computeShadowMapResolution(const SpotLight& spotLight) const {
         unsigned int expectedShadowMapResolution = (unsigned int)(spotLight.computeEndRadius() * config.spotShadowMapResolutionFactor);
-        return std::min(config.spotShadowMapMaxResolution, std::max(64u, MathFunction::nearestPowerOfTwo(expectedShadowMapResolution)));
+        return std::min(config.spotShadowMapMaxResolution, std::max(64u, expectedShadowMapResolution));
     }
 
     void ShadowManager::removeShadowLight(Light& light) {

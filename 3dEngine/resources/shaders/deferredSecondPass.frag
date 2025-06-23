@@ -84,7 +84,7 @@ float maxComponent(vec3 components) {
     return max(max(components.x, components.y), components.z);
 }
 
-float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 worldPosition, float NdotL) {
+float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 worldPosition, float NdotL, float biasReduceFactor) {
     float totalShadow = 0.0f;
 
     vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_NUMBER_SHADOW_MAPS + shadowMapIndex] * worldPosition;
@@ -93,7 +93,7 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
     shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
     float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
-    float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
+    float bias = (SHADOW_MAP_CONSTANT_BIAS + slopeBias) * biasReduceFactor;
 
     const float SOFT_EDGE_LENGTH = 1.5f;
     float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[shadowLightIndex], 0));
@@ -141,7 +141,7 @@ float computeSunShadowAttenuation(int shadowLightIndex, vec4 worldPosition, floa
         float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
         float frustumRadius = shadowMapData.splitData[i].w;
         if (frustumCenterDist < frustumRadius) {
-            return computeShadowAttenuation(shadowLightIndex, i, worldPosition, NdotL);
+            return computeShadowAttenuation(shadowLightIndex, i, worldPosition, NdotL, 1.0f);
         }
     }
     return 1.0;
@@ -160,7 +160,11 @@ float computeOmnidirectionalShadowAttenuation(int shadowLightIndex, vec4 worldPo
         shadowMapIndex = lightToFragment.z > 0.0 ? 4 /* Front (Z+) */ : 5 /* Back (Z-) */;
     }
 
-    return computeShadowAttenuation(shadowLightIndex, shadowMapIndex, worldPosition, NdotL);
+    return computeShadowAttenuation(shadowLightIndex, shadowMapIndex, worldPosition, NdotL, 0.1f);
+}
+
+float computeSpotShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
+    return computeShadowAttenuation(shadowLightIndex, 0, worldPosition, NdotL, 0.1f);
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
@@ -273,8 +277,8 @@ void main() {
                 } else if (lightsData.lightsInfo[lightIndex].lightType == 1) { //omnidirectional
                     vec3 lightPosition = lightsData.lightsInfo[lightIndex].position;
                     shadowAttenuation = computeOmnidirectionalShadowAttenuation(shadowLightIndex, worldPosition, lightValues.NdotL, lightPosition);
-                } else {
-                    shadowAttenuation = computeShadowAttenuation(shadowLightIndex, 0, worldPosition, lightValues.NdotL);
+                } else if (lightsData.lightsInfo[lightIndex].lightType == 2) { //spot
+                    shadowAttenuation = computeSpotShadowAttenuation(shadowLightIndex, worldPosition, lightValues.NdotL);
                 }
                 shadowLightIndex++;
             }

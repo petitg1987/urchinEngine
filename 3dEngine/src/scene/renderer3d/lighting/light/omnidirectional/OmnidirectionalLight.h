@@ -9,7 +9,7 @@ namespace urchin {
 
     class OmnidirectionalLight final : public Light {
         public:
-            static constexpr float FRUSTUM_NEAR_PLANE = 0.025f;
+            static constexpr float FRUSTUM_NEAR_PLANE = 0.01f;
 
             explicit OmnidirectionalLight(const Point3<float>&);
             OmnidirectionalLight(const OmnidirectionalLight&) = default;
