@@ -21,14 +21,9 @@ namespace urchin {
 
             const LightShadowMap* lightShadowMap;
 
-            struct ShadowMatrixData {
+            struct ShadowData {
                 alignas(16) std::array<Matrix4<float>, ShadowManager::SHADOW_MAPS_SHADER_LIMIT> lightProjectionViewMatrices;
-            } shadowMatrixData;
-
-            struct ShadowScopeData {
-                alignas(4) float omnidirectionalNearPlane;
-                alignas(4) float omnidirectionalFarPlane;
-            } shadowScopeData;
+            } shadowData;
     };
 
 }
