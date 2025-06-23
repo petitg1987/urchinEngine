@@ -38,7 +38,7 @@ namespace urchin {
                 unsigned int nbSunShadowMaps = 5;
                 unsigned int sunShadowMapResolution = 1024;
                 float sunShadowViewDistance = 75.0f;
-                float omniShadowMapResolutionFactor = 30.0f;
+                float omniShadowMapResolutionFactor = 30.0f; //TODO review omni param
                 unsigned int omniShadowMapMaxResolution = 1024;
                 float spotShadowMapResolutionFactor = 20.0f;
                 unsigned int spotShadowMapMaxResolution = 1024;
