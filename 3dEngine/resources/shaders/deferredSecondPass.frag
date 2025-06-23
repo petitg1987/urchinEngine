@@ -160,7 +160,7 @@ float computeOmnidirectionalShadowAttenuation(int shadowLightIndex, vec4 worldPo
         shadowMapIndex = lightToFragment.z > 0.0 ? 4 /* Front (Z+) */ : 5 /* Back (Z-) */;
     }
 
-    return computeShadowAttenuation(shadowLightIndex, shadowMapIndex, worldPosition, NdotL, 0.15f);
+    return computeShadowAttenuation(shadowLightIndex, shadowMapIndex, worldPosition, NdotL, 0.05f);
 }
 
 float computeSpotShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
