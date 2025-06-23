@@ -140,7 +140,7 @@ namespace urchin {
             } else if (lightType.value() == Light::LightType::OMNIDIRECTIONAL) {
                 objectEntity.setLight(std::make_shared<OmnidirectionalLight>(lightPosition));
             } else if (lightType.value() == Light::LightType::SPOT) {
-                objectEntity.setLight(std::make_shared<SpotLight>(lightPosition, Vector3(0.0f, -1.0f, 0.0f), 10.0f, 12.0f));
+                objectEntity.setLight(std::make_shared<SpotLight>(lightPosition, Vector3(0.0f, -1.0f, 0.0f), 30.0f, 45.0f));
             } else {
                 throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string((int)lightType.value()));
             }
