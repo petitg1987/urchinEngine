@@ -1,7 +1,7 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(constant_id = 0) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
+layout(constant_id = 0) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT
 
 layout (std140, push_constant) uniform PushConstants {
 	int layerIndex;
@@ -12,7 +12,7 @@ layout(std140, set = 0, binding = 0) uniform PositioningData {
 } postioningData;
 
 layout(std140, set = 0, binding = 2) uniform ShadowData {
-    mat4 lightProjectionViewMatrices[NUMBER_SHADOW_MAPS];
+    mat4 lightProjectionViewMatrices[MAX_SPLIT_SHADOW_MAPS];
 } shadowData;
 
 layout(location = 0) in vec3 vertexPosition;

@@ -19,8 +19,8 @@ namespace urchin {
             nbShadowMaps(nbShadowMaps),
             defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")) {
 
-        if (nbShadowMaps > ShadowManager::SHADOW_MAPS_SHADER_LIMIT) {
-            throw std::invalid_argument("Number of sun shadow maps must be lower than " + std::to_string(ShadowManager::SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(nbShadowMaps));
+        if (nbShadowMaps > ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) {
+            throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(nbShadowMaps));
         }
 
         for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye for sunlight.

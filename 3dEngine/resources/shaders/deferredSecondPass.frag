@@ -7,7 +7,7 @@
 layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 1) const float AO_STRENGTH = 0.0;
 layout(constant_id = 2) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
-layout(constant_id = 3) const uint MAX_NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
+layout(constant_id = 3) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT
 layout(constant_id = 4) const float SHADOW_MAP_CONSTANT_BIAS = 0.0;
 layout(constant_id = 5) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
 layout(constant_id = 6) const int SHADOW_MAP_OFFSET_TEX_SIZE = 0;
@@ -32,10 +32,10 @@ layout(std140, set = 0, binding = 2) uniform LightsData {
 
 //shadow
 layout(std140, set = 0, binding = 3) uniform ShadowLight {
-    mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * MAX_NUMBER_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
+    mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * MAX_SPLIT_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
 layout(std140, set = 0, binding = 4) uniform ShadowMapData {
-    vec4 splitData[MAX_NUMBER_SHADOW_MAPS];
+    vec4 splitData[MAX_SPLIT_SHADOW_MAPS];
 } shadowMapData;
 layout(std140, set = 0, binding = 5) uniform ShadowMapInfo {
     int offsetSampleCount;
@@ -84,10 +84,10 @@ float maxComponent(vec3 components) {
     return max(max(components.x, components.y), components.z);
 }
 
-float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 worldPosition, float NdotL, float biasReduceFactor) {
+float computeShadowAttenuation(int shadowLightIndex, int splitShadowMapIndex, vec4 worldPosition, float NdotL, float biasReduceFactor) {
     float totalShadow = 0.0f;
 
-    vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_NUMBER_SHADOW_MAPS + shadowMapIndex] * worldPosition;
+    vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SPLIT_SHADOW_MAPS + splitShadowMapIndex] * worldPosition;
     shadowCoord.xyz /= shadowCoord.w;
     shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
     shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
@@ -106,7 +106,7 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
     for (; offsetSampleIndex < testPointsQuantity; ++offsetSampleIndex) {
         vec2 shadowMapOffsetVector = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, offsetSampleIndex), 0).xy * SOFT_EDGE_LENGTH;
         vec2 shadowMapOffset = shadowMapOffsetVector * shadowMapInvSize;
-        float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, shadowMapIndex)).r;
+        float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
         float adjustedBias = bias * (1.0 + dot(shadowMapOffsetVector, shadowMapOffsetVector) * 0.9);
         if (shadowCoord.z - adjustedBias > shadowDepth) {
             totalShadow += singleShadowQuantity;
@@ -117,7 +117,7 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
     if (testPointsInShadow != 0 && testPointsInShadow != testPointsQuantity) {
         for (; offsetSampleIndex < shadowMapInfo.offsetSampleCount; ++offsetSampleIndex) {
             vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, offsetSampleIndex), 0).xy * SOFT_EDGE_LENGTH * shadowMapInvSize;
-            float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, shadowMapIndex)).r;
+            float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
             float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
             if (shadowCoord.z - adjustedBias > shadowDepth) {
                 totalShadow += singleShadowQuantity;
@@ -128,7 +128,7 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
 
     //DEBUG: fetch shadow map one time, no PCF filter
     /* totalShadow = 0.0f;
-    float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, shadowMapIndex)).r;
+    float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, splitShadowMapIndex)).r;
     if (shadowCoord.z - bias > shadowDepth) {
         totalShadow = 1.0f;
     } */
@@ -137,11 +137,11 @@ float computeShadowAttenuation(int shadowLightIndex, int shadowMapIndex, vec4 wo
 }
 
 float computeSunShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
-    for (int i = 0; i < MAX_NUMBER_SHADOW_MAPS; ++i) {
-        float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
-        float frustumRadius = shadowMapData.splitData[i].w;
+    for (int splitShadowMapIndex = 0; splitShadowMapIndex < MAX_SPLIT_SHADOW_MAPS; ++splitShadowMapIndex) {
+        float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[splitShadowMapIndex].xyz);
+        float frustumRadius = shadowMapData.splitData[splitShadowMapIndex].w;
         if (frustumCenterDist < frustumRadius) {
-            return computeShadowAttenuation(shadowLightIndex, i, worldPosition, NdotL, 1.0f);
+            return computeShadowAttenuation(shadowLightIndex, splitShadowMapIndex, worldPosition, NdotL, 1.0f);
         }
     }
     return 1.0;
