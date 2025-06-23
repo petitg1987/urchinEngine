@@ -498,15 +498,15 @@ namespace urchin {
         //determine visible lights on scene
         lightManager.updateVisibleLights(camera->getFrustum());
 
-        //determine models producing shadow on scene
-        if (sceneInfo.isShadowActivated) {
-            shadowManager.updateVisibleModels(camera->getFrustum());
-        }
-
         //animate models
         std::erase_if(modelsAnimated, [](const Model* modelAnimated){ return !modelAnimated->isAnimated(); });
         for (Model* modelAnimated : modelsAnimated) {
             modelAnimated->updateAnimation(dt);
+        }
+
+        //determine models producing shadow on scene (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
+        if (sceneInfo.isShadowActivated) {
+            shadowManager.updateVisibleModels(camera->getFrustum());
         }
 
         //update models (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
