@@ -441,7 +441,7 @@ namespace urchin {
                 .maxLights = lightManager.getMaxLights(),
                 .ambientOcclusionStrength = ambientOcclusionManager.getAmbientOcclusionStrength(), //apply AO strength after AO blur to not lose color precision on 8bit texture
                 .maxShadowLights = shadowManager.getMaxShadowLights(),
-                .maxNumberShadowMaps = std::max(1u /* one SM for spot */, shadowManager.getConfig().nbSunShadowMaps),
+                .maxNumberShadowMaps = std::max(6u /* 1 SM for spot, 6 for omni */, shadowManager.getConfig().nbSunShadowMaps),
                 .shadowMapConstantBias = shadowManager.getShadowMapConstantBias(),
                 .shadowMapSlopeBiasFactor = shadowManager.getShadowMapSlopeBiasFactor(),
                 .shadowMapOffsetTexSize = shadowManager.getShadowMapOffsetTexSize(),

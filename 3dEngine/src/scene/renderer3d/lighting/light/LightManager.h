@@ -48,7 +48,7 @@ namespace urchin {
 
             //lights container
             std::vector<std::shared_ptr<Light>> sunLights;
-            OctreeManager<Light> lightOctreeManager; //all lights except sunµ
+            OctreeManager<Light> lightOctreeManager; //all lights except sun
             std::shared_ptr<AABBoxModel> debugLightOctree;
             std::vector<Light*> lightsInFrustum;
             std::vector<Light*> visibleLights;
