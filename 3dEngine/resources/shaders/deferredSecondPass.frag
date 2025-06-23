@@ -164,7 +164,7 @@ float computeOmnidirectionalShadowAttenuation(int shadowLightIndex, vec4 worldPo
 }
 
 float computeSpotShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
-    return computeShadowAttenuation(shadowLightIndex, 0, worldPosition, NdotL, 0.1f);
+    return computeShadowAttenuation(shadowLightIndex, 0, worldPosition, NdotL, 0.5f);
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
