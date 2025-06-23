@@ -9,6 +9,7 @@ namespace urchin {
     class SunLight final : public Light {
         public:
             explicit SunLight(const Vector3<float>&);
+            SunLight(const SunLight&) = default;
             ~SunLight() override = default;
 
             //general methods

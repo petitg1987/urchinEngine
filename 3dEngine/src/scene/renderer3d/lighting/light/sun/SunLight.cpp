@@ -39,7 +39,7 @@ namespace urchin {
     }
 
     std::unique_ptr<Light> SunLight::clone() const {
-        return std::make_unique<SunLight>(directions[0]);
+        return std::make_unique<SunLight>(*this);
     }
 
 }

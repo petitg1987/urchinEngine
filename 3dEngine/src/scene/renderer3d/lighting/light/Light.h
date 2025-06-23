@@ -12,6 +12,7 @@ namespace urchin {
             static constexpr int LIGHT_FLAG_PBR_ENABLED = 0x02; //must match with _lightingFunctions.frag
 
             Light();
+            Light(const Light&) = default;
             ~Light() override = default;
 
             enum class LightType {

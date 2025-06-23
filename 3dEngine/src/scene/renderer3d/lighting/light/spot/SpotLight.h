@@ -13,6 +13,7 @@ namespace urchin {
             static constexpr float FRUSTUM_NEAR_PLANE = 0.025f;
 
             explicit SpotLight(const Point3<float>&, const Vector3<float>&, float, float);
+            SpotLight(const SpotLight&) = default;
 
             //general methods
             void setPosition(const Point3<float>&);

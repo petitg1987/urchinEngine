@@ -104,9 +104,7 @@ namespace urchin {
     }
 
     std::unique_ptr<Light> OmnidirectionalLight::clone() const {
-        auto cloned = std::make_unique<OmnidirectionalLight>(position);
-        cloned->setAttenuation(exponentialAttenuation);
-        return cloned;
+        return std::make_unique<OmnidirectionalLight>(*this);
     }
 
 }
