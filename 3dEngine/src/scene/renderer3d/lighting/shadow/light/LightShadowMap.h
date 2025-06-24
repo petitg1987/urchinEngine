@@ -39,7 +39,6 @@ namespace urchin {
             const ModelOcclusionCuller& modelOcclusionCuller;
             float shadowViewDistance;
             unsigned int shadowMapResolution;
-            unsigned int nbShadowMaps;
 
             std::vector<std::unique_ptr<LightSplitShadowMap>> lightSplitShadowMaps;
             mutable std::vector<Model*> models;

@@ -16,7 +16,6 @@ namespace urchin {
             modelOcclusionCuller(modelOcclusionCuller),
             shadowViewDistance(shadowViewDistance),
             shadowMapResolution(shadowMapResolution),
-            nbShadowMaps(nbShadowMaps),
             defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")) {
 
         if (nbShadowMaps > ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) {
@@ -75,7 +74,7 @@ namespace urchin {
     }
 
     unsigned int LightShadowMap::getNumberShadowMaps() const {
-        return nbShadowMaps;
+        return lightSplitShadowMaps.size();
     }
 
     unsigned int LightShadowMap::getShadowMapSize() const {
