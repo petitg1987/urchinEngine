@@ -74,7 +74,7 @@ namespace urchin {
     }
 
     unsigned int LightShadowMap::getNumberShadowMaps() const {
-        return lightSplitShadowMaps.size();
+        return (unsigned int)lightSplitShadowMaps.size();
     }
 
     unsigned int LightShadowMap::getShadowMapSize() const {
