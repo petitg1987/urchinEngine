@@ -38,7 +38,7 @@ namespace urchin {
                 float sunShadowViewDistance = 75.0f;
                 float omniShadowMapResolutionFactor = 45.0f;
                 unsigned int omniShadowMapMaxResolution = 1024;
-                float spotShadowMapResolutionFactor = 20.0f;
+                float spotShadowMapResolutionFactor = 40.0f;
                 unsigned int spotShadowMapMaxResolution = 1024;
             };
 
@@ -73,8 +73,8 @@ namespace urchin {
 
             //light handling
             void addOrReplaceShadowLight(Light&);
-            unsigned int computeShadowMapResolution(const SpotLight&) const;
             unsigned int computeShadowMapResolution(const OmnidirectionalLight&) const;
+            unsigned int computeShadowMapResolution(const SpotLight&) const;
             void removeShadowLight(Light&);
             void updateShadowLights();
 

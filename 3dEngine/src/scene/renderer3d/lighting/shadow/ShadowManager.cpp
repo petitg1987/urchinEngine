@@ -102,11 +102,11 @@ namespace urchin {
     }
 
     float ShadowManager::getShadowMapDistanceBiasFactor() const {
-        return 0.0001f;
+        return 0.00025f;
     }
 
     float ShadowManager::getShadowMapSlopeBiasFactor() const {
-        return 0.000075f;
+        return 0.00035f;
     }
 
     unsigned int ShadowManager::getShadowMapOffsetTexSize() const {
