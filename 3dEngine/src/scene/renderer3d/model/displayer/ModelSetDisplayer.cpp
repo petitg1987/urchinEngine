@@ -52,6 +52,10 @@ namespace urchin {
         clearDisplayers();
     }
 
+    CustomModelShaderVariable* ModelSetDisplayer::getCustomShaderVariable() const {
+        return this->customShaderVariable.get();
+    }
+
     void ModelSetDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
         this->depthTestEnabled = depthTestEnabled;
         this->depthWriteEnabled = depthWriteEnabled;

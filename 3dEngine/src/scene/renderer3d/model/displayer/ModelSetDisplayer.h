@@ -26,6 +26,7 @@ namespace urchin {
             void initialize(RenderTarget&);
             void setupShader(std::string, std::string, std::unique_ptr<ShaderConstants>);
             void setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
+            CustomModelShaderVariable* getCustomShaderVariable() const;
             void setupDepthOperations(bool, bool);
             void setupFaceCull(bool);
             void setupBlendFunctions(const std::vector<BlendFunction>&);

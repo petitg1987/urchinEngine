@@ -4,6 +4,7 @@
 #include <scene/renderer3d/OpaqueMeshFilter.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
+#include <scene/renderer3d/postprocess/antialiasing/ModelTaaShaderVariable.h>
 
 namespace urchin {
 
@@ -72,7 +73,8 @@ namespace urchin {
         this->camera->initialize(sceneWidth, sceneHeight);
 
         //deferred passes
-        modelSetDisplayer.setupShader("model.vert.spv", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
+        modelSetDisplayer.setupShader("modelJitter.vert.spv", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr)); //TODO AA specific
+        modelSetDisplayer.setupCustomShaderVariable(std::make_unique<ModelTaaShaderVariable>()); //TODO AA specific
         modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer.initialize(*deferredFirstPassRenderTarget);
         ambientOcclusionManager.addObserver(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);
@@ -387,6 +389,7 @@ namespace urchin {
             deferredFirstPassOffscreenRender->addOutputTexture(materialTexture);
             deferredFirstPassOffscreenRender->initialize();
         }
+        static_cast<ModelTaaShaderVariable*>(modelSetDisplayer.getCustomShaderVariable())->onRenderingSceneResize(renderingSceneWidth, renderingSceneHeight); //TODO AA specific
 
         //deferred second pass
         sceneInfo.sceneSize = Point2((float)sceneWidth, (float)sceneHeight);
