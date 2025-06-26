@@ -472,7 +472,7 @@ namespace urchin {
         std::shared_ptr<Texture> currentSceneTexture = illuminatedTexture;
         if (isAntiAliasingActivated) {
             antiAliasingApplier.refreshInputTexture(currentSceneTexture);
-            antiAliasingApplier.applyCameraJitter(*camera); //TODO specific to TAA
+            antiAliasingApplier.updateCamera(*camera);
             currentSceneTexture = antiAliasingApplier.getOutputTexture();
         }
 

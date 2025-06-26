@@ -16,6 +16,7 @@
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
+#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingQuality.h>
 #include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
 #include <scene/renderer3d/landscape/fog/Fog.h>
 #include <scene/renderer3d/landscape/terrain/Terrain.h>
