@@ -48,11 +48,11 @@ namespace urchin {
     }
 
     int TaaApplier::getOutputTextureIndex() const {
-        return 1; //frameCount % 2 == 0;
+        return 1; //frameCount % 2 == 0 ? 0 : 1;
     }
 
     int TaaApplier::getHistoryTextureIndex() const {
-        return 0; //frameCount % 2 == 1;
+        return 0; //frameCount % 2 == 1 ? 0 : 1;
     }
 
     const std::shared_ptr<Texture>& TaaApplier::getOutputTexture() const {
