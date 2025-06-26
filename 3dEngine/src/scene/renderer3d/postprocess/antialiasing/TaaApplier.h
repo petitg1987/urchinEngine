@@ -22,7 +22,7 @@ namespace urchin {
 
             void updateQuality(AntiAliasingQuality);
 
-            void applyAntiAliasing(uint32_t, unsigned int);
+            void applyAntiAliasing(uint32_t, unsigned int) const;
 
         private:
             int getOutputTextureIndex() const;

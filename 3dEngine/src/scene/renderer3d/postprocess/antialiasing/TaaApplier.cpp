@@ -28,6 +28,8 @@ namespace urchin {
     }
 
     void TaaApplier::applyCameraJitter(Camera& camera) {
+        frameCount++;
+
         constexpr std::array HALTON_SEQUENCE_X = {0.500000f, 0.250000f, 0.750000f, 0.125000f, 0.625000f, 0.375000f, 0.875000f, 0.062500f,
             0.562500f, 0.312500f, 0.812500f, 0.187500f, 0.687500f, 0.437500f, 0.937500f, 0.031250f};
         constexpr std::array HALTON_SEQUENCE_Y = {0.333333f, 0.666667f, 0.111111f, 0.444444f, 0.777778f, 0.222222f, 0.555556f, 0.888889f,
@@ -48,11 +50,11 @@ namespace urchin {
     }
 
     int TaaApplier::getOutputTextureIndex() const {
-        return 1; //frameCount % 2 == 0 ? 0 : 1;
+        return 1; //TODO frameCount % 2 == 0 ? 0 : 1;
     }
 
     int TaaApplier::getHistoryTextureIndex() const {
-        return 0; //frameCount % 2 == 1 ? 0 : 1;
+        return 0; //TODO frameCount % 2 == 1 ? 0 : 1;
     }
 
     const std::shared_ptr<Texture>& TaaApplier::getOutputTexture() const {
@@ -118,9 +120,7 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) {
-        frameCount++;
-
+    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) const {
         int historyTexIndex = getHistoryTextureIndex();
         renderer->updateUniformData(HISTORY_TEX_INDEX_UNIFORM_BINDING, &historyTexIndex);
 

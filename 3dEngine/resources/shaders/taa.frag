@@ -16,7 +16,9 @@ layout(location = 1) out vec4 fragColor2;
 void main() {
     if (data.historyTexIndex == 0) {
         fragColor1 = texture(inputTex, texCoordinates);
+        fragColor2 = vec4(1.0, 1.0, 0.0, 1.0);
     } else {
+        fragColor1 = vec4(1.0, 0.0, 0.0, 1.0);
         fragColor2 = texture(inputTex, texCoordinates);
     }
 }
