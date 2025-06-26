@@ -55,9 +55,7 @@ namespace urchin {
             renderTarget->cleanup();
             renderTarget.reset();
         }
-        if (outputTexture) {
-            outputTexture.reset();
-        }
+        outputTexture.reset();
     }
 
     void FxaaApplier::createOrUpdateRenderer() {

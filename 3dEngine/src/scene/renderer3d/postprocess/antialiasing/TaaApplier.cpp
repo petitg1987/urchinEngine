@@ -50,28 +50,29 @@ namespace urchin {
     }
 
     const std::shared_ptr<Texture>& TaaApplier::getOutputTexture() const {
-        return outputTexture;
+        return outputTextures[0];
     }
 
     void TaaApplier::createOrUpdateRenderData() {
         freeRenderData();
 
-        outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputTextures[0] = Texture::build("anti aliased 1", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputTextures[1] = Texture::build("anti aliased 2", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         renderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
-        renderTarget->addOutputTexture(outputTexture);
+        renderTarget->addOutputTexture(outputTextures[0]); //TODO possible to change each frame ?!
         renderTarget->initialize();
         createOrUpdateRenderer();
     }
 
     void TaaApplier::freeRenderData() {
         renderer.reset();
-        fxaaShader.reset();
+        taaShader.reset();
 
         if (renderTarget) {
             renderTarget->cleanup();
             renderTarget.reset();
         }
-        if (outputTexture) {
+        for (std::shared_ptr<Texture>& outputTexture : outputTextures) {
             outputTexture.reset();
         }
     }
@@ -88,7 +89,7 @@ namespace urchin {
             Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
         Point2 invSceneSize(1.0f / (float) inputTexture->getWidth(), 1.0f / (float) inputTexture->getHeight());
-        renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *fxaaShader, ShapeType::TRIANGLE)
+        renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *taaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(INV_SCENE_SIZE_UNIFORM_BINDING, sizeof(invSceneSize), &invSceneSize)
@@ -115,7 +116,7 @@ namespace urchin {
                 sizeof(AntiAliasingShaderConst::qualityP11)
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &antiAliasingShaderConst);
-        fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "fxaa.frag.spv", std::move(shaderConstants), renderTarget->isTestMode());
+        taaShader = ShaderBuilder::createShader("fxaa.vert.spv", "fxaa.frag.spv", std::move(shaderConstants), renderTarget->isTestMode());
     }
 
     void TaaApplier::updateQuality(AntiAliasingQuality quality) {

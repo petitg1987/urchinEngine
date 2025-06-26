@@ -61,8 +61,8 @@ namespace urchin {
             //display
             std::unique_ptr<OffscreenRender> renderTarget;
             std::shared_ptr<Texture> inputTexture;
-            std::shared_ptr<Texture> outputTexture;
-            std::unique_ptr<Shader> fxaaShader;
+            std::array<std::shared_ptr<Texture>, 2> outputTextures;
+            std::unique_ptr<Shader> taaShader;
             std::unique_ptr<GenericRenderer> renderer;
     };
 
