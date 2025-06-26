@@ -53,7 +53,7 @@ namespace urchin {
         return config;
     }
 
-    void AntiAliasingApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) const {
+    void AntiAliasingApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) {
         ScopeProfiler sp(Profiler::graphic(), "applyAA");
 
         if (config.useTaa) {

@@ -38,8 +38,6 @@ namespace urchin {
         float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)inputTexture->getWidth();
         float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)inputTexture->getHeight();
         camera.applyJitter(valueX, valueY);
-
-        frameCount++;
     }
 
     void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputTexture) {
@@ -49,17 +47,26 @@ namespace urchin {
         }
     }
 
+    int TaaApplier::getOutputTextureIndex() const {
+        return 1; //frameCount % 2 == 0;
+    }
+
+    int TaaApplier::getHistoryTextureIndex() const {
+        return 0; //frameCount % 2 == 1;
+    }
+
     const std::shared_ptr<Texture>& TaaApplier::getOutputTexture() const {
-        return outputTextures[0];
+        return outputOrHistoryTextures[getOutputTextureIndex()];
     }
 
     void TaaApplier::createOrUpdateRenderData() {
         freeRenderData();
 
-        outputTextures[0] = Texture::build("anti aliased 1", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
-        outputTextures[1] = Texture::build("anti aliased 2", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputOrHistoryTextures[0] = Texture::build("aa: output or history 1", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         renderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
-        renderTarget->addOutputTexture(outputTextures[0]); //TODO possible to change each frame ?!
+        renderTarget->addOutputTexture(outputOrHistoryTextures[0]);
+        renderTarget->addOutputTexture(outputOrHistoryTextures[1]);
         renderTarget->initialize();
         createOrUpdateRenderer();
     }
@@ -72,8 +79,8 @@ namespace urchin {
             renderTarget->cleanup();
             renderTarget.reset();
         }
-        for (std::shared_ptr<Texture>& outputTexture : outputTextures) {
-            outputTexture.reset();
+        for (std::shared_ptr<Texture>& outputOrHistoryTexture : outputOrHistoryTextures) {
+            outputOrHistoryTexture.reset();
         }
     }
 
@@ -88,12 +95,14 @@ namespace urchin {
             Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
             Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
-        Point2 invSceneSize(1.0f / (float) inputTexture->getWidth(), 1.0f / (float) inputTexture->getHeight());
+        int historyTexIndex = getHistoryTextureIndex();
         renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *taaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(INV_SCENE_SIZE_UNIFORM_BINDING, sizeof(invSceneSize), &invSceneSize)
+                ->addUniformData(HISTORY_TEX_INDEX_UNIFORM_BINDING, sizeof(int), &historyTexIndex)
                 ->addUniformTextureReader(INPUT_TEX_UNIFORM_BINDING, TextureReader::build(inputTexture, TextureParam::buildLinear()))
+                ->addUniformTextureReader(OUTPUT_OR_HISTORY_TEX_1_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[0], TextureParam::buildLinear()))
+                ->addUniformTextureReader(OUTPUT_OR_HISTORY_TEX_2_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[1], TextureParam::buildLinear()))
                 ->build();
     }
 
@@ -109,7 +118,12 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) const {
+    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) {
+        frameCount++;
+
+        int historyTexIndex = getHistoryTextureIndex();
+        renderer->updateUniformData(HISTORY_TEX_INDEX_UNIFORM_BINDING, &historyTexIndex);
+
         renderTarget->render(frameIndex, numDependenciesToAATexture);
     }
 

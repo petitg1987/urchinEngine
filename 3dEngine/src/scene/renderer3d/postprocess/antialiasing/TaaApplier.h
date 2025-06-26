@@ -22,17 +22,22 @@ namespace urchin {
 
             void updateQuality(AntiAliasingQuality);
 
-            void applyAntiAliasing(uint32_t, unsigned int) const;
+            void applyAntiAliasing(uint32_t, unsigned int);
 
         private:
+            int getOutputTextureIndex() const;
+            int getHistoryTextureIndex() const;
+
             void createOrUpdateRenderData();
             void freeRenderData();
 
             void createOrUpdateRenderer();
             void createOrUpdateFxaaShader();
 
-            static constexpr uint32_t INV_SCENE_SIZE_UNIFORM_BINDING = 0;
+            static constexpr uint32_t HISTORY_TEX_INDEX_UNIFORM_BINDING = 0;
             static constexpr uint32_t INPUT_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t OUTPUT_OR_HISTORY_TEX_1_UNIFORM_BINDING = 2;
+            static constexpr uint32_t OUTPUT_OR_HISTORY_TEX_2_UNIFORM_BINDING = 3;
 
             //properties
             bool isTestMode;
@@ -45,7 +50,7 @@ namespace urchin {
             //display
             std::unique_ptr<OffscreenRender> renderTarget;
             std::shared_ptr<Texture> inputTexture;
-            std::array<std::shared_ptr<Texture>, 2> outputTextures;
+            std::array<std::shared_ptr<Texture>, 2> outputOrHistoryTextures;
             std::unique_ptr<Shader> taaShader;
             std::unique_ptr<GenericRenderer> renderer;
     };
