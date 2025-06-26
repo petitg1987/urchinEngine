@@ -7,12 +7,28 @@ namespace urchin {
 
     AntiAliasingApplier::AntiAliasingApplier(const Config& config, bool isTestMode) :
             isTestMode(isTestMode),
-            config(config) {
+            config(config),
+            frameCount(0) {
 
     }
 
     AntiAliasingApplier::~AntiAliasingApplier() {
         clearRenderer();
+    }
+
+    void AntiAliasingApplier::applyCameraJitter(Camera& camera) {
+        constexpr std::array HALTON_SEQUENCE_X = {0.500000f, 0.250000f, 0.750000f, 0.125000f, 0.625000f, 0.375000f, 0.875000f, 0.062500f,
+            0.562500f, 0.312500f, 0.812500f, 0.187500f, 0.687500f, 0.437500f, 0.937500f, 0.031250f};
+        constexpr std::array HALTON_SEQUENCE_Y = {0.333333f, 0.666667f, 0.111111f, 0.444444f, 0.777778f, 0.222222f, 0.555556f, 0.888889f,
+            0.037037f, 0.370370f, 0.703704f, 0.148148f, 0.481481f, 0.814815f, 0.259259f, 0.592593f};
+        constexpr unsigned int JITTER_PERIOD_UPDATE = 4; //update the jitter values only on every 'x' frame
+
+        std::size_t sequenceIndex = (frameCount % (HALTON_SEQUENCE_X.size() * JITTER_PERIOD_UPDATE)) / JITTER_PERIOD_UPDATE;
+        float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)inputTexture->getWidth();
+        float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)inputTexture->getHeight();
+        camera.applyJitter(valueX, valueY);
+
+        frameCount++;
     }
 
     void AntiAliasingApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputTexture) {

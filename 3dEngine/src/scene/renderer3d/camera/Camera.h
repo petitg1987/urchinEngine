@@ -28,6 +28,7 @@ namespace urchin {
             void setDistance(float);
             bool isFirstPersonCamera() const;
             void setMaxRotationX(float);
+            void applyJitter(float, float);
 
             const Matrix4<float>& getViewMatrix() const;
             const Matrix4<float>& getProjectionMatrix() const;

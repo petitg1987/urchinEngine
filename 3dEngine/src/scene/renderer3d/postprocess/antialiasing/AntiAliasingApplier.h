@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <graphics/api/GraphicsApi.h>
+#include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
 
@@ -20,6 +21,8 @@ namespace urchin {
 
             AntiAliasingApplier(const Config&, bool);
             ~AntiAliasingApplier();
+
+            void applyCameraJitter(Camera& camera);
 
             void refreshInputTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getOutputTexture() const;
@@ -56,6 +59,9 @@ namespace urchin {
             //properties
             bool isTestMode;
             Config config;
+
+            //data
+            unsigned int frameCount;
 
             //display
             std::unique_ptr<OffscreenRender> renderTarget;
