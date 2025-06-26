@@ -98,25 +98,7 @@ namespace urchin {
     }
 
     void TaaApplier::createOrUpdateFxaaShader() {
-        AntiAliasingShaderConst antiAliasingShaderConst = {12, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 8.0f};
-
-        std::vector variablesSize = {
-                sizeof(AntiAliasingShaderConst::qualityPs),
-                sizeof(AntiAliasingShaderConst::qualityP0),
-                sizeof(AntiAliasingShaderConst::qualityP1),
-                sizeof(AntiAliasingShaderConst::qualityP2),
-                sizeof(AntiAliasingShaderConst::qualityP3),
-                sizeof(AntiAliasingShaderConst::qualityP4),
-                sizeof(AntiAliasingShaderConst::qualityP5),
-                sizeof(AntiAliasingShaderConst::qualityP6),
-                sizeof(AntiAliasingShaderConst::qualityP7),
-                sizeof(AntiAliasingShaderConst::qualityP8),
-                sizeof(AntiAliasingShaderConst::qualityP9),
-                sizeof(AntiAliasingShaderConst::qualityP10),
-                sizeof(AntiAliasingShaderConst::qualityP11)
-        };
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &antiAliasingShaderConst);
-        taaShader = ShaderBuilder::createShader("fxaa.vert.spv", "fxaa.frag.spv", std::move(shaderConstants), renderTarget->isTestMode());
+        taaShader = ShaderBuilder::createShader("taa.vert.spv", "taa.frag.spv", renderTarget->isTestMode());
     }
 
     void TaaApplier::updateQuality(AntiAliasingQuality quality) {
