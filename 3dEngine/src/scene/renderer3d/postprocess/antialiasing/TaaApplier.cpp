@@ -9,6 +9,7 @@ namespace urchin {
             isTestMode(isTestMode),
             isEnabled(false),
             quality(AntiAliasingQuality::HIGH),
+            copyInputTexToHistory(true),
             frameCount(0) {
 
     }
@@ -76,6 +77,7 @@ namespace urchin {
         renderTarget->initialize();
 
         createOrUpdateRenderer();
+        copyInputTexToHistory = true;
     }
 
     void TaaApplier::freeRenderData() {
@@ -122,20 +124,19 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) const {
-        static bool firstTime = true; //TODO avoid static
-        if (firstTime) {
-            firstTime = false;
-            renderTarget->removeAllPreRenderTextureCopiers();
+    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) {
+        if (copyInputTexToHistory) {
             renderTarget->addPreRenderTextureCopier(TextureCopier(*inputTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
-        } else {
-            renderTarget->removeAllPreRenderTextureCopiers(); //TODO avoid to call every frame
         }
 
         renderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
         renderTarget->replaceOutputTexture(0, outputOrHistoryTextures[getOutputTextureIndex()]);
-
         renderTarget->render(frameIndex, numDependenciesToAATexture);
+
+        if (copyInputTexToHistory) {
+            renderTarget->removeAllPreRenderTextureCopiers();
+            copyInputTexToHistory = false;
+        }
     }
 
 }

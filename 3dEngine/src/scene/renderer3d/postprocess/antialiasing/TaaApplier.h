@@ -22,7 +22,7 @@ namespace urchin {
 
             void updateQuality(AntiAliasingQuality);
 
-            void applyAntiAliasing(uint32_t, unsigned int) const;
+            void applyAntiAliasing(uint32_t, unsigned int);
 
         private:
             int getOutputTextureIndex() const;
@@ -43,6 +43,7 @@ namespace urchin {
             AntiAliasingQuality quality;
 
             //data
+            bool copyInputTexToHistory;
             unsigned int frameCount;
 
             //display
