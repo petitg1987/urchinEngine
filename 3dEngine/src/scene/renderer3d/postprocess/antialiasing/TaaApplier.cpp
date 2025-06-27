@@ -67,10 +67,8 @@ namespace urchin {
 
         outputOrHistoryTextures[0] = Texture::build("aa: output or history 1", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         outputOrHistoryTextures[0]->enableTextureWriting(OutputUsage::GRAPHICS);
-        outputOrHistoryTextures[0]->initialize();
         outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         outputOrHistoryTextures[1]->enableTextureWriting(OutputUsage::GRAPHICS);
-        outputOrHistoryTextures[1]->initialize();
 
         renderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         renderTarget->addOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
