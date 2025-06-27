@@ -123,7 +123,7 @@ namespace urchin {
     }
 
     void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) const {
-        static bool firstTime = true;
+        static bool firstTime = true; //TODO avoid static
         if (firstTime) {
             firstTime = false;
             renderTarget->removeAllPreRenderTextureCopiers();

@@ -20,7 +20,8 @@ namespace urchin {
             renderPassCompatibilityId(0),
             commandPool(nullptr),
             copiersDirty(false),
-            processorsDirty(false) {
+            processorsDirty(false),
+            framebufferDirty(false) {
         Logger::instance().logInfo("Creating a render target: " + this->name);
     }
 
@@ -173,8 +174,8 @@ namespace urchin {
         });
     }
 
-    bool RenderTarget::areProcessorsOrCopiersDirty() const {
-        return processorsDirty || copiersDirty;
+    bool RenderTarget::needCommandBufferRefresh() const {
+        return processorsDirty || copiersDirty || framebufferDirty;
     }
 
     VkAttachmentDescription2 RenderTarget::buildDepthAttachment(VkFormat format, VkImageLayout finalLayout) const {
@@ -348,6 +349,7 @@ namespace urchin {
                     throw std::runtime_error("Failed to create framebuffer with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
                 }
             }
+            framebufferDirty = true;
         }
     }
 
@@ -358,6 +360,7 @@ namespace urchin {
             }
         }
         framebuffers.clear();
+        framebufferDirty = true;
     }
 
     void RenderTarget::createCommandPool() {
@@ -520,6 +523,7 @@ namespace urchin {
                     vkCmdEndRenderPass(commandBuffers[frameIndex]);
                 }
             }
+            framebufferDirty = false;
             DebugLabelHelper::endDebugRegion(commandBuffers[frameIndex]);
 
             VkResult resultEndCmdBuffer = vkEndCommandBuffer(commandBuffers[frameIndex]);

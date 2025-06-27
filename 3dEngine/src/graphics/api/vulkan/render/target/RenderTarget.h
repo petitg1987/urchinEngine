@@ -67,7 +67,7 @@ namespace urchin {
             void cleanupProcessors() const;
             std::span<PipelineProcessor* const> getProcessors() const;
             bool hasProcessor() const;
-            bool areProcessorsOrCopiersDirty() const;
+            bool needCommandBufferRefresh() const;
 
             VkAttachmentDescription2 buildDepthAttachment(VkFormat, VkImageLayout) const;
             VkAttachmentDescription2 buildAttachment(VkFormat, bool, bool, VkImageLayout) const;
@@ -93,7 +93,7 @@ namespace urchin {
             void updatePipelineProcessorData(uint32_t) const;
             void updateCommandBuffers(uint32_t, const std::vector<VkClearValue>&);
 
-       //TODO private:
+        private:
             bool bIsInitialized;
             bool bIsTestMode;
 
@@ -115,6 +115,7 @@ namespace urchin {
             std::vector<PipelineProcessor*> processors;
             std::vector<PipelineProcessor*> sortedEnabledProcessors;
             bool processorsDirty;
+            bool framebufferDirty;
     };
 
 }
