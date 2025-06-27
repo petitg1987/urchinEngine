@@ -32,11 +32,19 @@ namespace urchin {
 
     void BloomEffectApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputHdrTexture) {
         if (inputHdrTexture.get() != this->inputHdrTexture.get()) {
+            bool sizeUpdated = this->sceneWidth != inputHdrTexture->getWidth() || this->sceneHeight != inputHdrTexture->getHeight();
+            bool firstTexture = inputHdrTexture.get() == nullptr;
+
             this->inputHdrTexture = inputHdrTexture;
             this->sceneWidth = inputHdrTexture->getWidth();
             this->sceneHeight = inputHdrTexture->getHeight();
 
-            refreshRenderers();
+            if (firstTexture || sizeUpdated) {
+                refreshRenderers();
+            } else {
+                preFilterCompute->updateUniformTextureReader(PF_INPUT_TEX_UNIFORM_BINDING, TextureReader::build(this->inputHdrTexture, TextureParam::buildLinear()));
+                combineRenderer->updateUniformTextureReader(CR_HDR_TEX_UNIFORM_BINDING, TextureReader::build(this->inputHdrTexture, TextureParam::buildLinear()));
+            }
         }
     }
 

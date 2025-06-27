@@ -50,11 +50,11 @@ namespace urchin {
     }
 
     int TaaApplier::getOutputTextureIndex() const {
-        return 0; //TODO frameCount % 2 == 0 ? 0 : 1;
+        return frameCount % 2 == 0 ? 0 : 1;
     }
 
     int TaaApplier::getHistoryTextureIndex() const {
-        return 1; //TODO frameCount % 2 == 1 ? 0 : 1;
+        return frameCount % 2 == 1 ? 0 : 1;
     }
 
     const std::shared_ptr<Texture>& TaaApplier::getOutputTexture() const {
@@ -97,14 +97,13 @@ namespace urchin {
             Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
             Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
-        int historyTexIndex = getHistoryTextureIndex();
+        int outputIndex = getOutputTextureIndex();
         renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *taaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(HISTORY_TEX_INDEX_UNIFORM_BINDING, sizeof(historyTexIndex), &historyTexIndex)
+                ->addUniformData(OUTPUT_INDEX_UNIFORM_BINDING, sizeof(outputIndex), &outputIndex)
                 ->addUniformTextureReader(INPUT_TEX_UNIFORM_BINDING, TextureReader::build(inputTexture, TextureParam::buildLinear()))
-                ->addUniformTextureReader(OUTPUT_OR_HISTORY_TEX_1_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[0], TextureParam::buildLinear()))
-                ->addUniformTextureReader(OUTPUT_OR_HISTORY_TEX_2_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[1], TextureParam::buildLinear()))
+                ->addUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()))
                 ->build();
     }
 
@@ -121,8 +120,9 @@ namespace urchin {
     }
 
     void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) const {
-        int historyTexIndex = getHistoryTextureIndex();
-        renderer->updateUniformData(HISTORY_TEX_INDEX_UNIFORM_BINDING, &historyTexIndex);
+        int outputIndex = getOutputTextureIndex();
+        renderer->updateUniformData(OUTPUT_INDEX_UNIFORM_BINDING, &outputIndex);
+        renderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
 
         renderTarget->render(frameIndex, numDependenciesToAATexture);
     }
