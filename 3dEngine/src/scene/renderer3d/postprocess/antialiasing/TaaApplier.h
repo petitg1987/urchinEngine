@@ -34,9 +34,8 @@ namespace urchin {
             void createOrUpdateRenderer();
             void createOrUpdateFxaaShader();
 
-            static constexpr uint32_t OUTPUT_INDEX_UNIFORM_BINDING = 0;
-            static constexpr uint32_t INPUT_TEX_UNIFORM_BINDING = 1;
-            static constexpr uint32_t HISTORY_TEX_UNIFORM_BINDING = 2;
+            static constexpr uint32_t INPUT_TEX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t HISTORY_TEX_UNIFORM_BINDING = 1;
 
             //properties
             bool isTestMode;

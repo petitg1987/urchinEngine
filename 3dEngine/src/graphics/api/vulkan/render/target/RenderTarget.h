@@ -93,7 +93,7 @@ namespace urchin {
             void updatePipelineProcessorData(uint32_t) const;
             void updateCommandBuffers(uint32_t, const std::vector<VkClearValue>&);
 
-        private:
+       //TODO private:
             bool bIsInitialized;
             bool bIsTestMode;
 

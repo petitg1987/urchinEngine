@@ -40,6 +40,10 @@ namespace urchin {
         float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)inputTexture->getWidth();
         float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)inputTexture->getHeight();
         camera.applyJitter(valueX, valueY);
+
+        //TODO move in render method ?
+        renderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
+        renderTarget->replaceOutputTexture(0, outputOrHistoryTextures[getOutputTextureIndex()]);
     }
 
     void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputTexture) {
@@ -65,11 +69,16 @@ namespace urchin {
         freeRenderData();
 
         outputOrHistoryTextures[0] = Texture::build("aa: output or history 1", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputOrHistoryTextures[0]->enableTextureWriting(OutputUsage::GRAPHICS);
+        outputOrHistoryTextures[0]->initialize();
         outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputOrHistoryTextures[1]->enableTextureWriting(OutputUsage::GRAPHICS);
+        outputOrHistoryTextures[1]->initialize();
+
         renderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
-        renderTarget->addOutputTexture(outputOrHistoryTextures[0]);
-        renderTarget->addOutputTexture(outputOrHistoryTextures[1]);
+        renderTarget->addOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
         renderTarget->initialize();
+
         createOrUpdateRenderer();
     }
 
@@ -97,11 +106,9 @@ namespace urchin {
             Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
             Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
-        int outputIndex = getOutputTextureIndex();
         renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *taaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(OUTPUT_INDEX_UNIFORM_BINDING, sizeof(outputIndex), &outputIndex)
                 ->addUniformTextureReader(INPUT_TEX_UNIFORM_BINDING, TextureReader::build(inputTexture, TextureParam::buildLinear()))
                 ->addUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()))
                 ->build();
@@ -120,9 +127,14 @@ namespace urchin {
     }
 
     void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) const {
-        int outputIndex = getOutputTextureIndex();
-        renderer->updateUniformData(OUTPUT_INDEX_UNIFORM_BINDING, &outputIndex);
-        renderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
+        static bool firstTime = true;
+        if (firstTime) {
+            firstTime = false;
+            renderTarget->removeAllPreRenderTextureCopiers();
+            renderTarget->addPreRenderTextureCopier(TextureCopier(*inputTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
+        } else {
+            renderTarget->removeAllPreRenderTextureCopiers();
+        }
 
         renderTarget->render(frameIndex, numDependenciesToAATexture);
     }

@@ -105,9 +105,13 @@ namespace urchin {
     }
 
     void Texture::enableTextureWriting(OutputUsage outputUsage) {
-        assert(!isInitialized);
-        this->writableTexture = true;
-        this->outputUsage = outputUsage;
+        if (!writableTexture) {
+            assert(!isInitialized);
+            this->writableTexture = true;
+            this->outputUsage = outputUsage;
+        } else {
+            assert(this->outputUsage == outputUsage);
+        }
     }
 
     void Texture::initialize() {

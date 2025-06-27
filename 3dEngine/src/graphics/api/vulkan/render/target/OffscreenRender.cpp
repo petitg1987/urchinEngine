@@ -74,6 +74,27 @@ namespace urchin {
         return outputTextures[index].texture;
     }
 
+    void OffscreenRender::replaceOutputTexture(std::size_t index, const std::shared_ptr<Texture>& texture) {
+        assert(outputTextures.size() > index);
+
+        //TODO add assert on size, layer, etc
+
+        outputTextures[index].texture->setLastTextureWriter(nullptr);
+        outputTextures[index].texture = texture;
+
+        //TODO review exception msg ? + explain code
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
+        VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
+        if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName());
+        }
+
+        destroyFramebuffers();
+        createFramebuffers();
+
+        copiersDirty = true; //TODO do better
+    }
+
     void OffscreenRender::resetOutput() {
         for (const auto& outputTexture : outputTextures) {
             if (outputTexture.texture->getLastTextureWriter() == this) {
