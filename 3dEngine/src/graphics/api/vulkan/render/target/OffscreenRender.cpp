@@ -75,20 +75,20 @@ namespace urchin {
     }
 
     void OffscreenRender::replaceOutputTexture(std::size_t index, const std::shared_ptr<Texture>& texture) {
-        assert(outputTextures.size() > index);
-
-        //TODO add assert on size, layer, etc
+        #ifdef URCHIN_DEBUG
+            assert(outputTextures.size() > index);
+            assert(outputTextures[index].texture->getWidth() == texture->getWidth());
+            assert(outputTextures[index].texture->getHeight() == texture->getHeight());
+            assert(outputTextures[index].texture->getLayer() == texture->getLayer());
+        #endif
 
         outputTextures[index].texture->setLastTextureWriter(nullptr);
         outputTextures[index].texture = texture;
 
-        //TODO review exception msg ? + explain code
-        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
-        VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
+        VkResult resultWaitForFences = vkWaitForFences(GraphicsSetupService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
-            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' to replace output texture on render target: " + getName());
         }
-
         destroyFramebuffers();
         createFramebuffers();
 
@@ -245,17 +245,17 @@ namespace urchin {
     void OffscreenRender::createFramebuffers() {
         if (couldHaveGraphicsProcessors()) {
             std::vector<std::vector<VkImageView>> attachments;
-            attachments.resize(getLayer());
+            attachments.resize(getLayer()); //TODO avoid allocation
 
             for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
                 attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + outputTextures.size());
                 if (hasDepthAttachment()) {
-                    std::vector<VkImageView> depthImageView = getDepthTexture()->getWritableImageViews();
-                    attachments[layerIndex].emplace_back(depthImageView.at(layerIndex));
+                    std::vector<VkImageView> depthImageView = getDepthTexture()->getWritableImageViews(); //TODO avoid allocation
+                    attachments[layerIndex].emplace_back(depthImageView.at(layerIndex)); //TODO avoid allocation
                 }
                 for (const auto& outputTexture: outputTextures) {
-                    std::vector<VkImageView> outputTextureImageViews = outputTexture.texture->getWritableImageViews();
-                    attachments[layerIndex].emplace_back(outputTextureImageViews.at(layerIndex));
+                    std::vector<VkImageView> outputTextureImageViews = outputTexture.texture->getWritableImageViews(); //TODO avoid allocation
+                    attachments[layerIndex].emplace_back(outputTextureImageViews.at(layerIndex)); //TODO avoid allocation
                 }
             }
 

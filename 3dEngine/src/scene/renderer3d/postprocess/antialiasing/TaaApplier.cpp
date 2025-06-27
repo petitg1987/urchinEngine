@@ -40,10 +40,6 @@ namespace urchin {
         float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)inputTexture->getWidth();
         float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)inputTexture->getHeight();
         camera.applyJitter(valueX, valueY);
-
-        //TODO move in render method ?
-        renderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
-        renderTarget->replaceOutputTexture(0, outputOrHistoryTextures[getOutputTextureIndex()]);
     }
 
     void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputTexture) {
@@ -133,8 +129,11 @@ namespace urchin {
             renderTarget->removeAllPreRenderTextureCopiers();
             renderTarget->addPreRenderTextureCopier(TextureCopier(*inputTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
         } else {
-            renderTarget->removeAllPreRenderTextureCopiers();
+            renderTarget->removeAllPreRenderTextureCopiers(); //TODO avoid to call every frame
         }
+
+        renderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
+        renderTarget->replaceOutputTexture(0, outputOrHistoryTextures[getOutputTextureIndex()]);
 
         renderTarget->render(frameIndex, numDependenciesToAATexture);
     }
