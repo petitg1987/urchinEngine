@@ -50,11 +50,11 @@ namespace urchin {
     }
 
     int TaaApplier::getOutputTextureIndex() const {
-        return 1; //TODO frameCount % 2 == 0 ? 0 : 1;
+        return 0; //TODO frameCount % 2 == 0 ? 0 : 1;
     }
 
     int TaaApplier::getHistoryTextureIndex() const {
-        return 0; //TODO frameCount % 2 == 1 ? 0 : 1;
+        return 1; //TODO frameCount % 2 == 1 ? 0 : 1;
     }
 
     const std::shared_ptr<Texture>& TaaApplier::getOutputTexture() const {
@@ -101,7 +101,7 @@ namespace urchin {
         renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *taaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(HISTORY_TEX_INDEX_UNIFORM_BINDING, sizeof(int), &historyTexIndex)
+                ->addUniformData(HISTORY_TEX_INDEX_UNIFORM_BINDING, sizeof(historyTexIndex), &historyTexIndex)
                 ->addUniformTextureReader(INPUT_TEX_UNIFORM_BINDING, TextureReader::build(inputTexture, TextureParam::buildLinear()))
                 ->addUniformTextureReader(OUTPUT_OR_HISTORY_TEX_1_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[0], TextureParam::buildLinear()))
                 ->addUniformTextureReader(OUTPUT_OR_HISTORY_TEX_2_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[1], TextureParam::buildLinear()))
