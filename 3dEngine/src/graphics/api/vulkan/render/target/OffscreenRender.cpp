@@ -240,20 +240,20 @@ namespace urchin {
         }
     }
 
-    void OffscreenRender::createFramebuffers() {
+    void OffscreenRender::createFramebuffers() { //TODO or switch between framebuffer !
         if (couldHaveGraphicsProcessors()) {
             std::vector<std::vector<VkImageView>> attachments;
-            attachments.resize(getLayer()); //TODO avoid allocation
+            attachments.resize(getLayer());
 
             for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
                 attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + outputTextures.size());
                 if (hasDepthAttachment()) {
-                    std::vector<VkImageView> depthImageView = getDepthTexture()->getWritableImageViews(); //TODO avoid allocation
-                    attachments[layerIndex].emplace_back(depthImageView.at(layerIndex)); //TODO avoid allocation
+                    std::vector<VkImageView> depthImageView = getDepthTexture()->getWritableImageViews();
+                    attachments[layerIndex].emplace_back(depthImageView.at(layerIndex));
                 }
                 for (const auto& outputTexture: outputTextures) {
-                    std::vector<VkImageView> outputTextureImageViews = outputTexture.texture->getWritableImageViews(); //TODO avoid allocation
-                    attachments[layerIndex].emplace_back(outputTextureImageViews.at(layerIndex)); //TODO avoid allocation
+                    std::vector<VkImageView> outputTextureImageViews = outputTexture.texture->getWritableImageViews();
+                    attachments[layerIndex].emplace_back(outputTextureImageViews.at(layerIndex));
                 }
             }
 
