@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cassert>
+#include <ranges>
 #include <libs/vkenum/vk_enum.h>
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
@@ -325,12 +326,12 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::addFramebuffers(std::size_t framebufferIndex, const std::vector<std::vector<VkImageView>>& attachments) { //TODO fix error
+    void RenderTarget::addFramebuffers(std::size_t framebufferIndex, const std::vector<std::vector<VkImageView>>& attachments) {
         if (!attachments.empty()) {
-            framebuffers.resize(framebuffers.size() + 1);
-            std::size_t frameIndex = framebuffers.size() - 1;
+            framebuffers[framebufferIndex].resize(framebuffers[framebufferIndex].size() + 1);
+            std::size_t frameIndex = framebuffers[framebufferIndex].size() - 1;
 
-            framebuffers[frameIndex].resize(getLayer(), nullptr);
+            framebuffers[framebufferIndex][frameIndex].resize(getLayer(), nullptr);
             for (std::size_t layerIndex = 0; layerIndex < attachments.size(); ++layerIndex) {
                 if (attachments[layerIndex].empty()) {
                     continue;
@@ -345,7 +346,7 @@ namespace urchin {
                 framebufferInfo.height = getHeight();
                 framebufferInfo.layers = 1;
 
-                VkResult result = vkCreateFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[frameIndex][layerIndex]);
+                VkResult result = vkCreateFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebufferIndex][frameIndex][layerIndex]);
                 if (result != VK_SUCCESS) {
                     throw std::runtime_error("Failed to create framebuffer with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
                 }
@@ -359,9 +360,11 @@ namespace urchin {
     }
 
     void RenderTarget::destroyFramebuffers() {
-        for (const auto& framebufferLayers : framebuffers) {
-            for (const auto& framebuffer : framebufferLayers) {
-                vkDestroyFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), framebuffer, nullptr);
+        for (const auto& framebufferByIndex : std::views::values(framebuffers)) {
+            for (const auto& framebufferLayers : framebufferByIndex) {
+                for (const auto& framebuffer : framebufferLayers) {
+                    vkDestroyFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), framebuffer, nullptr);
+                }
             }
         }
         framebuffers.clear();

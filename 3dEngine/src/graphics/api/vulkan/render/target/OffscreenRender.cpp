@@ -76,7 +76,8 @@ namespace urchin {
 
     void OffscreenRender::enableOnlyOutputTexture(const std::shared_ptr<Texture>& textureToEnable) {
         #ifdef URCHIN_DEBUG
-            assert(!isInitialized() || hasSingleActiveOutputTexture);
+            bool hasOutputTexturesDisabled = std::ranges::count_if(outputTextures, [](const auto& outputTexture){return !outputTexture.enabled;});
+            assert(!isInitialized() || hasOutputTexturesDisabled);
             for (size_t i = 0; i < outputTextures.size() - 1; ++i) {
                 assert(outputTextures[i].loadOperation == outputTextures[i + 1].loadOperation);
                 assert(outputTextures[i].texture->getWidth() == outputTextures[i + 1].texture->getWidth());
