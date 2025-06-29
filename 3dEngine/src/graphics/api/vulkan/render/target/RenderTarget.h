@@ -104,6 +104,7 @@ namespace urchin {
             std::size_t renderPassCompatibilityId;
             std::shared_ptr<Texture> depthTexture;
             std::vector<std::vector<VkFramebuffer>> framebuffers; //frameBuffers[frameIndex][layerIndex]
+            std::map<unsigned int, std::vector<std::vector<VkFramebuffer>>> cachedFramebuffers;
             VkCommandPool commandPool;
             std::vector<VkCommandBuffer> commandBuffers;
 

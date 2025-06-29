@@ -72,6 +72,8 @@ namespace urchin {
 
         renderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         renderTarget->addOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
+        renderTarget->addOutputTexture(outputOrHistoryTextures[getHistoryTextureIndex()]);
+        renderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
         renderTarget->initialize();
 
         createOrUpdateRenderer();
@@ -128,7 +130,8 @@ namespace urchin {
         }
 
         renderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
-        renderTarget->replaceOutputTexture(0, outputOrHistoryTextures[getOutputTextureIndex()]);
+        renderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
+
         renderTarget->render(frameIndex, numDependenciesToAATexture);
 
         if (copyInputTexToHistory) {

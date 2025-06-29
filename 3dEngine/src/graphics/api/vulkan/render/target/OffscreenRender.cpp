@@ -13,6 +13,7 @@ namespace urchin {
             height(0),
             layer(0),
             bIsArrayOutput(false),
+            hasSingleActiveOutputTexture(false),
             commandBufferFence(nullptr),
             submitSemaphores({}),
             submitSemaphoresFrameIndex(0),
@@ -66,7 +67,7 @@ namespace urchin {
             }
         }
 
-        outputTextures.emplace_back(OutputTexture{.texture=texture, .loadOperation=loadType, .clearColor=clearColor, .outputUsage=outputUsage});
+        outputTextures.emplace_back(OutputTexture{.enabled=true, .texture=texture, .loadOperation=loadType, .clearColor=clearColor, .outputUsage=outputUsage});
     }
 
     std::shared_ptr<Texture>& OffscreenRender::getOutputTexture(std::size_t index) {
@@ -74,23 +75,25 @@ namespace urchin {
         return outputTextures[index].texture;
     }
 
-    void OffscreenRender::replaceOutputTexture(std::size_t index, const std::shared_ptr<Texture>& texture) {
+    void OffscreenRender::enableOnlyOutputTexture(const std::shared_ptr<Texture>& textureToEnable) {
         #ifdef URCHIN_DEBUG
-            assert(outputTextures.size() > index);
-            assert(outputTextures[index].texture->getWidth() == texture->getWidth());
-            assert(outputTextures[index].texture->getHeight() == texture->getHeight());
-            assert(outputTextures[index].texture->getLayer() == texture->getLayer());
+            assert(!isInitialized() || hasSingleActiveOutputTexture);
+            for (size_t i = 0; i < outputTextures.size() - 1; ++i) {
+                assert(outputTextures[i].loadOperation == outputTextures[i + 1].loadOperation);
+                assert(outputTextures[i].texture->getWidth() == outputTextures[i + 1].texture->getWidth());
+                assert(outputTextures[i].texture->getHeight() == outputTextures[i + 1].texture->getHeight());
+                assert(outputTextures[i].texture->getLayer() == outputTextures[i + 1].texture->getLayer());
+                assert(outputTextures[i].texture->getFormat() == outputTextures[i + 1].texture->getFormat());
+                assert(outputTextures[i].outputUsage == outputTextures[i + 1].outputUsage);
+                assert(outputTextures[i].clearColor.value_or(Vector4<float>()) == outputTextures[i + 1].clearColor.value_or(Vector4<float>()));
+            }
         #endif
 
-        outputTextures[index].texture->setLastTextureWriter(nullptr);
-        outputTextures[index].texture = texture;
-
-        VkResult result = vkWaitForFences(GraphicsSetupService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
-        if (result != VK_SUCCESS && result != VK_TIMEOUT) {
-            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(result)) + "' to replace output texture on render target: " + getName());
+        for (OutputTexture& outputTexture : outputTextures) {
+            outputTexture.enabled = textureToEnable.get() == outputTexture.texture.get();
         }
-        destroyFramebuffers();
-        createFramebuffers();
+        hasSingleActiveOutputTexture = true;
+        //TODO refresh command buffer ! +> framebuffer dirty ?
     }
 
     void OffscreenRender::resetOutput() {
@@ -191,7 +194,9 @@ namespace urchin {
     void OffscreenRender::initializeClearValues() {
         bool hasLoadClear = hasDepthAttachment() && getDepthAttachmentType() != EXTERNAL_DEPTH_ATTACHMENT;
         for (const auto& outputTexture : outputTextures) {
-            hasLoadClear = hasLoadClear || outputTexture.loadOperation == LoadType::LOAD_CLEAR;
+            if (outputTexture.enabled) {
+                hasLoadClear = hasLoadClear || outputTexture.loadOperation == LoadType::LOAD_CLEAR;
+            }
         }
 
         if (hasLoadClear) {
@@ -202,10 +207,12 @@ namespace urchin {
             }
 
             for (const auto& outputTexture: outputTextures) {
-                Vector4<float> clearColorValue = outputTexture.clearColor.value_or(Vector4<float>(1.0f, 0.5f, 0.0f, 1.0) /*orange: should never be used */);
-                VkClearValue clearColor{};
-                clearColor.color = {{clearColorValue[0], clearColorValue[1], clearColorValue[2], clearColorValue[3]}};
-                clearValues.emplace_back(clearColor);
+                if (outputTexture.enabled) {
+                    Vector4<float> clearColorValue = outputTexture.clearColor.value_or(Vector4<float>(1.0f, 0.5f, 0.0f, 1.0) /*orange: should never be used */);
+                    VkClearValue clearColor{};
+                    clearColor.color = {{clearColorValue[0], clearColorValue[1], clearColorValue[2], clearColorValue[3]}};
+                    clearValues.emplace_back(clearColor);
+                }
             }
         }
     }
@@ -225,15 +232,17 @@ namespace urchin {
 
             std::vector<VkAttachmentReference2> colorAttachmentRefs;
             for (const auto& outputTexture : outputTextures) {
-                bool clearOnLoad = outputTexture.clearColor.has_value();
-                bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
-                VkImageLayout finalLayout = outputTexture.texture->getOutputUsage() == OutputUsage::GRAPHICS ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_GENERAL;
-                attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, finalLayout));
-                VkAttachmentReference2 colorAttachmentRef{};
-                colorAttachmentRef.sType = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
-                colorAttachmentRef.attachment = attachmentIndex++;
-                colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-                colorAttachmentRefs.push_back(colorAttachmentRef);
+                if (outputTexture.enabled) {
+                    bool clearOnLoad = outputTexture.clearColor.has_value();
+                    bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
+                    VkImageLayout finalLayout = outputTexture.texture->getOutputUsage() == OutputUsage::GRAPHICS ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_GENERAL;
+                    attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, finalLayout));
+                    VkAttachmentReference2 colorAttachmentRef{};
+                    colorAttachmentRef.sType = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
+                    colorAttachmentRef.attachment = attachmentIndex++;
+                    colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+                    colorAttachmentRefs.push_back(colorAttachmentRef);
+                }
             }
 
             RenderTarget::createRenderPass(depthAttachmentRef, colorAttachmentRefs, attachments);
@@ -252,8 +261,10 @@ namespace urchin {
                     attachments[layerIndex].emplace_back(depthImageView.at(layerIndex));
                 }
                 for (const auto& outputTexture: outputTextures) {
-                    std::vector<VkImageView> outputTextureImageViews = outputTexture.texture->getWritableImageViews();
-                    attachments[layerIndex].emplace_back(outputTextureImageViews.at(layerIndex));
+                    if (outputTexture.enabled) {
+                        std::vector<VkImageView> outputTextureImageViews = outputTexture.texture->getWritableImageViews();
+                        attachments[layerIndex].emplace_back(outputTextureImageViews.at(layerIndex));
+                    }
                 }
             }
 
@@ -368,7 +379,7 @@ namespace urchin {
 
     void OffscreenRender::fillAdditionalOffscreenRenderDependencies(std::vector<OffscreenRender*> &offscreenRenderDependencies) const {
         for (const auto& outputTexture : outputTextures) {
-            if (outputTexture.loadOperation == LoadType::LOAD_CONTENT) {
+            if (outputTexture.enabled && outputTexture.loadOperation == LoadType::LOAD_CONTENT) {
                 offscreenRenderDependencies.push_back(outputTexture.texture->getLastTextureWriter());
             }
         }

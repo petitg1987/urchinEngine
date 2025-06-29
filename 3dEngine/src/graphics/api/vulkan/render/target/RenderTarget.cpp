@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cassert>
+#include <ranges>
 #include <libs/vkenum/vk_enum.h>
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
@@ -360,7 +361,17 @@ namespace urchin {
             }
         }
         framebuffers.clear();
-        framebufferDirty = true;
+
+        for (const auto& cachedFramebuffer: std::views::values(cachedFramebuffers)) {
+            for (const auto& framebufferLayers : cachedFramebuffer) {
+                for (const auto& framebuffer : framebufferLayers) {
+                    vkDestroyFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), framebuffer, nullptr);
+                }
+            }
+        }
+        cachedFramebuffers.clear();
+
+        framebufferDirty = true; //TODO review !
     }
 
     void RenderTarget::createCommandPool() {

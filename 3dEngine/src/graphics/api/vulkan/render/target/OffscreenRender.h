@@ -15,6 +15,7 @@ namespace urchin {
     };
 
     struct OutputTexture {
+        bool enabled;
         std::shared_ptr<Texture> texture;
         LoadType loadOperation;
         std::optional<Vector4<float>> clearColor;
@@ -32,7 +33,7 @@ namespace urchin {
             void setOutputSize(unsigned int, unsigned int, unsigned int, bool);
             void addOutputTexture(const std::shared_ptr<Texture>&, LoadType = LoadType::NO_LOAD, const std::optional<Vector4<float>>& = std::nullopt, OutputUsage = OutputUsage::GRAPHICS);
             std::shared_ptr<Texture>& getOutputTexture(std::size_t);
-            void replaceOutputTexture(std::size_t, const std::shared_ptr<Texture>&);
+            void enableOnlyOutputTexture(const std::shared_ptr<Texture>&);
             void resetOutput();
 
             void initialize() override;
@@ -74,6 +75,7 @@ namespace urchin {
 
             std::vector<VkClearValue> clearValues;
             std::vector<OutputTexture> outputTextures;
+            bool hasSingleActiveOutputTexture;
 
             VkFence commandBufferFence;
             std::array<VkSemaphore, MAX_SUBMIT_SEMAPHORES> submitSemaphores;
