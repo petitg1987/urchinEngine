@@ -13,7 +13,6 @@ namespace urchin {
             height(0),
             layer(0),
             bIsArrayOutput(false),
-            hasSingleActiveOutputTexture(false),
             commandBufferFence(nullptr),
             submitSemaphores({}),
             submitSemaphoresFrameIndex(0),
@@ -89,17 +88,14 @@ namespace urchin {
             }
         #endif
 
-        std::size_t framebufferIndex = 0;
-        for (OutputTexture& outputTexture : outputTextures) {
-            if (textureToEnable.get() == outputTexture.texture.get()) {
-                outputTexture.enabled = true;
+        for (std::size_t framebufferIndex = 0; framebufferIndex < outputTextures.size(); ++framebufferIndex) {
+            if (textureToEnable.get() == outputTextures[framebufferIndex].texture.get()) {
+                outputTextures[framebufferIndex].enabled = true;
                 activateFramebuffer(framebufferIndex);
             } else {
-                outputTexture.enabled = false;
+                outputTextures[framebufferIndex].enabled = false;
             }
-            framebufferIndex++;
         }
-        hasSingleActiveOutputTexture = true; //TODO variable usefull ?
     }
 
     void OffscreenRender::resetOutput() {
@@ -257,10 +253,11 @@ namespace urchin {
 
     void OffscreenRender::createFramebuffers() {
         if (couldHaveGraphicsProcessors()) {
-            if (!hasSingleActiveOutputTexture) {
-                std::vector<std::vector<VkImageView>> attachments;
-                attachments.resize(getLayer());
+            std::size_t framebufferIndex = 0;
+            bool allOutputTexturesEnabled = std::ranges::all_of(outputTextures, [](const auto& outputTexture){return outputTexture.enabled;});
 
+            if (allOutputTexturesEnabled) {
+                std::vector<std::vector<VkImageView>> attachments(getLayer());
                 for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
                     attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + outputTextures.size());
                     if (hasDepthAttachment()) {
@@ -271,13 +268,10 @@ namespace urchin {
                     }
                 }
 
-                addFramebuffers(0, attachments);
-            } else {
-                std::size_t framebufferIndex = 0;
+                addFramebuffers(framebufferIndex, attachments);
+            } else { //create individuals framebuffers for each output textures
                 for (const auto& outputTexture: outputTextures) {
-                    std::vector<std::vector<VkImageView>> attachments;
-                    attachments.resize(getLayer());
-
+                    std::vector<std::vector<VkImageView>> attachments(getLayer());
                     for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
                         attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + 1 /* single output */);
                         if (hasDepthAttachment()) {

@@ -75,7 +75,6 @@ namespace urchin {
 
             std::vector<VkClearValue> clearValues;
             std::vector<OutputTexture> outputTextures;
-            bool hasSingleActiveOutputTexture;
 
             VkFence commandBufferFence;
             std::array<VkSemaphore, MAX_SUBMIT_SEMAPHORES> submitSemaphores;
