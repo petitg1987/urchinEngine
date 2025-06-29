@@ -76,7 +76,7 @@ namespace urchin {
 
     void OffscreenRender::enableOnlyOutputTexture(const std::shared_ptr<Texture>& textureToEnable) {
         #ifdef URCHIN_DEBUG
-            bool hasOutputTexturesDisabled = std::ranges::count_if(outputTextures, [](const auto& outputTexture){return !outputTexture.enabled;});
+            bool hasOutputTexturesDisabled = std::ranges::any_of(outputTextures, [](const auto& outputTexture){return !outputTexture.enabled;});
             assert(!isInitialized() || hasOutputTexturesDisabled);
             for (size_t i = 0; i < outputTextures.size() - 1; ++i) {
                 assert(outputTextures[i].loadOperation == outputTextures[i + 1].loadOperation);
@@ -255,9 +255,9 @@ namespace urchin {
     void OffscreenRender::createFramebuffers() {
         if (couldHaveGraphicsProcessors()) {
             std::size_t framebufferIndex = 0;
-            bool allOutputTexturesEnabled = std::ranges::all_of(outputTextures, [](const auto& outputTexture){return outputTexture.enabled;});
+            bool hasOutputTexturesDisabled = std::ranges::any_of(outputTextures, [](const auto& outputTexture){return !outputTexture.enabled;});;
 
-            if (allOutputTexturesEnabled) {
+            if (!hasOutputTexturesDisabled) {
                 std::vector<std::vector<VkImageView>> attachments(getLayer());
                 for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
                     attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + outputTextures.size());
