@@ -185,7 +185,7 @@ namespace urchin {
             }
             attachments[layerIndex].emplace_back(swapChainImageView);
 
-            addFramebuffers(attachments);
+            addFramebuffers(0, attachments);
         }
     }
 

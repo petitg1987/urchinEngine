@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <cassert>
-#include <ranges>
 #include <libs/vkenum/vk_enum.h>
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
@@ -19,6 +18,7 @@ namespace urchin {
             depthAttachmentType(depthAttachmentType),
             renderPass(nullptr),
             renderPassCompatibilityId(0),
+            activeFramebufferIndex(0),
             commandPool(nullptr),
             copiersDirty(false),
             processorsDirty(false),
@@ -325,7 +325,7 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::addFramebuffers(const std::vector<std::vector<VkImageView>>& attachments) {
+    void RenderTarget::addFramebuffers(std::size_t framebufferIndex, const std::vector<std::vector<VkImageView>>& attachments) { //TODO fix error
         if (!attachments.empty()) {
             framebuffers.resize(framebuffers.size() + 1);
             std::size_t frameIndex = framebuffers.size() - 1;
@@ -350,8 +350,12 @@ namespace urchin {
                     throw std::runtime_error("Failed to create framebuffer with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
                 }
             }
-            framebufferDirty = true;
         }
+    }
+
+    void RenderTarget::activateFramebuffer(std::size_t framebufferIndexToActivate) {
+        activeFramebufferIndex = framebufferIndexToActivate;
+        framebufferDirty = true;
     }
 
     void RenderTarget::destroyFramebuffers() {
@@ -361,17 +365,6 @@ namespace urchin {
             }
         }
         framebuffers.clear();
-
-        for (const auto& cachedFramebuffer: std::views::values(cachedFramebuffers)) {
-            for (const auto& framebufferLayers : cachedFramebuffer) {
-                for (const auto& framebuffer : framebufferLayers) {
-                    vkDestroyFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), framebuffer, nullptr);
-                }
-            }
-        }
-        cachedFramebuffers.clear();
-
-        framebufferDirty = true; //TODO review !
     }
 
     void RenderTarget::createCommandPool() {
@@ -513,12 +506,12 @@ namespace urchin {
             for (const TextureCopier& textureCopier : preRenderTextureCopier) {
                 textureCopier.executeCopy(commandBuffers[frameIndex]);
             }
-            for (std::size_t layerIndex = 0; layerIndex < framebuffers[frameIndex].size(); ++layerIndex) {
+            for (std::size_t layerIndex = 0; layerIndex < framebuffers[activeFramebufferIndex][frameIndex].size(); ++layerIndex) {
                 if (hasGraphicsProcessors()) {
                     VkRenderPassBeginInfo renderPassInfo{};
                     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
                     renderPassInfo.renderPass = renderPass;
-                    renderPassInfo.framebuffer = framebuffers[frameIndex][layerIndex];
+                    renderPassInfo.framebuffer = framebuffers[activeFramebufferIndex][frameIndex][layerIndex];
                     renderPassInfo.renderArea.offset = {.x=0, .y=0};
                     renderPassInfo.renderArea.extent = {.width=getWidth(), .height=getHeight()};
                     renderPassInfo.clearValueCount = (uint32_t)clearValues.size();

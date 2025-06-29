@@ -89,11 +89,17 @@ namespace urchin {
             }
         #endif
 
+        std::size_t framebufferIndex = 0;
         for (OutputTexture& outputTexture : outputTextures) {
-            outputTexture.enabled = textureToEnable.get() == outputTexture.texture.get();
+            if (textureToEnable.get() == outputTexture.texture.get()) {
+                outputTexture.enabled = true;
+                activateFramebuffer(framebufferIndex);
+            } else {
+                outputTexture.enabled = false;
+            }
+            framebufferIndex++;
         }
-        hasSingleActiveOutputTexture = true;
-        //TODO refresh command buffer ! +> framebuffer dirty ?
+        hasSingleActiveOutputTexture = true; //TODO variable usefull ?
     }
 
     void OffscreenRender::resetOutput() {
@@ -249,26 +255,41 @@ namespace urchin {
         }
     }
 
-    void OffscreenRender::createFramebuffers() { //TODO or switch between framebuffer !
+    void OffscreenRender::createFramebuffers() {
         if (couldHaveGraphicsProcessors()) {
-            std::vector<std::vector<VkImageView>> attachments;
-            attachments.resize(getLayer());
+            if (!hasSingleActiveOutputTexture) {
+                std::vector<std::vector<VkImageView>> attachments;
+                attachments.resize(getLayer());
 
-            for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
-                attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + outputTextures.size());
-                if (hasDepthAttachment()) {
-                    std::vector<VkImageView> depthImageView = getDepthTexture()->getWritableImageViews();
-                    attachments[layerIndex].emplace_back(depthImageView.at(layerIndex));
-                }
-                for (const auto& outputTexture: outputTextures) {
-                    if (outputTexture.enabled) {
-                        std::vector<VkImageView> outputTextureImageViews = outputTexture.texture->getWritableImageViews();
-                        attachments[layerIndex].emplace_back(outputTextureImageViews.at(layerIndex));
+                for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
+                    attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + outputTextures.size());
+                    if (hasDepthAttachment()) {
+                        attachments[layerIndex].emplace_back(getDepthTexture()->getWritableImageViews().at(layerIndex));
+                    }
+                    for (const auto& outputTexture: outputTextures) {
+                        attachments[layerIndex].emplace_back(outputTexture.texture->getWritableImageViews().at(layerIndex));
                     }
                 }
-            }
 
-            addFramebuffers(attachments);
+                addFramebuffers(0, attachments);
+            } else {
+                std::size_t framebufferIndex = 0;
+                for (const auto& outputTexture: outputTextures) {
+                    std::vector<std::vector<VkImageView>> attachments;
+                    attachments.resize(getLayer());
+
+                    for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
+                        attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + 1 /* single output */);
+                        if (hasDepthAttachment()) {
+                            attachments[layerIndex].emplace_back(getDepthTexture()->getWritableImageViews().at(layerIndex));
+                        }
+                        attachments[layerIndex].emplace_back(outputTexture.texture->getWritableImageViews().at(layerIndex));
+                    }
+
+                    addFramebuffers(framebufferIndex, attachments);
+                    framebufferIndex++;
+                }
+            }
         }
     }
 

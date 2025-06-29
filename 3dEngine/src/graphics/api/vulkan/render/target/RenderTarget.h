@@ -75,7 +75,8 @@ namespace urchin {
             void destroyRenderPass();
             void createDepthResources();
             void destroyDepthResources();
-            void addFramebuffers(const std::vector<std::vector<VkImageView>>&);
+            void addFramebuffers(std::size_t, const std::vector<std::vector<VkImageView>>&);
+            void activateFramebuffer(std::size_t);
             void destroyFramebuffers();
             void createCommandPool();
             void createCommandBuffers();
@@ -103,8 +104,8 @@ namespace urchin {
             VkRenderPass renderPass;
             std::size_t renderPassCompatibilityId;
             std::shared_ptr<Texture> depthTexture;
-            std::vector<std::vector<VkFramebuffer>> framebuffers; //frameBuffers[frameIndex][layerIndex]
-            std::map<unsigned int, std::vector<std::vector<VkFramebuffer>>> cachedFramebuffers;
+            std::map<std::size_t, std::vector<std::vector<VkFramebuffer>>> framebuffers; //frameBuffers[activeFramebufferIndex][frameIndex][layerIndex]
+            std::size_t activeFramebufferIndex;
             VkCommandPool commandPool;
             std::vector<VkCommandBuffer> commandBuffers;
 
