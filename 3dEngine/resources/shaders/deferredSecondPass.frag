@@ -15,7 +15,7 @@ layout(constant_id = 7) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
 layout(std140, set = 0, binding = 0) uniform PositioningData {
-    mat4 mInverseViewProjection;
+    mat4 mInverseProjectionView;
     vec3 viewPosition;
 } positioningData;
 layout(std140, set = 0, binding = 1) uniform SceneInfo {
@@ -71,7 +71,7 @@ vec4 fetchWorldPosition(vec2 texCoord, float depthValue) {
         depthValue,
         1.0
     );
-    vec4 worldPosition = positioningData.mInverseViewProjection * texPosition;
+    vec4 worldPosition = positioningData.mInverseProjectionView * texPosition;
     worldPosition /= worldPosition.w;
     return worldPosition;
 }

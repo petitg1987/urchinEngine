@@ -2,7 +2,8 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(std140, set = 0, binding = 0) uniform PositioningData {
-    mat4 mInverseViewProjection;
+    mat4 mInverseProjectionView;
+    mat4 mPreviousProjectionView;
 } positioningData;
 layout(binding = 1) uniform sampler2D depthTex;
 
@@ -15,8 +16,13 @@ void main() {
 
     vec4 currentPosNdc = vec4(texCoordinates.s * 2.0 - 1.0, texCoordinates.t * 2.0 - 1.0, depthValue, 1.0);
 
-    vec4 worldPosition = positioningData.mInverseViewProjection * currentPosNdc;
+    vec4 worldPosition = positioningData.mInverseProjectionView * currentPosNdc;
     worldPosition /= worldPosition.w;
+    vec4 previousPosNdc = positioningData.mPreviousProjectionView * worldPosition;
+    previousPosNdc.xyz /= previousPosNdc.w;
 
-    fragColor = vec2(0.0, 0.0);
+    vec2 velocity = currentPosNdc.xy - previousPosNdc.xy;
+    //TODO apply jitter
+
+    fragColor = velocity;
 }

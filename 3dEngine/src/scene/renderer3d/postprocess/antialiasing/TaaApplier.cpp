@@ -194,6 +194,7 @@ namespace urchin {
 
     void TaaApplier::generateVelocityTexture(uint32_t frameIndex, const Camera& camera) {
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
+        positioningData.previousProjectionViewMatrix = Matrix4<float>(); //TODO impl
         velocityRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
 
         unsigned int numDependenciesToVelocityTexture = 1;

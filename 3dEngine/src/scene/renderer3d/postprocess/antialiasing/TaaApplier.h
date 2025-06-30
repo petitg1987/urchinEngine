@@ -59,6 +59,7 @@ namespace urchin {
             unsigned int frameCount;
             struct PositioningData {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;
+                alignas(16) Matrix4<float> previousProjectionViewMatrix;
             } positioningData;
 
             //display - velocity
