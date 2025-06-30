@@ -327,29 +327,29 @@ namespace urchin {
     }
 
     void RenderTarget::addFramebuffers(std::size_t framebufferIndex, const std::vector<std::vector<VkImageView>>& attachments) {
-        if (!attachments.empty()) {
-            framebuffers[framebufferIndex].resize(framebuffers[framebufferIndex].size() + 1);
-            std::size_t frameIndex = framebuffers[framebufferIndex].size() - 1;
+        assert(getLayer() == attachments.size());
+        framebuffers[framebufferIndex].resize(framebuffers[framebufferIndex].size() + 1);
 
-            framebuffers[framebufferIndex][frameIndex].resize(getLayer(), nullptr);
-            for (std::size_t layerIndex = 0; layerIndex < attachments.size(); ++layerIndex) {
-                if (attachments[layerIndex].empty()) {
-                    continue;
-                }
+        std::size_t frameIndex = framebuffers[framebufferIndex].size() - 1;
+        framebuffers[framebufferIndex][frameIndex].resize(getLayer());
 
-                VkFramebufferCreateInfo framebufferInfo{};
-                framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-                framebufferInfo.renderPass = renderPass; //render pass must have the same number and type of attachments as the framebufferInfo
-                framebufferInfo.attachmentCount = (uint32_t) attachments[layerIndex].size();
-                framebufferInfo.pAttachments = attachments[layerIndex].data();
-                framebufferInfo.width = getWidth();
-                framebufferInfo.height = getHeight();
-                framebufferInfo.layers = 1;
+        for (std::size_t layerIndex = 0; layerIndex < attachments.size(); ++layerIndex) {
+            if (attachments[layerIndex].empty()) {
+                continue;
+            }
 
-                VkResult result = vkCreateFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebufferIndex][frameIndex][layerIndex]);
-                if (result != VK_SUCCESS) {
-                    throw std::runtime_error("Failed to create framebuffer with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
-                }
+            VkFramebufferCreateInfo framebufferInfo{};
+            framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+            framebufferInfo.renderPass = renderPass; //render pass must have the same number and type of attachments as the framebufferInfo
+            framebufferInfo.attachmentCount = (uint32_t) attachments[layerIndex].size();
+            framebufferInfo.pAttachments = attachments[layerIndex].data();
+            framebufferInfo.width = getWidth();
+            framebufferInfo.height = getHeight();
+            framebufferInfo.layers = 1;
+
+            VkResult result = vkCreateFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebufferIndex][frameIndex][layerIndex]);
+            if (result != VK_SUCCESS) {
+                throw std::runtime_error("Failed to create framebuffer with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
             }
         }
     }
@@ -509,7 +509,7 @@ namespace urchin {
             for (const TextureCopier& textureCopier : preRenderTextureCopier) {
                 textureCopier.executeCopy(commandBuffers[frameIndex]);
             }
-            for (std::size_t layerIndex = 0; layerIndex < framebuffers[activeFramebufferIndex][frameIndex].size(); ++layerIndex) {
+            for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
                 if (hasGraphicsProcessors()) {
                     VkRenderPassBeginInfo renderPassInfo{};
                     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

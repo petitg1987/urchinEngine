@@ -255,7 +255,7 @@ namespace urchin {
     void OffscreenRender::createFramebuffers() {
         if (couldHaveGraphicsProcessors()) {
             std::size_t framebufferIndex = 0;
-            bool hasOutputTexturesDisabled = std::ranges::any_of(outputTextures, [](const auto& outputTexture){return !outputTexture.enabled;});;
+            bool hasOutputTexturesDisabled = std::ranges::any_of(outputTextures, [](const auto& outputTexture){return !outputTexture.enabled;});
 
             if (!hasOutputTexturesDisabled) {
                 std::vector<std::vector<VkImageView>> attachments(getLayer());
