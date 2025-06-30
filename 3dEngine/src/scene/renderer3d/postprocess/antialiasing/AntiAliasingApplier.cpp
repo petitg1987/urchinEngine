@@ -17,9 +17,13 @@ namespace urchin {
         }
     }
 
-    void AntiAliasingApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputTexture) {
-        taaApplier.refreshInputTexture(inputTexture);
+    void AntiAliasingApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& inputTexture) {
+        taaApplier.refreshInputTexture(depthTexture, inputTexture);
         fxaaApplier.refreshInputTexture(inputTexture);
+    }
+
+    bool AntiAliasingApplier::useDepthTexture() const {
+        return config.useTaa;
     }
 
     const std::shared_ptr<Texture>& AntiAliasingApplier::getOutputTexture() const {

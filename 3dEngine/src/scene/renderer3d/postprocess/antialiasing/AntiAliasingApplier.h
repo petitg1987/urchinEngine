@@ -21,7 +21,8 @@ namespace urchin {
 
             void updateCamera(Camera&);
 
-            void refreshInputTexture(const std::shared_ptr<Texture>&);
+            void refreshInputTexture(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
+            bool useDepthTexture() const;
             const std::shared_ptr<Texture>& getOutputTexture() const;
 
             void updateConfig(const Config&);

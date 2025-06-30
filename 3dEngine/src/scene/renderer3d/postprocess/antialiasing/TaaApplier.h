@@ -17,7 +17,7 @@ namespace urchin {
 
             void applyCameraJitter(Camera& camera);
 
-            void refreshInputTexture(const std::shared_ptr<Texture>&);
+            void refreshInputTexture(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getOutputTexture() const;
 
             void updateQuality(AntiAliasingQuality);
@@ -38,7 +38,7 @@ namespace urchin {
             void createOrUpdateVelocityRenderer();
             void createOrUpdateResolveRenderer();
 
-            static constexpr uint32_t INPUT_TEX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t SCENE_TEX_UNIFORM_BINDING = 0;
             static constexpr uint32_t HISTORY_TEX_UNIFORM_BINDING = 1;
 
             //properties
@@ -47,7 +47,9 @@ namespace urchin {
             AntiAliasingQuality quality;
 
             //data
-            bool copyInputTexToHistory;
+            std::shared_ptr<Texture> depthTexture;
+            std::shared_ptr<Texture> sceneTexture;
+            bool copySceneTexToHistory;
             unsigned int frameCount;
 
             //display - velocity
@@ -55,7 +57,6 @@ namespace urchin {
             //display - resolve
             std::unique_ptr<OffscreenRender> velocityRenderTarget;
             std::unique_ptr<OffscreenRender> resolveRenderTarget;
-            std::shared_ptr<Texture> inputTexture;
             std::array<std::shared_ptr<Texture>, 2> outputOrHistoryTextures;
             std::unique_ptr<Shader> taaResolveShader;
             std::unique_ptr<GenericRenderer> resolveRenderer;

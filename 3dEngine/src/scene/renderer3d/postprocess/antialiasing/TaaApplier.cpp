@@ -9,7 +9,7 @@ namespace urchin {
             isTestMode(isTestMode),
             isEnabled(false),
             quality(AntiAliasingQuality::HIGH),
-            copyInputTexToHistory(true),
+            copySceneTexToHistory(true),
             frameCount(0) {
 
     }
@@ -38,14 +38,15 @@ namespace urchin {
         constexpr unsigned int JITTER_PERIOD_UPDATE = 4; //update the jitter values only on every 'x' frame
 
         std::size_t sequenceIndex = (frameCount % (HALTON_SEQUENCE_X.size() * JITTER_PERIOD_UPDATE)) / JITTER_PERIOD_UPDATE;
-        float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)inputTexture->getWidth();
-        float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)inputTexture->getHeight();
+        float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)sceneTexture->getWidth();
+        float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)sceneTexture->getHeight();
         camera.applyJitter(valueX, valueY);
     }
 
-    void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputTexture) {
-        if (inputTexture.get() != this->inputTexture.get()) {
-            this->inputTexture = inputTexture;
+    void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& sceneTexture) {
+        if (depthTexture.get() != this->depthTexture.get() || sceneTexture.get() != this->sceneTexture.get()) {
+            this->depthTexture = depthTexture;
+            this->sceneTexture = sceneTexture;
             createOrUpdateRenderData();
         }
     }
@@ -74,9 +75,9 @@ namespace urchin {
     void TaaApplier::createOrUpdateResolveRenderData() {
         freeResolveRenderData();
 
-        outputOrHistoryTextures[0] = Texture::build("aa: output or history 1", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputOrHistoryTextures[0] = Texture::build("aa: output or history 1", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         outputOrHistoryTextures[0]->enableTextureWriting(OutputUsage::GRAPHICS);
-        outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         outputOrHistoryTextures[1]->enableTextureWriting(OutputUsage::GRAPHICS);
 
         resolveRenderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
@@ -86,7 +87,7 @@ namespace urchin {
         resolveRenderTarget->initialize();
 
         createOrUpdateResolveRenderer();
-        copyInputTexToHistory = true;
+        copySceneTexToHistory = true;
     }
 
     void TaaApplier::freeRenderData() {
@@ -129,7 +130,7 @@ namespace urchin {
         resolveRenderer = GenericRendererBuilder::create("anti aliasing", *resolveRenderTarget, *taaResolveShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(INPUT_TEX_UNIFORM_BINDING, TextureReader::build(inputTexture, TextureParam::buildLinear()))
+                ->addUniformTextureReader(SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildLinear()))
                 ->addUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()))
                 ->build();
     }
@@ -144,8 +145,8 @@ namespace urchin {
     }
 
     void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) {
-        if (copyInputTexToHistory) {
-            resolveRenderTarget->addPreRenderTextureCopier(TextureCopier(*inputTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
+        if (copySceneTexToHistory) {
+            resolveRenderTarget->addPreRenderTextureCopier(TextureCopier(*sceneTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
         }
 
         resolveRenderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
@@ -153,9 +154,9 @@ namespace urchin {
 
         resolveRenderTarget->render(frameIndex, numDependenciesToAATexture);
 
-        if (copyInputTexToHistory) {
+        if (copySceneTexToHistory) {
             resolveRenderTarget->removeAllPreRenderTextureCopiers();
-            copyInputTexToHistory = false;
+            copySceneTexToHistory = false;
         }
     }
 

@@ -471,7 +471,7 @@ namespace urchin {
 
         std::shared_ptr<Texture> currentSceneTexture = illuminatedTexture;
         if (isAntiAliasingActivated) {
-            antiAliasingApplier.refreshInputTexture(currentSceneTexture);
+            antiAliasingApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
             antiAliasingApplier.updateCamera(*camera);
             currentSceneTexture = antiAliasingApplier.getOutputTexture();
         }
@@ -560,7 +560,7 @@ namespace urchin {
         }
     }
 
-    unsigned int Renderer3d::computeDependenciesToFirstPassOutput() const {
+    unsigned int Renderer3d::computeDependenciesToFirstPassOutput() const { //TODO review for TAA
         unsigned int numDependenciesToFirstPassOutput = 1; //second pass
         if (sceneInfo.isAmbientOcclusionActivated) {
             if (ambientOcclusionManager.getConfig().isBlurActivated) {
@@ -568,6 +568,9 @@ namespace urchin {
             } else {
                 numDependenciesToFirstPassOutput += 1; //AO texture
             }
+        }
+        if (isAntiAliasingActivated && antiAliasingApplier.useDepthTexture()) {
+            numDependenciesToFirstPassOutput += 1; //velocity texture
         }
         if (isReflectionActivated) {
             numDependenciesToFirstPassOutput += 3; //reflection color & reflection blur (vertical & horizontal)
