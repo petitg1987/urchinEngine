@@ -41,9 +41,6 @@ namespace urchin {
         float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)sceneWidth;
         float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)sceneHeight;
         camera.applyJitter(valueX, valueY);
-
-        positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
-        positioningData.previousProjectionViewMatrix = camera.getProjectionViewMatrix();
     }
 
     void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& sceneTexture) {
@@ -74,6 +71,7 @@ namespace urchin {
     void TaaApplier::createOrUpdateVelocityRenderData() {
         freeVelocityRenderData();
 
+        //A pixel with coordinates (x, y) and value (0.0010416, 0) means that this pixel was previously locate in coordinates (0.0010416 * textureWidth/2, 0)
         velocityTexture = Texture::build("aa: velocity", sceneTexture->getWidth(), sceneTexture->getHeight(), TextureFormat::RG_16_FLOAT);
 
         velocityRenderTarget = std::make_unique<OffscreenRender>("anti aliasing - velocity", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
