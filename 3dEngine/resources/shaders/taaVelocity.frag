@@ -13,19 +13,16 @@ layout(location = 0) out vec2 fragColor;
 
 void main() {
     float depthValue = texture(depthTex, texCoordinates).r;
-
     vec4 currentPosNdc = vec4(texCoordinates.s * 2.0 - 1.0, texCoordinates.t * 2.0 - 1.0, depthValue, 1.0);
 
     vec4 worldPosition = positioningData.mInverseProjectionView * currentPosNdc;
-    worldPosition /= worldPosition.w;
     vec4 previousPosNdc = positioningData.mPreviousProjectionView * worldPosition;
     previousPosNdc.xyz /= previousPosNdc.w;
 
-    //NDC are from -1.0 to 1.0 (distance: 2.0).
-    //However, we want a velocity of x=1.0 represents a full move from left to right of the screen.
-    //Therefore, we multiply by 0.5.
-    vec2 velocity = (currentPosNdc.xy - previousPosNdc.xy) * 0.5;
-    //TODO apply jitter ?
+    vec2 velocity = currentPosNdc.xy - previousPosNdc.xy;
 
-    fragColor = velocity;
+    //NDC values are from -1.0 to 1.0.
+    //However, we want a velocity of x=1.0 represents a full move from the left to the right of the screen (similar to texCoordinates).
+    //Therefore, we multiply by 0.5.
+    fragColor = velocity * 0.5;
 }
