@@ -29,10 +29,14 @@ namespace urchin {
             int getHistoryTextureIndex() const;
 
             void createOrUpdateRenderData();
+            void createOrUpdateVelocityRenderData();
+            void createOrUpdateResolveRenderData();
             void freeRenderData();
+            void freeVelocityRenderData();
+            void freeResolveRenderData();
 
-            void createOrUpdateRenderer();
-            void createOrUpdateFxaaShader();
+            void createOrUpdateVelocityRenderer();
+            void createOrUpdateResolveRenderer();
 
             static constexpr uint32_t INPUT_TEX_UNIFORM_BINDING = 0;
             static constexpr uint32_t HISTORY_TEX_UNIFORM_BINDING = 1;
@@ -46,7 +50,10 @@ namespace urchin {
             bool copyInputTexToHistory;
             unsigned int frameCount;
 
-            //display
+            //display - velocity
+
+            //display - resolve
+            std::unique_ptr<OffscreenRender> velocityRenderTarget;
             std::unique_ptr<OffscreenRender> resolveRenderTarget;
             std::shared_ptr<Texture> inputTexture;
             std::array<std::shared_ptr<Texture>, 2> outputOrHistoryTextures;

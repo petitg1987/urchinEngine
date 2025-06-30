@@ -63,7 +63,16 @@ namespace urchin {
     }
 
     void TaaApplier::createOrUpdateRenderData() {
-        freeRenderData();
+        createOrUpdateVelocityRenderData();
+        createOrUpdateResolveRenderData();
+    }
+
+    void TaaApplier::createOrUpdateVelocityRenderData() {
+        //TODO impl
+    }
+
+    void TaaApplier::createOrUpdateResolveRenderData() {
+        freeResolveRenderData();
 
         outputOrHistoryTextures[0] = Texture::build("aa: output or history 1", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         outputOrHistoryTextures[0]->enableTextureWriting(OutputUsage::GRAPHICS);
@@ -76,11 +85,20 @@ namespace urchin {
         resolveRenderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
         resolveRenderTarget->initialize();
 
-        createOrUpdateRenderer();
+        createOrUpdateResolveRenderer();
         copyInputTexToHistory = true;
     }
 
     void TaaApplier::freeRenderData() {
+        freeVelocityRenderData();
+        freeResolveRenderData();
+    }
+
+    void TaaApplier::freeVelocityRenderData() {
+        //TODO impl
+    }
+
+    void TaaApplier::freeResolveRenderData() {
         resolveRenderer.reset();
         taaResolveShader.reset();
 
@@ -93,8 +111,12 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::createOrUpdateRenderer() {
-        createOrUpdateFxaaShader();
+    void TaaApplier::createOrUpdateVelocityRenderer() {
+        //TODO impl
+    }
+
+    void TaaApplier::createOrUpdateResolveRenderer() {
+        taaResolveShader = ShaderBuilder::createShader("taaResolve.vert.spv", "taaResolve.frag.spv", resolveRenderTarget->isTestMode());
 
         std::vector vertexCoord = {
             Point2(-1.0f, -1.0f), Point2(1.0f, -1.0f), Point2(1.0f, 1.0f),
@@ -112,15 +134,12 @@ namespace urchin {
                 ->build();
     }
 
-    void TaaApplier::createOrUpdateFxaaShader() {
-        taaResolveShader = ShaderBuilder::createShader("taaResolve.vert.spv", "taaResolve.frag.spv", resolveRenderTarget->isTestMode());
-    }
-
     void TaaApplier::updateQuality(AntiAliasingQuality quality) {
         this->quality = quality;
 
         if (isEnabled) {
-            createOrUpdateRenderer();
+            createOrUpdateVelocityRenderer();
+            createOrUpdateResolveRenderer();
         }
     }
 
