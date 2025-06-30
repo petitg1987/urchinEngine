@@ -337,7 +337,7 @@ namespace urchin {
 
         if (isAntiAliasingActivated) {
             unsigned int numDependenciesToAATexture = 2; //bloom pre-filter & bloom combine
-            antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
+            antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture, *camera);
         }
 
         unsigned int numDependenciesToBloomCombineTexture = isReflectionActivated ? 2 /* reflection color & reflection combine */ : 1 /* transparent */;
@@ -471,8 +471,8 @@ namespace urchin {
 
         std::shared_ptr<Texture> currentSceneTexture = illuminatedTexture;
         if (isAntiAliasingActivated) {
+            antiAliasingApplier.updateCamera(*camera, deferredFirstPassRenderTarget->getDepthTexture()->getWidth(), deferredFirstPassRenderTarget->getDepthTexture()->getHeight());
             antiAliasingApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
-            antiAliasingApplier.updateCamera(*camera);
             currentSceneTexture = antiAliasingApplier.getOutputTexture();
         }
 

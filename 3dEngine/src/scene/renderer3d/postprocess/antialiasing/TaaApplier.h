@@ -15,14 +15,14 @@ namespace urchin {
 
             void enableApplier(bool);
 
-            void applyCameraJitter(Camera& camera);
+            void updateCamera(Camera&, unsigned int, unsigned int);
 
             void refreshInputTexture(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getOutputTexture() const;
 
             void updateQuality(AntiAliasingQuality);
 
-            void applyAntiAliasing(uint32_t, unsigned int);
+            void applyAntiAliasing(uint32_t, unsigned int, const Camera&);
 
         private:
             int getOutputTextureIndex() const;
@@ -38,9 +38,10 @@ namespace urchin {
             void createOrUpdateVelocityRenderer();
             void createOrUpdateResolveRenderer();
 
-            void generateVelocityTexture(uint32_t) const;
+            void generateVelocityTexture(uint32_t, const Camera&);
 
-            static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
+            static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 1;
 
             static constexpr uint32_t SCENE_TEX_UNIFORM_BINDING = 0;
             static constexpr uint32_t VELOCITY_TEX_UNIFORM_BINDING = 1;
@@ -56,6 +57,9 @@ namespace urchin {
             std::shared_ptr<Texture> sceneTexture;
             bool copySceneTexToHistory;
             unsigned int frameCount;
+            struct PositioningData {
+                alignas(16) Matrix4<float> inverseProjectionViewMatrix;
+            } positioningData;
 
             //display - velocity
             std::shared_ptr<Texture> velocityTexture;

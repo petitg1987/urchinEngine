@@ -28,7 +28,7 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::applyCameraJitter(Camera& camera) {
+    void TaaApplier::updateCamera(Camera& camera, unsigned int sceneWidth, unsigned int sceneHeight) {
         frameCount++;
 
         constexpr std::array HALTON_SEQUENCE_X = {0.500000f, 0.250000f, 0.750000f, 0.125000f, 0.625000f, 0.375000f, 0.875000f, 0.062500f,
@@ -38,8 +38,8 @@ namespace urchin {
         constexpr unsigned int JITTER_PERIOD_UPDATE = 4; //update the jitter values only on every 'x' frame
 
         std::size_t sequenceIndex = (frameCount % (HALTON_SEQUENCE_X.size() * JITTER_PERIOD_UPDATE)) / JITTER_PERIOD_UPDATE;
-        float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)sceneTexture->getWidth();
-        float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)sceneTexture->getHeight();
+        float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)sceneWidth;
+        float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)sceneHeight;
         camera.applyJitter(valueX, valueY);
     }
 
@@ -140,6 +140,7 @@ namespace urchin {
         velocityRenderer = GenericRendererBuilder::create("anti aliasing: velocity", *velocityRenderTarget, *taaVelocityShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
+                ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->build();
     }
@@ -173,8 +174,8 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) {
-        generateVelocityTexture(frameIndex);
+    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture, const Camera& camera) {
+        generateVelocityTexture(frameIndex, camera);
 
         if (copySceneTexToHistory) {
             resolveRenderTarget->addPreRenderTextureCopier(TextureCopier(*sceneTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
@@ -191,7 +192,10 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::generateVelocityTexture(uint32_t frameIndex) const {
+    void TaaApplier::generateVelocityTexture(uint32_t frameIndex, const Camera& camera) {
+        positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
+        velocityRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
+
         unsigned int numDependenciesToVelocityTexture = 1;
         velocityRenderTarget->render(frameIndex, numDependenciesToVelocityTexture);
     }

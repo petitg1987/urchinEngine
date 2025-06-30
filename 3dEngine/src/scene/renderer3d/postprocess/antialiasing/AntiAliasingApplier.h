@@ -19,7 +19,7 @@ namespace urchin {
 
             AntiAliasingApplier(const Config&, bool);
 
-            void updateCamera(Camera&);
+            void updateCamera(Camera&, unsigned int, unsigned int);
 
             void refreshInputTexture(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             bool useDepthTexture() const;
@@ -28,7 +28,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            void applyAntiAliasing(uint32_t, unsigned int);
+            void applyAntiAliasing(uint32_t, unsigned int, const Camera&);
 
         private:
             //properties

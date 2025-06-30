@@ -11,9 +11,9 @@ namespace urchin {
 
     }
 
-    void AntiAliasingApplier::updateCamera(Camera& camera) {
+    void AntiAliasingApplier::updateCamera(Camera& camera, unsigned int sceneWidth, unsigned int sceneHeight) {
         if (config.useTaa) {
-            taaApplier.applyCameraJitter(camera);
+            taaApplier.updateCamera(camera, sceneWidth, sceneHeight);
         }
     }
 
@@ -57,11 +57,11 @@ namespace urchin {
         return config;
     }
 
-    void AntiAliasingApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) {
+    void AntiAliasingApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "applyAA");
 
         if (config.useTaa) {
-            taaApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
+            taaApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture, camera);
         } else {
             fxaaApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
