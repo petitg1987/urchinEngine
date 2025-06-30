@@ -41,6 +41,9 @@ namespace urchin {
         float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)sceneWidth;
         float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)sceneHeight;
         camera.applyJitter(valueX, valueY);
+
+        positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
+        positioningData.previousProjectionViewMatrix = camera.getProjectionViewMatrix();
     }
 
     void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& sceneTexture) {
@@ -194,8 +197,8 @@ namespace urchin {
 
     void TaaApplier::generateVelocityTexture(uint32_t frameIndex, const Camera& camera) {
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
-        positioningData.previousProjectionViewMatrix = Matrix4<float>(); //TODO impl
         velocityRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
+        positioningData.previousProjectionViewMatrix = camera.getProjectionViewMatrix();
 
         unsigned int numDependenciesToVelocityTexture = 1;
         velocityRenderTarget->render(frameIndex, numDependenciesToVelocityTexture);
