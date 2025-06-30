@@ -10,6 +10,7 @@ namespace urchin {
         GRAYSCALE_32_FLOAT,
 
         RG_8_INT,
+        RG_16_FLOAT,
         RG_32_FLOAT,
 
         B10G11R11_FLOAT,
