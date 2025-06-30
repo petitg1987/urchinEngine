@@ -21,8 +21,11 @@ void main() {
     vec4 previousPosNdc = positioningData.mPreviousProjectionView * worldPosition;
     previousPosNdc.xyz /= previousPosNdc.w;
 
-    vec2 velocity = currentPosNdc.xy - previousPosNdc.xy;
-    //TODO apply jitter
+    //NDC are from -1.0 to 1.0 (distance: 2.0).
+    //However, we want a velocity of x=1.0 represents a full move from left to right of the screen.
+    //Therefore, we multiply by 0.5.
+    vec2 velocity = (currentPosNdc.xy - previousPosNdc.xy) * 0.5;
+    //TODO apply jitter ?
 
     fragColor = velocity;
 }
