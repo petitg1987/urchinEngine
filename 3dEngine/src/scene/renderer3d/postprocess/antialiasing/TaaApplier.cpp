@@ -71,9 +71,9 @@ namespace urchin {
     void TaaApplier::createOrUpdateVelocityRenderData() {
         freeVelocityRenderData();
 
-        velocityTexture = Texture::build("velocity", sceneTexture->getWidth(), sceneTexture->getHeight(), TextureFormat::RG_16_FLOAT);
+        velocityTexture = Texture::build("aa: velocity", sceneTexture->getWidth(), sceneTexture->getHeight(), TextureFormat::RG_16_FLOAT);
 
-        velocityRenderTarget = std::make_unique<OffscreenRender>("velocity", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
+        velocityRenderTarget = std::make_unique<OffscreenRender>("anti aliasing - velocity", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         velocityRenderTarget->addOutputTexture(velocityTexture);
         velocityRenderTarget->initialize();
 
@@ -88,7 +88,7 @@ namespace urchin {
         outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         outputOrHistoryTextures[1]->enableTextureWriting(OutputUsage::GRAPHICS);
 
-        resolveRenderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
+        resolveRenderTarget = std::make_unique<OffscreenRender>("anti aliasing - resolve", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         resolveRenderTarget->addOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
         resolveRenderTarget->addOutputTexture(outputOrHistoryTextures[getHistoryTextureIndex()]);
         resolveRenderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
@@ -137,7 +137,7 @@ namespace urchin {
             Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
             Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
-        velocityRenderer = GenericRendererBuilder::create("velocity", *velocityRenderTarget, *taaVelocityShader, ShapeType::TRIANGLE)
+        velocityRenderer = GenericRendererBuilder::create("anti aliasing: velocity", *velocityRenderTarget, *taaVelocityShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
@@ -155,7 +155,7 @@ namespace urchin {
             Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
             Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
-        resolveRenderer = GenericRendererBuilder::create("anti aliasing", *resolveRenderTarget, *taaResolveShader, ShapeType::TRIANGLE)
+        resolveRenderer = GenericRendererBuilder::create("anti aliasing: resolve", *resolveRenderTarget, *taaResolveShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
