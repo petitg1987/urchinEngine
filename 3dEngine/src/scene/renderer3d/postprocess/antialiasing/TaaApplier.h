@@ -38,8 +38,13 @@ namespace urchin {
             void createOrUpdateVelocityRenderer();
             void createOrUpdateResolveRenderer();
 
+            void generateVelocityTexture(uint32_t) const;
+
+            static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 0;
+
             static constexpr uint32_t SCENE_TEX_UNIFORM_BINDING = 0;
-            static constexpr uint32_t HISTORY_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t VELOCITY_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t HISTORY_TEX_UNIFORM_BINDING = 2;
 
             //properties
             bool isTestMode;
@@ -53,11 +58,14 @@ namespace urchin {
             unsigned int frameCount;
 
             //display - velocity
+            std::shared_ptr<Texture> velocityTexture;
+            std::unique_ptr<OffscreenRender> velocityRenderTarget;
+            std::unique_ptr<Shader> taaVelocityShader;
+            std::unique_ptr<GenericRenderer> velocityRenderer;
 
             //display - resolve
-            std::unique_ptr<OffscreenRender> velocityRenderTarget;
-            std::unique_ptr<OffscreenRender> resolveRenderTarget;
             std::array<std::shared_ptr<Texture>, 2> outputOrHistoryTextures;
+            std::unique_ptr<OffscreenRender> resolveRenderTarget;
             std::unique_ptr<Shader> taaResolveShader;
             std::unique_ptr<GenericRenderer> resolveRenderer;
     };

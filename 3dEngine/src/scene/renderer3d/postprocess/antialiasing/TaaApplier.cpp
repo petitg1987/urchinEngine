@@ -69,7 +69,15 @@ namespace urchin {
     }
 
     void TaaApplier::createOrUpdateVelocityRenderData() {
-        //TODO impl
+        freeVelocityRenderData();
+
+        velocityTexture = Texture::build("velocity", sceneTexture->getWidth(), sceneTexture->getHeight(), TextureFormat::RG_16_FLOAT);
+
+        velocityRenderTarget = std::make_unique<OffscreenRender>("velocity", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
+        velocityRenderTarget->addOutputTexture(velocityTexture);
+        velocityRenderTarget->initialize();
+
+        createOrUpdateVelocityRenderer();
     }
 
     void TaaApplier::createOrUpdateResolveRenderData() {
@@ -96,7 +104,13 @@ namespace urchin {
     }
 
     void TaaApplier::freeVelocityRenderData() {
-        //TODO impl
+        velocityRenderer.reset();
+        taaVelocityShader.reset();
+
+        if (velocityRenderTarget) {
+            velocityRenderTarget->cleanup();
+            velocityRenderTarget.reset();
+        }
     }
 
     void TaaApplier::freeResolveRenderData() {
@@ -113,7 +127,21 @@ namespace urchin {
     }
 
     void TaaApplier::createOrUpdateVelocityRenderer() {
-        //TODO impl
+        taaVelocityShader = ShaderBuilder::createShader("taaVelocity.vert.spv", "taaVelocity.frag.spv", velocityRenderTarget->isTestMode());
+
+        std::vector vertexCoord = {
+            Point2(-1.0f, -1.0f), Point2(1.0f, -1.0f), Point2(1.0f, 1.0f),
+            Point2(-1.0f, -1.0f), Point2(1.0f, 1.0f), Point2(-1.0f, 1.0f)
+        };
+        std::vector textureCoord = {
+            Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
+            Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
+        };
+        velocityRenderer = GenericRendererBuilder::create("velocity", *velocityRenderTarget, *taaVelocityShader, ShapeType::TRIANGLE)
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
+                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->build();
     }
 
     void TaaApplier::createOrUpdateResolveRenderer() {
@@ -130,7 +158,8 @@ namespace urchin {
         resolveRenderer = GenericRendererBuilder::create("anti aliasing", *resolveRenderTarget, *taaResolveShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildLinear()))
+                ->addUniformTextureReader(SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(VELOCITY_TEX_UNIFORM_BINDING, TextureReader::build(velocityTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()))
                 ->build();
     }
@@ -145,6 +174,8 @@ namespace urchin {
     }
 
     void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) {
+        generateVelocityTexture(frameIndex);
+
         if (copySceneTexToHistory) {
             resolveRenderTarget->addPreRenderTextureCopier(TextureCopier(*sceneTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
         }
@@ -158,6 +189,11 @@ namespace urchin {
             resolveRenderTarget->removeAllPreRenderTextureCopiers();
             copySceneTexToHistory = false;
         }
+    }
+
+    void TaaApplier::generateVelocityTexture(uint32_t frameIndex) const {
+        unsigned int numDependenciesToVelocityTexture = 1;
+        velocityRenderTarget->render(frameIndex, numDependenciesToVelocityTexture);
     }
 
 }

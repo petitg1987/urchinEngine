@@ -560,7 +560,7 @@ namespace urchin {
         }
     }
 
-    unsigned int Renderer3d::computeDependenciesToFirstPassOutput() const { //TODO review for TAA
+    unsigned int Renderer3d::computeDependenciesToFirstPassOutput() const {
         unsigned int numDependenciesToFirstPassOutput = 1; //second pass
         if (sceneInfo.isAmbientOcclusionActivated) {
             if (ambientOcclusionManager.getConfig().isBlurActivated) {
@@ -570,7 +570,7 @@ namespace urchin {
             }
         }
         if (isAntiAliasingActivated && antiAliasingApplier.useDepthTexture()) {
-            numDependenciesToFirstPassOutput += 1; //velocity texture
+            numDependenciesToFirstPassOutput += 1; //TAA velocity texture
         }
         if (isReflectionActivated) {
             numDependenciesToFirstPassOutput += 3; //reflection color & reflection blur (vertical & horizontal)
