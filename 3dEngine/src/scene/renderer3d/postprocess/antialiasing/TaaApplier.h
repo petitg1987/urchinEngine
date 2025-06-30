@@ -47,11 +47,11 @@ namespace urchin {
             unsigned int frameCount;
 
             //display
-            std::unique_ptr<OffscreenRender> renderTarget;
+            std::unique_ptr<OffscreenRender> resolveRenderTarget;
             std::shared_ptr<Texture> inputTexture;
             std::array<std::shared_ptr<Texture>, 2> outputOrHistoryTextures;
-            std::unique_ptr<Shader> taaShader;
-            std::unique_ptr<GenericRenderer> renderer;
+            std::unique_ptr<Shader> taaResolveShader;
+            std::unique_ptr<GenericRenderer> resolveRenderer;
     };
 
 }

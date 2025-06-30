@@ -70,23 +70,23 @@ namespace urchin {
         outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         outputOrHistoryTextures[1]->enableTextureWriting(OutputUsage::GRAPHICS);
 
-        renderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
-        renderTarget->addOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
-        renderTarget->addOutputTexture(outputOrHistoryTextures[getHistoryTextureIndex()]);
-        renderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
-        renderTarget->initialize();
+        resolveRenderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
+        resolveRenderTarget->addOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
+        resolveRenderTarget->addOutputTexture(outputOrHistoryTextures[getHistoryTextureIndex()]);
+        resolveRenderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
+        resolveRenderTarget->initialize();
 
         createOrUpdateRenderer();
         copyInputTexToHistory = true;
     }
 
     void TaaApplier::freeRenderData() {
-        renderer.reset();
-        taaShader.reset();
+        resolveRenderer.reset();
+        taaResolveShader.reset();
 
-        if (renderTarget) {
-            renderTarget->cleanup();
-            renderTarget.reset();
+        if (resolveRenderTarget) {
+            resolveRenderTarget->cleanup();
+            resolveRenderTarget.reset();
         }
         for (std::shared_ptr<Texture>& outputOrHistoryTexture : outputOrHistoryTextures) {
             outputOrHistoryTexture.reset();
@@ -104,7 +104,7 @@ namespace urchin {
             Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
             Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
-        renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *taaShader, ShapeType::TRIANGLE)
+        resolveRenderer = GenericRendererBuilder::create("anti aliasing", *resolveRenderTarget, *taaResolveShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(INPUT_TEX_UNIFORM_BINDING, TextureReader::build(inputTexture, TextureParam::buildLinear()))
@@ -113,7 +113,7 @@ namespace urchin {
     }
 
     void TaaApplier::createOrUpdateFxaaShader() {
-        taaShader = ShaderBuilder::createShader("taa.vert.spv", "taa.frag.spv", renderTarget->isTestMode());
+        taaResolveShader = ShaderBuilder::createShader("taaResolve.vert.spv", "taaResolve.frag.spv", resolveRenderTarget->isTestMode());
     }
 
     void TaaApplier::updateQuality(AntiAliasingQuality quality) {
@@ -126,16 +126,16 @@ namespace urchin {
 
     void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) {
         if (copyInputTexToHistory) {
-            renderTarget->addPreRenderTextureCopier(TextureCopier(*inputTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
+            resolveRenderTarget->addPreRenderTextureCopier(TextureCopier(*inputTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
         }
 
-        renderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
-        renderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
+        resolveRenderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
+        resolveRenderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
 
-        renderTarget->render(frameIndex, numDependenciesToAATexture);
+        resolveRenderTarget->render(frameIndex, numDependenciesToAATexture);
 
         if (copyInputTexToHistory) {
-            renderTarget->removeAllPreRenderTextureCopiers();
+            resolveRenderTarget->removeAllPreRenderTextureCopiers();
             copyInputTexToHistory = false;
         }
     }
