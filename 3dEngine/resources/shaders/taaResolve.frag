@@ -10,8 +10,11 @@ layout(location = 0) in vec2 texCoordinates;
 layout(location = 0) out vec4 fragColor;
 
 void main() {
+    vec2 velocity = texture(velocityTex, texCoordinates).xy;
+    vec2 prevousPixelPos = texCoordinates - velocity;
+
     vec3 currentColor = texture(sceneTex, texCoordinates).xyz;
-    vec3 historyColor = texture(historyTex, texCoordinates).xyz;
+    vec3 historyColor = texture(historyTex, prevousPixelPos).xyz;
     vec3 color = mix(currentColor, historyColor, 0.9);
     fragColor = vec4(color, 1.0);
 }

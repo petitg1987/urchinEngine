@@ -71,6 +71,7 @@ namespace urchin {
     void TaaApplier::createOrUpdateVelocityRenderData() {
         freeVelocityRenderData();
 
+        //TODO not correct: delta is stored !
         //A pixel with coordinates (x, y) and value (0.0010416, 0) means that this pixel was previously locate in coordinates (0.0010416 * textureWidth/2, 0)
         velocityTexture = Texture::build("aa: velocity", sceneTexture->getWidth(), sceneTexture->getHeight(), TextureFormat::RG_16_FLOAT);
 
