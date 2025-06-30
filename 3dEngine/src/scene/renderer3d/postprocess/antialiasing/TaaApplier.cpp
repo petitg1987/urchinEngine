@@ -71,8 +71,9 @@ namespace urchin {
     void TaaApplier::createOrUpdateVelocityRenderData() {
         freeVelocityRenderData();
 
-        //TODO not correct: delta is stored !
-        //A pixel with coordinates (x, y) and value (0.0010416, 0) means that this pixel was previously locate in coordinates (0.0010416 * textureWidth/2, 0)
+        //TODO confirm with test
+        //A pixel with a coordinates of (x, y) and a value of (0.012, 0) means this pixel has moved of the distance (0.0010416, 0) between previous frame and current frame.
+        //Values are expressed in NDC (-1, 1) meaning that a velocity of 2.0 in X represent a move from the left of the screen to the right of the screen.
         velocityTexture = Texture::build("aa: velocity", sceneTexture->getWidth(), sceneTexture->getHeight(), TextureFormat::RG_16_FLOAT);
 
         velocityRenderTarget = std::make_unique<OffscreenRender>("anti aliasing - velocity", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
