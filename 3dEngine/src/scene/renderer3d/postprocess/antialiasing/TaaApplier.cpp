@@ -142,8 +142,8 @@ namespace urchin {
         velocityRenderer = GenericRendererBuilder::create("anti aliasing: velocity", *velocityRenderTarget, *taaVelocityShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
-                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addUniformData(VELOCITY_POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
+                ->addUniformTextureReader(VELOCITY_DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->build();
     }
 
@@ -161,9 +161,10 @@ namespace urchin {
         resolveRenderer = GenericRendererBuilder::create("anti aliasing: resolve", *resolveRenderTarget, *taaResolveShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(VELOCITY_TEX_UNIFORM_BINDING, TextureReader::build(velocityTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()))
+                ->addUniformTextureReader(RESOLVE_SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(RESOLVE_DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(RESOLVE_VELOCITY_TEX_UNIFORM_BINDING, TextureReader::build(velocityTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(RESOLVE_HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()))
                 ->build();
     }
 
@@ -183,7 +184,7 @@ namespace urchin {
             resolveRenderTarget->addPreRenderTextureCopier(TextureCopier(*sceneTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
         }
 
-        resolveRenderer->updateUniformTextureReader(HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
+        resolveRenderer->updateUniformTextureReader(RESOLVE_HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
         resolveRenderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
 
         resolveRenderTarget->render(frameIndex, numDependenciesToAATexture);
@@ -196,7 +197,7 @@ namespace urchin {
 
     void TaaApplier::generateVelocityTexture(uint32_t frameIndex, const Camera& camera) {
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
-        velocityRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
+        velocityRenderer->updateUniformData(VELOCITY_POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
         positioningData.previousProjectionViewMatrix = camera.getProjectionViewMatrix();
 
         unsigned int numDependenciesToVelocityTexture = 1;
