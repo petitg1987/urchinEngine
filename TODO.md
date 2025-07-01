@@ -31,8 +31,6 @@
 * Anti-aliasing
   * ► **NEW FEATURE**: Handling moving objects in TAA
     * See: <https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/>
-  * ► **NEW FEATURE**: Apply velocity rejection in TAA with high quality only
-    * See: <https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/>
 * Landscape
   * ► **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)
   * ▼ **NEW FEATURE**: Use material textures (normal map...) for terrain
