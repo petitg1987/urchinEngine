@@ -14,7 +14,7 @@ layout(location = 0) out vec4 fragColor;
 vec2 getVelocityTexCoordinate() {
     vec2 sceneSize = textureSize(sceneTex, 0);
     float closestDepth = 1.0;
-    vec2 closestTexPosition = vec2(0.0, 0.0);
+    vec2 closestTexPosition = texCoordinates;
 
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {

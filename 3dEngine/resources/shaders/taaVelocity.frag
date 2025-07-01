@@ -16,8 +16,9 @@ void main() {
     vec4 currentPosNdc = vec4(texCoordinates.s * 2.0 - 1.0, texCoordinates.t * 2.0 - 1.0, depthValue, 1.0);
 
     vec4 worldPosition = positioningData.mInverseProjectionView * currentPosNdc;
+    worldPosition = worldPosition.xyzw / worldPosition.w;
     vec4 previousPosNdc = positioningData.mPreviousProjectionView * worldPosition;
-    previousPosNdc.xyz /= previousPosNdc.w;
+    previousPosNdc.xy /= previousPosNdc.w;
 
     vec2 velocity = currentPosNdc.xy - previousPosNdc.xy;
 
