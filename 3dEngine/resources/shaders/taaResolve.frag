@@ -9,6 +9,9 @@ layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
+//This method decreases the ghosting effect.
+//A value sourced from the history texture that diverges greatly from the scene texture should be discarded.
+//As discarding is complex, a clamping is applied instead.
 vec3 applyColorClamping(vec3 previousColor) {
     vec2 sceneSize = textureSize(sceneTex, 0);
     vec3 minColor = vec3(9999.0, 9999.0, 9999.0);
