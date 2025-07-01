@@ -19,6 +19,7 @@ vec2 getVelocityTexCoordinate() {
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             vec2 texPosition = texCoordinates + vec2(x / sceneSize.x, y / sceneSize.y);
+            texPosition = clamp(texPosition, vec2(0.0, 0.0), vec2(1.0, 1.0));
             float depthValue = texture(depthTex, texPosition).x;
             if (depthValue < closestDepth) {
                 closestDepth = depthValue;
