@@ -29,8 +29,8 @@
   * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
   * ▼ **NEW FEATURE**: Implement scalable ambient obscurance
 * Anti-aliasing
-  * ▲ **NEW FEATURE**: Implement TAA
-    * See: <https://sugulee.wordpress.com/2021/06/21/temporal-anti-aliasingtaa-tutorial/>
+  * ► **NEW FEATURE**: Handling moving objects in TAA
+    * See: <https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/>
 * Landscape
   * ► **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)
   * ▼ **NEW FEATURE**: Use material textures (normal map...) for terrain

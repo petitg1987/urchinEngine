@@ -22,7 +22,7 @@ Game engine library in C++20: 3D, Physics, Sound, Network, IA, Map Editor
   * Dynamic lighting with deferred shading: directional, omnidirectional, spot
   * Terrain multi-layered and grass
   * Ambient occlusion (SSAO+)
-  * Anti-aliasing (FXAA)
+  * Anti-aliasing (TAA or FXAA)
   * Space partitioning: octree
   * UI: text, button, window, textbox, textarea, bitmap, sequence, checkbox, slider, scrollbar
   * Skybox
