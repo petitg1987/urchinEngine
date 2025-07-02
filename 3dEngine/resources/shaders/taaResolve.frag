@@ -32,17 +32,28 @@ vec3 applyColorClamping(vec3 historyColor) {
     return clamp(historyColor, minColor, maxColor);
 }
 
+vec2 reduceFireflies(vec3 currentColor, vec3 historyColor, vec2 currentAndHistoryWeight) {
+    float currentLuminance = luminance(currentColor);
+    currentAndHistoryWeight.x *= 1.0 / (1.0 + currentLuminance);
+
+    float historyLuminance = luminance(historyColor);
+    currentAndHistoryWeight.y *= 1.0 / (1.0 + historyLuminance);
+
+    return currentAndHistoryWeight;
+}
+
 void main() {
     vec2 velocity = texture(velocityTex, texCoordinates).xy;
     vec2 prevousPixelPos = texCoordinates - velocity;
 
     vec3 currentColor = texture(sceneTex, texCoordinates).xyz;
     vec3 historyColor = texture(historyTex, prevousPixelPos).xyz;
+    vec2 currentAndHistoryWeight = vec2(0.1, 0.9);
+
+    currentAndHistoryWeight = reduceFireflies(currentColor, historyColor, currentAndHistoryWeight);
     historyColor = applyColorClamping(historyColor);
     historyColor = reduceColorBanding(historyColor, 0.004);
 
-    float historyWeight = 0.9;
-    vec3 color = currentColor * (1.0 - historyWeight) + historyColor * historyWeight;
-
+    vec3 color = (currentColor * currentAndHistoryWeight.x + historyColor * currentAndHistoryWeight.y) / (currentAndHistoryWeight.x + currentAndHistoryWeight.y);
     fragColor = vec4(color, 1.0);
 }
