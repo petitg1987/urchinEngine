@@ -36,8 +36,8 @@ void reduceFireflies(vec3 currentColor, vec3 historyColor, inout float currentWe
     float currentLuminance = max(luminance(currentColor), 0.001);
     float historyLuminance = max(luminance(historyColor), 0.001);
 
-    float luminanceDifference = max(currentLuminance - historyLuminance, 0.0) * 0.1;
-    currentWeight += -luminanceDifference;
+    float luminanceDifference = max(currentLuminance - historyLuminance, 0.0);
+    currentWeight += luminanceDifference * -0.1;
 }
 
 void main() {
