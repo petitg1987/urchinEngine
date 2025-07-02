@@ -35,9 +35,8 @@ namespace urchin {
             0.562500f, 0.312500f, 0.812500f, 0.187500f, 0.687500f, 0.437500f, 0.937500f, 0.031250f};
         constexpr std::array HALTON_SEQUENCE_Y = {0.333333f, 0.666667f, 0.111111f, 0.444444f, 0.777778f, 0.222222f, 0.555556f, 0.888889f,
             0.037037f, 0.370370f, 0.703704f, 0.148148f, 0.481481f, 0.814815f, 0.259259f, 0.592593f};
-        constexpr unsigned int JITTER_PERIOD_UPDATE = 1; //update the jitter values only on every 'x' frame
 
-        std::size_t sequenceIndex = (frameCount % (HALTON_SEQUENCE_X.size() * JITTER_PERIOD_UPDATE)) / JITTER_PERIOD_UPDATE;
+        std::size_t sequenceIndex = frameCount % HALTON_SEQUENCE_X.size();
         float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)sceneWidth;
         float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)sceneHeight;
         camera.applyJitter(valueX, valueY);
