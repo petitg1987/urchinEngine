@@ -52,7 +52,7 @@ void main() {
 
     currentAndHistoryWeight = reduceFireflies(currentColor, historyColor, currentAndHistoryWeight);
     historyColor = applyColorClamping(historyColor);
-    historyColor = reduceColorBanding(historyColor, 0.004);
+    historyColor = reduceColorBanding(historyColor, 0.002);
 
     vec3 color = (currentColor * currentAndHistoryWeight.x + historyColor * currentAndHistoryWeight.y) / (currentAndHistoryWeight.x + currentAndHistoryWeight.y);
     fragColor = vec4(color, 1.0);
