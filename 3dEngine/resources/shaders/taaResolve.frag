@@ -32,14 +32,12 @@ vec3 applyColorClamping(vec3 historyColor) {
     return clamp(historyColor, minColor, maxColor);
 }
 
-vec2 reduceFireflies(vec3 currentColor, vec3 historyColor, vec2 currentAndHistoryWeight) {
-    float currentLuminance = luminance(currentColor) * 500.0; //TODO adapt value !
-    currentAndHistoryWeight.x *= 1.0 / (1.0 + currentLuminance);
+void reduceFireflies(vec3 currentColor, vec3 historyColor, inout float currentWeight) {
+    float currentLuminance = max(luminance(currentColor), 0.001);
+    float historyLuminance = max(luminance(historyColor), 0.001);
 
-    float historyLuminance = luminance(historyColor) * 500.0;
-    currentAndHistoryWeight.y *= 1.0 / (1.0 + historyLuminance);
-
-    return currentAndHistoryWeight;
+    float luminanceDifference = max(currentLuminance - historyLuminance, 0.0) * 0.1;
+    currentWeight += -luminanceDifference;
 }
 
 void main() {
@@ -48,12 +46,13 @@ void main() {
 
     vec3 currentColor = texture(sceneTex, texCoordinates).xyz;
     vec3 historyColor = texture(historyTex, prevousPixelPos).xyz;
-    vec2 currentAndHistoryWeight = vec2(0.1, 0.9);
+    float currentWeight = 0.1;
+    float historyWeight = 1.0 - currentWeight;
 
     historyColor = applyColorClamping(historyColor);
     historyColor = reduceColorBanding(historyColor, 0.002);
-    currentAndHistoryWeight = reduceFireflies(currentColor, historyColor, currentAndHistoryWeight);
+    reduceFireflies(currentColor, historyColor, currentWeight);
 
-    vec3 color = (currentColor * currentAndHistoryWeight.x + historyColor * currentAndHistoryWeight.y) / (currentAndHistoryWeight.x + currentAndHistoryWeight.y);
+    vec3 color = (currentColor * currentWeight + historyColor * historyWeight) / (currentWeight + historyWeight);
     fragColor = vec4(color, 1.0);
 }
