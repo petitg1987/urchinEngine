@@ -1,6 +1,8 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
+#include "_lightingFunctions.frag"
+
 layout(binding = 0) uniform sampler2D sceneTex;
 layout(binding = 1) uniform sampler2D velocityTex;
 layout(binding = 2) uniform sampler2D historyTex;
@@ -37,6 +39,7 @@ void main() {
     vec3 currentColor = texture(sceneTex, texCoordinates).xyz;
     vec3 historyColor = texture(historyTex, prevousPixelPos).xyz;
     historyColor = applyColorClamping(historyColor);
+    historyColor = reduceColorBanding(historyColor, 0.004);
 
     float historyWeight = 0.9;
     vec3 color = currentColor * (1.0 - historyWeight) + historyColor * historyWeight;
