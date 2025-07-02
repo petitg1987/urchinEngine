@@ -50,7 +50,6 @@ void main() {
     vec3 historyColor = texture(historyTex, prevousPixelPos).xyz;
     vec2 currentAndHistoryWeight = vec2(0.1, 0.9);
 
-
     historyColor = applyColorClamping(historyColor);
     historyColor = reduceColorBanding(historyColor, 0.002);
     currentAndHistoryWeight = reduceFireflies(currentColor, historyColor, currentAndHistoryWeight);
