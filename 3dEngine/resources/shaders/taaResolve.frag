@@ -12,7 +12,7 @@ layout(location = 0) out vec4 fragColor;
 //This method decreases the ghosting effect.
 //A value sourced from the history texture that diverges greatly from the scene texture should be discarded.
 //As discarding is complex, a clamping is applied instead.
-vec3 applyColorClamping(vec3 previousColor) {
+vec3 applyColorClamping(vec3 historyColor) {
     vec2 sceneSize = textureSize(sceneTex, 0);
     vec3 minColor = vec3(9999.0, 9999.0, 9999.0);
     vec3 maxColor = vec3(-9999.0, -9999.0, -9999.0);
@@ -27,7 +27,7 @@ vec3 applyColorClamping(vec3 previousColor) {
         }
     }
 
-    return clamp(previousColor, minColor, maxColor);
+    return clamp(historyColor, minColor, maxColor);
 }
 
 void main() {
@@ -37,6 +37,9 @@ void main() {
     vec3 currentColor = texture(sceneTex, texCoordinates).xyz;
     vec3 historyColor = texture(historyTex, prevousPixelPos).xyz;
     historyColor = applyColorClamping(historyColor);
-    vec3 color = mix(currentColor, historyColor, 0.9);
+
+    float historyWeight = 0.9;
+    vec3 color = currentColor * (1.0 - historyWeight) + historyColor * historyWeight;
+
     fragColor = vec4(color, 1.0);
 }
