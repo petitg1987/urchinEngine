@@ -59,7 +59,7 @@ void main() {
             vec2 subTexCoordinates = clamp(texCoordinates + vec2(x / sceneSize.x, y / sceneSize.y), vec2(0.0, 0.0), vec2(1.0, 1.0));
             vec3 subSourceColor = texture(sceneTex, subTexCoordinates).rgb;
 
-            float subSampleDistance = length(vec2(x, y));
+            float subSampleDistance = length(vec2(x, y)); //TODO incorporate jitter (see https://alextardif.com/TAA.html) ?
             float subSampleWeight = filterCubic(subSampleDistance, 1.0 / 3.0, 1.0 / 3.0); //Mitchell–Netravali filters
             sourceSampleTotal += subSourceColor * subSampleWeight;
             sourceSampleWeight += subSampleWeight;
