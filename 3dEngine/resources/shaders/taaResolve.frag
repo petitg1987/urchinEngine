@@ -46,7 +46,7 @@ float filterMitchell(float value) {
 
 // Samples a texture with Catmull-Rom filtering, using 9 texture fetches instead of 16.
 // See http://vec3.ca/bicubic-filtering-in-fewer-taps/ for more details
-vec3 sample_texture_catmull_rom(vec2 uv, sampler2D tex) {
+vec3 sample_texture_catmull_rom(sampler2D tex, vec2 uv) {
     // We're going to sample a a 4x4 grid of texels surrounding the target UV coordinate. We'll do this by rounding
     // down the sample location to get the exact center of our "starting" texel. The starting texel will be at
     // location [1, 1] in the grid, where [0, 0] is the top left corner.
@@ -133,6 +133,7 @@ void main() {
 
     //Get source color
     vec3 sourceColor = sourceSampleTotal / sourceSampleWeight;
+    //TODO better ?: vec3 sourceColor = texture(sceneTex, texCoordinates).xyz;
 
     //The velocity texture is aliased, unlike the history texture.
     //Therefore, we don't use directly 'texCoordinates' but 'closestDepthTexCoordinates' to get better result and avoid to reintroducing edge aliasing.
@@ -144,8 +145,8 @@ void main() {
     }
 
     //Get  history color
-    vec3 historyColor = texture(historyTex, previousTexPos).xyz;
-    //TODO apply filter catmull
+    vec3 historyColor = sample_texture_catmull_rom(historyTex, previousTexPos);
+    //TODO low quality: vec3 historyColor = texture(historyTex, previousTexPos).xyz;
 
     //A color sourced from the history texture that diverges greatly from the scene texture should be discarded/adjusted:
     //1. Apply clamp on history color
