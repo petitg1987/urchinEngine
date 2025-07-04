@@ -109,13 +109,15 @@ void main() {
     //1. Apply clamp on history color
     historyColor = clamp(historyColor, minColor, maxColor);
     //2. Apply variance clip on history color
-    float rcpSampleCount = 1.0f / 9.0f;
-    float gamma = 2.0f;
-    vec3 mu = moment1 * rcpSampleCount;
-    vec3 sigma = sqrt(abs((moment2 * rcpSampleCount) - (mu * mu)));
-    vec3 aabbMin = mu - gamma * sigma;
-    vec3 aabbMax = mu + gamma * sigma;
-    historyColor = clipAabb(aabbMin, aabbMax, vec4(historyColor, 1.0), 1.0).rgb;
+    if (TAA_HIGH_QUALITY) { //TODO avoid second if !
+        float rcpSampleCount = 1.0f / 9.0f;
+        float gamma = 2.0f;
+        vec3 mu = moment1 * rcpSampleCount;
+        vec3 sigma = sqrt(abs((moment2 * rcpSampleCount) - (mu * mu)));
+        vec3 aabbMin = mu - gamma * sigma;
+        vec3 aabbMax = mu + gamma * sigma;
+        historyColor = clipAabb(aabbMin, aabbMax, vec4(historyColor, 1.0), 1.0).rgb;
+    }
 
     //Due to clamping on history color, some bright pixels (so-called fireflies) can appear briefly due to jittering.
     //Reduce those bright pixels based on their luminance.
