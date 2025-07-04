@@ -131,14 +131,21 @@ void main() {
         }
     }
 
+    //Get source color
+    vec3 sourceColor = sourceSampleTotal / sourceSampleWeight;
+
     //The velocity texture is aliased, unlike the history texture.
     //Therefore, we don't use directly 'texCoordinates' but 'closestDepthTexCoordinates' to get better result and avoid to reintroducing edge aliasing.
     vec2 velocity = texture(velocityTex, closestDepthTexCoordinates).xy;
     vec2 previousTexPos = texCoordinates - velocity;
-    //TODO clamp ? or ignore ?
+    if (any(lessThan(previousTexPos, vec2(0.0, 0.0))) || any(greaterThan(previousTexPos, vec2(1.0, 1.0)))) {
+        fragColor = vec4(sourceColor, 1.0);
+        return;
+    }
 
-    vec3 sourceColor = texture(sceneTex, texCoordinates).xyz;
+    //Get  history color
     vec3 historyColor = texture(historyTex, previousTexPos).xyz;
+    //TODO apply filter catmull
 
     //A color sourced from the history texture that diverges greatly from the scene texture should be discarded/adjusted:
     //1. Apply clamp on history color
@@ -163,8 +170,7 @@ void main() {
     sourceWeight *= 1.0 / (1.0 + luminanceSource);
     historyWeight *= 1.0 / (1.0 + luminanceHistory);
 
-    historyColor = (sourceColor * sourceWeight + historyColor * historyWeight) / max(sourceWeight + historyWeight, 0.00001);
-    historyColor = reduceColorBanding(historyColor, 0.002);
-
-    fragColor = vec4(historyColor, 1.0);
+    vec3 result = (sourceColor * sourceWeight + historyColor * historyWeight) / max(sourceWeight + historyWeight, 0.00001);
+    result = reduceColorBanding(result, 0.002);
+    fragColor = vec4(result, 1.0);
 }
