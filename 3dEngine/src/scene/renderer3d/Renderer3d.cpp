@@ -80,7 +80,6 @@ namespace urchin {
         ambientOcclusionManager.addObserver(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
-        sceneInfo.sceneSize = Point2((float)sceneWidth, (float)sceneHeight);
         sceneInfo.isShadowActivated = visualConfig.isShadowActivated();
         sceneInfo.isAmbientOcclusionActivated = visualConfig.isAmbientOcclusionActivated();
 
@@ -391,7 +390,6 @@ namespace urchin {
         }
 
         //deferred second pass
-        sceneInfo.sceneSize = Point2((float)sceneWidth, (float)sceneHeight);
         illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         if (deferredSecondPassRenderTarget) {
             auto* deferredSecondPassOffscreenRender = static_cast<OffscreenRender*>(deferredSecondPassRenderTarget.get());

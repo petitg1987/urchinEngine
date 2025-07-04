@@ -17,7 +17,8 @@ namespace urchin {
     }
 
     void FirstPassModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t uniformBinding1, uint32_t) {
-        jitter.values = camera.getAppliedJitter() * Vector2(2560.0f * 0.5f, 1440.0f * 0.5f); //TODO remove hardcoded value
+        constexpr float ndcSpaceToUvCoordinatesScale = 0.5f;
+        jitter.values = camera.getAppliedJitter() * Vector2(2560.0f * ndcSpaceToUvCoordinatesScale, 1440.0f * ndcSpaceToUvCoordinatesScale); //TODO remove hardcoded value
         meshRenderer.updateUniformData(uniformBinding1, &jitter);
     }
 

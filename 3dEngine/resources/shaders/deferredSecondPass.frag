@@ -19,7 +19,6 @@ layout(std140, set = 0, binding = 0) uniform PositioningData {
     vec3 viewPosition;
 } positioningData;
 layout(std140, set = 0, binding = 1) uniform SceneInfo {
-    vec2 sceneSize;
     bool hasShadow;
     bool hasAmbientOcclusion;
 } sceneInfo;
@@ -100,7 +99,8 @@ float computeShadowAttenuation(int shadowLightIndex, int splitShadowMapIndex, ve
     float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[shadowLightIndex], 0));
     int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
     float singleShadowQuantity = (1.0 - max(0.0, NdotL / 5.0)); //NdotL is a hijack to apply normal map in shadow
-    ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneInfo.sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
+    vec2 sceneResolution = textureSize(depthTex, 0);
+    ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneResolution) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
 
     int testPointsInShadow = 0;
     int offsetSampleIndex = 0;
