@@ -37,9 +37,9 @@ namespace urchin {
             0.037037f, 0.370370f, 0.703704f, 0.148148f, 0.481481f, 0.814815f, 0.259259f, 0.592593f};
 
         std::size_t sequenceIndex = frameCount % HALTON_SEQUENCE_X.size();
-        float valueX = (0.5f - HALTON_SEQUENCE_X[sequenceIndex]) / (float)sceneWidth; //TODO jitter from 0.0 to 1.0 or -0.5 to 0.5 ?
-        float valueY = (0.5f - HALTON_SEQUENCE_Y[sequenceIndex]) / (float)sceneHeight;
-        camera.applyJitter(Vector2(valueX, valueY)); //TODO remove * 50.0
+        float valueX = (0.5f - HALTON_SEQUENCE_X[sequenceIndex]) * 2.0f / (float)sceneWidth;
+        float valueY = (0.5f - HALTON_SEQUENCE_Y[sequenceIndex]) * 2.0f / (float)sceneHeight;
+        camera.applyJitter(Vector2(valueX, valueY));
     }
 
     void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& sceneTexture) {

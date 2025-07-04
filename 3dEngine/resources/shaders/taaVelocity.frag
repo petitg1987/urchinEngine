@@ -20,7 +20,7 @@ void main() {
     vec4 previousPosNdc = positioningData.mPreviousProjectionView * worldPosition;
     previousPosNdc.xy /= previousPosNdc.w;
 
-    vec2 velocity = currentPosNdc.xy - previousPosNdc.xy; //TODO See https://alextardif.com/TAA.html to check if jitter must be applied for static scene !
+    vec2 velocity = currentPosNdc.xy - previousPosNdc.xy; //TODO See https://alextardif.com/TAA.html remove jitter !!!
 
     //NDC values are from -1.0 to 1.0.
     //However, we want a velocity of x=1.0 represents a full move from the left to the right of the screen (similar to texCoordinates).
