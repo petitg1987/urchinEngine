@@ -95,21 +95,13 @@ void main() {
         return;
     }
 
-    //Get history color
+    //A color sourced from the history texture that diverges greatly from the scene texture should be discarded/adjusted:
     vec3 historyColor = vec3(0.0, 0.0, 0.0);
     if (TAA_HIGH_QUALITY) {
         historyColor = sampleCatmullRom(historyTex, previousTexPos);
-        historyColor = vec3(1.0, 1.0, 0.0); //TODO remove !
-    } else {
-        historyColor = texture(historyTex, previousTexPos).xyz;
-        historyColor = vec3(1.0, 0.0, 0.0); //TODO remove !
-    }
-
-    //A color sourced from the history texture that diverges greatly from the scene texture should be discarded/adjusted:
-    //1. Apply clamp on history color
-    historyColor = clamp(historyColor, minColor, maxColor);
-    //2. Apply variance clip on history color
-    if (TAA_HIGH_QUALITY) { //TODO avoid second if !
+        //1. Apply clamp on history color
+        historyColor = clamp(historyColor, minColor, maxColor);
+        //2. Apply variance clip on history color
         float rcpSampleCount = 1.0f / 9.0f;
         float gamma = 2.0f;
         vec3 mu = moment1 * rcpSampleCount;
@@ -117,6 +109,10 @@ void main() {
         vec3 aabbMin = mu - gamma * sigma;
         vec3 aabbMax = mu + gamma * sigma;
         historyColor = clipAabb(aabbMin, aabbMax, vec4(historyColor, 1.0), 1.0).rgb;
+    } else {
+        historyColor = texture(historyTex, previousTexPos).xyz;
+        //1. Apply clamp on history color
+        historyColor = clamp(historyColor, minColor, maxColor);
     }
 
     //Due to clamping on history color, some bright pixels (so-called fireflies) can appear briefly due to jittering.

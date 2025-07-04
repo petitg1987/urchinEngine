@@ -5,10 +5,10 @@
 
 namespace urchin {
 
-    FxaaApplier::FxaaApplier(bool isTestMode) :
+    FxaaApplier::FxaaApplier(bool isTestMode, bool isEnabled, AntiAliasingQuality quality) :
             isTestMode(isTestMode),
-            isEnabled(false),
-            quality(AntiAliasingQuality::HIGH) {
+            isEnabled(isEnabled),
+            quality(quality) {
 
     }
 
@@ -114,6 +114,7 @@ namespace urchin {
     }
 
     void FxaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) const {
+        assert(isEnabled);
         renderTarget->render(frameIndex, numDependenciesToAATexture);
     }
 

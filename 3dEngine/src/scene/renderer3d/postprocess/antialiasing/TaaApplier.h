@@ -10,7 +10,7 @@ namespace urchin {
 
     class TaaApplier {
         public:
-            explicit TaaApplier(bool);
+            TaaApplier(bool, bool, AntiAliasingQuality);
             ~TaaApplier();
 
             void enableApplier(bool);

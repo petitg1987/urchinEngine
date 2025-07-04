@@ -5,10 +5,10 @@
 
 namespace urchin {
 
-    TaaApplier::TaaApplier(bool isTestMode) :
+    TaaApplier::TaaApplier(bool isTestMode, bool isEnabled, AntiAliasingQuality quality) :
             isTestMode(isTestMode),
-            isEnabled(false),
-            quality(AntiAliasingQuality::HIGH),
+            isEnabled(isEnabled),
+            quality(quality),
             copySceneTexToHistory(true),
             frameCount(0) {
 
@@ -179,6 +179,7 @@ namespace urchin {
     }
 
     void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture, const Camera& camera) {
+        assert(isEnabled);
         generateVelocityTexture(frameIndex, camera);
 
         if (copySceneTexToHistory) {

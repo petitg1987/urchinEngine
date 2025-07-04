@@ -9,7 +9,7 @@ namespace urchin {
 
     class FxaaApplier {
         public:
-            explicit FxaaApplier(bool);
+            FxaaApplier(bool, bool, AntiAliasingQuality);
             ~FxaaApplier();
 
             void enableApplier(bool);

@@ -6,8 +6,8 @@ namespace urchin {
     AntiAliasingApplier::AntiAliasingApplier(const Config& config, bool isTestMode) :
             isTestMode(isTestMode),
             config(config),
-            fxaaApplier(FxaaApplier(isTestMode)),
-            taaApplier(TaaApplier(isTestMode)) {
+            fxaaApplier(FxaaApplier(isTestMode, !config.useTaa, config.quality)),
+            taaApplier(TaaApplier(isTestMode, config.useTaa, config.quality)) {
 
     }
 
@@ -42,13 +42,13 @@ namespace urchin {
 
             this->config = config;
 
-            if (qualityUpdated) {
-                fxaaApplier.updateQuality(this->config.quality);
-                taaApplier.updateQuality(this->config.quality);
-            }
             if (applierUpdated) {
                 fxaaApplier.enableApplier(!this->config.useTaa);
                 taaApplier.enableApplier(this->config.useTaa);
+            }
+            if (qualityUpdated) {
+                fxaaApplier.updateQuality(this->config.quality);
+                taaApplier.updateQuality(this->config.quality);
             }
         }
     }
