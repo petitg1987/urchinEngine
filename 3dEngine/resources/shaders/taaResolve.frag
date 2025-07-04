@@ -110,7 +110,7 @@ void main() {
     historyColor = clipAabb(aabbMin, aabbMax, vec4(historyColor, 1.0), 1.0).rgb;
 
     //Due to clamping on history color, some bright pixels (so-called fireflies) can appear briefly due to jittering.
-    //Reduce those bright pixel based on their luminance.
+    //Reduce those bright pixels based on their luminance.
     vec3 compressedSource = sourceColor / (max(max(sourceColor.r, sourceColor.g), sourceColor.b) + 1.0);
     vec3 compressedHistory = historyColor / (max(max(historyColor.r, historyColor.g), historyColor.b) + 1.0);
     float luminanceSource = luminance(compressedSource);
