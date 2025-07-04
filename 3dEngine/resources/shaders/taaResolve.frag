@@ -79,8 +79,7 @@ void main() {
     }
 
     //Get source color
-    //vec3 sourceColor = sourceSampleTotal / sourceSampleWeight;
-    vec3 sourceColor = texture(sceneTex, texCoordinates).xyz;
+    vec3 sourceColor = sourceSampleTotal / sourceSampleWeight;
 
     //The velocity texture is aliased, unlike the history texture.
     //Therefore, we don't use directly 'texCoordinates' but 'closestDepthTexCoordinates' to get better result and avoid to reintroducing edge aliasing.
