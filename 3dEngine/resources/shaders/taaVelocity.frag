@@ -24,7 +24,7 @@ void main() {
     vec4 previousPosNdc = positioningData.mPreviousProjectionView * worldPosition;
     previousPosNdc.xy /= previousPosNdc.w;
 
-    vec2 velocity = (currentPosNdc.xy + jitterData.currentJitter) - (previousPosNdc.xy + jitterData.previousJitter); //TODO check velo is 0 in static
+    vec2 velocity = (currentPosNdc.xy + jitterData.currentJitter) - (previousPosNdc.xy + jitterData.previousJitter);
 
     //NDC values are from -1.0 to 1.0.
     //However, we want a velocity of x=1.0 represents a full move from the left to the right of the screen (similar to texCoordinates).
