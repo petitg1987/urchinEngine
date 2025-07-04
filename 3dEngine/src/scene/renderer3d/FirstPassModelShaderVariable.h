@@ -6,18 +6,21 @@
 
 namespace urchin {
 
-    class FirstPassModelShaderVariable final : public CustomModelShaderVariable { //TODO rename in ModelShaderVariable ?
+    class FirstPassModelShaderVariable final : public CustomModelShaderVariable {
         public:
-            explicit FirstPassModelShaderVariable(const Camera&);
+            FirstPassModelShaderVariable(const Camera&, unsigned int, unsigned int);
 
             void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t) override;
             void loadCustomShaderVariables(GenericRenderer&, uint32_t, uint32_t) override;
 
         private:
-            struct {
-                alignas(8) Vector2<float> values;
-            } jitter;
+            struct CameraInfo {
+                alignas(8) Vector2<float> jitterInPixel;
+            } cameraInfo;
+
             const Camera& camera;
+            float renderingSceneWidth;
+            float renderingSceneHeight;
     };
 
 }

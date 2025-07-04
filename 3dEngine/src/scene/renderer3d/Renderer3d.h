@@ -24,7 +24,6 @@
 #include <scene/renderer3d/landscape/sky/SkyContainer.h>
 #include <scene/renderer3d/ui/UiContainer.h>
 #include <resources/geometry/GeometryContainer.h>
-#include <graphics/api/GraphicsApi.h>
 #include <texture/render/TextureRenderer.h>
 
 namespace urchin {
@@ -140,7 +139,7 @@ namespace urchin {
             //deferred rendering
             std::unique_ptr<RenderTarget> deferredFirstPassRenderTarget;
             ModelOcclusionCuller modelOcclusionCuller;
-            ModelSetDisplayer modelSetDisplayer;
+            std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
             std::unordered_set<Model*> modelsAnimated;
             std::shared_ptr<AABBoxModel> debugOcclusionCullerGeometries;
             std::vector<Model*> modelsInFrustum;

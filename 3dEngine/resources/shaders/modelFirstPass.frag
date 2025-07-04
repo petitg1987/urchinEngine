@@ -6,9 +6,9 @@ layout(std140, set = 0, binding = 1) uniform MaterialData {
     float ambientFactor;
 } materialData;
 
-layout(std140, set = 0, binding = 2) uniform Jitter {
-    vec2 values;
-} jitter;
+layout(std140, set = 0, binding = 2) uniform CameraInfo {
+    vec2 jitterInPixel;
+} cameraInfo;
 
 layout(binding = 4) uniform sampler2D albedoTex;
 layout(binding = 5) uniform sampler2D normalTex;
@@ -25,9 +25,8 @@ layout(location = 1) out vec4 fragNormalAndAmbient;
 layout(location = 2) out vec2 fragPbr;
 
 vec2 unjitterTextureUv(vec2 uv) {
-    //Tips to debug following code: apply a scale on camera jitter of 50.0f and check that textures don't move despite the jittering
-    //TODO Note: We negate the y because UV and screen space run in opposite directions => negate for Vulkan ???
-    return uv - (dFdxFine(uv) * jitter.values.x) - (dFdyFine(uv) * jitter.values.y);
+    //Tips to debug the following code: increase the camera jittering of 50.0f and check that textures don't jitter despite the camera jittering
+    return uv - (dFdxFine(uv) * cameraInfo.jitterInPixel.x) - (dFdyFine(uv) * cameraInfo.jitterInPixel.y);
 }
 
 void main() {

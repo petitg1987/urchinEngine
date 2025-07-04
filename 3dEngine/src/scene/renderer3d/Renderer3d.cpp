@@ -35,7 +35,6 @@ namespace urchin {
             //deferred first pass
             deferredFirstPassRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", finalRenderTarget.isTestMode(), RenderTarget::SHARED_DEPTH_ATTACHMENT)),
             modelOcclusionCuller(ModelOcclusionCuller()),
-            modelSetDisplayer(ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             fogContainer(FogContainer()),
             terrainContainer(TerrainContainer(visualConfig.getTerrainConfig(), *deferredFirstPassRenderTarget)),
             waterContainer(WaterContainer(*deferredFirstPassRenderTarget)),
@@ -73,10 +72,6 @@ namespace urchin {
         this->camera->initialize(sceneWidth, sceneHeight);
 
         //deferred passes
-        modelSetDisplayer.setupShader("modelFirstPass.vert.spv", "modelFirstPass.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
-        modelSetDisplayer.setupCustomShaderVariable(std::make_unique<FirstPassModelShaderVariable>(*this->camera));
-        modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
-        modelSetDisplayer.initialize(*deferredFirstPassRenderTarget);
         ambientOcclusionManager.addObserver(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
@@ -127,7 +122,7 @@ namespace urchin {
     }
 
     const ModelSetDisplayer& Renderer3d::getModelSetDisplayer() const {
-        return modelSetDisplayer;
+        return *modelSetDisplayer;
     }
 
     FogContainer& Renderer3d::getFogContainer() {
@@ -251,7 +246,7 @@ namespace urchin {
         if (model) {
             shadowManager.removeModel(model);
             transparentManager.removeModel(model);
-            modelSetDisplayer.removeModel(model);
+            modelSetDisplayer->removeModel(model);
             unregisterModelForAnimation(*model);
             return modelOcclusionCuller.removeModel(model);
         }
@@ -377,17 +372,22 @@ namespace urchin {
         unsigned int renderingSceneHeight = MathFunction::roundToUInt((float)sceneHeight * renderingScale);
 
         //deferred first pass
+        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
+        modelSetDisplayer->setupShader("modelFirstPass.vert.spv", "modelFirstPass.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
+        modelSetDisplayer->setupCustomShaderVariable(std::make_unique<FirstPassModelShaderVariable>(*this->camera, renderingSceneWidth, renderingSceneHeight));
+        modelSetDisplayer->setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
+        modelSetDisplayer->initialize(*deferredFirstPassRenderTarget);
+
         albedoAndEmissiveTexture = Texture::build("albedo and emissive", renderingSceneWidth, renderingSceneHeight, VisualConfig::ALBEDO_AND_EMISSIVE_TEXTURE_FORMAT);
         normalAndAmbientTexture = Texture::build("normal and ambient", renderingSceneWidth, renderingSceneHeight, VisualConfig::NORMAL_AND_AMBIENT_TEXTURE_FORMAT);
         materialTexture = Texture::build("material", renderingSceneWidth, renderingSceneHeight, VisualConfig::MATERIAL_TEXTURE_FORMAT);
-        if (deferredFirstPassRenderTarget) {
-            auto* deferredFirstPassOffscreenRender = static_cast<OffscreenRender*>(deferredFirstPassRenderTarget.get());
-            deferredFirstPassOffscreenRender->resetOutput();
-            deferredFirstPassOffscreenRender->addOutputTexture(albedoAndEmissiveTexture);
-            deferredFirstPassOffscreenRender->addOutputTexture(normalAndAmbientTexture);
-            deferredFirstPassOffscreenRender->addOutputTexture(materialTexture);
-            deferredFirstPassOffscreenRender->initialize();
-        }
+
+        auto* deferredFirstPassOffscreenRender = static_cast<OffscreenRender*>(deferredFirstPassRenderTarget.get());
+        deferredFirstPassOffscreenRender->resetOutput();
+        deferredFirstPassOffscreenRender->addOutputTexture(albedoAndEmissiveTexture);
+        deferredFirstPassOffscreenRender->addOutputTexture(normalAndAmbientTexture);
+        deferredFirstPassOffscreenRender->addOutputTexture(materialTexture);
+        deferredFirstPassOffscreenRender->initialize();
 
         //deferred second pass
         illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
@@ -511,7 +511,7 @@ namespace urchin {
         }
 
         //update models (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
-        modelSetDisplayer.updateModels(modelsInFrustum);
+        modelSetDisplayer->updateModels(modelsInFrustum);
         transparentManager.updateModels(modelsInFrustum);
     }
 
@@ -535,7 +535,7 @@ namespace urchin {
         skyContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix(), camera->getPosition());
 
         deferredRenderingOrder++;
-        modelSetDisplayer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
+        modelSetDisplayer->prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
         deferredRenderingOrder++;
         terrainContainer.prepareRendering(deferredRenderingOrder, *camera, dt);
@@ -592,11 +592,11 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
-            modelSetDisplayer.drawBBox(geometryContainer);
+            modelSetDisplayer->drawBBox(geometryContainer);
         }
 
         if (DEBUG_DISPLAY_MODEL_BASE_BONES) {
-            modelSetDisplayer.drawBaseBones(geometryContainer);
+            modelSetDisplayer->drawBaseBones(geometryContainer);
         }
 
         if (DEBUG_DISPLAY_LIGHTS_OCTREE) {
