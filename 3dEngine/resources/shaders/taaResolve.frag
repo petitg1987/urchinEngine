@@ -43,10 +43,6 @@ float filterCubic(in float x, in float b, in float c) {
     return y / 6.0;
 }
 
-float filterMitchell(float value) {
-    return filterCubic(value, 1.0 / 3.0, 1.0 / 3.0);
-}
-
 void main() {
     vec2 sceneSize = textureSize(sceneTex, 0);
 
@@ -64,7 +60,7 @@ void main() {
             vec3 subSourceColor = texture(sceneTex, subTexCoordinates).rgb;
 
             float subSampleDistance = length(vec2(x, y));
-            float subSampleWeight = filterMitchell(subSampleDistance);
+            float subSampleWeight = filterCubic(subSampleDistance, 1.0 / 3.0, 1.0 / 3.0); //Mitchell–Netravali filters
             sourceSampleTotal += subSourceColor * subSampleWeight;
             sourceSampleWeight += subSampleWeight;
 
