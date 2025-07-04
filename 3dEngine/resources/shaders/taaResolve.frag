@@ -106,41 +106,39 @@ void main() {
     vec3 moment1 = vec3(0.0, 0.0, 0.0);
     vec3 moment2 = vec3(0.0, 0.0, 0.0);
     float closestDepth = 1.0;
-    vec2 closestDepthTexPosition = vec2(0.0, 0.0);
+    vec2 closestDepthTexCoordinates = vec2(0.0, 0.0);
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
-            vec2 texPosition = texCoordinates + vec2(x / sceneSize.x, y / sceneSize.y);
-            texPosition = clamp(texPosition, vec2(0.0, 0.0), vec2(1.0, 1.0));
-            vec3 sceneColor = texture(sceneTex, texPosition).rgb;
+            vec2 subTexCoordinates = clamp(texCoordinates + vec2(x / sceneSize.x, y / sceneSize.y), vec2(0.0, 0.0), vec2(1.0, 1.0));
+            vec3 subSourceColor = texture(sceneTex, subTexCoordinates).rgb;
 
             float subSampleDistance = length(vec2(x, y));
             float subSampleWeight = filterMitchell(subSampleDistance);
-
-            sourceSampleTotal += sceneColor * subSampleWeight;
+            sourceSampleTotal += subSourceColor * subSampleWeight;
             sourceSampleWeight += subSampleWeight;
 
-            minColor = min(minColor, sceneColor);
-            maxColor = max(maxColor, sceneColor);
+            minColor = min(minColor, subSourceColor);
+            maxColor = max(maxColor, subSourceColor);
 
-            moment1 += sceneColor;
-            moment2 += sceneColor * sceneColor;
+            moment1 += subSourceColor;
+            moment2 += subSourceColor * subSourceColor;
 
-            float currentDepth = texture(depthTex, texPosition).r;
+            float currentDepth = texture(depthTex, subTexCoordinates).r;
             if (currentDepth < closestDepth) {
                 closestDepth = currentDepth;
-                closestDepthTexPosition = texPosition;
+                closestDepthTexCoordinates = subTexCoordinates;
             }
         }
     }
 
-    //
-    vec2 velocity = texture(velocityTex, texCoordinates).xy;
-    vec2 prevousPixelPos = texCoordinates - velocity;
+    //The velocity texture is aliased, unlike the history texture.
+    //Therefore, we don't use directly 'texCoordinates' but 'closestDepthTexCoordinates' to get better result and avoid to reintroducing edge aliasing.
+    vec2 velocity = texture(velocityTex, closestDepthTexCoordinates).xy;
+    vec2 previousTexPos = texCoordinates - velocity;
+    //TODO clamp ? or ignore ?
 
-    vec3 currentColor = texture(sceneTex, texCoordinates).xyz;
-    vec3 historyColor = texture(historyTex, prevousPixelPos).xyz;
-    float sourceWeight = 0.05;
-    float historyWeight = 1.0 - sourceWeight;
+    vec3 sourceColor = texture(sceneTex, texCoordinates).xyz;
+    vec3 historyColor = texture(historyTex, previousTexPos).xyz;
 
     //A color sourced from the history texture that diverges greatly from the scene texture should be discarded/adjusted:
     //1. Apply clamp on history color
@@ -156,14 +154,16 @@ void main() {
 
     //Due to clamping on history color, some bright pixels (so-called fireflies) can appear briefly due to jittering.
     //Reduce those bright pixel based on their luminance.
-    vec3 compressedSource = currentColor / (max(max(currentColor.r, currentColor.g), currentColor.b) + 1.0);
+    vec3 compressedSource = sourceColor / (max(max(sourceColor.r, sourceColor.g), sourceColor.b) + 1.0);
     vec3 compressedHistory = historyColor / (max(max(historyColor.r, historyColor.g), historyColor.b) + 1.0);
     float luminanceSource = luminance(compressedSource);
     float luminanceHistory = luminance(compressedHistory);
+    float sourceWeight = 0.05;
+    float historyWeight = 1.0 - sourceWeight;
     sourceWeight *= 1.0 / (1.0 + luminanceSource);
     historyWeight *= 1.0 / (1.0 + luminanceHistory);
 
-    historyColor = (currentColor * sourceWeight + historyColor * historyWeight) / max(sourceWeight + historyWeight, 0.00001);
+    historyColor = (sourceColor * sourceWeight + historyColor * historyWeight) / max(sourceWeight + historyWeight, 0.00001);
     historyColor = reduceColorBanding(historyColor, 0.002);
 
     fragColor = vec4(historyColor, 1.0);
