@@ -31,8 +31,6 @@
 * Anti-aliasing
   * ▲ **NEW FEATURE**: Handling moving objects in TAA
     * See: <https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/>
-  * ▲ **NEW FEATURE**: Un-jitter texture UV coordinates to reduce blur (use urchinEngineTest to check result)
-    * See: <https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/>
   * ▼ **OPTIMIZATION**: Use computer shaders
 * Landscape
   * ► **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)

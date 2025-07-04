@@ -100,11 +100,15 @@ namespace urchin {
         this->maxRotationX = maxRotationX;
     }
 
-    void Camera::applyJitter(float x, float y) {
-        mProjection.a13 = x;
-        mProjection.a23 = y;
+    void Camera::applyJitter(const Vector2<float>& jitterValues) {
+        mProjection.a13 = jitterValues.X;
+        mProjection.a23 = jitterValues.Y;
 
         updateComponents();
+    }
+
+    Vector2<float> Camera::getAppliedJitter() const {
+        return Vector2(mProjection.a13, mProjection.a23);
     }
 
     const Matrix4<float>& Camera::getViewMatrix() const {

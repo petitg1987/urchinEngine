@@ -1,6 +1,7 @@
 #include <cstring>
 
 #include <scene/renderer3d/Renderer3d.h>
+#include <scene/renderer3d/FirstPassModelShaderVariable.h>
 #include <scene/renderer3d/OpaqueMeshFilter.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
@@ -72,7 +73,8 @@ namespace urchin {
         this->camera->initialize(sceneWidth, sceneHeight);
 
         //deferred passes
-        modelSetDisplayer.setupShader("model.vert.spv", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
+        modelSetDisplayer.setupShader("modelFirstPass.vert.spv", "modelFirstPass.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
+        modelSetDisplayer.setupCustomShaderVariable(std::make_unique<FirstPassModelShaderVariable>(*this->camera));
         modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer.initialize(*deferredFirstPassRenderTarget);
         ambientOcclusionManager.addObserver(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);

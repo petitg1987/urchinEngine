@@ -15,8 +15,7 @@ namespace urchin {
 
     void TransparentModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t uniformBinding2) {
         assert(meshRendererBuilder->getUniformData().size() == 2);
-        meshRendererBuilder
-                ->addUniformData(uniformBinding1, sizeof(cameraPlanes), &cameraPlanes);
+        meshRendererBuilder->addUniformData(uniformBinding1, sizeof(cameraPlanes), &cameraPlanes);
         lightManager.setupDeferredSecondPassRenderer(meshRendererBuilder, uniformBinding2);
     }
 

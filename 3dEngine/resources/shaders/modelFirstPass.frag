@@ -6,6 +6,10 @@ layout(std140, set = 0, binding = 1) uniform MaterialData {
     float ambientFactor;
 } materialData;
 
+layout(std140, set = 0, binding = 2) uniform Jitter {
+    vec2 values;
+} jitter;
+
 layout(binding = 4) uniform sampler2D albedoTex;
 layout(binding = 5) uniform sampler2D normalTex;
 layout(binding = 6) uniform sampler2D roughnessTex;
@@ -20,17 +24,25 @@ layout(location = 0) out vec4 fragAlbedoAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
 layout(location = 2) out vec2 fragPbr;
 
+vec2 unjitterTextureUv(vec2 uv) {
+    //Tips to debug following code: apply a scale on camera jitter of 50.0f and check that textures don't move despite the jittering
+    //TODO Note: We negate the y because UV and screen space run in opposite directions => negate for Vulkan ???
+    return uv - (dFdxFine(uv) * jitter.values.x) - (dFdyFine(uv) * jitter.values.y);
+}
+
 void main() {
+    vec2 unjitterUv = unjitterTextureUv(texCoordinates);
+
     //albedo and emissive
-    fragAlbedoAndEmissive = vec4(texture(albedoTex, texCoordinates).rgb, materialData.encodedEmissiveFactor);
+    fragAlbedoAndEmissive = vec4(texture(albedoTex, unjitterUv).rgb, materialData.encodedEmissiveFactor);
 
     //normal and ambient factor
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
-    vec3 texNormal = normalize(texture(normalTex, texCoordinates).rgb * 2.0 - 1.0);
+    vec3 texNormal = normalize(texture(normalTex, unjitterUv).rgb * 2.0 - 1.0);
     vec3 normal = ((tbnMatrix * texNormal) + 1.0) / 2.0;
     fragNormalAndAmbient = vec4(normal, materialData.ambientFactor);
 
     //pbr
-    fragPbr.r = texture(roughnessTex, texCoordinates).r;
-    fragPbr.g = texture(metalnessTex, texCoordinates).r;
+    fragPbr.r = texture(roughnessTex, unjitterUv).r;
+    fragPbr.g = texture(metalnessTex, unjitterUv).r;
 }

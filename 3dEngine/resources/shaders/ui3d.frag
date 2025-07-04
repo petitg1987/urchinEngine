@@ -16,7 +16,7 @@ layout(location = 0) out vec4 fragAlbedoAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
 layout(location = 2) out vec2 fragPbr;
 
-void main() {
+void main() { //TODO unjitter ?
     //albedo and emissive
     vec4 color = texture(albedoTex, texCoordinates);
     if (color.a < 0.05) {
