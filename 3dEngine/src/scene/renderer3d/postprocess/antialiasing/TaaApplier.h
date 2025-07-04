@@ -25,6 +25,10 @@ namespace urchin {
             void applyAntiAliasing(uint32_t, unsigned int, const Camera&);
 
         private:
+            struct AntiAliasingShaderConst {
+                uint32_t highQuality;
+            };
+
             int getOutputTextureIndex() const;
             int getHistoryTextureIndex() const;
 

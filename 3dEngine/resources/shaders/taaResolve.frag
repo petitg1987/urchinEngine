@@ -1,6 +1,8 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
+layout(constant_id = 0) const bool TAA_HIGH_QUALITY = true;
+
 #include "_lightingFunctions.frag"
 #include "_samplingFunctions.frag"
 
@@ -94,8 +96,14 @@ void main() {
     }
 
     //Get history color
-    vec3 historyColor = sampleCatmullRom(historyTex, previousTexPos);
-    //TODO low quality: vec3 historyColor = texture(historyTex, previousTexPos).xyz;
+    vec3 historyColor = vec3(0.0, 0.0, 0.0);
+    if (TAA_HIGH_QUALITY) {
+        historyColor = sampleCatmullRom(historyTex, previousTexPos);
+        historyColor = vec3(1.0, 1.0, 0.0); //TODO remove !
+    } else {
+        historyColor = texture(historyTex, previousTexPos).xyz;
+        historyColor = vec3(1.0, 0.0, 0.0); //TODO remove !
+    }
 
     //A color sourced from the history texture that diverges greatly from the scene texture should be discarded/adjusted:
     //1. Apply clamp on history color

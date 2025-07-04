@@ -9,7 +9,7 @@ namespace urchin {
 
     /**
      * Wrapper for shader constant variables.
-     * Variable size and data don't require memory alignment but only 4 bytes scalar can be used as constant ('bool' type must be VkBool32).
+     * Variable size and data don't require memory alignment but only 4 bytes scalar can be used as constant ('bool' type must be uint32_t).
      */
     ShaderConstants::ShaderConstants(std::vector<std::size_t> variablesSize, const void* data) :
             variablesSize(std::move(variablesSize)) {

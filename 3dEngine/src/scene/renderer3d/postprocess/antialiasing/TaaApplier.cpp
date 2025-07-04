@@ -147,7 +147,10 @@ namespace urchin {
     }
 
     void TaaApplier::createOrUpdateResolveRenderer() {
-        taaResolveShader = ShaderBuilder::createShader("taaResolve.vert.spv", "taaResolve.frag.spv", resolveRenderTarget->isTestMode());
+        AntiAliasingShaderConst antiAliasingShaderConst = {.highQuality = (quality == AntiAliasingQuality::HIGH)};
+        std::vector variablesSize = {sizeof(AntiAliasingShaderConst::highQuality)};
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &antiAliasingShaderConst);
+        taaResolveShader = ShaderBuilder::createShader("taaResolve.vert.spv", "taaResolve.frag.spv", std::move(shaderConstants), resolveRenderTarget->isTestMode());
 
         std::vector vertexCoord = {
             Point2(-1.0f, -1.0f), Point2(1.0f, -1.0f), Point2(1.0f, 1.0f),
@@ -171,7 +174,6 @@ namespace urchin {
         this->quality = quality;
 
         if (isEnabled) {
-            createOrUpdateVelocityRenderer();
             createOrUpdateResolveRenderer();
         }
     }
