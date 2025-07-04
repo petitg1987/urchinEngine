@@ -161,6 +161,7 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(RESOLVE_SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(RESOLVE_DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(RESOLVE_VELOCITY_TEX_UNIFORM_BINDING, TextureReader::build(velocityTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(RESOLVE_HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()))
                 ->build();

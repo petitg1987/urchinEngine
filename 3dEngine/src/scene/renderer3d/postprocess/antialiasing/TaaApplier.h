@@ -44,8 +44,9 @@ namespace urchin {
             static constexpr uint32_t VELOCITY_DEPTH_TEX_UNIFORM_BINDING = 1;
 
             static constexpr uint32_t RESOLVE_SCENE_TEX_UNIFORM_BINDING = 0;
-            static constexpr uint32_t RESOLVE_VELOCITY_TEX_UNIFORM_BINDING = 1;
-            static constexpr uint32_t RESOLVE_HISTORY_TEX_UNIFORM_BINDING = 2;
+            static constexpr uint32_t RESOLVE_DEPTH_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t RESOLVE_VELOCITY_TEX_UNIFORM_BINDING = 2;
+            static constexpr uint32_t RESOLVE_HISTORY_TEX_UNIFORM_BINDING = 3;
 
             //properties
             bool isTestMode;

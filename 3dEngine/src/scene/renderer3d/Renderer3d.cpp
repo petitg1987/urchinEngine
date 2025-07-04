@@ -570,7 +570,7 @@ namespace urchin {
             }
         }
         if (isAntiAliasingActivated && antiAliasingApplier.useDepthTexture()) {
-            numDependenciesToFirstPassOutput += 1; //TAA velocity
+            numDependenciesToFirstPassOutput += 2; //TAA velocity & TAA resolve
         }
         if (isReflectionActivated) {
             numDependenciesToFirstPassOutput += 3; //reflection color & reflection blur (vertical & horizontal)
