@@ -31,16 +31,15 @@ namespace urchin {
     void TaaApplier::updateCamera(Camera& camera, unsigned int sceneWidth, unsigned int sceneHeight) {
         frameCount++;
 
-        //TODO only jitter from 0.0 to 1.0, not negative ?!
         constexpr std::array HALTON_SEQUENCE_X = {0.500000f, 0.250000f, 0.750000f, 0.125000f, 0.625000f, 0.375000f, 0.875000f, 0.062500f,
             0.562500f, 0.312500f, 0.812500f, 0.187500f, 0.687500f, 0.437500f, 0.937500f, 0.031250f};
         constexpr std::array HALTON_SEQUENCE_Y = {0.333333f, 0.666667f, 0.111111f, 0.444444f, 0.777778f, 0.222222f, 0.555556f, 0.888889f,
             0.037037f, 0.370370f, 0.703704f, 0.148148f, 0.481481f, 0.814815f, 0.259259f, 0.592593f};
 
         std::size_t sequenceIndex = frameCount % HALTON_SEQUENCE_X.size();
-        float valueX = HALTON_SEQUENCE_X[sequenceIndex] / (float)sceneWidth;
-        float valueY = HALTON_SEQUENCE_Y[sequenceIndex] / (float)sceneHeight;
-        camera.applyJitter(Vector2(valueX * 50.0f, valueY * 50.0f)); //TODO remove * 20.0
+        float valueX = (0.5f - HALTON_SEQUENCE_X[sequenceIndex]) / (float)sceneWidth; //TODO jitter from 0.0 to 1.0 or -0.5 to 0.5 ?
+        float valueY = (0.5f - HALTON_SEQUENCE_Y[sequenceIndex]) / (float)sceneHeight;
+        camera.applyJitter(Vector2(valueX, valueY)); //TODO remove * 50.0
     }
 
     void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& sceneTexture) {
