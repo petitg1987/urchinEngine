@@ -53,7 +53,8 @@ namespace urchin {
             void generateVelocityTexture(uint32_t, const Camera&);
 
             static constexpr uint32_t VELOCITY_POSITIONING_DATA_UNIFORM_BINDING = 0;
-            static constexpr uint32_t VELOCITY_DEPTH_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t VELOCITY_JITTER_DATA_UNIFORM_BINDING = 1; //TODO merge with previous ?
+            static constexpr uint32_t VELOCITY_DEPTH_TEX_UNIFORM_BINDING = 2;
 
             static constexpr uint32_t RESOLVE_SCENE_TEX_UNIFORM_BINDING = 0;
             static constexpr uint32_t RESOLVE_DEPTH_TEX_UNIFORM_BINDING = 1;
@@ -76,6 +77,10 @@ namespace urchin {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Matrix4<float> previousProjectionViewMatrix;
             } positioningData;
+            struct JitterData {
+                alignas(8) Vector2<float> currentJitter;
+                alignas(8) Vector2<float> previousJitter;
+            } jitterData;
 
             //display - velocity
             std::shared_ptr<Texture> velocityTexture;

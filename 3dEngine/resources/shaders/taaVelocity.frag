@@ -5,7 +5,11 @@ layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mInverseProjectionView;
     mat4 mPreviousProjectionView;
 } positioningData;
-layout(binding = 1) uniform sampler2D depthTex;
+layout(std140, set = 0, binding = 1) uniform JitterData {
+    vec2 currentJitter;
+    vec2 previousJitter;
+} jitterData;
+layout(binding = 2) uniform sampler2D depthTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -20,7 +24,7 @@ void main() {
     vec4 previousPosNdc = positioningData.mPreviousProjectionView * worldPosition;
     previousPosNdc.xy /= previousPosNdc.w;
 
-    vec2 velocity = currentPosNdc.xy - previousPosNdc.xy; //TODO See https://alextardif.com/TAA.html remove jitter !!!
+    vec2 velocity = (currentPosNdc.xy + jitterData.currentJitter) - (previousPosNdc.xy + jitterData.previousJitter); //TODO check velo is 0 in static
 
     //NDC values are from -1.0 to 1.0.
     //However, we want a velocity of x=1.0 represents a full move from the left to the right of the screen (similar to texCoordinates).

@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <graphics/render/shader/ShaderBuilder.h>
@@ -13,7 +15,8 @@ namespace urchin {
             previousJitter(Vector2(0.0f, 0.0f)),
             copySceneTexToHistory(true),
             frameCount(0) {
-
+        std::memset((void *)&positioningData, 0, sizeof(positioningData));
+        std::memset((void *)&jitterData, 0, sizeof(jitterData));
     }
 
     TaaApplier::~TaaApplier() {
@@ -147,6 +150,7 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(VELOCITY_POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
+                ->addUniformData(VELOCITY_JITTER_DATA_UNIFORM_BINDING, sizeof(jitterData), &jitterData)
                 ->addUniformTextureReader(VELOCITY_DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->build();
     }
@@ -206,6 +210,10 @@ namespace urchin {
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
         velocityRenderer->updateUniformData(VELOCITY_POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
         positioningData.previousProjectionViewMatrix = camera.getProjectionViewMatrix();
+
+        jitterData.currentJitter = getCurrentJitter();
+        jitterData.previousJitter = getPreviousJitter(); //TODO do as previousProjectionViewMatrix ?
+        velocityRenderer->updateUniformData(VELOCITY_JITTER_DATA_UNIFORM_BINDING, &jitterData);
 
         unsigned int numDependenciesToVelocityTexture = 1;
         velocityRenderTarget->render(frameIndex, numDependenciesToVelocityTexture);
