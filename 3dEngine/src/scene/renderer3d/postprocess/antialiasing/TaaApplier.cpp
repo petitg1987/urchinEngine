@@ -82,9 +82,9 @@ namespace urchin {
     void TaaApplier::createOrUpdateResolveRenderData() {
         freeResolveRenderData();
 
-        outputOrHistoryTextures[0] = Texture::build("aa: output or history 1", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputOrHistoryTextures[0] = Texture::build("aa: output or history 1", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
         outputOrHistoryTextures[0]->enableTextureWriting(OutputUsage::GRAPHICS);
-        outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
         outputOrHistoryTextures[1]->enableTextureWriting(OutputUsage::GRAPHICS);
 
         resolveRenderTarget = std::make_unique<OffscreenRender>("anti aliasing - resolve", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
