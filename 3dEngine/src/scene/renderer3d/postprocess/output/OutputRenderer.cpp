@@ -15,10 +15,17 @@ namespace urchin {
     }
 
     void OutputRenderer::refreshInputTexture(const std::shared_ptr<Texture>& sceneTexture) {
-        if (sceneTexture.get() != this->sceneTexture.get()) {
+        if (!this->sceneTexture) {
             this->sceneTexture = sceneTexture;
-
             createOrUpdateRenderingObjects();
+        } else if (sceneTexture.get() != this->sceneTexture.get()) {
+            bool sizeUpdated = this->sceneTexture->getWidth() != sceneTexture->getWidth() || this->sceneTexture->getHeight() != sceneTexture->getHeight();
+            this->sceneTexture = sceneTexture;
+            if (sizeUpdated) {
+                createOrUpdateRenderingObjects();
+            } else {
+                outputRenderer->updateUniformTextureReader(SCENE_TEX_UNIFORM_BINDING, TextureReader::build(this->sceneTexture, TextureParam::buildNearest()));
+            }
         }
     }
 

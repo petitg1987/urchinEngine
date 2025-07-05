@@ -11,8 +11,6 @@ namespace urchin {
     BloomEffectApplier::BloomEffectApplier(const Config& config, bool isTestMode) :
             config(config),
             isTestMode(isTestMode),
-            sceneWidth(0),
-            sceneHeight(0),
             preFilterTweak({}) {
         std::memset((void *)&preFilterTweak, 0, sizeof(preFilterTweak));
 
@@ -31,15 +29,13 @@ namespace urchin {
     }
 
     void BloomEffectApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputHdrTexture) {
-        if (inputHdrTexture.get() != this->inputHdrTexture.get()) {
-            bool sizeUpdated = this->sceneWidth != inputHdrTexture->getWidth() || this->sceneHeight != inputHdrTexture->getHeight();
-            bool firstTexture = inputHdrTexture.get() == nullptr;
-
+        if (!this->inputHdrTexture) {
             this->inputHdrTexture = inputHdrTexture;
-            this->sceneWidth = inputHdrTexture->getWidth();
-            this->sceneHeight = inputHdrTexture->getHeight();
-
-            if (firstTexture || sizeUpdated) {
+            refreshRenderers();
+        } else if (inputHdrTexture.get() != this->inputHdrTexture.get()) {
+            bool sizeUpdated = this->inputHdrTexture->getWidth() != inputHdrTexture->getWidth() || this->inputHdrTexture->getHeight() != inputHdrTexture->getHeight();
+            this->inputHdrTexture = inputHdrTexture;
+            if (sizeUpdated) {
                 refreshRenderers();
             } else {
                 preFilterCompute->updateUniformTextureReader(PF_INPUT_TEX_UNIFORM_BINDING, TextureReader::build(this->inputHdrTexture, TextureParam::buildLinear()));
@@ -57,8 +53,8 @@ namespace urchin {
         clearRenderers();
 
         //create bloom step textures
-        unsigned int textureWidth = sceneWidth / 2;
-        unsigned int textureHeight = sceneHeight / 2;
+        unsigned int textureWidth = inputHdrTexture->getWidth() / 2;
+        unsigned int textureHeight = inputHdrTexture->getHeight() / 2;
         bloomStepTextures.clear();
         for (unsigned int i = 0; i < config.maxIterations; ++i) {
             std::string bloomTextureName = "bloom " + std::to_string(textureWidth) + "x" + std::to_string(textureHeight);
@@ -141,7 +137,7 @@ namespace urchin {
         }
 
         //combine
-        bloomCombineTexture = Texture::build("bloom - combine", sceneWidth, sceneHeight, VisualConfig::SCENE_TEXTURE_FORMAT);
+        bloomCombineTexture = Texture::build("bloom - combine", inputHdrTexture->getWidth(), inputHdrTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
         combineRenderTarget = std::make_unique<OffscreenRender>("bloom - combine", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         combineRenderTarget->addOutputTexture(bloomCombineTexture);
         combineRenderTarget->initialize();

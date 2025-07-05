@@ -60,8 +60,6 @@ namespace urchin {
 
             Config config;
             bool isTestMode;
-            unsigned int sceneWidth;
-            unsigned int sceneHeight;
             std::shared_ptr<Texture> inputHdrTexture;
             std::vector<std::shared_ptr<Texture>> bloomStepTextures;
             std::shared_ptr<Texture> bloomCombineTexture;
