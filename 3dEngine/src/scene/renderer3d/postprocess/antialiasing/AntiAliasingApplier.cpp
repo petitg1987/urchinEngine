@@ -24,13 +24,6 @@ namespace urchin {
         return Vector2(0.0f, 0.0f);
     }
 
-    Vector2<float> AntiAliasingApplier::getPreviousJitter() const {
-        if (config.useTaa) {
-            taaApplier.getPreviousJitter();
-        }
-        return Vector2(0.0f, 0.0f);
-    }
-
     void AntiAliasingApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& inputTexture) {
         taaApplier.refreshInputTexture(depthTexture, inputTexture);
         fxaaApplier.refreshInputTexture(inputTexture);
