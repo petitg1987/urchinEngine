@@ -28,7 +28,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            void applyAntiAliasing(uint32_t, unsigned int, Camera&);
+            void applyAntiAliasing(uint32_t, unsigned int, const Camera&);
 
         private:
             //properties

@@ -23,7 +23,7 @@ namespace urchin {
 
             void updateQuality(AntiAliasingQuality);
 
-            void applyAntiAliasing(uint32_t, unsigned int, Camera&);
+            void applyAntiAliasing(uint32_t, unsigned int, const Camera&);
 
         private:
             static constexpr std::array HALTON_SEQUENCE_X = {0.500000f, 0.250000f, 0.750000f, 0.125000f, 0.625000f, 0.375000f, 0.875000f, 0.062500f,

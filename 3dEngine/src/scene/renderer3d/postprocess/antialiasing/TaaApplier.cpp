@@ -177,7 +177,7 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture, Camera& camera) {
+    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture, const Camera& camera) {
         assert(isEnabled);
         generateVelocityTexture(frameIndex, camera);
 
@@ -189,8 +189,6 @@ namespace urchin {
         resolveRenderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
 
         resolveRenderTarget->render(frameIndex, numDependenciesToAATexture);
-
-        camera.applyJitter(Vector2(0.0f, 0.0f)); //disable jitter for next rendering (transparent, etc.)
 
         if (copySceneTexToHistory) {
             resolveRenderTarget->removeAllPreRenderTextureCopiers();
