@@ -68,7 +68,7 @@ namespace urchin {
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> sceneTexture;
             bool copySceneTexToHistory;
-            unsigned int frameCount;
+            uint32_t frameCount;
             struct VelocityData {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Matrix4<float> previousProjectionViewMatrix;

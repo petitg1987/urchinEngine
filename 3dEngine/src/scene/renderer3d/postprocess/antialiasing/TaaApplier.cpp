@@ -35,7 +35,6 @@ namespace urchin {
     }
 
     void TaaApplier::applyCameraJitter(Camera& camera, unsigned int sceneWidth, unsigned int sceneHeight) {
-        frameCount++;
         std::size_t sequenceIndex = frameCount % HALTON_SEQUENCE_X.size();
         currentJitter = Vector2((HALTON_SEQUENCE_X[sequenceIndex] * 2.0f - 1.0f) / (float)sceneWidth, (HALTON_SEQUENCE_Y[sequenceIndex] * 2.0f - 1.0f) / (float)sceneHeight);
         camera.applyJitter(currentJitter);
@@ -179,6 +178,8 @@ namespace urchin {
 
     void TaaApplier::applyAntiAliasing(uint32_t frameCount, unsigned int numDependenciesToAATexture, const Camera& camera) {
         assert(isEnabled);
+        this->frameCount = frameCount;
+
         generateVelocityTexture(frameCount, camera);
 
         if (copySceneTexToHistory) {
