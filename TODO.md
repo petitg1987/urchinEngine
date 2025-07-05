@@ -29,7 +29,7 @@
   * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
   * ▼ **NEW FEATURE**: Implement scalable ambient obscurance
 * Anti-aliasing
-  * ▲ **NEW FEATURE**: Handling moving objects in TAA
+  * ► **NEW FEATURE**: Handling moving objects in TAA
     * See: <https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/>
   * ▼ **OPTIMIZATION**: Use computer shaders
 * Landscape
