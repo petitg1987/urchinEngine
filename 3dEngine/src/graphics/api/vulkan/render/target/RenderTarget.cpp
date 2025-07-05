@@ -435,7 +435,7 @@ namespace urchin {
         //see override methods
     }
 
-    void RenderTarget::configureWaitSemaphore(uint32_t frameIndex, VkSubmitInfo2& submitInfo, std::optional<VkSemaphoreSubmitInfo> additionalSemaphoreSubmitInfo) const {
+    void RenderTarget::configureWaitSemaphore(uint32_t frameCount, VkSubmitInfo2& submitInfo, std::optional<VkSemaphoreSubmitInfo> additionalSemaphoreSubmitInfo) const {
         queueSubmitWaitSemaphoreSubmitInfos.clear();
 
         if (additionalSemaphoreSubmitInfo.has_value()) {
@@ -453,7 +453,7 @@ namespace urchin {
         }
 
         for (OffscreenRender* offscreenRenderDependency : getOffscreenRenderDependencies()) {
-            VkSemaphore waitSemaphore = offscreenRenderDependency->popSubmitSemaphore(frameIndex, name);
+            VkSemaphore waitSemaphore = offscreenRenderDependency->popSubmitSemaphore(frameCount, name);
             if (waitSemaphore) {
                 VkSemaphoreSubmitInfo semaphoreSubmitInfo{};
                 semaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;

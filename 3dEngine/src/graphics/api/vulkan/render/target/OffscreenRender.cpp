@@ -15,7 +15,7 @@ namespace urchin {
             bIsArrayOutput(false),
             commandBufferFence(nullptr),
             submitSemaphores({}),
-            submitSemaphoresFrameIndex(0),
+            submitSemaphoresFrameCount(0),
             remainingSubmitSemaphores(0),
             submitSemaphoresStale(false) {
 
@@ -319,20 +319,20 @@ namespace urchin {
         }
     }
 
-    void OffscreenRender::render(uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
+    void OffscreenRender::render(uint32_t frameCount, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "offRender");
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit2
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
-            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
 
         if (numDependenciesToOutputs > MAX_SUBMIT_SEMAPHORES) {
-            throw std::runtime_error("Number of dependencies to output (" + std::to_string(numDependenciesToOutputs) + ") is higher that the maximum expected on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Number of dependencies to output (" + std::to_string(numDependenciesToOutputs) + ") is higher that the maximum expected on render target: " + getName() + "/" + std::to_string(frameCount));
         } else if (remainingSubmitSemaphores != 0) {
-            throw std::runtime_error("Not all submit semaphores (remaining: " + std::to_string(remainingSubmitSemaphores) + ") has been consumed on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Not all submit semaphores (remaining: " + std::to_string(remainingSubmitSemaphores) + ") has been consumed on render target: " + getName() + "/" + std::to_string(frameCount));
         } else if (submitSemaphoresStale) {
             VkResult resultDeviceWait = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (resultDeviceWait != VK_SUCCESS) {
@@ -362,23 +362,23 @@ namespace urchin {
 
         VkSubmitInfo2 submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
-        configureWaitSemaphore(frameIndex, submitInfo, std::nullopt);
+        configureWaitSemaphore(frameCount, submitInfo, std::nullopt);
         submitInfo.commandBufferInfoCount = 1;
         submitInfo.pCommandBufferInfos = &commandBufferSubmitInfo;
         submitInfo.signalSemaphoreInfoCount = numDependenciesToOutputs;
         submitInfo.pSignalSemaphoreInfos = numDependenciesToOutputs > 0 ? submitSemaphoreSubmitInfo.data() : nullptr;
         remainingSubmitSemaphores = numDependenciesToOutputs;
-        submitSemaphoresFrameIndex = frameIndex;
+        submitSemaphoresFrameCount = frameCount;
 
         updateTexturesWriter();
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFence);
         if (resultResetFences != VK_SUCCESS) {
-            throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
         VkResult resultQueueSubmit = vkQueueSubmit2(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, commandBufferFence);
         if (resultQueueSubmit != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
     }
 
@@ -401,21 +401,21 @@ namespace urchin {
         }
     }
 
-    VkSemaphore OffscreenRender::popSubmitSemaphore(uint32_t frameIndex, const std::string& requester) {
-        if (submitSemaphoresFrameIndex == frameIndex) {
+    VkSemaphore OffscreenRender::popSubmitSemaphore(uint32_t frameCount, const std::string& requester) {
+        if (submitSemaphoresFrameCount == frameCount) {
             if (remainingSubmitSemaphores == 0) {
-                throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameIndex) + " (requester: " + requester + ")");
+                throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameCount) + " (requester: " + requester + ")");
             }
             return submitSemaphores[--remainingSubmitSemaphores];
         }
 
         //This render target has been generated in a previous frame: therefore, the synchronization is already done and no need to be redone. Typical case is when the render target is cached.
-        assert(submitSemaphoresFrameIndex < frameIndex);
+        assert(submitSemaphoresFrameCount < frameCount);
         return nullptr;
     }
 
-    void OffscreenRender::markSubmitSemaphoreUnused(uint32_t frameIndex) {
-        popSubmitSemaphore(frameIndex, getName());
+    void OffscreenRender::markSubmitSemaphoreUnused(uint32_t frameCount) {
+        popSubmitSemaphore(frameCount, getName());
         submitSemaphoresStale = true; //an unused semaphore is considered as stale
     }
 

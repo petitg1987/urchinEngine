@@ -113,9 +113,9 @@ namespace urchin {
         }
     }
 
-    void FxaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture) const {
+    void FxaaApplier::applyAntiAliasing(uint32_t frameCount, unsigned int numDependenciesToAATexture) const {
         assert(isEnabled);
-        renderTarget->render(frameIndex, numDependenciesToAATexture);
+        renderTarget->render(frameCount, numDependenciesToAATexture);
     }
 
 }

@@ -200,21 +200,21 @@ namespace urchin {
         return reflectionCombineTexture;
     }
 
-    void ReflectionApplier::applyReflection(uint32_t frameIndex, unsigned int numDependenciesToReflectionCombineTexture, const Camera& camera) {
+    void ReflectionApplier::applyReflection(uint32_t frameCount, unsigned int numDependenciesToReflectionCombineTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "applySSR");
 
         unsigned int numDependenciesToReflectionColorTexture = 1 /* vertical blur filter */;
         positioningData.viewMatrix = camera.getViewMatrix();
         reflectionColorRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
-        reflectionColorRenderTarget->render(frameIndex, numDependenciesToReflectionColorTexture);
+        reflectionColorRenderTarget->render(frameCount, numDependenciesToReflectionColorTexture);
 
         unsigned int numDependenciesToVerticalBlurFilterOutputs = 1 /* horizontal blur filter */;
-        verticalBlurFilter->applyFilter(frameIndex, numDependenciesToVerticalBlurFilterOutputs);
+        verticalBlurFilter->applyFilter(frameCount, numDependenciesToVerticalBlurFilterOutputs);
 
         unsigned int numDependenciesToHorizontalBlurFilterOutputs = 1 /* reflection combine */;
-        horizontalBlurFilter->applyFilter(frameIndex, numDependenciesToHorizontalBlurFilterOutputs);
+        horizontalBlurFilter->applyFilter(frameCount, numDependenciesToHorizontalBlurFilterOutputs);
 
-        reflectionCombineRenderTarget->render(frameIndex, numDependenciesToReflectionCombineTexture);
+        reflectionCombineRenderTarget->render(frameCount, numDependenciesToReflectionCombineTexture);
     }
 
 }

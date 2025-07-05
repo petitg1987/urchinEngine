@@ -239,27 +239,27 @@ namespace urchin {
         }
     }
 
-    void ScreenRender::render(uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
+    void ScreenRender::render(uint32_t frameCount, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "screenRender");
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit2 for the frame 'currentFrameIndex'.
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
-            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
 
         if (numDependenciesToOutputs != 0) {
-            throw std::runtime_error("No dependencies to outputs expected on screen render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("No dependencies to outputs expected on screen render target: " + getName() + "/" + std::to_string(frameCount));
         }
 
         VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, presentCompleteSemaphores[currentFrameIndex], VK_NULL_HANDLE, &vkImageIndex);
         if (resultAcquireImage == VK_ERROR_OUT_OF_DATE_KHR) { //after window resize (never had the case !) or when window is minimized with Alt+Tab or Win+D
             onResize();
-            std::ranges::for_each(getOffscreenRenderDependencies(), [frameIndex](OffscreenRender* ord){ ord->markSubmitSemaphoreUnused(frameIndex); });
+            std::ranges::for_each(getOffscreenRenderDependencies(), [frameCount](OffscreenRender* ord){ ord->markSubmitSemaphoreUnused(frameCount); });
             return;
         } else if (resultAcquireImage != VK_SUCCESS && resultAcquireImage != VK_SUBOPTIMAL_KHR /* Continue with suboptimal image because already acquired */) {
-            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::string(string_VkResult(resultAcquireImage)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::string(string_VkResult(resultAcquireImage)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
 
         updatePipelineProcessorData(vkImageIndex);
@@ -271,7 +271,7 @@ namespace urchin {
             // 2) Acquired images from swap chain are returned out-of-order
             resultWaitForFences = vkWaitForFences(logicalDevice, 1, &imagesFences[vkImageIndex], VK_TRUE, UINT64_MAX);
             if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
-                throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+                throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
             }
         }
         imagesFences[vkImageIndex] = commandBufferFences[currentFrameIndex]; //mark the image as now being in use by this frame
@@ -297,7 +297,7 @@ namespace urchin {
 
         VkSubmitInfo2 submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
-        configureWaitSemaphore(frameIndex, submitInfo, imageAvailableSemaphoreSubmitInfo);
+        configureWaitSemaphore(frameCount, submitInfo, imageAvailableSemaphoreSubmitInfo);
         submitInfo.commandBufferInfoCount = 1;
         submitInfo.pCommandBufferInfos = &commandBufferSubmitInfo;
         submitInfo.signalSemaphoreInfoCount = 1;
@@ -305,11 +305,11 @@ namespace urchin {
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
         if (resultResetFences != VK_SUCCESS) {
-            throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
         VkResult resultQueueSubmit = vkQueueSubmit2(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
         if (resultQueueSubmit != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
 
         std::array swapChains = {swapChainHandler.getSwapChain()};
@@ -332,7 +332,7 @@ namespace urchin {
             }
             onResize();
         } else if (queuePresentResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to queue an image for presentation with error code '" + std::string(string_VkResult(queuePresentResult)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to queue an image for presentation with error code '" + std::string(string_VkResult(queuePresentResult)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
 
         currentFrameIndex++;

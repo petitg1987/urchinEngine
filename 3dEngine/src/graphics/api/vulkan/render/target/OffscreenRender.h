@@ -78,7 +78,7 @@ namespace urchin {
 
             VkFence commandBufferFence;
             std::array<VkSemaphore, MAX_SUBMIT_SEMAPHORES> submitSemaphores;
-            uint32_t submitSemaphoresFrameIndex;
+            uint32_t submitSemaphoresFrameCount;
             unsigned int remainingSubmitSemaphores;
             bool submitSemaphoresStale;
     };

@@ -203,26 +203,26 @@ namespace urchin {
         }
     }
 
-    void BloomEffectApplier::applyBloom(uint32_t frameIndex, unsigned int numDependenciesToBloomCombineTexture) const {
+    void BloomEffectApplier::applyBloom(uint32_t frameCount, unsigned int numDependenciesToBloomCombineTexture) const {
         ScopeProfiler sp(Profiler::graphic(), "applyBloom");
 
         unsigned int numDependenciesToPreFilterOutput = 2; //first down sample & last up sample
-        preFilterRenderTarget->render(frameIndex, numDependenciesToPreFilterOutput);
+        preFilterRenderTarget->render(frameCount, numDependenciesToPreFilterOutput);
 
         for (const auto& downSampleRenderTarget : downSampleRenderTargets) {
             unsigned int numDependenciesToDownSampleOutput = 1; //next down sample OR first up sample
             if (downSampleRenderTarget.get() != downSampleRenderTargets.back().get()) {
                 numDependenciesToDownSampleOutput += 1; //up sample
             }
-            downSampleRenderTarget->render(frameIndex, numDependenciesToDownSampleOutput);
+            downSampleRenderTarget->render(frameCount, numDependenciesToDownSampleOutput);
         }
 
         for (const auto& upSampleRenderTarget : upSampleRenderTargets) {
             unsigned int numDependenciesToUpSampleOutput = 1; //next up sample OR bloom combine
-            upSampleRenderTarget->render(frameIndex, numDependenciesToUpSampleOutput);
+            upSampleRenderTarget->render(frameCount, numDependenciesToUpSampleOutput);
         }
 
-        combineRenderTarget->render(frameIndex, numDependenciesToBloomCombineTexture);
+        combineRenderTarget->render(frameCount, numDependenciesToBloomCombineTexture);
     }
 
 }

@@ -79,7 +79,7 @@ namespace urchin {
 
             //renderer
             std::unique_ptr<GraphicsApiService> graphicsApiService;
-            uint32_t frameIndex;
+            uint32_t frameCount;
             ScreenRender screenRenderTarget;
             std::vector<std::unique_ptr<Renderer3d>> renderers3d;
             Renderer3d* activeRenderer3d;

@@ -177,9 +177,9 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture, const Camera& camera) {
+    void TaaApplier::applyAntiAliasing(uint32_t frameCount, unsigned int numDependenciesToAATexture, const Camera& camera) {
         assert(isEnabled);
-        generateVelocityTexture(frameIndex, camera);
+        generateVelocityTexture(frameCount, camera);
 
         if (copySceneTexToHistory) {
             resolveRenderTarget->addPreRenderTextureCopier(TextureCopier(*sceneTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
@@ -188,7 +188,7 @@ namespace urchin {
         resolveRenderer->updateUniformTextureReader(RESOLVE_HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
         resolveRenderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
 
-        resolveRenderTarget->render(frameIndex, numDependenciesToAATexture);
+        resolveRenderTarget->render(frameCount, numDependenciesToAATexture);
 
         if (copySceneTexToHistory) {
             resolveRenderTarget->removeAllPreRenderTextureCopiers();
@@ -196,7 +196,7 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::generateVelocityTexture(uint32_t frameIndex, const Camera& camera) {
+    void TaaApplier::generateVelocityTexture(uint32_t frameCount, const Camera& camera) {
         velocityData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
         velocityData.currentJitter = currentJitter;
         velocityRenderer->updateUniformData(VELOCITY_DATA_UNIFORM_BINDING, &velocityData);
@@ -204,7 +204,7 @@ namespace urchin {
         velocityData.previousJitter = currentJitter;
 
         unsigned int numDependenciesToVelocityTexture = 1;
-        velocityRenderTarget->render(frameIndex, numDependenciesToVelocityTexture);
+        velocityRenderTarget->render(frameCount, numDependenciesToVelocityTexture);
     }
 
 }

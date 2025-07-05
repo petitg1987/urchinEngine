@@ -88,10 +88,10 @@ namespace urchin {
         return textureHeight;
     }
 
-    void TextureFilter::applyFilter(uint32_t frameIndex, unsigned int numDependenciesToOutputTextures) const {
+    void TextureFilter::applyFilter(uint32_t frameCount, unsigned int numDependenciesToOutputTextures) const {
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }
-        renderTarget->render(frameIndex, numDependenciesToOutputTextures);
+        renderTarget->render(frameCount, numDependenciesToOutputTextures);
     }
 }

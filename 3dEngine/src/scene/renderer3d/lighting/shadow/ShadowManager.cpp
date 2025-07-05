@@ -266,14 +266,14 @@ namespace urchin {
         #endif
     }
 
-    void ShadowManager::updateShadowMaps(uint32_t frameIndex, unsigned int numDependenciesToShadowMaps) const {
+    void ShadowManager::updateShadowMaps(uint32_t frameCount, unsigned int numDependenciesToShadowMaps) const {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
 
         unsigned int renderingOrder = 0;
         for (const Light* visibleLight : lightManager.getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
                 const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;
-                lightShadowMap->renderModels(frameIndex, numDependenciesToShadowMaps, renderingOrder);
+                lightShadowMap->renderModels(frameCount, numDependenciesToShadowMaps, renderingOrder);
             }
         }
     }

@@ -94,7 +94,7 @@ namespace urchin {
         return sceneTexture;
     }
 
-    void TransparentManager::drawTransparentModels(uint32_t frameIndex, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
+    void TransparentManager::drawTransparentModels(uint32_t frameCount, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 
@@ -122,7 +122,7 @@ namespace urchin {
 
         renderTarget->disableAllProcessors();
         modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix(), modelSorter, &sortUserData);
-        renderTarget->render(frameIndex, numDependenciesToTransparentTextures);
+        renderTarget->render(frameCount, numDependenciesToTransparentTextures);
     }
 
 }

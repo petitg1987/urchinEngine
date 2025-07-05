@@ -57,13 +57,13 @@ namespace urchin {
         return config;
     }
 
-    void AntiAliasingApplier::applyAntiAliasing(uint32_t frameIndex, unsigned int numDependenciesToAATexture, const Camera& camera) {
+    void AntiAliasingApplier::applyAntiAliasing(uint32_t frameCount, unsigned int numDependenciesToAATexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "applyAA");
 
         if (config.useTaa) {
-            taaApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture, camera);
+            taaApplier.applyAntiAliasing(frameCount, numDependenciesToAATexture, camera);
         } else {
-            fxaaApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
+            fxaaApplier.applyAntiAliasing(frameCount, numDependenciesToAATexture);
         }
     }
 

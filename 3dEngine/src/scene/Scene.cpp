@@ -16,7 +16,7 @@ namespace urchin {
             fps(0),
             fpsForDisplay(0),
             fpsLimit(-1),
-            frameIndex(0),
+            frameCount(0),
             screenRenderTarget(ScreenRender("screen", false, RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
             activeUiRenderer(nullptr),
@@ -285,7 +285,7 @@ namespace urchin {
         {
             ScopeProfiler sp(Profiler::graphic(), "sceneDisplay");
 
-            graphicsApiService->frameStart(frameIndex);
+            graphicsApiService->frameStart(frameCount);
             handleFpsLimiter();
             computeFps();
             float dt = getDeltaTime();
@@ -295,14 +295,14 @@ namespace urchin {
             for (auto* activeRenderer: std::initializer_list<Renderer *>{activeRenderer3d, activeUiRenderer}) {
                 if (activeRenderer) {
                     screenRenderingOrder++;
-                    activeRenderer->prepareRendering(frameIndex, dt, screenRenderingOrder);
+                    activeRenderer->prepareRendering(frameCount, dt, screenRenderingOrder);
                 }
             }
-            screenRenderTarget.render(frameIndex, 0);
+            screenRenderTarget.render(frameCount, 0);
 
             ResourceContainer::instance().cleanResources();
             graphicsApiService->frameEnd();
-            frameIndex++;
+            frameCount++;
         }
 
         if (DEBUG_PROFILE_FRAME_BY_FRAME) {
