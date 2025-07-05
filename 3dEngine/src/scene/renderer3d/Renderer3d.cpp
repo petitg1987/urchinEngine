@@ -327,14 +327,9 @@ namespace urchin {
         unsigned int numDependenciesToFirstPassOutput = computeDependenciesToFirstPassOutput();
         renderDeferredFirstPass(frameIndex, dt, numDependenciesToFirstPassOutput);
 
-        unsigned int numDependenciesToSecondPassOutput = isAntiAliasingActivated ? 1 /* anti-aliasing */ : 2 /* bloom pre-filter & bloom combine */;
+        unsigned int numDependenciesToSecondPassOutput = 2; //bloom pre-filter & bloom combine;
         numDependenciesToSecondPassOutput += DEBUG_DISPLAY_ILLUMINATED_BUFFER ? 1 : 0;
         renderDeferredSecondPass(frameIndex, numDependenciesToSecondPassOutput);
-
-        if (isAntiAliasingActivated) {
-            unsigned int numDependenciesToAATexture = 2; //bloom pre-filter & bloom combine
-            antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture, *camera);
-        }
 
         unsigned int numDependenciesToBloomCombineTexture = isReflectionActivated ? 2 /* reflection color & reflection combine */ : 1 /* transparent */;
         bloomEffectApplier.applyBloom(frameIndex, numDependenciesToBloomCombineTexture);
@@ -344,8 +339,13 @@ namespace urchin {
             reflectionApplier.applyReflection(frameIndex, numDependenciesToReflectionCombineTexture, *camera);
         }
 
-        unsigned int numDependenciesToTransparentTextures = 1; //output renderer
+        unsigned int numDependenciesToTransparentTextures = 1; //anti-aliasing OR output renderer
         transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
+
+        if (isAntiAliasingActivated) {
+            unsigned int numDependenciesToAATexture = 1; //output renderer
+            antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture, *camera);
+        }
 
         outputRenderer.render(screenRenderingOrder);
 
@@ -470,11 +470,6 @@ namespace urchin {
         }
 
         std::shared_ptr<Texture> currentSceneTexture = illuminatedTexture;
-        if (isAntiAliasingActivated) {
-            antiAliasingApplier.applyCameraJitter(*camera, deferredFirstPassRenderTarget->getDepthTexture()->getWidth(), deferredFirstPassRenderTarget->getDepthTexture()->getHeight());
-            antiAliasingApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
-            currentSceneTexture = antiAliasingApplier.getOutputTexture();
-        }
 
         bloomEffectApplier.refreshInputTexture(currentSceneTexture);
         currentSceneTexture = bloomEffectApplier.getOutputTexture();
@@ -486,6 +481,12 @@ namespace urchin {
 
         transparentManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
         currentSceneTexture = transparentManager.getOutputTexture();
+
+        if (isAntiAliasingActivated) {
+            antiAliasingApplier.applyCameraJitter(*camera, deferredFirstPassRenderTarget->getDepthTexture()->getWidth(), deferredFirstPassRenderTarget->getDepthTexture()->getHeight());
+            antiAliasingApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
+            currentSceneTexture = antiAliasingApplier.getOutputTexture();
+        }
 
         outputRenderer.refreshInputTexture(currentSceneTexture);
 
@@ -569,11 +570,11 @@ namespace urchin {
                 numDependenciesToFirstPassOutput += 1; //AO texture
             }
         }
-        if (isAntiAliasingActivated && antiAliasingApplier.useDepthTexture()) {
-            numDependenciesToFirstPassOutput += 2; //TAA velocity & TAA resolve
-        }
         if (isReflectionActivated) {
             numDependenciesToFirstPassOutput += 3; //reflection color & reflection blur (vertical & horizontal)
+        }
+        if (isAntiAliasingActivated && antiAliasingApplier.useDepthTexture()) {
+            numDependenciesToFirstPassOutput += 2; //TAA velocity & TAA resolve
         }
         numDependenciesToFirstPassOutput += 1; //transparent
         if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_EMISSIVE_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
