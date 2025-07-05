@@ -16,8 +16,8 @@ void main() {
     vec3 color = texture(sceneTex, texCoordinates).rgb;
 
     vec4 reflectionColorAndVisibility = texture(reflectionColorTex, texCoordinates).rgba;
-    float visibility = reflectionColorAndVisibility.a * REFLECTION_STRENGTH;
+    float visibility = reduceColorBanding(reflectionColorAndVisibility.a, 0.05);
+    float colorWeight = visibility * REFLECTION_STRENGTH;
 
-    fragColor = vec4(mix(color, reflectionColorAndVisibility.rgb, visibility), 1.0);
-    fragColor.rgb = reduceColorBanding(fragColor.rgb, 1.0 / 255.0f);
+    fragColor = vec4(mix(color, reflectionColorAndVisibility.rgb, colorWeight), 1.0);
 }

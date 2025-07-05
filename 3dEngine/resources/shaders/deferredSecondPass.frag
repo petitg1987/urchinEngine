@@ -251,8 +251,9 @@ void main() {
             }
 
             LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
+            float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.008);
 
-            vec3 lightRadiance = lightsData.lightsInfo[lightIndex].lightColor * lightValues.lightAttenuation;
+            vec3 lightRadiance = lightsData.lightsInfo[lightIndex].lightColor * lightAttenuation;
             vec3 bidirectionalReflectanceDist;
             if ((lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PBR_ENABLED) != 0) {
                 //PBR formulas (see https://www.youtube.com/watch?v=RRE-F57fbXw & https://learnopengl.com/PBR/Theory)
@@ -284,11 +285,10 @@ void main() {
             }
 
             //add ambient
-            fragColor.rgb += modelAmbient * lightValues.lightAttenuation;
+            fragColor.rgb += modelAmbient * lightAttenuation;
 
             //update with PBR formula
             vec3 pbrFragColor = bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL;
-            pbrFragColor = reduceColorBanding(pbrFragColor, 0.004);
             fragColor.rgb += shadowAttenuation * pbrFragColor;
         }
     } else { //do not apply lighting (e.g. skybox, geometry models...)

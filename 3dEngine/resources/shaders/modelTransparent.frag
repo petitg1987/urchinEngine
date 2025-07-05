@@ -54,9 +54,11 @@ void main() {
         for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (lightsData.lightsInfo[lightIndex].isExist) {
                 LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
+                float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.007);
+
                 vec3 ambient = lightsData.lightsInfo[lightIndex].lightColor * modelAmbient;
 
-                fragColor.rgb += lightValues.lightAttenuation * ((albedo.rgb * lightValues.NdotL) + ambient);
+                fragColor.rgb += lightAttenuation * ((albedo.rgb * lightValues.NdotL) + ambient);
             } else {
                 break; //no more light
             }
