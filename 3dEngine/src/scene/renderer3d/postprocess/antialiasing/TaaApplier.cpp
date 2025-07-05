@@ -34,15 +34,11 @@ namespace urchin {
         }
     }
 
-    void TaaApplier::applyJitter(Camera& camera, unsigned int sceneWidth, unsigned int sceneHeight) {
+    void TaaApplier::applyCameraJitter(Camera& camera, unsigned int sceneWidth, unsigned int sceneHeight) {
         frameCount++;
         std::size_t sequenceIndex = frameCount % HALTON_SEQUENCE_X.size();
         currentJitter = Vector2((HALTON_SEQUENCE_X[sequenceIndex] * 2.0f - 1.0f) / (float)sceneWidth, (HALTON_SEQUENCE_Y[sequenceIndex] * 2.0f - 1.0f) / (float)sceneHeight);
-        camera.applyJitter(currentJitter);
-    }
-
-    Vector2<float> TaaApplier::getCurrentJitter() const {
-        return currentJitter;
+        camera.applyJitter(currentJitter * 25.0f); //TODO remove
     }
 
     void TaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& sceneTexture) {

@@ -12,8 +12,10 @@ namespace urchin {
             widgetSetDisplayer(widgetSetDisplayer),
             instanceId(WidgetDisplayable::INSTANCING_DENY_ID),
             uiRenderer(uiRenderer),
-            colorParams({}) {
-        std::memset(&colorParams, 0, sizeof(colorParams));
+            colorParams({}),
+            cameraInfo({}) {
+        std::memset((void *)&colorParams, 0, sizeof(colorParams));
+        std::memset((void *)&cameraInfo, 0, sizeof(cameraInfo));
     }
 
     WidgetInstanceDisplayer::~WidgetInstanceDisplayer() {
@@ -62,6 +64,9 @@ namespace urchin {
         colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
         colorParams.gammaFactor = uiRenderer.getGammaFactor();
         rendererBuilder->addUniformData(COLOR_PARAMS_UNIFORM_BINDING, sizeof(colorParams), &colorParams);
+
+        cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
+        rendererBuilder->addUniformData(CAMERA_INFO_UNIFORM_BINDING, sizeof(cameraInfo), &cameraInfo);
 
         coordinates.clear();
         getReferenceWidget().retrieveVertexCoordinates(coordinates);
@@ -218,10 +223,16 @@ namespace urchin {
                 0.0f, 0.0f, 0.0f, 1.0f);
     }
 
-    void WidgetInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
+    void WidgetInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& cameraJitter) {
         if (uiRenderer.getUi3dData()) {
             Matrix4<float> uiProjectionViewMatrix = projectionViewMatrix * uiRenderer.getUi3dData()->modelMatrix;
             renderer->updateUniformData(PVM_MATRIX_UNIFORM_BINDING, &uiProjectionViewMatrix);
+
+            constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;
+            unsigned int width = uiRenderer.getRenderTarget().getWidth();
+            unsigned int height = uiRenderer.getRenderTarget().getHeight();
+            cameraInfo.jitterInPixel = cameraJitter * Vector2((float)width * NDC_SPACE_TO_UV_COORDS_SCALE, (float)height * NDC_SPACE_TO_UV_COORDS_SCALE);
+            renderer->updateUniformData(CAMERA_INFO_UNIFORM_BINDING, &cameraInfo);
         }
 
         renderer->updateInstanceData(instanceModelMatrices.size(), (const float*)instanceModelMatrices.data());

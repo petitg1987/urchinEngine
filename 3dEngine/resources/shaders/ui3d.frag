@@ -7,7 +7,10 @@ layout(std140, set = 0, binding = 2) uniform ColorParams {
     float alphaFactor;
     float gammaFactor;
 } colorParams;
-layout(binding = 3) uniform sampler2D albedoTex;
+layout(std140, set = 0, binding = 3) uniform CameraInfo {
+    vec2 jitterInPixel;
+} cameraInfo;
+layout(binding = 4) uniform sampler2D albedoTex;
 
 layout(location = 0) in vec2 texCoordinates;
 layout(location = 1) in vec3 normal;
@@ -16,9 +19,15 @@ layout(location = 0) out vec4 fragAlbedoAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
 layout(location = 2) out vec2 fragPbr;
 
-void main() { //TODO unjitter ?
+vec2 unjitterTextureUv(vec2 uv) {
+    //Tips to debug the following code: increase the camera jittering of 50.0f and check that textures don't jitter despite the camera jittering
+    return uv - (dFdxFine(uv) * cameraInfo.jitterInPixel.x) - (dFdyFine(uv) * cameraInfo.jitterInPixel.y);
+}
+
+void main() {
     //albedo and emissive
-    vec4 color = texture(albedoTex, texCoordinates);
+    vec2 unjitterUv = unjitterTextureUv(texCoordinates);
+    vec4 color = texture(albedoTex, unjitterUv);
     if (color.a < 0.05) {
         discard;
     }

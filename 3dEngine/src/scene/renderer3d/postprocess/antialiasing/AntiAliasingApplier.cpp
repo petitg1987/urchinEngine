@@ -11,17 +11,10 @@ namespace urchin {
 
     }
 
-    void AntiAliasingApplier::applyJitter(Camera& camera, unsigned int sceneWidth, unsigned int sceneHeight) {
+    void AntiAliasingApplier::applyCameraJitter(Camera& camera, unsigned int sceneWidth, unsigned int sceneHeight) {
         if (config.useTaa) {
-            taaApplier.applyJitter(camera, sceneWidth, sceneHeight);
+            taaApplier.applyCameraJitter(camera, sceneWidth, sceneHeight);
         }
-    }
-
-    Vector2<float> AntiAliasingApplier::getCurrentJitter() const {
-        if (config.useTaa) {
-            taaApplier.getCurrentJitter();
-        }
-        return Vector2(0.0f, 0.0f);
     }
 
     void AntiAliasingApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& inputTexture) {

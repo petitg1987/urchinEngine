@@ -7,7 +7,10 @@ layout(std140, set = 0, binding = 2) uniform ColorParams {
     float alphaFactor;
     float gammaFactor;
 } colorParams;
-layout(binding = 3) uniform sampler2D albedoTex;
+layout(std140, set = 0, binding = 3) uniform CameraInfo {
+    vec2 jitterInPixel;
+} cameraInfo;
+layout(binding = 4) uniform sampler2D albedoTex;
 
 layout(location = 0) in vec2 texCoordinates;
 

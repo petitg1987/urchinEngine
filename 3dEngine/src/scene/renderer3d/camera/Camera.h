@@ -29,6 +29,7 @@ namespace urchin {
             bool isFirstPersonCamera() const;
             void setMaxRotationX(float);
             void applyJitter(const Vector2<float>&);
+            Vector2<float> getAppliedJitter() const;
 
             const Matrix4<float>& getViewMatrix() const;
             const Matrix4<float>& getProjectionMatrix() const;

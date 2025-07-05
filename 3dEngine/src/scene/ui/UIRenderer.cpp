@@ -356,10 +356,10 @@ namespace urchin {
     }
 
     void UIRenderer::prepareRendering(uint32_t, float dt, unsigned int& screenRenderingOrder) {
-        prepareRendering(dt, screenRenderingOrder, Matrix4<float>());
+        prepareRendering(dt, screenRenderingOrder, Matrix4<float>(), Vector2(0.0f, 0.0f));
     }
 
-    void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
+    void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& cameraJitter) const {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
         bool isUiVisible = true;
@@ -375,7 +375,7 @@ namespace urchin {
             prepareWidgets(dt, widgets);
             widgetSetDisplayer->updateWidgets(widgetsToRender);
 
-            widgetSetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix);
+            widgetSetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, cameraJitter);
         }
 
         //debug

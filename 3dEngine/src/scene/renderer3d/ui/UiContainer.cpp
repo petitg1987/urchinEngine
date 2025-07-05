@@ -74,9 +74,9 @@ namespace urchin {
         std::erase_if(uis, [&](auto& p){ return ui3dRenderer == p.get(); });
     }
 
-    void UiContainer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
+    void UiContainer::prepareRendering(float dt, unsigned int& renderingOrder, const Camera& camera) const {
         for (const auto& ui : uis) {
-            ui->prepareRendering(dt, renderingOrder, projectionViewMatrix);
+            ui->prepareRendering(dt, renderingOrder, camera.getProjectionViewMatrix(), camera.getAppliedJitter());
         }
     }
 }

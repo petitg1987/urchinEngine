@@ -374,7 +374,7 @@ namespace urchin {
         //deferred first pass
         modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
         modelSetDisplayer->setupShader("modelFirstPass.vert.spv", "modelFirstPass.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
-        modelSetDisplayer->setupCustomShaderVariable(std::make_unique<FirstPassModelShaderVariable>(antiAliasingApplier, renderingSceneWidth, renderingSceneHeight));
+        modelSetDisplayer->setupCustomShaderVariable(std::make_unique<FirstPassModelShaderVariable>(*camera, renderingSceneWidth, renderingSceneHeight));
         modelSetDisplayer->setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer->initialize(*deferredFirstPassRenderTarget);
 
@@ -471,7 +471,7 @@ namespace urchin {
 
         std::shared_ptr<Texture> currentSceneTexture = illuminatedTexture;
         if (isAntiAliasingActivated) {
-            antiAliasingApplier.applyJitter(*camera, deferredFirstPassRenderTarget->getDepthTexture()->getWidth(), deferredFirstPassRenderTarget->getDepthTexture()->getHeight());
+            antiAliasingApplier.applyCameraJitter(*camera, deferredFirstPassRenderTarget->getDepthTexture()->getWidth(), deferredFirstPassRenderTarget->getDepthTexture()->getHeight());
             antiAliasingApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
             currentSceneTexture = antiAliasingApplier.getOutputTexture();
         }
@@ -544,7 +544,7 @@ namespace urchin {
         waterContainer.prepareRendering(deferredRenderingOrder, *camera, fogContainer, dt);
 
         deferredRenderingOrder++;
-        uiContainer.prepareRendering(dt, deferredRenderingOrder, camera->getProjectionViewMatrix());
+        uiContainer.prepareRendering(dt, deferredRenderingOrder, *camera);
 
         renderDebugSceneData(geometryContainer);
         deferredRenderingOrder++;

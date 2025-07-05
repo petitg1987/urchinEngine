@@ -107,6 +107,10 @@ namespace urchin {
         updateComponents();
     }
 
+    Vector2<float> Camera::getAppliedJitter() const {
+        return Vector2(mProjection.a13, mProjection.a23);
+    }
+
     const Matrix4<float>& Camera::getViewMatrix() const {
         return mView;
     }

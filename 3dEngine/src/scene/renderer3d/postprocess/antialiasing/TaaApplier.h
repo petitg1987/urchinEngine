@@ -16,8 +16,7 @@ namespace urchin {
 
             void enableApplier(bool);
 
-            void applyJitter(Camera&, unsigned int, unsigned int);
-            Vector2<float> getCurrentJitter() const;
+            void applyCameraJitter(Camera&, unsigned int, unsigned int);
 
             void refreshInputTexture(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getOutputTexture() const;

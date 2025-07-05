@@ -31,7 +31,7 @@ namespace urchin {
 
             void resetRenderingWidgets() const;
             void registerRenderingWidget(const Widget&) const;
-            void prepareRendering(unsigned int, const Matrix4<float>&) const;
+            void prepareRendering(unsigned int, const Matrix4<float>&, const Vector2<float>&);
 
         private:
             Widget& getReferenceWidget() const;
@@ -40,7 +40,8 @@ namespace urchin {
             static constexpr uint32_t NORMAL_MATRIX_UNIFORM_BINDING = 0;
             static constexpr uint32_t PVM_MATRIX_UNIFORM_BINDING = 1;
             static constexpr uint32_t COLOR_PARAMS_UNIFORM_BINDING = 2;
-            static constexpr uint32_t TEX_UNIFORM_BINDING = 3;
+            static constexpr uint32_t CAMERA_INFO_UNIFORM_BINDING = 3;
+            static constexpr uint32_t TEX_UNIFORM_BINDING = 4;
 
             bool isInitialized;
 
@@ -55,6 +56,9 @@ namespace urchin {
                 alignas(4) float alphaFactor;
                 alignas(4) float gammaFactor;
             } colorParams;
+            struct CameraInfo {
+                alignas(8) Vector2<float> jitterInPixel;
+            } cameraInfo;
             mutable std::vector<Matrix4<float>> instanceModelMatrices;
 
             std::unique_ptr<GenericRenderer> renderer;
