@@ -14,7 +14,7 @@ namespace urchin {
             RenderTarget(std::move(name), isTestMode, depthAttachmentType),
             verticalSyncEnabled(true),
             vkImageIndex(std::numeric_limits<uint32_t>::max()),
-            currentFrameIndex(0),
+            currentFramebufferIndex(0),
             presentCompleteSemaphores({}),
             renderCompleteSemaphores({}),
             commandBufferFences({}) {
@@ -202,7 +202,7 @@ namespace urchin {
         fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
-        for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
+        for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMEBUFFERS; i++) {
             VkResult imageAvailableSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &presentCompleteSemaphores[i]);
             if (imageAvailableSemaphoreResult != VK_SUCCESS) {
                 throw std::runtime_error("Failed to create image available semaphore with error code '" + std::string(string_VkResult(imageAvailableSemaphoreResult)) + "' on render target: " + getName());
@@ -215,7 +215,7 @@ namespace urchin {
         }
 
         for (std::size_t imageIndex = 0; imageIndex < swapChainImageViews.size(); imageIndex++) {
-            for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
+            for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMEBUFFERS; i++) {
                 VkResult renderFinishedSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &renderCompleteSemaphores[imageIndex][i]);
                 if (renderFinishedSemaphoreResult != VK_SUCCESS) {
                     throw std::runtime_error("Failed to create render finished semaphore with error code '" + std::string(string_VkResult(renderFinishedSemaphoreResult)) + "' on render target: " + getName());
@@ -229,11 +229,11 @@ namespace urchin {
 
         imagesFences.clear();
         for (std::size_t imageIndex = 0; imageIndex < swapChainImageViews.size(); imageIndex++) {
-            for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
+            for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMEBUFFERS; i++) {
                 vkDestroySemaphore(logicalDevice, renderCompleteSemaphores[imageIndex][i], nullptr);
             }
         }
-        for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
+        for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMEBUFFERS; i++) {
             vkDestroySemaphore(logicalDevice, presentCompleteSemaphores[i], nullptr);
             vkDestroyFence(logicalDevice, commandBufferFences[i], nullptr);
         }
@@ -243,8 +243,8 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "screenRender");
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit2 for the frame 'currentFrameIndex'.
-        VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
+        //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit2 for the frame 'currentFramebufferIndex'.
+        VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFramebufferIndex], VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
             throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
@@ -253,7 +253,7 @@ namespace urchin {
             throw std::runtime_error("No dependencies to outputs expected on screen render target: " + getName() + "/" + std::to_string(frameCount));
         }
 
-        VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, presentCompleteSemaphores[currentFrameIndex], VK_NULL_HANDLE, &vkImageIndex);
+        VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, presentCompleteSemaphores[currentFramebufferIndex], VK_NULL_HANDLE, &vkImageIndex);
         if (resultAcquireImage == VK_ERROR_OUT_OF_DATE_KHR) { //after window resize (never had the case !) or when window is minimized with Alt+Tab or Win+D
             onResize();
             std::ranges::for_each(getOffscreenRenderDependencies(), [frameCount](OffscreenRender* ord){ ord->markSubmitSemaphoreUnused(frameCount); });
@@ -274,19 +274,19 @@ namespace urchin {
                 throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
             }
         }
-        imagesFences[vkImageIndex] = commandBufferFences[currentFrameIndex]; //mark the image as now being in use by this frame
+        imagesFences[vkImageIndex] = commandBufferFences[currentFramebufferIndex]; //mark the image as now being in use by this frame
 
         //Semaphores (GPU-GPU sync) to wait command buffers execution before present the image.
         VkSemaphoreSubmitInfo semaphoreSubmitInfo{};
         semaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
-        semaphoreSubmitInfo.semaphore = renderCompleteSemaphores[vkImageIndex][currentFrameIndex];
+        semaphoreSubmitInfo.semaphore = renderCompleteSemaphores[vkImageIndex][currentFramebufferIndex];
         semaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
         semaphoreSubmitInfo.deviceIndex = 0;
 
         //Semaphores (GPU-GPU sync) to wait image available before executing command buffers.
         VkSemaphoreSubmitInfo imageAvailableSemaphoreSubmitInfo{};
         imageAvailableSemaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
-        imageAvailableSemaphoreSubmitInfo.semaphore = presentCompleteSemaphores[currentFrameIndex];
+        imageAvailableSemaphoreSubmitInfo.semaphore = presentCompleteSemaphores[currentFramebufferIndex];
         imageAvailableSemaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
         imageAvailableSemaphoreSubmitInfo.deviceIndex = 0;
 
@@ -303,11 +303,11 @@ namespace urchin {
         submitInfo.signalSemaphoreInfoCount = 1;
         submitInfo.pSignalSemaphoreInfos = &semaphoreSubmitInfo;
 
-        VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
+        VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFences[currentFramebufferIndex]);
         if (resultResetFences != VK_SUCCESS) {
             throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
-        VkResult resultQueueSubmit = vkQueueSubmit2(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
+        VkResult resultQueueSubmit = vkQueueSubmit2(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, commandBufferFences[currentFramebufferIndex]);
         if (resultQueueSubmit != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
@@ -316,7 +316,7 @@ namespace urchin {
         VkPresentInfoKHR presentInfo{};
         presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         presentInfo.waitSemaphoreCount = 1;
-        presentInfo.pWaitSemaphores = &renderCompleteSemaphores[vkImageIndex][currentFrameIndex];
+        presentInfo.pWaitSemaphores = &renderCompleteSemaphores[vkImageIndex][currentFramebufferIndex];
         presentInfo.swapchainCount = 1;
         presentInfo.pSwapchains = swapChains.data();
         presentInfo.pImageIndices = &vkImageIndex;
@@ -335,13 +335,13 @@ namespace urchin {
             throw std::runtime_error("Failed to queue an image for presentation with error code '" + std::string(string_VkResult(queuePresentResult)) + "' on render target: " + getName() + "/" + std::to_string(frameCount));
         }
 
-        currentFrameIndex++;
-        if (currentFrameIndex >= MAX_CONCURRENT_FRAMES) {
-            currentFrameIndex = 0;
+        currentFramebufferIndex++;
+        if (currentFramebufferIndex >= MAX_CONCURRENT_FRAMEBUFFERS) {
+            currentFramebufferIndex = 0;
         }
     }
 
-    bool ScreenRender::needCommandBufferRefresh(std::size_t /*cmdBufferIndex*/) const {
+    bool ScreenRender::needCommandBufferRefresh(std::size_t /*framebufferIndex*/) const {
         //Always return true for the following reasons:
         // - Command buffer refresh is almost always required due to renders make dirty by the UIRenderer
         // - Determine when a refresh is required for a specific command buffer is not easy. Indeed, a dirty render would require a refresh of the current command
@@ -352,10 +352,10 @@ namespace urchin {
     void ScreenRender::waitCommandBuffersIdle() const {
         ScopeProfiler sp(Profiler::graphic(), "waitCmdBufIdle");
 
-        for (unsigned int frameIndex = 0; frameIndex < MAX_CONCURRENT_FRAMES; ++frameIndex) {
-            if (frameIndex != currentFrameIndex) { //current command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
-                //fence (CPU-GPU sync) to wait completion of vkQueueSubmit2 for the frame 'frameIndex'
-                VkResult result = vkWaitForFences(GraphicsSetupService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[frameIndex], VK_TRUE, UINT64_MAX);
+        for (unsigned int framebufferIndex = 0; framebufferIndex < MAX_CONCURRENT_FRAMEBUFFERS; ++framebufferIndex) {
+            if (framebufferIndex != currentFramebufferIndex) { //current command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
+                //fence (CPU-GPU sync) to wait completion of vkQueueSubmit2 for the frame 'framebufferIndex'
+                VkResult result = vkWaitForFences(GraphicsSetupService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[framebufferIndex], VK_TRUE, UINT64_MAX);
                 if (result != VK_SUCCESS && result != VK_TIMEOUT) {
                     throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
                 }

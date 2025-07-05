@@ -183,7 +183,7 @@ namespace urchin {
         this->scissorSize = scissorSize;
     }
 
-    void GenericRenderer::updatePipelineProcessorData(uint32_t frameIndex) {
+    void GenericRenderer::updatePipelineProcessorData(uint32_t framebufferIndex) {
         //update data (vertex & vertex attributes)
         #ifdef URCHIN_DEBUG
             std::size_t dataCount = data[0].getDataCount();
@@ -192,32 +192,32 @@ namespace urchin {
             }
         #endif
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
-            if (data[dataIndex].hasNewData(frameIndex)) {
+            if (data[dataIndex].hasNewData(framebufferIndex)) {
                 DataContainer& dataContainer = data[dataIndex];
-                if (dataBuffers[dataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData())) {
+                if (dataBuffers[dataIndex].updateData(framebufferIndex, dataContainer.getBufferSize(), dataContainer.getData())) {
                     markDrawCommandsDirty();
                 }
-                dataContainer.markDataAsProcessed(frameIndex);
+                dataContainer.markDataAsProcessed(framebufferIndex);
             }
         }
 
         //update instance data
-        if (instanceData && instanceData->hasNewData(frameIndex)) {
-            if (instanceDataBuffer.updateData(frameIndex, instanceData->getBufferSize(), instanceData->getData())) {
+        if (instanceData && instanceData->hasNewData(framebufferIndex)) {
+            if (instanceDataBuffer.updateData(framebufferIndex, instanceData->getBufferSize(), instanceData->getData())) {
                 markDrawCommandsDirty();
             }
-            instanceData->markDataAsProcessed(frameIndex);
+            instanceData->markDataAsProcessed(framebufferIndex);
         }
 
         //update shader uniforms
-        PipelineProcessor::updatePipelineProcessorData(frameIndex);
+        PipelineProcessor::updatePipelineProcessorData(framebufferIndex);
     }
 
-    bool GenericRenderer::needCommandBufferRefresh(std::size_t frameIndex) const {
-        return layerIndexDataInShaderEnabled || PipelineProcessor::needCommandBufferRefresh(frameIndex);
+    bool GenericRenderer::needCommandBufferRefresh(std::size_t framebufferIndex) const {
+        return layerIndexDataInShaderEnabled || PipelineProcessor::needCommandBufferRefresh(framebufferIndex);
     }
 
-    void GenericRenderer::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t layerIndex, std::size_t boundPipelineId) {
+    void GenericRenderer::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t framebufferIndex, std::size_t layerIndex, std::size_t boundPipelineId) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufRender");
 
         if (boundPipelineId != getPipeline().getId()) {
@@ -234,7 +234,7 @@ namespace urchin {
 
         rawVertexBuffers.clear();
         for (const auto& dataBuffer : dataBuffers) {
-            rawVertexBuffers.emplace_back(dataBuffer.getBuffer(frameIndex));
+            rawVertexBuffers.emplace_back(dataBuffer.getBuffer(framebufferIndex));
         }
 
         VkRect2D scissor{};
@@ -242,17 +242,17 @@ namespace urchin {
         scissor.extent = {.width = (unsigned int)scissorSize.X, .height = (unsigned int)scissorSize.Y};
         vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
-        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, getPipeline().getPipelineLayout(), 0, 1, &getDescriptorSets()[frameIndex], 0, nullptr);
+        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, getPipeline().getPipelineLayout(), 0, 1, &getDescriptorSets()[framebufferIndex], 0, nullptr);
         vkCmdBindVertexBuffers(commandBuffer, 0, (uint32_t)data.size(), rawVertexBuffers.data(), offsets.data());
         uint32_t instanceCount = 1;
         if (instanceData) {
             auto firstBinding = (uint32_t)data.size();
-            VkBuffer buffer = instanceDataBuffer.getBuffer(frameIndex);
+            VkBuffer buffer = instanceDataBuffer.getBuffer(framebufferIndex);
             vkCmdBindVertexBuffers(commandBuffer, firstBinding, 1, &buffer, offsets.data());
             instanceCount = (uint32_t)instanceData->getDataCount();
         }
-        if (indices && indexBuffer.getBuffer(frameIndex)) {
-            vkCmdBindIndexBuffer(commandBuffer, indexBuffer.getBuffer(frameIndex), 0, VK_INDEX_TYPE_UINT32);
+        if (indices && indexBuffer.getBuffer(framebufferIndex)) {
+            vkCmdBindIndexBuffer(commandBuffer, indexBuffer.getBuffer(framebufferIndex), 0, VK_INDEX_TYPE_UINT32);
             vkCmdDrawIndexed(commandBuffer, (uint32_t)indices->getIndicesCount(), instanceCount, 0, 0, 0);
         } else {
             auto vertexCount = (uint32_t)data[0].getDataCount();

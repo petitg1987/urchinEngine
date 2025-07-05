@@ -52,13 +52,13 @@ namespace urchin {
             uint32_t vkImageIndex;
             std::vector<VkImageView> swapChainImageViews;
 
-            static constexpr std::size_t MAX_CONCURRENT_FRAMES = 2;
+            static constexpr std::size_t MAX_CONCURRENT_FRAMEBUFFERS = 2;
             static constexpr unsigned int MAX_ERRORS_LOG = 20;
-            std::size_t currentFrameIndex;
+            std::size_t currentFramebufferIndex;
 
-            std::array<VkSemaphore, MAX_CONCURRENT_FRAMES> presentCompleteSemaphores;
-            std::vector<std::array<VkSemaphore, MAX_CONCURRENT_FRAMES>> renderCompleteSemaphores;
-            std::array<VkFence, MAX_CONCURRENT_FRAMES> commandBufferFences;
+            std::array<VkSemaphore, MAX_CONCURRENT_FRAMEBUFFERS> presentCompleteSemaphores;
+            std::vector<std::array<VkSemaphore, MAX_CONCURRENT_FRAMEBUFFERS>> renderCompleteSemaphores;
+            std::array<VkFence, MAX_CONCURRENT_FRAMEBUFFERS> commandBufferFences;
             std::vector<VkFence> imagesFences;
     };
 

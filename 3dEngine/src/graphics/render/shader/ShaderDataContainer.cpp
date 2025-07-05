@@ -39,15 +39,15 @@ namespace urchin {
         return ptr;
     }
 
-    bool ShaderDataContainer::hasNewData(uint32_t frameIndex) const {
-        if (frameIndex >= MAX_FRAMES) {
-            throw std::runtime_error("Number of frames higher than expected: " + std::to_string(frameIndex));
+    bool ShaderDataContainer::hasNewData(uint32_t framebufferIndex) const {
+        if (framebufferIndex >= MAX_DATA) {
+            throw std::runtime_error("Number of framebuffer higher than expected: " + std::to_string(framebufferIndex));
         }
-        return bHasNewData[frameIndex];
+        return bHasNewData[framebufferIndex];
     }
 
-    void ShaderDataContainer::markDataAsProcessed(uint32_t frameIndex) {
-        bHasNewData[frameIndex] = false;
+    void ShaderDataContainer::markDataAsProcessed(uint32_t framebufferIndex) {
+        bHasNewData[framebufferIndex] = false;
     }
 
     void ShaderDataContainer::markDataAsProcessed() {

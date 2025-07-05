@@ -326,12 +326,12 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::addFramebuffers(std::size_t framebufferIndex, const std::vector<std::vector<VkImageView>>& attachments) {
+    void RenderTarget::addFramebuffers(std::size_t activeFramebufferIndex, const std::vector<std::vector<VkImageView>>& attachments) {
         assert(getLayer() == attachments.size());
-        framebuffers[framebufferIndex].resize(framebuffers[framebufferIndex].size() + 1);
+        framebuffers[activeFramebufferIndex].resize(framebuffers[activeFramebufferIndex].size() + 1);
 
-        std::size_t frameIndex = framebuffers[framebufferIndex].size() - 1;
-        framebuffers[framebufferIndex][frameIndex].resize(getLayer());
+        std::size_t framebufferIndex = framebuffers[activeFramebufferIndex].size() - 1;
+        framebuffers[activeFramebufferIndex][framebufferIndex].resize(getLayer());
 
         for (std::size_t layerIndex = 0; layerIndex < attachments.size(); ++layerIndex) {
             if (attachments[layerIndex].empty()) {
@@ -347,7 +347,7 @@ namespace urchin {
             framebufferInfo.height = getHeight();
             framebufferInfo.layers = 1;
 
-            VkResult result = vkCreateFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebufferIndex][frameIndex][layerIndex]);
+            VkResult result = vkCreateFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[activeFramebufferIndex][framebufferIndex][layerIndex]);
             if (result != VK_SUCCESS) {
                 throw std::runtime_error("Failed to create framebuffer with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
             }
@@ -409,8 +409,8 @@ namespace urchin {
         return renderPass;
     }
 
-    VkCommandBuffer RenderTarget::getCommandBuffer(std::size_t cmdBufferIndex) const {
-        return commandBuffers[cmdBufferIndex];
+    VkCommandBuffer RenderTarget::getCommandBuffer(std::size_t framebufferIndex) const {
+        return commandBuffers[framebufferIndex];
     }
 
     std::span<OffscreenRender*> RenderTarget::getOffscreenRenderDependencies() const {
@@ -467,20 +467,20 @@ namespace urchin {
         submitInfo.pWaitSemaphoreInfos = queueSubmitWaitSemaphoreSubmitInfos.empty() ? nullptr : queueSubmitWaitSemaphoreSubmitInfos.data();
     }
 
-    void RenderTarget::updatePipelineProcessorData(uint32_t frameIndex) const {
+    void RenderTarget::updatePipelineProcessorData(uint32_t framebufferIndex) const {
         ScopeProfiler sp(Profiler::graphic(), "upShaderData");
 
         for (auto& processor : processors) {
             if (processor->isEnabled()) {
-                processor->updatePipelineProcessorData(frameIndex);
+                processor->updatePipelineProcessorData(framebufferIndex);
             }
         }
     }
 
-    void RenderTarget::updateCommandBuffers(uint32_t frameIndex, const std::vector<VkClearValue>& clearValues) {
+    void RenderTarget::updateCommandBuffers(uint32_t framebufferIndex, const std::vector<VkClearValue>& clearValues) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufTarget");
 
-        if (needCommandBufferRefresh(frameIndex)) {
+        if (needCommandBufferRefresh(framebufferIndex)) {
             sortedEnabledProcessors.clear();
             for (PipelineProcessor* processor: processors) {
                 if (processor->isEnabled()) {
@@ -500,40 +500,40 @@ namespace urchin {
                 throw std::runtime_error("Failed to reset command pool with error code '" + std::string(string_VkResult(resultResetCmdPool)) + "' on render target: " + getName());
             }
 
-            VkResult resultCmdBuffer = vkBeginCommandBuffer(commandBuffers[frameIndex], &beginInfo);
+            VkResult resultCmdBuffer = vkBeginCommandBuffer(commandBuffers[framebufferIndex], &beginInfo);
             if (resultCmdBuffer != VK_SUCCESS) {
                 throw std::runtime_error("Failed to begin recording command buffer with error code '" + std::string(string_VkResult(resultCmdBuffer)) + "' on render target: " + getName());
             }
 
-            DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4(0.9f, 1.0f, 0.8f, 1.0f));
+            DebugLabelHelper::beginDebugRegion(commandBuffers[framebufferIndex], name, Vector4(0.9f, 1.0f, 0.8f, 1.0f));
             for (const TextureCopier& textureCopier : preRenderTextureCopier) {
-                textureCopier.executeCopy(commandBuffers[frameIndex]);
+                textureCopier.executeCopy(commandBuffers[framebufferIndex]);
             }
             for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
                 if (hasGraphicsProcessors()) {
                     VkRenderPassBeginInfo renderPassInfo{};
                     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
                     renderPassInfo.renderPass = renderPass;
-                    renderPassInfo.framebuffer = framebuffers[activeFramebufferIndex][frameIndex][layerIndex];
+                    renderPassInfo.framebuffer = framebuffers[activeFramebufferIndex][framebufferIndex][layerIndex];
                     renderPassInfo.renderArea.offset = {.x=0, .y=0};
                     renderPassInfo.renderArea.extent = {.width=getWidth(), .height=getHeight()};
                     renderPassInfo.clearValueCount = (uint32_t)clearValues.size();
                     renderPassInfo.pClearValues = clearValues.empty() ? nullptr : clearValues.data();
 
-                    vkCmdBeginRenderPass(commandBuffers[frameIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+                    vkCmdBeginRenderPass(commandBuffers[framebufferIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
                 }
                 std::size_t boundPipelineId = 0;
                 for (PipelineProcessor* pipelineProcessor: sortedEnabledProcessors) {
-                    boundPipelineId = pipelineProcessor->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, layerIndex, boundPipelineId);
+                    boundPipelineId = pipelineProcessor->updateCommandBuffer(commandBuffers[framebufferIndex], framebufferIndex, layerIndex, boundPipelineId);
                 }
                 if (hasGraphicsProcessors()) {
-                    vkCmdEndRenderPass(commandBuffers[frameIndex]);
+                    vkCmdEndRenderPass(commandBuffers[framebufferIndex]);
                 }
             }
             framebufferDirty = false;
-            DebugLabelHelper::endDebugRegion(commandBuffers[frameIndex]);
+            DebugLabelHelper::endDebugRegion(commandBuffers[framebufferIndex]);
 
-            VkResult resultEndCmdBuffer = vkEndCommandBuffer(commandBuffers[frameIndex]);
+            VkResult resultEndCmdBuffer = vkEndCommandBuffer(commandBuffers[framebufferIndex]);
             if (resultEndCmdBuffer != VK_SUCCESS) {
                 throw std::runtime_error("Failed to record command buffer with error code '" + std::string(string_VkResult(resultEndCmdBuffer)) + "' on render target: " + getName());
             }

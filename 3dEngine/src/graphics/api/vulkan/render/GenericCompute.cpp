@@ -66,14 +66,14 @@ namespace urchin {
         return false;
     }
 
-    void GenericCompute::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t, std::size_t boundPipelineId) {
+    void GenericCompute::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t framebufferIndex, std::size_t, std::size_t boundPipelineId) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufComp");
 
         if (boundPipelineId != getPipeline().getId()) {
             vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getVkPipeline());
         }
 
-        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getPipelineLayout(), 0, 1, &getDescriptorSets()[frameIndex], 0, nullptr);
+        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getPipelineLayout(), 0, 1, &getDescriptorSets()[framebufferIndex], 0, nullptr);
 
         auto numGroupX = (uint32_t)MathFunction::ceilToInt((float)getRenderTarget().getWidth() / (float)threadLocalSize.X);
         auto numGroupY = (uint32_t)MathFunction::ceilToInt((float)getRenderTarget().getHeight() / (float)threadLocalSize.Y);

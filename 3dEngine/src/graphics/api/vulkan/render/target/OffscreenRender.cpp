@@ -419,13 +419,13 @@ namespace urchin {
         submitSemaphoresStale = true; //an unused semaphore is considered as stale
     }
 
-    bool OffscreenRender::needCommandBufferRefresh(std::size_t frameIndex) const {
+    bool OffscreenRender::needCommandBufferRefresh(std::size_t framebufferIndex) const {
         if (RenderTarget::needCommandBufferRefresh()) {
             return true;
         }
 
-        return std::ranges::any_of(getProcessors(), [frameIndex](const auto* renderer) {
-            return renderer->isEnabled() && renderer->needCommandBufferRefresh(frameIndex);
+        return std::ranges::any_of(getProcessors(), [framebufferIndex](const auto* renderer) {
+            return renderer->isEnabled() && renderer->needCommandBufferRefresh(framebufferIndex);
         });
     }
 

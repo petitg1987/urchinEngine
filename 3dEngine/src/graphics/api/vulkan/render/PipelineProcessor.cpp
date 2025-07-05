@@ -176,12 +176,12 @@ namespace urchin {
     }
 
     void PipelineProcessor::updateDescriptorSets() {
-        for (std::size_t frameIndex = 0; frameIndex < getRenderTarget().getNumFramebuffer(); frameIndex++) {
-            updateDescriptorSets(frameIndex);
+        for (std::size_t framebufferIndex = 0; framebufferIndex < getRenderTarget().getNumFramebuffer(); framebufferIndex++) {
+            updateDescriptorSets(framebufferIndex);
         }
     }
 
-    void PipelineProcessor::updateDescriptorSets(std::size_t frameIndex) {
+    void PipelineProcessor::updateDescriptorSets(std::size_t framebufferIndex) {
         descriptorWrites.clear();
         descriptorWrites.reserve(uniformData.size() + uniformTextureReaders.size() + uniformTextureOutputs.size());
 
@@ -190,14 +190,14 @@ namespace urchin {
         bufferInfos.reserve(uniformData.size());
         for (uint32_t uniformBinding : std::views::keys(uniformData)) {
             VkDescriptorBufferInfo bufferInfo{};
-            bufferInfo.buffer = uniformsBuffers.at(uniformBinding).getBuffer(frameIndex);
+            bufferInfo.buffer = uniformsBuffers.at(uniformBinding).getBuffer(framebufferIndex);
             bufferInfo.offset = 0;
             bufferInfo.range = VK_WHOLE_SIZE;
             bufferInfos.emplace_back(bufferInfo);
 
             VkWriteDescriptorSet uniformDescriptorWrites{};
             uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-            uniformDescriptorWrites.dstSet = descriptorSets[frameIndex];
+            uniformDescriptorWrites.dstSet = descriptorSets[framebufferIndex];
             uniformDescriptorWrites.dstBinding = uniformBinding;
             uniformDescriptorWrites.dstArrayElement = 0;
             uniformDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -228,7 +228,7 @@ namespace urchin {
 
             VkWriteDescriptorSet textureDescriptorWrites{};
             textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-            textureDescriptorWrites.dstSet = descriptorSets[frameIndex];
+            textureDescriptorWrites.dstSet = descriptorSets[framebufferIndex];
             textureDescriptorWrites.dstBinding = uniformBiding;
             textureDescriptorWrites.dstArrayElement = 0;
             textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
@@ -251,7 +251,7 @@ namespace urchin {
 
             VkWriteDescriptorSet textureDescriptorWrites{};
             textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-            textureDescriptorWrites.dstSet = descriptorSets[frameIndex];
+            textureDescriptorWrites.dstSet = descriptorSets[framebufferIndex];
             textureDescriptorWrites.dstBinding = uniformBinding;
             textureDescriptorWrites.dstArrayElement = 0;
             textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
@@ -337,14 +337,14 @@ namespace urchin {
         return texturesWriter;
     }
 
-    void PipelineProcessor::updatePipelineProcessorData(uint32_t frameIndex) {
+    void PipelineProcessor::updatePipelineProcessorData(uint32_t framebufferIndex) {
         //update shader uniforms
         for (auto& [uniformBinding, dataContainer] : uniformData) {
-            if (dataContainer.hasNewData(frameIndex)) {
-                if (uniformsBuffers.at(uniformBinding).updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData())) {
+            if (dataContainer.hasNewData(framebufferIndex)) {
+                if (uniformsBuffers.at(uniformBinding).updateData(framebufferIndex, dataContainer.getDataSize(), dataContainer.getData())) {
                     markDrawCommandsDirty();
                 }
-                dataContainer.markDataAsProcessed(frameIndex);
+                dataContainer.markDataAsProcessed(framebufferIndex);
             }
         }
     }
@@ -357,17 +357,17 @@ namespace urchin {
         return descriptorSets;
     }
 
-    bool PipelineProcessor::needCommandBufferRefresh(std::size_t frameIndex) const {
-        return drawCommandsDirty || descriptorSetsDirty[frameIndex];
+    bool PipelineProcessor::needCommandBufferRefresh(std::size_t framebufferIndex) const {
+        return drawCommandsDirty || descriptorSetsDirty[framebufferIndex];
     }
 
-    std::size_t PipelineProcessor::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t layerIndex, std::size_t boundPipelineId) {
-        if (descriptorSetsDirty[frameIndex]) {
-            updateDescriptorSets(frameIndex);
-            descriptorSetsDirty[frameIndex] = false;
+    std::size_t PipelineProcessor::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t framebufferIndex, std::size_t layerIndex, std::size_t boundPipelineId) {
+        if (descriptorSetsDirty[framebufferIndex]) {
+            updateDescriptorSets(framebufferIndex);
+            descriptorSetsDirty[framebufferIndex] = false;
         }
 
-        doUpdateCommandBuffer(commandBuffer, frameIndex, layerIndex, boundPipelineId);
+        doUpdateCommandBuffer(commandBuffer, framebufferIndex, layerIndex, boundPipelineId);
 
         drawCommandsDirty = false;
         return getPipeline().getId();

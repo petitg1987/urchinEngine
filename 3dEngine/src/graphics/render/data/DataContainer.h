@@ -37,8 +37,8 @@ namespace urchin {
             std::size_t dataCount;
             void* ptr;
 
-            static constexpr uint32_t MAX_FRAMES = 6;
-            std::array<bool, MAX_FRAMES> bHasNewData;
+            static constexpr uint32_t MAX_DATA = 6;
+            std::array<bool, MAX_DATA> bHasNewData;
     };
 
 }
