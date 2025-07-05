@@ -122,6 +122,6 @@ void main() {
     historyWeight *= 1.0 / (1.0 + luminanceHistory);
 
     vec3 result = (sourceColor * sourceWeight + historyColor * historyWeight) / max(sourceWeight + historyWeight, 0.00001);
-    result = reduceColorBanding(result, 0.0025);
+    result = reduceColorBanding(result, 0.005);
     fragColor = vec4(result, 1.0);
 }
