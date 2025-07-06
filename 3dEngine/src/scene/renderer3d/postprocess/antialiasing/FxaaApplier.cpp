@@ -19,7 +19,7 @@ namespace urchin {
     void FxaaApplier::enableApplier(bool enable) {
         this->isEnabled = enable;
 
-        if (enable) {
+        if (isEnabled) {
             createOrUpdateRenderData();
         } else {
             freeRenderData();
