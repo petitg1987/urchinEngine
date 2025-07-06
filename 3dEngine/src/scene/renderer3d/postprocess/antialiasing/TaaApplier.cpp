@@ -105,11 +105,7 @@ namespace urchin {
     void TaaApplier::freeVelocityRenderData() {
         velocityRenderer.reset();
         taaVelocityShader.reset();
-
-        if (velocityRenderTarget) {
-            velocityRenderTarget->cleanup();
-            velocityRenderTarget.reset();
-        }
+        velocityRenderTarget.reset();
     }
 
     void TaaApplier::freeResolveRenderData() {
