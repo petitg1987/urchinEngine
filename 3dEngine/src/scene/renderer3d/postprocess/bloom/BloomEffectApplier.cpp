@@ -156,30 +156,19 @@ namespace urchin {
     void BloomEffectApplier::clearRenderers() {
         //combine
         combineRenderer.reset();
-        if (combineRenderTarget) {
-            combineRenderTarget->cleanup();
-        }
+        combineRenderTarget.reset();
 
         //up sample
         upSampleRenderers.clear();
-        for (const auto& upSampleRenderTarget : upSampleRenderTargets) {
-            upSampleRenderTarget->cleanup();
-        }
         upSampleRenderTargets.clear();
 
         //down sample
         downSampleComputes.clear();
-        for (const auto& downSampleRenderTarget : downSampleRenderTargets) {
-            downSampleRenderTarget->cleanup();
-        }
         downSampleRenderTargets.clear();
 
         //pre filter
         preFilterCompute.reset();
-        if (preFilterRenderTarget) {
-            preFilterRenderTarget->cleanup();
-            preFilterRenderTarget.reset();
-        }
+        preFilterRenderTarget.reset();
     }
 
     void BloomEffectApplier::updateConfig(const Config& config) {

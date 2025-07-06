@@ -6,12 +6,6 @@
 
 namespace urchin {
 
-    TextureFilter::~TextureFilter() {
-        if (renderTarget) {
-            renderTarget->cleanup();
-        }
-    }
-
     void TextureFilter::initialize() {
         if (isInitialized) {
             throw std::runtime_error("Texture filter is already initialized");

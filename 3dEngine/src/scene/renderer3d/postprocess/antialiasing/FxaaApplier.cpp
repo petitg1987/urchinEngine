@@ -50,11 +50,7 @@ namespace urchin {
     void FxaaApplier::freeRenderData() {
         renderer.reset();
         fxaaShader.reset();
-
-        if (renderTarget) {
-            renderTarget->cleanup();
-            renderTarget.reset();
-        }
+        renderTarget.reset();
         outputTexture.reset();
     }
 

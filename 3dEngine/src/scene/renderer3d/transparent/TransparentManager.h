@@ -12,7 +12,6 @@ namespace urchin {
     class TransparentManager {
         public:
             TransparentManager(bool, LightManager&);
-            ~TransparentManager();
 
             void onCameraProjectionUpdate(const Camera&);
 

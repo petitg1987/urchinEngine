@@ -39,7 +39,6 @@ namespace urchin {
             };
 
             AmbientOcclusionManager(const Config&, bool);
-            ~AmbientOcclusionManager() override;
 
             void onCameraProjectionUpdate(const Camera&);
 

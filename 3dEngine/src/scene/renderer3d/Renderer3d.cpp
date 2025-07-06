@@ -81,11 +81,6 @@ namespace urchin {
         createOrUpdateDeferredPasses();
     }
 
-    Renderer3d::~Renderer3d() {
-        deferredSecondPassRenderTarget->cleanup();
-        deferredFirstPassRenderTarget->cleanup();
-    }
-
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         //scene properties
         this->sceneWidth = sceneWidth;

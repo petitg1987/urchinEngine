@@ -2,9 +2,9 @@
 
 #include <vector>
 #include <memory>
-#include <UrchinCommon.h>
 
 #include <graphics/api/GraphicsApi.h>
+#include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/light/Light.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>
@@ -12,13 +12,11 @@
 
 namespace urchin {
 
-    class LightSplitShadowMap;
     class ShadowModelShaderVariable;
 
     class LightShadowMap final {
         public:
             LightShadowMap(bool, Light&, const ModelOcclusionCuller&, float, unsigned int, unsigned int);
-            ~LightShadowMap();
 
             Light& getLight() const;
             const ModelOcclusionCuller& getModelOcclusionCuller() const;

@@ -22,11 +22,8 @@ namespace urchin {
     }
 
     OffscreenRender::~OffscreenRender() {
-        if (isInitialized()) {
-            Logger::instance().logWarning("Offscreen render not cleanup before destruction: " + getName());
-            OffscreenRender::cleanup();
-        }
         resetOutput();
+        cleanup();
     }
 
     void OffscreenRender::setOutputSize(unsigned int width, unsigned int height, unsigned int layer, bool bIsArrayOutput) {
@@ -140,29 +137,30 @@ namespace urchin {
     }
 
     void OffscreenRender::cleanup() {
-        assert(isInitialized());
-        if (!isTestMode()) {
-            VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
-            if (result != VK_SUCCESS) {
-                Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on offscreen render: " + getName());
+        if (isInitialized()) {
+            if (!isTestMode()) {
+                VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
+                if (result != VK_SUCCESS) {
+                    Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on offscreen render: " + getName());
+                }
             }
-        }
 
-        cleanupProcessors();
+            cleanupProcessors();
 
-        if (!isTestMode()) {
-            destroySemaphores();
-            destroyFence();
-            destroyCommandBuffersAndPool();
-            destroyFramebuffers();
-        }
-        destroyDepthResources();
-        if (!isTestMode()) {
-            destroyRenderPass();
-        }
-        clearValues.clear();
+            if (!isTestMode()) {
+                destroySemaphores();
+                destroyFence();
+                destroyCommandBuffersAndPool();
+                destroyFramebuffers();
+            }
+            destroyDepthResources();
+            if (!isTestMode()) {
+                destroyRenderPass();
+            }
+            clearValues.clear();
 
-        setInitialized(false);
+            setInitialized(false);
+        }
     }
 
     unsigned int OffscreenRender::getWidth() const {

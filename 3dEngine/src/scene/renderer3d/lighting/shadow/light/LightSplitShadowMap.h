@@ -2,17 +2,18 @@
 
 #include <UrchinCommon.h>
 
-#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/SplitFrustum.h>
 #include <scene/renderer3d/model/Model.h>
 
 namespace urchin {
 
+    class LightShadowMap;
+
     class LightSplitShadowMap {
         public:
             static constexpr float LIGHT_BOX_MARGIN = 0.05f;
 
-            explicit LightSplitShadowMap(unsigned int, const LightShadowMap*);
+            LightSplitShadowMap(unsigned int, const LightShadowMap*);
 
             void onLightAffectedZoneUpdated();
             void onSplitFrustumUpdated(const SplitFrustum&);

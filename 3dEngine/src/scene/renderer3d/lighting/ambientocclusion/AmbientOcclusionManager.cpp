@@ -25,12 +25,6 @@ namespace urchin {
         checkConfig();
     }
 
-    AmbientOcclusionManager::~AmbientOcclusionManager() {
-        if (renderTarget) {
-            renderTarget->cleanup();
-        }
-    }
-
     void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera& camera) {
         nearPlane = camera.getNearPlane();
         farPlane = camera.getFarPlane();

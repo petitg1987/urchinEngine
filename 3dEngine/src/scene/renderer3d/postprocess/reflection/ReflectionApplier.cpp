@@ -61,16 +61,10 @@ namespace urchin {
 
     void ReflectionApplier::clearRenderingObjects() {
         reflectionColorRenderer.reset();
-        if (reflectionColorRenderTarget) {
-            reflectionColorRenderTarget->cleanup();
-            reflectionColorRenderTarget.reset();
-        }
+        reflectionColorRenderTarget.reset();
 
         reflectionCombineRenderer.reset();
-        if (reflectionCombineRenderTarget) {
-            reflectionCombineRenderTarget->cleanup();
-            reflectionCombineRenderTarget.reset();
-        }
+        reflectionCombineRenderTarget.reset();
     }
 
     void ReflectionApplier::createOrUpdateRenderTargets() {

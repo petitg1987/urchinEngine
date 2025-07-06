@@ -14,12 +14,6 @@ namespace urchin {
 
     }
 
-    TransparentManager::~TransparentManager() {
-        if (renderTarget) {
-            renderTarget->cleanup();
-        }
-    }
-
     void TransparentManager::onCameraProjectionUpdate(const Camera& camera) {
         this->camera = &camera;
 

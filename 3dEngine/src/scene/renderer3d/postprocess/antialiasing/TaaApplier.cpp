@@ -115,11 +115,7 @@ namespace urchin {
     void TaaApplier::freeResolveRenderData() {
         resolveRenderer.reset();
         taaResolveShader.reset();
-
-        if (resolveRenderTarget) {
-            resolveRenderTarget->cleanup();
-            resolveRenderTarget.reset();
-        }
+        resolveRenderTarget.reset();
         for (std::shared_ptr<Texture>& outputOrHistoryTexture : outputOrHistoryTextures) {
             outputOrHistoryTexture.reset();
         }

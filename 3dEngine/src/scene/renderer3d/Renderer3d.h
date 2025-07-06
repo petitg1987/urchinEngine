@@ -31,7 +31,7 @@ namespace urchin {
     class Renderer3d final : public Renderer, public Observer {
         public:
             Renderer3d(float, RenderTarget&, std::shared_ptr<Camera>, const VisualConfig&, I18nService&);
-            ~Renderer3d() override;
+            ~Renderer3d() override = default;
 
             //scene properties
             void onResize(unsigned int, unsigned int) override;

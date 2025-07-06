@@ -55,12 +55,6 @@ namespace urchin {
         }
     }
 
-    LightShadowMap::~LightShadowMap() {
-        if (renderTarget) {
-            renderTarget->cleanup();
-        }
-    }
-
     Light& LightShadowMap::getLight() const {
         return light;
     }

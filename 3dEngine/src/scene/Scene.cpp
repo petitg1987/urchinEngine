@@ -41,7 +41,7 @@ namespace urchin {
         uiRenderers.clear();
 
         ResourceContainer::instance().cleanResources();
-        screenRenderTarget.cleanup();
+        screenRenderTarget.cleanup(); //TODO remove ???
         if (!DEBUG_PROFILE_FRAME_BY_FRAME) {
             Profiler::graphic().log();
         }
