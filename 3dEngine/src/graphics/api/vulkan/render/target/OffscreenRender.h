@@ -37,7 +37,6 @@ namespace urchin {
             void resetOutput();
 
             void initialize() override;
-            void cleanup() override;
 
             unsigned int getWidth() const override;
             unsigned int getHeight() const override;
@@ -49,6 +48,8 @@ namespace urchin {
             void render(uint32_t, unsigned int) override;
 
         private:
+            void cleanup() override;
+
             void initializeClearValues();
             void createRenderPass();
             void createFramebuffers();

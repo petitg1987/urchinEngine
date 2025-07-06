@@ -15,7 +15,6 @@ namespace urchin {
             ~ScreenRender() override;
 
             void initialize() override;
-            void cleanup() override;
 
             void onResize();
 
@@ -34,6 +33,8 @@ namespace urchin {
             void render(uint32_t, unsigned int) override;
 
         private:
+            void cleanup() override;
+
             void initializeClearValues();
             void createImageViews();
             void destroyImageViews();

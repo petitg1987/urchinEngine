@@ -28,7 +28,6 @@ namespace urchin {
             virtual ~RenderTarget();
 
             virtual void initialize() = 0;
-            virtual void cleanup() = 0;
 
             std::string getName() const;
             bool isTestMode() const;
@@ -60,6 +59,8 @@ namespace urchin {
             virtual void render(uint32_t, unsigned int) = 0;
 
         protected:
+            virtual void cleanup() = 0;
+
             bool isInitialized() const;
             void setInitialized(bool);
 
