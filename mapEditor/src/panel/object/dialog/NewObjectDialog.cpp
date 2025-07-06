@@ -93,6 +93,9 @@ namespace urchin {
         if (!filename.isNull()) {
             this->meshesFilename = filename.toUtf8().constData();
             this->meshesFilenameText->setText(filename);
+            if (this->objectNameText->text() == "") {
+                this->objectNameText->setText(FileUtil::getFileNameNoExtension(this->meshesFilename).data());
+            }
 
             std::string preferredMeshesPathString = FileUtil::getDirectory(meshesFilename);
             preferredMeshesPath = QString::fromStdString(preferredMeshesPathString);
