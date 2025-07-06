@@ -14,7 +14,7 @@ namespace urchin {
             lastUpdatedLight(nullptr),
             lightsData({}) {
         static_assert(MAX_LIGHTS < LIGHTS_SHADER_LIMIT);
-        std::memset((void *)&lightsData, 0, sizeof(lightsData));
+        std::memset((void*)&lightsData, 0, sizeof(lightsData));
 
         lightsData.globalAmbientColor = Point3(0.0f, 0.0f, 0.0f);
         LightInfo emptyLightData{};

@@ -6,7 +6,7 @@ namespace urchin {
 
     FogContainer::FogContainer() :
             fogData({}) {
-        std::memset((void *)&fogData, 0, sizeof(fogData));
+        std::memset((void*)&fogData, 0, sizeof(fogData));
     }
 
     void FogContainer::pushFog(const Fog* fog) {

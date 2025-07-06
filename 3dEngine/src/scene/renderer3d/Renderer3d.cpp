@@ -63,8 +63,8 @@ namespace urchin {
             refreshDebugFramebuffers(true) {
         ScopeProfiler sp(Profiler::graphic(), "render3dInit");
 
-        std::memset((void *)&positioningData, 0, sizeof(positioningData));
-        std::memset((void *)&sceneInfo, 0, sizeof(sceneInfo));
+        std::memset((void*)&positioningData, 0, sizeof(positioningData));
+        std::memset((void*)&sceneInfo, 0, sizeof(sceneInfo));
 
         //scene properties
         assert(this->camera);

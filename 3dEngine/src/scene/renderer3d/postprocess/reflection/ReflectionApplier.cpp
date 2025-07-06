@@ -15,8 +15,8 @@ namespace urchin {
             farPlane(0.0f),
             projectionData({}),
             positioningData({}) {
-        std::memset((void *)&projectionData, 0, sizeof(projectionData));
-        std::memset((void *)&positioningData, 0, sizeof(positioningData));
+        std::memset((void*)&projectionData, 0, sizeof(projectionData));
+        std::memset((void*)&positioningData, 0, sizeof(positioningData));
     }
 
     ReflectionApplier::~ReflectionApplier() {

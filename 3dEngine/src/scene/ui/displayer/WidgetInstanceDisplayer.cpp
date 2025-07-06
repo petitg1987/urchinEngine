@@ -14,8 +14,8 @@ namespace urchin {
             uiRenderer(uiRenderer),
             colorParams({}),
             cameraInfo({}) {
-        std::memset((void *)&colorParams, 0, sizeof(colorParams));
-        std::memset((void *)&cameraInfo, 0, sizeof(cameraInfo));
+        std::memset((void*)&colorParams, 0, sizeof(colorParams));
+        std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
     }
 
     WidgetInstanceDisplayer::~WidgetInstanceDisplayer() {

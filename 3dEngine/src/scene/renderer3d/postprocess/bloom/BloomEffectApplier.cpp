@@ -12,7 +12,7 @@ namespace urchin {
             config(config),
             isTestMode(isTestMode),
             preFilterTweak({}) {
-        std::memset((void *)&preFilterTweak, 0, sizeof(preFilterTweak));
+        std::memset((void*)&preFilterTweak, 0, sizeof(preFilterTweak));
 
         checkConfig();
 

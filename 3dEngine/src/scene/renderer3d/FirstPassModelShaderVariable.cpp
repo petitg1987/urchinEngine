@@ -8,7 +8,7 @@ namespace urchin {
             camera(camera),
             renderingSceneWidth((float)renderingSceneWidth),
             renderingSceneHeight((float)renderingSceneHeight) {
-        std::memset((void *)&cameraInfo, 0, sizeof(cameraInfo));
+        std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
 
         cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
     }

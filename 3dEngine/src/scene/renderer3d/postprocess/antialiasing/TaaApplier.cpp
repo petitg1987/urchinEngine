@@ -14,7 +14,7 @@ namespace urchin {
             currentJitter(Vector2(0.0f, 0.0f)),
             copySceneTexToHistory(true),
             frameCount(0) {
-        std::memset((void *)&velocityData, 0, sizeof(velocityData));
+        std::memset((void*)&velocityData, 0, sizeof(velocityData));
 
         velocityData.currentJitter = currentJitter;
         velocityData.previousJitter = currentJitter;

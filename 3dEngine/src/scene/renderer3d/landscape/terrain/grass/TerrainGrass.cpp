@@ -23,8 +23,8 @@ namespace urchin {
             grassProperties({}),
             mesh(nullptr),
             grassTextureParam(TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)) {
-        std::memset((void *)&positioningData, 0, sizeof(positioningData));
-        std::memset((void *)&grassProperties, 0, sizeof(grassProperties));
+        std::memset((void*)&positioningData, 0, sizeof(positioningData));
+        std::memset((void*)&grassProperties, 0, sizeof(grassProperties));
 
         float grassAlphaTest = ConfigService::instance().getFloatValue("terrain.grassAlphaTest");
         std::vector variablesSize = {sizeof(grassAlphaTest)};
