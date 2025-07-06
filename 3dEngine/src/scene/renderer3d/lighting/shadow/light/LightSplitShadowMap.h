@@ -18,10 +18,9 @@ namespace urchin {
             void onLightAffectedZoneUpdated();
             void onSplitFrustumUpdated(const SplitFrustum&);
 
-            void updateVisibleModels();
-
             const Matrix4<float>& getLightProjectionViewMatrix() const;
 
+            void updateVisibleModels();
             std::span<Model* const> getModels() const;
 
         private:

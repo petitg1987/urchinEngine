@@ -144,15 +144,15 @@ namespace urchin {
         *dynamic_cast<Frustum<float>*>(lightScopeConvexObject.get()) = spotLight.getFrustumScope();
     }
 
+    const Matrix4<float>& LightSplitShadowMap::getLightProjectionViewMatrix() const {
+        return lightProjectionViewMatrix;
+    }
+
     void LightSplitShadowMap::updateVisibleModels() {
         models.clear();
         lightShadowMap->getModelOcclusionCuller().getModelsInConvexObject(*lightScopeConvexObject, models, true, [](const Model *const model) {
             return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
         });
-    }
-
-    const Matrix4<float>& LightSplitShadowMap::getLightProjectionViewMatrix() const {
-        return lightProjectionViewMatrix;
     }
 
     /**
