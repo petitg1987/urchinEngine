@@ -1,5 +1,4 @@
 #include <libs/vkenum/vk_enum.h>
-#include <libs/vma/vk_mem_alloc.h>
 
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
