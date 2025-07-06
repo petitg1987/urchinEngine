@@ -44,7 +44,10 @@ namespace urchin {
         if (depthTexture.get() != this->depthTexture.get() || sceneTexture.get() != this->sceneTexture.get()) {
             this->depthTexture = depthTexture;
             this->sceneTexture = sceneTexture;
-            createOrUpdateRenderData();
+
+            if (isEnabled) {
+                createOrUpdateRenderData();
+            }
         }
     }
 

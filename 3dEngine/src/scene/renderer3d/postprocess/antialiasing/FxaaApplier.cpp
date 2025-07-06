@@ -29,7 +29,10 @@ namespace urchin {
     void FxaaApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputTexture) {
         if (inputTexture.get() != this->inputTexture.get()) {
             this->inputTexture = inputTexture;
-            createOrUpdateRenderData();
+
+            if (isEnabled) {
+                createOrUpdateRenderData();
+            }
         }
     }
 
