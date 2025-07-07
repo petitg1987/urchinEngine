@@ -191,7 +191,7 @@ namespace urchin {
     void ModelSetDisplayer::addNewModel(Model* model, std::bitset<8> layersMask) {
         #ifdef URCHIN_DEBUG
             //Note: model instancing is currently not supported when models are only displayed on same layers
-            //TODO assert(layersMask.all() || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE || displayMode == DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE);
+            assert(layersMask.all() || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE || displayMode == DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE);
             assert(renderTarget);
         #endif
 
