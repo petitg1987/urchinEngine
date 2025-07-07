@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <bitset>
 #include <UrchinCommon.h>
 
 #include <graphics/api/GraphicsApi.h>
@@ -71,6 +72,7 @@ namespace urchin {
             bool enableFaceCull;
             std::vector<BlendFunction> blendFunctions;
             bool enableLayerIndexDataInShader;
+
             std::array<std::shared_ptr<TextureReader>, 2> textureReaders;
             std::unique_ptr<MeshFilter> meshFilter;
 

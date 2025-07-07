@@ -68,18 +68,18 @@ namespace urchin {
         this->enableLayerIndexDataInShader = enableLayerIndexDataInShader;
     }
 
-    void ModelInstanceDisplayer::setupCustomTextures(const std::array<std::shared_ptr<TextureReader>, 2>& textureReaders) {
-        if (isInitialized) {
-            throw std::runtime_error("Can not define a custom texture on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
-        }
-        this->textureReaders = textureReaders;
-    }
-
     void ModelInstanceDisplayer::setupLayersMask(std::bitset<8> layersMask) {
         if (isInitialized) {
             throw std::runtime_error("Can not define a layer mask on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->layersMask = layersMask;
+    }
+
+    void ModelInstanceDisplayer::setupCustomTextures(const std::array<std::shared_ptr<TextureReader>, 2>& textureReaders) {
+        if (isInitialized) {
+            throw std::runtime_error("Can not define a custom texture on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
+        }
+        this->textureReaders = textureReaders;
     }
 
     void ModelInstanceDisplayer::initialize() {

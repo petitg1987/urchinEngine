@@ -184,7 +184,7 @@ namespace urchin {
         model.removeObserver(this, Model::MESH_VERTICES_UPDATED);
     }
 
-    void ModelSetDisplayer::updateModels(std::span<Model* const> models) {
+    void ModelSetDisplayer::updateModels(std::span<Model* const> models) { //TODO give layer here !
         ScopeProfiler sp(Profiler::graphic(), "updateModels");
         assert(renderTarget);
 
@@ -228,6 +228,7 @@ namespace urchin {
             modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
             modelInstanceDisplayer->setupFaceCull(enableFaceCull);
             modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
+            //TODO modelInstanceDisplayer->setupLayersMask(layersMask);
             modelInstanceDisplayer->setupCustomTextures(textureReaders);
             addModelToDisplayer(*model, *modelInstanceDisplayer);
             modelInstanceDisplayer->initialize();
