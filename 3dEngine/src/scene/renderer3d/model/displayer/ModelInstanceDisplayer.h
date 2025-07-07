@@ -27,6 +27,7 @@ namespace urchin {
 
             void initialize();
 
+            void updateLayersMask(std::bitset<8>);
             void updateMeshVertices(const Model*) const;
             void updateMeshUv(const Model*) const;
             void updateMaterial(const Model*) const;

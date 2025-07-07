@@ -38,7 +38,7 @@ namespace urchin {
             void notify(Observable*, int) override;
 
             void cleanAllModels();
-            void addNewModels(std::span<Model* const>, std::bitset<8> layersMask = std::bitset<8>(ULLONG_MAX));
+            void addNewModel(Model*, std::bitset<8> layersMask = std::bitset<8>(ULLONG_MAX));
             void replaceAllModels(std::span<Model* const>);
             void removeModel(Model*);
             std::span<Model* const> getModels() const;

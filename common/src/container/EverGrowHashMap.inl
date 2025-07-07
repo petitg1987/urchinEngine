@@ -1,3 +1,35 @@
+template<typename K, typename V> EverGrowHashMap<K, V>::Iterator::Iterator(EverGrowHashMap& map, std::size_t bucketIndex, std::size_t elementIndex) :
+        map(map),
+        bucketIndex(bucketIndex),
+        elementIndex(elementIndex) {
+
+}
+
+template<typename K, typename V> typename EverGrowHashMap<K, V>::Node& EverGrowHashMap<K, V>::Iterator::operator*() const {
+    return map.table[bucketIndex][elementIndex];
+}
+
+template<typename K, typename V> typename EverGrowHashMap<K, V>::Node* EverGrowHashMap<K, V>::Iterator::operator->() const {
+    return &map.table[bucketIndex][elementIndex];
+}
+
+template<typename K, typename V> typename EverGrowHashMap<K, V>::Iterator& EverGrowHashMap<K, V>::Iterator::operator++() {
+    ++elementIndex;
+    while (bucketIndex < map.table.size() && elementIndex >= map.table[bucketIndex].size()) {
+        ++bucketIndex;
+        elementIndex = 0;
+    }
+    return *this;
+}
+
+template<typename K, typename V> bool EverGrowHashMap<K, V>::Iterator::operator==(const Iterator& other) const {
+    return &map == &other.map && bucketIndex == other.bucketIndex && elementIndex == other.elementIndex;
+}
+
+template<typename K, typename V> bool EverGrowHashMap<K, V>::Iterator::operator!=(const Iterator& other) const {
+    return !(*this == other);
+}
+
 template<typename K, typename V> EverGrowHashMap<K, V>::Node::Node(const K& key, const V& value) :
         key(key),
         value(value) {
@@ -75,6 +107,18 @@ template<typename K, typename V> void EverGrowHashMap<K, V>::clear() {
         bucket.clear();
     }
     currentSize = 0;
+}
+
+template<typename K, typename V> typename EverGrowHashMap<K, V>::Iterator EverGrowHashMap<K, V>::begin() {
+    std::size_t bucketIndex = 0;
+    while (bucketIndex < table.size() && table[bucketIndex].empty()) {
+        ++bucketIndex;
+    }
+    return Iterator(*this, bucketIndex, 0);
+}
+
+template<typename K, typename V> typename EverGrowHashMap<K, V>::Iterator EverGrowHashMap<K, V>::end() {
+    return Iterator(*this, table.size(), 0);
 }
 
 template<typename K, typename V> bool EverGrowHashMap<K, V>::isEmpty() const {

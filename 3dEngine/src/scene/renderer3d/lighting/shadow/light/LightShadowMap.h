@@ -28,7 +28,7 @@ namespace urchin {
             const std::vector<std::unique_ptr<LightSplitShadowMap>>& getLightSplitShadowMaps() const;
 
             void removeModel(Model* model) const;
-            void updateVisibleModels() const;
+            void updateVisibleModels();
 
             void renderModels(uint32_t, unsigned int, unsigned int) const;
 
@@ -40,6 +40,7 @@ namespace urchin {
 
             std::vector<std::unique_ptr<LightSplitShadowMap>> lightSplitShadowMaps;
             std::unique_ptr<Model> defaultEmptyModel;
+            EverGrowHashMap<Model*, std::bitset<8>> modelsToLayersMask;
 
             std::unique_ptr<OffscreenRender> renderTarget;
             std::unique_ptr<ModelSetDisplayer> shadowModelSetDisplayer;

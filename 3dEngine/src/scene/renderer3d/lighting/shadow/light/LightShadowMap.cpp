@@ -16,7 +16,8 @@ namespace urchin {
             modelOcclusionCuller(modelOcclusionCuller),
             shadowViewDistance(shadowViewDistance),
             shadowMapResolution(shadowMapResolution),
-            defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")) {
+            defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")),
+            modelsToLayersMask(EverGrowHashMap<Model*, std::bitset<8>>()) {
 
         if (nbShadowMaps > ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) {
             throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(nbShadowMaps));
@@ -33,7 +34,7 @@ namespace urchin {
 
             std::vector variablesDescriptions = {sizeof(nbShadowMaps)};
             auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
-            shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE);
+            shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE); //TODO can use instance ?!
             if (light.getLightType() == Light::LightType::SUN) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapSun.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
                 shadowModelSetDisplayer->initialize(*renderTarget);
@@ -90,23 +91,32 @@ namespace urchin {
         shadowModelSetDisplayer->removeModel(model);
     }
 
-    void LightShadowMap::updateVisibleModels() const {
+    void LightShadowMap::updateVisibleModels() {
+        ScopeProfiler sp(Profiler::graphic(), "smUpModels");
+
         shadowModelSetDisplayer->cleanAllModels();
 
+        //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
+        std::array defaultModels = {defaultEmptyModel.get()};
+
+        modelsToLayersMask.clear();
         std::size_t layerIndex = 0;
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
-            std::bitset<8> layersMask(1 << layerIndex);
             std::span<Model* const> modelsBySplit = lightSplitShadowMap->getModels();
-
-            if (modelsBySplit.empty()) {
-                //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
-                std::array defaultModels = {defaultEmptyModel.get()};
-                shadowModelSetDisplayer->addNewModels(defaultModels, layersMask);
-            } else {
-                shadowModelSetDisplayer->addNewModels(modelsBySplit, layersMask);
+            for (Model* const model : modelsBySplit.empty() ? defaultModels : modelsBySplit) {
+                std::bitset<8>* foundLayersMask = modelsToLayersMask.find(model);
+                if (foundLayersMask == nullptr) {
+                    std::bitset<8> layersMask(1 << layerIndex);
+                    modelsToLayersMask.insert(model, layersMask);
+                } else {
+                    foundLayersMask->set(layerIndex);
+                }
             }
-
             layerIndex++;
+        }
+
+        for (const auto& modelToLayersMask : modelsToLayersMask) {
+            shadowModelSetDisplayer->addNewModel(modelToLayersMask.key, modelToLayersMask.value);
         }
     }
 

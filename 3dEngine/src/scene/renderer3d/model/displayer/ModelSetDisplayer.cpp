@@ -133,7 +133,7 @@ namespace urchin {
 
     ModelInstanceDisplayer* ModelSetDisplayer::findModelInstanceDisplayer(const Model& model) const {
         for (ModelInstanceDisplayer* modelInstanceDisplayer : model.getModelInstanceDisplayers()) {
-            if (&modelInstanceDisplayer->getModelSetDisplayer() == this) { //TODO compare also layerMask
+            if (&modelInstanceDisplayer->getModelSetDisplayer() == this) {
                 return modelInstanceDisplayer;
             }
         }
@@ -188,68 +188,72 @@ namespace urchin {
         this->models.clear();
     }
 
-    void ModelSetDisplayer::addNewModels(std::span<Model* const> models, std::bitset<8> layersMask) {
-        ScopeProfiler sp(Profiler::graphic(), "addModels");
+    void ModelSetDisplayer::addNewModel(Model* model, std::bitset<8> layersMask) {
         #ifdef URCHIN_DEBUG
             //Note: model instancing is currently not supported when models are only displayed on same layers
-            assert(layersMask.all() || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE || displayMode == DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE);
+            //TODO assert(layersMask.all() || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE || displayMode == DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE);
             assert(renderTarget);
         #endif
 
-        for (Model* model : models) {
-            if (meshFilter && !meshFilter->isAccepted(*model)) {
-                continue;
-            } else if (!model->getConstMeshes()) {
-                continue;
-            }
+        if (meshFilter && !meshFilter->isAccepted(*model)) {
+            return;
+        } else if (!model->getConstMeshes()) {
+            return;
+        }
 
-            this->models.push_back(model);
-            std::size_t modelInstanceId = model->computeInstanceId(displayMode);
+        this->models.push_back(model);
+        std::size_t modelInstanceId = model->computeInstanceId(displayMode);
 
-            ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            if (currentModelInstanceDisplayer) {
-                if (currentModelInstanceDisplayer->getInstanceId() == modelInstanceId) {
-                    continue; //the model displayer attached to the model is still valid
-                }
-                removeModelFromDisplayer(*model, *currentModelInstanceDisplayer);
+        ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
+        if (currentModelInstanceDisplayer) {
+            if (currentModelInstanceDisplayer->getInstanceId() == modelInstanceId) {
+                currentModelInstanceDisplayer->updateLayersMask(layersMask);
+                return; //the model displayer attached to the model is still valid
             }
+            removeModelFromDisplayer(*model, *currentModelInstanceDisplayer);
+        }
 
-            if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
-                const auto& itFind = modelDisplayers.find(model);
-                if (itFind != modelDisplayers.end()) {
-                    assert(itFind->second->getInstanceCount() == 0);
-                    addModelToDisplayer(*model, *itFind->second);
-                    continue; //the model displayer used in past for this model has been found
-                }
-            } else {
-                const auto& itFind = modelInstanceDisplayers.find(modelInstanceId);
-                if (itFind != modelInstanceDisplayers.end()) {
-                    addModelToDisplayer(*model, *itFind->second);
-                    continue; //a matching model instance displayer has been found for the model
-                }
+        if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
+            const auto& itFind = modelDisplayers.find(model);
+            if (itFind != modelDisplayers.end()) {
+                assert(itFind->second->getInstanceCount() == 0);
+                addModelToDisplayer(*model, *itFind->second);
+                itFind->second->updateLayersMask(layersMask);
+                return; //the model displayer used in past for this model has been found
             }
+        } else {
+            const auto& itFind = modelInstanceDisplayers.find(modelInstanceId);
+            if (itFind != modelInstanceDisplayers.end()) {
+                addModelToDisplayer(*model, *itFind->second);
+                itFind->second->updateLayersMask(layersMask);
+                return; //a matching model instance displayer has been found for the model
+            }
+        }
 
-            auto modelInstanceDisplayer = std::make_unique<ModelInstanceDisplayer>(*this, displayMode, *renderTarget, *modelShader);
-            modelInstanceDisplayer->setupCustomShaderVariable(customShaderVariable.get());
-            modelInstanceDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
-            modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
-            modelInstanceDisplayer->setupFaceCull(enableFaceCull);
-            modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
-            modelInstanceDisplayer->setupLayersMask(layersMask);
-            modelInstanceDisplayer->setupCustomTextures(textureReaders);
-            addModelToDisplayer(*model, *modelInstanceDisplayer);
-            modelInstanceDisplayer->initialize();
-            if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
-                modelDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
-            } else {
-                modelInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer));
-            }
+        auto modelInstanceDisplayer = std::make_unique<ModelInstanceDisplayer>(*this, displayMode, *renderTarget, *modelShader);
+        modelInstanceDisplayer->setupCustomShaderVariable(customShaderVariable.get());
+        modelInstanceDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
+        modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
+        modelInstanceDisplayer->setupFaceCull(enableFaceCull);
+        modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
+        modelInstanceDisplayer->setupLayersMask(layersMask);
+        modelInstanceDisplayer->setupCustomTextures(textureReaders);
+        addModelToDisplayer(*model, *modelInstanceDisplayer);
+        modelInstanceDisplayer->initialize();
+        if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
+            modelDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
+        } else {
+            modelInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer));
         }
     }
 
     void ModelSetDisplayer::replaceAllModels(std::span<Model* const> models) {
+        ScopeProfiler sp(Profiler::graphic(), "repAllModels");
+
         cleanAllModels();
-        addNewModels(models);
+        for (Model* model : models) {
+            addNewModel(model);
+        }
     }
 
     void ModelSetDisplayer::removeModel(Model* model) {

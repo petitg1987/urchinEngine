@@ -183,6 +183,10 @@ namespace urchin {
         this->scissorSize = scissorSize;
     }
 
+    void GenericRenderer::updateLayersMask(std::bitset<8> layersMask) {
+        this->layersMask = layersMask;
+    }
+
     void GenericRenderer::updatePipelineProcessorData(uint32_t framebufferIndex) {
         //update data (vertex & vertex attributes)
         #ifdef URCHIN_DEBUG

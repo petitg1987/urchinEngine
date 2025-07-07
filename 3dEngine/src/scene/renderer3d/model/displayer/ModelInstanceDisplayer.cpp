@@ -166,6 +166,14 @@ namespace urchin {
         isInitialized = true;
     }
 
+    void ModelInstanceDisplayer::updateLayersMask(std::bitset<8> layersMask) {
+        this->layersMask = layersMask;
+
+        for (auto& meshRenderer : meshRenderers) {
+            meshRenderer->updateLayersMask(layersMask);
+        }
+    }
+
     void ModelInstanceDisplayer::updateMeshVertices(const Model* model) const {
         unsigned int meshIndex = 0;
         for (const auto& meshRenderer: meshRenderers) {

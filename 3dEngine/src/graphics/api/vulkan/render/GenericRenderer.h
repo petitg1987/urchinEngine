@@ -34,6 +34,8 @@ namespace urchin {
             void resetScissor();
             void updateScissor(Vector2<int>, Vector2<int>);
 
+            void updateLayersMask(std::bitset<8>);
+
         private:
             void initialize() override;
             void cleanup() override;
