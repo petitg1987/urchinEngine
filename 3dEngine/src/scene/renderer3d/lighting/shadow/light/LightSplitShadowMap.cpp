@@ -85,24 +85,23 @@ namespace urchin {
         float splitFrustumRadius = splitFrustum.getBoundingSphere().getRadius();
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
 
-        std::array<Point3<float>, 4> lightProjectionVertex;
-        lightProjectionVertex[0] = splitFrustumCenter + Point3(splitFrustumRadius, splitFrustumRadius, splitFrustumRadius);
-        lightProjectionVertex[1] = Point3(lightProjectionVertex[0].X, lightProjectionVertex[0].Y, nearCapZ);
-        lightProjectionVertex[2] = splitFrustumCenter - Point3(splitFrustumRadius, splitFrustumRadius, splitFrustumRadius);
-        lightProjectionVertex[3] = Point3(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
-        lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
-        stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
+        Point3 minPoint = splitFrustumCenter - Point3(splitFrustumRadius, splitFrustumRadius, splitFrustumRadius);
+        Point3 maxPoint = splitFrustumCenter + Point3(splitFrustumRadius, splitFrustumRadius, 0.0f);
+        maxPoint.Z = nearCapZ;
+        lightProjectionMatrix = AABBox(minPoint, maxPoint).toProjectionMatrix();
+        stabilizeShadow(splitFrustum.getBoundingSphere().getCenterOfMass());
         lightProjectionViewMatrix = lightProjectionMatrix * lightViewMatrix;
 
         //determine point belonging to shadow caster/receiver box
         std::array<Point3<float>, 16> shadowReceiverAndCasterVertex;
-        for (std::size_t i = 0; i < 8; ++i) {
+        for (std::size_t i = 0; i < 8; ++i) { //TODO use sphere !!!
             const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
 
             shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver point
             shadowReceiverAndCasterVertex[i * 2 + 1] = Point3(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
         }
         AABBox<float> shadowCasterReceiverShape(shadowReceiverAndCasterVertex);
+        shadowCasterReceiverShape = shadowCasterReceiverShape.enlarge(20.0f, 20.0f); //TODO to remove
         OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox(shadowCasterReceiverShape);
 
         *dynamic_cast<OBBox<float>*>(lightScopeConvexObject.get()) = obboxSceneIndependentViewSpace;
