@@ -17,7 +17,7 @@ namespace urchin {
 
             void refreshInputTextures(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             const ModelSetDisplayer& getModelSetDisplayer() const;
-            void updateModels(const std::vector<Model*>&) const;
+            void replaceAllModels(const std::vector<Model*>&) const;
             void removeModel(Model*) const;
 
             const std::shared_ptr<Texture>& getOutputTexture() const;

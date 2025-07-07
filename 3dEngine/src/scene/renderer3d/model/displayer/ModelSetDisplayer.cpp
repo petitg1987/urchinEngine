@@ -184,7 +184,7 @@ namespace urchin {
         model.removeObserver(this, Model::MESH_VERTICES_UPDATED);
     }
 
-    void ModelSetDisplayer::updateModels(std::span<Model* const> models) { //TODO give layer here !
+    void ModelSetDisplayer::replaceAllModels(std::span<Model* const> models) { //TODO give layer here !
         ScopeProfiler sp(Profiler::graphic(), "updateModels");
         assert(renderTarget);
 

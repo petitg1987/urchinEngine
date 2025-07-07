@@ -74,8 +74,8 @@ namespace urchin {
         return *modelSetDisplayer;
     }
 
-    void TransparentManager::updateModels(const std::vector<Model*>& models) const {
-        modelSetDisplayer->updateModels(models);
+    void TransparentManager::replaceAllModels(const std::vector<Model*>& models) const {
+        modelSetDisplayer->replaceAllModels(models);
     }
 
     void TransparentManager::removeModel(Model* model) const {

@@ -102,7 +102,7 @@ namespace urchin {
             models.push_back(defaultEmptyModel.get());
         }
 
-        shadowModelSetDisplayer->updateModels(models);
+        shadowModelSetDisplayer->replaceAllModels(models);
     }
 
     void LightShadowMap::renderModels(uint32_t frameCount, unsigned int numDependenciesToShadowMaps, unsigned int renderingOrder) const {

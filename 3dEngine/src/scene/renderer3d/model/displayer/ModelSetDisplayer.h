@@ -37,7 +37,7 @@ namespace urchin {
 
             void notify(Observable*, int) override;
 
-            void updateModels(std::span<Model* const>);
+            void replaceAllModels(std::span<Model* const>);
             void removeModel(Model*);
             std::span<Model* const> getModels() const;
             bool isDisplayerExist(const Model&) const;
