@@ -184,11 +184,14 @@ namespace urchin {
         model.removeObserver(this, Model::MESH_VERTICES_UPDATED);
     }
 
-    void ModelSetDisplayer::replaceAllModels(std::span<Model* const> models) { //TODO give layer here !
-        ScopeProfiler sp(Profiler::graphic(), "updateModels");
+    void ModelSetDisplayer::cleanAllModels() {
+        this->models.clear();
+    }
+
+    void ModelSetDisplayer::addNewModels(std::span<Model* const> models, std::bitset<8> layersMask) {
+        ScopeProfiler sp(Profiler::graphic(), "addModels");
         assert(renderTarget);
 
-        this->models.clear();
         for (Model* model : models) {
             if (meshFilter && !meshFilter->isAccepted(*model)) {
                 continue;
@@ -197,7 +200,7 @@ namespace urchin {
             }
 
             this->models.push_back(model);
-            std::size_t modelInstanceId = model->computeInstanceId(displayMode);
+            std::size_t modelInstanceId = model->computeInstanceId(displayMode); //TODO use layers mask to avoid instancing !
 
             ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
             if (currentModelInstanceDisplayer) {
@@ -228,7 +231,7 @@ namespace urchin {
             modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
             modelInstanceDisplayer->setupFaceCull(enableFaceCull);
             modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
-            //TODO modelInstanceDisplayer->setupLayersMask(layersMask);
+            modelInstanceDisplayer->setupLayersMask(layersMask);
             modelInstanceDisplayer->setupCustomTextures(textureReaders);
             addModelToDisplayer(*model, *modelInstanceDisplayer);
             modelInstanceDisplayer->initialize();
@@ -238,6 +241,11 @@ namespace urchin {
                 modelInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer));
             }
         }
+    }
+
+    void ModelSetDisplayer::replaceAllModels(std::span<Model* const> models) {
+        cleanAllModels();
+        addNewModels(models);
     }
 
     void ModelSetDisplayer::removeModel(Model* model) {

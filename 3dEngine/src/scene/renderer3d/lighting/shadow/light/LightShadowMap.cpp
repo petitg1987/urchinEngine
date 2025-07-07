@@ -91,18 +91,23 @@ namespace urchin {
     }
 
     void LightShadowMap::updateVisibleModels() const {
-        models.clear();
+        shadowModelSetDisplayer->cleanAllModels();
+
+        std::size_t layerIndex = 0;
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
+            std::bitset<8> layersMask(1 << layerIndex);
             std::span<Model* const> modelsBySplit = lightSplitShadowMap->getModels();
-            OctreeableHelper<Model>::merge(models, modelsBySplit);
-        }
 
-        if (models.empty()) {
-            //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
-            models.push_back(defaultEmptyModel.get());
-        }
+            if (modelsBySplit.empty()) {
+                //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
+                std::array defaultModels = {defaultEmptyModel.get()};
+                shadowModelSetDisplayer->addNewModels(defaultModels, layersMask);
+            } else {
+                shadowModelSetDisplayer->addNewModels(modelsBySplit, layersMask);
+            }
 
-        shadowModelSetDisplayer->replaceAllModels(models);
+            layerIndex++;
+        }
     }
 
     void LightShadowMap::renderModels(uint32_t frameCount, unsigned int numDependenciesToShadowMaps, unsigned int renderingOrder) const {

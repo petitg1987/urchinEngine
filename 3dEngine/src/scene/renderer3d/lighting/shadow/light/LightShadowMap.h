@@ -39,7 +39,6 @@ namespace urchin {
             unsigned int shadowMapResolution;
 
             std::vector<std::unique_ptr<LightSplitShadowMap>> lightSplitShadowMaps;
-            mutable std::vector<Model*> models;
             std::unique_ptr<Model> defaultEmptyModel;
 
             std::unique_ptr<OffscreenRender> renderTarget;
