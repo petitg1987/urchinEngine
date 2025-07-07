@@ -361,16 +361,19 @@ namespace urchin {
         return drawCommandsDirty || descriptorSetsDirty[framebufferIndex];
     }
 
-    std::size_t PipelineProcessor::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t framebufferIndex, std::size_t layerIndex, std::size_t boundPipelineId) {
-        if (descriptorSetsDirty[framebufferIndex]) {
-            updateDescriptorSets(framebufferIndex);
-            descriptorSetsDirty[framebufferIndex] = false;
+    std::size_t PipelineProcessor::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t framebufferIndex, std::size_t layerIndex, std::size_t currentBoundPipelineId) {
+        if (isApplicableOnLayer(layerIndex)) {
+            if (descriptorSetsDirty[framebufferIndex]) {
+                updateDescriptorSets(framebufferIndex);
+                descriptorSetsDirty[framebufferIndex] = false;
+            }
+
+            std::size_t newBoundPipelineId = doUpdateCommandBuffer(commandBuffer, framebufferIndex, layerIndex, currentBoundPipelineId);
+
+            drawCommandsDirty = false;
+            return newBoundPipelineId;
         }
-
-        doUpdateCommandBuffer(commandBuffer, framebufferIndex, layerIndex, boundPipelineId);
-
-        drawCommandsDirty = false;
-        return getPipeline().getId();
+        return currentBoundPipelineId;
     }
 
 }

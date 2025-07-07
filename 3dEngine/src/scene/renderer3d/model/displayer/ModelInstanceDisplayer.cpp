@@ -20,7 +20,8 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true),
-            enableLayerIndexDataInShader(false) {
+            enableLayerIndexDataInShader(false),
+            layersMask(ULLONG_MAX) {
         std::memset(&materialData, 0, sizeof(materialData));
     }
 
@@ -72,6 +73,13 @@ namespace urchin {
             throw std::runtime_error("Can not define a custom texture on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->textureReaders = textureReaders;
+    }
+
+    void ModelInstanceDisplayer::setupLayersMask(std::bitset<8> layersMask) {
+        if (isInitialized) {
+            throw std::runtime_error("Can not define a layer mask on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
+        }
+        this->layersMask = layersMask;
     }
 
     void ModelInstanceDisplayer::initialize() {
@@ -128,6 +136,9 @@ namespace urchin {
             }
             if (enableLayerIndexDataInShader) {
                 meshRendererBuilder->enableLayerIndexDataInShader();
+            }
+            if (!layersMask.all()) {
+                meshRendererBuilder->setLayersMask(layersMask);
             }
 
             if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {

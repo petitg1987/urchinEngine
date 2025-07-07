@@ -15,7 +15,8 @@ namespace urchin {
             depthTestEnabled(false),
             depthWriteEnabled(false),
             cullFaceEnabled(true),
-            layerIndexDataInShaderEnabled(false) {
+            layerIndexDataInShaderEnabled(false),
+            layersMask(ULLONG_MAX) {
 
     }
 
@@ -197,6 +198,15 @@ namespace urchin {
 
     bool GenericRendererBuilder::isLayerIndexDataInShaderEnabled() const {
         return layerIndexDataInShaderEnabled;
+    }
+
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::setLayersMask(std::bitset<8> layersMask) {
+        this->layersMask = layersMask;
+        return shared_from_this();
+    }
+
+    std::bitset<8> GenericRendererBuilder::getLayersMask() const {
+        return layersMask;
     }
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {

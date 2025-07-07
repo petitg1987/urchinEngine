@@ -21,7 +21,8 @@ namespace urchin {
             scissorOffset(rendererBuilder.getScissorOffset()),
             scissorSize(rendererBuilder.getScissorSize()),
             depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
-            layerIndexDataInShaderEnabled(rendererBuilder.isLayerIndexDataInShaderEnabled()) {
+            layerIndexDataInShaderEnabled(rendererBuilder.isLayerIndexDataInShaderEnabled()),
+            layersMask(rendererBuilder.getLayersMask()) {
 
         setupPipelineBuilder(std::make_unique<PipelineBuilder>(GRAPHICS, getName()));
         getPipelineBuilder().setupRenderTarget(getRenderTarget());
@@ -216,11 +217,17 @@ namespace urchin {
         return layerIndexDataInShaderEnabled || PipelineProcessor::needCommandBufferRefresh(framebufferIndex);
     }
 
-    void GenericRenderer::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t framebufferIndex, std::size_t layerIndex, std::size_t boundPipelineId) {
+    bool GenericRenderer::isApplicableOnLayer(std::size_t layerIndex) const {
+        return layersMask.test(layerIndex);
+    }
+
+    std::size_t GenericRenderer::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t framebufferIndex, std::size_t layerIndex, std::size_t currentBoundPipelineId) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufRender");
 
-        if (boundPipelineId != getPipeline().getId()) {
+        std::size_t newBoundPipelineId = currentBoundPipelineId;
+        if (currentBoundPipelineId != getPipeline().getId()) {
             vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, getPipeline().getVkPipeline());
+            newBoundPipelineId = getPipeline().getId();
         }
 
         if (layerIndexDataInShaderEnabled) {
@@ -257,6 +264,8 @@ namespace urchin {
             auto vertexCount = (uint32_t)data[0].getDataCount();
             vkCmdDraw(commandBuffer, vertexCount, instanceCount, 0, 0);
         }
+
+        return newBoundPipelineId;
     }
 
 }

@@ -1,13 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <bitset>
 #include <vulkan/vulkan.h>
 #include <UrchinCommon.h>
 
 #include <graphics/render/shader/ShaderDataContainer.h>
 #include <graphics/render/data/DataContainer.h>
 #include <graphics/render/data/IndexContainer.h>
-#include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
 
 namespace urchin {
@@ -46,7 +46,8 @@ namespace urchin {
 
             void updatePipelineProcessorData(uint32_t) override;
             bool needCommandBufferRefresh(std::size_t) const override;
-            void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t, std::size_t) override;
+            bool isApplicableOnLayer(std::size_t) const override;
+            std::size_t doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t, std::size_t) override;
 
             bool isInitialized;
 
@@ -59,6 +60,7 @@ namespace urchin {
 
             bool depthTestEnabled;
             bool layerIndexDataInShaderEnabled;
+            std::bitset<8> layersMask;
             std::vector<AlterableBufferHandler> dataBuffers;
             AlterableBufferHandler instanceDataBuffer;
             AlterableBufferHandler indexBuffer;

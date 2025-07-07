@@ -66,11 +66,17 @@ namespace urchin {
         return false;
     }
 
-    void GenericCompute::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t framebufferIndex, std::size_t, std::size_t boundPipelineId) {
+    bool GenericCompute::isApplicableOnLayer(std::size_t) const {
+        return true;
+    }
+
+    std::size_t GenericCompute::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t framebufferIndex, std::size_t, std::size_t currentBoundPipelineId) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufComp");
 
-        if (boundPipelineId != getPipeline().getId()) {
+        std::size_t newBoundPipelineId = currentBoundPipelineId;
+        if (currentBoundPipelineId != getPipeline().getId()) {
             vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getVkPipeline());
+            newBoundPipelineId = getPipeline().getId();
         }
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getPipelineLayout(), 0, 1, &getDescriptorSets()[framebufferIndex], 0, nullptr);
@@ -78,6 +84,8 @@ namespace urchin {
         auto numGroupX = (uint32_t)MathFunction::ceilToInt((float)getRenderTarget().getWidth() / (float)threadLocalSize.X);
         auto numGroupY = (uint32_t)MathFunction::ceilToInt((float)getRenderTarget().getHeight() / (float)threadLocalSize.Y);
         vkCmdDispatch(commandBuffer, numGroupX, numGroupY, 1);
+
+        return newBoundPipelineId;
     }
 
 }

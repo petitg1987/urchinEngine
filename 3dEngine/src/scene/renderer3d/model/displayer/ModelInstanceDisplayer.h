@@ -1,5 +1,7 @@
 #pragma once
 
+#include <bitset>
+
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/DisplayMode.h>
 #include <scene/renderer3d/model/displayer/MeshFilter.h>
@@ -21,6 +23,7 @@ namespace urchin {
             void setupBlendFunctions(const std::vector<BlendFunction>&);
             void setupLayerIndexDataInShader(bool);
             void setupCustomTextures(const std::array<std::shared_ptr<TextureReader>, 2>&);
+            void setupLayersMask(std::bitset<8>);
 
             void initialize();
 
@@ -91,6 +94,7 @@ namespace urchin {
             std::vector<BlendFunction> blendFunctions;
             bool enableLayerIndexDataInShader;
             std::array<std::shared_ptr<TextureReader>, 2> textureReaders;
+            std::bitset<8> layersMask;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
             std::vector<std::shared_ptr<AABBoxModel>> aabboxModels;

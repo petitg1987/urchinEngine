@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <bitset>
 #include <UrchinCommon.h>
 
 #include <graphics/render/shader/ShaderDataContainer.h>
@@ -57,6 +58,8 @@ namespace urchin {
 
             std::shared_ptr<GenericRendererBuilder> enableLayerIndexDataInShader();
             bool isLayerIndexDataInShaderEnabled() const;
+            std::shared_ptr<GenericRendererBuilder> setLayersMask(std::bitset<8>);
+            std::bitset<8> getLayersMask() const;
 
             std::unique_ptr<GenericRenderer> build();
 
@@ -81,6 +84,7 @@ namespace urchin {
             bool depthWriteEnabled;
             bool cullFaceEnabled;
             bool layerIndexDataInShaderEnabled;
+            std::bitset<8> layersMask;
     };
 
 }

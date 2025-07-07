@@ -25,7 +25,6 @@
 * Lighting & Shadow
   * ▲ **NEW FEATURE**: Implement a 'light blocking volume' to restrict lights without shadow to the current room
   * ▲ **OPTIMIZATION**: Free shadow map memory when light is not displayed on the scene
-  * ▲ **OPTIMIZATION**: Avoid to render all the same models for each split shadow map (sun & omni): use the split frustum models instead
   * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
   * ▼ **NEW FEATURE**: Implement scalable ambient obscurance
 * Anti-aliasing

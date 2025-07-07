@@ -65,7 +65,8 @@ namespace urchin {
 
             void markDrawCommandsDirty();
             std::vector<VkDescriptorSet>& getDescriptorSets();
-            virtual void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t, std::size_t) = 0;
+            virtual bool isApplicableOnLayer(std::size_t) const = 0;
+            virtual std::size_t doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t, std::size_t) = 0;
 
         private:
             std::string name;
