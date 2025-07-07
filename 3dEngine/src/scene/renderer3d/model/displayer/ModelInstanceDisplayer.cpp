@@ -106,7 +106,7 @@ namespace urchin {
             if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                 instanceMatrices.emplace_back(InstanceMatrix{.modelMatrix = Matrix4<float>(), .normalMatrix = Matrix4<float>()});
                 meshRendererBuilder->instanceData(instanceMatrices.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT}, (const float*)instanceMatrices.data());
-            } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
+            } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE || displayMode == DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE) {
                 instanceModelMatrices.emplace_back();
                 meshRendererBuilder->instanceData(instanceModelMatrices.size(), {VariableType::MAT4_FLOAT}, (const float*)instanceModelMatrices.data());
             }
@@ -322,7 +322,7 @@ namespace urchin {
             instanceMatrix.modelMatrix = model.getTransform().getTransformMatrix();
             instanceMatrix.normalMatrix = instanceMatrix.modelMatrix.inverse().transpose();
             instanceMatrices.push_back(instanceMatrix);
-        } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
+        } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE || displayMode == DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE) {
             instanceModelMatrices.push_back(model.getTransform().getTransformMatrix());
         }
     }
@@ -341,7 +341,7 @@ namespace urchin {
 
             if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                 meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*) instanceMatrices.data());
-            } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
+            } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE || displayMode == DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE) {
                 meshRenderer->updateInstanceData(instanceModelMatrices.size(), (const float*) instanceModelMatrices.data());
             }
             meshRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &projectionViewMatrix);

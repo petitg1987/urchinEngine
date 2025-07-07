@@ -33,7 +33,7 @@ namespace urchin {
 
             std::vector variablesDescriptions = {sizeof(nbShadowMaps)};
             auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
-            shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
+            shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE);
             if (light.getLightType() == Light::LightType::SUN) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapSun.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
                 shadowModelSetDisplayer->initialize(*renderTarget);

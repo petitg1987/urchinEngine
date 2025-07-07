@@ -133,7 +133,7 @@ namespace urchin {
 
     ModelInstanceDisplayer* ModelSetDisplayer::findModelInstanceDisplayer(const Model& model) const {
         for (ModelInstanceDisplayer* modelInstanceDisplayer : model.getModelInstanceDisplayers()) {
-            if (&modelInstanceDisplayer->getModelSetDisplayer() == this) {
+            if (&modelInstanceDisplayer->getModelSetDisplayer() == this) { //TODO compare also layerMask
                 return modelInstanceDisplayer;
             }
         }
@@ -190,7 +190,11 @@ namespace urchin {
 
     void ModelSetDisplayer::addNewModels(std::span<Model* const> models, std::bitset<8> layersMask) {
         ScopeProfiler sp(Profiler::graphic(), "addModels");
-        assert(renderTarget);
+        #ifdef URCHIN_DEBUG
+            //Note: model instancing is currently not supported when models are only displayed on same layers
+            assert(layersMask.all() || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE || displayMode == DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE);
+            assert(renderTarget);
+        #endif
 
         for (Model* model : models) {
             if (meshFilter && !meshFilter->isAccepted(*model)) {
@@ -200,7 +204,7 @@ namespace urchin {
             }
 
             this->models.push_back(model);
-            std::size_t modelInstanceId = model->computeInstanceId(displayMode); //TODO use layers mask to avoid instancing !
+            std::size_t modelInstanceId = model->computeInstanceId(displayMode);
 
             ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
             if (currentModelInstanceDisplayer) {
