@@ -88,22 +88,12 @@ namespace urchin {
         Point3 minPoint = splitFrustumCenter - Point3(splitFrustumRadius, splitFrustumRadius, splitFrustumRadius);
         Point3 maxPoint = splitFrustumCenter + Point3(splitFrustumRadius, splitFrustumRadius, 0.0f);
         maxPoint.Z = nearCapZ;
-        lightProjectionMatrix = AABBox(minPoint, maxPoint).toProjectionMatrix();
+        AABBox shadowCasterReceiverShape(minPoint, maxPoint);
+        lightProjectionMatrix = shadowCasterReceiverShape.toProjectionMatrix();
         stabilizeShadow(splitFrustum.getBoundingSphere().getCenterOfMass());
         lightProjectionViewMatrix = lightProjectionMatrix * lightViewMatrix;
 
-        //determine point belonging to shadow caster/receiver box
-        std::array<Point3<float>, 16> shadowReceiverAndCasterVertex;
-        for (std::size_t i = 0; i < 8; ++i) { //TODO use sphere !!!
-            const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
-
-            shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver point
-            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
-        }
-        AABBox<float> shadowCasterReceiverShape(shadowReceiverAndCasterVertex);
-        shadowCasterReceiverShape = shadowCasterReceiverShape.enlarge(20.0f, 20.0f); //TODO to remove
         OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox(shadowCasterReceiverShape);
-
         *dynamic_cast<OBBox<float>*>(lightScopeConvexObject.get()) = obboxSceneIndependentViewSpace;
     }
 
