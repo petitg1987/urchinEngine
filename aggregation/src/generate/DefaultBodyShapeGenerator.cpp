@@ -26,7 +26,7 @@ namespace urchin {
             auto orientation = static_cast<CapsuleShape<float>::CapsuleOrientation>(axis);
 
             float radius = std::max(modelAABBox.getHalfSizes()[(axis + 1) % 3], modelAABBox.getHalfSizes()[(axis + 2) % 3]);
-            float cylinderHeight = modelAABBox.getHalfSizes()[axis] * 2.0f; //TODO wrong !
+            float cylinderHeight = std::max((modelAABBox.getHalfSizes()[axis] * 2.0f) - 2.0f * radius, 0.01f);
 
             shape = std::make_unique<CollisionCapsuleShape>(radius, cylinderHeight, orientation);
         } else if (shapeType == CollisionShape3D::ShapeType::CYLINDER_SHAPE) {
