@@ -68,13 +68,12 @@ namespace urchin {
     }
 
     std::vector<std::shared_ptr<const LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildLocalizedCollisionShapes() const {
-        std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
+        std::vector<std::shared_ptr<const LocalizedCollisionShape>> result;
 
         if (objectEntity.getModel()->getConstMeshes()) {
             const std::vector<std::unique_ptr<const ConstMesh>>& constMeshes = objectEntity.getModel()->getConstMeshes()->getConstMeshes();
-            localizedCollisionShapes.reserve(constMeshes.size());
+            result.reserve(constMeshes.size());
 
-            std::size_t shapeIndex = 0;
             for (const std::unique_ptr<const ConstMesh>& constMesh : constMeshes) {
                 std::set<Point3<float>> meshUniqueVertices;
                 for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
@@ -82,47 +81,56 @@ namespace urchin {
                 }
 
                 try {
-                    std::unique_ptr<LocalizedCollisionShape> localizedShape = buildBestCollisionShape(shapeIndex++,
-                        std::vector(meshUniqueVertices.begin(), meshUniqueVertices.end()));
-                    localizedCollisionShapes.push_back(std::move(localizedShape));
+                    std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(std::vector(meshUniqueVertices.begin(), meshUniqueVertices.end()));
+                    for (std::unique_ptr<LocalizedCollisionShape>& localizedCollisionShape : localizedCollisionShapes) {
+                        result.push_back(std::move(localizedCollisionShape));
+                    }
                 } catch (const std::invalid_argument&) {
                     //ignore build convex hull errors
                 }
             }
         }
 
-        if (localizedCollisionShapes.empty()) {
+        if (result.empty()) {
             auto boxLocalizedShape = std::make_unique<LocalizedCollisionShape>();
             boxLocalizedShape->shapeIndex = 0;
             boxLocalizedShape->shape = std::make_unique<const CollisionBoxShape>(objectEntity.getModel()->getLocalAABBox().getHalfSizes());
             boxLocalizedShape->transform = PhysicsTransform();
-            localizedCollisionShapes.push_back(std::move(boxLocalizedShape));
+            result.push_back(std::move(boxLocalizedShape));
         }
 
-        return localizedCollisionShapes;
+        return result;
     }
 
-    std::unique_ptr<LocalizedCollisionShape> DefaultBodyShapeGenerator::buildBestCollisionShape(std::size_t shapeIndex, const std::vector<Point3<float>>& uniqueVertices) const {
-        Point3<float> position;
-        Quaternion<float> orientation;
-        std::unique_ptr<ConvexShape3D<float>> bestShape = ShapeDetectService().detect(uniqueVertices, position, orientation);
+    std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(const std::vector<Point3<float>>& uniqueVertices) const {
+        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService().detect(uniqueVertices);
 
-        auto localizedShape = std::make_unique<LocalizedCollisionShape>();
-        localizedShape->shapeIndex = shapeIndex;
-        if (dynamic_cast<ConvexHullShape3D<float>*>(bestShape.get())) {
-            std::unique_ptr<ConvexHullShape3D<float>> convexHull(dynamic_cast<ConvexHullShape3D<float>*>(bestShape.release()));
-            localizedShape->shape = std::make_unique<const CollisionConvexHullShape>(std::move(convexHull));
-        } else if (dynamic_cast<BoxShape<float>*>(bestShape.get())) {
-            std::unique_ptr<BoxShape<float>> boxShape(dynamic_cast<BoxShape<float>*>(bestShape.release()));
-            localizedShape->shape = std::make_unique<const CollisionBoxShape>(boxShape->getHalfSizes());
-        } else if (dynamic_cast<SphereShape<float>*>(bestShape.get())) {
-            std::unique_ptr<SphereShape<float>> sphereShape(dynamic_cast<SphereShape<float>*>(bestShape.release()));
-            localizedShape->shape = std::make_unique<const CollisionSphereShape>(sphereShape->getRadius());
-        } else {
-            throw std::runtime_error("Unknown shape type to build optimized collision shape");
+        std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
+        result.reserve(bestLocalizedShapes.size());
+
+        std::size_t shapeIndex = 0;
+        for (ShapeDetectService::LocalizedShape& localizedShape : bestLocalizedShapes) {
+            auto localizedCollisionShape = std::make_unique<LocalizedCollisionShape>();
+            localizedCollisionShape->shapeIndex = shapeIndex;
+            if (dynamic_cast<ConvexHullShape3D<float>*>(localizedShape.shape.get())) {
+                std::unique_ptr<ConvexHullShape3D<float>> convexHull(dynamic_cast<ConvexHullShape3D<float>*>(localizedShape.shape.release()));
+                localizedCollisionShape->shape = std::make_unique<const CollisionConvexHullShape>(std::move(convexHull));
+            } else if (dynamic_cast<BoxShape<float>*>(localizedShape.shape.get())) {
+                std::unique_ptr<BoxShape<float>> boxShape(dynamic_cast<BoxShape<float>*>(localizedShape.shape.release()));
+                localizedCollisionShape->shape = std::make_unique<const CollisionBoxShape>(boxShape->getHalfSizes());
+            } else if (dynamic_cast<SphereShape<float>*>(localizedShape.shape.get())) {
+                std::unique_ptr<SphereShape<float>> sphereShape(dynamic_cast<SphereShape<float>*>(localizedShape.shape.release()));
+                localizedCollisionShape->shape = std::make_unique<const CollisionSphereShape>(sphereShape->getRadius());
+            } else {
+                throw std::runtime_error("Unknown shape type to build optimized collision shape");
+            }
+            localizedCollisionShape->transform = PhysicsTransform(localizedShape.position, localizedShape.orientation);
+            result.push_back(std::move(localizedCollisionShape));
+
+            shapeIndex++;
         }
-        localizedShape->transform = PhysicsTransform(position, orientation);
-        return localizedShape;
+
+        return result;
     }
 
 }
