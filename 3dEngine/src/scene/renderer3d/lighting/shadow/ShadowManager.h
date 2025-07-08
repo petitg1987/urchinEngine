@@ -51,7 +51,7 @@ namespace urchin {
 
             unsigned int getMaxShadowLights() const;
             unsigned int getMaxSplitShadowMaps() const;
-            float getShadowMapDistanceBiasFactor() const;
+            float getShadowMapConstantBiasFactor() const;
             float getShadowMapSlopeBiasFactor() const;
             unsigned int getShadowMapOffsetTexSize() const;
 

@@ -8,7 +8,7 @@ layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightMan
 layout(constant_id = 1) const float AO_STRENGTH = 0.0;
 layout(constant_id = 2) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 3) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT
-layout(constant_id = 4) const float SHADOW_MAP_DISTANCE_BIAS_FACTOR = 0.0;
+layout(constant_id = 4) const float SHADOW_MAP_CONSTANT_BIAS_FACTOR = 0.0;
 layout(constant_id = 5) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
 layout(constant_id = 6) const int SHADOW_MAP_OFFSET_TEX_SIZE = 0;
 layout(constant_id = 7) const float MAX_EMISSIVE_FACTOR = 0.0;
@@ -92,8 +92,7 @@ float computeShadowAttenuation(int shadowLightIndex, int splitShadowMapIndex, ve
     shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
     float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
-    float distanceBias = min(distance(positioningData.viewPosition, vec3(worldPosition)) * SHADOW_MAP_DISTANCE_BIAS_FACTOR, 0.0015f);
-    float bias = (slopeBias + distanceBias) * biasReduceFactor;
+    float bias = (slopeBias + SHADOW_MAP_CONSTANT_BIAS_FACTOR) * biasReduceFactor;
 
     const float SOFT_EDGE_LENGTH = 1.5f;
     float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[shadowLightIndex], 0));
@@ -160,11 +159,13 @@ float computeOmnidirectionalShadowAttenuation(int shadowLightIndex, vec4 worldPo
         shadowMapIndex = lightToFragment.z > 0.0 ? 4 /* Front (Z+) */ : 5 /* Back (Z-) */;
     }
 
-    return computeShadowAttenuation(shadowLightIndex, shadowMapIndex, worldPosition, NdotL, 0.15f);
+    float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear !
+    return computeShadowAttenuation(shadowLightIndex, shadowMapIndex, worldPosition, NdotL, biasReduceFactor);
 }
 
 float computeSpotShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
-    return computeShadowAttenuation(shadowLightIndex, 0, worldPosition, NdotL, 1.0f);
+    float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear !
+    return computeShadowAttenuation(shadowLightIndex, 0, worldPosition, NdotL, biasReduceFactor);
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {

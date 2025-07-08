@@ -90,7 +90,7 @@ namespace urchin {
                 float ambientOcclusionStrength;
                 uint32_t maxShadowLights;
                 uint32_t maxSplitShadowMaps;
-                float shadowMapDistanceBiasFactor;
+                float shadowMapConstantBiasFactor;
                 float shadowMapSlopeBiasFactor;
                 uint32_t shadowMapOffsetTexSize;
                 float maxEmissiveFactor;

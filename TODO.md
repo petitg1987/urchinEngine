@@ -25,6 +25,7 @@
 * Lighting & Shadow
   * ▲ **NEW FEATURE**: Implement a 'light blocking volume' to restrict lights without shadow to the current room
   * ▲ **OPTIMIZATION**: Free shadow map memory when light is not displayed on the scene
+  * ► **IMPROVEMENT**: Use linear shadow map depth for spot and omnidirectional lights
   * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
   * ▼ **NEW FEATURE**: Implement scalable ambient obscurance
 * Anti-aliasing

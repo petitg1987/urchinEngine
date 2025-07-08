@@ -101,12 +101,12 @@ namespace urchin {
         return std::max(std::max(1u /* spot */, 6u /* omnidirectional */), getConfig().nbSunShadowMaps);
     }
 
-    float ShadowManager::getShadowMapDistanceBiasFactor() const {
-        return 0.00025f;
+    float ShadowManager::getShadowMapConstantBiasFactor() const {
+        return 0.0003f;
     }
 
     float ShadowManager::getShadowMapSlopeBiasFactor() const {
-        return 0.00035f;
+        return 0.0007f;
     }
 
     unsigned int ShadowManager::getShadowMapOffsetTexSize() const {
