@@ -220,8 +220,9 @@ namespace urchin {
             const auto& itFind = modelDisplayers.find(model);
             if (itFind != modelDisplayers.end()) {
                 assert(itFind->second->getInstanceCount() == 0);
+                assert(itFind->second->getLayersMask().none());
                 addModelToDisplayer(*model, *itFind->second);
-                itFind->second->updateLayersMask(itFind->second->getLayersMask() | layersMask);
+                itFind->second->updateLayersMask(layersMask);
                 return; //the model displayer used in past for this model has been found
             }
         } else {
