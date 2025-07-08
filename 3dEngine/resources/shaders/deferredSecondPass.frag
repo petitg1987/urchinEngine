@@ -159,12 +159,12 @@ float computeOmnidirectionalShadowAttenuation(int shadowLightIndex, vec4 worldPo
         shadowMapIndex = lightToFragment.z > 0.0 ? 4 /* Front (Z+) */ : 5 /* Back (Z-) */;
     }
 
-    float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear !
+    float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear
     return computeShadowAttenuation(shadowLightIndex, shadowMapIndex, worldPosition, NdotL, biasReduceFactor);
 }
 
 float computeSpotShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
-    float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear !
+    float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear
     return computeShadowAttenuation(shadowLightIndex, 0, worldPosition, NdotL, biasReduceFactor);
 }
 
