@@ -15,12 +15,12 @@ namespace urchin {
             shape = std::make_unique<CollisionBoxShape>(modelAABBox.getHalfSizes());
         } else if (shapeType == CollisionShape3D::ShapeType::SPHERE_SHAPE) {
             shape = std::make_unique<CollisionSphereShape>(modelAABBox.getMaxHalfSize());
-        } else if (shapeType == CollisionShape3D::ShapeType::CAPSULE_SHAPE) {
+        } else if (shapeType == CollisionShape3D::ShapeType::CAPSULE_SHAPE) { //TODO find best orientation
             float radius = std::max(modelAABBox.getHalfSizes()[1], modelAABBox.getHalfSizes()[2]);
             float cylinderHeight = modelAABBox.getHalfSizes()[0] * 2.0f;
 
             shape = std::make_unique<CollisionCapsuleShape>(radius, cylinderHeight, CapsuleShape<float>::CAPSULE_X);
-        } else if (shapeType == CollisionShape3D::ShapeType::CYLINDER_SHAPE) {
+        } else if (shapeType == CollisionShape3D::ShapeType::CYLINDER_SHAPE) { //TODO find best orientation
             float radius = std::max(modelAABBox.getHalfSizes()[1], modelAABBox.getHalfSizes()[2]);
             float height = modelAABBox.getHalfSizes()[0] * 2.0f;
 

@@ -9,8 +9,8 @@ namespace urchin {
 
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& originalPoints) const {
 		std::vector<LocalizedShape> result;
-		auto position = Point3(0.0f, 0.0f, 0.0f);
-		auto orientation = Quaternion<float>();
+		Point3 position(0.0f, 0.0f, 0.0f);
+		Quaternion<float> orientation;
 
 		auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(originalPoints);
 		std::vector<Point3<float>> convexPoints = convexHullShape->getPoints();
