@@ -8,6 +8,12 @@ namespace urchin {
     }
 
     std::unique_ptr<const CollisionShape3D> DefaultBodyShapeGenerator::generate(CollisionShape3D::ShapeType shapeType) const {
+        std::map<std::string, std::string, std::less<>> params;
+        return generate(shapeType, params);
+    }
+
+    std::unique_ptr<const CollisionShape3D> DefaultBodyShapeGenerator::generate(CollisionShape3D::ShapeType shapeType,
+            const std::map<std::string, std::string, std::less<>>& params) const {
         std::unique_ptr<CollisionShape3D> shape;
         const AABBox<float>& modelAABBox = objectEntity.getModel()->getLocalAABBox();
 
@@ -15,16 +21,22 @@ namespace urchin {
             shape = std::make_unique<CollisionBoxShape>(modelAABBox.getHalfSizes());
         } else if (shapeType == CollisionShape3D::ShapeType::SPHERE_SHAPE) {
             shape = std::make_unique<CollisionSphereShape>(modelAABBox.getMaxHalfSize());
-        } else if (shapeType == CollisionShape3D::ShapeType::CAPSULE_SHAPE) { //TODO find best orientation
-            float radius = std::max(modelAABBox.getHalfSizes()[1], modelAABBox.getHalfSizes()[2]);
-            float cylinderHeight = modelAABBox.getHalfSizes()[0] * 2.0f;
+        } else if (shapeType == CollisionShape3D::ShapeType::CAPSULE_SHAPE) {
+            std::size_t axis = params.contains("axis") ? TypeConverter::toSize(params.at("axis")) : 0;
+            auto orientation = static_cast<CapsuleShape<float>::CapsuleOrientation>(axis);
 
-            shape = std::make_unique<CollisionCapsuleShape>(radius, cylinderHeight, CapsuleShape<float>::CAPSULE_X);
-        } else if (shapeType == CollisionShape3D::ShapeType::CYLINDER_SHAPE) { //TODO find best orientation
-            float radius = std::max(modelAABBox.getHalfSizes()[1], modelAABBox.getHalfSizes()[2]);
-            float height = modelAABBox.getHalfSizes()[0] * 2.0f;
+            float radius = std::max(modelAABBox.getHalfSizes()[(axis + 1) % 3], modelAABBox.getHalfSizes()[(axis + 2) % 3]);
+            float cylinderHeight = modelAABBox.getHalfSizes()[axis] * 2.0f; //TODO wrong !
 
-            shape = std::make_unique<CollisionCylinderShape>(radius, height, CylinderShape<float>::CYLINDER_X);
+            shape = std::make_unique<CollisionCapsuleShape>(radius, cylinderHeight, orientation);
+        } else if (shapeType == CollisionShape3D::ShapeType::CYLINDER_SHAPE) {
+            std::size_t axis = params.contains("axis") ? TypeConverter::toSize(params.at("axis")) : 0;
+            auto orientation = static_cast<CylinderShape<float>::CylinderOrientation>(axis);
+
+            float radius = std::max(modelAABBox.getHalfSizes()[(axis + 1) % 3], modelAABBox.getHalfSizes()[(axis + 2) % 3]);
+            float height = modelAABBox.getHalfSizes()[axis] * 2.0f;
+
+            shape = std::make_unique<CollisionCylinderShape>(radius, height, orientation);
         } else if (shapeType == CollisionShape3D::ShapeType::CONE_SHAPE) {
             float radius = std::max(modelAABBox.getHalfSizes()[1], modelAABBox.getHalfSizes()[2]);
             float height = modelAABBox.getHalfSizes()[0] * 2.0f;

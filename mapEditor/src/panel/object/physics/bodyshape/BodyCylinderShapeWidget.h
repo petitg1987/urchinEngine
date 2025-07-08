@@ -20,11 +20,16 @@ namespace urchin {
 
             std::string getBodyShapeName() const override;
 
+        public slots:
+            void updateCylinderOrientation();
+
         protected:
             void doSetupShapePropertiesFrom(const CollisionShape3D&) override;
             std::unique_ptr<const CollisionShape3D> createBodyShape() const override;
 
         private:
+            void disableShapeEvents(bool) const;
+
             QDoubleSpinBox* radius;
             QDoubleSpinBox* height;
             QComboBox* orientation;

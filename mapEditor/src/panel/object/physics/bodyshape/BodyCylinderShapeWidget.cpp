@@ -31,11 +31,34 @@ namespace urchin {
         orientation->addItem("X", QVariant(CylinderShape<float>::CylinderOrientation::CYLINDER_X));
         orientation->addItem("Y", QVariant(CylinderShape<float>::CylinderOrientation::CYLINDER_Y));
         orientation->addItem("Z", QVariant(CylinderShape<float>::CylinderOrientation::CYLINDER_Z));
-        connect(orientation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateBodyShape()));
+        connect(orientation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCylinderOrientation()));
     }
 
     std::string BodyCylinderShapeWidget::getBodyShapeName() const {
         return CYLINDER_SHAPE_LABEL;
+    }
+
+    void BodyCylinderShapeWidget::updateCylinderOrientation() {
+        std::map<std::string, std::string, std::less<>> params{{"axis", TypeConverter::toString(orientation->currentData().toInt())}};
+        std::unique_ptr<const CollisionShape3D> newShape = DefaultBodyShapeGenerator(*getObjectEntity()).generate(CollisionShape3D::ShapeType::CYLINDER_SHAPE, params);
+        const auto& cylinderShape = static_cast<const CollisionCylinderShape&>(*newShape);
+
+        disableShapeEvents(true);
+        radius->setValue(cylinderShape.getRadius());
+        height->setValue(cylinderShape.getHeight());
+        int index = orientation->findData(cylinderShape.getCylinderOrientation());
+        if (index != -1) {
+            orientation->setCurrentIndex(index);
+        }
+        disableShapeEvents(false);
+
+        updateBodyShape();
+    }
+
+    void BodyCylinderShapeWidget::disableShapeEvents(bool disable) const {
+        radius->blockSignals(disable);
+        height->blockSignals(disable);
+        orientation->blockSignals(disable);
     }
 
     void BodyCylinderShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
@@ -43,7 +66,6 @@ namespace urchin {
 
         radius->setValue(cylinderShape.getRadius());
         height->setValue(cylinderShape.getHeight());
-
         int index = orientation->findData(cylinderShape.getCylinderOrientation());
         if (index != -1) {
             orientation->setCurrentIndex(index);

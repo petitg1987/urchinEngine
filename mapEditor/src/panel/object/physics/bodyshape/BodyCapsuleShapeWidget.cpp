@@ -31,11 +31,35 @@ namespace urchin {
         orientation->addItem("X", QVariant(CapsuleShape<float>::CapsuleOrientation::CAPSULE_X));
         orientation->addItem("Y", QVariant(CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y));
         orientation->addItem("Z", QVariant(CapsuleShape<float>::CapsuleOrientation::CAPSULE_Z));
-        connect(orientation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateBodyShape()));
+        connect(orientation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCapsuleOrientation()));
     }
 
     std::string BodyCapsuleShapeWidget::getBodyShapeName() const {
         return CAPSULE_SHAPE_LABEL;
+    }
+
+    void BodyCapsuleShapeWidget::updateCapsuleOrientation() {
+        std::map<std::string, std::string, std::less<>> params{{"axis", TypeConverter::toString(orientation->currentData().toInt())}};
+        std::unique_ptr<const CollisionShape3D> newShape = DefaultBodyShapeGenerator(*getObjectEntity()).generate(CollisionShape3D::ShapeType::CAPSULE_SHAPE, params);
+        const auto& capsuleShape = static_cast<const CollisionCapsuleShape&>(*newShape);
+
+        disableShapeEvents(true);
+        radius->setValue(capsuleShape.getRadius());
+        cylinderHeight->setValue(capsuleShape.getCylinderHeight());
+        int index = orientation->findData(capsuleShape.getCapsuleOrientation());
+        if (index != -1) {
+            orientation->setCurrentIndex(index);
+        }
+        disableShapeEvents(false);
+
+        updateBodyShape();
+    }
+
+
+    void BodyCapsuleShapeWidget::disableShapeEvents(bool disable) const {
+        radius->blockSignals(disable);
+        cylinderHeight->blockSignals(disable);
+        orientation->blockSignals(disable);
     }
 
     void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
@@ -43,7 +67,6 @@ namespace urchin {
 
         radius->setValue(capsuleShape.getRadius());
         cylinderHeight->setValue(capsuleShape.getCylinderHeight());
-
         int index = orientation->findData(capsuleShape.getCapsuleOrientation());
         if (index != -1) {
             orientation->setCurrentIndex(index);
