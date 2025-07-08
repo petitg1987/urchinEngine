@@ -16,7 +16,6 @@ graph BT
     Transparent(Transparent)
     OutputRenderer(Output Renderer)
     
-    
     DeferredSecondPass --> ShadowMap
     DeferredSecondPass -->|Depth / Albedo / Normal / Mat| DeferredFirstPass
     DeferredSecondPass --> AmbientOcclusionBlur
@@ -25,12 +24,10 @@ graph BT
     AmbientOcclusionBlur -->|Depth| DeferredFirstPass
     AmbientOcclusionBlur --> AmbientOcclusion
     
-    AntiAliasing --> DeferredSecondPass
-    
     BloomCombine --> BloomFilterUpDown
-    BloomCombine --> AntiAliasing
+    BloomCombine --> DeferredSecondPass
     BloomFilterUpDown --> BloomFilterUpDown
-    BloomFilterUpDown --> AntiAliasing
+    BloomFilterUpDown --> DeferredSecondPass
     
     ReflectionColor --> BloomCombine
     ReflectionColor -->|Depth / Normal / Mat| DeferredFirstPass
@@ -42,5 +39,7 @@ graph BT
     Transparent --> ReflectionCombine
     Transparent -->|Depth| DeferredFirstPass
     
-    OutputRenderer --> Transparent
+    AntiAliasing --> Transparent
+    
+    OutputRenderer --> AntiAliasing
 ```
