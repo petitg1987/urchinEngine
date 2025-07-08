@@ -39,7 +39,7 @@ namespace urchin {
 
         deferredSecondPassRendererBuilder
                 ->addUniformData(projViewMatricesUniformBinding, maxMatricesLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
-                ->addUniformData(shadowMapDataUniformBinding, config.nbSunShadowMaps * sizeof(Point4<float>), splitData.data())
+                ->addUniformData(shadowMapDataUniformBinding, sizeof(splitData), splitData.data())
                 ->addUniformData(shadowMapInfoUniformBinding, sizeof(shadowMapInfo), &shadowMapInfo);
     }
 
