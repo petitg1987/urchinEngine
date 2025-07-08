@@ -103,8 +103,7 @@ namespace urchin {
             for (Model* const model : modelsBySplit) {
                 std::bitset<8>* foundLayersMask = modelsToLayersMask.find(model);
                 if (foundLayersMask == nullptr) {
-                    std::bitset<8> layersMask(1 << layerIndex);
-                    modelsToLayersMask.insert(model, layersMask);
+                    modelsToLayersMask.insert(model, std::bitset<8>(1 << layerIndex));
                 } else {
                     foundLayersMask->set(layerIndex);
                 }
@@ -112,8 +111,7 @@ namespace urchin {
             layerIndex++;
         }
 
-        if (modelsToLayersMask.isEmpty()) {
-            //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
+        if (modelsToLayersMask.isEmpty()) { //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
             modelsToLayersMask.insert(defaultEmptyModel.get(), std::bitset<8>(1 << 1));
         }
 
