@@ -34,7 +34,7 @@ namespace urchin {
 
             std::vector variablesDescriptions = {sizeof(nbShadowMaps)};
             auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
-            shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE);
+            shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
             if (light.getLightType() == Light::LightType::SUN) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapSun.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
                 shadowModelSetDisplayer->initialize(*renderTarget);
@@ -96,14 +96,11 @@ namespace urchin {
 
         shadowModelSetDisplayer->cleanAllModels();
 
-        //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
-        std::array defaultModels = {defaultEmptyModel.get()};
-
         modelsToLayersMask.clear();
         std::size_t layerIndex = 0;
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
             std::span<Model* const> modelsBySplit = lightSplitShadowMap->getModels();
-            for (Model* const model : modelsBySplit.empty() ? defaultModels : modelsBySplit) {
+            for (Model* const model : modelsBySplit) {
                 std::bitset<8>* foundLayersMask = modelsToLayersMask.find(model);
                 if (foundLayersMask == nullptr) {
                     std::bitset<8> layersMask(1 << layerIndex);
@@ -113,6 +110,11 @@ namespace urchin {
                 }
             }
             layerIndex++;
+        }
+
+        if (modelsToLayersMask.isEmpty()) {
+            //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
+            modelsToLayersMask.insert(defaultEmptyModel.get(), std::bitset<8>(1 << 1));
         }
 
         for (const auto& modelToLayersMask : modelsToLayersMask) {

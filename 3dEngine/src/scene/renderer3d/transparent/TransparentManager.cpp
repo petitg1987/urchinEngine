@@ -59,7 +59,7 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &modelTransparentConstData);
 
-        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_NO_INSTANCING_MODE);
+        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_NO_INSTANCING_MODE /* no objects instancing as the objects must be drawn in order */);
         modelSetDisplayer->setupShader("modelTransparent.vert.spv", "modelTransparent.frag.spv", std::move(shaderConstants));
         modelSetDisplayer->setupDepthOperations(true, false);
         modelSetDisplayer->setupBlendFunctions({BlendFunction::buildDefault()});

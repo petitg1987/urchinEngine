@@ -186,14 +186,17 @@ namespace urchin {
 
     void ModelSetDisplayer::cleanAllModels() {
         this->models.clear();
+
+        for (const std::unique_ptr<ModelInstanceDisplayer>& modelInstanceDisplayer : std::views::values(modelDisplayers)) {
+            modelInstanceDisplayer->updateLayersMask(std::bitset<8>());
+        }
+        for (const std::unique_ptr<ModelInstanceDisplayer>& modelInstanceDisplayer : std::views::values(modelInstanceDisplayers)) {
+            modelInstanceDisplayer->updateLayersMask(std::bitset<8>());
+        }
     }
 
     void ModelSetDisplayer::addNewModel(Model* model, std::bitset<8> layersMask) {
-        #ifdef URCHIN_DEBUG
-            //Note: model instancing is currently not supported when models are only displayed on same layers
-            assert(layersMask.all() || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE || displayMode == DisplayMode::DEPTH_ONLY_NO_INSTANCING_MODE);
-            assert(renderTarget);
-        #endif
+        assert(renderTarget);
 
         if (meshFilter && !meshFilter->isAccepted(*model)) {
             return;
@@ -207,7 +210,7 @@ namespace urchin {
         ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
         if (currentModelInstanceDisplayer) {
             if (currentModelInstanceDisplayer->getInstanceId() == modelInstanceId) {
-                currentModelInstanceDisplayer->updateLayersMask(layersMask);
+                currentModelInstanceDisplayer->updateLayersMask(currentModelInstanceDisplayer->getLayersMask() | layersMask);
                 return; //the model displayer attached to the model is still valid
             }
             removeModelFromDisplayer(*model, *currentModelInstanceDisplayer);
@@ -218,14 +221,14 @@ namespace urchin {
             if (itFind != modelDisplayers.end()) {
                 assert(itFind->second->getInstanceCount() == 0);
                 addModelToDisplayer(*model, *itFind->second);
-                itFind->second->updateLayersMask(layersMask);
+                itFind->second->updateLayersMask(itFind->second->getLayersMask() | layersMask);
                 return; //the model displayer used in past for this model has been found
             }
         } else {
             const auto& itFind = modelInstanceDisplayers.find(modelInstanceId);
             if (itFind != modelInstanceDisplayers.end()) {
                 addModelToDisplayer(*model, *itFind->second);
-                itFind->second->updateLayersMask(layersMask);
+                itFind->second->updateLayersMask(itFind->second->getLayersMask() | layersMask);
                 return; //a matching model instance displayer has been found for the model
             }
         }

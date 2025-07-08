@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <bitset>
 #include <UrchinCommon.h>
 
 #include <graphics/api/GraphicsApi.h>
@@ -38,7 +37,7 @@ namespace urchin {
             void notify(Observable*, int) override;
 
             void cleanAllModels();
-            void addNewModel(Model*, std::bitset<8> layersMask = std::bitset<8>(ULLONG_MAX));
+            void addNewModel(Model*, std::bitset<8> = std::bitset<8>(ULLONG_MAX));
             void replaceAllModels(std::span<Model* const>);
             void removeModel(Model*);
             std::span<Model* const> getModels() const;

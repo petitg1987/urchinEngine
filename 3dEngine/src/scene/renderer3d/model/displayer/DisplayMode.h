@@ -17,11 +17,7 @@ namespace urchin {
 
         /* DEPTH_ONLY_MODE provide:
             * Depth information */
-        DEPTH_ONLY_MODE,
-
-        /* DEPTH_ONLY_NO_INSTANCING_MODE provide:
-            * Same as DEPTH_ONLY_MODE but without models instancing */
-        DEPTH_ONLY_NO_INSTANCING_MODE
+        DEPTH_ONLY_MODE
     };
 
 }
