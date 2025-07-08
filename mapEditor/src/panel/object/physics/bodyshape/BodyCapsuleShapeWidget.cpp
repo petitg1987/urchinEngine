@@ -55,7 +55,6 @@ namespace urchin {
         updateBodyShape();
     }
 
-
     void BodyCapsuleShapeWidget::disableShapeEvents(bool disable) const {
         radius->blockSignals(disable);
         cylinderHeight->blockSignals(disable);
