@@ -60,9 +60,8 @@ namespace urchin {
             const Point3<float>& p3 = vertices[triangleIndices[triIndices + 2]];
 
             LineSegment3D line(voxelCenterPosition, voxelCenterPosition.translate(arbitraryAxis));
-            Triangle3D triangle(p1, p2, p3);
 
-            bool hasPlaneInteraction;
+            bool hasPlaneInteraction = false;
             Point3 intersectionPoint = Plane(p1, p2, p3).intersectPoint(line, hasPlaneInteraction);
             if (hasPlaneInteraction) {
                 bool hasTriangleIntersection = Triangle3D(p1, p2, p3).projectedPointInsideTriangle(intersectionPoint);
