@@ -10,7 +10,7 @@ namespace urchin {
 
     class VoxelService {
         public:
-            VoxelGrid voxelize(float, const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
+            VoxelGrid voxelizeObject(float, const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
 
         private:
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;

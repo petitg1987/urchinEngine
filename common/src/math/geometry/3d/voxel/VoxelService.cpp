@@ -6,14 +6,15 @@
 
 namespace urchin {
 
-    VoxelGrid VoxelService::voxelize(float voxelSize, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+    VoxelGrid VoxelService::voxelizeObject(float voxelSize, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
         AABBox<float> abbox = computeAABBox(vertices);
 
-        VoxelGrid voxelGrid(voxelSize, abbox.getMin());
+        float halfVoxelSize = voxelSize / 2.0f;
+        VoxelGrid voxelGrid(voxelSize, abbox.getMin().translate(Vector3(halfVoxelSize, halfVoxelSize, halfVoxelSize)));
 
-        float xSize = abbox.getHalfSize(0) * 2.0f + voxelSize /* half voxel size on each side */;
-        float ySize = abbox.getHalfSize(1) * 2.0f + voxelSize /* half voxel size on each side */;
-        float zSize = abbox.getHalfSize(2) * 2.0f + voxelSize /* half voxel size on each side */;
+        float xSize = abbox.getHalfSize(0) * 2.0f;
+        float ySize = abbox.getHalfSize(1) * 2.0f;
+        float zSize = abbox.getHalfSize(2) * 2.0f;
         int xVoxelQuantity = MathFunction::ceilToInt(xSize / voxelSize);
         int yVoxelQuantity = MathFunction::ceilToInt(ySize / voxelSize);
         int zVoxelQuantity = MathFunction::ceilToInt(zSize / voxelSize);
@@ -48,6 +49,8 @@ namespace urchin {
     }
 
     bool VoxelService::isVoxelExist(const Point3<float>& /*voxelCenterPosition*/, const std::vector<Point3<float>>& /*vertices*/, const std::vector<unsigned int>& /*triangleIndices*/) const {
+
+
         return true; //TODO impl...
     }
 
