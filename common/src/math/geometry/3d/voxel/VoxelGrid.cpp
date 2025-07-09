@@ -19,6 +19,10 @@ namespace urchin {
         return minCenterPosition;
     }
 
+    Point3<float> VoxelGrid::computeVoxelPosition(const Point3<int>& voxelIndexPosition) const {
+        return minCenterPosition.translate(Vector3((float)voxelIndexPosition.X * voxelSize, (float)voxelIndexPosition.Y * voxelSize, (float)voxelIndexPosition.Z * voxelSize));
+    }
+
     void VoxelGrid::addVoxel(const Point3<int>& voxelIndexPosition) {
         voxels.insert(voxelIndexPosition);
     }

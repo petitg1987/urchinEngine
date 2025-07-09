@@ -15,19 +15,17 @@ namespace urchin {
         float halfVoxelSize = voxelSize / 2.0f;
         VoxelGrid voxelGrid(voxelSize, abbox.getMin().translate(Vector3(halfVoxelSize, halfVoxelSize, halfVoxelSize)));
 
-        float xSize = abbox.getHalfSize(0) * 2.0f;
-        float ySize = abbox.getHalfSize(1) * 2.0f;
-        float zSize = abbox.getHalfSize(2) * 2.0f;
-        int xVoxelQuantity = MathFunction::ceilToInt(xSize / voxelSize);
-        int yVoxelQuantity = MathFunction::ceilToInt(ySize / voxelSize);
-        int zVoxelQuantity = MathFunction::ceilToInt(zSize / voxelSize);
+        int xVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(0) * 2.0f / voxelSize);
+        int yVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(1) * 2.0f / voxelSize);
+        int zVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(2) * 2.0f / voxelSize);
 
         for (int x = 0; x < xVoxelQuantity; ++x) {
             for (int y = 0; y < yVoxelQuantity; ++y) {
                 for (int z = 0; z < zVoxelQuantity; ++z) {
-                    Point3 voxelCenterPosition = voxelGrid.getMinCenterPosition().translate(Vector3(x * voxelSize, y * voxelSize, z * voxelSize));
+                    Point3 voxelIndexPosition(x, y, z);
+                    Point3 voxelCenterPosition = voxelGrid.computeVoxelPosition(voxelIndexPosition);
                     if (isVoxelExist(voxelCenterPosition, vertices, triangleIndices)) {
-                        voxelGrid.addVoxel(Point3(x, y, z));
+                        voxelGrid.addVoxel(voxelIndexPosition);
                     }
                 }
             }
@@ -54,7 +52,7 @@ namespace urchin {
     bool VoxelService::isVoxelExist(const Point3<float>& voxelCenterPosition, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
         Vector3 arbitraryAxis(1000.0f, 0.02f, 0.0f);
 
-        int countTriangleIntersections = 0;
+        int triangleIntersectionCount = 0;
         assert(triangleIndices.size() % 3 == 0);
         for (std::size_t triIndices = 0; triIndices < triangleIndices.size(); triIndices += 3) {
             const Point3<float>& p1 = vertices[triangleIndices[triIndices + 0]];
@@ -69,12 +67,12 @@ namespace urchin {
             if (hasPlaneInteraction) {
                 bool hasTriangleIntersection = Triangle3D(p1, p2, p3).projectedPointInsideTriangle(intersectionPoint);
                 if (hasTriangleIntersection) {
-                    countTriangleIntersections++;
+                    triangleIntersectionCount++;
                 }
             }
         }
 
-        return countTriangleIntersections % 2 == 1;
+        return triangleIntersectionCount % 2 == 1;
     }
 
 }
