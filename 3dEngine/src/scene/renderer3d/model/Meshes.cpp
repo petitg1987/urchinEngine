@@ -83,26 +83,14 @@ namespace urchin {
         Point3 max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
         for (unsigned int meshIndex = 0; meshIndex < getNumMeshes(); ++meshIndex) {
             const auto& vertices = useMeshVertices ? getMesh(meshIndex).getVertices() : getConstMeshes().getConstMesh(meshIndex).getBaseVertices();
-            for (auto& vertex : vertices) {
-                if (min.X > vertex.X) {
-                    min.X = vertex.X;
-                }
-                if (min.Y > vertex.Y) {
-                    min.Y = vertex.Y;
-                }
-                if (min.Z > vertex.Z) {
-                    min.Z = vertex.Z;
-                }
+            for (const Point3<float>& vertex : vertices) {
+                min.X = std::min(min.X, vertex.X);
+                min.Y = std::min(min.Y, vertex.Y);
+                min.Z = std::min(min.Z, vertex.Z);
 
-                if (max.X < vertex.X) {
-                    max.X = vertex.X;
-                }
-                if (max.Y < vertex.Y) {
-                    max.Y = vertex.Y;
-                }
-                if (max.Z < vertex.Z) {
-                    max.Z = vertex.Z;
-                }
+                max.X = std::max(max.X, vertex.X);
+                max.Y = std::max(max.Y, vertex.Y);
+                max.Z = std::max(max.Z, vertex.Z);
             }
         }
 
