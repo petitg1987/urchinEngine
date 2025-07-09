@@ -15,6 +15,7 @@ namespace urchin {
         private:
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
 
+            bool isVoxelExist(const Point3<float>&, const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
     };
 
 }
