@@ -72,7 +72,6 @@ namespace urchin {
                     countTriangleIntersections++;
                 }
             }
-
         }
 
         return countTriangleIntersections % 2 == 1;

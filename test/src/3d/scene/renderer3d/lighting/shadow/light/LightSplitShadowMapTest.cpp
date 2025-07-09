@@ -22,9 +22,9 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 2);
 }
 
-void LightSplitShadowMapTest::modelsOutsideFrustumSplit() { //TODO check test fail !
+void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
     auto modelOcclusionCuller = buildModelOcclusionCuller({
-        Point3(1.0f, 2.0f, -120.0f), //model not visible and doesn't produce shadow in the frustum split
+        Point3(1.0f, 2.0f, -250.0f), //model not visible and doesn't produce shadow in the frustum split
         Point3(-500.0f, 2.0f, -3.0f), //model not visible and too far to produce shadow in the frustum split
         Point3(500.0f, 2.0f, -3.0f), //model not visible and in the wrong direction to produce shadow in the frustum split
     });
@@ -43,6 +43,7 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() { //TODO check test fa
 void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
     auto modelOcclusionCuller = buildModelOcclusionCuller({
         Point3(-250.0f, 2.0f, -3.0f), //model not visible but produces shadow in the frustum split
+        Point3(1.0f, 2.0f, -150.0f), //model after frustum far plane but still in frustum bounding sphere
     });
     auto light = std::make_unique<SunLight>(Vector3(1.0f, 0.0f, 0.0f));
     auto shadowMapTexture = Texture::build("sm", 2048, 2048, TextureFormat::DEPTH_32_FLOAT);
@@ -53,7 +54,7 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
     lightSplitShadowMap->onSplitFrustumUpdated(splitFrustum);
     lightSplitShadowMap->updateVisibleModels();
 
-    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 1);
+    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 2);
 }
 
 std::unique_ptr<ModelOcclusionCuller> LightSplitShadowMapTest::buildModelOcclusionCuller(const std::vector<Point3<float>> &modelPositions) {
