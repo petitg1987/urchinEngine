@@ -23,6 +23,14 @@ namespace urchin {
         return minCenterPosition.translate(Vector3((float)voxelIndexPosition.X * voxelSize, (float)voxelIndexPosition.Y * voxelSize, (float)voxelIndexPosition.Z * voxelSize));
     }
 
+    const std::unordered_set<Point3<int>, VoxelGrid::VoxelHash>& VoxelGrid::getVoxels() const {
+        return voxels;
+    }
+
+    float VoxelGrid::getVoxelSize() const {
+        return voxelSize;
+    }
+
     void VoxelGrid::addVoxel(const Point3<int>& voxelIndexPosition) {
         voxels.insert(voxelIndexPosition);
     }

@@ -74,4 +74,42 @@ namespace urchin {
         return triangleIntersectionCount % 2 == 1;
     }
 
+    std::vector<AABBox<float>> VoxelService::voxelGridToAABBoxes(const VoxelGrid& voxelGrid) const {
+        std::vector<AABBox<float>> result;
+
+        std::array expandAxes = {
+            Point3(1, 0, 0), Point3(-1, 0, 0),
+            Point3(0, 1, 0), Point3(0, -1, 0),
+            Point3(0, 0, 1), Point3(0, 0, -1)
+        };
+
+        VoxelContainer usedVoxels;
+        for (Point3 voxelIndexPosition : voxelGrid.getVoxels()) {
+            if (usedVoxels.contains(voxelIndexPosition)) {
+                continue;
+            }
+
+            VoxelContainer voxelBox;
+            voxelBox.insert(voxelIndexPosition);
+            for (Point3 expandAxis : expandAxes) {
+                expand(expandAxis, voxelBox, usedVoxels);
+            }
+
+            result.push_back(voxelBoxToAABBox(voxelBox));
+        }
+
+        return result;
+    }
+
+    void VoxelService::expand(Point3<int> expandAxis, VoxelContainer& voxelBox, VoxelContainer& usedVoxels) const {
+        while (true) {
+
+        }
+    }
+
+    AABBox<float> VoxelService::voxelBoxToAABBox(const std::unordered_set<Point3<int>, VoxelGrid::VoxelHash>& /*voxelBox*/) const {
+        //TODO ...
+        return AABBox<float>();
+    }
+
 }
