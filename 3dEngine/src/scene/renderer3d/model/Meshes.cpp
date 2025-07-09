@@ -14,7 +14,7 @@ namespace urchin {
         computeLocalAABBox(false);
     }
 
-    unsigned int Meshes::getNumberMeshes() const {
+    unsigned int Meshes::getNumMeshes() const {
         return numMeshes;
     }
 
@@ -81,7 +81,7 @@ namespace urchin {
     void Meshes::computeLocalAABBox(bool useMeshVertices) {
         Point3 min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point3 max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-        for (unsigned int meshIndex = 0; meshIndex < getNumberMeshes(); ++meshIndex) {
+        for (unsigned int meshIndex = 0; meshIndex < getNumMeshes(); ++meshIndex) {
             const auto& vertices = useMeshVertices ? getMesh(meshIndex).getVertices() : getConstMeshes().getConstMesh(meshIndex).getBaseVertices();
             for (auto& vertex : vertices) {
                 if (min.X > vertex.X) {

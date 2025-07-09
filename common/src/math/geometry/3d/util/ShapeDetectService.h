@@ -19,7 +19,7 @@ namespace urchin {
                 Quaternion<float> orientation;
             };
 
-            std::vector<LocalizedShape> detect(const std::vector<Point3<float>>&) const;
+            std::vector<LocalizedShape> detect(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
 
         private:
             std::unique_ptr<BoxShape<float>> tryBuildBox(const std::vector<Point3<float>>&, Point3<float>&, Quaternion<float>&) const;

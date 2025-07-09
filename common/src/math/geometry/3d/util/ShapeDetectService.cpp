@@ -7,12 +7,13 @@
 
 namespace urchin {
 
-	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& originalPoints) const {
+	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& /*triangleIndices*/) const {
 		std::vector<LocalizedShape> result;
 		Point3 position(0.0f, 0.0f, 0.0f);
 		Quaternion<float> orientation;
 
-		auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(originalPoints);
+		std::set uniqueVerticesSet(vertices.begin(), vertices.end());
+		auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(std::vector(uniqueVerticesSet.begin(), uniqueVerticesSet.end()));
 		std::vector<Point3<float>> convexPoints = convexHullShape->getPoints();
 
 		std::unique_ptr<BoxShape<float>> boxShape = tryBuildBox(convexPoints, position, orientation);

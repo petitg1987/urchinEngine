@@ -83,17 +83,14 @@ namespace urchin {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> result;
 
         if (objectEntity.getModel()->getConstMeshes()) {
-            const std::vector<std::unique_ptr<const ConstMesh>>& constMeshes = objectEntity.getModel()->getConstMeshes()->getConstMeshes();
-            result.reserve(constMeshes.size());
+            const Meshes* meshes = objectEntity.getModel()->getMeshes();
+            result.reserve(meshes->getNumMeshes());
 
-            for (const std::unique_ptr<const ConstMesh>& constMesh : constMeshes) {
-                std::set<Point3<float>> meshUniqueVertices;
-                for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
-                    meshUniqueVertices.insert(constMesh->getBaseVertices()[i]);
-                }
-
+            for (unsigned int meshIndex = 0; meshIndex < meshes->getNumMeshes(); ++meshIndex) {
+                const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
+                const std::vector<unsigned int>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
                 try {
-                    std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(std::vector(meshUniqueVertices.begin(), meshUniqueVertices.end()));
+                    std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(vertices, triangleIndices);
                     for (std::unique_ptr<LocalizedCollisionShape>& localizedCollisionShape : localizedCollisionShapes) {
                         result.push_back(std::move(localizedCollisionShape));
                     }
@@ -114,8 +111,8 @@ namespace urchin {
         return result;
     }
 
-    std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(const std::vector<Point3<float>>& uniqueVertices) const {
-        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService().detect(uniqueVertices);
+    std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService().detect(vertices, triangleIndices);
 
         std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
         result.reserve(bestLocalizedShapes.size());

@@ -89,7 +89,7 @@ namespace urchin {
             throw std::runtime_error("At least one instance model must be added before initialization");
         }
 
-        for (unsigned int i = 0; i < getReferenceModel().getMeshes()->getNumberMeshes(); ++i) {
+        for (unsigned int i = 0; i < getReferenceModel().getMeshes()->getNumMeshes(); ++i) {
             const ConstMesh& constMesh = getReferenceModel().getConstMeshes()->getConstMesh(i);
             const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(i);
             auto meshName = getReferenceModel().getMeshes()->getConstMeshes().getMeshesName();
@@ -380,7 +380,7 @@ namespace urchin {
     void ModelInstanceDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) const {
         for (const Model* instanceModel : instanceModels) {
             if (instanceModel->getMeshes()) {
-                for (unsigned int m = 0; m < instanceModel->getMeshes()->getNumberMeshes(); ++m) {
+                for (unsigned int m = 0; m < instanceModel->getMeshes()->getNumMeshes(); ++m) {
                     const Mesh& mesh = instanceModel->getMeshes()->getMesh(m);
                     if (!meshFilter || meshFilter->isAccepted(mesh)) {
                         instanceModel->getMeshes()->getMesh(m).drawBaseBones(geometryContainer, instanceModel->getTransform().getTransformMatrix());

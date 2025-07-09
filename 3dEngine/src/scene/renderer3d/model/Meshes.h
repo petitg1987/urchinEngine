@@ -14,7 +14,7 @@ namespace urchin {
 
             static constexpr float MIN_BBOX_SIZE = 0.01f;
 
-            unsigned int getNumberMeshes() const;
+            unsigned int getNumMeshes() const;
             Mesh& getMesh(unsigned int) const;
             const AABBox<float>& getMeshesAABBox() const;
             const std::vector<AABBox<float>>& getMeshesSplitAABBoxes() const;

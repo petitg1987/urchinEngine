@@ -60,7 +60,7 @@ namespace urchin {
 
     void Model::initialize() {
         if (meshes) {
-            meshesUpdated.resize(meshes->getNumberMeshes(), false);
+            meshesUpdated.resize(meshes->getNumMeshes(), false);
             meshes->onMoving(transform);
         }
     }
@@ -144,7 +144,7 @@ namespace urchin {
         }
 
         //apply skeleton bind pose
-        for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
+        for (unsigned int meshIndex = 0; meshIndex < meshes->getNumMeshes(); ++meshIndex) {
             meshes->getMesh(meshIndex).resetSkeleton();
         }
         notifyMeshVerticesUpdated();

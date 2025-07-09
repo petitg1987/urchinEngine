@@ -4,7 +4,7 @@ namespace urchin {
 
     bool OpaqueMeshFilter::isAccepted(const Model& model) const {
         if (model.getMeshes()) {
-            for (unsigned int i = 0; i < model.getMeshes()->getNumberMeshes(); ++i) {
+            for (unsigned int i = 0; i < model.getMeshes()->getNumMeshes(); ++i) {
                 if (isAccepted(model.getMeshes()->getMesh(i))) {
                     return true;
                 }

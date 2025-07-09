@@ -35,7 +35,7 @@ namespace urchin {
         std::size_t instanceHash = model->getConstMeshes()->retrieveHashId();
         if (displayMode == DisplayMode::DEFAULT_MODE) {
             bool hasUvScaling = false;
-            for (unsigned int meshIndex = 0; meshIndex < model->getMeshes()->getNumberMeshes(); ++meshIndex) {
+            for (unsigned int meshIndex = 0; meshIndex < model->getMeshes()->getNumMeshes(); ++meshIndex) {
                 const Material& material = model->getMeshes()->getMesh(meshIndex).getMaterial();
                 HashUtil::combine(instanceHash, material.retrieveHashId());
                 hasUvScaling = hasUvScaling || material.getUvScale().hasScaling();

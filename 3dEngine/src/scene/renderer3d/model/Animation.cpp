@@ -8,7 +8,7 @@ namespace urchin {
             animationInformation() {
         skeleton.resize(this->constAnimation->getNumberBones());
 
-        for (unsigned int meshIndex = 0; meshIndex < meshes.getNumberMeshes(); ++meshIndex) {
+        for (unsigned int meshIndex = 0; meshIndex < meshes.getNumMeshes(); ++meshIndex) {
             for (std::size_t boneIndex : meshes.getConstMeshes().getConstMesh(meshIndex).getUsedBoneIndices()) {
                 if (this->constAnimation->isAnimatedBone(boneIndex) && std::ranges::find(animatedMeshIndices, meshIndex) == animatedMeshIndices.end()) {
                     animatedMeshIndices.push_back(meshIndex);
@@ -108,7 +108,7 @@ namespace urchin {
         }
 
         //update the mesh (vertex, normals...)
-        for (unsigned int meshIndex = 0; meshIndex < meshes.getNumberMeshes(); ++meshIndex) {
+        for (unsigned int meshIndex = 0; meshIndex < meshes.getNumMeshes(); ++meshIndex) {
             meshes.getMesh(meshIndex).updateSkeleton(skeleton);
         }
     }
@@ -142,7 +142,7 @@ namespace urchin {
         }
 
         //update the mesh (vertex, normals...)
-        for (unsigned int meshIndex = 0; meshIndex < meshes.getNumberMeshes(); ++meshIndex) {
+        for (unsigned int meshIndex = 0; meshIndex < meshes.getNumMeshes(); ++meshIndex) {
             meshes.getMesh(meshIndex).updateSkeleton(skeleton);
         }
 
