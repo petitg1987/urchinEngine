@@ -4,11 +4,12 @@
 
 namespace urchin {
 
-    VoxelWorld VoxelService::voxelize(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& /*triangleIndices*/) const {
+    VoxelGrid VoxelService::voxelize(float voxelSize, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& /*triangleIndices*/) const {
         AABBox<float> globalAbbox = computeAABBox(vertices);
 
-        VoxelWorld voxelWorld(globalAbbox.getMin());
-        return voxelWorld;
+        VoxelGrid voxelGrid(voxelSize, globalAbbox.getMin());
+        //TODO impl ...
+        return voxelGrid;
     }
 
     AABBox<float> VoxelService::computeAABBox(const std::vector<Point3<float>>& vertices) const {

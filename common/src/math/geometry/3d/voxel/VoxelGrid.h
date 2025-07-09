@@ -1,23 +1,24 @@
 #pragma once
 
-#include <unordered_map>
+#include <unordered_set>
 
-#include <math/geometry/3d/voxel/Voxel.h>
 #include <math/algebra/point/Point3.h>
 
 namespace urchin {
 
-    class VoxelWorld {
+    class VoxelGrid {
         public:
             struct VoxelPositionHash {
                 std::size_t operator()(const Point3<int>&) const;
             };
 
-            explicit VoxelWorld(Point3<float>);
+            explicit VoxelGrid(float, Point3<float>);
 
         private:
+            float voxelSize;
             Point3<float> startPosition;
-            std::unordered_map<Point3<int>, Voxel, VoxelPositionHash> voxels;
+
+            std::unordered_set<Point3<int>, VoxelPositionHash> voxels;
     };
 
 }
