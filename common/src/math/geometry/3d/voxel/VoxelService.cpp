@@ -1,8 +1,11 @@
 #include <limits>
+#include <cassert>
 
 #include <math/geometry/3d/voxel/VoxelService.h>
-
-#include "math/algorithm/MathFunction.h"
+#include <math/algorithm/MathFunction.h>
+#include <math/geometry/3d/object/LineSegment3D.h>
+#include <math/geometry/3d/object/Triangle3D.h>
+#include <math/geometry/3d/Plane.h>
 
 namespace urchin {
 
@@ -48,10 +51,31 @@ namespace urchin {
         return AABBox(min, max);
     }
 
-    bool VoxelService::isVoxelExist(const Point3<float>& /*voxelCenterPosition*/, const std::vector<Point3<float>>& /*vertices*/, const std::vector<unsigned int>& /*triangleIndices*/) const {
+    bool VoxelService::isVoxelExist(const Point3<float>& voxelCenterPosition, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+        Vector3 arbitraryAxis(1000.0f, 0.02f, 0.0f);
 
+        int countTriangleIntersections = 0;
+        assert(triangleIndices.size() % 3 == 0);
+        for (std::size_t triIndices = 0; triIndices < triangleIndices.size(); triIndices += 3) {
+            const Point3<float>& p1 = vertices[triangleIndices[triIndices + 0]];
+            const Point3<float>& p2 = vertices[triangleIndices[triIndices + 1]];
+            const Point3<float>& p3 = vertices[triangleIndices[triIndices + 2]];
 
-        return true; //TODO impl...
+            LineSegment3D line(voxelCenterPosition, voxelCenterPosition.translate(arbitraryAxis));
+            Triangle3D triangle(p1, p2, p3);
+
+            bool hasPlaneInteraction;
+            Point3 intersectionPoint = Plane(p1, p2, p3).intersectPoint(line, hasPlaneInteraction);
+            if (hasPlaneInteraction) {
+                bool hasTriangleIntersection = Triangle3D(p1, p2, p3).projectedPointInsideTriangle(intersectionPoint);
+                if (hasTriangleIntersection) {
+                    countTriangleIntersections++;
+                }
+            }
+
+        }
+
+        return countTriangleIntersections % 2 == 1;
     }
 
 }

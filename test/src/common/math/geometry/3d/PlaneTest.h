@@ -8,4 +8,5 @@ class PlaneTest final : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void orthogonalProjection();
+        void intersectPoint();
 };

@@ -218,7 +218,7 @@ void UIRendererTest::windowChildRenderingOrder() {
     auto widgetWin2Lvl1 = StaticBitmap::create(win2.get(), Position(10.0f, 10.0f, PIXEL, PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
 
     unsigned int renderingOrder = 0;
-    uiRenderer->prepareRendering(1.0f / 60.0f, renderingOrder, Matrix4<float>());
+    uiRenderer->prepareRendering(1.0f / 60.0f, renderingOrder, Matrix4<float>(), Vector2(0.0f, 0.0f));
 
     std::span<Widget* const> sortedWidgetsToRender = uiRenderer->getWidgetSetDisplayer().getWidgets();
     AssertHelper::assertUnsignedIntEquals(sortedWidgetsToRender.size(), 12);

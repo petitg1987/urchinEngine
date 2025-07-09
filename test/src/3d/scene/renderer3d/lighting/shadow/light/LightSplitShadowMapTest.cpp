@@ -22,7 +22,7 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 2);
 }
 
-void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
+void LightSplitShadowMapTest::modelsOutsideFrustumSplit() { //TODO check test fail !
     auto modelOcclusionCuller = buildModelOcclusionCuller({
         Point3(1.0f, 2.0f, -120.0f), //model not visible and doesn't produce shadow in the frustum split
         Point3(-500.0f, 2.0f, -3.0f), //model not visible and too far to produce shadow in the frustum split
