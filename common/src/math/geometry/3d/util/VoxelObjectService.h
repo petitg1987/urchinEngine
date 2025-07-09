@@ -11,13 +11,14 @@ namespace urchin {
     class VoxelObjectService {
         public:
             struct Voxel {
-                Point3<float> position;
+                Point3<int> indexPosition;
+                Point3<float> realPosition;
             };
             struct VoxelPositionHash {
-                std::size_t operator()(const Point3<float>&) const;
+                std::size_t operator()(const Point3<int>&) const;
             };
 
-            std::unordered_map<Point3<float>, Point3<float>, VoxelPositionHash> voxelize(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
+            std::unordered_map<Point3<int>, Voxel, VoxelPositionHash> voxelize(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
 
         private:
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
