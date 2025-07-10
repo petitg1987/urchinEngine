@@ -18,7 +18,6 @@ namespace urchin {
             CONVEX_HULL,
             CYLINDER,
             FRUSTUM,
-            LINE_SEGMENT,
             OBBOX,
             SPHERE,
             TETRAHEDRON,

@@ -1,16 +1,14 @@
-#include <math/geometry/3d/object/LineSegment3D.h>
+#include <math/geometry/3d/LineSegment3D.h>
 
 namespace urchin {
 
     template<class T> LineSegment3D<T>::LineSegment3D() :
-            ConvexObject3D<T>(ConvexObjectType::LINE_SEGMENT),
             a(Point3<T>(0.0, 0.0, 0.0)),
             b(Point3<T>(0.0, 0.0, 0.0)) {
 
     }
 
     template<class T> LineSegment3D<T>::LineSegment3D(const Point3<T>& a, const Point3<T>& b) :
-            ConvexObject3D<T>(ConvexObjectType::LINE_SEGMENT),
             a(a),
             b(b) {
 

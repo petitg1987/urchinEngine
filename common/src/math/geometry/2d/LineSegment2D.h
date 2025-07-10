@@ -2,21 +2,20 @@
 
 #include <array>
 
-#include <math/geometry/2d/object/ConvexObject2D.h>
 #include <math/geometry/2d/Line2D.h>
 #include <math/algebra/point/Point2.h>
 #include <math/algebra/vector/Vector2.h>
 
 namespace urchin {
 
-    template<class T> class LineSegment2D final : public ConvexObject2D<T> {
+    template<class T> class LineSegment2D {
         public:
             LineSegment2D(const Point2<T>&, const Point2<T>&);
 
             const Point2<T>& getA() const;
             const Point2<T>& getB() const;
 
-            Point2<T> getSupportPoint(const Vector2<T>&) const override;
+            Point2<T> getSupportPoint(const Vector2<T>&) const;
             Point2<T> closestPoint(const Point2<T>&, std::array<T, 2>&) const;
             T squareDistance(const Point2<T>&) const;
             bool onSegment(const Point2<T>&) const;

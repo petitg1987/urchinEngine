@@ -43,16 +43,17 @@
 #include <math/algebra/MathValue.h>
 #include <math/algebra/Bezier.h>
 #include <math/geometry/2d/Line2D.h>
+#include <math/geometry/2d/LineSegment2D.h>
 #include <math/geometry/2d/IndexedTriangle2D.h>
 #include <math/geometry/2d/shape/ConvexShape2D.h>
 #include <math/geometry/2d/shape/RectangleShape.h>
 #include <math/geometry/2d/shape/ConvexHullShape2D.h>
 #include <math/geometry/2d/object/ConvexObject2D.h>
 #include <math/geometry/2d/object/ConvexHull2D.h>
-#include <math/geometry/2d/object/LineSegment2D.h>
 #include <math/geometry/2d/object/Rectangle2D.h>
 #include <math/geometry/2d/util/ResizePolygon2DService.h>
 #include <math/geometry/3d/Line3D.h>
+#include <math/geometry/3d/LineSegment3D.h>
 #include <math/geometry/3d/Ray.h>
 #include <math/geometry/3d/Plane.h>
 #include <math/geometry/3d/Rectangle3D.h>
@@ -68,7 +69,6 @@
 #include <math/geometry/3d/object/AABBox.h>
 #include <math/geometry/3d/object/ConvexHull3D.h>
 #include <math/geometry/3d/object/Frustum.h>
-#include <math/geometry/3d/object/LineSegment3D.h>
 #include <math/geometry/3d/object/OBBox.h>
 #include <math/geometry/3d/object/Sphere.h>
 #include <math/geometry/3d/object/Triangle3D.h>

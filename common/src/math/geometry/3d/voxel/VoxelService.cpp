@@ -3,7 +3,7 @@
 
 #include <math/geometry/3d/voxel/VoxelService.h>
 #include <math/algorithm/MathFunction.h>
-#include <math/geometry/3d/object/LineSegment3D.h>
+#include <math/geometry/3d/LineSegment3D.h>
 #include <math/geometry/3d/object/Triangle3D.h>
 #include <math/geometry/3d/Plane.h>
 
