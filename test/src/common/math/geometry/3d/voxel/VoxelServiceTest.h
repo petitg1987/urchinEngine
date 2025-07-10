@@ -9,4 +9,5 @@ class VoxelServiceTest final : public CppUnit::TestFixture {
 
         void noVoxelToAABBoxes();
         void oneVoxelToAABBoxes();
+        void twoDistinctVoxelsToAABBoxes();
 };

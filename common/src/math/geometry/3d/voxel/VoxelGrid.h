@@ -23,7 +23,7 @@ namespace urchin {
 
         private:
             float voxelSize;
-            Point3<float> minCenterPosition;
+            Point3<float> minCenterPosition; //center position of the voxel 0, 0, 0
 
             std::unordered_set<Point3<int>, VoxelHash> voxels;
     };
