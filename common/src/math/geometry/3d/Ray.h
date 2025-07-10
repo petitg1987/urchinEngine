@@ -7,6 +7,9 @@
 
 namespace urchin {
 
+    /**
+     * A ray is similar to a line segment, but it has a clearly defined origin/starting point
+     */
     template<class T> class Ray {
         public:
             Ray(const Point3<T>&, const Vector3<T>&, T);
