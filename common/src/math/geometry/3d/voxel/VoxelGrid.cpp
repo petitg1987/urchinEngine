@@ -3,10 +3,10 @@
 namespace urchin {
 
     std::size_t VoxelHash::operator()(const Point3<int>& indexPosition) const {
-        std::size_t h1 = std::hash<int>()(indexPosition.X);
-        std::size_t h2 = std::hash<int>()(indexPosition.Y);
-        std::size_t h3 = std::hash<int>()(indexPosition.Z);
-        return h1 ^ (h2 << 1) ^ (h3 << 2); //TODO improve speed. Only shift bit without hash ?
+        constexpr auto BIT_IN_SIZE_T = (sizeof(std::size_t) * 8) / 3;
+        return ((std::size_t)indexPosition.X) +
+                (((std::size_t)indexPosition.Y) << BIT_IN_SIZE_T) +
+                (((std::size_t)indexPosition.Z) << BIT_IN_SIZE_T * 2);
     }
 
     VoxelGrid::VoxelGrid(float voxelSize, Point3<float> minCenterPosition) :
