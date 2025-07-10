@@ -44,8 +44,8 @@ namespace urchin {
     }
 
     template<class T> T Line3D<T>::minDistance(const Line3D<T>& line) const {
-        Vector3<T> linesVectorCrossProduction = a.vector(b).crossProduct(line.getA().vector(line.getB()));
-        return line.getA().vector(a).dotProduct(linesVectorCrossProduction) / linesVectorCrossProduction.length();
+        Vector3<T> linesVectorCrossProduct = a.vector(b).crossProduct(line.getA().vector(line.getB()));
+        return line.getA().vector(a).dotProduct(linesVectorCrossProduct) / linesVectorCrossProduct.length();
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const Line3D<T>& l) {
