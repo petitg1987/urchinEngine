@@ -21,6 +21,8 @@ namespace urchin {
             static std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T>&, const std::map<std::size_t, Plane<T>>&);
 
         private:
+            static constexpr unsigned int MAX_ERRORS_LOG = 5;
+
             static std::map<std::size_t, Plane<T>> buildPlanesFromConvexHullShape(const ConvexHullShape3D<T>&);
             static void shiftPlanes(std::map<std::size_t, Plane<T>>&, T);
             static std::vector<Plane<T>> findThreeNonParallelPlanes(const std::vector<std::size_t>&, const std::map<std::size_t, Plane<T>>&);

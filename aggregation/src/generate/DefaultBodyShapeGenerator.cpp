@@ -86,13 +86,16 @@ namespace urchin {
             const Meshes* meshes = objectEntity.getModel()->getMeshes();
             result.reserve(meshes->getNumMeshes());
 
+            std::size_t nextShapeIndex = 0;
             for (unsigned int meshIndex = 0; meshIndex < meshes->getNumMeshes(); ++meshIndex) {
                 const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
                 const std::vector<unsigned int>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
                 try {
-                    std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(vertices, triangleIndices);
+                    std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(nextShapeIndex, vertices, triangleIndices);
                     for (std::unique_ptr<LocalizedCollisionShape>& localizedCollisionShape : localizedCollisionShapes) {
+                        assert(nextShapeIndex == localizedCollisionShape->shapeIndex);
                         result.push_back(std::move(localizedCollisionShape));
+                        nextShapeIndex++;
                     }
                 } catch (const std::invalid_argument&) {
                     //ignore build convex hull errors
@@ -111,13 +114,13 @@ namespace urchin {
         return result;
     }
 
-    std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+    std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(std::size_t nextShapeIndex, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
         std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService().detect(vertices, triangleIndices);
 
         std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
         result.reserve(bestLocalizedShapes.size());
 
-        std::size_t shapeIndex = 0;
+        std::size_t shapeIndex = nextShapeIndex;
         for (ShapeDetectService::LocalizedShape& localizedShape : bestLocalizedShapes) {
             auto localizedCollisionShape = std::make_unique<LocalizedCollisionShape>();
             localizedCollisionShape->shapeIndex = shapeIndex;
