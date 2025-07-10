@@ -62,6 +62,7 @@ namespace urchin {
 
             LineSegment3D line(position, position.translate(arbitraryAxis));
 
+            //TODO is Möller–Trumbore intersection algorithm faster ?
             bool hasPlaneInteraction = false;
             Point3 intersectionPoint = Plane(p1, p2, p3).intersectPoint(line, hasPlaneInteraction);
             if (hasPlaneInteraction) {
