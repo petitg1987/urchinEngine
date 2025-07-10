@@ -5,9 +5,11 @@
 #include <math/geometry/3d/shape/SphereShape.h>
 #include <math/geometry/3d/shape/ConvexHullShape3D.h>
 
+#include "math/geometry/3d/voxel/VoxelService.h"
+
 namespace urchin {
 
-	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& /*triangleIndices*/) const {
+	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
 		std::vector<LocalizedShape> result;
 		Point3 position(0.0f, 0.0f, 0.0f);
 		Quaternion<float> orientation;
@@ -28,7 +30,17 @@ namespace urchin {
 			return result;
 		}
 
-		result.push_back({.shape = std::move(convexHullShape), .position = position, .orientation = orientation});
+		//TODO move in method ?
+		VoxelService voxelService;
+		VoxelGrid voxelGrid = voxelService.voxelizeObject(0.1f, vertices, triangleIndices); //TODO avoid hard coded size
+		std::vector<AABBox<float>> aabboxes = voxelService.voxelGridToAABBoxes(voxelGrid);
+		for (const AABBox<float>& aabbox : aabboxes) {
+			Vector3<float> halfSizes = aabbox.getHalfSizes();
+			position = (aabbox.getMin() + aabbox.getMax()) / 2.0f;
+			result.push_back({.shape = std::make_unique<BoxShape<float>>(halfSizes), .position = position, .orientation = orientation});
+		}
+
+		//TODO result.push_back({.shape = std::move(convexHullShape), .position = position, .orientation = orientation});
 		return result;
 	}
 

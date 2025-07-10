@@ -104,7 +104,6 @@
 
 # Map editor
 * Physics
-  * ▲ **NEW FEATURE**: Generate automatically compound shape with several AABBoxes to approximate the object mesh the best
   * ► **NEW FEATURE**: Make objects without physics selectable with left click
   * ► **NEW FEATURE**: Display box around objects which don't have mesh (allow to select them easily with left click)
 * UI
