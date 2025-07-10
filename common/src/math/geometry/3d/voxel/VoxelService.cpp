@@ -129,7 +129,7 @@ namespace urchin {
 
         bool allVoxelsCanBeAdded = true;
         for (const Point3<int>& voxel : voxelsToAdd) {
-            if (!voxelGrid.getVoxels().contains(voxel) && !usedVoxels.contains(voxel)) {
+            if (!voxelGrid.getVoxels().contains(voxel) || usedVoxels.contains(voxel)) {
                 allVoxelsCanBeAdded = false;
                 break;
             }

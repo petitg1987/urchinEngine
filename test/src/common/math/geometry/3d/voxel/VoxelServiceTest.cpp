@@ -53,7 +53,7 @@ void VoxelServiceTest::twoDistinctVoxelsToAABBoxes() {
     AssertHelper::assertPoint3FloatEquals(boxes[1].getMax(), Point3(1.75f, 1.25f, 1.25f));
 }
 
-void VoxelServiceTest::voxelsToAABBoxes() { //TODO complete !
+void VoxelServiceTest::voxelsToAABBoxes() {
     VoxelGrid voxelGrid(1.0f, Point3(0.5f, 0.5f, 0.5f));
     voxelGrid.addVoxel(Point3(0, 0, 0));
     voxelGrid.addVoxel(Point3(1, 0, 0));
@@ -63,11 +63,13 @@ void VoxelServiceTest::voxelsToAABBoxes() { //TODO complete !
 
     std::vector<AABBox<float>> boxes = VoxelService().voxelGridToAABBoxes(voxelGrid);
 
-    AssertHelper::assertUnsignedIntEquals(boxes.size(), 2);
-    // AssertHelper::assertPoint3FloatEquals(boxes[0].getMin(), Point3(2.25f, 0.75f, 0.75f));
-    // AssertHelper::assertPoint3FloatEquals(boxes[0].getMax(), Point3(2.75f, 1.25f, 1.25f));
-    // AssertHelper::assertPoint3FloatEquals(boxes[1].getMin(), Point3(0.75f, 0.75f, 0.75f));
-    // AssertHelper::assertPoint3FloatEquals(boxes[1].getMax(), Point3(1.75f, 1.25f, 1.25f));
+    AssertHelper::assertUnsignedIntEquals(boxes.size(), 3);
+    AssertHelper::assertPoint3FloatEquals(boxes[0].getMin(), Point3(1.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(boxes[0].getMax(), Point3(2.0f, 2.0f, 1.0f));
+    AssertHelper::assertPoint3FloatEquals(boxes[1].getMin(), Point3(0.0f, 0.0f, 1.0f));
+    AssertHelper::assertPoint3FloatEquals(boxes[1].getMax(), Point3(2.0f, 1.0f, 2.0f));
+    AssertHelper::assertPoint3FloatEquals(boxes[2].getMin(), Point3(0.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(boxes[2].getMax(), Point3(1.0f, 1.0f, 1.0f));
 }
 
 CppUnit::Test* VoxelServiceTest::suite() {
