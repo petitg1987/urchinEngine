@@ -7,6 +7,8 @@ class VoxelServiceTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
+        void voxelizeObject();
+
         void noVoxelToAABBoxes();
         void oneVoxelToAABBoxes();
         void threeVoxelsToAABBoxes();

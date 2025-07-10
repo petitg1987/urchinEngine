@@ -23,8 +23,9 @@ namespace urchin {
             for (int y = 0; y < yVoxelQuantity; ++y) {
                 for (int z = 0; z < zVoxelQuantity; ++z) {
                     Point3 voxelIndexPosition(x, y, z);
+
                     Point3 voxelCenterPosition = voxelGrid.computeVoxelCenterPosition(voxelIndexPosition);
-                    if (isVoxelExist(voxelCenterPosition, vertices, triangleIndices)) {
+                    if (isPositionInModel(voxelCenterPosition, vertices, triangleIndices)) {
                         voxelGrid.addVoxel(voxelIndexPosition);
                     }
                 }
@@ -49,7 +50,7 @@ namespace urchin {
         return AABBox(min, max);
     }
 
-    bool VoxelService::isVoxelExist(const Point3<float>& voxelCenterPosition, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+    bool VoxelService::isPositionInModel(const Point3<float>& position, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
         Vector3 arbitraryAxis(1000.0f, 0.02f, 0.0f);
 
         int triangleIntersectionCount = 0;
@@ -59,7 +60,7 @@ namespace urchin {
             const Point3<float>& p2 = vertices[triangleIndices[triIndices + 1]];
             const Point3<float>& p3 = vertices[triangleIndices[triIndices + 2]];
 
-            LineSegment3D line(voxelCenterPosition, voxelCenterPosition.translate(arbitraryAxis));
+            LineSegment3D line(position, position.translate(arbitraryAxis));
 
             bool hasPlaneInteraction = false;
             Point3 intersectionPoint = Plane(p1, p2, p3).intersectPoint(line, hasPlaneInteraction);
@@ -155,7 +156,7 @@ namespace urchin {
         }
     }
 
-    AABBox<float> VoxelService::voxelBoxToAABBox(const std::unordered_set<Point3<int>, VoxelGrid::VoxelHash>& voxelBox, const VoxelGrid& voxelGrid) const {
+    AABBox<float> VoxelService::voxelBoxToAABBox(const VoxelContainer& voxelBox, const VoxelGrid& voxelGrid) const {
         Point3 minVoxel(0, 0, 0);
         Point3 maxVoxel(0, 0, 0);
         for (int axis = 0; axis < 3; ++axis) {

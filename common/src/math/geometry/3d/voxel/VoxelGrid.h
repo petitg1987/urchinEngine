@@ -6,17 +6,18 @@
 
 namespace urchin {
 
+    struct VoxelHash {
+        std::size_t operator()(const Point3<int>&) const;
+    };
+    using VoxelContainer = std::unordered_set<Point3<int>, VoxelHash>;
+
     class VoxelGrid {
         public:
-            struct VoxelHash {
-                std::size_t operator()(const Point3<int>&) const;
-            };
-
             explicit VoxelGrid(float, Point3<float>);
 
             const Point3<float>& getMinCenterPosition() const;
             Point3<float> computeVoxelCenterPosition(const Point3<int>&) const;
-            const std::unordered_set<Point3<int>, VoxelHash>& getVoxels() const;
+            const VoxelContainer& getVoxels() const;
             float getVoxelSize() const;
 
             void addVoxel(const Point3<int>&);
@@ -25,7 +26,7 @@ namespace urchin {
             float voxelSize;
             Point3<float> minCenterPosition; //center position of the voxel 0, 0, 0
 
-            std::unordered_set<Point3<int>, VoxelHash> voxels;
+            VoxelContainer voxels;
     };
 
 }

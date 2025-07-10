@@ -6,6 +6,26 @@
 #include <AssertHelper.h>
 using namespace urchin;
 
+void VoxelServiceTest::voxelizeObject() {
+    std::vector<Point3<float>> vertices;
+    vertices.emplace_back(1.0f, 1.0f, -1.0f);
+    vertices.emplace_back(3.0f, 1.0f, -1.0f);
+    vertices.emplace_back(2.0f, 3.1f, 0.0f);
+    vertices.emplace_back(2.0f, 1.0f, 1.0f);
+
+    std::vector<unsigned int> triangleIndices;
+    triangleIndices.insert(triangleIndices.end(), {0, 1, 2}); //back
+    triangleIndices.insert(triangleIndices.end(), {0, 2, 3}); //left
+    triangleIndices.insert(triangleIndices.end(), {1, 2, 3}); //right
+    triangleIndices.insert(triangleIndices.end(), {0, 1, 3}); //bottom
+
+    VoxelGrid voxelGrid = VoxelService().voxelizeObject(1.0, vertices, triangleIndices);
+
+    AssertHelper::assertUnsignedIntEquals(voxelGrid.getVoxels().size(), 2);
+    AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(0, 0, 0)));
+    AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(1, 0, 0)));
+}
+
 void VoxelServiceTest::noVoxelToAABBoxes() {
     VoxelGrid voxelGrid(0.5f, Point3(1.0f, 1.0f, 1.0f));
 
@@ -74,6 +94,8 @@ void VoxelServiceTest::voxelsToAABBoxes() {
 
 CppUnit::Test* VoxelServiceTest::suite() {
     auto* suite = new CppUnit::TestSuite("VoxelServiceTest");
+
+    suite->addTest(new CppUnit::TestCaller("voxelizeObject", &VoxelServiceTest::voxelizeObject));
 
     suite->addTest(new CppUnit::TestCaller("noVoxelToAABBoxes", &VoxelServiceTest::noVoxelToAABBoxes));
     suite->addTest(new CppUnit::TestCaller("oneVoxelToAABBoxes", &VoxelServiceTest::oneVoxelToAABBoxes));

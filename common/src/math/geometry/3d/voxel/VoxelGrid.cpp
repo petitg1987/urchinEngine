@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    std::size_t VoxelGrid::VoxelHash::operator()(const Point3<int>& indexPosition) const {
+    std::size_t VoxelHash::operator()(const Point3<int>& indexPosition) const {
         std::size_t h1 = std::hash<int>()(indexPosition.X);
         std::size_t h2 = std::hash<int>()(indexPosition.Y);
         std::size_t h3 = std::hash<int>()(indexPosition.Z);
@@ -23,7 +23,7 @@ namespace urchin {
         return minCenterPosition.translate(Vector3((float)voxelIndexPosition.X * voxelSize, (float)voxelIndexPosition.Y * voxelSize, (float)voxelIndexPosition.Z * voxelSize));
     }
 
-    const std::unordered_set<Point3<int>, VoxelGrid::VoxelHash>& VoxelGrid::getVoxels() const {
+    const VoxelContainer& VoxelGrid::getVoxels() const {
         return voxels;
     }
 
