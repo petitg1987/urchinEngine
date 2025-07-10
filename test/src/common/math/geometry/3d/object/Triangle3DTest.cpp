@@ -59,10 +59,23 @@ void Triangle3DTest::closestPoint() {
     AssertHelper::assertFloatEquals(barycentrics[2], 0.38f);
 }
 
+void Triangle3DTest::projectedPointInsideTriangle() {
+    Triangle3D triangle(Point3(1.0f, 1.0f, 0.0f), Point3(3.0f, 1.0f, 0.0f), Point3(2.0f, 3.0f, 0.0f));
+
+    AssertHelper::assertTrue(triangle.projectedPointInsideTriangle(Point3(2.0f, 2.0f, 0.0f)));
+    AssertHelper::assertTrue(triangle.projectedPointInsideTriangle(Point3(2.0f, 2.0f, -100.0f)));
+    AssertHelper::assertTrue(triangle.projectedPointInsideTriangle(Point3(2.0f, 2.0f, 100.0f)));
+    AssertHelper::assertFalse(triangle.projectedPointInsideTriangle(Point3(2.75f, 2.0f, 0.0f)));
+    AssertHelper::assertFalse(triangle.projectedPointInsideTriangle(Point3(2.75f, 2.0f, -100.0f)));
+    AssertHelper::assertFalse(triangle.projectedPointInsideTriangle(Point3(2.75f, 2.0f, 100.0f)));
+}
+
 CppUnit::Test* Triangle3DTest::suite() {
     auto* suite = new CppUnit::TestSuite("Triangle3DTest");
 
     suite->addTest(new CppUnit::TestCaller("closestPoint", &Triangle3DTest::closestPoint));
+
+    suite->addTest(new CppUnit::TestCaller("projectedPointInsideTriangle", &Triangle3DTest::projectedPointInsideTriangle));
 
     return suite;
 }

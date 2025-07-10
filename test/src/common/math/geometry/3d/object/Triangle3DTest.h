@@ -9,4 +9,6 @@ class Triangle3DTest final : public CppUnit::TestFixture {
 
         void closestPoint();
 
+        void projectedPointInsideTriangle();
+
 };
