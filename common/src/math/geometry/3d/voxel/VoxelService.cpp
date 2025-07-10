@@ -109,9 +109,11 @@ namespace urchin {
             int otherAxisMax = getMaxInDirection(otherAxis, true, voxelBox);
             otherAxesMinMax[i] = std::pair(otherAxisMin, otherAxisMax);
         }
+        int totalVoxelsToAdd = (otherAxesMinMax[0].second - otherAxesMinMax[0].first + 1) * (otherAxesMinMax[1].second - otherAxesMinMax[1].first + 1);
 
-        Point3 voxelToAdd(0, 0, 0);
         std::vector<Point3<int>> voxelsToAdd;
+        voxelsToAdd.reserve(totalVoxelsToAdd);
+        Point3 voxelToAdd(0, 0, 0);
         voxelToAdd[directionAxis] = getMaxInDirection(directionAxis, isPositive, voxelBox) + (isPositive ? 1 : -1);
         for (int i = otherAxesMinMax[0].first; i <= otherAxesMinMax[0].second; ++i) {
             voxelToAdd[(directionAxis + 1) % 3] = i;
