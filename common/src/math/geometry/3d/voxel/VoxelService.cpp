@@ -91,8 +91,12 @@ namespace urchin {
 
             VoxelContainer voxelBox;
             voxelBox.insert(voxelIndexPosition);
+            usedVoxels.insert(voxelIndexPosition);
             for (const auto& [directionAxis, isPositive] : expandDirections) {
-                expand(directionAxis, isPositive, voxelGrid, voxelBox, usedVoxels);
+                bool voxelBoxIsExpanded = false;
+                do {
+                    voxelBoxIsExpanded = expand(directionAxis, isPositive, voxelGrid, voxelBox, usedVoxels);
+                } while (voxelBoxIsExpanded);
             }
 
             result.push_back(voxelBoxToAABBox(voxelBox, voxelGrid));
@@ -101,7 +105,7 @@ namespace urchin {
         return result;
     }
 
-    void VoxelService::expand(int directionAxis, bool isPositive, const VoxelGrid& voxelGrid, VoxelContainer& voxelBox, VoxelContainer& usedVoxels) const {
+    bool VoxelService::expand(int directionAxis, bool isPositive, const VoxelGrid& voxelGrid, VoxelContainer& voxelBox, VoxelContainer& usedVoxels) const {
         std::array<std::pair<int, int>, 2> otherAxesMinMax;
         for (int i = 0; i < 2; ++i) {
             int otherAxis = (directionAxis + i + 1) % 3;
@@ -137,6 +141,7 @@ namespace urchin {
                 usedVoxels.insert(voxel);
             }
         }
+        return allVoxelsCanBeAdded && !voxelsToAdd.empty();
     }
 
     int VoxelService::getMaxInDirection(int directionAxis, bool isPositive, const VoxelContainer& voxelBox) const {
