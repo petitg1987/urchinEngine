@@ -77,10 +77,10 @@ namespace urchin {
     std::vector<AABBox<float>> VoxelService::voxelGridToAABBoxes(const VoxelGrid& voxelGrid) const {
         std::vector<AABBox<float>> result;
 
-        std::array expandAxes = {
-            Point3(1, 0, 0), Point3(-1, 0, 0),
-            Point3(0, 1, 0), Point3(0, -1, 0),
-            Point3(0, 0, 1), Point3(0, 0, -1)
+        std::array expandDirections = {
+            std::pair(0, true), std::pair(0, false),
+            std::pair(1, true), std::pair(1, false),
+            std::pair(2, true), std::pair(2, false)
         };
 
         VoxelContainer usedVoxels;
@@ -91,8 +91,8 @@ namespace urchin {
 
             VoxelContainer voxelBox;
             voxelBox.insert(voxelIndexPosition);
-            for (Point3 expandAxis : expandAxes) {
-                expand(expandAxis, voxelBox, usedVoxels);
+            for (const auto& [directionAxis, isPositive] : expandDirections) {
+                expand(directionAxis, isPositive, voxelGrid, voxelBox, usedVoxels);
             }
 
             result.push_back(voxelBoxToAABBox(voxelBox));
@@ -101,9 +101,53 @@ namespace urchin {
         return result;
     }
 
-    void VoxelService::expand(Point3<int> expandAxis, VoxelContainer& voxelBox, VoxelContainer& usedVoxels) const {
-        while (true) {
+    void VoxelService::expand(int directionAxis, bool isPositive, const VoxelGrid& voxelGrid, VoxelContainer& voxelBox, VoxelContainer& usedVoxels) const {
+        std::array<std::pair<int, int>, 2> otherAxesMinMax;
+        for (int i = 0; i < 2; ++i) {
+            std::size_t otherAxis = (std::size_t)((directionAxis + i + 1) % 3);
+            int otherAxisMin = getMaxInDirection(otherAxis, false, voxelBox);
+            int otherAxisMax = getMaxInDirection(otherAxis, true, voxelBox);
+            otherAxesMinMax[i] = std::pair(otherAxisMin, otherAxisMax);
+        }
 
+        Point3 voxelToAdd(0, 0, 0);
+        std::vector<Point3<int>> voxelsToAdd;
+        voxelToAdd[directionAxis] = getMaxInDirection(directionAxis, isPositive, voxelBox) + (isPositive ? 1 : -1);
+        for (int i = otherAxesMinMax[0].first; i <= otherAxesMinMax[0].second; ++i) {
+            voxelToAdd[(directionAxis + 1) % 3] = i;
+            for (int j = otherAxesMinMax[1].first; j <= otherAxesMinMax[1].second; ++j) {
+                voxelToAdd[(directionAxis + 2) % 3] = j;
+                voxelsToAdd.push_back(voxelToAdd);
+            }
+        }
+
+        bool allVoxelsCanBeAdded = true;
+        for (const Point3<int>& voxel : voxelsToAdd) {
+            if (!voxelGrid.getVoxels().contains(voxel) && !usedVoxels.contains(voxel)) {
+                allVoxelsCanBeAdded = false;
+                break;
+            }
+        }
+
+        if (allVoxelsCanBeAdded) {
+            for (const Point3<int>& voxel : voxelsToAdd) {
+                voxelBox.insert(voxel);
+                usedVoxels.insert(voxel);
+            }
+        }
+    }
+
+    int VoxelService::getMaxInDirection(int directionAxis, bool isPositive, const VoxelContainer& voxelBox) const {
+        Point3<int> startVoxel = *voxelBox.begin();
+        int currPosition = startVoxel[directionAxis];
+        while (true) {
+            currPosition += isPositive ? 1 : -1;
+
+            Point3<int> voxelPosition = startVoxel;
+            voxelPosition[directionAxis] = currPosition;
+            if (!voxelBox.contains(voxelPosition)) {
+                return currPosition - (isPositive ? 1 : -1);
+            }
         }
     }
 

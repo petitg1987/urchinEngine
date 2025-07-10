@@ -21,7 +21,8 @@ namespace urchin {
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
             bool isVoxelExist(const Point3<float>&, const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
 
-            void expand(Point3<int>, VoxelContainer&, VoxelContainer&) const;
+            void expand(int, bool, const VoxelGrid&, VoxelContainer&, VoxelContainer&) const;
+            int getMaxInDirection(int, bool, const VoxelContainer&) const;
             AABBox<float> voxelBoxToAABBox(const VoxelContainer&) const;
     };
 
