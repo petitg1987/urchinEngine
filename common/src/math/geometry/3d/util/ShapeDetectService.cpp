@@ -11,7 +11,7 @@
 namespace urchin {
 
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
-		std::vector<LocalizedShape> result;
+		std::vector<LocalizedShape> result; //TODO ignore small flat shape !!!?
 
 		std::set uniqueVerticesSet(vertices.begin(), vertices.end());
 		auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(std::vector(uniqueVerticesSet.begin(), uniqueVerticesSet.end()));
@@ -136,7 +136,7 @@ namespace urchin {
 		VoxelGrid voxelGrid = voxelService.voxelizeObject(0.1f, vertices, triangleIndices); //TODO avoid hard coded size
 		std::vector<AABBox<float>> boxes = voxelService.voxelGridToAABBoxes(voxelGrid);
 
-		for (const AABBox<float>& box : boxes) { //TODO duplicate boxes on plant model !
+		for (const AABBox<float>& box : boxes) {
 			result.push_back({
 				.shape = std::make_unique<BoxShape<float>>(box.getHalfSizes()),
 				.position = (box.getMin() + box.getMax()) / 2.0f,
