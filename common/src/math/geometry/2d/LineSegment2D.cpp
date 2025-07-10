@@ -20,17 +20,6 @@ namespace urchin {
         return b;
     }
 
-    template<class T> Point2<T> LineSegment2D<T>::getSupportPoint(const Vector2<T>& direction) const {
-        const T pointADotDirection = Point2<T>(0.0, 0.0).vector(a).dotProduct(direction);
-        const T pointBDotDirection = Point2<T>(0.0, 0.0).vector(b).dotProduct(direction);
-
-        if (pointADotDirection > pointBDotDirection) {
-            return a;
-        }
-
-        return b;
-    }
-
     /**
      * @param barycentrics [out] Returns barycentric coordinates for closest point
      * @return Point on segment AB closest to point p

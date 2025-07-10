@@ -22,17 +22,6 @@ namespace urchin {
         return b;
     }
 
-    template<class T> Point3<T> LineSegment3D<T>::getSupportPoint(const Vector3<T>& direction) const {
-        const T pointADotDirection = a.toVector().dotProduct(direction);
-        const T pointBDotDirection = b.toVector().dotProduct(direction);
-
-        if (pointADotDirection > pointBDotDirection) {
-            return a;
-        }
-
-        return b;
-    }
-
     /**
      * @return Point on segment AB closest to point p
      */
