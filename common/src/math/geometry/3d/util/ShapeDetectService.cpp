@@ -1,4 +1,5 @@
 #include <limits>
+#include <optional>
 
 #include <math/geometry/3d/util/ShapeDetectService.h>
 #include <math/geometry/3d/shape/BoxShape.h>
@@ -11,49 +12,45 @@ namespace urchin {
 
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
 		std::vector<LocalizedShape> result;
-		Point3 position(0.0f, 0.0f, 0.0f);
-		Quaternion<float> orientation;
 
 		std::set uniqueVerticesSet(vertices.begin(), vertices.end());
 		auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(std::vector(uniqueVerticesSet.begin(), uniqueVerticesSet.end()));
 		std::vector<Point3<float>> convexPoints = convexHullShape->getPoints();
 
-		std::unique_ptr<BoxShape<float>> boxShape = tryBuildBox(convexPoints, position, orientation);
-		if (boxShape) {
-			result.push_back({.shape = std::move(boxShape), .position = position, .orientation = orientation});
+		std::optional<LocalizedShape> boxShape = tryBuildBox(convexPoints);
+		if (boxShape.has_value()) {
+			result.push_back(std::move(boxShape.value()));
 			return result;
 		}
 
-		std::unique_ptr<SphereShape<float>> sphereShape = tryBuildSphere(convexPoints, position, orientation);
-		if (sphereShape) {
-			result.push_back({.shape = std::move(sphereShape), .position = position, .orientation = orientation});
+		std::optional<LocalizedShape> sphereShape = tryBuildSphere(convexPoints);
+		if (sphereShape.has_value()) {
+			result.push_back(std::move(sphereShape.value()));
 			return result;
 		}
 
-		//TODO move in method ?
-		VoxelService voxelService;
-		VoxelGrid voxelGrid = voxelService.voxelizeObject(0.1f, vertices, triangleIndices); //TODO avoid hard coded size
-		std::vector<AABBox<float>> aabboxes = voxelService.voxelGridToAABBoxes(voxelGrid);
-		for (const AABBox<float>& aabbox : aabboxes) {
-			Vector3<float> halfSizes = aabbox.getHalfSizes();
-			position = (aabbox.getMin() + aabbox.getMax()) / 2.0f;
-			result.push_back({.shape = std::make_unique<BoxShape<float>>(halfSizes), .position = position, .orientation = orientation});
+		std::vector<LocalizedShape> boxShapes = tryBuildAABBoxes(vertices, triangleIndices);
+		if (!boxShapes.empty()) {
+			for (LocalizedShape& box : boxShapes) {
+				result.push_back(std::move(box));
+			}
+			return result;
 		}
 
-		//TODO result.push_back({.shape = std::move(convexHullShape), .position = position, .orientation = orientation});
+		result.push_back({
+			.shape = std::move(convexHullShape),
+			.position = Point3(0.0f, 0.0f, 0.0f),
+			.orientation = Quaternion<float>()
+		});
 		return result;
 	}
 
-	/**
-	 * @param position [out] Shape position
-	 * @param orientation [out] Shape orientation
-	 */
-	std::unique_ptr<BoxShape<float>> ShapeDetectService::tryBuildBox(const std::vector<Point3<float>>& convexPoints, Point3<float>& position, Quaternion<float>& orientation) const {
+	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildBox(const std::vector<Point3<float>>& convexPoints) const {
 		constexpr float DIST_TO_CENTER_TOLERANCE_PERC = 0.025f;
 		constexpr float ORTHOGONAL_TOLERANCE_DOT_PRODUCT = 0.05f;
 
 		if (convexPoints.size() != 8) {
-			return std::unique_ptr<BoxShape<float>>(nullptr);
+			return std::nullopt;
 		}
 
 		Point3<float> cornerPoint = convexPoints[0];
@@ -66,7 +63,7 @@ namespace urchin {
 		for (std::size_t i = 1; i < convexPoints.size(); ++i) {
 			float distanceToCenter = convexPoints[i].distance(boxCenterPoint);
 			if (distanceToCenter < minExpectedDistanceToCenter || distanceToCenter > maxExpectedDistanceToCenter) {
-				return std::unique_ptr<BoxShape<float>>(nullptr);
+				return std::nullopt;
 			}
 		}
 
@@ -89,7 +86,7 @@ namespace urchin {
 			}
 		}
 		if (orthogonalVectorsToXAxis[0] == 0 || orthogonalVectorsToXAxis[1] == 0) {
-			return std::unique_ptr<BoxShape<float>>(nullptr);
+			return std::nullopt;
 		}
 
 		Vector3<float> yAxis = cornerPoint.vector(convexPoints[orthogonalVectorsToXAxis[0]]);
@@ -97,20 +94,18 @@ namespace urchin {
 		Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(Vector3(1.0f, 0.0f, 0.0f), xAxis.normalize()).normalize();
 		Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(xOrientation.rotateVector(Vector3(0.0f, 1.0f, 0.0f)), yAxis.normalize()).normalize();
 
-		position = boxCenterPoint;
-		orientation = yOrientation * xOrientation;
-		return std::make_unique<BoxShape<float>>(Vector3(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f));
+		return std::make_optional<LocalizedShape>({
+			.shape = std::make_unique<BoxShape<float>>(Vector3(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f)),
+			.position = boxCenterPoint,
+			.orientation = yOrientation * xOrientation
+		});
 	}
 
-	/**
-	 * @param position [out] Shape position
-	 * @param orientation [out] Shape orientation
-	 */
-	std::unique_ptr<SphereShape<float>> ShapeDetectService::tryBuildSphere(const std::vector<Point3<float>>& convexPoints, Point3<float>& position, Quaternion<float>& orientation) const {
+	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildSphere(const std::vector<Point3<float>>& convexPoints) const {
 		constexpr float DIST_TO_CENTER_TOLERANCE_PERC = 0.025f;
 
 		if (convexPoints.size() < 35 || convexPoints.size() > 2500) {
-			std::unique_ptr<SphereShape<float>>(nullptr);
+			return std::nullopt;
 		}
 
 		Point3<float> firstPoint = convexPoints[0];
@@ -123,13 +118,33 @@ namespace urchin {
 		for (std::size_t i = 1; i < convexPoints.size(); ++i) {
 			float distanceToCenter = convexPoints[i].distance(sphereCenterPoint);
 			if (distanceToCenter < minExpectedRadius || distanceToCenter > maxExpectedRadius) {
-				return std::unique_ptr<SphereShape<float>>(nullptr);
+				return std::nullopt;
 			}
 		}
 
-		position = sphereCenterPoint;
-		orientation = Quaternion<float>();
-		return std::make_unique<SphereShape<float>>(expectedRadius);
+		return std::make_optional<LocalizedShape>({
+			.shape = std::make_unique<SphereShape<float>>(expectedRadius),
+			.position = sphereCenterPoint,
+			.orientation = Quaternion<float>()
+		});
+	}
+
+	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildAABBoxes(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+		std::vector<LocalizedShape> result;
+
+		VoxelService voxelService;
+		VoxelGrid voxelGrid = voxelService.voxelizeObject(0.1f, vertices, triangleIndices); //TODO avoid hard coded size
+		std::vector<AABBox<float>> boxes = voxelService.voxelGridToAABBoxes(voxelGrid);
+
+		for (const AABBox<float>& box : boxes) {
+			result.push_back({
+				.shape = std::make_unique<BoxShape<float>>(box.getHalfSizes()),
+				.position = (box.getMin() + box.getMax()) / 2.0f,
+				.orientation = Quaternion<float>()
+			});
+		}
+
+		return result;
 	}
 
     std::pair<std::size_t, std::size_t> ShapeDetectService::findClosestAndFarthestPoints(const std::vector<Point3<float>>& points, const Point3<float>& refPoint) const {
