@@ -15,7 +15,7 @@ namespace urchin {
             explicit VoxelGrid(float, Point3<float>);
 
             const Point3<float>& getMinCenterPosition() const;
-            Point3<float> computeVoxelPosition(const Point3<int>&) const;
+            Point3<float> computeVoxelCenterPosition(const Point3<int>&) const;
             const std::unordered_set<Point3<int>, VoxelHash>& getVoxels() const;
             float getVoxelSize() const;
 

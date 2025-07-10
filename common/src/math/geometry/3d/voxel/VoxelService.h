@@ -23,7 +23,7 @@ namespace urchin {
 
             void expand(int, bool, const VoxelGrid&, VoxelContainer&, VoxelContainer&) const;
             int getMaxInDirection(int, bool, const VoxelContainer&) const;
-            AABBox<float> voxelBoxToAABBox(const VoxelContainer&) const;
+            AABBox<float> voxelBoxToAABBox(const VoxelContainer&, const VoxelGrid&) const;
     };
 
 }

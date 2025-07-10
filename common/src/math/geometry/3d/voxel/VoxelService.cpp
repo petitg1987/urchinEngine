@@ -23,7 +23,7 @@ namespace urchin {
             for (int y = 0; y < yVoxelQuantity; ++y) {
                 for (int z = 0; z < zVoxelQuantity; ++z) {
                     Point3 voxelIndexPosition(x, y, z);
-                    Point3 voxelCenterPosition = voxelGrid.computeVoxelPosition(voxelIndexPosition);
+                    Point3 voxelCenterPosition = voxelGrid.computeVoxelCenterPosition(voxelIndexPosition);
                     if (isVoxelExist(voxelCenterPosition, vertices, triangleIndices)) {
                         voxelGrid.addVoxel(voxelIndexPosition);
                     }
@@ -95,7 +95,7 @@ namespace urchin {
                 expand(directionAxis, isPositive, voxelGrid, voxelBox, usedVoxels);
             }
 
-            result.push_back(voxelBoxToAABBox(voxelBox));
+            result.push_back(voxelBoxToAABBox(voxelBox, voxelGrid));
         }
 
         return result;
@@ -104,7 +104,7 @@ namespace urchin {
     void VoxelService::expand(int directionAxis, bool isPositive, const VoxelGrid& voxelGrid, VoxelContainer& voxelBox, VoxelContainer& usedVoxels) const {
         std::array<std::pair<int, int>, 2> otherAxesMinMax;
         for (int i = 0; i < 2; ++i) {
-            std::size_t otherAxis = (std::size_t)((directionAxis + i + 1) % 3);
+            int otherAxis = (directionAxis + i + 1) % 3;
             int otherAxisMin = getMaxInDirection(otherAxis, false, voxelBox);
             int otherAxisMax = getMaxInDirection(otherAxis, true, voxelBox);
             otherAxesMinMax[i] = std::pair(otherAxisMin, otherAxisMax);
@@ -153,9 +153,18 @@ namespace urchin {
         }
     }
 
-    AABBox<float> VoxelService::voxelBoxToAABBox(const std::unordered_set<Point3<int>, VoxelGrid::VoxelHash>& /*voxelBox*/) const {
-        //TODO ...
-        return AABBox<float>();
+    AABBox<float> VoxelService::voxelBoxToAABBox(const std::unordered_set<Point3<int>, VoxelGrid::VoxelHash>& voxelBox, const VoxelGrid& voxelGrid) const {
+        Point3 minVoxel(0, 0, 0);
+        Point3 maxVoxel(0, 0, 0);
+        for (int axis = 0; axis < 3; ++axis) {
+            minVoxel[axis] = getMaxInDirection(axis, false, voxelBox);
+            maxVoxel[axis] = getMaxInDirection(axis, true, voxelBox);
+        }
+
+        Point3 halfVoxelSize(voxelGrid.getVoxelSize() / 2.0f, voxelGrid.getVoxelSize() / 2.0f, voxelGrid.getVoxelSize() / 2.0f);
+        Point3<float> min = voxelGrid.computeVoxelCenterPosition(minVoxel) - halfVoxelSize;
+        Point3<float> max = voxelGrid.computeVoxelCenterPosition(maxVoxel) + halfVoxelSize;
+        return AABBox(min, max);
     }
 
 }
