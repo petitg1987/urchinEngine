@@ -133,13 +133,13 @@ namespace urchin {
 		std::vector<LocalizedShape> result;
 
 		VoxelService voxelService;
-		VoxelGrid voxelGrid = voxelService.voxelizeObject(0.1f, vertices, triangleIndices); //TODO avoid hard coded size
+		VoxelGrid voxelGrid = voxelService.voxelizeObject(0.05f, vertices, triangleIndices); //TODO avoid hard coded size
 		std::vector<AABBox<float>> boxes = voxelService.voxelGridToAABBoxes(voxelGrid);
 
 		for (const AABBox<float>& box : boxes) {
 			result.push_back({
 				.shape = std::make_unique<BoxShape<float>>(box.getHalfSizes()),
-				.position = (box.getMin() + box.getMax()) / 2.0f,
+				.position = box.getCenterOfMass(),
 				.orientation = Quaternion<float>()
 			});
 		}
