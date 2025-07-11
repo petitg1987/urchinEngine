@@ -4,7 +4,6 @@
 #include <math/geometry/3d/util/ShapeDetectService.h>
 #include <math/geometry/3d/shape/BoxShape.h>
 #include <math/geometry/3d/shape/SphereShape.h>
-#include <math/geometry/3d/shape/ConvexHullShape3D.h>
 #include <math/geometry/3d/voxel/VoxelService.h>
 
 namespace urchin {
@@ -12,17 +11,13 @@ namespace urchin {
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
 		std::vector<LocalizedShape> result; //TODO ignore small flat shape !!!?
 
-		std::set uniqueVerticesSet(vertices.begin(), vertices.end());
-		auto convexHullShape = std::make_unique<ConvexHullShape3D<float>>(std::vector(uniqueVerticesSet.begin(), uniqueVerticesSet.end()));
-		std::vector<Point3<float>> convexPoints = convexHullShape->getPoints();
-
-		std::optional<LocalizedShape> boxShape = tryBuildBox(convexPoints);
+		std::optional<LocalizedShape> boxShape = tryBuildBox(vertices);
 		if (boxShape.has_value()) {
 			result.push_back(std::move(boxShape.value()));
 			return result;
 		}
 
-		std::optional<LocalizedShape> sphereShape = tryBuildSphere(convexPoints);
+		std::optional<LocalizedShape> sphereShape = tryBuildSphere(vertices);
 		if (sphereShape.has_value()) {
 			result.push_back(std::move(sphereShape.value()));
 			return result;
@@ -36,11 +31,6 @@ namespace urchin {
 			return result;
 		}
 
-		result.push_back({
-			.shape = std::move(convexHullShape),
-			.position = Point3(0.0f, 0.0f, 0.0f),
-			.orientation = Quaternion<float>()
-		});
 		return result;
 	}
 
