@@ -79,6 +79,7 @@ namespace urchin {
             Point3<T> p2 = getPoints()[indexedTriangle.getIndex(1)];
             Point3<T> p3 = getPoints()[indexedTriangle.getIndex(2)];
 
+            //TODO replace with Triangle3D(p1, p2, p3).collideWithRay(ray) ?
             bool hasPlaneInteraction;
             Point3<T> intersectionPoint = Plane<T>(p1, p2, p3).intersectPoint(line, hasPlaneInteraction);
             if (hasPlaneInteraction) {

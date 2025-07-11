@@ -5,7 +5,6 @@
 #include <math/algorithm/MathFunction.h>
 #include <math/geometry/3d/LineSegment3D.h>
 #include <math/geometry/3d/object/Triangle3D.h>
-#include <math/geometry/3d/Plane.h>
 
 namespace urchin {
 
@@ -52,6 +51,7 @@ namespace urchin {
 
     bool VoxelService::isPositionInModel(const Point3<float>& position, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
         Vector3 arbitraryAxis(1000.0f, 0.02f, 0.0f);
+        Ray ray(position, position.translate(arbitraryAxis));
 
         int triangleIntersectionCount = 0;
         assert(triangleIndices.size() % 3 == 0);
@@ -60,16 +60,9 @@ namespace urchin {
             const Point3<float>& p2 = vertices[triangleIndices[triIndices + 1]];
             const Point3<float>& p3 = vertices[triangleIndices[triIndices + 2]];
 
-            LineSegment3D line(position, position.translate(arbitraryAxis));
-
-            //TODO is Möller–Trumbore intersection algorithm faster ?
-            bool hasPlaneInteraction = false;
-            Point3 intersectionPoint = Plane(p1, p2, p3).intersectPoint(line, hasPlaneInteraction);
-            if (hasPlaneInteraction) {
-                bool hasTriangleIntersection = Triangle3D(p1, p2, p3).projectedPointInsideTriangle(intersectionPoint);
-                if (hasTriangleIntersection) {
-                    triangleIntersectionCount++;
-                }
+            bool hasIntersection = Triangle3D(p1, p2, p3).collideWithRay(ray);
+            if (hasIntersection) {
+                triangleIntersectionCount++;
             }
         }
 
