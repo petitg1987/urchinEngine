@@ -15,6 +15,7 @@ class Triangle3DTest final : public CppUnit::TestFixture {
         void noRayIntersectionOblique();
         void intersectionBeforeRay();
         void intersectionAfterRay();
-        void rayIntersection();
+        void rayIntersectionParallel();
+        void rayIntersectionOblique();
 
 };
