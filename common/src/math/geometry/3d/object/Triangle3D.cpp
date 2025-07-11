@@ -176,7 +176,7 @@ namespace urchin {
         T invDeterminant = (T)1.0 / determinant;
         Vector3 s = vertex0.vector(ray.getOrigin());
         T u = invDeterminant * (s.dotProduct(rayCrossEdge2));
-        if (u < 0.0 || u > 1.0) {
+        if (u < 0.0 || u > 1.0) { //TODO no test for here
             hasIntersection = false;
             return Point3<T>(0.0, 0.0, 0.0);
         }
@@ -189,11 +189,11 @@ namespace urchin {
         }
 
         T t = invDeterminant * edge2.dotProduct(q);
-        if (t > EPSILON) {
+        if (t > EPSILON && t < ray.getLength()) {
             hasIntersection = true;
             return ray.getOrigin().translate(ray.getDirection() * t);
         } else {
-            hasIntersection = false; //there is a line intersection but not a ray intersection
+            hasIntersection = false; //there is a line intersection but no ray intersection
             return Point3<T>(0.0, 0.0, 0.0);
         }
     }

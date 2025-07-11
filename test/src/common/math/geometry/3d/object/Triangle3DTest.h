@@ -11,7 +11,8 @@ class Triangle3DTest final : public CppUnit::TestFixture {
         void projectedPointInsideTriangle();
 
         void parallelLineIntersection();
-        void onlyLineIntersection();
+        void intersectionBeforeRay();
+        void intersectionAfterRay();
         void noRayIntersection();
         void rayIntersection();
 

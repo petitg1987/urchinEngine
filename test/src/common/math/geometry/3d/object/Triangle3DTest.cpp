@@ -79,7 +79,7 @@ void Triangle3DTest::parallelLineIntersection() {
     AssertHelper::assertFalse(hasIntersection);
 }
 
-void Triangle3DTest::onlyLineIntersection() {
+void Triangle3DTest::intersectionBeforeRay() {
     Triangle3D triangle(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 1.0f));
     Ray ray(Point3(1.0f, -0.5f, 0.2f), Point3(1.0f, -500.0f, 0.2f));
 
@@ -88,9 +88,18 @@ void Triangle3DTest::onlyLineIntersection() {
     AssertHelper::assertFalse(hasIntersection);
 }
 
+void Triangle3DTest::intersectionAfterRay() {
+    Triangle3D triangle(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 1.0f));
+    Ray ray(Point3(1.0f, 500.0f, 0.2f), Point3(1.0f, 0.5f, 0.2f));
+
+    bool hasIntersection = false;
+    triangle.intersectPoint(ray, hasIntersection);
+    AssertHelper::assertFalse(hasIntersection);
+}
+
 void Triangle3DTest::noRayIntersection() {
     Triangle3D triangle(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 1.0f));
-    Ray ray(Point3(1.0f, 1.0f, -0.2f), Point3(1.0f, -500.0f, -0.2f));
+    Ray ray(Point3(1.0f, 1.5f, -0.2f), Point3(1.0f, -500.0f, -0.2f));
 
     bool hasIntersection = false;
     triangle.intersectPoint(ray, hasIntersection);
@@ -99,7 +108,7 @@ void Triangle3DTest::noRayIntersection() {
 
 void Triangle3DTest::rayIntersection() {
     Triangle3D triangle(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 1.0f));
-    Ray ray(Point3(1.0f, 1.0f, 0.2f), Point3(1.0f, -500.0f, 0.2f));
+    Ray ray(Point3(1.0f, 1.5f, 0.2f), Point3(1.0f, -500.0f, 0.2f));
 
     bool hasIntersection = false;
     Point3 intersectionPoint = triangle.intersectPoint(ray, hasIntersection);
@@ -115,7 +124,8 @@ CppUnit::Test* Triangle3DTest::suite() {
 
     suite->addTest(new CppUnit::TestCaller("parallelLineIntersection", &Triangle3DTest::parallelLineIntersection));
     suite->addTest(new CppUnit::TestCaller("noRayIntersection", &Triangle3DTest::noRayIntersection));
-    suite->addTest(new CppUnit::TestCaller("onlyLineIntersection", &Triangle3DTest::onlyLineIntersection));
+    suite->addTest(new CppUnit::TestCaller("intersectionBeforeRay", &Triangle3DTest::intersectionBeforeRay));
+    suite->addTest(new CppUnit::TestCaller("intersectionAfterRay", &Triangle3DTest::intersectionAfterRay));
     suite->addTest(new CppUnit::TestCaller("rayIntersection", &Triangle3DTest::rayIntersection));
 
     return suite;
