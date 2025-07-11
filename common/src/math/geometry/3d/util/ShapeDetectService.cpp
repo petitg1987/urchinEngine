@@ -79,7 +79,7 @@ namespace urchin {
 		return mesh;
 	}
 
-	std::vector<ShapeDetectService::Mesh> ShapeDetectService::splitDistinctMeshes(const Mesh& mesh) const { //TODO review
+	std::vector<ShapeDetectService::Mesh> ShapeDetectService::splitDistinctMeshes(const Mesh& mesh) const {
 	    std::vector<Mesh> subMeshes;
 
 		std::map<uint32_t, std::vector<unsigned int>> vertexToTriangles;
