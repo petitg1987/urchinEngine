@@ -288,7 +288,7 @@ namespace urchin {
     }
 
     void PhysicsWidget::showChangeBodyShapeDialog() {
-        ChangeBodyShapeDialog changeBodyShapeDialog(this, false);
+        ChangeBodyShapeDialog changeBodyShapeDialog(this, false, objectEntity->getRigidBody()->getShape().getShapeType());
         changeBodyShapeDialog.exec();
 
         if (changeBodyShapeDialog.result() == QDialog::Accepted) {

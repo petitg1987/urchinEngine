@@ -228,7 +228,7 @@ namespace urchin {
     }
 
     void BodyCompoundShapeWidget::addNewLocalizedShape() {
-        ChangeBodyShapeDialog changeBodyShapeDialog(this, true);
+        ChangeBodyShapeDialog changeBodyShapeDialog(this, true, CollisionShape3D::ShapeType::BOX_SHAPE);
         changeBodyShapeDialog.exec();
 
         if (changeBodyShapeDialog.result() == QDialog::Accepted) {

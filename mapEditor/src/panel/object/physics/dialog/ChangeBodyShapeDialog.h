@@ -16,13 +16,13 @@ namespace urchin {
             static constexpr char QUALITY_MEDIUM_LABEL[] = "Medium";
             static constexpr char QUALITY_HIGH_LABEL[] = "High";
 
-            ChangeBodyShapeDialog(QWidget*, bool);
+            ChangeBodyShapeDialog(QWidget*, bool, CollisionShape3D::ShapeType);
 
             CollisionShape3D::ShapeType getShapeType() const;
             DefaultBodyShapeGenerator::ShapeQuality getDefaultShapeQuality() const;
 
         private:
-            void setupBodyShapeTypeFields(QGridLayout*);
+            void setupBodyShapeTypeFields(QGridLayout*, CollisionShape3D::ShapeType);
 
             void done(int) override;
 

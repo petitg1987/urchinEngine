@@ -5,19 +5,19 @@
 
 namespace urchin {
 
-    ChangeBodyShapeDialog::ChangeBodyShapeDialog(QWidget* parent, bool excludeCompoundShape) :
+    ChangeBodyShapeDialog::ChangeBodyShapeDialog(QWidget* parent, bool excludeCompoundShape, CollisionShape3D::ShapeType defaultSelectedShapeType) :
             QDialog(parent),
             excludeCompoundShape(excludeCompoundShape),
             bodyShapeTypeComboBox(nullptr),
             shapeType(CollisionShape3D::ShapeType::SHAPE_MAX) {
         this->setWindowTitle("Select Body Shape");
-        this->resize(330, 130);
+        this->resize(330, 120);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        setupBodyShapeTypeFields(mainLayout);
+        setupBodyShapeTypeFields(mainLayout, defaultSelectedShapeType);
 
         auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 2, 0, 1, 2, Qt::AlignmentFlag::AlignRight);
@@ -28,7 +28,7 @@ namespace urchin {
         connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void ChangeBodyShapeDialog::setupBodyShapeTypeFields(QGridLayout* mainLayout) {
+    void ChangeBodyShapeDialog::setupBodyShapeTypeFields(QGridLayout* mainLayout, CollisionShape3D::ShapeType defaultSelectedShapeType) {
         auto* bodyShapeTypeLabel = new QLabel("Shape Type:");
         mainLayout->addWidget(bodyShapeTypeLabel, 0, 0);
 
@@ -44,7 +44,12 @@ namespace urchin {
         if (!excludeCompoundShape) {
             bodyShapeTypeComboBox->addItem(BodyShapeWidget::COMPOUND_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::COMPOUND_SHAPE));
         }
-        //TODO select current shape by default
+        for (int i = 0; i < bodyShapeTypeComboBox->count(); ++i) {
+            if (bodyShapeTypeComboBox->itemData(i).toInt() == defaultSelectedShapeType) {
+                bodyShapeTypeComboBox->setCurrentIndex(i);
+                break;
+            }
+        }
 
         auto* defaultShapeQualityLabel = new QLabel("Default Shape Quality:");
         mainLayout->addWidget(defaultShapeQualityLabel, 1, 0);
