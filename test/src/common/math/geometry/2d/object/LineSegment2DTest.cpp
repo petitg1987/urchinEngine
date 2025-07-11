@@ -39,7 +39,7 @@ void LineSegment2DTest::noIntersection() {
     AssertHelper::assertFalse(firstLine.hasProperIntersection(secondLine));
 }
 
-void LineSegment2DTest::parallelLines() {
+void LineSegment2DTest::parallelLinesIntersection() {
     LineSegment2D firstLine(Point2(-2.0, 0.0), Point2(-1.0, 0.0));
     LineSegment2D secondLine(Point2(-2.0, 1.0), Point2(-1.0, 1.0));
 
@@ -188,7 +188,7 @@ CppUnit::Test* LineSegment2DTest::suite() {
     suite->addTest(new CppUnit::TestCaller("closestPoint", &LineSegment2DTest::closestPoint));
 
     suite->addTest(new CppUnit::TestCaller("noIntersection", &LineSegment2DTest::noIntersection));
-    suite->addTest(new CppUnit::TestCaller("parallelLines", &LineSegment2DTest::parallelLines));
+    suite->addTest(new CppUnit::TestCaller("parallelLinesIntersection", &LineSegment2DTest::parallelLinesIntersection));
     suite->addTest(new CppUnit::TestCaller("intersection", &LineSegment2DTest::intersection));
 
     suite->addTest(new CppUnit::TestCaller("intersectionOnOnePoint", &LineSegment2DTest::intersectionOnOnePoint));

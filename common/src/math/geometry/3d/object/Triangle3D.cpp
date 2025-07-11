@@ -1,6 +1,7 @@
 #include <iomanip>
 
 #include <math/geometry/3d/object/Triangle3D.h>
+#include <math/geometry/3d/Ray.h>
 
 namespace urchin {
 
@@ -147,6 +148,54 @@ namespace urchin {
         }
 
         return true;
+    }
+
+    template<class T> bool Triangle3D<T>::collideWithRay(const Ray<T>& ray) const {
+        bool hasIntersection = false;
+        intersectPoint(ray, hasIntersection);
+        return hasIntersection;
+    }
+
+    template<class T> Point3<T> Triangle3D<T>::intersectPoint(const Ray<T>& ray, bool& hasIntersection) const {
+        //Möller-Trumbore algorithm
+        constexpr T EPSILON = (T)0.0000001;
+
+        Point3 vertex0 = triangleShape.getPoints()[0];
+        Point3 vertex1 = triangleShape.getPoints()[1];
+        Point3 vertex2 = triangleShape.getPoints()[2];
+
+        Vector3 edge1 = vertex0.vector(vertex1);
+        Vector3 edge2 = vertex0.vector(vertex2);
+        Vector3 rayCrossEdge2 = ray.getDirection().crossProduct(edge2);
+        T determinant = edge1.dotProduct(rayCrossEdge2);
+        if (determinant > -EPSILON && determinant < EPSILON) {
+            hasIntersection = false; //ray is parallel to the triangle
+            return Point3<T>(0.0, 0.0, 0.0);
+        }
+
+        T invDeterminant = (T)1.0 / determinant;
+        Vector3 s = vertex0.vector(ray.getOrigin());
+        T u = invDeterminant * (s.dotProduct(rayCrossEdge2));
+        if (u < 0.0 || u > 1.0) {
+            hasIntersection = false;
+            return Point3<T>(0.0, 0.0, 0.0);
+        }
+
+        Vector3 q = s.crossProduct(edge1);
+        T v = invDeterminant * ray.getDirection().dotProduct(q);
+        if (v < 0.0 || u + v > 1.0) {
+            hasIntersection = false;
+            return Point3<T>(0.0, 0.0, 0.0);
+        }
+
+        T t = invDeterminant * edge2.dotProduct(q);
+        if (t > EPSILON) {
+            hasIntersection = true;
+            return ray.getOrigin().translate(ray.getDirection() * t);
+        } else {
+            hasIntersection = false; //there is a line intersection but not a ray intersection
+            return Point3<T>(0.0, 0.0, 0.0);
+        }
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const Triangle3D<T>& triangle) {

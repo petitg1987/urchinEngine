@@ -70,12 +70,53 @@ void Triangle3DTest::projectedPointInsideTriangle() {
     AssertHelper::assertFalse(triangle.projectedPointInsideTriangle(Point3(2.75f, 2.0f, 100.0f)));
 }
 
+void Triangle3DTest::parallelLineIntersection() {
+    Triangle3D triangle(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 1.0f));
+    Ray ray(Point3(-10.0f, -5.0f, 0.0f), Point3(10.0f, -5.0f, 0.0f));
+
+    bool hasIntersection = false;
+    triangle.intersectPoint(ray, hasIntersection);
+    AssertHelper::assertFalse(hasIntersection);
+}
+
+void Triangle3DTest::onlyLineIntersection() {
+    Triangle3D triangle(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 1.0f));
+    Ray ray(Point3(1.0f, -0.5f, 0.2f), Point3(1.0f, -500.0f, 0.2f));
+
+    bool hasIntersection = false;
+    triangle.intersectPoint(ray, hasIntersection);
+    AssertHelper::assertFalse(hasIntersection);
+}
+
+void Triangle3DTest::noRayIntersection() {
+    Triangle3D triangle(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 1.0f));
+    Ray ray(Point3(1.0f, 1.0f, -0.2f), Point3(1.0f, -500.0f, -0.2f));
+
+    bool hasIntersection = false;
+    triangle.intersectPoint(ray, hasIntersection);
+    AssertHelper::assertFalse(hasIntersection);
+}
+
+void Triangle3DTest::rayIntersection() {
+    Triangle3D triangle(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 1.0f));
+    Ray ray(Point3(1.0f, 1.0f, 0.2f), Point3(1.0f, -500.0f, 0.2f));
+
+    bool hasIntersection = false;
+    Point3 intersectionPoint = triangle.intersectPoint(ray, hasIntersection);
+    AssertHelper::assertTrue(hasIntersection);
+    AssertHelper::assertPoint3FloatEquals(intersectionPoint, Point3(1.0f, 0.0f, 0.2f));
+}
+
 CppUnit::Test* Triangle3DTest::suite() {
     auto* suite = new CppUnit::TestSuite("Triangle3DTest");
 
     suite->addTest(new CppUnit::TestCaller("closestPoint", &Triangle3DTest::closestPoint));
-
     suite->addTest(new CppUnit::TestCaller("projectedPointInsideTriangle", &Triangle3DTest::projectedPointInsideTriangle));
+
+    suite->addTest(new CppUnit::TestCaller("parallelLineIntersection", &Triangle3DTest::parallelLineIntersection));
+    suite->addTest(new CppUnit::TestCaller("noRayIntersection", &Triangle3DTest::noRayIntersection));
+    suite->addTest(new CppUnit::TestCaller("onlyLineIntersection", &Triangle3DTest::onlyLineIntersection));
+    suite->addTest(new CppUnit::TestCaller("rayIntersection", &Triangle3DTest::rayIntersection));
 
     return suite;
 }

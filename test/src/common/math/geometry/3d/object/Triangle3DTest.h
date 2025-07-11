@@ -8,7 +8,11 @@ class Triangle3DTest final : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void closestPoint();
-
         void projectedPointInsideTriangle();
+
+        void parallelLineIntersection();
+        void onlyLineIntersection();
+        void noRayIntersection();
+        void rayIntersection();
 
 };

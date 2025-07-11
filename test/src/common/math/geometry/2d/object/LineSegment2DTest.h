@@ -10,7 +10,7 @@ class LineSegment2DTest final : public CppUnit::TestFixture {
         void closestPoint();
 
         void noIntersection();
-        void parallelLines();
+        void parallelLinesIntersection();
         void intersection();
 
         void intersectionOnOnePoint();

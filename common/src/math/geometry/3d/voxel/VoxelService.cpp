@@ -108,9 +108,9 @@ namespace urchin {
         std::vector<Point3<int>> voxelsToAdd;
         voxelsToAdd.reserve(totalVoxelsToAdd);
 
-        for (bool isPositive : {true , false}) { //expand on 'axis' in both direction: positive and negative on current axis
+        for (bool isPositive : {true, false}) { //expand on 'axis' in both direction: positive and negative
             bool allVoxelsCanBeAdded = true;
-            do { //expand until it cannot expand anymore
+            do { //expand in the current direction until it cannot expand anymore
                 voxelsToAdd.clear();
                 allVoxelsCanBeAdded = true;
 

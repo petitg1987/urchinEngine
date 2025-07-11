@@ -8,7 +8,8 @@
 namespace urchin {
 
     /**
-     * A ray is similar to a line segment, but it has a clearly defined origin/starting point
+     * A ray is similar to a line segment, but it has a clearly defined origin/starting point.
+     * Moreover, a ray has an infinite length but for performance optimization, a length is still available.
      */
     template<class T> class Ray {
         public:

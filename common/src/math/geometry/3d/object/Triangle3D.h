@@ -19,6 +19,9 @@ namespace urchin {
             Point3<T> closestPoint(const Point3<T>&, std::array<T, 3>&) const;
             bool projectedPointInsideTriangle(const Point3<T>&) const;
 
+            bool collideWithRay(const Ray<T>&) const override;
+            Point3<T> intersectPoint(const Ray<T>&, bool&) const;
+
         private:
             TriangleShape3D<T> triangleShape;
     };
