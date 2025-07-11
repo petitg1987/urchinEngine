@@ -16,7 +16,7 @@ namespace urchin {
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
 		std::vector<LocalizedShape> result;
 
-		//TODO split vertices not connected together !
+		//TODO split vertices not connected together ! + remove duplicate vertices
 
 		std::optional<LocalizedShape> boxShape = tryBuildBox(vertices);
 		if (boxShape.has_value()) {
