@@ -2,6 +2,8 @@
 #include <optional>
 #include <unordered_map>
 #include <queue>
+#include <map>
+#include <set>
 
 #include <math/geometry/3d/util/ShapeDetectService.h>
 #include <math/geometry/3d/shape/BoxShape.h>
@@ -19,7 +21,7 @@ namespace urchin {
 		std::vector<LocalizedShape> result;
 
 		Mesh meshNoDuplicate = mergeDuplicatePoints(vertices, triangleIndices);
-		std::vector<Mesh> meshes = splitDistinctMesh(meshNoDuplicate);
+		std::vector<Mesh> meshes = splitDistinctMeshes(meshNoDuplicate);
 
 		for (const Mesh& mesh : meshes) {
 			std::optional<LocalizedShape> boxShape = tryBuildBox(mesh.vertices);
@@ -73,17 +75,15 @@ namespace urchin {
 		return mesh;
 	}
 
-	std::vector<ShapeDetectService::Mesh> ShapeDetectService::splitDistinctMesh(const Mesh& originalMesh) const { //TODO review
+	std::vector<ShapeDetectService::Mesh> ShapeDetectService::splitDistinctMeshes(const Mesh& originalMesh) const { //TODO review
 	    std::vector<Mesh> subMeshes;
 	    if (originalMesh.triangleIndices.empty()) {
 	        return subMeshes;
 	    }
 
-	    const unsigned int numTriangles = originalMesh.triangleIndices.size() / 3;
+	    unsigned int numTriangles = (unsigned int)originalMesh.triangleIndices.size() / 3;
 	    std::vector visitedTriangles(numTriangles, false);
 
-	    // 1. Build adjacency (mapping original vertex index to list of triangle indices that use it)
-	    // This allows finding triangles connected by a shared vertex
 	    std::map<unsigned int, std::vector<unsigned int>> vertexToTriangles;
 	    for (unsigned int i = 0; i < numTriangles; ++i) {
 	        for (int j = 0; j < 3; ++j) {
