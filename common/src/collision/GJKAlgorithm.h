@@ -6,6 +6,7 @@
 #include <collision/GJKResult.h>
 #include <math/algebra/point/Point3.h>
 #include <math/algebra/vector/Vector3.h>
+#include <math/geometry/3d/object/AABBox.h>
 #include <profiler/ScopeProfiler.h>
 #include <math/geometry/3d/Simplex.h>
 #include <logger/Logger.h>

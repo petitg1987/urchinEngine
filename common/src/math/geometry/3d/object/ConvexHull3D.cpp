@@ -1,4 +1,3 @@
-#include <math/geometry/3d/object/AABBox.h>
 #include <math/geometry/3d/object/ConvexHull3D.h>
 #include <math/geometry/3d/object/Triangle3D.h>
 #include <math/geometry/3d/util/ResizeConvexHull3DService.h>
@@ -79,15 +78,11 @@ namespace urchin {
             Point3<T> p2 = getPoints()[indexedTriangle.getIndex(1)];
             Point3<T> p3 = getPoints()[indexedTriangle.getIndex(2)];
 
-            //TODO replace with Triangle3D(p1, p2, p3).collideWithRay(ray) ?
-            bool hasPlaneInteraction;
-            Point3<T> intersectionPoint = Plane<T>(p1, p2, p3).intersectPoint(line, hasPlaneInteraction);
-            if (hasPlaneInteraction) {
-                bool hasTriangleIntersection = Triangle3D<T>(p1, p2, p3).projectedPointInsideTriangle(intersectionPoint);
-                if (hasTriangleIntersection && (!hasIntersection || line.getA().squareDistance(intersectionPoint) < line.getA().squareDistance(bestIntersectionPoint))) {
-                    bestIntersectionPoint = intersectionPoint;
-                    hasIntersection = true;
-                }
+            bool hasTriangleIntersection;
+            Point3<T> intersectionPoint = Triangle3D<T>(p1, p2, p3).intersectPoint(line, hasTriangleIntersection);
+            if (hasTriangleIntersection && (!hasIntersection || line.getA().squareDistance(intersectionPoint) < line.getA().squareDistance(bestIntersectionPoint))) {
+                bestIntersectionPoint = intersectionPoint;
+                hasIntersection = true;
             }
         }
 

@@ -132,7 +132,17 @@ void Triangle3DTest::rayIntersectionOblique() {
     bool hasIntersection = false;
     Point3 intersectionPoint = triangle.intersectPoint(ray, hasIntersection);
     AssertHelper::assertTrue(hasIntersection);
-    AssertHelper::assertPoint3FloatEquals(intersectionPoint, Point3(0.36f, 1.8f, 2.104f));
+    AssertHelper::assertPoint3FloatEquals(intersectionPoint, Point3(0.36f, 1.8f, -2.104f));
+}
+
+void Triangle3DTest::lineIntersection() {
+    Triangle3D triangle(Point3(0.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 1.0f));
+    Line3D line(Point3(1.0f, -0.5f, 0.2f), Point3(1.0f, -500.0f, 0.2f));
+
+    bool hasIntersection = false;
+    Point3 intersectionPoint = triangle.intersectPoint(line, hasIntersection);
+    AssertHelper::assertTrue(hasIntersection);
+    AssertHelper::assertPoint3FloatEquals(intersectionPoint, Point3(1.0f, 0.0f, 0.2f));
 }
 
 CppUnit::Test* Triangle3DTest::suite() {
@@ -148,6 +158,8 @@ CppUnit::Test* Triangle3DTest::suite() {
     suite->addTest(new CppUnit::TestCaller("intersectionAfterRay", &Triangle3DTest::intersectionAfterRay));
     suite->addTest(new CppUnit::TestCaller("rayIntersectionParallel", &Triangle3DTest::rayIntersectionParallel));
     suite->addTest(new CppUnit::TestCaller("rayIntersectionOblique", &Triangle3DTest::rayIntersectionOblique));
+
+    suite->addTest(new CppUnit::TestCaller("lineIntersection", &Triangle3DTest::lineIntersection));
 
     return suite;
 }

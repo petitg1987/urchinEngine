@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    template<class T> class Triangle3D final : public ConvexObject3D<T> {
+    template<class T> class Triangle3D final : public ConvexObject3D<T> { //TODO remove inheritance !
         public:
             explicit Triangle3D(const std::array<Point3<T>, 3>&);
             Triangle3D(const Point3<T>&, const Point3<T>&, const Point3<T>&);
@@ -20,9 +20,12 @@ namespace urchin {
             bool projectedPointInsideTriangle(const Point3<T>&) const;
 
             bool collideWithRay(const Ray<T>&) const override;
+            Point3<T> intersectPoint(const Line3D<T>&, bool&) const override;
             Point3<T> intersectPoint(const Ray<T>&, bool&) const;
 
         private:
+            T intersectionDistance(const Ray<T>&, bool&) const;
+
             TriangleShape3D<T> triangleShape;
     };
 

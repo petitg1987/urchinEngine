@@ -2,6 +2,7 @@
 
 #include <math/geometry/3d/object/Triangle3D.h>
 #include <math/geometry/3d/Ray.h>
+#include <math/geometry/3d/Line3D.h>
 
 namespace urchin {
 
@@ -156,8 +157,33 @@ namespace urchin {
         return hasIntersection;
     }
 
+    template<class T> Point3<T> Triangle3D<T>::intersectPoint(const Line3D<T>& line, bool& hasIntersection) const {
+        Ray<T> ray(line.getA(), line.getB());
+        T t = intersectionDistance(ray, hasIntersection);
+        if (!hasIntersection) {
+            return Point3<T>(0.0, 0.0, 0.0);
+        }
+
+        return ray.getOrigin().translate(ray.getDirection() * t);
+    }
+
     template<class T> Point3<T> Triangle3D<T>::intersectPoint(const Ray<T>& ray, bool& hasIntersection) const {
-        //Möller-Trumbore algorithm
+        T t = intersectionDistance(ray, hasIntersection);
+        if (!hasIntersection) {
+            return Point3<T>(0.0, 0.0, 0.0);
+        }
+
+        if (t > 0.0 && t < ray.getLength()) {
+            hasIntersection = true;
+            return ray.getOrigin().translate(ray.getDirection() * t);
+        } else {
+            hasIntersection = false; //there is a line intersection but no ray intersection
+            return Point3<T>(0.0, 0.0, 0.0);
+        }
+    }
+
+    //See Möller-Trumbore algorithm
+    template<class T> T Triangle3D<T>::intersectionDistance(const Ray<T>& ray, bool& hasIntersection) const {
         constexpr T EPSILON = (T)0.0000001;
 
         Point3 vertex0 = triangleShape.getPoints()[0];
@@ -170,7 +196,7 @@ namespace urchin {
         T determinant = edge1.dotProduct(rayCrossEdge2);
         if (determinant > -EPSILON && determinant < EPSILON) {
             hasIntersection = false; //ray is parallel to the triangle
-            return Point3<T>(0.0, 0.0, 0.0);
+            return 0.0;
         }
 
         T invDeterminant = (T)1.0 / determinant;
@@ -178,24 +204,18 @@ namespace urchin {
         T u = invDeterminant * (s.dotProduct(rayCrossEdge2));
         if (u < 0.0 || u > 1.0) {
             hasIntersection = false;
-            return Point3<T>(0.0, 0.0, 0.0);
+            return 0.0;
         }
 
         Vector3 q = s.crossProduct(edge1);
         T v = invDeterminant * ray.getDirection().dotProduct(q);
         if (v < 0.0 || u + v > 1.0) {
             hasIntersection = false;
-            return Point3<T>(0.0, 0.0, 0.0);
+            return 0.0;
         }
 
-        T t = invDeterminant * edge2.dotProduct(q);
-        if (t > EPSILON && t < ray.getLength()) {
-            hasIntersection = true;
-            return ray.getOrigin().translate(ray.getDirection() * t);
-        } else {
-            hasIntersection = false; //there is a line intersection but no ray intersection
-            return Point3<T>(0.0, 0.0, 0.0);
-        }
+        hasIntersection = true;
+        return invDeterminant * edge2.dotProduct(q);
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const Triangle3D<T>& triangle) {
