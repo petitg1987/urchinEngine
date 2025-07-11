@@ -1,5 +1,4 @@
 #include <limits>
-#include <cassert>
 
 #include <math/geometry/3d/voxel/VoxelService.h>
 #include <math/algorithm/MathFunction.h>
