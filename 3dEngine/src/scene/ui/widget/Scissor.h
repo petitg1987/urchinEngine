@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 
