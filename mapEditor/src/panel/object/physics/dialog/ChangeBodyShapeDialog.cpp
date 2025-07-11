@@ -11,7 +11,7 @@ namespace urchin {
             bodyShapeTypeComboBox(nullptr),
             shapeType(CollisionShape3D::ShapeType::SHAPE_MAX) {
         this->setWindowTitle("Select Body Shape");
-        this->resize(330, 120);
+        this->resize(330, 130);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
@@ -44,6 +44,7 @@ namespace urchin {
         if (!excludeCompoundShape) {
             bodyShapeTypeComboBox->addItem(BodyShapeWidget::COMPOUND_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::COMPOUND_SHAPE));
         }
+        //TODO select current shape by default
 
         auto* defaultShapeQualityLabel = new QLabel("Default Shape Quality:");
         mainLayout->addWidget(defaultShapeQualityLabel, 1, 0);
@@ -54,6 +55,7 @@ namespace urchin {
         defaultShapeQualityComboBox->addItem(QUALITY_LOW_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::LOW));
         defaultShapeQualityComboBox->addItem(QUALITY_MEDIUM_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::MEDIUM));
         defaultShapeQualityComboBox->addItem(QUALITY_HIGH_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::HIGH));
+        defaultShapeQualityComboBox->setCurrentIndex(1);
     }
 
     void ChangeBodyShapeDialog::done(int r) {
