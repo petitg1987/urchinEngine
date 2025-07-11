@@ -43,6 +43,8 @@ namespace urchin {
 				}
 				//continue;
 			}
+
+			//TODO build aabbox here ?
 		}
 
 		return result;
