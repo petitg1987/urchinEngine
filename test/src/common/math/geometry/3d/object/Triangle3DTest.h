@@ -10,10 +10,11 @@ class Triangle3DTest final : public CppUnit::TestFixture {
         void closestPoint();
         void projectedPointInsideTriangle();
 
-        void parallelLineIntersection();
+        void noRayIntersectionParallel();
+        void noRayIntersectionPerpendicular();
+        void noRayIntersectionOblique();
         void intersectionBeforeRay();
         void intersectionAfterRay();
-        void noRayIntersection();
         void rayIntersection();
 
 };

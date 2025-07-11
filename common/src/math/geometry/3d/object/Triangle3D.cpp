@@ -176,7 +176,7 @@ namespace urchin {
         T invDeterminant = (T)1.0 / determinant;
         Vector3 s = vertex0.vector(ray.getOrigin());
         T u = invDeterminant * (s.dotProduct(rayCrossEdge2));
-        if (u < 0.0 || u > 1.0) { //TODO no test for here
+        if (u < 0.0 || u > 1.0) {
             hasIntersection = false;
             return Point3<T>(0.0, 0.0, 0.0);
         }
