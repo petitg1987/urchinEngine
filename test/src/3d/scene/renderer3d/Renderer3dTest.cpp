@@ -34,7 +34,7 @@ std::unique_ptr<Model> Renderer3dTest::buildModel(const std::string& materialFil
     ModelBuilder modelBuilder(materialFilename);
 
     std::vector vertices = {Point3(-0.01f, 0.0f, 0.0f), Point3(0.0f, 0.01f, 0.0f), Point3(0.01f, 0.0f, 0.0f)};
-    std::vector triangleIndices = {0u, 1u, 2u};
+    std::vector<std::array<uint32_t, 3>> triangleIndices = {{0u, 1u, 2u}};
     std::vector uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
 
     std::unique_ptr<Model> model = modelBuilder.newModel(modelName, vertices, triangleIndices, uvTexture);

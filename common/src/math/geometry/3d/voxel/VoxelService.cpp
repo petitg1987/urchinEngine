@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    VoxelGrid VoxelService::voxelizeObject(float voxelSize, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+    VoxelGrid VoxelService::voxelizeObject(float voxelSize, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
         AABBox<float> abbox = computeAABBox(vertices);
 
         float halfVoxelSize = voxelSize / 2.0f;
@@ -49,16 +49,15 @@ namespace urchin {
         return AABBox(min, max);
     }
 
-    bool VoxelService::isPositionInModel(const Point3<float>& position, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+    bool VoxelService::isPositionInModel(const Point3<float>& position, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
         Vector3 arbitraryAxis(1000.0f, 0.02f, 0.0f);
         Ray ray(position, position.translate(arbitraryAxis));
 
         int triangleIntersectionCount = 0;
-        assert(triangleIndices.size() % 3 == 0);
-        for (std::size_t triIndices = 0; triIndices < triangleIndices.size(); triIndices += 3) {
-            const Point3<float>& p1 = vertices[triangleIndices[triIndices + 0]];
-            const Point3<float>& p2 = vertices[triangleIndices[triIndices + 1]];
-            const Point3<float>& p3 = vertices[triangleIndices[triIndices + 2]];
+        for (std::size_t triangleIndex = 0; triangleIndex < triangleIndices.size(); ++triangleIndex) {
+            const Point3<float>& p1 = vertices[triangleIndices[triangleIndex][0]];
+            const Point3<float>& p2 = vertices[triangleIndices[triangleIndex][1]];
+            const Point3<float>& p3 = vertices[triangleIndices[triangleIndex][2]];
 
             bool hasIntersection = Triangle3D(p1, p2, p3).collideWithRay(ray);
             if (hasIntersection) {

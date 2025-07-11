@@ -53,11 +53,10 @@ namespace urchin {
         vertexNormals.resize(constMesh.getNumberVertices(), Vector3(0.0f, 0.0f, 0.0f));
 
         std::size_t numTrianglesIndices = constMesh.getTrianglesIndices().size();
-        assert(numTrianglesIndices % 3 == 0);
-        for (std::size_t triIndices = 0; triIndices < numTrianglesIndices; triIndices += 3) {
-            unsigned int triIndex1 = constMesh.getTrianglesIndices()[triIndices + 0];
-            unsigned int triIndex2 = constMesh.getTrianglesIndices()[triIndices + 1];
-            unsigned int triIndex3 = constMesh.getTrianglesIndices()[triIndices + 2];
+        for (std::size_t triangleIndex = 0; triangleIndex < numTrianglesIndices; ++triangleIndex) {
+            unsigned int triIndex1 = constMesh.getTrianglesIndices()[triangleIndex][0];
+            unsigned int triIndex2 = constMesh.getTrianglesIndices()[triangleIndex][1];
+            unsigned int triIndex3 = constMesh.getTrianglesIndices()[triangleIndex][2];
 
             const Point3<float>& vert1 = vertices[triIndex1];
             const Point3<float>& vert2 = vertices[triIndex2];

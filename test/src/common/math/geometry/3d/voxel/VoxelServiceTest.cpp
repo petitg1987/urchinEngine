@@ -13,7 +13,7 @@ void VoxelServiceTest::voxelizeObject() {
     vertices.emplace_back(2.0f, 3.1f, 0.0f);
     vertices.emplace_back(2.0f, 1.0f, 1.0f);
 
-    std::vector<unsigned int> triangleIndices;
+    std::vector<std::array<uint32_t, 3>> triangleIndices;
     triangleIndices.insert(triangleIndices.end(), {0, 1, 2}); //back
     triangleIndices.insert(triangleIndices.end(), {0, 2, 3}); //left
     triangleIndices.insert(triangleIndices.end(), {1, 2, 3}); //right

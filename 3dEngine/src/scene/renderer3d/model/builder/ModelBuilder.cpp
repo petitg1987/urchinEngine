@@ -25,14 +25,14 @@ namespace urchin {
 
     std::unique_ptr<Model> ModelBuilder::newEmptyModel(const std::string& meshesName) const {
         std::vector vertices = {Point3(0.1f, 0.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)};
-        std::vector triangleIndices = {0u, 1u, 2u};
+        std::vector<std::array<uint32_t, 3>> triangleIndices = {{0u, 1u, 2u}};
         std::vector uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
 
         return newModel(meshesName, vertices, triangleIndices, uvTexture);
     }
 
     std::unique_ptr<Model> ModelBuilder::newModel(const std::string& meshesName, const std::vector<Point3<float>>& vertices,
-                                                  const std::vector<unsigned int>& trianglesIndices, const std::vector<Point2<float>>& uvTexture) const {
+                                                  const std::vector<std::array<uint32_t, 3>>& trianglesIndices, const std::vector<Point2<float>>& uvTexture) const {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector;
         constMeshesVector.push_back(buildConstMesh(vertices, trianglesIndices, uvTexture));
         auto constMeshes = ConstMeshes::fromMemory(meshesName, std::move(constMeshesVector));
@@ -42,12 +42,10 @@ namespace urchin {
         return Model::fromMemory(std::move(meshes));
     }
 
-    std::unique_ptr<const ConstMesh> ModelBuilder::buildConstMesh(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& trianglesIndices,
-                                                                  const std::vector<Point2<float>>& uvTexture) const {
+    std::unique_ptr<const ConstMesh> ModelBuilder::buildConstMesh(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,
+            const std::vector<Point2<float>>& uvTexture) const {
         if (vertices.size() != uvTexture.size()) {
             throw std::runtime_error("Vertices (" + std::to_string(vertices.size()) + ") must have exactly one UV coordinate (" + std::to_string(uvTexture.size()) + ")");
-        } else if (trianglesIndices.size() % 3 != 0) {
-            throw std::runtime_error("Triangle indices must be a multiple of three");
         }
 
         std::vector<Vertex> modelVertices;

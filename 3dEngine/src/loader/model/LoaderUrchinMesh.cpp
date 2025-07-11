@@ -86,11 +86,16 @@ namespace urchin {
             iss >> sdata >> numTriangles;
 
             //triangles indices
-            std::vector<unsigned int> trianglesIndices(numTriangles * 3);
+            std::vector<std::array<uint32_t, 3>> trianglesIndices;
+            trianglesIndices.reserve(numTriangles);
             for (std::size_t i = 0, triVertexIndex = 0; i < numTriangles; i++, triVertexIndex += 3) {
                 FileReader::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
-                iss >> sdata >> trianglesIndices[triVertexIndex] >> trianglesIndices[triVertexIndex + 1] >> trianglesIndices[triVertexIndex + 2];
+                uint32_t index1 = 0;
+                uint32_t index2 = 0;
+                uint32_t index3 = 0;
+                iss >> sdata >> index1 >> index2 >> index3;
+                trianglesIndices.push_back({index1, index2, index3});
             }
 
             //numWeights

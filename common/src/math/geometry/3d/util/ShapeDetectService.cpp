@@ -17,11 +17,11 @@ namespace urchin {
 
 	}
 
-	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
 		std::vector<LocalizedShape> result;
 
 		Mesh meshNoDuplicate = mergeDuplicatePoints(vertices, triangleIndices);
-		std::vector<Mesh> meshes = splitDistinctMeshes(meshNoDuplicate);
+		std::vector<Mesh> meshes = {meshNoDuplicate}; //splitDistinctMeshes(meshNoDuplicate);
 
 		for (const Mesh& mesh : meshes) {
 			std::optional<LocalizedShape> boxShape = tryBuildBox(mesh.vertices);
@@ -50,7 +50,7 @@ namespace urchin {
 		return result;
 	}
 
-	ShapeDetectService::Mesh ShapeDetectService::mergeDuplicatePoints(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
+	ShapeDetectService::Mesh ShapeDetectService::mergeDuplicatePoints(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
 		std::unordered_map<Point3<float>, unsigned int, Point3<float>::Hash> pointToNewIndex;
 		std::vector<unsigned int> oldToNewIndex(vertices.size());
 
@@ -70,8 +70,10 @@ namespace urchin {
 			}
 		}
 
-		for (std::size_t i = 0; i < triangleIndices.size(); ++i) {
-			mesh.triangleIndices[i] = oldToNewIndex[triangleIndices[i]];
+		for (std::size_t triangleIndex = 0; triangleIndex < triangleIndices.size(); ++triangleIndex) {
+			mesh.triangleIndices[triangleIndex][0] = oldToNewIndex[triangleIndices[triangleIndex][0]];
+			mesh.triangleIndices[triangleIndex][1] = oldToNewIndex[triangleIndices[triangleIndex][1]];
+			mesh.triangleIndices[triangleIndex][2] = oldToNewIndex[triangleIndices[triangleIndex][2]];
 		}
 
 		return mesh;
@@ -83,68 +85,69 @@ namespace urchin {
 	        return subMeshes;
 	    }
 
-	    unsigned int numTriangles = (unsigned int)originalMesh.triangleIndices.size() / 3;
-	    std::vector visitedTriangles(numTriangles, false);
-
-	    std::map<unsigned int, std::vector<unsigned int>> vertexToTriangles;
-	    for (unsigned int i = 0; i < numTriangles; ++i) {
-	        for (int j = 0; j < 3; ++j) {
-	            unsigned int vertexIdx = originalMesh.triangleIndices[i * 3 + j];
-	            vertexToTriangles[vertexIdx].push_back(i);
-	        }
-	    }
-
-	    // 2. Iterate and perform BFS/DFS for connected components
-	    for (unsigned int i = 0; i < numTriangles; ++i) {
-	        if (!visitedTriangles[i]) {
-	            // Start a new connected component (sub-mesh)
-	            Mesh currentSubMesh;
-	            std::map<unsigned int, unsigned int> originalToSubMeshVertexMap; // original_idx -> new_idx
-	            unsigned int nextSubMeshVertexIdx = 0;
-
-	            std::queue<unsigned int> q;
-	            q.push(i);
-	            visitedTriangles[i] = true;
-
-	            while (!q.empty()) {
-	                unsigned int currentTriangleIdx = q.front();
-	                q.pop();
-
-	                // Add vertices and triangle indices to the current sub-mesh
-	                for (int j = 0; j < 3; ++j) {
-	                    unsigned int originalVertexIdx = originalMesh.triangleIndices[currentTriangleIdx * 3 + j];
-
-	                    if (originalToSubMeshVertexMap.contains(originalVertexIdx)) {
-	                        // Vertex not yet in this sub-mesh, add it
-	                        originalToSubMeshVertexMap[originalVertexIdx] = nextSubMeshVertexIdx++;
-	                        currentSubMesh.vertices.push_back(originalMesh.vertices[originalVertexIdx]);
-	                    }
-	                    currentSubMesh.triangleIndices.push_back(originalToSubMeshVertexMap[originalVertexIdx]);
-	                }
-
-	                // Find connected triangles
-	                std::set<unsigned int> neighbors; // Use set to avoid duplicate neighbors
-	                for (int j = 0; j < 3; ++j) {
-	                    unsigned int vertexIdx = originalMesh.triangleIndices[currentTriangleIdx * 3 + j];
-	                    for (unsigned int neighborTriangleIdx : vertexToTriangles[vertexIdx]) {
-	                        if (!visitedTriangles[neighborTriangleIdx]) {
-	                            neighbors.insert(neighborTriangleIdx);
-	                        }
-	                    }
-	                }
-
-	                for (unsigned int neighborIdx : neighbors) {
-	                    if (!visitedTriangles[neighborIdx]) {
-	                        visitedTriangles[neighborIdx] = true;
-	                        q.push(neighborIdx);
-	                    }
-	                }
-	            }
-	            subMeshes.push_back(currentSubMesh);
-	        }
-	    }
-
-	    return subMeshes;
+return subMeshes;
+	    // unsigned int numTriangles = (unsigned int)originalMesh.triangleIndices.size() / 3;
+	    // std::vector visitedTriangles(numTriangles, false);
+	    //
+	    // std::map<unsigned int, std::vector<unsigned int>> vertexToTriangles;
+	    // for (unsigned int i = 0; i < numTriangles; ++i) {
+	    //     for (int j = 0; j < 3; ++j) {
+	    //         unsigned int vertexIdx = originalMesh.triangleIndices[i * 3 + j];
+	    //         vertexToTriangles[vertexIdx].push_back(i);
+	    //     }
+	    // }
+	    //
+	    // // 2. Iterate and perform BFS/DFS for connected components
+	    // for (unsigned int i = 0; i < numTriangles; ++i) {
+	    //     if (!visitedTriangles[i]) {
+	    //         // Start a new connected component (sub-mesh)
+	    //         Mesh currentSubMesh;
+	    //         std::map<unsigned int, unsigned int> originalToSubMeshVertexMap; // original_idx -> new_idx
+	    //         unsigned int nextSubMeshVertexIdx = 0;
+	    //
+	    //         std::queue<unsigned int> q;
+	    //         q.push(i);
+	    //         visitedTriangles[i] = true;
+	    //
+	    //         while (!q.empty()) {
+	    //             unsigned int currentTriangleIdx = q.front();
+	    //             q.pop();
+	    //
+	    //             // Add vertices and triangle indices to the current sub-mesh
+	    //             for (int j = 0; j < 3; ++j) {
+	    //                 unsigned int originalVertexIdx = originalMesh.triangleIndices[currentTriangleIdx * 3 + j];
+	    //
+	    //                 if (originalToSubMeshVertexMap.contains(originalVertexIdx)) {
+	    //                     // Vertex not yet in this sub-mesh, add it
+	    //                     originalToSubMeshVertexMap[originalVertexIdx] = nextSubMeshVertexIdx++;
+	    //                     currentSubMesh.vertices.push_back(originalMesh.vertices[originalVertexIdx]);
+	    //                 }
+	    //                 currentSubMesh.triangleIndices.push_back(originalToSubMeshVertexMap[originalVertexIdx]);
+	    //             }
+	    //
+	    //             // Find connected triangles
+	    //             std::set<unsigned int> neighbors; // Use set to avoid duplicate neighbors
+	    //             for (int j = 0; j < 3; ++j) {
+	    //                 unsigned int vertexIdx = originalMesh.triangleIndices[currentTriangleIdx * 3 + j];
+	    //                 for (unsigned int neighborTriangleIdx : vertexToTriangles[vertexIdx]) {
+	    //                     if (!visitedTriangles[neighborTriangleIdx]) {
+	    //                         neighbors.insert(neighborTriangleIdx);
+	    //                     }
+	    //                 }
+	    //             }
+	    //
+	    //             for (unsigned int neighborIdx : neighbors) {
+	    //                 if (!visitedTriangles[neighborIdx]) {
+	    //                     visitedTriangles[neighborIdx] = true;
+	    //                     q.push(neighborIdx);
+	    //                 }
+	    //             }
+	    //         }
+	    //         subMeshes.push_back(currentSubMesh);
+	    //     }
+	    // }
+	    //
+	    // return subMeshes;
 	}
 
 	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildBox(const std::vector<Point3<float>>& points) const {

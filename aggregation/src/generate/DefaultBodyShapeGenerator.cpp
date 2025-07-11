@@ -92,7 +92,7 @@ namespace urchin {
             std::size_t nextShapeIndex = 0;
             for (unsigned int meshIndex = 0; meshIndex < meshes->getNumMeshes(); ++meshIndex) {
                 const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
-                const std::vector<unsigned int>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
+                const std::vector<std::array<uint32_t, 3>>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
                 try {
                     std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(nextShapeIndex, vertices, triangleIndices);
                     for (std::unique_ptr<LocalizedCollisionShape>& localizedCollisionShape : localizedCollisionShapes) {
@@ -118,7 +118,7 @@ namespace urchin {
     }
 
     std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(std::size_t nextShapeIndex, const std::vector<Point3<float>>& vertices,
-            const std::vector<unsigned int>& triangleIndices) const {
+            const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
         std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
 
         ShapeDetectService::Config config = {.voxelizationSize = shapeQualityToVoxelizationSize()};

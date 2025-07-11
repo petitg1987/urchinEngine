@@ -81,7 +81,7 @@ namespace urchin {
         return mInstanceData;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::indices(const std::vector<uint32_t>& indices) {
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::indices(std::span<const uint32_t> indices) {
         mIndices = std::make_shared<IndexContainer>(indices.size(), indices.data());
         return shared_from_this();
     }

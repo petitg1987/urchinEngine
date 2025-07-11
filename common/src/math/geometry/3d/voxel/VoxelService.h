@@ -10,13 +10,13 @@ namespace urchin {
 
     class VoxelService {
         public:
-            VoxelGrid voxelizeObject(float, const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
+            VoxelGrid voxelizeObject(float, const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
 
             std::vector<AABBox<float>> voxelGridToAABBoxes(const VoxelGrid&) const;
 
         private:
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
-            bool isPositionInModel(const Point3<float>&, const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
+            bool isPositionInModel(const Point3<float>&, const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
 
             void expandOnAxis(int, const VoxelGrid&, VoxelContainer&, VoxelContainer&) const;
             int getMaxInDirection(int, bool, const VoxelContainer&) const;

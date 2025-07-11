@@ -7,7 +7,7 @@
 namespace urchin {
 
     ConstMesh::ConstMesh(std::shared_ptr<Material> initialMaterial, const std::vector<Vertex>& vertices, std::vector<Point2<float>> uv,
-            std::vector<unsigned int> trianglesIndices, std::vector<Weight> weights, const std::vector<Bone>& baseSkeleton) :
+            std::vector<std::array<uint32_t, 3>> trianglesIndices, std::vector<Weight> weights, const std::vector<Bone>& baseSkeleton) :
             initialMaterial(std::move(initialMaterial)),
             vertices(vertices),
             uv(std::move(uv)),
@@ -60,7 +60,7 @@ namespace urchin {
         throw std::runtime_error("Impossible to find linked vertices for group ID: " + std::to_string(linkedVerticesGroupId));
     }
 
-    const std::vector<unsigned int>& ConstMesh::getTrianglesIndices() const {
+    const std::vector<std::array<uint32_t, 3>>& ConstMesh::getTrianglesIndices() const {
         return trianglesIndices;
     }
 

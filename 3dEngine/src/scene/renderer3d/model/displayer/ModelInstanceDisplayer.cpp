@@ -99,7 +99,7 @@ namespace urchin {
 
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
-                    ->indices(constMesh.getTrianglesIndices())
+                    ->indices(std::span(reinterpret_cast<const unsigned int*>(constMesh.getTrianglesIndices().data()), constMesh.getTrianglesIndices().size() * 3))
                     ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projectionViewMatrix), &projectionViewMatrix)
                     ->addUniformData(MAT_DATA_UNIFORM_BINDING, sizeof(materialData), &materialData); //only used in DEFAULT_MODE
 

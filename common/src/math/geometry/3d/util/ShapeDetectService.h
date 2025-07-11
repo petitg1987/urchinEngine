@@ -23,15 +23,15 @@ namespace urchin {
 
             explicit ShapeDetectService(Config config);
 
-            std::vector<LocalizedShape> detect(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
+            std::vector<LocalizedShape> detect(const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
 
         private:
             struct Mesh {
                 std::vector<Point3<float>> vertices;
-                std::vector<unsigned int> triangleIndices;
+                std::vector<std::array<uint32_t, 3>> triangleIndices;
             };
 
-            Mesh mergeDuplicatePoints(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
+            Mesh mergeDuplicatePoints(const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
             std::vector<Mesh> splitDistinctMeshes(const Mesh&) const;
 
             std::optional<LocalizedShape> tryBuildBox(const std::vector<Point3<float>>&) const;

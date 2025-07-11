@@ -35,7 +35,7 @@ namespace urchin {
     class ConstMesh {
         public:
             ConstMesh(std::shared_ptr<Material>, const std::vector<Vertex>&, std::vector<Point2<float>>,
-                    std::vector<unsigned int>, std::vector<Weight>, const std::vector<Bone>&);
+                    std::vector<std::array<uint32_t, 3>>, std::vector<Weight>, const std::vector<Bone>&);
 
             const std::shared_ptr<Material>& getInitialMaterialPtr() const;
 
@@ -44,7 +44,7 @@ namespace urchin {
             const std::vector<Point2<float>>& getUv() const;
             const std::vector<unsigned int>& getLinkedVertices(unsigned int) const;
 
-            const std::vector<unsigned int>& getTrianglesIndices() const;
+            const std::vector<std::array<uint32_t, 3>>& getTrianglesIndices() const;
 
             unsigned int getNumberWeights() const;
             const Weight& getWeight(unsigned int) const;
@@ -64,7 +64,7 @@ namespace urchin {
             std::vector<Point2<float>> uv;
             std::unordered_map<unsigned int, std::vector<unsigned int>> linkedVertices;
 
-            std::vector<unsigned int> trianglesIndices;
+            std::vector<std::array<uint32_t, 3>> trianglesIndices;
 
             std::vector<Weight> weights;
             std::vector<std::size_t> usedBoneIndices;

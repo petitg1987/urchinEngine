@@ -63,7 +63,7 @@ std::unique_ptr<ModelOcclusionCuller> LightSplitShadowMapTest::buildModelOcclusi
     for (const auto& modelPosition : modelPositions) {
         ModelBuilder modelBuilder("materials/opaque.uda");
         std::vector vertices = {Point3(-0.5f, -0.5f, -0.5f), Point3(0.5f, 0.5f, 0.5f), Point3(0.5f, -0.5f, 0.5f)};
-        std::vector triangleIndices = {0u, 1u, 2u};
+        std::vector<std::array<uint32_t, 3>> triangleIndices = {{0u, 1u, 2u}};
         std::vector uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
         std::unique_ptr<Model> model = modelBuilder.newModel("modelName", vertices, triangleIndices, uvTexture);
 
