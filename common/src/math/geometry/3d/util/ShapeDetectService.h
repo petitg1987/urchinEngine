@@ -32,6 +32,7 @@ namespace urchin {
             };
 
             Mesh mergeDuplicatePoints(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
+            std::vector<Mesh> splitDistinctMesh(const Mesh&) const;
 
             std::optional<LocalizedShape> tryBuildBox(const std::vector<Point3<float>>&) const;
             std::optional<LocalizedShape> tryBuildSphere(const std::vector<Point3<float>>&) const;

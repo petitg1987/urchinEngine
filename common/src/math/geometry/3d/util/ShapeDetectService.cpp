@@ -1,6 +1,7 @@
 #include <limits>
 #include <optional>
 #include <unordered_map>
+#include <queue>
 
 #include <math/geometry/3d/util/ShapeDetectService.h>
 #include <math/geometry/3d/shape/BoxShape.h>
@@ -17,27 +18,29 @@ namespace urchin {
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
 		std::vector<LocalizedShape> result;
 
-		Mesh mesh = mergeDuplicatePoints(vertices, triangleIndices);
-		//TODO split vertices not connected together
+		Mesh meshNoDuplicate = mergeDuplicatePoints(vertices, triangleIndices);
+		std::vector<Mesh> meshes = splitDistinctMesh(meshNoDuplicate);
 
-		std::optional<LocalizedShape> boxShape = tryBuildBox(mesh.vertices);
-		if (boxShape.has_value()) {
-			result.push_back(std::move(boxShape.value()));
-			return result;
-		}
-
-		std::optional<LocalizedShape> sphereShape = tryBuildSphere(mesh.vertices);
-		if (sphereShape.has_value()) {
-			result.push_back(std::move(sphereShape.value()));
-			return result;
-		}
-
-		std::vector<LocalizedShape> boxShapes = tryBuildAABBoxes(mesh);
-		if (!boxShapes.empty()) {
-			for (LocalizedShape& box : boxShapes) {
-				result.push_back(std::move(box));
+		for (const Mesh& mesh : meshes) {
+			std::optional<LocalizedShape> boxShape = tryBuildBox(mesh.vertices);
+			if (boxShape.has_value()) {
+				result.push_back(std::move(boxShape.value()));
+				continue;
 			}
-			return result;
+
+			std::optional<LocalizedShape> sphereShape = tryBuildSphere(mesh.vertices);
+			if (sphereShape.has_value()) {
+				result.push_back(std::move(sphereShape.value()));
+				continue;
+			}
+
+			std::vector<LocalizedShape> boxShapes = tryBuildAABBoxes(mesh);
+			if (!boxShapes.empty()) {
+				for (LocalizedShape& box : boxShapes) {
+					result.push_back(std::move(box));
+				}
+				//continue;
+			}
 		}
 
 		return result;
@@ -68,6 +71,78 @@ namespace urchin {
 		}
 
 		return mesh;
+	}
+
+	std::vector<ShapeDetectService::Mesh> ShapeDetectService::splitDistinctMesh(const Mesh& originalMesh) const { //TODO review
+	    std::vector<Mesh> subMeshes;
+	    if (originalMesh.triangleIndices.empty()) {
+	        return subMeshes;
+	    }
+
+	    const unsigned int numTriangles = originalMesh.triangleIndices.size() / 3;
+	    std::vector visitedTriangles(numTriangles, false);
+
+	    // 1. Build adjacency (mapping original vertex index to list of triangle indices that use it)
+	    // This allows finding triangles connected by a shared vertex
+	    std::map<unsigned int, std::vector<unsigned int>> vertexToTriangles;
+	    for (unsigned int i = 0; i < numTriangles; ++i) {
+	        for (int j = 0; j < 3; ++j) {
+	            unsigned int vertexIdx = originalMesh.triangleIndices[i * 3 + j];
+	            vertexToTriangles[vertexIdx].push_back(i);
+	        }
+	    }
+
+	    // 2. Iterate and perform BFS/DFS for connected components
+	    for (unsigned int i = 0; i < numTriangles; ++i) {
+	        if (!visitedTriangles[i]) {
+	            // Start a new connected component (sub-mesh)
+	            Mesh currentSubMesh;
+	            std::map<unsigned int, unsigned int> originalToSubMeshVertexMap; // original_idx -> new_idx
+	            unsigned int nextSubMeshVertexIdx = 0;
+
+	            std::queue<unsigned int> q;
+	            q.push(i);
+	            visitedTriangles[i] = true;
+
+	            while (!q.empty()) {
+	                unsigned int currentTriangleIdx = q.front();
+	                q.pop();
+
+	                // Add vertices and triangle indices to the current sub-mesh
+	                for (int j = 0; j < 3; ++j) {
+	                    unsigned int originalVertexIdx = originalMesh.triangleIndices[currentTriangleIdx * 3 + j];
+
+	                    if (originalToSubMeshVertexMap.contains(originalVertexIdx)) {
+	                        // Vertex not yet in this sub-mesh, add it
+	                        originalToSubMeshVertexMap[originalVertexIdx] = nextSubMeshVertexIdx++;
+	                        currentSubMesh.vertices.push_back(originalMesh.vertices[originalVertexIdx]);
+	                    }
+	                    currentSubMesh.triangleIndices.push_back(originalToSubMeshVertexMap[originalVertexIdx]);
+	                }
+
+	                // Find connected triangles
+	                std::set<unsigned int> neighbors; // Use set to avoid duplicate neighbors
+	                for (int j = 0; j < 3; ++j) {
+	                    unsigned int vertexIdx = originalMesh.triangleIndices[currentTriangleIdx * 3 + j];
+	                    for (unsigned int neighborTriangleIdx : vertexToTriangles[vertexIdx]) {
+	                        if (!visitedTriangles[neighborTriangleIdx]) {
+	                            neighbors.insert(neighborTriangleIdx);
+	                        }
+	                    }
+	                }
+
+	                for (unsigned int neighborIdx : neighbors) {
+	                    if (!visitedTriangles[neighborIdx]) {
+	                        visitedTriangles[neighborIdx] = true;
+	                        q.push(neighborIdx);
+	                    }
+	                }
+	            }
+	            subMeshes.push_back(currentSubMesh);
+	        }
+	    }
+
+	    return subMeshes;
 	}
 
 	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildBox(const std::vector<Point3<float>>& points) const {
