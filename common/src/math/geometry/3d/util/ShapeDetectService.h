@@ -26,9 +26,16 @@ namespace urchin {
             std::vector<LocalizedShape> detect(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
 
         private:
+            struct Mesh {
+                std::vector<Point3<float>> vertices;
+                std::vector<unsigned int> triangleIndices;
+            };
+
+            Mesh mergeDuplicatePoints(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
+
             std::optional<LocalizedShape> tryBuildBox(const std::vector<Point3<float>>&) const;
             std::optional<LocalizedShape> tryBuildSphere(const std::vector<Point3<float>>&) const;
-            std::vector<LocalizedShape> tryBuildAABBoxes(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
+            std::vector<LocalizedShape> tryBuildAABBoxes(const Mesh&) const;
 
             std::pair<std::size_t, std::size_t> findClosestAndFarthestPoints(const std::vector<Point3<float>>&, const Point3<float>&) const;
             std::size_t findFarthestPoint(const std::vector<Point3<float>>&, const Point3<float>&) const;
