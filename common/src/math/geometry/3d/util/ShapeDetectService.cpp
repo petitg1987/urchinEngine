@@ -8,8 +8,15 @@
 
 namespace urchin {
 
+	ShapeDetectService::ShapeDetectService(Config config) :
+			config(std::move(config)) {
+
+	}
+
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
-		std::vector<LocalizedShape> result; //TODO ignore small flat shape !!!?
+		std::vector<LocalizedShape> result;
+
+		//TODO split vertices not connected together !
 
 		std::optional<LocalizedShape> boxShape = tryBuildBox(vertices);
 		if (boxShape.has_value()) {
@@ -122,7 +129,7 @@ namespace urchin {
 		std::vector<LocalizedShape> result;
 
 		VoxelService voxelService;
-		VoxelGrid voxelGrid = voxelService.voxelizeObject(0.01f, vertices, triangleIndices); //TODO avoid hard coded size
+		VoxelGrid voxelGrid = voxelService.voxelizeObject(config.voxelizationSize, vertices, triangleIndices);
 		std::vector<AABBox<float>> boxes = voxelService.voxelGridToAABBoxes(voxelGrid);
 
 		for (const AABBox<float>& box : boxes) {

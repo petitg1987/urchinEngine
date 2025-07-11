@@ -11,11 +11,17 @@ namespace urchin {
 
     class ShapeDetectService {
         public:
+            struct Config {
+                float voxelizationSize;
+            };
+
             struct LocalizedShape {
                 std::unique_ptr<ConvexShape3D<float>> shape;
                 Point3<float> position;
                 Quaternion<float> orientation;
             };
+
+            explicit ShapeDetectService(Config config);
 
             std::vector<LocalizedShape> detect(const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
 
@@ -26,6 +32,8 @@ namespace urchin {
 
             std::pair<std::size_t, std::size_t> findClosestAndFarthestPoints(const std::vector<Point3<float>>&, const Point3<float>&) const;
             std::size_t findFarthestPoint(const std::vector<Point3<float>>&, const Point3<float>&) const;
+
+            Config config;
     };
 
 }

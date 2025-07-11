@@ -115,7 +115,8 @@ namespace urchin {
     }
 
     std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(std::size_t nextShapeIndex, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
-        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService().detect(vertices, triangleIndices);
+        ShapeDetectService::Config config = {.voxelizationSize = 0.01f}; //TODO do better !
+        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService(config).detect(vertices, triangleIndices);
 
         std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
         result.reserve(bestLocalizedShapes.size());
