@@ -118,20 +118,18 @@ namespace urchin {
 					currentSubMesh.triangleIndices.back()[i] = originalToSubMeshVertexMap[originalVertexIndex];
 				}
 
-				std::set<unsigned int> neighborTriangles;
+				std::set<unsigned int> neighborTrianglesIndices;
 				for (int i = 0; i < 3; ++i) {
 				    uint32_t vertexIndex = mesh.triangleIndices[currentTriangleIndex][i];
 				    for (unsigned int neighborTriangleIndex : vertexToTriangles[vertexIndex]) {
 				        if (!visitedTriangles[neighborTriangleIndex]) {
-				            neighborTriangles.insert(neighborTriangleIndex);
+				            neighborTrianglesIndices.insert(neighborTriangleIndex);
 				        }
 				    }
 				}
-				for (unsigned int neighborTriangle : neighborTriangles) {
-				    if (!visitedTriangles[neighborTriangle]) {
-				        visitedTriangles[neighborTriangle] = true;
-				        trianglesQueue.push(neighborTriangle);
-				    }
+				for (unsigned int neighborTriangleIndex : neighborTrianglesIndices) {
+			        visitedTriangles[neighborTriangleIndex] = true;
+			        trianglesQueue.push(neighborTriangleIndex);
 				}
 			}
 
