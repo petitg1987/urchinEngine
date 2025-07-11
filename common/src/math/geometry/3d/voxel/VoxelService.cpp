@@ -27,6 +27,7 @@ namespace urchin {
                     if (isPositionInModel(voxelCenterPosition, vertices, triangleIndices)) {
                         voxelGrid.addVoxel(voxelIndexPosition);
                     }
+                    //TODO test others points for better results ?
                 }
             }
         }
