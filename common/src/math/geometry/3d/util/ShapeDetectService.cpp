@@ -110,7 +110,7 @@ namespace urchin {
 				currentSubMesh.triangleIndices.push_back({0u, 0u, 0u});
 				for (int i = 0; i < 3; ++i) {
 					uint32_t originalVertexIndex = mesh.triangleIndices[currentTriangleIndex][i];
-					if (originalToSubMeshVertexMap.contains(originalVertexIndex)) {
+					if (!originalToSubMeshVertexMap.contains(originalVertexIndex)) {
 						uint32_t subMeshVertexIndex = (uint32_t)currentSubMesh.vertices.size();
 						originalToSubMeshVertexMap[originalVertexIndex] = subMeshVertexIndex;
 						currentSubMesh.vertices.push_back(mesh.vertices[originalVertexIndex]);
@@ -128,8 +128,8 @@ namespace urchin {
 				    }
 				}
 				for (unsigned int neighborTriangleIndex : neighborTrianglesIndices) {
-			        visitedTriangles[neighborTriangleIndex] = true;
 			        trianglesQueue.push(neighborTriangleIndex);
+					visitedTriangles[neighborTriangleIndex] = true;
 				}
 			}
 
