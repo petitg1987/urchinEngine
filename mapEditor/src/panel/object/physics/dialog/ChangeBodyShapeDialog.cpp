@@ -8,11 +8,10 @@ namespace urchin {
     ChangeBodyShapeDialog::ChangeBodyShapeDialog(QWidget* parent, bool excludeCompoundShape) :
             QDialog(parent),
             excludeCompoundShape(excludeCompoundShape),
-            bodyShapeTypeLabel(nullptr),
             bodyShapeTypeComboBox(nullptr),
             shapeType(CollisionShape3D::ShapeType::SHAPE_MAX) {
         this->setWindowTitle("Select Body Shape");
-        this->resize(260, 90);
+        this->resize(330, 120);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
@@ -21,7 +20,7 @@ namespace urchin {
         setupBodyShapeTypeFields(mainLayout);
 
         auto* buttonBox = new QDialogButtonBox();
-        mainLayout->addWidget(buttonBox, 1, 0, 1, 2, Qt::AlignmentFlag::AlignRight);
+        mainLayout->addWidget(buttonBox, 2, 0, 1, 2, Qt::AlignmentFlag::AlignRight);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -30,7 +29,7 @@ namespace urchin {
     }
 
     void ChangeBodyShapeDialog::setupBodyShapeTypeFields(QGridLayout* mainLayout) {
-        bodyShapeTypeLabel = new QLabel("Shape Type:");
+        auto* bodyShapeTypeLabel = new QLabel("Shape Type:");
         mainLayout->addWidget(bodyShapeTypeLabel, 0, 0);
 
         bodyShapeTypeComboBox = new QComboBox();
@@ -45,12 +44,26 @@ namespace urchin {
         if (!excludeCompoundShape) {
             bodyShapeTypeComboBox->addItem(BodyShapeWidget::COMPOUND_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::COMPOUND_SHAPE));
         }
+
+        auto* defaultShapeQualityLabel = new QLabel("Default Shape Quality:");
+        mainLayout->addWidget(defaultShapeQualityLabel, 1, 0);
+
+        defaultShapeQualityComboBox = new QComboBox();
+        mainLayout->addWidget(defaultShapeQualityComboBox, 1, 1);
+        defaultShapeQualityComboBox->setFixedWidth(150);
+        defaultShapeQualityComboBox->addItem(QUALITY_LOW_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::LOW));
+        defaultShapeQualityComboBox->addItem(QUALITY_MEDIUM_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::MEDIUM));
+        defaultShapeQualityComboBox->addItem(QUALITY_HIGH_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::HIGH));
     }
 
     void ChangeBodyShapeDialog::done(int r) {
         if (Accepted == r) {
-            QVariant variant = bodyShapeTypeComboBox->currentData();
-            shapeType = static_cast<CollisionShape3D::ShapeType>(variant.toInt());
+            QVariant variantShapeType = bodyShapeTypeComboBox->currentData();
+            shapeType = static_cast<CollisionShape3D::ShapeType>(variantShapeType.toInt());
+
+            QVariant variantDefaultShapeQuality = defaultShapeQualityComboBox->currentData();
+            defaultShapeQuality = static_cast<DefaultBodyShapeGenerator::ShapeQuality>(variantDefaultShapeQuality.toInt());
+
             QDialog::done(r);
         } else {
             QDialog::done(r);
@@ -59,6 +72,10 @@ namespace urchin {
 
     CollisionShape3D::ShapeType ChangeBodyShapeDialog::getShapeType() const {
         return shapeType;
+    }
+
+    DefaultBodyShapeGenerator::ShapeQuality ChangeBodyShapeDialog::getDefaultShapeQuality() const {
+        return defaultShapeQuality;
     }
 
 }

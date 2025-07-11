@@ -70,7 +70,8 @@ namespace urchin {
             return std::make_unique<const CollisionCompoundShape>(std::move(localizedCollisionShapes));
         } catch (const std::invalid_argument& e) {
             LabelStyleHelper::applyErrorStyle(shapesLabel, std::string(e.what()));
-            return DefaultBodyShapeGenerator(*getObjectEntity()).generate(CollisionShape3D::ShapeType::COMPOUND_SHAPE);
+            auto shapeQuality = DefaultBodyShapeGenerator::ShapeQuality::LOW;
+            return DefaultBodyShapeGenerator(*getObjectEntity(), shapeQuality).generate(CollisionShape3D::ShapeType::COMPOUND_SHAPE);
         }
     }
 
@@ -232,7 +233,8 @@ namespace urchin {
 
         if (changeBodyShapeDialog.result() == QDialog::Accepted) {
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
-            std::unique_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeGenerator(*getObjectEntity()).generate(shapeType);
+            DefaultBodyShapeGenerator::ShapeQuality shapeQuality = changeBodyShapeDialog.getDefaultShapeQuality();
+            std::unique_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeGenerator(*getObjectEntity(), shapeQuality).generate(shapeType);
 
             std::size_t nextShapeIndex = 0;
             for (std::size_t i = 0; i < localizedShapeTableView->getLocalizedShapes().size(); ++i) {

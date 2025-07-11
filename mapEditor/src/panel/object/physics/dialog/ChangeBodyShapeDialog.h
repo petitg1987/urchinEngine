@@ -3,7 +3,6 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QLabel>
 
 #include <UrchinPhysicsEngine.h>
 
@@ -13,9 +12,14 @@ namespace urchin {
         Q_OBJECT
 
         public:
+            static constexpr char QUALITY_LOW_LABEL[] = "Low";
+            static constexpr char QUALITY_MEDIUM_LABEL[] = "Medium";
+            static constexpr char QUALITY_HIGH_LABEL[] = "High";
+
             ChangeBodyShapeDialog(QWidget*, bool);
 
             CollisionShape3D::ShapeType getShapeType() const;
+            DefaultBodyShapeGenerator::ShapeQuality getDefaultShapeQuality() const;
 
         private:
             void setupBodyShapeTypeFields(QGridLayout*);
@@ -24,10 +28,11 @@ namespace urchin {
 
             bool excludeCompoundShape;
 
-            QLabel* bodyShapeTypeLabel;
             QComboBox* bodyShapeTypeComboBox;
+            QComboBox* defaultShapeQualityComboBox;
 
             CollisionShape3D::ShapeType shapeType;
+            DefaultBodyShapeGenerator::ShapeQuality defaultShapeQuality;
     };
 
 }

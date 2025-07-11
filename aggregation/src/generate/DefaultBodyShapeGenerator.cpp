@@ -2,8 +2,9 @@
 
 namespace urchin {
 
-    DefaultBodyShapeGenerator::DefaultBodyShapeGenerator(const ObjectEntity& objectEntity) :
-            objectEntity(objectEntity) {
+    DefaultBodyShapeGenerator::DefaultBodyShapeGenerator(const ObjectEntity& objectEntity, ShapeQuality shapeQuality) :
+            objectEntity(objectEntity),
+            shapeQuality(shapeQuality) {
 
     }
 
@@ -46,7 +47,7 @@ namespace urchin {
             shape = std::make_unique<CollisionConeShape>(radius, height, ConeShape<float>::CONE_X_POSITIVE);
         } else if (shapeType == CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE) {
             shape = std::make_unique<CollisionConvexHullShape>(buildConvexHullShape());
-        } else if (shapeType == CollisionShape3D::ShapeType::COMPOUND_SHAPE) {
+        } else if (shapeType == CollisionShape3D::ShapeType::COMPOUND_SHAPE) { //TODO compound on windows, crash
             shape = std::make_unique<CollisionCompoundShape>(buildLocalizedCollisionShapes());
         } else {
             throw std::invalid_argument("Unknown shape type to create default body shape: " + std::to_string(shapeType));
@@ -116,17 +117,18 @@ namespace urchin {
         return result;
     }
 
-    std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(std::size_t nextShapeIndex, const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& triangleIndices) const {
-        ShapeDetectService::Config config = {.voxelizationSize = 0.01f}; //TODO do better !
-        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService(config).detect(vertices, triangleIndices);
-
+    std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(std::size_t nextShapeIndex, const std::vector<Point3<float>>& vertices,
+            const std::vector<unsigned int>& triangleIndices) const {
         std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
+
+        ShapeDetectService::Config config = {.voxelizationSize = shapeQualityToVoxelizationSize()};
+        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService(config).detect(vertices, triangleIndices);
         result.reserve(bestLocalizedShapes.size());
 
         std::size_t shapeIndex = nextShapeIndex;
         for (ShapeDetectService::LocalizedShape& localizedShape : bestLocalizedShapes) {
             auto localizedCollisionShape = std::make_unique<LocalizedCollisionShape>();
-            localizedCollisionShape->shapeIndex = shapeIndex;
+
             if (dynamic_cast<ConvexHullShape3D<float>*>(localizedShape.shape.get())) {
                 std::unique_ptr<ConvexHullShape3D<float>> convexHull(dynamic_cast<ConvexHullShape3D<float>*>(localizedShape.shape.release()));
                 localizedCollisionShape->shape = std::make_unique<const CollisionConvexHullShape>(std::move(convexHull));
@@ -139,13 +141,25 @@ namespace urchin {
             } else {
                 throw std::runtime_error("Unknown shape type to build optimized collision shape");
             }
-            localizedCollisionShape->transform = PhysicsTransform(localizedShape.position, localizedShape.orientation);
-            result.push_back(std::move(localizedCollisionShape));
 
-            shapeIndex++;
+            localizedCollisionShape->transform = PhysicsTransform(localizedShape.position, localizedShape.orientation);
+            localizedCollisionShape->shapeIndex = shapeIndex++;
+
+            result.push_back(std::move(localizedCollisionShape));
         }
 
         return result;
+    }
+
+    float DefaultBodyShapeGenerator::shapeQualityToVoxelizationSize() const {
+        if (shapeQuality == ShapeQuality::LOW) {
+            return 0.15f;
+        } else if (shapeQuality == ShapeQuality::MEDIUM) {
+            return 0.10f;
+        } else if (shapeQuality == ShapeQuality::HIGH) {
+            return 0.05f;
+        }
+        throw std::runtime_error("Unknown the shape quality to determine the voxelization size: " + std::to_string((int)shapeQuality));
     }
 
 }

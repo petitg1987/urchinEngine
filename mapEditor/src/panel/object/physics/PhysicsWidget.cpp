@@ -293,8 +293,9 @@ namespace urchin {
 
         if (changeBodyShapeDialog.result() == QDialog::Accepted) {
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
+            DefaultBodyShapeGenerator::ShapeQuality shapeQuality = changeBodyShapeDialog.getDefaultShapeQuality();
 
-            objectController->changeBodyShape(*objectEntity, shapeType);
+            objectController->changeBodyShape(*objectEntity, shapeQuality, shapeType);
             setupObjectPhysicsDataFrom(objectEntity->getRigidBody());
         }
     }

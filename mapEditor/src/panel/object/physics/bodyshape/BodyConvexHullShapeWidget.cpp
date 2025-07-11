@@ -72,7 +72,8 @@ namespace urchin {
             return scaledShape;
         } catch (const std::invalid_argument& e) {
             LabelStyleHelper::applyErrorStyle(pointsLabel, std::string(e.what()));
-            return DefaultBodyShapeGenerator(*getObjectEntity()).generate(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE);
+            auto shapeQuality = DefaultBodyShapeGenerator::ShapeQuality::LOW;
+            return DefaultBodyShapeGenerator(*getObjectEntity(), shapeQuality).generate(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE);
         }
     }
 

@@ -23,7 +23,7 @@ namespace urchin {
             void renameObjectEntity(const ObjectEntity&, std::string);
 
             void createDefaultBody(const ObjectEntity&);
-            void changeBodyShape(const ObjectEntity&, CollisionShape3D::ShapeType);
+            void changeBodyShape(const ObjectEntity&, DefaultBodyShapeGenerator::ShapeQuality, CollisionShape3D::ShapeType);
             void moveObjectInFrontOfCamera(const ObjectEntity&, bool);
             void removeBody(const ObjectEntity&);
 

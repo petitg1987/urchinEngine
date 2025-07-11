@@ -40,7 +40,8 @@ namespace urchin {
 
     void BodyCapsuleShapeWidget::updateCapsuleOrientation() {
         std::map<std::string, std::string, std::less<>> params{{"axis", TypeConverter::toString(orientation->currentData().toInt())}};
-        std::unique_ptr<const CollisionShape3D> newShape = DefaultBodyShapeGenerator(*getObjectEntity()).generate(CollisionShape3D::ShapeType::CAPSULE_SHAPE, params);
+        auto shapeQuality = DefaultBodyShapeGenerator::ShapeQuality::MEDIUM;
+        std::unique_ptr<const CollisionShape3D> newShape = DefaultBodyShapeGenerator(*getObjectEntity(), shapeQuality).generate(CollisionShape3D::ShapeType::CAPSULE_SHAPE, params);
         const auto& capsuleShape = static_cast<const CollisionCapsuleShape&>(*newShape);
 
         disableShapeEvents(true);
