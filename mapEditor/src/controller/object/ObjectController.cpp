@@ -54,14 +54,14 @@ namespace urchin {
 
     void ObjectController::createDefaultBody(const ObjectEntity& constObjectEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        auto rigidBody = DefaultRigidBodyGenerator(constObjectEntity).generate(CollisionShape3D::ShapeType::BOX_SHAPE);
+        auto rigidBody = DefaultRigidBodyGenerator(constObjectEntity).generate();
         objectEntity.setupInteractiveBody(std::move(rigidBody));
 
         markModified();
     }
 
     void ObjectController::changeBodyShape(const ObjectEntity& constObjectEntity, CollisionShape3D::ShapeType shapeType) {
-        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeGenerator(constObjectEntity).generate(shapeType);
+        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeGenerator(constObjectEntity).generate(shapeType); //TODO add quality param !
         updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
     }
 

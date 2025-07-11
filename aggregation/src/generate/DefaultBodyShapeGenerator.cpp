@@ -17,6 +17,8 @@ namespace urchin {
         std::unique_ptr<CollisionShape3D> shape;
         const AABBox<float>& modelAABBox = objectEntity.getModel()->getLocalAABBox();
 
+        //TODO implement Simple Edge Collapse Algorithm for convex hull and compound
+
         if (shapeType == CollisionShape3D::ShapeType::BOX_SHAPE) {
             shape = std::make_unique<CollisionBoxShape>(modelAABBox.getHalfSizes());
         } else if (shapeType == CollisionShape3D::ShapeType::SPHERE_SHAPE) {

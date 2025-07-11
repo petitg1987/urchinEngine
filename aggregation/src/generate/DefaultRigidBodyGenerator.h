@@ -8,7 +8,7 @@ namespace urchin {
         public:
             explicit DefaultRigidBodyGenerator(const ObjectEntity&);
 
-            std::unique_ptr<RigidBody> generate(CollisionShape3D::ShapeType) const;
+            std::unique_ptr<RigidBody> generate() const;
 
         private:
             const ObjectEntity& objectEntity;
