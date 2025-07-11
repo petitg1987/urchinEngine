@@ -18,7 +18,7 @@ namespace urchin {
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
             bool isPositionInModel(const Point3<float>&, const std::vector<Point3<float>>&, const std::vector<unsigned int>&) const;
 
-            bool expand(int, bool, const VoxelGrid&, VoxelContainer&, VoxelContainer&) const;
+            void expandOnAxis(int, const VoxelGrid&, VoxelContainer&, VoxelContainer&) const;
             int getMaxInDirection(int, bool, const VoxelContainer&) const;
             AABBox<float> voxelBoxToAABBox(const VoxelContainer&, const VoxelGrid&) const;
     };
