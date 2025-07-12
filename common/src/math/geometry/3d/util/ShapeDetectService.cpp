@@ -9,6 +9,7 @@
 #include <math/geometry/3d/util/ShapeDetectService.h>
 #include <math/geometry/3d/shape/BoxShape.h>
 #include <math/geometry/3d/shape/SphereShape.h>
+#include <math/geometry/3d/shape/ConvexHullShape3D.h>
 #include <math/geometry/3d/voxel/VoxelService.h>
 
 namespace urchin {
@@ -34,6 +35,12 @@ namespace urchin {
 			std::optional<LocalizedShape> sphereShape = tryBuildSphere(mesh.vertices);
 			if (sphereShape.has_value()) {
 				result.push_back(std::move(sphereShape.value()));
+				continue;
+			}
+
+			std::optional<LocalizedShape> convexHullShape = tryBuildConvexHull(mesh); //TODO test it and update station tropale mesh !
+			if (convexHullShape.has_value()) {
+				result.push_back(std::move(convexHullShape.value()));
 				continue;
 			}
 
@@ -221,6 +228,24 @@ namespace urchin {
 		});
 	}
 
+	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildConvexHull(const Mesh& mesh) const {
+		if (!isConvexMesh(mesh)) {
+			return std::nullopt;
+		}
+
+		try {
+			return std::make_optional<LocalizedShape>({
+				.shape = std::make_unique<ConvexHullShape3D<float>>(mesh.vertices),
+				.position = Point3(0.0f, 0.0f, 0.0f),
+				.orientation = Quaternion<float>()
+			});
+		} catch (const std::invalid_argument&) {
+			//ignore build convex hull errors
+		}
+
+		return std::nullopt;
+	}
+
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildAABBoxes(const Mesh& mesh) const {
 		std::vector<LocalizedShape> result;
 		std::vector<AABBox<float>> boxes;
@@ -242,6 +267,33 @@ namespace urchin {
 		}
 
 		return result;
+	}
+
+	bool ShapeDetectService::isConvexMesh(const Mesh& mesh) const {
+		constexpr float EPSILON = 0.0001f;
+
+		for (const std::array<uint32_t, 3>& triangleIndices : mesh.trianglesIndices) {
+			Point3<float> a = mesh.vertices[triangleIndices[0]];
+			Point3<float> b = mesh.vertices[triangleIndices[1]];
+			Point3<float> c = mesh.vertices[triangleIndices[2]];
+
+			Vector3<float> normal = a.vector(b).crossProduct(a.vector(c)).normalize();
+
+			for (size_t i = 0; i < mesh.vertices.size(); ++i) {
+				if (i == triangleIndices[0] || i == triangleIndices[1] || i == triangleIndices[2]) {
+					continue;
+				}
+
+				Point3<float> point = mesh.vertices[i];
+				float distance = normal.dotProduct(a.vector(point));
+
+				if (distance > EPSILON) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	bool ShapeDetectService::isManifoldMesh(const Mesh& mesh) const {

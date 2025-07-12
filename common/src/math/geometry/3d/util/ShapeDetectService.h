@@ -37,8 +37,10 @@ namespace urchin {
 
             std::optional<LocalizedShape> tryBuildBox(const std::vector<Point3<float>>&) const;
             std::optional<LocalizedShape> tryBuildSphere(const std::vector<Point3<float>>&) const;
+            std::optional<LocalizedShape> tryBuildConvexHull(const Mesh& mesh) const;
             std::vector<LocalizedShape> tryBuildAABBoxes(const Mesh&) const;
 
+            bool isConvexMesh(const Mesh&) const;
             bool isManifoldMesh(const Mesh&) const;
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
             std::pair<std::size_t, std::size_t> findClosestAndFarthestPoints(const std::vector<Point3<float>>&, const Point3<float>&) const;
