@@ -6,11 +6,11 @@
 
 namespace urchin {
 
-    VoxelGrid VoxelService::voxelizeObject(float voxelSize, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
+    VoxelGrid VoxelService::voxelizeManifoldMesh(float voxelSize, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices) const {
         std::vector<Triangle3D<float>> triangles;
-        triangles.reserve(triangleIndices.size());
-        for (std::size_t triangleIndex = 0; triangleIndex < triangleIndices.size(); ++triangleIndex) {
-            triangles.emplace_back(vertices[triangleIndices[triangleIndex][0]], vertices[triangleIndices[triangleIndex][1]], vertices[triangleIndices[triangleIndex][2]]);
+        triangles.reserve(trianglesIndices.size());
+        for (const std::array<uint32_t, 3>& triangleIndices : trianglesIndices) {
+            triangles.emplace_back(vertices[triangleIndices[0]], vertices[triangleIndices[1]], vertices[triangleIndices[2]]);
         }
 
         AABBox<float> abbox = computeAABBox(vertices);

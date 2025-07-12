@@ -19,7 +19,7 @@ void VoxelServiceTest::voxelizeObject() {
     triangleIndices.insert(triangleIndices.end(), {1, 2, 3}); //right
     triangleIndices.insert(triangleIndices.end(), {0, 1, 3}); //bottom
 
-    VoxelGrid voxelGrid = VoxelService().voxelizeObject(1.0, vertices, triangleIndices);
+    VoxelGrid voxelGrid = VoxelService().voxelizeManifoldMesh(1.0, vertices, triangleIndices);
 
     AssertHelper::assertUnsignedIntEquals(voxelGrid.getVoxels().size(), 2);
     AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(0, 0, 0)));

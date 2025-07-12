@@ -28,7 +28,7 @@ namespace urchin {
         private:
             struct Mesh {
                 std::vector<Point3<float>> vertices;
-                std::vector<std::array<uint32_t, 3>> triangleIndices;
+                std::vector<std::array<uint32_t, 3>> trianglesIndices;
             };
 
             Mesh mergeDuplicateVertices(const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
@@ -38,6 +38,8 @@ namespace urchin {
             std::optional<LocalizedShape> tryBuildSphere(const std::vector<Point3<float>>&) const;
             std::vector<LocalizedShape> tryBuildAABBoxes(const Mesh&) const;
 
+            bool isManifoldMesh(const Mesh&) const;
+            AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
             std::pair<std::size_t, std::size_t> findClosestAndFarthestPoints(const std::vector<Point3<float>>&, const Point3<float>&) const;
             std::size_t findFarthestPoint(const std::vector<Point3<float>>&, const Point3<float>&) const;
 

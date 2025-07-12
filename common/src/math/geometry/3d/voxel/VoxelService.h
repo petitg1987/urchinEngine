@@ -11,7 +11,7 @@ namespace urchin {
 
     class VoxelService {
         public:
-            VoxelGrid voxelizeObject(float, const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
+            VoxelGrid voxelizeManifoldMesh(float, const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
 
             std::vector<AABBox<float>> voxelGridToAABBoxes(const VoxelGrid&) const;
 

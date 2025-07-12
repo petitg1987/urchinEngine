@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <queue>
 #include <map>
+#include <ranges>
 #include <set>
 
 #include <math/geometry/3d/util/ShapeDetectService.h>
@@ -17,11 +18,11 @@ namespace urchin {
 
 	}
 
-	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
+	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices) const {
 		std::vector<LocalizedShape> result;
 
-		Mesh meshNoDuplicate = mergeDuplicateVertices(vertices, triangleIndices);
-		std::vector<Mesh> meshes = splitDistinctMeshes(meshNoDuplicate);
+		Mesh meshUniqueVertices = mergeDuplicateVertices(vertices, trianglesIndices);
+		std::vector<Mesh> meshes = splitDistinctMeshes(meshUniqueVertices);
 
 		for (const Mesh& mesh : meshes) {
 			std::optional<LocalizedShape> boxShape = tryBuildBox(mesh.vertices);
@@ -41,21 +42,18 @@ namespace urchin {
 				for (LocalizedShape& box : boxShapes) {
 					result.push_back(std::move(box));
 				}
-				continue;
 			}
-
-			//TODO build aabbox here ?
 		}
 
 		return result;
 	}
 
-	ShapeDetectService::Mesh ShapeDetectService::mergeDuplicateVertices(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
+	ShapeDetectService::Mesh ShapeDetectService::mergeDuplicateVertices(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices) const {
 		std::unordered_map<Point3<float>, unsigned int, Point3<float>::Hash> pointToNewIndex;
 		std::vector<unsigned int> oldToNewIndex(vertices.size());
 
 		Mesh mesh = {};
-		mesh.triangleIndices.resize(triangleIndices.size());
+		mesh.trianglesIndices.resize(trianglesIndices.size());
 
 		for (std::size_t i = 0; i < vertices.size(); ++i) {
 			const Point3<float>& point = vertices[i];
@@ -70,10 +68,10 @@ namespace urchin {
 			}
 		}
 
-		for (std::size_t triangleIndex = 0; triangleIndex < triangleIndices.size(); ++triangleIndex) {
-			mesh.triangleIndices[triangleIndex][0] = oldToNewIndex[triangleIndices[triangleIndex][0]];
-			mesh.triangleIndices[triangleIndex][1] = oldToNewIndex[triangleIndices[triangleIndex][1]];
-			mesh.triangleIndices[triangleIndex][2] = oldToNewIndex[triangleIndices[triangleIndex][2]];
+		for (std::size_t triangleIndex = 0; triangleIndex < trianglesIndices.size(); ++triangleIndex) {
+			mesh.trianglesIndices[triangleIndex][0] = oldToNewIndex[trianglesIndices[triangleIndex][0]];
+			mesh.trianglesIndices[triangleIndex][1] = oldToNewIndex[trianglesIndices[triangleIndex][1]];
+			mesh.trianglesIndices[triangleIndex][2] = oldToNewIndex[trianglesIndices[triangleIndex][2]];
 		}
 
 		return mesh;
@@ -83,15 +81,15 @@ namespace urchin {
 	    std::vector<Mesh> subMeshes;
 
 		std::map<uint32_t, std::vector<unsigned int>> vertexToTriangles;
-		for (unsigned int triangleIndex = 0; triangleIndex < mesh.triangleIndices.size(); ++triangleIndex) {
+		for (unsigned int triangleIndex = 0; triangleIndex < mesh.trianglesIndices.size(); ++triangleIndex) {
 		    for (int i = 0; i < 3; ++i) {
-		        uint32_t vertexIndex = mesh.triangleIndices[triangleIndex][i];
+		        uint32_t vertexIndex = mesh.trianglesIndices[triangleIndex][i];
 		        vertexToTriangles[vertexIndex].push_back(triangleIndex);
 		    }
 		}
 
-		std::vector visitedTriangles(mesh.triangleIndices.size(), false);
-		for (unsigned int triangleIndex = 0; triangleIndex < mesh.triangleIndices.size(); ++triangleIndex) {
+		std::vector visitedTriangles(mesh.trianglesIndices.size(), false);
+		for (unsigned int triangleIndex = 0; triangleIndex < mesh.trianglesIndices.size(); ++triangleIndex) {
 			if (visitedTriangles[triangleIndex]) {
 				continue;
 			}
@@ -107,20 +105,20 @@ namespace urchin {
 				unsigned int currentTriangleIndex = trianglesQueue.front();
 				trianglesQueue.pop();
 
-				currentSubMesh.triangleIndices.push_back({0u, 0u, 0u});
+				currentSubMesh.trianglesIndices.push_back({0u, 0u, 0u});
 				for (int i = 0; i < 3; ++i) {
-					uint32_t originalVertexIndex = mesh.triangleIndices[currentTriangleIndex][i];
+					uint32_t originalVertexIndex = mesh.trianglesIndices[currentTriangleIndex][i];
 					if (!originalToSubMeshVertexMap.contains(originalVertexIndex)) {
 						uint32_t subMeshVertexIndex = (uint32_t)currentSubMesh.vertices.size();
 						originalToSubMeshVertexMap[originalVertexIndex] = subMeshVertexIndex;
 						currentSubMesh.vertices.push_back(mesh.vertices[originalVertexIndex]);
 					}
-					currentSubMesh.triangleIndices.back()[i] = originalToSubMeshVertexMap[originalVertexIndex];
+					currentSubMesh.trianglesIndices.back()[i] = originalToSubMeshVertexMap[originalVertexIndex];
 				}
 
 				std::set<unsigned int> neighborTrianglesIndices;
 				for (int i = 0; i < 3; ++i) {
-				    uint32_t vertexIndex = mesh.triangleIndices[currentTriangleIndex][i];
+				    uint32_t vertexIndex = mesh.trianglesIndices[currentTriangleIndex][i];
 				    for (unsigned int neighborTriangleIndex : vertexToTriangles[vertexIndex]) {
 				        if (!visitedTriangles[neighborTriangleIndex]) {
 				            neighborTrianglesIndices.insert(neighborTriangleIndex);
@@ -225,10 +223,15 @@ namespace urchin {
 
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildAABBoxes(const Mesh& mesh) const {
 		std::vector<LocalizedShape> result;
+		std::vector<AABBox<float>> boxes;
 
-		VoxelService voxelService;
-		VoxelGrid voxelGrid = voxelService.voxelizeObject(config.voxelizationSize, mesh.vertices, mesh.triangleIndices);
-		std::vector<AABBox<float>> boxes = voxelService.voxelGridToAABBoxes(voxelGrid);
+		if (isManifoldMesh(mesh)) {
+			VoxelService voxelService;
+			VoxelGrid voxelGrid = voxelService.voxelizeManifoldMesh(config.voxelizationSize, mesh.vertices, mesh.trianglesIndices);
+			boxes = voxelService.voxelGridToAABBoxes(voxelGrid);
+		} else {
+			boxes = {computeAABBox(mesh.vertices)};
+		}
 
 		for (const AABBox<float>& box : boxes) {
 			result.push_back({
@@ -239,6 +242,41 @@ namespace urchin {
 		}
 
 		return result;
+	}
+
+	bool ShapeDetectService::isManifoldMesh(const Mesh& mesh) const {
+		const auto edgeIdProducer = [](uint32_t edgeIndex1, uint32_t edgeIndex2) {
+			return edgeIndex1 < edgeIndex2 ? ((uint64_t)edgeIndex1 << 32 | (uint64_t)edgeIndex2) : ((uint64_t)edgeIndex2 << 32 | (uint64_t)edgeIndex1);
+		};
+
+		std::unordered_map<uint64_t, int> edgesCount;
+		for (const std::array<uint32_t, 3>& triangleIndices : mesh.trianglesIndices) {
+			edgesCount[edgeIdProducer(triangleIndices[0], triangleIndices[1])]++;
+			edgesCount[edgeIdProducer(triangleIndices[1], triangleIndices[2])]++;
+			edgesCount[edgeIdProducer(triangleIndices[2], triangleIndices[0])]++;
+		}
+
+		for (uint64_t count : std::views::values(edgesCount)) {
+			if (count != 2) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	AABBox<float> ShapeDetectService::computeAABBox(const std::vector<Point3<float>>& vertices) const {
+		Point3 min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+		Point3 max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+		for (const Point3<float>& vertex : vertices) {
+			min.X = std::min(min.X, vertex.X);
+			min.Y = std::min(min.Y, vertex.Y);
+			min.Z = std::min(min.Z, vertex.Z);
+
+			max.X = std::max(max.X, vertex.X);
+			max.Y = std::max(max.Y, vertex.Y);
+			max.Z = std::max(max.Z, vertex.Z);
+		}
+		return AABBox(min, max);
 	}
 
     std::pair<std::size_t, std::size_t> ShapeDetectService::findClosestAndFarthestPoints(const std::vector<Point3<float>>& points, const Point3<float>& refPoint) const {
