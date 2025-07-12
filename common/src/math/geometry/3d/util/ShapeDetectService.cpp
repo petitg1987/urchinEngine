@@ -20,7 +20,7 @@ namespace urchin {
 	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
 		std::vector<LocalizedShape> result;
 
-		Mesh meshNoDuplicate = mergeDuplicatePoints(vertices, triangleIndices);
+		Mesh meshNoDuplicate = mergeDuplicateVertices(vertices, triangleIndices);
 		std::vector<Mesh> meshes = splitDistinctMeshes(meshNoDuplicate);
 
 		for (const Mesh& mesh : meshes) {
@@ -50,7 +50,7 @@ namespace urchin {
 		return result;
 	}
 
-	ShapeDetectService::Mesh ShapeDetectService::mergeDuplicatePoints(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
+	ShapeDetectService::Mesh ShapeDetectService::mergeDuplicateVertices(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
 		std::unordered_map<Point3<float>, unsigned int, Point3<float>::Hash> pointToNewIndex;
 		std::vector<unsigned int> oldToNewIndex(vertices.size());
 

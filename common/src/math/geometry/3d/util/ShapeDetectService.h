@@ -31,7 +31,7 @@ namespace urchin {
                 std::vector<std::array<uint32_t, 3>> triangleIndices;
             };
 
-            Mesh mergeDuplicatePoints(const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
+            Mesh mergeDuplicateVertices(const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
             std::vector<Mesh> splitDistinctMeshes(const Mesh&) const;
 
             std::optional<LocalizedShape> tryBuildBox(const std::vector<Point3<float>>&) const;
