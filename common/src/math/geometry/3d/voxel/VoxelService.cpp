@@ -7,23 +7,19 @@
 namespace urchin {
 
     VoxelGrid VoxelService::voxelizeObject(float voxelSize, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
-        AABBox<float> abbox = computeAABBox(vertices);
+        std::vector<Triangle3D<float>> triangles;
+        triangles.reserve(triangleIndices.size());
+        for (std::size_t triangleIndex = 0; triangleIndex < triangleIndices.size(); ++triangleIndex) {
+            triangles.emplace_back(vertices[triangleIndices[triangleIndex][0]], vertices[triangleIndices[triangleIndex][1]], vertices[triangleIndices[triangleIndex][2]]);
+        }
 
+        AABBox<float> abbox = computeAABBox(vertices);
         float halfVoxelSize = voxelSize / 2.0f;
         VoxelGrid voxelGrid(voxelSize, abbox.getMin().translate(Vector3(halfVoxelSize, halfVoxelSize, halfVoxelSize)));
 
         int xVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(0) * 2.0f / voxelSize);
         int yVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(1) * 2.0f / voxelSize);
         int zVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(2) * 2.0f / voxelSize);
-
-        std::vector<Triangle3D<float>> triangles;
-        triangles.reserve(triangleIndices.size());
-        for (std::size_t triangleIndex = 0; triangleIndex < triangleIndices.size(); ++triangleIndex) {
-            const Point3<float>& p1 = vertices[triangleIndices[triangleIndex][0]];
-            const Point3<float>& p2 = vertices[triangleIndices[triangleIndex][1]];
-            const Point3<float>& p3 = vertices[triangleIndices[triangleIndex][2]];
-            triangles.emplace_back(p1, p2, p3);
-        }
 
         for (int x = 0; x < xVoxelQuantity; ++x) {
             for (int y = 0; y < yVoxelQuantity; ++y) {
