@@ -9,7 +9,8 @@ namespace urchin {
             enum class ShapeQuality {
                 LOW = 0,
                 MEDIUM = 1,
-                HIGH = 2
+                HIGH = 2,
+                ULTRA = 3
             };
 
             explicit DefaultBodyShapeGenerator(const ObjectEntity&, ShapeQuality);
@@ -22,7 +23,6 @@ namespace urchin {
 
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> buildLocalizedCollisionShapes() const;
             std::vector<std::unique_ptr<LocalizedCollisionShape>> buildBestCollisionShapes(std::size_t, const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
-            float shapeQualityToVoxelizationSize() const;
 
             const ObjectEntity& objectEntity;
             ShapeQuality shapeQuality;

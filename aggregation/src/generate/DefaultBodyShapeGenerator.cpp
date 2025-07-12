@@ -121,7 +121,10 @@ namespace urchin {
             const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
         std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
 
-        ShapeDetectService::Config config = {.voxelizationSize = shapeQualityToVoxelizationSize()};
+        ShapeDetectService::Config config = {
+            .voxelizationEnabled = shapeQuality >= ShapeQuality::MEDIUM,
+            .voxelizationSize = 0.15f / (float)(shapeQuality)
+        };
         std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService(config).detect(vertices, triangleIndices);
         result.reserve(bestLocalizedShapes.size());
 
@@ -149,17 +152,6 @@ namespace urchin {
         }
 
         return result;
-    }
-
-    float DefaultBodyShapeGenerator::shapeQualityToVoxelizationSize() const {
-        if (shapeQuality == ShapeQuality::LOW) {
-            return 0.15f;
-        } else if (shapeQuality == ShapeQuality::MEDIUM) {
-            return 0.08f;
-        } else if (shapeQuality == ShapeQuality::HIGH) {
-            return 0.04f;
-        }
-        throw std::runtime_error("Unknown the shape quality to determine the voxelization size: " + std::to_string((int)shapeQuality));
     }
 
 }

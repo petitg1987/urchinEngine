@@ -60,7 +60,8 @@ namespace urchin {
         defaultShapeQualityComboBox->addItem(QUALITY_LOW_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::LOW));
         defaultShapeQualityComboBox->addItem(QUALITY_MEDIUM_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::MEDIUM));
         defaultShapeQualityComboBox->addItem(QUALITY_HIGH_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::HIGH));
-        defaultShapeQualityComboBox->setCurrentIndex(1);
+        defaultShapeQualityComboBox->addItem(QUALITY_ULTRA_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::ULTRA));
+        defaultShapeQualityComboBox->setCurrentIndex(0);
     }
 
     void ChangeBodyShapeDialog::done(int r) {

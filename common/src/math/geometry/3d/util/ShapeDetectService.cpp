@@ -225,7 +225,7 @@ namespace urchin {
 		std::vector<LocalizedShape> result;
 		std::vector<AABBox<float>> boxes;
 
-		if (isManifoldMesh(mesh)) {
+		if (isManifoldMesh(mesh) && config.voxelizationEnabled) {
 			VoxelService voxelService;
 			VoxelGrid voxelGrid = voxelService.voxelizeManifoldMesh(config.voxelizationSize, mesh.vertices, mesh.trianglesIndices);
 			boxes = voxelService.voxelGridToAABBoxes(voxelGrid);

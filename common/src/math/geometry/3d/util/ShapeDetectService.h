@@ -12,6 +12,7 @@ namespace urchin {
     class ShapeDetectService {
         public:
             struct Config {
+                bool voxelizationEnabled;
                 float voxelizationSize;
             };
 
