@@ -153,11 +153,11 @@ namespace urchin {
 
     float DefaultBodyShapeGenerator::shapeQualityToVoxelizationSize() const {
         if (shapeQuality == ShapeQuality::LOW) {
-            return 0.075f;
+            return 0.15f;
         } else if (shapeQuality == ShapeQuality::MEDIUM) {
-            return 0.05f;
+            return 0.08f;
         } else if (shapeQuality == ShapeQuality::HIGH) {
-            return 0.025f;
+            return 0.04f;
         }
         throw std::runtime_error("Unknown the shape quality to determine the voxelization size: " + std::to_string((int)shapeQuality));
     }
