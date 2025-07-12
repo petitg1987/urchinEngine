@@ -9,7 +9,7 @@ namespace urchin {
                 (((std::size_t)indexPosition.Z) << BIT_IN_SIZE_T * 2);
     }
 
-    VoxelGrid::VoxelGrid(float voxelSize, Point3<float> minCenterPosition) :
+    VoxelGrid::VoxelGrid(Vector3<float> voxelSize, Point3<float> minCenterPosition) :
             voxelSize(voxelSize),
             minCenterPosition(std::move(minCenterPosition)) {
 
@@ -20,14 +20,14 @@ namespace urchin {
     }
 
     Point3<float> VoxelGrid::computeVoxelCenterPosition(const Point3<int>& voxelIndexPosition) const {
-        return minCenterPosition.translate(Vector3((float)voxelIndexPosition.X * voxelSize, (float)voxelIndexPosition.Y * voxelSize, (float)voxelIndexPosition.Z * voxelSize));
+        return minCenterPosition.translate(Vector3((float)voxelIndexPosition.X * voxelSize[0], (float)voxelIndexPosition.Y * voxelSize[1], (float)voxelIndexPosition.Z * voxelSize[2]));
     }
 
     const VoxelContainer& VoxelGrid::getVoxels() const {
         return voxels;
     }
 
-    float VoxelGrid::getVoxelSize() const {
+    const Vector3<float>& VoxelGrid::getVoxelSize() const {
         return voxelSize;
     }
 

@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    VoxelGrid VoxelService::voxelizeManifoldMesh(float voxelSize, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices) const {
+    VoxelGrid VoxelService::voxelizeManifoldMesh(float expectedVoxelSize, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices) const {
         std::vector<Triangle3D<float>> triangles;
         triangles.reserve(trianglesIndices.size());
         for (const std::array<uint32_t, 3>& triangleIndices : trianglesIndices) {
@@ -14,19 +14,23 @@ namespace urchin {
         }
 
         AABBox<float> boundingBox = computeAABBox(vertices);
-        float halfVoxelSize = voxelSize / 2.0f;
-        VoxelGrid voxelGrid(voxelSize, boundingBox.getMin().translate(Vector3(halfVoxelSize, halfVoxelSize, halfVoxelSize)));
+        int xVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(0) * 2.0f / expectedVoxelSize);
+        int yVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(1) * 2.0f / expectedVoxelSize);
+        int zVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(2) * 2.0f / expectedVoxelSize);
 
-        int xVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(0) * 2.0f / voxelSize); //TODO adjust voxel size to match perfectly the mesh bounding box ?
-        int yVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(1) * 2.0f / voxelSize);
-        int zVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(2) * 2.0f / voxelSize);
+        Vector3 voxelSize(
+            boundingBox.getHalfSize(0) * 2.0f / (float)xVoxelQuantity,
+            boundingBox.getHalfSize(1) * 2.0f / (float)yVoxelQuantity,
+            boundingBox.getHalfSize(2) * 2.0f / (float)zVoxelQuantity
+        );
+        VoxelGrid voxelGrid(voxelSize, boundingBox.getMin().translate(voxelSize / 2.0f));
 
         for (int x = 0; x < xVoxelQuantity; ++x) {
             for (int y = 0; y < yVoxelQuantity; ++y) {
                 for (int z = 0; z < zVoxelQuantity; ++z) {
                     Point3 voxelIndexPosition(x, y, z);
-
                     Point3 voxelCenterPosition = voxelGrid.computeVoxelCenterPosition(voxelIndexPosition);
+
                     if (isPositionInModel(voxelCenterPosition, triangles)) {
                         voxelGrid.addVoxel(voxelIndexPosition);
                     }
@@ -153,9 +157,8 @@ namespace urchin {
             maxVoxel[axis] = getMaxInDirection(axis, true, voxelBox);
         }
 
-        Point3 halfVoxelSize(voxelGrid.getVoxelSize() / 2.0f, voxelGrid.getVoxelSize() / 2.0f, voxelGrid.getVoxelSize() / 2.0f);
-        Point3<float> min = voxelGrid.computeVoxelCenterPosition(minVoxel) - halfVoxelSize;
-        Point3<float> max = voxelGrid.computeVoxelCenterPosition(maxVoxel) + halfVoxelSize;
+        Point3<float> min = voxelGrid.computeVoxelCenterPosition(minVoxel).translate(-voxelGrid.getVoxelSize() / 2.0f);
+        Point3<float> max = voxelGrid.computeVoxelCenterPosition(maxVoxel).translate(voxelGrid.getVoxelSize() / 2.0f);
         return AABBox(min, max);
     }
 

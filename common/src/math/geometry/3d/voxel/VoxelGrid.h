@@ -13,17 +13,17 @@ namespace urchin {
 
     class VoxelGrid {
         public:
-            explicit VoxelGrid(float, Point3<float>);
+            explicit VoxelGrid(Vector3<float>, Point3<float>);
 
             const Point3<float>& getMinCenterPosition() const;
             Point3<float> computeVoxelCenterPosition(const Point3<int>&) const;
             const VoxelContainer& getVoxels() const;
-            float getVoxelSize() const;
+            const Vector3<float>& getVoxelSize() const;
 
             void addVoxel(const Point3<int>&);
 
         private:
-            float voxelSize;
+            Vector3<float> voxelSize;
             Point3<float> minCenterPosition; //center position of the voxel 0, 0, 0
 
             VoxelContainer voxels;
