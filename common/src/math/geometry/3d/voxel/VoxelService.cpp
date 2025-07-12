@@ -13,13 +13,13 @@ namespace urchin {
             triangles.emplace_back(vertices[triangleIndices[0]], vertices[triangleIndices[1]], vertices[triangleIndices[2]]);
         }
 
-        AABBox<float> abbox = computeAABBox(vertices);
+        AABBox<float> boundingBox = computeAABBox(vertices);
         float halfVoxelSize = voxelSize / 2.0f;
-        VoxelGrid voxelGrid(voxelSize, abbox.getMin().translate(Vector3(halfVoxelSize, halfVoxelSize, halfVoxelSize)));
+        VoxelGrid voxelGrid(voxelSize, boundingBox.getMin().translate(Vector3(halfVoxelSize, halfVoxelSize, halfVoxelSize)));
 
-        int xVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(0) * 2.0f / voxelSize);
-        int yVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(1) * 2.0f / voxelSize);
-        int zVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(2) * 2.0f / voxelSize);
+        int xVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(0) * 2.0f / voxelSize); //TODO adjust voxel size to match perfectly the mesh bounding box ?
+        int yVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(1) * 2.0f / voxelSize);
+        int zVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(2) * 2.0f / voxelSize);
 
         for (int x = 0; x < xVoxelQuantity; ++x) {
             for (int y = 0; y < yVoxelQuantity; ++y) {
