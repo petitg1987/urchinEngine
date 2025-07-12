@@ -23,6 +23,18 @@ namespace urchin {
             boundingBox.getHalfSize(1) * 2.0f / (float)yVoxelQuantity,
             boundingBox.getHalfSize(2) * 2.0f / (float)zVoxelQuantity
         );
+
+        constexpr float EPSILON = 0.0001f; //to avoid to be on the edge of the bounding box and miss the collision
+        std::array shiftTestPoints = {
+            Vector3(0.0f, 0.0f, 0.0f), //central point
+            Vector3(voxelSize.X / 2.0f - EPSILON, 0.0f, 0.0f), //X+
+            Vector3(-voxelSize.X / 2.0f + EPSILON, 0.0f, 0.0f), //X-
+            Vector3(0.0f, voxelSize.Y / 2.0f - EPSILON, 0.0f), //Y+
+            Vector3(0.0f, -voxelSize.Y / 2.0f + EPSILON, 0.0f), //Y-
+            Vector3(0.0f, 0.0f, voxelSize.Z / 2.0f - EPSILON), //Z+
+            Vector3(0.0f, 0.0f, -voxelSize.Z / 2.0f + EPSILON), //Z-
+        };
+
         VoxelGrid voxelGrid(voxelSize, boundingBox.getMin().translate(voxelSize / 2.0f));
 
         for (int x = 0; x < xVoxelQuantity; ++x) {
@@ -31,10 +43,13 @@ namespace urchin {
                     Point3 voxelIndexPosition(x, y, z);
                     Point3 voxelCenterPosition = voxelGrid.computeVoxelCenterPosition(voxelIndexPosition);
 
-                    if (isPositionInModel(voxelCenterPosition, triangles)) {
-                        voxelGrid.addVoxel(voxelIndexPosition);
+                    for (const Vector3<float>& shiftTestPoint : shiftTestPoints) {
+                        Point3 testPoint = voxelCenterPosition.translate(shiftTestPoint);
+                        if (isPositionInModel(testPoint, triangles)) {
+                            voxelGrid.addVoxel(voxelIndexPosition);
+                            break;
+                        }
                     }
-                    //TODO test others points for better results ?
                 }
             }
         }
@@ -58,7 +73,7 @@ namespace urchin {
     }
 
     bool VoxelService::isPositionInModel(const Point3<float>& position, const std::vector<Triangle3D<float>>& triangles) const {
-        Vector3 arbitraryAxis(1000.0f, 0.02f, 0.0f);
+        Vector3 arbitraryAxis(1000.0f, 1000.1f, 1000.2f);
         Ray ray(position, position.translate(arbitraryAxis));
 
         int triangleIntersectionCount = 0;
