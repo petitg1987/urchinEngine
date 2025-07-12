@@ -5,6 +5,7 @@
 #include <math/geometry/3d/voxel/VoxelGrid.h>
 #include <math/algebra/point/Point3.h>
 #include <math/geometry/3d/object/AABBox.h>
+#include <math/geometry/3d/object/Triangle3D.h>
 
 namespace urchin {
 
@@ -16,7 +17,7 @@ namespace urchin {
 
         private:
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
-            bool isPositionInModel(const Point3<float>&, const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
+            bool isPositionInModel(const Point3<float>&, const std::vector<Triangle3D<float>>&) const;
 
             void expandOnAxis(int, const VoxelGrid&, VoxelContainer&, VoxelContainer&) const;
             int getMaxInDirection(int, bool, const VoxelContainer&) const;

@@ -3,7 +3,6 @@
 #include <math/geometry/3d/voxel/VoxelService.h>
 #include <math/algorithm/MathFunction.h>
 #include <math/geometry/3d/LineSegment3D.h>
-#include <math/geometry/3d/object/Triangle3D.h>
 
 namespace urchin {
 
@@ -17,13 +16,22 @@ namespace urchin {
         int yVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(1) * 2.0f / voxelSize);
         int zVoxelQuantity = MathFunction::ceilToInt(abbox.getHalfSize(2) * 2.0f / voxelSize);
 
+        std::vector<Triangle3D<float>> triangles;
+        triangles.reserve(triangleIndices.size());
+        for (std::size_t triangleIndex = 0; triangleIndex < triangleIndices.size(); ++triangleIndex) {
+            const Point3<float>& p1 = vertices[triangleIndices[triangleIndex][0]];
+            const Point3<float>& p2 = vertices[triangleIndices[triangleIndex][1]];
+            const Point3<float>& p3 = vertices[triangleIndices[triangleIndex][2]];
+            triangles.emplace_back(p1, p2, p3);
+        }
+
         for (int x = 0; x < xVoxelQuantity; ++x) {
             for (int y = 0; y < yVoxelQuantity; ++y) {
                 for (int z = 0; z < zVoxelQuantity; ++z) {
                     Point3 voxelIndexPosition(x, y, z);
 
                     Point3 voxelCenterPosition = voxelGrid.computeVoxelCenterPosition(voxelIndexPosition);
-                    if (isPositionInModel(voxelCenterPosition, vertices, triangleIndices)) {
+                    if (isPositionInModel(voxelCenterPosition, triangles)) {
                         voxelGrid.addVoxel(voxelIndexPosition);
                     }
                     //TODO test others points for better results ?
@@ -49,17 +57,13 @@ namespace urchin {
         return AABBox(min, max);
     }
 
-    bool VoxelService::isPositionInModel(const Point3<float>& position, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
+    bool VoxelService::isPositionInModel(const Point3<float>& position, const std::vector<Triangle3D<float>>& triangles) const {
         Vector3 arbitraryAxis(1000.0f, 0.02f, 0.0f);
         Ray ray(position, position.translate(arbitraryAxis));
 
         int triangleIntersectionCount = 0;
-        for (std::size_t triangleIndex = 0; triangleIndex < triangleIndices.size(); ++triangleIndex) {
-            const Point3<float>& p1 = vertices[triangleIndices[triangleIndex][0]];
-            const Point3<float>& p2 = vertices[triangleIndices[triangleIndex][1]];
-            const Point3<float>& p3 = vertices[triangleIndices[triangleIndex][2]];
-
-            bool hasIntersection = Triangle3D(p1, p2, p3).collideWithRay(ray);
+        for (const Triangle3D<float>& triangle : triangles) {
+            bool hasIntersection = triangle.collideWithRay(ray);
             if (hasIntersection) {
                 triangleIntersectionCount++;
             }
