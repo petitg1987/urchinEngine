@@ -6,14 +6,14 @@
 
 namespace urchin {
 
-    VoxelGrid VoxelService::voxelizeManifoldMesh(float expectedVoxelSize, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices) const {
+    VoxelGrid VoxelService::voxelizeManifoldMesh(float expectedVoxelSize, const MeshData& mesh) const {
         std::vector<Triangle3D<float>> triangles;
-        triangles.reserve(trianglesIndices.size());
-        for (const std::array<uint32_t, 3>& triangleIndices : trianglesIndices) {
-            triangles.emplace_back(vertices[triangleIndices[0]], vertices[triangleIndices[1]], vertices[triangleIndices[2]]);
+        triangles.reserve(mesh.getTrianglesIndices().size());
+        for (const std::array<uint32_t, 3>& triangleIndices : mesh.getTrianglesIndices()) {
+            triangles.emplace_back(mesh.getVertices()[triangleIndices[0]], mesh.getVertices()[triangleIndices[1]], mesh.getVertices()[triangleIndices[2]]);
         }
 
-        AABBox<float> boundingBox = computeAABBox(vertices);
+        AABBox<float> boundingBox = computeAABBox(mesh.getVertices());
         int xVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(0) * 2.0f / expectedVoxelSize);
         int yVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(1) * 2.0f / expectedVoxelSize);
         int zVoxelQuantity = MathFunction::ceilToInt(boundingBox.getHalfSize(2) * 2.0f / expectedVoxelSize);

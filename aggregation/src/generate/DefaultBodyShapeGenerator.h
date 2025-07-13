@@ -22,10 +22,12 @@ namespace urchin {
             std::unique_ptr<ConvexHullShape3D<float>> buildConvexHullShape() const;
 
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> buildLocalizedCollisionShapes() const;
-            std::vector<std::unique_ptr<LocalizedCollisionShape>> buildBestCollisionShapes(std::size_t, const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
+            std::vector<std::unique_ptr<LocalizedCollisionShape>> buildBestCollisionShapes(std::size_t, const MeshData&) const;
 
             const ObjectEntity& objectEntity;
-            ShapeQuality shapeQuality;
+
+            std::unique_ptr<MeshSimplificationService> meshSimplificationService;
+            std::unique_ptr<ShapeDetectService> shapeDetectService;
     };
 
 }

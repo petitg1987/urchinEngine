@@ -5,6 +5,14 @@
 
 namespace urchin {
 
+    template<class T> std::size_t Point4<T>::Hash::operator()(const Point4<T>& p) const {
+        std::size_t h1 = std::hash<T>()(p.X);
+        std::size_t h2 = std::hash<T>()(p.Y);
+        std::size_t h3 = std::hash<T>()(p.Z);
+        std::size_t h4 = std::hash<T>()(p.W);
+        return h1 ^ (h2 << 1) ^ (h3 << 2) ^ (h4 << 2);
+    }
+
     template<class T> Point4<T>::Point4() noexcept :
             X(0), Y(0), Z(0), W(1) {
 

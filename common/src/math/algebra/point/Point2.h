@@ -9,6 +9,10 @@ namespace urchin {
 
     template<class T> class Point2 {
         public:
+            struct Hash {
+                std::size_t operator()(const Point2<T>&) const;
+            };
+
             Point2() noexcept;
             Point2(T Xu, T Yu) noexcept;
             explicit Point2(const Vector2<T>&) ;

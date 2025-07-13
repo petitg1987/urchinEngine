@@ -12,6 +12,10 @@ namespace urchin {
 
     template<class T> class Point4 {
         public:
+            struct Hash {
+                std::size_t operator()(const Point4<T>&) const;
+            };
+
             Point4() noexcept;
             Point4(T Xu, T Yu, T Zu, T Wu) noexcept;
             explicit Point4(const Point2<T>&, T Zu = 0, T Wu = 1) noexcept;

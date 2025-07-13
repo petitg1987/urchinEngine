@@ -6,12 +6,13 @@
 #include <math/algebra/point/Point3.h>
 #include <math/geometry/3d/object/AABBox.h>
 #include <math/geometry/3d/object/Triangle3D.h>
+#include <math/geometry/3d/MeshData.h>
 
 namespace urchin {
 
     class VoxelService {
         public:
-            VoxelGrid voxelizeManifoldMesh(float, const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
+            VoxelGrid voxelizeManifoldMesh(float, const MeshData&) const;
 
             std::vector<AABBox<float>> voxelGridToAABBoxes(const VoxelGrid&) const;
 

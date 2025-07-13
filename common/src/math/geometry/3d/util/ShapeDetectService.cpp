@@ -5,6 +5,7 @@
 #include <map>
 #include <ranges>
 #include <set>
+#include <cassert>
 
 #include <math/geometry/3d/util/ShapeDetectService.h>
 #include <math/geometry/3d/shape/BoxShape.h>
@@ -19,89 +20,66 @@ namespace urchin {
 
 	}
 
-	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices) const {
+	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::detect(const MeshData& mesh) const {
+		#ifdef URCHIN_DEBUG
+			std::unordered_set<Point3<float>, Point3<float>::Hash> pointsSet;
+			for (const Point3<float>& vertex : mesh.getVertices()) {
+				assert(pointsSet.insert(vertex).second);
+			}
+		#endif
+
+		std::vector<MeshData> subMeshes = splitDistinctMeshes(mesh);
+
 		std::vector<LocalizedShape> result;
+		result.reserve(subMeshes.size());
 
-		Mesh meshUniqueVertices = mergeDuplicateVertices(vertices, trianglesIndices);
-		std::vector<Mesh> meshes = splitDistinctMeshes(meshUniqueVertices);
-
-		for (const Mesh& mesh : meshes) {
-			std::optional<LocalizedShape> boxShape = tryBuildBox(mesh.vertices);
+		for (const MeshData& subMesh : subMeshes) {
+			std::optional<LocalizedShape> boxShape = tryBuildBox(subMesh.getVertices());
 			if (boxShape.has_value()) {
 				result.push_back(std::move(boxShape.value()));
 				continue;
 			}
 
-			std::optional<LocalizedShape> sphereShape = tryBuildSphere(mesh.vertices);
+			std::optional<LocalizedShape> sphereShape = tryBuildSphere(subMesh.getVertices());
 			if (sphereShape.has_value()) {
 				result.push_back(std::move(sphereShape.value()));
 				continue;
 			}
 
-			std::optional<LocalizedShape> convexHullShape = tryBuildConvexHull(mesh); //TODO test it and update station tropale mesh !
+			std::optional<LocalizedShape> convexHullShape = tryBuildConvexHull(subMesh); //TODO test it
 			if (convexHullShape.has_value()) {
 				result.push_back(std::move(convexHullShape.value()));
 				continue;
 			}
 
-			std::vector<LocalizedShape> boxShapes = tryBuildAABBoxes(mesh);
-			if (!boxShapes.empty()) {
-				for (LocalizedShape& box : boxShapes) {
-					result.push_back(std::move(box));
-				}
+			std::vector<LocalizedShape> boxShapes = buildAABBoxes(subMesh);
+			for (LocalizedShape& box : boxShapes) {
+				result.push_back(std::move(box));
 			}
 		}
 
 		return result;
 	}
 
-	ShapeDetectService::Mesh ShapeDetectService::mergeDuplicateVertices(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices) const {
-		std::unordered_map<Point3<float>, unsigned int, Point3<float>::Hash> pointToNewIndex;
-		std::vector<unsigned int> oldToNewIndex(vertices.size());
-
-		Mesh mesh = {};
-		mesh.trianglesIndices.resize(trianglesIndices.size());
-
-		for (std::size_t i = 0; i < vertices.size(); ++i) {
-			const Point3<float>& point = vertices[i];
-			auto itFind = pointToNewIndex.find(point);
-			if (itFind == pointToNewIndex.end()) {
-				unsigned int newIndex = (unsigned int)mesh.vertices.size();
-				pointToNewIndex[point] = newIndex;
-				mesh.vertices.push_back(point);
-				oldToNewIndex[i] = newIndex;
-			} else {
-				oldToNewIndex[i] = itFind->second;
-			}
-		}
-
-		for (std::size_t triangleIndex = 0; triangleIndex < trianglesIndices.size(); ++triangleIndex) {
-			mesh.trianglesIndices[triangleIndex][0] = oldToNewIndex[trianglesIndices[triangleIndex][0]];
-			mesh.trianglesIndices[triangleIndex][1] = oldToNewIndex[trianglesIndices[triangleIndex][1]];
-			mesh.trianglesIndices[triangleIndex][2] = oldToNewIndex[trianglesIndices[triangleIndex][2]];
-		}
-
-		return mesh;
-	}
-
-	std::vector<ShapeDetectService::Mesh> ShapeDetectService::splitDistinctMeshes(const Mesh& mesh) const {
-	    std::vector<Mesh> subMeshes;
+	std::vector<MeshData> ShapeDetectService::splitDistinctMeshes(const MeshData& mesh) const {
+	    std::vector<MeshData> subMeshes;
 
 		std::map<uint32_t, std::vector<unsigned int>> vertexToTriangles;
-		for (unsigned int triangleIndex = 0; triangleIndex < mesh.trianglesIndices.size(); ++triangleIndex) {
+		for (unsigned int triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
 		    for (int i = 0; i < 3; ++i) {
-		        uint32_t vertexIndex = mesh.trianglesIndices[triangleIndex][i];
+		        uint32_t vertexIndex = mesh.getTrianglesIndices()[triangleIndex][i];
 		        vertexToTriangles[vertexIndex].push_back(triangleIndex);
 		    }
 		}
 
-		std::vector visitedTriangles(mesh.trianglesIndices.size(), false);
-		for (unsigned int triangleIndex = 0; triangleIndex < mesh.trianglesIndices.size(); ++triangleIndex) {
+		std::vector visitedTriangles(mesh.getTrianglesIndices().size(), false);
+		for (unsigned int triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
 			if (visitedTriangles[triangleIndex]) {
 				continue;
 			}
 
-			Mesh currentSubMesh = {};
+			std::vector<Point3<float>> subMeshVertices;
+			std::vector<std::array<uint32_t, 3>> subMeshTrianglesIndices;
 			std::map<uint32_t, uint32_t> originalToSubMeshVertexMap;
 
 			std::queue<unsigned int> trianglesQueue;
@@ -112,20 +90,20 @@ namespace urchin {
 				unsigned int currentTriangleIndex = trianglesQueue.front();
 				trianglesQueue.pop();
 
-				currentSubMesh.trianglesIndices.push_back({0u, 0u, 0u});
+				subMeshTrianglesIndices.push_back({0u, 0u, 0u});
 				for (int i = 0; i < 3; ++i) {
-					uint32_t originalVertexIndex = mesh.trianglesIndices[currentTriangleIndex][i];
+					uint32_t originalVertexIndex = mesh.getTrianglesIndices()[currentTriangleIndex][i];
 					if (!originalToSubMeshVertexMap.contains(originalVertexIndex)) {
-						uint32_t subMeshVertexIndex = (uint32_t)currentSubMesh.vertices.size();
+						uint32_t subMeshVertexIndex = (uint32_t)subMeshVertices.size();
 						originalToSubMeshVertexMap[originalVertexIndex] = subMeshVertexIndex;
-						currentSubMesh.vertices.push_back(mesh.vertices[originalVertexIndex]);
+						subMeshVertices.push_back(mesh.getVertices()[originalVertexIndex]);
 					}
-					currentSubMesh.trianglesIndices.back()[i] = originalToSubMeshVertexMap[originalVertexIndex];
+					subMeshTrianglesIndices.back()[i] = originalToSubMeshVertexMap[originalVertexIndex];
 				}
 
 				std::set<unsigned int> neighborTrianglesIndices;
 				for (int i = 0; i < 3; ++i) {
-				    uint32_t vertexIndex = mesh.trianglesIndices[currentTriangleIndex][i];
+				    uint32_t vertexIndex = mesh.getTrianglesIndices()[currentTriangleIndex][i];
 				    for (unsigned int neighborTriangleIndex : vertexToTriangles[vertexIndex]) {
 				        if (!visitedTriangles[neighborTriangleIndex]) {
 				            neighborTrianglesIndices.insert(neighborTriangleIndex);
@@ -138,7 +116,7 @@ namespace urchin {
 				}
 			}
 
-			subMeshes.push_back(currentSubMesh);
+			subMeshes.emplace_back(subMeshVertices, subMeshTrianglesIndices);
 		}
 
 		return subMeshes;
@@ -228,14 +206,14 @@ namespace urchin {
 		});
 	}
 
-	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildConvexHull(const Mesh& mesh) const {
+	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildConvexHull(const MeshData& mesh) const {
 		if (!isConvexMesh(mesh)) {
 			return std::nullopt;
 		}
 
 		try {
 			return std::make_optional<LocalizedShape>({
-				.shape = std::make_unique<ConvexHullShape3D<float>>(mesh.vertices),
+				.shape = std::make_unique<ConvexHullShape3D<float>>(mesh.getVertices()),
 				.position = Point3(0.0f, 0.0f, 0.0f),
 				.orientation = Quaternion<float>()
 			});
@@ -246,16 +224,18 @@ namespace urchin {
 		return std::nullopt;
 	}
 
-	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildAABBoxes(const Mesh& mesh) const {
+	std::vector<ShapeDetectService::LocalizedShape> ShapeDetectService::buildAABBoxes(const MeshData& mesh) const {
 		std::vector<LocalizedShape> result;
 		std::vector<AABBox<float>> boxes;
 
 		if (isManifoldMesh(mesh) && config.voxelizationEnabled) {
 			VoxelService voxelService;
-			VoxelGrid voxelGrid = voxelService.voxelizeManifoldMesh(config.voxelizationSize, mesh.vertices, mesh.trianglesIndices);
+			VoxelGrid voxelGrid = voxelService.voxelizeManifoldMesh(config.voxelizationSize, mesh);
 			boxes = voxelService.voxelGridToAABBoxes(voxelGrid);
-		} else {
-			boxes = {computeAABBox(mesh.vertices)};
+		}
+
+		if (boxes.empty()) {
+			boxes = {computeAABBox(mesh.getVertices())};
 		}
 
 		for (const AABBox<float>& box : boxes) {
@@ -269,22 +249,22 @@ namespace urchin {
 		return result;
 	}
 
-	bool ShapeDetectService::isConvexMesh(const Mesh& mesh) const {
+	bool ShapeDetectService::isConvexMesh(const MeshData& mesh) const {
 		constexpr float EPSILON = 0.0001f;
 
-		for (const std::array<uint32_t, 3>& triangleIndices : mesh.trianglesIndices) {
-			Point3<float> a = mesh.vertices[triangleIndices[0]];
-			Point3<float> b = mesh.vertices[triangleIndices[1]];
-			Point3<float> c = mesh.vertices[triangleIndices[2]];
+		for (const std::array<uint32_t, 3>& triangleIndices : mesh.getTrianglesIndices()) {
+			Point3<float> a = mesh.getVertices()[triangleIndices[0]];
+			Point3<float> b = mesh.getVertices()[triangleIndices[1]];
+			Point3<float> c = mesh.getVertices()[triangleIndices[2]];
 
 			Vector3<float> normal = a.vector(b).crossProduct(a.vector(c)).normalize();
 
-			for (size_t i = 0; i < mesh.vertices.size(); ++i) {
+			for (size_t i = 0; i < mesh.getVertices().size(); ++i) {
 				if (i == triangleIndices[0] || i == triangleIndices[1] || i == triangleIndices[2]) {
 					continue;
 				}
 
-				Point3<float> point = mesh.vertices[i];
+				Point3<float> point = mesh.getVertices()[i];
 				float distance = normal.dotProduct(a.vector(point));
 
 				if (distance > EPSILON) {
@@ -296,13 +276,13 @@ namespace urchin {
 		return true;
 	}
 
-	bool ShapeDetectService::isManifoldMesh(const Mesh& mesh) const {
+	bool ShapeDetectService::isManifoldMesh(const MeshData& mesh) const {
 		const auto edgeIdProducer = [](uint32_t edgeIndex1, uint32_t edgeIndex2) {
 			return edgeIndex1 < edgeIndex2 ? ((uint64_t)edgeIndex1 << 32 | (uint64_t)edgeIndex2) : ((uint64_t)edgeIndex2 << 32 | (uint64_t)edgeIndex1);
 		};
 
 		std::unordered_map<uint64_t, int> edgesCount;
-		for (const std::array<uint32_t, 3>& triangleIndices : mesh.trianglesIndices) {
+		for (const std::array<uint32_t, 3>& triangleIndices : mesh.getTrianglesIndices()) {
 			edgesCount[edgeIdProducer(triangleIndices[0], triangleIndices[1])]++;
 			edgesCount[edgeIdProducer(triangleIndices[1], triangleIndices[2])]++;
 			edgesCount[edgeIdProducer(triangleIndices[2], triangleIndices[0])]++;

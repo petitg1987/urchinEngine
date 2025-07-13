@@ -3,9 +3,18 @@
 namespace urchin {
 
     DefaultBodyShapeGenerator::DefaultBodyShapeGenerator(const ObjectEntity& objectEntity, ShapeQuality shapeQuality) :
-            objectEntity(objectEntity),
-            shapeQuality(shapeQuality) {
+            objectEntity(objectEntity) {
 
+        MeshSimplificationService::Config meshSimplificationConfig = {
+            .edgeSizeToErase = 0.04f / ((float)(shapeQuality) + 1.0f)
+        };
+        meshSimplificationService = std::make_unique<MeshSimplificationService>(meshSimplificationConfig);
+
+        ShapeDetectService::Config shapeDetectConfig = {
+            .voxelizationEnabled = shapeQuality >= ShapeQuality::MEDIUM,
+            .voxelizationSize = 0.15f / (float)(shapeQuality)
+        };
+        shapeDetectService = std::make_unique<ShapeDetectService>(shapeDetectConfig);
     }
 
     std::unique_ptr<const CollisionShape3D> DefaultBodyShapeGenerator::generate(CollisionShape3D::ShapeType shapeType) const {
@@ -55,10 +64,9 @@ namespace urchin {
         return shape->scale(scale);
     }
 
-    std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape() const {
-        std::set<Point3<float>> uniqueVertices;
-
+    std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape() const { //TODO simplify: Simple Edge Collapse Algorithm
         if (objectEntity.getModel()->getConstMeshes()) {
+            std::set<Point3<float>> uniqueVertices;
             const std::vector<std::unique_ptr<const ConstMesh>>& constMeshes = objectEntity.getModel()->getConstMeshes()->getConstMeshes();
             for (const std::unique_ptr<const ConstMesh>& constMesh : constMeshes) {
                 for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
@@ -71,13 +79,13 @@ namespace urchin {
             } catch (const std::invalid_argument&) {
                 //ignore build convex hull errors
             }
-            uniqueVertices.clear();
         }
 
+        std::set<Point3<float>> boundingBoxPoints;
         for (const Point3<float>& point : objectEntity.getModel()->getLocalAABBox().getPoints()) {
-            uniqueVertices.insert(point);
+            boundingBoxPoints.insert(point);
         }
-        return std::make_unique<ConvexHullShape3D<float>>(std::vector(uniqueVertices.begin(), uniqueVertices.end()));
+        return std::make_unique<ConvexHullShape3D<float>>(std::vector(boundingBoxPoints.begin(), boundingBoxPoints.end()));
     }
 
     std::vector<std::shared_ptr<const LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildLocalizedCollisionShapes() const {
@@ -91,15 +99,13 @@ namespace urchin {
             for (unsigned int meshIndex = 0; meshIndex < meshes->getNumMeshes(); ++meshIndex) {
                 const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
                 const std::vector<std::array<uint32_t, 3>>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
-                try {
-                    std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(nextShapeIndex, vertices, triangleIndices);
-                    for (std::unique_ptr<LocalizedCollisionShape>& localizedCollisionShape : localizedCollisionShapes) {
-                        assert(nextShapeIndex == localizedCollisionShape->shapeIndex);
-                        result.push_back(std::move(localizedCollisionShape));
-                        nextShapeIndex++;
-                    }
-                } catch (const std::invalid_argument&) {
-                    //ignore build convex hull errors
+
+                MeshData meshData(vertices, triangleIndices);
+                std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(nextShapeIndex, meshData);
+                for (std::unique_ptr<LocalizedCollisionShape>& localizedCollisionShape : localizedCollisionShapes) {
+                    assert(nextShapeIndex == localizedCollisionShape->shapeIndex);
+                    result.push_back(std::move(localizedCollisionShape));
+                    nextShapeIndex++;
                 }
             }
         }
@@ -115,15 +121,11 @@ namespace urchin {
         return result;
     }
 
-    std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(std::size_t nextShapeIndex, const std::vector<Point3<float>>& vertices,
-            const std::vector<std::array<uint32_t, 3>>& triangleIndices) const {
-        std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
+    std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(std::size_t nextShapeIndex, const MeshData& mesh) const {
+        MeshData simplifiedMesh = meshSimplificationService->simplify(mesh);
+        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = shapeDetectService->detect(simplifiedMesh);
 
-        ShapeDetectService::Config config = {
-            .voxelizationEnabled = shapeQuality >= ShapeQuality::MEDIUM,
-            .voxelizationSize = 0.15f / (float)(shapeQuality)
-        };
-        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = ShapeDetectService(config).detect(vertices, triangleIndices);
+        std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
         result.reserve(bestLocalizedShapes.size());
 
         std::size_t shapeIndex = nextShapeIndex;

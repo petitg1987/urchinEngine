@@ -6,6 +6,7 @@
 #include <math/algebra/point/Point3.h>
 #include <math/algebra/Quaternion.h>
 #include <math/geometry/3d/shape/ConvexShape3D.h>
+#include <math/geometry/3d/MeshData.h>
 
 namespace urchin {
 
@@ -24,24 +25,18 @@ namespace urchin {
 
             explicit ShapeDetectService(Config config);
 
-            std::vector<LocalizedShape> detect(const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
+            std::vector<LocalizedShape> detect(const MeshData&) const;
 
         private:
-            struct Mesh {
-                std::vector<Point3<float>> vertices;
-                std::vector<std::array<uint32_t, 3>> trianglesIndices;
-            };
-
-            Mesh mergeDuplicateVertices(const std::vector<Point3<float>>&, const std::vector<std::array<uint32_t, 3>>&) const;
-            std::vector<Mesh> splitDistinctMeshes(const Mesh&) const;
+            std::vector<MeshData> splitDistinctMeshes(const MeshData&) const;
 
             std::optional<LocalizedShape> tryBuildBox(const std::vector<Point3<float>>&) const;
             std::optional<LocalizedShape> tryBuildSphere(const std::vector<Point3<float>>&) const;
-            std::optional<LocalizedShape> tryBuildConvexHull(const Mesh& mesh) const;
-            std::vector<LocalizedShape> tryBuildAABBoxes(const Mesh&) const;
+            std::optional<LocalizedShape> tryBuildConvexHull(const MeshData&) const;
+            std::vector<LocalizedShape> buildAABBoxes(const MeshData&) const;
 
-            bool isConvexMesh(const Mesh&) const;
-            bool isManifoldMesh(const Mesh&) const;
+            bool isConvexMesh(const MeshData&) const;
+            bool isManifoldMesh(const MeshData&) const;
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
             std::pair<std::size_t, std::size_t> findClosestAndFarthestPoints(const std::vector<Point3<float>>&, const Point3<float>&) const;
             std::size_t findFarthestPoint(const std::vector<Point3<float>>&, const Point3<float>&) const;

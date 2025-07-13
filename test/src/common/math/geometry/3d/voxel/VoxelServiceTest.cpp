@@ -19,15 +19,19 @@ void VoxelServiceTest::voxelizeObject() {
     triangleIndices.insert(triangleIndices.end(), {1, 2, 3}); //right
     triangleIndices.insert(triangleIndices.end(), {0, 1, 3}); //bottom
 
-    VoxelGrid voxelGrid = VoxelService().voxelizeManifoldMesh(1.0, vertices, triangleIndices);
+    VoxelGrid voxelGrid = VoxelService().voxelizeManifoldMesh(1.0, MeshData(vertices, triangleIndices));
 
-    AssertHelper::assertUnsignedIntEquals(voxelGrid.getVoxels().size(), 2);
-    AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(0, 0, 0)));
+    AssertHelper::assertUnsignedIntEquals(voxelGrid.getVoxels().size(), 6);
+    AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(1, 1, 0)));
     AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(1, 0, 0)));
+    AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(0, 1, 0)));
+    AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(0, 0, 1)));
+    AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(1, 0, 1)));
+    AssertHelper::assertTrue(voxelGrid.getVoxels().contains(Point3(0, 0, 0)));
 }
 
 void VoxelServiceTest::noVoxelToAABBoxes() {
-    VoxelGrid voxelGrid(0.5f, Point3(1.0f, 1.0f, 1.0f));
+    VoxelGrid voxelGrid(Vector3(0.5f, 0.5f, 0.5f), Point3(1.0f, 1.0f, 1.0f));
 
     std::vector<AABBox<float>> boxes = VoxelService().voxelGridToAABBoxes(voxelGrid);
 
@@ -35,7 +39,7 @@ void VoxelServiceTest::noVoxelToAABBoxes() {
 }
 
 void VoxelServiceTest::oneVoxelToAABBoxes() {
-    VoxelGrid voxelGrid(0.5f, Point3(1.0f, 1.0f, 1.0f));
+    VoxelGrid voxelGrid(Vector3(0.5f, 0.5f, 0.5f), Point3(1.0f, 1.0f, 1.0f));
     voxelGrid.addVoxel(Point3(0, 0, 0));
 
     std::vector<AABBox<float>> boxes = VoxelService().voxelGridToAABBoxes(voxelGrid);
@@ -46,7 +50,7 @@ void VoxelServiceTest::oneVoxelToAABBoxes() {
 }
 
 void VoxelServiceTest::threeVoxelsToAABBoxes() {
-    VoxelGrid voxelGrid(0.5f, Point3(1.0f, 1.0f, 1.0f));
+    VoxelGrid voxelGrid(Vector3(0.5f, 0.5f, 0.5f), Point3(1.0f, 1.0f, 1.0f));
     voxelGrid.addVoxel(Point3(0, 0, 0));
     voxelGrid.addVoxel(Point3(0, 1, 0));
     voxelGrid.addVoxel(Point3(0, 2, 0));
@@ -59,7 +63,7 @@ void VoxelServiceTest::threeVoxelsToAABBoxes() {
 }
 
 void VoxelServiceTest::twoDistinctVoxelsToAABBoxes() {
-    VoxelGrid voxelGrid(0.5f, Point3(1.0f, 1.0f, 1.0f));
+    VoxelGrid voxelGrid(Vector3(0.5f, 0.5f, 0.5f), Point3(1.0f, 1.0f, 1.0f));
     voxelGrid.addVoxel(Point3(0, 0, 0));
     voxelGrid.addVoxel(Point3(1, 0, 0));
     voxelGrid.addVoxel(Point3(3, 0, 0));
@@ -74,7 +78,7 @@ void VoxelServiceTest::twoDistinctVoxelsToAABBoxes() {
 }
 
 void VoxelServiceTest::voxelsToAABBoxes() {
-    VoxelGrid voxelGrid(1.0f, Point3(0.5f, 0.5f, 0.5f));
+    VoxelGrid voxelGrid(Vector3(1.0f, 1.0f, 1.0f), Point3(0.5f, 0.5f, 0.5f));
     voxelGrid.addVoxel(Point3(0, 0, 0));
     voxelGrid.addVoxel(Point3(1, 0, 0));
     voxelGrid.addVoxel(Point3(0, 0, 1));
