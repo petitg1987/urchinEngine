@@ -64,18 +64,21 @@ namespace urchin {
         return shape->scale(scale);
     }
 
-    std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape() const { //TODO simplify: Simple Edge Collapse Algorithm
+    std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape() const {
         if (objectEntity.getModel()->getConstMeshes()) {
-            std::set<Point3<float>> uniqueVertices;
-            const std::vector<std::unique_ptr<const ConstMesh>>& constMeshes = objectEntity.getModel()->getConstMeshes()->getConstMeshes();
-            for (const std::unique_ptr<const ConstMesh>& constMesh : constMeshes) {
-                for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
-                    uniqueVertices.insert(constMesh->getBaseVertices()[i]);
-                }
+            const Meshes* meshes = objectEntity.getModel()->getMeshes();
+
+            MeshData meshData({}, {});
+            for (unsigned int meshIndex = 0; meshIndex < meshes->getNumMeshes(); ++meshIndex) {
+                const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
+                const std::vector<std::array<uint32_t, 3>>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
+                meshData.addNewMesh(vertices, triangleIndices);
             }
 
+            MeshData simplifiedMesh = meshSimplificationService->simplify(meshData);
+
             try {
-                return std::make_unique<ConvexHullShape3D<float>>(std::vector(uniqueVertices.begin(), uniqueVertices.end()));
+                return std::make_unique<ConvexHullShape3D<float>>(simplifiedMesh.getVertices());
             } catch (const std::invalid_argument&) {
                 //ignore build convex hull errors
             }
@@ -99,8 +102,8 @@ namespace urchin {
             for (unsigned int meshIndex = 0; meshIndex < meshes->getNumMeshes(); ++meshIndex) {
                 const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
                 const std::vector<std::array<uint32_t, 3>>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
-
                 MeshData meshData(vertices, triangleIndices);
+
                 std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(nextShapeIndex, meshData);
                 for (std::unique_ptr<LocalizedCollisionShape>& localizedCollisionShape : localizedCollisionShapes) {
                     assert(nextShapeIndex == localizedCollisionShape->shapeIndex);
