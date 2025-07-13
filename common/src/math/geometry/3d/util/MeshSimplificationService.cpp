@@ -44,7 +44,7 @@ namespace urchin {
             newTrianglesIndices[triangleIndex][2] = oldToNewIndex[mesh.getTrianglesIndices()[triangleIndex][2]];
         }
 
-        return mesh;
+        return MeshData(newVertices, newTrianglesIndices);
     }
 
 }
