@@ -15,6 +15,7 @@ namespace urchin {
             struct Config {
                 bool voxelizationEnabled;
                 float voxelizationSize;
+                unsigned int maxConvexHullPoints;
             };
 
             struct LocalizedShape {

@@ -19,6 +19,9 @@ namespace urchin {
             std::unique_ptr<const CollisionShape3D> generate(CollisionShape3D::ShapeType, const std::map<std::string, std::string, std::less<>>&) const;
 
         private:
+            float shapeQualityToVoxelizationSize(ShapeQuality) const;
+            unsigned int shapeQualityToMaxConvexHullPoints(ShapeQuality) const;
+
             std::unique_ptr<ConvexHullShape3D<float>> buildConvexHullShape() const;
 
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> buildLocalizedCollisionShapes() const;

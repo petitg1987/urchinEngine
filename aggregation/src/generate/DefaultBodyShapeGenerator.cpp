@@ -10,9 +10,36 @@ namespace urchin {
 
         ShapeDetectService::Config shapeDetectConfig = {
             .voxelizationEnabled = shapeQuality >= ShapeQuality::MEDIUM,
-            .voxelizationSize = 0.15f / (float)(shapeQuality)
+            .voxelizationSize = shapeQualityToVoxelizationSize(shapeQuality),
+            .maxConvexHullPoints = shapeQualityToMaxConvexHullPoints(shapeQuality)
         };
         shapeDetectService = std::make_unique<ShapeDetectService>(shapeDetectConfig);
+    }
+
+    float DefaultBodyShapeGenerator::shapeQualityToVoxelizationSize(ShapeQuality shapeQuality) const {
+        if (shapeQuality == ShapeQuality::LOW) {
+            return 0.0f; //no voxelization
+        } else if (shapeQuality == ShapeQuality::MEDIUM) {
+            return 0.15f;
+        } else if (shapeQuality == ShapeQuality::HIGH) {
+            return 0.08f;
+        } else if (shapeQuality == ShapeQuality::ULTRA) {
+            return 0.03f;
+        }
+        throw std::runtime_error("Unknown shape quality: " + std::to_string((int)shapeQuality));
+    }
+
+    unsigned int DefaultBodyShapeGenerator::shapeQualityToMaxConvexHullPoints(ShapeQuality shapeQuality) const {
+        if (shapeQuality == ShapeQuality::LOW) {
+            return 20;
+        } else if (shapeQuality == ShapeQuality::MEDIUM) {
+            return 25;
+        } else if (shapeQuality == ShapeQuality::HIGH) {
+            return 35;
+        } else if (shapeQuality == ShapeQuality::ULTRA) {
+            return 50;
+        }
+        throw std::runtime_error("Unknown shape quality: " + std::to_string((int)shapeQuality));
     }
 
     std::unique_ptr<const CollisionShape3D> DefaultBodyShapeGenerator::generate(CollisionShape3D::ShapeType shapeType) const {

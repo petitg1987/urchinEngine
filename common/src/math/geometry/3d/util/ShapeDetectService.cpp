@@ -207,7 +207,7 @@ namespace urchin {
 	}
 
 	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildConvexHull(const MeshData& mesh) const {
-		if (!isConvexMesh(mesh)) {
+		if (mesh.getVertices().size() > config.maxConvexHullPoints || !isConvexMesh(mesh)) {
 			return std::nullopt;
 		}
 
