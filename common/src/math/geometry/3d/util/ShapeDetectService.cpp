@@ -46,7 +46,7 @@ namespace urchin {
 				continue;
 			}
 
-			std::optional<LocalizedShape> convexHullShape = tryBuildConvexHull(subMesh); //TODO test it
+			std::optional<LocalizedShape> convexHullShape = tryBuildConvexHull(subMesh);
 			if (convexHullShape.has_value()) {
 				result.push_back(std::move(convexHullShape.value()));
 				continue;
