@@ -61,16 +61,16 @@ void MeshSimplificationServiceTest::simplifyTwoConsecutiveEdges() {
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getVertices().size(), 5);
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 4);
     AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(0, simplifiedMesh), std::array{
-        Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f)
+        Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 1.3125f, 0.0f)
     });
     AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(1, simplifiedMesh), std::array{
-        Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f), Point3(0.0f, 3.0f, 0.0f)
+        Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 1.3125f, 0.0f), Point3(0.0f, 3.0f, 0.0f)
     });
     AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(2, simplifiedMesh), std::array{
-        Point3(-2.0f, 0.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f), Point3(0.0f, 0.0f, 0.0f)
+        Point3(-2.0f, 0.0f, 0.0f), Point3(0.0f, 1.3125f, 0.0f), Point3(0.0f, 0.0f, 0.0f)
     });
     AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(3, simplifiedMesh), std::array{
-        Point3(-2.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f)
+        Point3(-2.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f), Point3(0.0f, 1.3125f, 0.0f)
     });
 }
 

@@ -2,8 +2,7 @@
 #include <unordered_set>
 
 #include <math/geometry/3d/util/MeshSimplificationService.h>
-
-#include "container/VectorUtil.h"
+#include <container/VectorUtil.h>
 
 namespace urchin {
 
@@ -58,8 +57,8 @@ namespace urchin {
         const auto buildEdge = [](uint32_t i1, uint32_t i2){ return Edge{.vertexIndex1 = i1 < i2 ? i1 : i2, .vertexIndex2 = i1 < i2 ? i2 : i1}; };
         std::unordered_map<Edge, std::vector<std::size_t>, Edge::Hash> edgeToTriangles;
         std::unordered_map<uint32_t, std::unordered_set<std::size_t>> vertexToTriangles;
-        for (std::size_t triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
-            const std::array<uint32_t, 3>& triangleIndices = mesh.getTrianglesIndices()[triangleIndex];
+        for (std::size_t triangleIndex = 0; triangleIndex < newTrianglesIndices.size(); ++triangleIndex) {
+            const std::array<uint32_t, 3>& triangleIndices = newTrianglesIndices[triangleIndex];
 
             edgeToTriangles[buildEdge(triangleIndices[0], triangleIndices[1])].push_back(triangleIndex);
             edgeToTriangles[buildEdge(triangleIndices[1], triangleIndices[2])].push_back(triangleIndex);
@@ -73,13 +72,18 @@ namespace urchin {
         std::unordered_set<std::size_t> removedTriangles;
         std::unordered_map<uint32_t, uint32_t> oldToNewEdgeIndexMap;
         float edgeSquareDistanceThreshold = config.edgeDistanceThreshold * config.edgeDistanceThreshold;
-        for (const auto& [edge, trianglesIndex] : edgeToTriangles) {
-            uint32_t edgeVertexIndex1 = oldToNewEdgeIndexMap.contains(edge.vertexIndex1) ? oldToNewEdgeIndexMap.at(edge.vertexIndex1) : edge.vertexIndex1;
-            uint32_t edgeVertexIndex2 = oldToNewEdgeIndexMap.contains(edge.vertexIndex2) ? oldToNewEdgeIndexMap.at(edge.vertexIndex2) : edge.vertexIndex2;
+        for (auto& [edge, trianglesIndex] : edgeToTriangles) {
+            uint32_t edgeVertexIndex1 = edge.vertexIndex1;
+            while (oldToNewEdgeIndexMap.contains(edgeVertexIndex1)) {
+                edgeVertexIndex1 = oldToNewEdgeIndexMap.at(edgeVertexIndex1);
+            }
+            uint32_t edgeVertexIndex2 = edge.vertexIndex2;
+            while (oldToNewEdgeIndexMap.contains(edgeVertexIndex2)) {
+                edgeVertexIndex2 = oldToNewEdgeIndexMap.at(edgeVertexIndex2);
+            }
 
-            Point3<float> edgePoint1 = mesh.getVertices()[edgeVertexIndex1];
-            Point3<float> edgePoint2 = mesh.getVertices()[edgeVertexIndex2];
-
+            Point3<float> edgePoint1 = newVertices[edgeVertexIndex1];
+            Point3<float> edgePoint2 = newVertices[edgeVertexIndex2];
             float squareDistance = edgePoint1.squareDistance(edgePoint2);
             if (squareDistance > edgeSquareDistanceThreshold) {
                 continue;
@@ -94,7 +98,12 @@ namespace urchin {
             oldToNewEdgeIndexMap[edgeVertexIndex2] = edgeVertexIndex1;
 
             std::unordered_set<std::size_t> affectedTrianglesIndex = vertexToTriangles.at(edgeVertexIndex2);
+            vertexToTriangles.erase(edgeVertexIndex2);
             for (std::size_t affectedTriangleIndex : affectedTrianglesIndex) {
+                if (removedTriangles.contains(affectedTriangleIndex)) {
+                    continue;
+                }
+
                 std::array<uint32_t, 3>& triangles = newTrianglesIndices[affectedTriangleIndex];
                 for (std::size_t i = 0; i < 3; ++i) {
                     if (triangles[i] == edgeVertexIndex2) {
@@ -102,26 +111,22 @@ namespace urchin {
                     }
                 }
 
-                if (triangles[0] == triangles[1] || triangles[1] == triangles[2] || triangles[0] == triangles[2]) {
+                if (triangles[0] == triangles[1] || triangles[1] == triangles[2] || triangles[2] == triangles[0]) {
                     removedTriangles.insert(affectedTriangleIndex); //remove degenerate triangle
                 } else {
                     vertexToTriangles[edgeVertexIndex1].insert(affectedTriangleIndex);
                 }
             }
-
-            for (std::size_t triangleIndex : trianglesIndex) { //TODO useful ?
-                removedTriangles.insert(triangleIndex); //remove the two triangles which used the edge collapsed
-            }
         }
 
-        std::vector<std::array<uint32_t, 3>> adjustedTriangles;
-        adjustedTriangles.reserve(newTrianglesIndices.size() - removedTriangles.size());
+        std::vector<std::array<uint32_t, 3>> activeTriangles;
+        activeTriangles.reserve(newTrianglesIndices.size() - removedTriangles.size());
         for (size_t i = 0; i < newTrianglesIndices.size(); ++i) {
             if (!removedTriangles.contains(i)) {
-                adjustedTriangles.push_back(newTrianglesIndices[i]);
+                activeTriangles.push_back(newTrianglesIndices[i]);
             }
         }
-        newTrianglesIndices = std::move(adjustedTriangles);
+        newTrianglesIndices = std::move(activeTriangles);
 
         cleanUnusedVertices(newVertices, newTrianglesIndices);
         return MeshData(newVertices, newTrianglesIndices);
