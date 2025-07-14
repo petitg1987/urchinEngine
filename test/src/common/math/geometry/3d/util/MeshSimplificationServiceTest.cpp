@@ -35,8 +35,8 @@ void MeshSimplificationServiceTest::simplifyTwoConsecutiveEdges() {
         Point3(2.0f, 0.0f, 0.0f),
         Point3(0.0f, 0.0f, 0.0f),
         Point3(0.0f, 1.0f, 0.0f),
+        Point3(0.0f, 1.25f, 0.0f),
         Point3(0.0f, 1.5f, 0.0f),
-        Point3(0.0f, 2.0f, 0.0f),
         Point3(0.0f, 3.0f, 0.0f),
         Point3(-2.0f, 0.0f, 0.0f),
     };
@@ -52,7 +52,7 @@ void MeshSimplificationServiceTest::simplifyTwoConsecutiveEdges() {
     };
     MeshData mesh(vertices, trianglesIndices);
 
-    MeshData simplifiedMesh = MeshSimplificationService({.edgeDistanceThreshold = 0.4f}).simplify(mesh);
+    MeshData simplifiedMesh = MeshSimplificationService({.edgeDistanceThreshold = 0.6f}).simplify(mesh);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getVertices().size(), 5);
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 4);
@@ -63,7 +63,7 @@ CppUnit::Test* MeshSimplificationServiceTest::suite() {
     auto* suite = new CppUnit::TestSuite("MeshSimplificationServiceTest");
 
     suite->addTest(new CppUnit::TestCaller("simplifyOneEdge", &MeshSimplificationServiceTest::simplifyOneEdge));
-    //suite->addTest(new CppUnit::TestCaller("simplifyTwoConsecutiveEdges", &MeshSimplificationServiceTest::simplifyTwoConsecutiveEdges));
+    suite->addTest(new CppUnit::TestCaller("simplifyTwoConsecutiveEdges", &MeshSimplificationServiceTest::simplifyTwoConsecutiveEdges));
 
     return suite;
 }

@@ -71,10 +71,14 @@ namespace urchin {
         }
 
         std::unordered_set<std::size_t> removedTriangles;
+        std::unordered_map<uint32_t, uint32_t> oldToNewEdgeIndexMap;
         float edgeSquareDistanceThreshold = config.edgeDistanceThreshold * config.edgeDistanceThreshold;
         for (const auto& [edge, trianglesIndex] : edgeToTriangles) {
-            Point3<float> edgePoint1 = mesh.getVertices()[edge.vertexIndex1];
-            Point3<float> edgePoint2 = mesh.getVertices()[edge.vertexIndex2];
+            uint32_t edgeVertexIndex1 = oldToNewEdgeIndexMap.contains(edge.vertexIndex1) ? oldToNewEdgeIndexMap.at(edge.vertexIndex1) : edge.vertexIndex1;
+            uint32_t edgeVertexIndex2 = oldToNewEdgeIndexMap.contains(edge.vertexIndex2) ? oldToNewEdgeIndexMap.at(edge.vertexIndex2) : edge.vertexIndex2;
+
+            Point3<float> edgePoint1 = mesh.getVertices()[edgeVertexIndex1];
+            Point3<float> edgePoint2 = mesh.getVertices()[edgeVertexIndex2];
 
             float squareDistance = edgePoint1.squareDistance(edgePoint2);
             if (squareDistance > edgeSquareDistanceThreshold) {
@@ -86,25 +90,26 @@ namespace urchin {
             }
 
             Point3<float> newPosition = (edgePoint1 + edgePoint2) / 2.0f;
-            newVertices[edge.vertexIndex1] = newPosition;
+            newVertices[edgeVertexIndex1] = newPosition;
+            oldToNewEdgeIndexMap[edgeVertexIndex2] = edgeVertexIndex1;
 
-            std::unordered_set<std::size_t> affectedTrianglesIndex = vertexToTriangles.at(edge.vertexIndex2);
+            std::unordered_set<std::size_t> affectedTrianglesIndex = vertexToTriangles.at(edgeVertexIndex2);
             for (std::size_t affectedTriangleIndex : affectedTrianglesIndex) {
                 std::array<uint32_t, 3>& triangles = newTrianglesIndices[affectedTriangleIndex];
                 for (std::size_t i = 0; i < 3; ++i) {
-                    if (triangles[i] == edge.vertexIndex2) {
-                        triangles[i] = edge.vertexIndex1; //TODO check triangle orientation !
+                    if (triangles[i] == edgeVertexIndex2) {
+                        triangles[i] = edgeVertexIndex1; //TODO check triangle orientation !
                     }
                 }
 
-                if (triangles[0] == triangles[1] || triangles[1] == triangles[2] || triangles[0] == triangles[2]) { //TODO possible ?
+                if (triangles[0] == triangles[1] || triangles[1] == triangles[2] || triangles[0] == triangles[2]) {
                     removedTriangles.insert(affectedTriangleIndex); //remove degenerate triangle
                 } else {
-                    vertexToTriangles[edge.vertexIndex1].insert(affectedTriangleIndex);
+                    vertexToTriangles[edgeVertexIndex1].insert(affectedTriangleIndex);
                 }
             }
 
-            for (std::size_t triangleIndex : trianglesIndex) {
+            for (std::size_t triangleIndex : trianglesIndex) { //TODO useful ?
                 removedTriangles.insert(triangleIndex); //remove the two triangles which used the edge collapsed
             }
         }
