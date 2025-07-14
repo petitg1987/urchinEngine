@@ -60,7 +60,7 @@ inline void AssertHelper::assertPoint2LongLongEquals(const urchin::Point2<long l
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + urchin::StringUtil::toString(value) + ", expected: " + urchin::StringUtil::toString(expected), value.isEqual(expected, 0));
 }
 
-inline void AssertHelper::assertPoints2FloatEquals(const std::vector<urchin::Point2<float>>& points, const std::vector<urchin::Point2<float>>& expectedPoints, float epsilon) {
+inline void AssertHelper::assertPoints2FloatEquals(std::span<const urchin::Point2<float>> points, std::span<const urchin::Point2<float>> expectedPoints, float epsilon) {
     assertUnsignedIntEquals(points.size(), expectedPoints.size());
 
     for (std::size_t i = 0; i < points.size(); ++i) {
@@ -68,7 +68,7 @@ inline void AssertHelper::assertPoints2FloatEquals(const std::vector<urchin::Poi
     }
 }
 
-inline void AssertHelper::assertPoints2LongLongEquals(const std::vector<urchin::Point2<long long>>& points, const std::vector<urchin::Point2<long long>>& expectedPoints) {
+inline void AssertHelper::assertPoints2LongLongEquals(std::span<const urchin::Point2<long long>> points, std::span<const urchin::Point2<long long>> expectedPoints) {
     assertUnsignedIntEquals(points.size(), expectedPoints.size());
 
     for (std::size_t i = 0; i < points.size(); ++i) {
@@ -78,6 +78,14 @@ inline void AssertHelper::assertPoints2LongLongEquals(const std::vector<urchin::
 
 inline void AssertHelper::assertPoint3FloatEquals(const urchin::Point3<float>& value, const urchin::Point3<float>& expected, float epsilon) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + urchin::StringUtil::toString(value) + ", expected: " + urchin::StringUtil::toString(expected), value.isEqual(expected, epsilon));
+}
+
+inline void AssertHelper::assertPoints3FloatEquals(std::span<const urchin::Point3<float>> points, std::span<const urchin::Point3<float>> expectedPoints, float epsilon) {
+    assertUnsignedIntEquals(points.size(), expectedPoints.size());
+
+    for (std::size_t i = 0; i < points.size(); ++i) {
+        assertPoint3FloatEquals(points[i], expectedPoints[i], epsilon);
+    }
 }
 
 inline void AssertHelper::assertPoint3IntEquals(const urchin::Point3<int>& value, const urchin::Point3<int>& expected) {

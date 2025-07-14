@@ -22,10 +22,11 @@ class AssertHelper {
         static void assertPoint2FloatEquals(const urchin::Point2<float>&, const urchin::Point2<float>&, float epsilon = 0.001f);
         static void assertPoint2IntEquals(const urchin::Point2<int>&, const urchin::Point2<int>&);
         static void assertPoint2LongLongEquals(const urchin::Point2<long long>&, const urchin::Point2<long long>&);
-        static void assertPoints2FloatEquals(const std::vector<urchin::Point2<float>>&, const std::vector<urchin::Point2<float>>&, float epsilon = 0.001f);
-        static void assertPoints2LongLongEquals(const std::vector<urchin::Point2<long long>>&, const std::vector<urchin::Point2<long long>>&);
+        static void assertPoints2FloatEquals(std::span<const urchin::Point2<float>>, std::span<const urchin::Point2<float>>, float epsilon = 0.001f);
+        static void assertPoints2LongLongEquals(std::span<const urchin::Point2<long long>>, std::span<const urchin::Point2<long long>>);
 
         static void assertPoint3FloatEquals(const urchin::Point3<float>&, const urchin::Point3<float>&, float epsilon = 0.001f);
+        static void assertPoints3FloatEquals(std::span<const urchin::Point3<float>>, std::span<const urchin::Point3<float>>, float epsilon = 0.001f);
         static void assertPoint3IntEquals(const urchin::Point3<int>&, const urchin::Point3<int>&);
         static void assertVector3FloatEquals(const urchin::Vector3<float>&, const urchin::Vector3<float>&, float epsilon = 0.001f);
 

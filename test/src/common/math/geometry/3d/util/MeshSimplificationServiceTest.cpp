@@ -1,7 +1,6 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 #include <vector>
-#include <UrchinCommon.h>
 
 #include <common/math/geometry/3d/util/MeshSimplificationServiceTest.h>
 #include <AssertHelper.h>
@@ -27,7 +26,12 @@ void MeshSimplificationServiceTest::simplifyOneEdge() {
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getVertices().size(), 4);
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 2);
-    //TODO do more !
+    AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(0, simplifiedMesh), std::array{
+        Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f)
+    });
+    AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(1, simplifiedMesh), std::array{
+        Point3(-2.0f, 0.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f), Point3(0.0f, 0.0f, 0.0f)
+    });
 }
 
 void MeshSimplificationServiceTest::simplifyTwoConsecutiveEdges() {
@@ -56,7 +60,23 @@ void MeshSimplificationServiceTest::simplifyTwoConsecutiveEdges() {
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getVertices().size(), 5);
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 4);
-    //TODO do more !
+    AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(0, simplifiedMesh), std::array{
+        Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f)
+    });
+    AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(1, simplifiedMesh), std::array{
+        Point3(2.0f, 0.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f), Point3(0.0f, 3.0f, 0.0f)
+    });
+    AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(2, simplifiedMesh), std::array{
+        Point3(-2.0f, 0.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f), Point3(0.0f, 0.0f, 0.0f)
+    });
+    AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(3, simplifiedMesh), std::array{
+        Point3(-2.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f), Point3(0.0f, 1.25f, 0.0f)
+    });
+}
+
+std::array<Point3<float>, 3> MeshSimplificationServiceTest::extractTrianglePoints(std::size_t triangleIndex, const MeshData& mesh) const {
+    const std::array<uint32_t, 3>& triangleIndices = mesh.getTrianglesIndices()[triangleIndex];
+    return {mesh.getVertices()[triangleIndices[0]], mesh.getVertices()[triangleIndices[1]], mesh.getVertices()[triangleIndices[2]]};
 }
 
 CppUnit::Test* MeshSimplificationServiceTest::suite() {
