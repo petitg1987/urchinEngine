@@ -250,16 +250,16 @@ namespace urchin {
 	}
 
 	bool ShapeDetectService::isConvexMesh(const MeshData& mesh) const {
-		constexpr float EPSILON = 0.0001f;
+		constexpr float EPSILON = 0.01f;
 
 		for (const std::array<uint32_t, 3>& triangleIndices : mesh.getTrianglesIndices()) {
 			Point3<float> a = mesh.getVertices()[triangleIndices[0]];
 			Point3<float> b = mesh.getVertices()[triangleIndices[1]];
 			Point3<float> c = mesh.getVertices()[triangleIndices[2]];
 
-			Vector3<float> normal = a.vector(b).crossProduct(a.vector(c)).normalize();
+			Vector3<float> normal = a.vector(c).crossProduct(a.vector(b)).normalize();
 
-			for (size_t i = 0; i < mesh.getVertices().size(); ++i) {
+			for (std::size_t i = 0; i < mesh.getVertices().size(); ++i) {
 				if (i == triangleIndices[0] || i == triangleIndices[1] || i == triangleIndices[2]) {
 					continue;
 				}
