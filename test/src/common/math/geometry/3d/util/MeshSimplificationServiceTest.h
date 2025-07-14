@@ -9,8 +9,7 @@ class MeshSimplificationServiceTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
-        void simplifyOneEdge();
-        void simplifyTwoConsecutiveEdges();
+        void simplify();
 
     private:
         std::array<urchin::Point3<float>, 3> extractTrianglePoints(std::size_t, const urchin::MeshData&) const;

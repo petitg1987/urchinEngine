@@ -5,9 +5,7 @@ namespace urchin {
     DefaultBodyShapeGenerator::DefaultBodyShapeGenerator(const ObjectEntity& objectEntity, ShapeQuality shapeQuality) :
             objectEntity(objectEntity) {
 
-        MeshSimplificationService::Config meshSimplificationConfig = {
-            .edgeDistanceThreshold = 0.04f / ((float)(shapeQuality) + 1.0f)
-        };
+        MeshSimplificationService::Config meshSimplificationConfig = {};
         meshSimplificationService = std::make_unique<MeshSimplificationService>(meshSimplificationConfig);
 
         ShapeDetectService::Config shapeDetectConfig = {
