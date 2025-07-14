@@ -81,16 +81,16 @@ namespace urchin {
             while (oldToNewEdgeIndexMap.contains(edgeVertexIndex2)) {
                 edgeVertexIndex2 = oldToNewEdgeIndexMap.at(edgeVertexIndex2);
             }
-
-            Point3<float> edgePoint1 = newVertices[edgeVertexIndex1];
-            Point3<float> edgePoint2 = newVertices[edgeVertexIndex2];
-            float squareDistance = edgePoint1.squareDistance(edgePoint2);
-            if (squareDistance > edgeSquareDistanceThreshold) {
+            if (edgeVertexIndex1 == edgeVertexIndex2) {
                 continue;
             }
 
-            if (trianglesIndex.size() != 2) {
-                continue; //the edge is not shared by 2 triangles (no-manifold mesh)
+            Point3<float> edgePoint1 = newVertices[edgeVertexIndex1];
+            Point3<float> edgePoint2 = newVertices[edgeVertexIndex2];
+
+            float squareDistance = edgePoint1.squareDistance(edgePoint2);
+            if (squareDistance > edgeSquareDistanceThreshold) {
+                continue;
             }
 
             Point3<float> newPosition = (edgePoint1 + edgePoint2) / 2.0f;
