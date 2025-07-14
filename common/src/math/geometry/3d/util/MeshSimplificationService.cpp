@@ -3,6 +3,8 @@
 
 #include <math/geometry/3d/util/MeshSimplificationService.h>
 
+#include "container/VectorUtil.h"
+
 namespace urchin {
 
     uint64_t MeshSimplificationService::Edge::Hash::operator()(const Edge& edge) const {
@@ -55,7 +57,7 @@ namespace urchin {
 
         const auto buildEdge = [](uint32_t i1, uint32_t i2){ return Edge{.vertexIndex1 = i1 < i2 ? i1 : i2, .vertexIndex2 = i1 < i2 ? i2 : i1}; };
         std::unordered_map<Edge, std::vector<std::size_t>, Edge::Hash> edgeToTriangles;
-        std::unordered_map<uint32_t, std::set<std::size_t>> vertexToTriangles;
+        std::unordered_map<uint32_t, std::unordered_set<std::size_t>> vertexToTriangles;
         for (std::size_t triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
             const std::array<uint32_t, 3>& triangleIndices = mesh.getTrianglesIndices()[triangleIndex];
 
@@ -71,12 +73,9 @@ namespace urchin {
         std::unordered_set<std::size_t> removedTriangles;
         float edgeSquareDistanceThreshold = config.edgeDistanceThreshold * config.edgeDistanceThreshold;
         for (const auto& [edge, trianglesIndex] : edgeToTriangles) {
-            if (edge.vertexIndex1 == edge.vertexIndex2) { //v1 & v2
-                continue; //TODO possible ?
-            }
-
             Point3<float> edgePoint1 = mesh.getVertices()[edge.vertexIndex1];
-            Point3<float> edgePoint2 = mesh.getVertices()[edge.vertexIndex1];
+            Point3<float> edgePoint2 = mesh.getVertices()[edge.vertexIndex2];
+
             float squareDistance = edgePoint1.squareDistance(edgePoint2);
             if (squareDistance > edgeSquareDistanceThreshold) {
                 continue;
@@ -89,7 +88,7 @@ namespace urchin {
             Point3<float> newPosition = (edgePoint1 + edgePoint2) / 2.0f;
             newVertices[edge.vertexIndex1] = newPosition;
 
-            std::set<std::size_t> affectedTrianglesIndex = vertexToTriangles.at(edge.vertexIndex2);
+            std::unordered_set<std::size_t> affectedTrianglesIndex = vertexToTriangles.at(edge.vertexIndex2);
             for (std::size_t affectedTriangleIndex : affectedTrianglesIndex) {
                 std::array<uint32_t, 3>& triangles = newTrianglesIndices[affectedTriangleIndex];
                 for (std::size_t i = 0; i < 3; ++i) {
@@ -110,7 +109,14 @@ namespace urchin {
             }
         }
 
-        std::erase_if(newTrianglesIndices,[&removedTriangles](std::size_t t) { return removedTriangles.contains(t); });
+        std::vector<std::array<uint32_t, 3>> adjustedTriangles;
+        adjustedTriangles.reserve(newTrianglesIndices.size() - removedTriangles.size());
+        for (size_t i = 0; i < newTrianglesIndices.size(); ++i) {
+            if (!removedTriangles.contains(i)) {
+                adjustedTriangles.push_back(newTrianglesIndices[i]);
+            }
+        }
+        newTrianglesIndices = std::move(adjustedTriangles);
 
         cleanUnusedVertices(newVertices, newTrianglesIndices);
         return MeshData(newVertices, newTrianglesIndices);

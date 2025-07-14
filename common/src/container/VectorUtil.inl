@@ -1,5 +1,5 @@
 /**
- * Similar to std::vector.erase() but doesn't keep vector order and is more faster.
+ * Similar to std::vector.erase() but doesn't keep vector order and is faster.
  */
 template<class T> void VectorUtil::erase(std::vector<T>& v, std::size_t eraseIndex) {
     std::swap(v[eraseIndex], v.back());
@@ -7,7 +7,7 @@ template<class T> void VectorUtil::erase(std::vector<T>& v, std::size_t eraseInd
 }
 
 /**
- * Similar to std::vector.erase() but doesn't keep vector order and is more faster.
+ * Similar to std::vector.erase() but doesn't keep vector order and is faster.
  */
 template<class T> void VectorUtil::erase(std::vector<T>& v, typename std::vector<T>::iterator it) {
     std::swap(*it, v.back());

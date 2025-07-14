@@ -14,6 +14,9 @@ namespace urchin {
                 struct Hash {
                     uint64_t operator()(const Edge&) const;
                 };
+
+                bool operator==(const Edge&) const = default;
+
                 uint32_t vertexIndex1;
                 uint32_t vertexIndex2;
             };
