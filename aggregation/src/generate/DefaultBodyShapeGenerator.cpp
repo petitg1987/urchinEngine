@@ -6,7 +6,7 @@ namespace urchin {
             objectEntity(objectEntity) {
 
         MeshSimplificationService::Config meshSimplificationConfig = {
-            .edgeSizeToErase = 0.04f / ((float)(shapeQuality) + 1.0f)
+            .edgeDistanceThreshold = 0.04f / ((float)(shapeQuality) + 1.0f)
         };
         meshSimplificationService = std::make_unique<MeshSimplificationService>(meshSimplificationConfig);
 

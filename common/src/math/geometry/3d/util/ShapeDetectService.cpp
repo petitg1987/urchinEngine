@@ -64,8 +64,8 @@ namespace urchin {
 	std::vector<MeshData> ShapeDetectService::splitDistinctMeshes(const MeshData& mesh) const {
 	    std::vector<MeshData> subMeshes;
 
-		std::map<uint32_t, std::vector<unsigned int>> vertexToTriangles;
-		for (unsigned int triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
+		std::map<uint32_t, std::vector<std::size_t>> vertexToTriangles;
+		for (std::size_t triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
 		    for (int i = 0; i < 3; ++i) {
 		        uint32_t vertexIndex = mesh.getTrianglesIndices()[triangleIndex][i];
 		        vertexToTriangles[vertexIndex].push_back(triangleIndex);
@@ -73,7 +73,7 @@ namespace urchin {
 		}
 
 		std::vector visitedTriangles(mesh.getTrianglesIndices().size(), false);
-		for (unsigned int triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
+		for (std::size_t triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
 			if (visitedTriangles[triangleIndex]) {
 				continue;
 			}
@@ -82,12 +82,12 @@ namespace urchin {
 			std::vector<std::array<uint32_t, 3>> subMeshTrianglesIndices;
 			std::map<uint32_t, uint32_t> originalToSubMeshVertexMap;
 
-			std::queue<unsigned int> trianglesQueue;
+			std::queue<std::size_t> trianglesQueue;
 			trianglesQueue.push(triangleIndex);
 			visitedTriangles[triangleIndex] = true;
 
 			while (!trianglesQueue.empty()) {
-				unsigned int currentTriangleIndex = trianglesQueue.front();
+				std::size_t currentTriangleIndex = trianglesQueue.front();
 				trianglesQueue.pop();
 
 				subMeshTrianglesIndices.push_back({0u, 0u, 0u});
@@ -101,16 +101,16 @@ namespace urchin {
 					subMeshTrianglesIndices.back()[i] = originalToSubMeshVertexMap[originalVertexIndex];
 				}
 
-				std::set<unsigned int> neighborTrianglesIndices;
+				std::set<std::size_t> neighborTrianglesIndices;
 				for (int i = 0; i < 3; ++i) {
 				    uint32_t vertexIndex = mesh.getTrianglesIndices()[currentTriangleIndex][i];
-				    for (unsigned int neighborTriangleIndex : vertexToTriangles[vertexIndex]) {
+				    for (std::size_t neighborTriangleIndex : vertexToTriangles[vertexIndex]) {
 				        if (!visitedTriangles[neighborTriangleIndex]) {
 				            neighborTrianglesIndices.insert(neighborTriangleIndex);
 				        }
 				    }
 				}
-				for (unsigned int neighborTriangleIndex : neighborTrianglesIndices) {
+				for (std::size_t neighborTriangleIndex : neighborTrianglesIndices) {
 			        trianglesQueue.push(neighborTriangleIndex);
 					visitedTriangles[neighborTriangleIndex] = true;
 				}

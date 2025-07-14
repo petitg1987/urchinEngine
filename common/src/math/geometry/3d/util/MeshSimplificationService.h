@@ -7,7 +7,15 @@ namespace urchin {
     class MeshSimplificationService {
         public:
             struct Config {
-                float edgeSizeToErase;
+                float edgeDistanceThreshold;
+            };
+
+            struct Edge {
+                struct Hash {
+                    uint64_t operator()(const Edge&) const;
+                };
+                uint32_t vertexIndex1;
+                uint32_t vertexIndex2;
             };
 
             explicit MeshSimplificationService(Config);
@@ -16,6 +24,7 @@ namespace urchin {
 
         private:
             MeshData mergeDuplicateVertices(const MeshData&) const;
+            MeshData collapseShortEdge(const MeshData&) const;
 
             Config config;
     };
