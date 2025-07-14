@@ -24,7 +24,9 @@ namespace urchin {
 
         private:
             MeshData mergeDuplicateVertices(const MeshData&) const;
+
             MeshData collapseShortEdge(const MeshData&) const;
+            void cleanUnusedVertices(std::vector<Point3<float>>&, std::vector<std::array<uint32_t, 3>>&) const;
 
             Config config;
     };

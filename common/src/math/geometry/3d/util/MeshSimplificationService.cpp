@@ -112,9 +112,35 @@ namespace urchin {
 
         std::erase_if(newTrianglesIndices,[&removedTriangles](std::size_t t) { return removedTriangles.contains(t); });
 
-        //TODO remove vertex unused !
-
+        cleanUnusedVertices(newVertices, newTrianglesIndices);
         return MeshData(newVertices, newTrianglesIndices);
+    }
+
+    void MeshSimplificationService::cleanUnusedVertices(std::vector<Point3<float>>& vertices, std::vector<std::array<uint32_t, 3>>& trianglesIndices) const {
+        std::unordered_set<uint32_t> usedIndices;
+        for (const auto& triangleIndices : trianglesIndices) {
+            usedIndices.insert(triangleIndices[0]);
+            usedIndices.insert(triangleIndices[1]);
+            usedIndices.insert(triangleIndices[2]);
+        }
+
+        std::unordered_map<uint32_t, uint32_t> oldToNew;
+        std::vector<Point3<float>> newVertices;
+        newVertices.reserve(usedIndices.size());
+
+        for (uint32_t oldIndex = 0, newIndex = 0; oldIndex < vertices.size(); ++oldIndex) {
+            if (usedIndices.contains(oldIndex)) {
+                oldToNew[oldIndex] = newIndex++;
+                newVertices.push_back(vertices[oldIndex]);
+            }
+        }
+
+        for (std::array<uint32_t, 3>& triangleIndices : trianglesIndices) {
+            triangleIndices[0] = oldToNew[triangleIndices[0]];
+            triangleIndices[1] = oldToNew[triangleIndices[1]];
+            triangleIndices[2] = oldToNew[triangleIndices[2]];
+        }
+        vertices = std::move(newVertices);
     }
 
 }
