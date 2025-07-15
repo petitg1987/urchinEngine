@@ -47,10 +47,6 @@ namespace urchin {
         disableShapeEvents(true);
         radius->setValue(cylinderShape.getRadius());
         height->setValue(cylinderShape.getHeight());
-        int index = orientation->findData(cylinderShape.getCylinderOrientation());
-        if (index != -1) {
-            orientation->setCurrentIndex(index);
-        }
         disableShapeEvents(false);
 
         updateBodyShape();
@@ -65,12 +61,14 @@ namespace urchin {
     void BodyCylinderShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
         const auto& cylinderShape = static_cast<const CollisionCylinderShape&>(shape);
 
+        disableShapeEvents(true); //required for compound shape to not re-call updateCylinderOrientation()
         radius->setValue(cylinderShape.getRadius());
         height->setValue(cylinderShape.getHeight());
         int index = orientation->findData(cylinderShape.getCylinderOrientation());
         if (index != -1) {
             orientation->setCurrentIndex(index);
         }
+        disableShapeEvents(false);
     }
 
     std::unique_ptr<const CollisionShape3D> BodyCylinderShapeWidget::createBodyShape() const {

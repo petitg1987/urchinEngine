@@ -47,10 +47,6 @@ namespace urchin {
         disableShapeEvents(true);
         radius->setValue(capsuleShape.getRadius());
         cylinderHeight->setValue(capsuleShape.getCylinderHeight());
-        int index = orientation->findData(capsuleShape.getCapsuleOrientation());
-        if (index != -1) {
-            orientation->setCurrentIndex(index);
-        }
         disableShapeEvents(false);
 
         updateBodyShape();
@@ -65,12 +61,14 @@ namespace urchin {
     void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
         const auto& capsuleShape = static_cast<const CollisionCapsuleShape&>(shape);
 
+        disableShapeEvents(true); //required for compound shape to not re-call updateCapsuleOrientation()
         radius->setValue(capsuleShape.getRadius());
         cylinderHeight->setValue(capsuleShape.getCylinderHeight());
         int index = orientation->findData(capsuleShape.getCapsuleOrientation());
         if (index != -1) {
             orientation->setCurrentIndex(index);
         }
+        disableShapeEvents(false);
     }
 
     std::unique_ptr<const CollisionShape3D> BodyCapsuleShapeWidget::createBodyShape() const {
