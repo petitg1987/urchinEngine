@@ -164,7 +164,7 @@ namespace urchin {
 		Vector3<float> yAxis = cornerPoint.vector(points[shortestOrthogonalVectorToXAxis]);
 
 		//Compute Z axis:
-		std::size_t orthogonalVectorToXYAxis = 0;
+		std::size_t shortestOrthogonalVectorToXYAxis = 0;
 		for (std::size_t i = 1; i < points.size(); ++i) {
 			if (i == shortestOrthogonalVectorToXAxis) {
 				continue;
@@ -173,14 +173,14 @@ namespace urchin {
 			if (xAxis.normalize().dotProduct(vector) >= ORTHOGONAL_TOLERANCE_DOT_PRODUCT || yAxis.normalize().dotProduct(vector) >= ORTHOGONAL_TOLERANCE_DOT_PRODUCT) {
 				continue; //not orthogonal to X or Y axis
 			}
-			if (orthogonalVectorToXYAxis == 0 || cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorToXYAxis])) {
-				orthogonalVectorToXYAxis = i;
+			if (shortestOrthogonalVectorToXYAxis == 0 || cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[shortestOrthogonalVectorToXYAxis])) {
+				shortestOrthogonalVectorToXYAxis = i;
 			}
 		}
-		if (orthogonalVectorToXYAxis == 0) {
+		if (shortestOrthogonalVectorToXYAxis == 0) {
 			return std::nullopt;
 		}
-		Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorToXYAxis]);
+		Vector3<float> zAxis = cornerPoint.vector(points[shortestOrthogonalVectorToXYAxis]);
 
 		Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(Vector3(1.0f, 0.0f, 0.0f), xAxis.normalize()).normalize();
 		Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(xOrientation.rotateVector(Vector3(0.0f, 1.0f, 0.0f)), yAxis.normalize()).normalize();
