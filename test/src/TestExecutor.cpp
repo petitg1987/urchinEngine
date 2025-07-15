@@ -1,3 +1,4 @@
+#include <cstring>
 #include <cppunit/ui/text/TestRunner.h>
 
 #include <common/collision/GJKAlgorithmTest.h>
@@ -51,13 +52,6 @@
 #include <physics/collision/CollisionWorldIT.h>
 #include <physics/character/CharacterControllerIT.h>
 #include <physics/character/CharacterControllerMT.h>
-#include <ai/path/navmesh/csg/CSGPolygonTest.h>
-#include <ai/path/navmesh/csg/PolygonsUnionTest.h>
-#include <ai/path/navmesh/csg/PolygonsSubtractionTest.h>
-#include <ai/path/navmesh/triangulation/TriangulationTest.h>
-#include <ai/path/navmesh/polytope/services/TerrainObstacleServiceTest.h>
-#include <ai/path/navmesh/jump/EdgeLinkDetectionTest.h>
-#include <ai/path/navmesh/NavMeshGeneratorTest.h>
 #include <ai/path/pathfinding/FunnelAlgorithmTest.h>
 #include <ai/path/pathfinding/PathfindingAStarTest.h>
 #include <sound/player/filereader/SoundFileReaderTest.h>
@@ -171,15 +165,6 @@ void addPhysicsMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
 }
 
 void addAiUnitTests(CppUnit::TextUi::TestRunner& runner) {
-    //navigation mesh
-    runner.addTest(CSGPolygonTest::suite());
-    runner.addTest(PolygonsUnionTest::suite());
-    runner.addTest(PolygonsSubtractionTest::suite());
-    runner.addTest(TriangulationTest::suite());
-    runner.addTest(TerrainObstacleServiceTest::suite());
-    runner.addTest(EdgeLinkDetectionTest::suite());
-    runner.addTest(NavMeshGeneratorTest::suite());
-
     //pathfinding
     runner.addTest(FunnelAlgorithmTest::suite());
     runner.addTest(PathfindingAStarTest::suite());

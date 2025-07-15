@@ -209,7 +209,6 @@ namespace urchin {
     template Vector2<float> Vector2<float>::cast() const;
     template Vector2<double> Vector2<float>::cast() const;
     template Vector2<int> Vector2<float>::cast() const;
-    template Vector2<long long> Vector2<float>::cast() const;
     template Vector2<float> operator *<float>(const Vector2<float>&, float);
     template Vector2<float> operator *<float>(float, const Vector2<float>&);
     template Vector2<float> operator /<float>(const Vector2<float>&, float);
@@ -221,7 +220,6 @@ namespace urchin {
     template Vector2<float> Vector2<double>::cast() const;
     template Vector2<double> Vector2<double>::cast() const;
     template Vector2<int> Vector2<double>::cast() const;
-    template Vector2<long long> Vector2<double>::cast() const;
     template Vector2<double> operator *<double>(const Vector2<double>&, double);
     template Vector2<double> operator *<double>(double, const Vector2<double>&);
     template Vector2<double> operator /<double>(const Vector2<double>&, double);
@@ -233,24 +231,11 @@ namespace urchin {
     template Vector2<float> Vector2<int>::cast() const;
     template Vector2<double> Vector2<int>::cast() const;
     template Vector2<int> Vector2<int>::cast() const;
-    template Vector2<long long> Vector2<int>::cast() const;
     template Vector2<int> operator *<int>(const Vector2<int>&, int);
     template Vector2<int> operator *<int>(int, const Vector2<int>&);
     template Vector2<int> operator /<int>(const Vector2<int>&, int);
     template Vector2<int> operator *<int>(const Matrix2<int>&, const Vector2<int>&);
     template Vector2<int> operator *<int>(const Vector2<int>&, const Matrix2<int>&);
     template std::ostream& operator <<<int>(std::ostream&, const Vector2<int>&);
-
-    template class Vector2<long long>;
-    template Vector2<float> Vector2<long long>::cast() const;
-    template Vector2<double> Vector2<long long>::cast() const;
-    template Vector2<int> Vector2<long long>::cast() const;
-    template Vector2<long long> Vector2<long long>::cast() const;
-    template Vector2<long long> operator *<long long>(const Vector2<long long>&, long long);
-    template Vector2<long long> operator *<long long>(long long, const Vector2<long long>&);
-    template Vector2<long long> operator /<long long>(const Vector2<long long>&, long long);
-    template Vector2<long long> operator *<long long>(const Matrix2<long long>&, const Vector2<long long>&);
-    template Vector2<long long> operator *<long long>(const Vector2<long long>&, const Matrix2<long long>&);
-    template std::ostream& operator <<<long long>(std::ostream&, const Vector2<long long>&);
 
 }

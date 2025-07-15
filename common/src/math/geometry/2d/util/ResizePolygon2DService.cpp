@@ -33,5 +33,4 @@ namespace urchin {
 
     template class ResizePolygon2DService<int>;
 
-    template class ResizePolygon2DService<long long>;
 }

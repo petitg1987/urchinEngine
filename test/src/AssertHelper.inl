@@ -56,23 +56,11 @@ inline void AssertHelper::assertPoint2IntEquals(const urchin::Point2<int>& value
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + urchin::StringUtil::toString(value) + ", expected: " + urchin::StringUtil::toString(expected), value.isEqual(expected, 0));
 }
 
-inline void AssertHelper::assertPoint2LongLongEquals(const urchin::Point2<long long>& value, const urchin::Point2<long long>& expected) {
-    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + urchin::StringUtil::toString(value) + ", expected: " + urchin::StringUtil::toString(expected), value.isEqual(expected, 0));
-}
-
 inline void AssertHelper::assertPoints2FloatEquals(std::span<const urchin::Point2<float>> points, std::span<const urchin::Point2<float>> expectedPoints, float epsilon) {
     assertUnsignedIntEquals(points.size(), expectedPoints.size());
 
     for (std::size_t i = 0; i < points.size(); ++i) {
         assertPoint2FloatEquals(points[i], expectedPoints[i], epsilon);
-    }
-}
-
-inline void AssertHelper::assertPoints2LongLongEquals(std::span<const urchin::Point2<long long>> points, std::span<const urchin::Point2<long long>> expectedPoints) {
-    assertUnsignedIntEquals(points.size(), expectedPoints.size());
-
-    for (std::size_t i = 0; i < points.size(); ++i) {
-        assertPoint2LongLongEquals(points[i], expectedPoints[i]);
     }
 }
 
@@ -109,40 +97,6 @@ inline void AssertHelper::assertQuaternionFloatEquals(const urchin::Quaternion<f
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + floatToString(qTest1[i]) + ", expected: " + floatToString(expected[i]),
                                urchin::MathFunction::isEqual(qTest1[i], expected[i], epsilon));
     }
-}
-
-inline void AssertHelper::assertPolygonFloatEquals(std::vector<urchin::Point2<float>> orientedPoints, const std::vector<urchin::Point2<float>>& orientedExpectedPoints, float epsilon) {
-    assertUnsignedIntEquals(orientedPoints.size(), orientedExpectedPoints.size());
-
-    for (std::size_t i = 0; i < orientedPoints.size(); ++i) {
-        try {
-            assertPoints2FloatEquals(orientedPoints, orientedExpectedPoints, epsilon);
-        } catch (...) {
-            std::ranges::rotate(orientedPoints, orientedPoints.begin() + 1);
-            continue;
-        }
-
-        return;
-    }
-
-    assertTrue(false);
-}
-
-inline void AssertHelper::assertPolygonLongLongEquals(std::vector<urchin::Point2<long long>> orientedPoints, const std::vector<urchin::Point2<long long>>& orientedExpectedPoints) {
-    assertUnsignedIntEquals(orientedPoints.size(), orientedExpectedPoints.size());
-
-    for (std::size_t i = 0; i < orientedPoints.size(); ++i) {
-        try {
-            assertPoints2LongLongEquals(orientedPoints, orientedExpectedPoints);
-        } catch (...) {
-            std::ranges::rotate(orientedPoints, orientedPoints.begin() + 1);
-            continue;
-        }
-
-        return;
-    }
-
-    assertTrue(false);
 }
 
 inline std::string AssertHelper::floatToString(float f) {

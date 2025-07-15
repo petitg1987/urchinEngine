@@ -8,6 +8,4 @@ namespace urchin {
 
     template class ConvexObject2D<int>;
 
-    template class ConvexObject2D<long long>;
-
 }

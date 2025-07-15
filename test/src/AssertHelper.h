@@ -21,9 +21,7 @@ class AssertHelper {
 
         static void assertPoint2FloatEquals(const urchin::Point2<float>&, const urchin::Point2<float>&, float epsilon = 0.001f);
         static void assertPoint2IntEquals(const urchin::Point2<int>&, const urchin::Point2<int>&);
-        static void assertPoint2LongLongEquals(const urchin::Point2<long long>&, const urchin::Point2<long long>&);
         static void assertPoints2FloatEquals(std::span<const urchin::Point2<float>>, std::span<const urchin::Point2<float>>, float epsilon = 0.001f);
-        static void assertPoints2LongLongEquals(std::span<const urchin::Point2<long long>>, std::span<const urchin::Point2<long long>>);
 
         static void assertPoint3FloatEquals(const urchin::Point3<float>&, const urchin::Point3<float>&, float epsilon = 0.001f);
         static void assertPoints3FloatEquals(std::span<const urchin::Point3<float>>, std::span<const urchin::Point3<float>>, float epsilon = 0.001f);
@@ -31,9 +29,6 @@ class AssertHelper {
         static void assertVector3FloatEquals(const urchin::Vector3<float>&, const urchin::Vector3<float>&, float epsilon = 0.001f);
 
         static void assertQuaternionFloatEquals(const urchin::Quaternion<float>&, const urchin::Quaternion<float>&, float epsilon = 0.001f);
-
-        static void assertPolygonFloatEquals(std::vector<urchin::Point2<float>>, const std::vector<urchin::Point2<float>>&, float epsilon = 0.001f);
-        static void assertPolygonLongLongEquals(std::vector<urchin::Point2<long long>>, const std::vector<urchin::Point2<long long>>&);
 
     private:
         AssertHelper() = default;

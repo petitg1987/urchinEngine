@@ -79,19 +79,7 @@
 
 # AI engine
 * Navigation mesh
-  * ▲ **BUG**: Surrounded faces are not walkable (NavMeshGeneratorTest#surroundedWalkableFace)
-  * ▲ **BUG**: Union of room walls create wrong polygons (PolygonsUnionTest#roomPolygonsUnion)
-  * ▲ **NEW FEATURE**: Add possibility to exclude dynamic objects from navigation mesh
-    * Note: worth it only when steering behaviour will be implemented in pathfinding
-  * ► **BUG**: Jump from an edge created by an obstacle should be allowed only if target is this obstacle and vice versa
-  * ► **BUG**: Jump links visualization are not exact
-  * ► **OPTIMIZATION**: Exclude very small objects from navigation mesh
-  * ► **NEW FEATURE**: Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
-  * ► **NEW FEATURE**: Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
-  * ▼ **OPTIMIZATION**: Reduce memory allocation in NavMeshGenerator#createNavigationPolygon()
-  * ▼ **OPTIMIZATION**: TerrainObstacleService: apply a rough simplification on self obstacles polygons
-  * ▼ **NEW FEATURE**: Exclude fast moving objects as walkable face
-  * ▼ **OPTIMIZATION**: NavMeshGenerator#computePolytopeFootprint: put result in cache
+  * ▲ **NEW FEATURE**: Generate the navigation mesh
 * Pathfinding
   * ▲ **NEW FEATURE**: Implement steering behaviour
     * See: <https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>

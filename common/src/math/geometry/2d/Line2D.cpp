@@ -28,7 +28,7 @@ namespace urchin {
         Vector2<T> ap = a.vector(p);
 
         T apDotAb = ap.dotProduct(ab);
-        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
+        if constexpr (std::is_same_v<T, int>) {
             T abSquareLength = ab.squareLength();
             Vector2<T> vTranslate(MathFunction::roundDivision<T>(ab.X * apDotAb, abSquareLength),
                                   MathFunction::roundDivision<T>(ab.Y * apDotAb, abSquareLength));
@@ -46,7 +46,7 @@ namespace urchin {
 
         T apDotAb = ap.dotProduct(ab);
 
-        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
+        if constexpr (std::is_same_v<T, int>) {
             return ap.squareLength() - MathFunction::roundDivision<T>(apDotAb * apDotAb, ab.squareLength());
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / ab.squareLength());
@@ -107,7 +107,7 @@ namespace urchin {
 
         //lines not parallel
         hasIntersection = true;
-        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
+        if constexpr (std::is_same_v<T, int>) {
             Vector2<T> vTranslate(MathFunction::roundDivision<T>(startPointsCrossR * s.X, rCrossS),
                                   MathFunction::roundDivision<T>(startPointsCrossR * s.Y, rCrossS));
             return other.getA().translate(vTranslate);
@@ -128,8 +128,5 @@ namespace urchin {
 
     template class Line2D<int>;
     template std::ostream& operator <<<int>(std::ostream&, const Line2D<int>&);
-
-    template class Line2D<long long>;
-    template std::ostream& operator <<<long long>(std::ostream&, const Line2D<long long>&);
 
 }

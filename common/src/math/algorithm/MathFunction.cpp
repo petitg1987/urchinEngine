@@ -97,7 +97,7 @@ namespace urchin {
      * Perform a division of two integers with a classical rounding.
      */
     template<class T> T MathFunction::roundDivision(T dividend, T divisor) { //see https://stackoverflow.com/questions/17005364/dividing-two-integers-and-rounding-up-the-result-without-using-floating-point
-        assert(typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T));
+        assert(typeid(int) == typeid(T) || typeid(long) == typeid(T));
 
         return (dividend + (divisor / 2)) / divisor;
     }
@@ -127,7 +127,4 @@ namespace urchin {
     template unsigned long MathFunction::sign<unsigned long>(unsigned long);
     template unsigned long MathFunction::roundDivision<unsigned long>(unsigned long, unsigned long);
 
-    template long long MathFunction::sign<long long>(long long);
-    template bool MathFunction::isEqual(long long, long long, long long);
-    template long long MathFunction::roundDivision<long long>(long long, long long);
 }

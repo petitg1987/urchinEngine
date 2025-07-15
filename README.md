@@ -46,7 +46,6 @@ Game engine library in C++20: 3D, Physics, Sound, Network, IA, Map Editor
   * Sound trigger based on character position
 
 * IA Engine:
-  * Automatic navigation mesh generator
   * Pathfinding A* with funnel algorithm
   * Character controller
   

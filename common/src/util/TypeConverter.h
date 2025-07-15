@@ -55,9 +55,6 @@ namespace urchin {
             static Vector4<int> toVector4Int(std::string_view);
             static Quaternion<float> toQuaternion(std::string_view);
 
-            static long long toLongLong(float, float scale = FLOAT_INT_SCALE);
-            static float toFloat(long long, float scale = FLOAT_INT_SCALE);
-
             static std::string toString(float);
             static std::string toString(double);
             static std::string toString(int);

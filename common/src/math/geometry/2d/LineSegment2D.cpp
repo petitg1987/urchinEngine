@@ -61,7 +61,7 @@ namespace urchin {
             return bp.squareLength();
         }
 
-        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
+        if constexpr (std::is_same_v<T, int>) {
             return ap.squareLength() - MathFunction::roundDivision<T>(apDotAb * apDotAb, abSquareLength);
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
@@ -153,7 +153,7 @@ namespace urchin {
                 && (startPointsCrossR == T(0) || MathFunction::sign<T>(startPointsCrossR) == MathFunction::sign<T>(rCrossS))
                 && std::abs(rCrossS) >= std::abs(startPointsCrossR)) { //intersection
             hasIntersection = true;
-            if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
+            if constexpr (std::is_same_v<T, int>) {
                 Vector2<T> vTranslate(MathFunction::roundDivision<T>(thisToOtherCrossR * r.X, rCrossS),
                                       MathFunction::roundDivision<T>(thisToOtherCrossR * r.Y, rCrossS));
                 return a.translate(vTranslate);
@@ -192,28 +192,18 @@ namespace urchin {
     template LineSegment2D<float> LineSegment2D<float>::cast() const;
     template LineSegment2D<double> LineSegment2D<float>::cast() const;
     template LineSegment2D<int> LineSegment2D<float>::cast() const;
-    template LineSegment2D<long long> LineSegment2D<float>::cast() const;
     template std::ostream& operator <<<float>(std::ostream&, const LineSegment2D<float>&);
 
     template class LineSegment2D<double>;
     template LineSegment2D<float> LineSegment2D<double>::cast() const;
     template LineSegment2D<double> LineSegment2D<double>::cast() const;
     template LineSegment2D<int> LineSegment2D<double>::cast() const;
-    template LineSegment2D<long long> LineSegment2D<double>::cast() const;
     template std::ostream& operator <<<double>(std::ostream&, const LineSegment2D<double>&);
 
     template class LineSegment2D<int>;
     template LineSegment2D<float> LineSegment2D<int>::cast() const;
     template LineSegment2D<double> LineSegment2D<int>::cast() const;
     template LineSegment2D<int> LineSegment2D<int>::cast() const;
-    template LineSegment2D<long long> LineSegment2D<int>::cast() const;
     template std::ostream& operator <<<int>(std::ostream&, const LineSegment2D<int>&);
-
-    template class LineSegment2D<long long>;
-    template LineSegment2D<float> LineSegment2D<long long>::cast() const;
-    template LineSegment2D<double> LineSegment2D<long long>::cast() const;
-    template LineSegment2D<int> LineSegment2D<long long>::cast() const;
-    template LineSegment2D<long long> LineSegment2D<long long>::cast() const;
-    template std::ostream& operator <<<long long>(std::ostream&, const LineSegment2D<long long>&);
 
 }

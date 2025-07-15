@@ -237,28 +237,6 @@ namespace urchin {
         return {floatValues[0], floatValues[1], floatValues[2], floatValues[3]};
     }
 
-    long long TypeConverter::toLongLong(float value, float scale) {
-        const float minValue = (float)std::numeric_limits<long long>::min() / scale;
-        const float maxValue = (float)std::numeric_limits<long long>::max() / scale;
-
-        if (value < 0.0) {
-            if (value < minValue) [[unlikely]] {
-                Logger::instance().logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
-            }
-            return std::llround(value * scale - 0.5);
-        }
-        else {
-            if (value > maxValue) [[unlikely]] {
-                Logger::instance().logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
-            }
-            return std::llround(value * scale + 0.5);
-        }
-    }
-
-    float TypeConverter::toFloat(long long value, float scale) {
-        return (float)value / scale;
-    }
-
     /**
      * Convert float to string. Unlike std::to_string(), this method is independent of the locale.
      */
