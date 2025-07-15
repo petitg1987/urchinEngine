@@ -40,8 +40,7 @@ namespace urchin {
 
     void BodyCylinderShapeWidget::updateCylinderOrientation() {
         std::map<std::string, std::string, std::less<>> params{{"axis", TypeConverter::toString(orientation->currentData().toInt())}};
-        auto shapeQuality = DefaultBodyShapeGenerator::ShapeQuality::LOW;
-        std::unique_ptr<const CollisionShape3D> newShape = DefaultBodyShapeGenerator(*getObjectEntity(), shapeQuality).generate(CollisionShape3D::ShapeType::CYLINDER_SHAPE, params);
+        std::unique_ptr<const CollisionShape3D> newShape = DefaultBodyShapeGenerator(*getObjectEntity(), DefaultShapeQuality::LOW).generate(CollisionShape3D::ShapeType::CYLINDER_SHAPE, params);
         const auto& cylinderShape = static_cast<const CollisionCylinderShape&>(*newShape);
 
         disableShapeEvents(true);

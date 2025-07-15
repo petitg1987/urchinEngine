@@ -9,7 +9,8 @@ namespace urchin {
             QDialog(parent),
             excludeCompoundShape(excludeCompoundShape),
             bodyShapeTypeComboBox(nullptr),
-            shapeType(CollisionShape3D::ShapeType::SHAPE_MAX) {
+            shapeType(CollisionShape3D::ShapeType::SHAPE_MAX),
+            defaultShapeQuality(DefaultShapeQuality::LOW) {
         this->setWindowTitle("Select Body Shape");
         this->resize(330, 120);
         this->setFixedSize(this->width(), this->height());
@@ -57,10 +58,14 @@ namespace urchin {
         defaultShapeQualityComboBox = new QComboBox();
         mainLayout->addWidget(defaultShapeQualityComboBox, 1, 1);
         defaultShapeQualityComboBox->setFixedWidth(150);
-        defaultShapeQualityComboBox->addItem(QUALITY_LOW_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::LOW));
-        defaultShapeQualityComboBox->addItem(QUALITY_MEDIUM_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::MEDIUM));
-        defaultShapeQualityComboBox->addItem(QUALITY_HIGH_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::HIGH));
-        defaultShapeQualityComboBox->addItem(QUALITY_ULTRA_LABEL, QVariant((int)DefaultBodyShapeGenerator::ShapeQuality::ULTRA));
+        int itemIndex = 0;
+        for (const DefaultShapeQuality& quality : DefaultShapeQuality::getAllQualities()) {
+            defaultShapeQualityComboBox->addItem(QString::fromStdString(quality.getLabel()), QVariant(quality.getId()));
+
+            std::string tooltip = std::format("Quality:<br> - Voxelization size: {}<br> - Convex hull max points: {}",
+                quality.getVoxelizationSize(), quality.getConvexHullMaxPoints());
+            defaultShapeQualityComboBox->setItemData(itemIndex++, QString::fromStdString(tooltip), Qt::ToolTipRole); //TODO improve
+        }
         defaultShapeQualityComboBox->setCurrentIndex(0);
     }
 
@@ -70,7 +75,7 @@ namespace urchin {
             shapeType = static_cast<CollisionShape3D::ShapeType>(variantShapeType.toInt());
 
             QVariant variantDefaultShapeQuality = defaultShapeQualityComboBox->currentData();
-            defaultShapeQuality = static_cast<DefaultBodyShapeGenerator::ShapeQuality>(variantDefaultShapeQuality.toInt());
+            defaultShapeQuality = DefaultShapeQuality::getQualityById(variantDefaultShapeQuality.toInt());
 
             QDialog::done(r);
         } else {
@@ -82,7 +87,7 @@ namespace urchin {
         return shapeType;
     }
 
-    DefaultBodyShapeGenerator::ShapeQuality ChangeBodyShapeDialog::getDefaultShapeQuality() const {
+    const DefaultShapeQuality& ChangeBodyShapeDialog::getDefaultShapeQuality() const {
         return defaultShapeQuality;
     }
 

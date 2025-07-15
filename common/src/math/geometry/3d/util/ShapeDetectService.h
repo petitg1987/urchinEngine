@@ -13,9 +13,8 @@ namespace urchin {
     class ShapeDetectService {
         public:
             struct Config {
-                bool voxelizationEnabled;
                 float voxelizationSize;
-                unsigned int maxConvexHullPoints;
+                unsigned int convexHullMaxPoints;
             };
 
             struct LocalizedShape {

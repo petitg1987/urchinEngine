@@ -2,44 +2,17 @@
 
 namespace urchin {
 
-    DefaultBodyShapeGenerator::DefaultBodyShapeGenerator(const ObjectEntity& objectEntity, ShapeQuality shapeQuality) :
+    DefaultBodyShapeGenerator::DefaultBodyShapeGenerator(const ObjectEntity& objectEntity, const DefaultShapeQuality& defaultShapeQuality) :
             objectEntity(objectEntity) {
 
         MeshSimplificationService::Config meshSimplificationConfig = {};
         meshSimplificationService = std::make_unique<MeshSimplificationService>(meshSimplificationConfig);
 
         ShapeDetectService::Config shapeDetectConfig = {
-            .voxelizationEnabled = shapeQuality >= ShapeQuality::MEDIUM,
-            .voxelizationSize = shapeQualityToVoxelizationSize(shapeQuality),
-            .maxConvexHullPoints = shapeQualityToMaxConvexHullPoints(shapeQuality)
+            .voxelizationSize = defaultShapeQuality.getVoxelizationSize(),
+            .convexHullMaxPoints = defaultShapeQuality.getConvexHullMaxPoints()
         };
         shapeDetectService = std::make_unique<ShapeDetectService>(shapeDetectConfig);
-    }
-
-    float DefaultBodyShapeGenerator::shapeQualityToVoxelizationSize(ShapeQuality shapeQuality) const {
-        if (shapeQuality == ShapeQuality::LOW) {
-            return 0.0f; //no voxelization
-        } else if (shapeQuality == ShapeQuality::MEDIUM) {
-            return 0.13f;
-        } else if (shapeQuality == ShapeQuality::HIGH) {
-            return 0.07f;
-        } else if (shapeQuality == ShapeQuality::ULTRA) {
-            return 0.02f;
-        }
-        throw std::runtime_error("Unknown shape quality: " + std::to_string((int)shapeQuality));
-    }
-
-    unsigned int DefaultBodyShapeGenerator::shapeQualityToMaxConvexHullPoints(ShapeQuality shapeQuality) const {
-        if (shapeQuality == ShapeQuality::LOW) {
-            return 20;
-        } else if (shapeQuality == ShapeQuality::MEDIUM) {
-            return 25;
-        } else if (shapeQuality == ShapeQuality::HIGH) {
-            return 35;
-        } else if (shapeQuality == ShapeQuality::ULTRA) {
-            return 50;
-        }
-        throw std::runtime_error("Unknown shape quality: " + std::to_string((int)shapeQuality));
     }
 
     std::unique_ptr<const CollisionShape3D> DefaultBodyShapeGenerator::generate(CollisionShape3D::ShapeType shapeType) const {

@@ -221,7 +221,7 @@ namespace urchin {
 	}
 
 	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildConvexHull(const MeshData& mesh) const {
-		if (mesh.getVertices().size() > config.maxConvexHullPoints || !isConvexMesh(mesh)) {
+		if (mesh.getVertices().size() > config.convexHullMaxPoints || !isConvexMesh(mesh)) {
 			return std::nullopt;
 		}
 
@@ -242,7 +242,7 @@ namespace urchin {
 		std::vector<LocalizedShape> result;
 		std::vector<AABBox<float>> boxes;
 
-		if (isManifoldMesh(mesh) && config.voxelizationEnabled) {
+		if (isManifoldMesh(mesh) && config.voxelizationSize > 0.0f) {
 			VoxelService voxelService;
 			VoxelGrid voxelGrid = voxelService.voxelizeManifoldMesh(config.voxelizationSize, mesh);
 			boxes = voxelService.voxelGridToAABBoxes(voxelGrid);

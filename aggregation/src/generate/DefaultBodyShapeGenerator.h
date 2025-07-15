@@ -1,27 +1,18 @@
 #pragma once
 
 #include <model/ObjectEntity.h>
+#include <generate/DefaultShapeQuality.h>
 
 namespace urchin {
 
     class DefaultBodyShapeGenerator {
         public:
-            enum class ShapeQuality {
-                LOW = 0,
-                MEDIUM = 1,
-                HIGH = 2,
-                ULTRA = 3
-            };
-
-            explicit DefaultBodyShapeGenerator(const ObjectEntity&, ShapeQuality);
+            explicit DefaultBodyShapeGenerator(const ObjectEntity&, const DefaultShapeQuality&);
 
             std::unique_ptr<const CollisionShape3D> generate(CollisionShape3D::ShapeType) const;
             std::unique_ptr<const CollisionShape3D> generate(CollisionShape3D::ShapeType, const std::map<std::string, std::string, std::less<>>&) const;
 
         private:
-            float shapeQualityToVoxelizationSize(ShapeQuality) const;
-            unsigned int shapeQualityToMaxConvexHullPoints(ShapeQuality) const;
-
             std::unique_ptr<ConvexHullShape3D<float>> buildConvexHullShape() const;
 
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> buildLocalizedCollisionShapes() const;

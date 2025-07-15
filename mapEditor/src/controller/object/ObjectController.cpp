@@ -60,8 +60,8 @@ namespace urchin {
         markModified();
     }
 
-    void ObjectController::changeBodyShape(const ObjectEntity& constObjectEntity, DefaultBodyShapeGenerator::ShapeQuality shapeQuality, CollisionShape3D::ShapeType shapeType) {
-        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeGenerator(constObjectEntity, shapeQuality).generate(shapeType);
+    void ObjectController::changeBodyShape(const ObjectEntity& constObjectEntity, const DefaultShapeQuality& defaultShapeQuality, CollisionShape3D::ShapeType shapeType) {
+        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeGenerator(constObjectEntity, defaultShapeQuality).generate(shapeType);
         updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
     }
 
