@@ -8,6 +8,7 @@
 #include <cassert>
 
 #include <math/geometry/3d/util/ShapeDetectService.h>
+#include <math/geometry/3d/Plane.h>
 #include <math/geometry/3d/shape/BoxShape.h>
 #include <math/geometry/3d/shape/SphereShape.h>
 #include <math/geometry/3d/shape/ConvexHullShape3D.h>
@@ -263,24 +264,21 @@ namespace urchin {
 	}
 
 	bool ShapeDetectService::isConvexMesh(const MeshData& mesh) const {
-		constexpr float EPSILON = 0.01f;
+		constexpr float DISTANCE_THRESHOLD = 0.05f;
 
 		for (const std::array<uint32_t, 3>& triangleIndices : mesh.getTrianglesIndices()) {
 			Point3<float> a = mesh.getVertices()[triangleIndices[0]];
 			Point3<float> b = mesh.getVertices()[triangleIndices[1]];
 			Point3<float> c = mesh.getVertices()[triangleIndices[2]];
-
-			Vector3<float> normal = a.vector(c).crossProduct(a.vector(b)).normalize();
+			Plane plane(a, c, b);
 
 			for (std::size_t i = 0; i < mesh.getVertices().size(); ++i) {
 				if (i == triangleIndices[0] || i == triangleIndices[1] || i == triangleIndices[2]) {
 					continue;
 				}
 
-				Point3<float> point = mesh.getVertices()[i];
-				float distance = normal.dotProduct(a.vector(point));
-
-				if (distance > EPSILON) {
+				float distance = plane.distance(mesh.getVertices()[i]);
+				if (distance > DISTANCE_THRESHOLD) {
 					return false;
 				}
 			}
