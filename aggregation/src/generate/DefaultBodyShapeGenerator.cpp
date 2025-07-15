@@ -20,11 +20,11 @@ namespace urchin {
         if (shapeQuality == ShapeQuality::LOW) {
             return 0.0f; //no voxelization
         } else if (shapeQuality == ShapeQuality::MEDIUM) {
-            return 0.15f;
+            return 0.13f;
         } else if (shapeQuality == ShapeQuality::HIGH) {
-            return 0.08f;
+            return 0.07f;
         } else if (shapeQuality == ShapeQuality::ULTRA) {
-            return 0.03f;
+            return 0.02f;
         }
         throw std::runtime_error("Unknown shape quality: " + std::to_string((int)shapeQuality));
     }
