@@ -144,33 +144,46 @@ namespace urchin {
 			}
 		}
 
+		//Compute X axis:
 		Vector3<float> xAxis = cornerPoint.vector(points[closestPointIndex]);
-		std::array<std::size_t, 2> orthogonalVectorsToXAxis = {0, 0};
+
+		//Compute Y axis:
+		std::size_t shortestOrthogonalVectorToXAxis = 0;
 		for (std::size_t i = 1; i < points.size(); ++i) {
-			if (i != closestPointIndex || i != farthestPointIndex) {
-				Vector3<float> vector = cornerPoint.vector(points[i]).normalize();
-				if (xAxis.normalize().dotProduct(vector) < ORTHOGONAL_TOLERANCE_DOT_PRODUCT) {
-					if (orthogonalVectorsToXAxis[0] == 0) {
-						orthogonalVectorsToXAxis[0] = i;
-					} else if (orthogonalVectorsToXAxis[1] == 0) {
-						orthogonalVectorsToXAxis[1] = i;
-					} else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToXAxis[0]])) {
-						orthogonalVectorsToXAxis[0] = i;
-					} else if (cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorsToXAxis[1]])) {
-						orthogonalVectorsToXAxis[1] = i;
-					}
-				}
+			Vector3<float> vector = cornerPoint.vector(points[i]).normalize();
+			if (xAxis.normalize().dotProduct(vector) >= ORTHOGONAL_TOLERANCE_DOT_PRODUCT) {
+				continue; //not orthogonal to X axis
+			}
+			if (shortestOrthogonalVectorToXAxis == 0 || cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[shortestOrthogonalVectorToXAxis])) {
+				shortestOrthogonalVectorToXAxis = i;
 			}
 		}
-		if (orthogonalVectorsToXAxis[0] == 0 || orthogonalVectorsToXAxis[1] == 0) {
+		if (shortestOrthogonalVectorToXAxis == 0) {
 			return std::nullopt;
 		}
+		Vector3<float> yAxis = cornerPoint.vector(points[shortestOrthogonalVectorToXAxis]);
 
-		Vector3<float> yAxis = cornerPoint.vector(points[orthogonalVectorsToXAxis[0]]);
-		Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorsToXAxis[1]]);
+		//Compute Z axis:
+		std::size_t orthogonalVectorToXYAxis = 0;
+		for (std::size_t i = 1; i < points.size(); ++i) {
+			if (i == shortestOrthogonalVectorToXAxis) {
+				continue;
+			}
+			Vector3<float> vector = cornerPoint.vector(points[i]).normalize();
+			if (xAxis.normalize().dotProduct(vector) >= ORTHOGONAL_TOLERANCE_DOT_PRODUCT || yAxis.normalize().dotProduct(vector) >= ORTHOGONAL_TOLERANCE_DOT_PRODUCT) {
+				continue; //not orthogonal to X or Y axis
+			}
+			if (orthogonalVectorToXYAxis == 0 || cornerPoint.squareDistance(points[i]) < cornerPoint.squareDistance(points[orthogonalVectorToXYAxis])) {
+				orthogonalVectorToXYAxis = i;
+			}
+		}
+		if (orthogonalVectorToXYAxis == 0) {
+			return std::nullopt;
+		}
+		Vector3<float> zAxis = cornerPoint.vector(points[orthogonalVectorToXYAxis]);
+
 		Quaternion<float> xOrientation = Quaternion<float>::rotationFromTo(Vector3(1.0f, 0.0f, 0.0f), xAxis.normalize()).normalize();
 		Quaternion<float> yOrientation = Quaternion<float>::rotationFromTo(xOrientation.rotateVector(Vector3(0.0f, 1.0f, 0.0f)), yAxis.normalize()).normalize();
-
 		return std::make_optional<LocalizedShape>({
 			.shape = std::make_unique<BoxShape<float>>(Vector3(xAxis.length() / 2.0f, yAxis.length() / 2.0f, zAxis.length() / 2.0f)),
 			.position = boxCenterPoint,
