@@ -54,7 +54,7 @@ void main() {
 
     float visibility = 1.0 - max(dot(-cameraToPositionVec, pivot), 0.0); //Eliminate reflection rays pointing to camera and probably hitting something behind the camera;
     if (visibility < 0.075) {
-        fragColor = vec4(0.0, 0.0, 0.0, 0.0);
+        fragColor = vec4(0.5, 0.5, 0.5, 0.0); //use neutral color value as the color could be used in the blurring step
         return;
     }
 
@@ -62,7 +62,7 @@ void main() {
     float materialRoughness = texture(materialTex, texCoordinates).r;
     visibility *= (MAX_MATERIAL_ROUGHNESS - materialRoughness);
     if (visibility < 0.075) {
-        fragColor = vec4(0.0, 0.0, 0.0, 0.0);
+        fragColor = vec4(0.5, 0.5, 0.5, 0.0); //use neutral color value as the color could be used in the blurring step
         return;
     }
 
