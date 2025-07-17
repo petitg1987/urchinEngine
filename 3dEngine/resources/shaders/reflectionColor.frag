@@ -156,7 +156,7 @@ void main() {
         return;
     } */
 
-    const float EDGE_THRESHOLD = 0.2;
+    const float EDGE_THRESHOLD = 0.25;
     visibility *= secondPassHasHit
         * (1.0 - clamp(depth / HIT_THRESHOLD, 0.0, 1.0)) //Fade out the reflection point when the exact hit point is not found
         * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / MAX_DISTANCE, 0.0, 1.0)) //Fade out the reflection based on how far way the reflected point is from the initial starting point
