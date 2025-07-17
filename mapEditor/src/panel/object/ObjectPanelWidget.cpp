@@ -346,7 +346,7 @@ namespace urchin {
         if (const auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 if (objectTableView->hasObjectEntitySelected()) {
-                    const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+                    const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
                     setupObjectDataFrom(objectEntity);
 
                     removeObjectButton->setEnabled(true);
@@ -375,7 +375,9 @@ namespace urchin {
             }
         } else if (const auto* objectMoveController = dynamic_cast<ObjectMoveController*>(observable)) {
             if (notificationType == ObjectMoveController::OBJECT_MOVED) {
-                setupObjectDataFrom(*objectMoveController->getSelectedObjectEntity());
+                for (const ObjectEntity* objectEntityMoved : objectMoveController->getSelectedObjectEntities()) {
+                    setupObjectDataFrom(*objectEntityMoved);
+                }
             }
         }
     }
@@ -514,7 +516,7 @@ namespace urchin {
 
     void ObjectPanelWidget::removeSelectedObject() const {
         if (objectTableView->hasObjectEntitySelected()) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             objectController->removeObjectEntity(objectEntity);
 
             objectTableView->removeSelectedObject();
@@ -522,13 +524,13 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showCloneObjectDialog() {
-        std::string originalName = objectTableView->getSelectedObjectEntity()->getName();
+        std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
         CloneObjectDialog cloneObjectEntityDialog(this, originalName, objectController);
         cloneObjectEntityDialog.exec();
 
         if (cloneObjectEntityDialog.result() == QDialog::Accepted) {
             const std::string& newObjectName = cloneObjectEntityDialog.getObjectName();
-            const ObjectEntity& toCloneObjectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& toCloneObjectEntity = *objectTableView->getMainSelectedObjectEntity();
             const std::pair<ObjectEntity*, std::size_t> objectEntityInserted = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
             objectController->moveObjectInFrontOfCamera(*objectEntityInserted.first, true);
 
@@ -538,13 +540,13 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showRenameObjectDialog() {
-        std::string originalName = objectTableView->getSelectedObjectEntity()->getName();
+        std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
         RenameObjectDialog renameObjectEntityDialog(this, originalName, objectController);
         renameObjectEntityDialog.exec();
 
         if (renameObjectEntityDialog.result() == QDialog::Accepted) {
             const std::string& newObjectName = renameObjectEntityDialog.getObjectName();
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             objectController->renameObjectEntity(objectEntity, newObjectName);
 
             objectTableView->updateSelectedObject(objectEntity);
@@ -553,7 +555,7 @@ namespace urchin {
 
     void ObjectPanelWidget::updateObjectOrientationType() const {
         if (!disableObjectEvent) {
-            const ObjectEntity* objectEntity = objectTableView->getSelectedObjectEntity();
+            const ObjectEntity* objectEntity = objectTableView->getMainSelectedObjectEntity();
 
             QVariant variant = orientationType->currentData();
             auto newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
@@ -571,7 +573,7 @@ namespace urchin {
 
     void ObjectPanelWidget::updateObjectTransform() const {
         if (!disableObjectEvent) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
 
             Vector3 eulerAngle(
                     AngleConverter<float>::toRadian((float)eulerAxis0->value()),
@@ -595,14 +597,14 @@ namespace urchin {
         if (!disableObjectEvent) {
             updateObjectTransform();
 
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             physicsWidget->load(objectEntity, *objectController); //refresh physics shape dimension
         }
     }
 
     void ObjectPanelWidget::updateObjectProperties() const {
         if (!disableObjectEvent) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
 
             QVariant shadowBehaviorVariant = shadowBehavior->currentData();
             auto shadowBehaviorValue = static_cast<Model::ShadowBehavior>(shadowBehaviorVariant.toInt());
@@ -616,7 +618,7 @@ namespace urchin {
 
     void ObjectPanelWidget::updateObjectTags() const {
         if (!disableObjectEvent) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
 
             std::string tagsValues = tags->text().toUtf8().constData();
             objectController->updateObjectTags(objectEntity, tagsValues);
@@ -625,7 +627,7 @@ namespace urchin {
 
     void ObjectPanelWidget::rigidBodyToggled(int rigidBodyState) {
         if (!disableObjectEvent) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             if (Qt::CheckState::Checked == rigidBodyState) {
                 physicsWidget->show();
                 objectController->createDefaultBody(objectEntity);
@@ -643,7 +645,7 @@ namespace urchin {
         changeLightTypeDialog.exec();
 
         if (changeLightTypeDialog.result() == QDialog::Accepted) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             std::optional<Light::LightType> lightType = changeLightTypeDialog.getLightType();
 
             objectController->changeLightType(objectEntity, lightType);
@@ -656,7 +658,7 @@ namespace urchin {
         changeSoundDialog.exec();
 
         if (changeSoundDialog.result() == QDialog::Accepted) {
-            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             std::optional<Sound::SoundType> soundType = changeSoundDialog.getSoundType();
             std::string soundFilename = changeSoundDialog.getSoundFilename();
 

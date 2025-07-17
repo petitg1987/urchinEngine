@@ -11,7 +11,7 @@ namespace urchin {
             explicit BodyShapeDisplayer(Scene&);
             ~BodyShapeDisplayer();
 
-            void setSelectedObjectEntity(const ObjectEntity*);
+            void setSelectedObjectEntities(std::vector<const ObjectEntity*>);
             void setSelectedCompoundShapeComponent(const LocalizedCollisionShape*);
 
             void displayBodyShape();
@@ -30,7 +30,7 @@ namespace urchin {
             Scene& scene;
             std::vector<std::shared_ptr<GeometryModel>> bodyShapeModels;
 
-            const ObjectEntity* selectedObjectEntity;
+            std::vector<const ObjectEntity*> selectedObjectEntities;
             const LocalizedCollisionShape* selectedCompoundShapeComponent;
     };
 

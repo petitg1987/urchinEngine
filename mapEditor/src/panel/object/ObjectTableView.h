@@ -21,7 +21,8 @@ namespace urchin {
             };
 
             bool hasObjectEntitySelected() const;
-            const ObjectEntity* getSelectedObjectEntity() const;
+            const ObjectEntity* getMainSelectedObjectEntity() const;
+            std::vector<const ObjectEntity*> getAllSelectedObjectEntities() const;
 
             int getObjectEntityRow(const ObjectEntity*) const;
 

@@ -10,7 +10,6 @@ namespace urchin {
             sceneController(sceneController),
             mouseController(mouseController),
             statusBarController(statusBarController),
-            selectedObjectEntity(nullptr),
             selectedAxis(-1),
             oldMouseX(-1.0),
             oldMouseY(-1.0) {
@@ -23,9 +22,11 @@ namespace urchin {
     }
 
     void ObjectMoveController::onCtrlXYZ(unsigned int axisIndex) {
-        if (selectedObjectEntity) {
+        if (!selectedObjectEntities.empty()) {
             if (selectedAxis == -1) {
-                savedPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
+                for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
+                    savedPositions.insert({selectedObjectEntity, selectedObjectEntity->getModel()->getTransform().getPosition()});
+                }
             }
 
             selectedAxis = (int) axisIndex;
@@ -56,7 +57,7 @@ namespace urchin {
             if (!camera.isUseMouseToMoveCamera()) {
                 mousePositionAdjusted = adjustMousePosition();
                 if (!mousePositionAdjusted) {
-                    moveObject(Point2((float)oldMouseX, (float)oldMouseY), Point2((float)mouseX, (float)mouseY));
+                    moveObjects(Point2((float)oldMouseX, (float)oldMouseY), Point2((float)mouseX, (float)mouseY));
                 }
             }
             propagateEvent = false;
@@ -104,17 +105,17 @@ namespace urchin {
         return false;
     }
 
-    void ObjectMoveController::moveObject(const Point2<float>& oldMouseCoord, const Point2<float>& newMouseCoord) {
+    void ObjectMoveController::moveObjects(const Point2<float>& oldMouseCoord, const Point2<float>& newMouseCoord) {
         constexpr float MOVE_SPEED_FACTOR = 20.0f;
 
-        Point3<float> modelPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
+        Point3<float> modelsPosition = computeSelectObjectsMeanPosition();
         CameraSpaceService cameraSpaceService(scene.getActiveRenderer3d()->getCamera());
 
-        Point3<float> startAxisWorldSpacePoint = modelPosition;
+        Point3<float> startAxisWorldSpacePoint = modelsPosition;
         startAxisWorldSpacePoint[(unsigned int)selectedAxis] -= 1.0f;
         Point3<float> startAxisPointNdcSpace = cameraSpaceService.worldSpacePointToViewSpace(startAxisWorldSpacePoint);
 
-        Point3<float> endAxisWorldSpacePoint = modelPosition;
+        Point3<float> endAxisWorldSpacePoint = modelsPosition;
         endAxisWorldSpacePoint[(unsigned int)selectedAxis] += 1.0f;
         Point3<float> endAxisPointNdcSpace = cameraSpaceService.worldSpacePointToViewSpace(endAxisWorldSpacePoint);
 
@@ -125,18 +126,29 @@ namespace urchin {
         Vector3<float> axisVector = startAxisPointNdcSpace.vector(endAxisPointNdcSpace);
 
         float moveFactor = axisVector.normalize().dotProduct(mouseVector);
-        float moveSpeed = scene.getActiveRenderer3d()->getCamera().getPosition().distance(modelPosition);
+        float moveSpeed = scene.getActiveRenderer3d()->getCamera().getPosition().distance(modelsPosition);
 
-        Point3<float> newPosition = modelPosition;
-        newPosition[(unsigned int)selectedAxis] += moveFactor * moveSpeed * MOVE_SPEED_FACTOR;
-        updateObjectPosition(newPosition);
+        for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
+            Point3<float> newPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
+            newPosition[(unsigned int)selectedAxis] += moveFactor * moveSpeed * MOVE_SPEED_FACTOR;
+            updateObjectPosition(selectedObjectEntity, newPosition);
+        }
     }
 
-    void ObjectMoveController::updateObjectPosition(const Point3<float>& newPosition) {
-        Transform<float> transform = selectedObjectEntity->getModel()->getTransform();
+    Point3<float> ObjectMoveController::computeSelectObjectsMeanPosition() const {
+        Point3<float> meanPosition;
+        for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
+            meanPosition += selectedObjectEntity->getModel()->getTransform().getPosition();
+        }
+        meanPosition /= (float)selectedObjectEntities.size();
+        return meanPosition;
+    }
+
+    void ObjectMoveController::updateObjectPosition(const ObjectEntity* objectEntity, const Point3<float>& newPosition) {
+        Transform<float> transform = objectEntity->getModel()->getTransform();
         transform.setPosition(newPosition);
 
-        sceneController.getObjectController().updateObjectTransform(*selectedObjectEntity, transform);
+        sceneController.getObjectController().updateObjectTransform(*objectEntity, transform);
         notifyObservers(this, OBJECT_MOVED);
     }
 
@@ -155,7 +167,9 @@ namespace urchin {
     bool ObjectMoveController::onEscapeKey() {
         bool propagateEvent = true;
         if (selectedAxis != -1) {
-            updateObjectPosition(savedPosition);
+            for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
+                updateObjectPosition(selectedObjectEntity, savedPositions.at(selectedObjectEntity));
+            }
 
             statusBarController.applyPreviousState();
             selectedAxis = -1;
@@ -164,25 +178,25 @@ namespace urchin {
         return propagateEvent;
     }
 
-    void ObjectMoveController::setSelectedObjectEntity(const ObjectEntity* selectedObjectEntity) {
-        this->selectedObjectEntity = selectedObjectEntity;
+    void ObjectMoveController::setSelectedObjectEntities(std::vector<const ObjectEntity*> selectedObjectEntities) {
+        this->selectedObjectEntities = std::move(selectedObjectEntities);
         this->selectedAxis = -1;
 
-        if (selectedObjectEntity) {
+        if (!this->selectedObjectEntities.empty()) {
             statusBarController.applyState(MODEL_SELECTED);
         } else {
             statusBarController.applyPreviousState();
         }
     }
 
-    const ObjectEntity* ObjectMoveController::getSelectedObjectEntity() const {
-        return selectedObjectEntity;
+    const std::vector<const ObjectEntity*>& ObjectMoveController::getSelectedObjectEntities() const {
+        return selectedObjectEntities;
     }
 
     void ObjectMoveController::displayAxis() {
-        if (selectedObjectEntity) {
-            Point3<float> modelPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
-            objectMoveAxisDisplayer.displayAxis(modelPosition, (unsigned int)selectedAxis);
+        if (!selectedObjectEntities.empty()) {
+            Point3<float> modelsPosition = computeSelectObjectsMeanPosition();
+            objectMoveAxisDisplayer.displayAxis(modelsPosition, (unsigned int)selectedAxis);
         } else {
             objectMoveAxisDisplayer.cleanCurrentDisplay();
         }

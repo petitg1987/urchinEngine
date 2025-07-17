@@ -7,7 +7,6 @@ namespace urchin {
 
     BodyShapeDisplayer::BodyShapeDisplayer(Scene& scene) :
             scene(scene),
-            selectedObjectEntity(nullptr),
             selectedCompoundShapeComponent(nullptr) {
 
     }
@@ -16,8 +15,8 @@ namespace urchin {
         clearDisplay();
     }
 
-    void BodyShapeDisplayer::setSelectedObjectEntity(const ObjectEntity* selectedObjectEntity) {
-        this->selectedObjectEntity = selectedObjectEntity;
+    void BodyShapeDisplayer::setSelectedObjectEntities(std::vector<const ObjectEntity*> selectedObjectEntity) {
+        this->selectedObjectEntities = std::move(selectedObjectEntity);
     }
 
     void BodyShapeDisplayer::setSelectedCompoundShapeComponent(const LocalizedCollisionShape* selectedCompoundShapeComponent) {
@@ -27,47 +26,49 @@ namespace urchin {
     void BodyShapeDisplayer::displayBodyShape() {
         clearDisplay();
 
-        if (selectedObjectEntity && selectedObjectEntity->getRigidBody()) {
-            const Transform<float>& modelTransform = selectedObjectEntity->getModel()->getTransform();
-            const CollisionShape3D& bodyShape = selectedObjectEntity->getRigidBody()->getShape();
+        if (!selectedObjectEntities.empty()) {
+            for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
+                const Transform<float>& modelTransform = selectedObjectEntity->getModel()->getTransform();
+                const CollisionShape3D& bodyShape = selectedObjectEntity->getRigidBody()->getShape();
 
-            Vector3 activeObjectColor(0.2f, 0.8f, 0.2f);
-            Vector3 inactiveObjectColor(0.0f, 0.5f, 0.0f);
+                Vector3 activeObjectColor(0.2f, 0.8f, 0.2f);
+                Vector3 inactiveObjectColor(0.0f, 0.5f, 0.0f);
 
-            if (bodyShape.isConcave()) {
-                PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
-                AABBox<float> heightfieldAABBox = bodyShape.toAABBox(transform);
+                if (bodyShape.isConcave()) {
+                    PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
+                    AABBox<float> heightfieldAABBox = bodyShape.toAABBox(transform);
 
-                auto geometryModel = std::make_unique<AABBoxModel>(heightfieldAABBox);
-                geometryModel->setColor(activeObjectColor);
-                geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
-                bodyShapeModels.push_back(std::move(geometryModel));
-            } else if (bodyShape.isCompound()) {
-                const auto& compoundShape = static_cast<const CollisionCompoundShape&>(bodyShape);
-                const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
-                for (const auto& localizedShape : localizedShapes) {
-                    PhysicsTransform transform = PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()) * localizedShape->transform;
-                    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = localizedShape->shape->toConvexObject(transform);
-
-                    auto geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), *bodyObject);
-                    if (selectedCompoundShapeComponent != nullptr && selectedCompoundShapeComponent->shapeIndex == localizedShape->shapeIndex) {
-                        geometryModel->setColor(activeObjectColor);
-                    } else {
-                        geometryModel->setColor(inactiveObjectColor);
-                    }
+                    auto geometryModel = std::make_unique<AABBoxModel>(heightfieldAABBox);
+                    geometryModel->setColor(activeObjectColor);
                     geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                     bodyShapeModels.push_back(std::move(geometryModel));
-                }
-            } else if (bodyShape.isConvex()) {
-                PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
-                std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = bodyShape.toConvexObject(transform);
+                } else if (bodyShape.isCompound()) {
+                    const auto& compoundShape = static_cast<const CollisionCompoundShape&>(bodyShape);
+                    const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
+                    for (const auto& localizedShape : localizedShapes) {
+                        PhysicsTransform transform = PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()) * localizedShape->transform;
+                        std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = localizedShape->shape->toConvexObject(transform);
 
-                auto geometryModel = retrieveSingleGeometry(bodyShape.getShapeType(), *bodyObject);
-                geometryModel->setColor(activeObjectColor);
-                geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
-                bodyShapeModels.push_back(std::move(geometryModel));
-            } else {
-                throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape.getShapeType()));
+                        auto geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), *bodyObject);
+                        if (selectedCompoundShapeComponent != nullptr && selectedCompoundShapeComponent->shapeIndex == localizedShape->shapeIndex) {
+                            geometryModel->setColor(activeObjectColor);
+                        } else {
+                            geometryModel->setColor(inactiveObjectColor);
+                        }
+                        geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
+                        bodyShapeModels.push_back(std::move(geometryModel));
+                    }
+                } else if (bodyShape.isConvex()) {
+                    PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
+                    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = bodyShape.toConvexObject(transform);
+
+                    auto geometryModel = retrieveSingleGeometry(bodyShape.getShapeType(), *bodyObject);
+                    geometryModel->setColor(activeObjectColor);
+                    geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
+                    bodyShapeModels.push_back(std::move(geometryModel));
+                } else {
+                    throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape.getShapeType()));
+                }
             }
 
             for (const auto& bodyShapeModel : bodyShapeModels) {

@@ -12,7 +12,7 @@ namespace urchin {
             id(id),
             label(std::move(label)),
             voxelizationSize(voxelizationSize),
-            convexhullMaxPoints(convexhullMaxPoints) {
+            convexHullMaxPoints(convexhullMaxPoints) {
 
     }
 
@@ -20,7 +20,7 @@ namespace urchin {
         return {LOW, MEDIUM, HIGH, ULTRA};
     }
 
-    const DefaultShapeQuality& DefaultShapeQuality::getQualityById(int id) {
+    DefaultShapeQuality DefaultShapeQuality::getQualityById(int id) {
         for (const DefaultShapeQuality& quality : getAllQualities()) {
             if (quality.getId() == id) {
                 return quality;
@@ -42,7 +42,7 @@ namespace urchin {
     }
 
     unsigned int DefaultShapeQuality::getConvexHullMaxPoints() const {
-        return convexhullMaxPoints;
+        return convexHullMaxPoints;
     }
 
 }

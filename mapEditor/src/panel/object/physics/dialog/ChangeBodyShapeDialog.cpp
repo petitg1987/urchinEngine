@@ -64,7 +64,7 @@ namespace urchin {
 
             std::string tooltip = std::format("Quality:<br> - Voxelization size: {}<br> - Convex hull max points: {}",
                 quality.getVoxelizationSize(), quality.getConvexHullMaxPoints());
-            defaultShapeQualityComboBox->setItemData(itemIndex++, QString::fromStdString(tooltip), Qt::ToolTipRole); //TODO improve
+            defaultShapeQualityComboBox->setItemData(itemIndex++, QString::fromStdString(tooltip), Qt::ToolTipRole);
         }
         defaultShapeQualityComboBox->setCurrentIndex(0);
     }

@@ -27,15 +27,16 @@ namespace urchin {
             bool onMouseLeftButton();
             bool onEscapeKey();
 
-            void setSelectedObjectEntity(const ObjectEntity*);
-            const ObjectEntity* getSelectedObjectEntity() const;
+            void setSelectedObjectEntities(std::vector<const ObjectEntity*>);
+            const std::vector<const ObjectEntity*>& getSelectedObjectEntities() const;
 
             void displayAxis();
 
         private:
             bool adjustMousePosition();
-            void moveObject(const Point2<float>&, const Point2<float>&);
-            void updateObjectPosition(const Point3<float>&);
+            void moveObjects(const Point2<float>&, const Point2<float>&);
+            Point3<float> computeSelectObjectsMeanPosition() const;
+            void updateObjectPosition(const ObjectEntity*, const Point3<float>&);
 
             unsigned int sceneWidth;
             unsigned int sceneHeight;
@@ -46,9 +47,9 @@ namespace urchin {
             MouseController& mouseController;
             StatusBarController& statusBarController;
 
-            const ObjectEntity* selectedObjectEntity;
+            std::vector<const ObjectEntity*> selectedObjectEntities;
             int selectedAxis;
-            Point3<float> savedPosition;
+            std::map<const ObjectEntity*, Point3<float>> savedPositions;
 
             double oldMouseX;
             double oldMouseY;

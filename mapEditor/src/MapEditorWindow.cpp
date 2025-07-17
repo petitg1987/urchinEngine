@@ -186,7 +186,7 @@ namespace urchin {
     }
 
     void MapEditorWindow::notify(Observable* observable, int notificationType) {
-        bool refreshObjectHighlight = false;
+        bool refreshObjectsHighlight = false;
 
         if (dynamic_cast<ScenePanelWidget*>(observable)) {
             if (notificationType == ScenePanelWidget::TAB_SELECTED) {
@@ -194,7 +194,7 @@ namespace urchin {
             }
         } else if (dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
-                refreshObjectHighlight = true;
+                refreshObjectsHighlight = true;
             }
         } else if (dynamic_cast<AbstractController*>(observable)) {
             if (notificationType == AbstractController::CHANGES_DONE) {
@@ -203,16 +203,19 @@ namespace urchin {
         } else if (const auto* objectPanelWidget = dynamic_cast<ObjectPanelWidget*>(observable)) {
             if (notificationType == ObjectPanelWidget::OBJECT_SUB_TAB_SELECTION_CHANGED) {
                 objectTabSelected = objectPanelWidget->getTabSelected();
-                refreshObjectHighlight = true;
+                refreshObjectsHighlight = true;
             }
         }
         handleCompoundShapeSelectionChange(observable, notificationType);
 
-        if (refreshObjectHighlight) {
-            const ObjectEntity* selectedObjectEntity = scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->getSelectedObjectEntity();
-            sceneDisplayerWindow->setHighlightObjectPhysicsShape(selectedObjectEntity);
-            sceneDisplayerWindow->setHighlightObjectLight(objectTabSelected == ObjectPanelWidget::ObjectTab::LIGHT ? selectedObjectEntity : nullptr);
-            sceneDisplayerWindow->setHighlightObjectSound(objectTabSelected == ObjectPanelWidget::ObjectTab::SOUND ? selectedObjectEntity : nullptr);
+        if (refreshObjectsHighlight) {
+            const std::vector<const ObjectEntity*>& selectedObjectEntities = scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->getAllSelectedObjectEntities();
+            sceneDisplayerWindow->setHighlightObjectPhysicsShapes(selectedObjectEntities);
+
+            //TODO handle multi select ?
+            const ObjectEntity* mainSelectedObjectEntity = scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->getMainSelectedObjectEntity();
+            sceneDisplayerWindow->setHighlightObjectLight(objectTabSelected == ObjectPanelWidget::ObjectTab::LIGHT ? mainSelectedObjectEntity : nullptr);
+            sceneDisplayerWindow->setHighlightObjectSound(objectTabSelected == ObjectPanelWidget::ObjectTab::SOUND ? mainSelectedObjectEntity : nullptr);
         }
     }
 

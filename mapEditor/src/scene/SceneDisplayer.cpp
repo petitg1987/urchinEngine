@@ -16,7 +16,6 @@ namespace urchin {
             mouseController(mouseController),
             statusBarController(statusBarController),
             viewProperties(),
-            highlightObjectPhysicsShape(nullptr),
             highlightObjectLight(nullptr),
             highlightObjectSound(nullptr) {
 
@@ -115,13 +114,9 @@ namespace urchin {
         viewProperties[viewProperty] = value;
     }
 
-    void SceneDisplayer::setHighlightObjectPhysicsShape(const ObjectEntity* highlightObjectPhysicsShape) {
-        if (this->highlightObjectPhysicsShape != highlightObjectPhysicsShape) {
-            this->highlightObjectPhysicsShape = highlightObjectPhysicsShape;
-
-            bodyShapeDisplayer->setSelectedObjectEntity(highlightObjectPhysicsShape);
-            objectMoveController->setSelectedObjectEntity(highlightObjectPhysicsShape);
-        }
+    void SceneDisplayer::setHighlightObjectPhysicsShapes(const std::vector<const ObjectEntity*>& highlightObjectPhysicsShapes) const {
+        bodyShapeDisplayer->setSelectedObjectEntities(highlightObjectPhysicsShapes);
+        objectMoveController->setSelectedObjectEntities(highlightObjectPhysicsShapes);
     }
 
     void SceneDisplayer::setHighlightObjectLight(const ObjectEntity* highlightObjectLight) {

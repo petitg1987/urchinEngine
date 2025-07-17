@@ -19,7 +19,7 @@ namespace urchin {
         horizontalHeader()->resizeSection(1, 160);
         verticalHeader()->hide();
 
-        setSelectionMode(SingleSelection);
+        setSelectionMode(ExtendedSelection);
         setSelectionBehavior(SelectRows);
     }
 
@@ -72,11 +72,20 @@ namespace urchin {
         return -1;
     }
 
-    const ObjectEntity* ObjectTableView::getSelectedObjectEntity() const {
+    const ObjectEntity* ObjectTableView::getMainSelectedObjectEntity() const {
         if (hasObjectEntitySelected()) {
             return this->currentIndex().data(Qt::UserRole + 1).value<const ObjectEntity*>();
         }
         return nullptr;
+    }
+
+    std::vector<const ObjectEntity*> ObjectTableView::getAllSelectedObjectEntities() const {
+        std::vector<const ObjectEntity*> objectEntities;
+        objectEntities.reserve(this->selectedIndexes().size());
+        for (const QModelIndex& modelIndex : this->selectedIndexes()) {
+            objectEntities.push_back(modelIndex.data(Qt::UserRole + 1).value<const ObjectEntity*>());
+        }
+        return objectEntities;
     }
 
     int ObjectTableView::addObject(const ObjectEntity& objectEntity, std::size_t insertPosition) {
@@ -109,7 +118,7 @@ namespace urchin {
 
     bool ObjectTableView::updateSelectedObject(const ObjectEntity& updatedObjectEntity) {
         if (hasObjectEntitySelected()) {
-            const ObjectEntity* selectObjectEntity = getSelectedObjectEntity();
+            const ObjectEntity* selectObjectEntity = getMainSelectedObjectEntity();
             if (selectObjectEntity == &updatedObjectEntity) {
                 std::vector<QStandardItem*> objectEntityItems = buildObjectEntityItems(updatedObjectEntity);
                 int column = 0;

@@ -12,7 +12,7 @@ namespace urchin {
             static const DefaultShapeQuality ULTRA;
 
             static std::array<DefaultShapeQuality, 4> getAllQualities();
-            static const DefaultShapeQuality& getQualityById(int);
+            static DefaultShapeQuality getQualityById(int);
 
             int getId() const;
             const std::string& getLabel() const;
@@ -25,7 +25,7 @@ namespace urchin {
             int id;
             std::string label;
             float voxelizationSize;
-            unsigned int convexhullMaxPoints;
+            unsigned int convexHullMaxPoints;
     };
 
 }
