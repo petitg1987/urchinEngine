@@ -13,10 +13,13 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void LightScopeDisplayer::displayLightScope(const ObjectEntity* objectEntity) {
+    void LightScopeDisplayer::displayLightScopes(const std::vector<const ObjectEntity*>& objectEntities) {
         cleanCurrentDisplay();
 
-        if (objectEntity) {
+        for (const ObjectEntity* objectEntity : objectEntities) {
+            if (!objectEntity->getLight()) {
+                continue;
+            }
             const Light* light = objectEntity->getLight();
 
             if (const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light)) {
@@ -40,10 +43,10 @@ namespace urchin {
                 frustumModel->setPolygonMode(PolygonMode::WIREFRAME);
                 lightScopeModels.push_back(std::move(frustumModel));
             }
+        }
 
-            for (const auto& lightScopeModel : lightScopeModels) {
-                scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(lightScopeModel);
-            }
+        for (const auto& lightScopeModel : lightScopeModels) {
+            scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(lightScopeModel);
         }
     }
 

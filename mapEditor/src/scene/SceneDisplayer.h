@@ -40,8 +40,8 @@ namespace urchin {
 
             void setViewProperties(ViewProperties, bool);
             void setHighlightObjectPhysicsShapes(const std::vector<const ObjectEntity*>&) const;
-            void setHighlightObjectLight(const ObjectEntity*);
-            void setHighlightObjectSound(const ObjectEntity*);
+            void setHighlightObjectLights(std::vector<const ObjectEntity*>);
+            void setHighlightObjectSounds(std::vector<const ObjectEntity*>);
 
             void paint();
             void resize(unsigned int, unsigned int) const;
@@ -92,8 +92,8 @@ namespace urchin {
 
             //scene specifics
             std::array<bool, LAST_VIEW_PROPERTIES> viewProperties;
-            const ObjectEntity* highlightObjectLight;
-            const ObjectEntity* highlightObjectSound;
+            std::vector<const ObjectEntity*> highlightObjectLights;
+            std::vector<const ObjectEntity*> highlightObjectSounds;
     };
 
 }

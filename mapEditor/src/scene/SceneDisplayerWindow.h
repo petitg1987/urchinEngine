@@ -35,8 +35,8 @@ namespace urchin {
             void setViewProperties(SceneDisplayer::ViewProperties, bool);
             void setHighlightObjectPhysicsShapes(std::vector<const ObjectEntity*>) const;
             void setHighlightCompoundShapeComponent(const LocalizedCollisionShape*) const;
-            void setHighlightObjectLight(const ObjectEntity*) const;
-            void setHighlightObjectSound(const ObjectEntity*) const;
+            void setHighlightObjectLights(std::vector<const ObjectEntity*>) const;
+            void setHighlightObjectSounds(std::vector<const ObjectEntity*>) const;
 
             void render();
 

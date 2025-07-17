@@ -211,11 +211,8 @@ namespace urchin {
         if (refreshObjectsHighlight) {
             const std::vector<const ObjectEntity*>& selectedObjectEntities = scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->getAllSelectedObjectEntities();
             sceneDisplayerWindow->setHighlightObjectPhysicsShapes(selectedObjectEntities);
-
-            //TODO handle multi select ?
-            const ObjectEntity* mainSelectedObjectEntity = scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->getMainSelectedObjectEntity();
-            sceneDisplayerWindow->setHighlightObjectLight(objectTabSelected == ObjectPanelWidget::ObjectTab::LIGHT ? mainSelectedObjectEntity : nullptr);
-            sceneDisplayerWindow->setHighlightObjectSound(objectTabSelected == ObjectPanelWidget::ObjectTab::SOUND ? mainSelectedObjectEntity : nullptr);
+            sceneDisplayerWindow->setHighlightObjectLights(objectTabSelected == ObjectPanelWidget::ObjectTab::LIGHT ? selectedObjectEntities : std::vector<const ObjectEntity*>{});
+            sceneDisplayerWindow->setHighlightObjectSounds(objectTabSelected == ObjectPanelWidget::ObjectTab::SOUND ? selectedObjectEntities : std::vector<const ObjectEntity*>{});
         }
     }
 

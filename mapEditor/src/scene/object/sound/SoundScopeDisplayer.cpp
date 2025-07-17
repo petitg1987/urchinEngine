@@ -13,10 +13,14 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void SoundScopeDisplayer::displaySoundScope(const ObjectEntity* objectEntity) {
+    void SoundScopeDisplayer::displaySoundScopes(const std::vector<const ObjectEntity*>& objectEntities) {
         cleanCurrentDisplay();
 
-        if (objectEntity) {
+        for (const ObjectEntity* objectEntity : objectEntities) {
+            if (!objectEntity->getSoundComponent()) {
+                continue;
+            }
+
             const Sound& sound = objectEntity->getSoundComponent()->getSound();
             if (sound.getSoundType() == Sound::SoundType::LOCALIZABLE) {
                 const auto& localizableSound = static_cast<const LocalizableSound&>(sound);
@@ -24,7 +28,6 @@ namespace urchin {
                 geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                 geometryModel->setColor(Vector3(0.0f, 0.0f, 1.0f));
                 soundModels.push_back(std::move(geometryModel));
-                scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(soundModels.back());
             }
 
             const SoundTrigger& soundTrigger = objectEntity->getSoundComponent()->getSoundTrigger();
@@ -34,8 +37,11 @@ namespace urchin {
                 geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                 geometryModel->setColor(Vector3(0.0f, 1.0f, 1.0f));
                 soundModels.push_back(std::move(geometryModel));
-                scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(soundModels.back());
             }
+        }
+
+        for (const auto& soundModel : soundModels) {
+            scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(soundModel);
         }
     }
 

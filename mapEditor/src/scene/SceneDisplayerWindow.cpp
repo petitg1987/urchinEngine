@@ -123,15 +123,15 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWindow::setHighlightObjectLight(const ObjectEntity* highlightObjectEntity) const {
+    void SceneDisplayerWindow::setHighlightObjectLights(std::vector<const ObjectEntity*> highlightObjectEntities) const {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightObjectLight(highlightObjectEntity);
+            sceneDisplayer->setHighlightObjectLights(std::move(highlightObjectEntities));
         }
     }
 
-    void SceneDisplayerWindow::setHighlightObjectSound(const ObjectEntity* highlightSoundEntity) const {
+    void SceneDisplayerWindow::setHighlightObjectSounds(std::vector<const ObjectEntity*> highlightObjectEntities) const {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightObjectSound(highlightSoundEntity);
+            sceneDisplayer->setHighlightObjectSounds(std::move(highlightObjectEntities));
         }
     }
 

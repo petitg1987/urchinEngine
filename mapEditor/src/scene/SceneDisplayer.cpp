@@ -15,9 +15,7 @@ namespace urchin {
             sceneController(sceneController),
             mouseController(mouseController),
             statusBarController(statusBarController),
-            viewProperties(),
-            highlightObjectLight(nullptr),
-            highlightObjectSound(nullptr) {
+            viewProperties() {
 
     }
 
@@ -119,12 +117,12 @@ namespace urchin {
         objectMoveController->setSelectedObjectEntities(highlightObjectPhysicsShapes);
     }
 
-    void SceneDisplayer::setHighlightObjectLight(const ObjectEntity* highlightObjectLight) {
-        this->highlightObjectLight = highlightObjectLight;
+    void SceneDisplayer::setHighlightObjectLights(std::vector<const ObjectEntity*> highlightObjectLights) {
+        this->highlightObjectLights = std::move(highlightObjectLights);
     }
 
-    void SceneDisplayer::setHighlightObjectSound(const ObjectEntity* highlightObjectSound) {
-        this->highlightObjectSound = highlightObjectSound;
+    void SceneDisplayer::setHighlightObjectSounds(std::vector<const ObjectEntity*> highlightObjectSounds) {
+        this->highlightObjectSounds = std::move(highlightObjectSounds);
     }
 
     void SceneDisplayer::refreshObjectsModel() const {
@@ -141,20 +139,20 @@ namespace urchin {
 
     void SceneDisplayer::refreshLightScopeModel() const {
         if (lightScopeDisplayer) {
-            if (viewProperties[LIGHT_SCOPE] && highlightObjectLight && highlightObjectLight->getLight()) {
-                lightScopeDisplayer->displayLightScope(highlightObjectLight);
+            if (viewProperties[LIGHT_SCOPE]) {
+                lightScopeDisplayer->displayLightScopes(highlightObjectLights);
             } else {
-                lightScopeDisplayer->displayLightScope(nullptr);
+                lightScopeDisplayer->displayLightScopes({});
             }
         }
     }
 
     void SceneDisplayer::refreshSoundTriggerModel() const {
         if (soundScopeDisplayer) {
-            if (viewProperties[SOUND_SCOPE] && highlightObjectSound && highlightObjectSound->getSoundComponent()) {
-                soundScopeDisplayer->displaySoundScope(highlightObjectSound);
+            if (viewProperties[SOUND_SCOPE]) {
+                soundScopeDisplayer->displaySoundScopes(highlightObjectSounds);
             } else {
-                soundScopeDisplayer->displaySoundScope(nullptr);
+                soundScopeDisplayer->displaySoundScopes({});
             }
         }
     }
