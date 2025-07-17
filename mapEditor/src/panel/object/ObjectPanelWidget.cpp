@@ -376,14 +376,23 @@ namespace urchin {
         } else if (const auto* objectMoveController = dynamic_cast<ObjectMoveController*>(observable)) {
             if (notificationType == ObjectMoveController::OBJECT_MOVED) {
                 for (const ObjectEntity* objectEntityMoved : objectMoveController->getSelectedObjectEntities()) {
-                    setupObjectDataFrom(*objectEntityMoved);
+                    setupObjectGeneralDataFrom(*objectEntityMoved);
                 }
             }
         }
     }
 
     void ObjectPanelWidget::setupObjectDataFrom(const ObjectEntity& objectEntity) {
+        setupObjectGeneralDataFrom(objectEntity);
+        setupObjectPhysicsDataFrom(objectEntity);
+        setupObjectLightDataFrom(objectEntity);
+        setupObjectSoundDataFrom(objectEntity);
+        setupObjectTagsDataFrom(objectEntity);
+    }
+
+    void ObjectPanelWidget::setupObjectGeneralDataFrom(const ObjectEntity& objectEntity) {
         disableObjectEvent = true;
+
         const Model* model = objectEntity.getModel();
         const Transform<float>& modelTransform = model->getTransform();
 
@@ -415,10 +424,6 @@ namespace urchin {
             cullBehavior->setCurrentIndex(cullBehaviorIndex);
         }
 
-        setupObjectPhysicsDataFrom(objectEntity);
-        setupObjectLightDataFrom(objectEntity);
-        setupObjectSoundDataFrom(objectEntity);
-        setupObjectTagsDataFrom(objectEntity);
         disableObjectEvent = false;
     }
 

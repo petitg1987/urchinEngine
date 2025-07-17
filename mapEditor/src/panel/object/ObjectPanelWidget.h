@@ -54,6 +54,7 @@ namespace urchin {
 
             void notify(Observable*, int) override;
             void setupObjectDataFrom(const ObjectEntity&);
+            void setupObjectGeneralDataFrom(const ObjectEntity&);
             void setupObjectPhysicsDataFrom(const ObjectEntity&);
             void setupObjectLightDataFrom(const ObjectEntity&);
             void setupObjectSoundDataFrom(const ObjectEntity&);
