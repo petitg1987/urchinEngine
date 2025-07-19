@@ -199,7 +199,7 @@ namespace urchin {
 
         activeInstanceDisplayers.clear();
         activeSortedInstanceDisplayers.clear();
-        for (const Widget* widget : widgets) { //TODO display directly without temporary var !
+        for (const Widget* widget : widgets) {
             WidgetInstanceDisplayer* widgetInstanceDisplayer = findWidgetInstanceDisplayer(*widget);
             if (activeInstanceDisplayers.insert(widgetInstanceDisplayer)) {
                 activeSortedInstanceDisplayers.push_back(widgetInstanceDisplayer);

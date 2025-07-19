@@ -290,7 +290,7 @@ namespace urchin {
         }
 
         activeInstanceDisplayers.clear();
-        for (const Model* model: models) { //TODO display directly without temporary var !
+        for (const Model* model: models) {
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
             if (activeInstanceDisplayers.insert(modelInstanceDisplayer)) {
                 modelInstanceDisplayer->resetRenderingModels();
