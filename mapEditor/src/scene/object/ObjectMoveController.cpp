@@ -10,6 +10,7 @@ namespace urchin {
             sceneController(sceneController),
             mouseController(mouseController),
             statusBarController(statusBarController),
+            lastMovedObjectEntity(nullptr),
             selectedAxis(-1),
             oldMouseX(-1.0),
             oldMouseY(-1.0) {
@@ -147,8 +148,9 @@ namespace urchin {
     void ObjectMoveController::updateObjectPosition(const ObjectEntity* objectEntity, const Point3<float>& newPosition) {
         Transform<float> transform = objectEntity->getModel()->getTransform();
         transform.setPosition(newPosition);
-
         sceneController.getObjectController().updateObjectTransform(*objectEntity, transform);
+
+        lastMovedObjectEntity = objectEntity;
         notifyObservers(this, OBJECT_MOVED);
     }
 
@@ -189,8 +191,9 @@ namespace urchin {
         }
     }
 
-    const std::vector<const ObjectEntity*>& ObjectMoveController::getSelectedObjectEntities() const {
-        return selectedObjectEntities;
+    const ObjectEntity& ObjectMoveController::getLastMovedObjectEntity() const {
+        assert(lastMovedObjectEntity);
+        return *lastMovedObjectEntity;
     }
 
     void ObjectMoveController::displayAxis() {

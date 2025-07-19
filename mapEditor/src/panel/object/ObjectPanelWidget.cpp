@@ -24,6 +24,7 @@ namespace urchin {
             renameObjectButton(nullptr),
             tabWidget(nullptr),
             tabSelected(ObjectTab::GENERAL),
+            objectEntitySelected(nullptr),
             disableObjectEvent(false),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr),
             orientationType(nullptr),
@@ -347,6 +348,8 @@ namespace urchin {
             if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 if (objectTableView->hasObjectEntitySelected()) {
                     const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
+                    objectEntitySelected = &objectEntity;
+
                     setupObjectDataFrom(objectEntity);
 
                     removeObjectButton->setEnabled(true);
@@ -354,6 +357,8 @@ namespace urchin {
                     renameObjectButton->setEnabled(true);
                     tabWidget->show();
                 } else {
+                    objectEntitySelected = nullptr;
+
                     removeObjectButton->setEnabled(false);
                     cloneObjectButton->setEnabled(false);
                     renameObjectButton->setEnabled(false);
@@ -375,8 +380,8 @@ namespace urchin {
             }
         } else if (const auto* objectMoveController = dynamic_cast<ObjectMoveController*>(observable)) {
             if (notificationType == ObjectMoveController::OBJECT_MOVED) {
-                for (const ObjectEntity* objectEntityMoved : objectMoveController->getSelectedObjectEntities()) {
-                    setupObjectGeneralDataFrom(*objectEntityMoved);
+                if (objectEntitySelected == &objectMoveController->getLastMovedObjectEntity()) {
+                    setupObjectDataFrom(objectMoveController->getLastMovedObjectEntity());
                 }
             }
         }

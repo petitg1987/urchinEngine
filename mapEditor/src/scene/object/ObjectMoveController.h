@@ -28,7 +28,7 @@ namespace urchin {
             bool onEscapeKey();
 
             void setSelectedObjectEntities(std::vector<const ObjectEntity*>);
-            const std::vector<const ObjectEntity*>& getSelectedObjectEntities() const;
+            const ObjectEntity& getLastMovedObjectEntity() const;
 
             void displayAxis();
 
@@ -48,6 +48,7 @@ namespace urchin {
             StatusBarController& statusBarController;
 
             std::vector<const ObjectEntity*> selectedObjectEntities;
+            const ObjectEntity* lastMovedObjectEntity;
             int selectedAxis;
             std::map<const ObjectEntity*, Point3<float>> savedPositions;
 

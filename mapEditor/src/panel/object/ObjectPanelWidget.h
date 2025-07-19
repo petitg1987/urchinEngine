@@ -77,6 +77,7 @@ namespace urchin {
             QTabWidget* tabWidget;
             ObjectTab tabSelected;
 
+            const ObjectEntity* objectEntitySelected;
             bool disableObjectEvent;
 
             //general
