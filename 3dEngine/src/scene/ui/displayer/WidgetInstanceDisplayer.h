@@ -28,6 +28,7 @@ namespace urchin {
             void addInstanceWidget(Widget&);
             void removeInstanceWidget(Widget&);
             unsigned int getInstanceCount() const;
+            uint32_t getDisplayerLastFrameUsed() const;
 
             void resetRenderingWidgets() const;
             void registerRenderingWidget(const Widget&) const;
@@ -62,6 +63,7 @@ namespace urchin {
             mutable std::vector<Matrix4<float>> instanceModelMatrices;
 
             std::unique_ptr<GenericRenderer> renderer;
+            uint32_t displayerLastFrameUsed;
     };
 
 }

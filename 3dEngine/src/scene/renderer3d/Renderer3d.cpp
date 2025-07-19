@@ -542,7 +542,7 @@ namespace urchin {
         deferredRenderingOrder++;
         uiContainer.prepareRendering(frameCount, dt, deferredRenderingOrder, *camera);
 
-        renderDebugSceneData(geometryContainer);
+        renderDebugSceneData(frameCount, geometryContainer);
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
@@ -578,7 +578,7 @@ namespace urchin {
         return numDependenciesToFirstPassOutput;
     }
 
-    void Renderer3d::renderDebugSceneData(GeometryContainer& geometryContainer) {
+    void Renderer3d::renderDebugSceneData(uint32_t frameCount, GeometryContainer& geometryContainer) {
         if (DEBUG_DISPLAY_MODELS_OCCLUSION_CULLER_DATA) {
             if (debugOcclusionCullerGeometries) {
                 geometryContainer.removeGeometry(*debugOcclusionCullerGeometries);
@@ -588,11 +588,11 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
-            modelSetDisplayer->drawBBox(geometryContainer);
+            modelSetDisplayer->drawBBox(frameCount, geometryContainer);
         }
 
         if (DEBUG_DISPLAY_MODEL_BASE_BONES) {
-            modelSetDisplayer->drawBaseBones(geometryContainer);
+            modelSetDisplayer->drawBaseBones(frameCount, geometryContainer);
         }
 
         if (DEBUG_DISPLAY_LIGHTS_OCTREE) {

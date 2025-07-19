@@ -108,7 +108,7 @@ namespace urchin {
             void updateScene(float);
             void renderDeferredFirstPass(uint32_t, float, unsigned int);
             unsigned int computeDependenciesToFirstPassOutput() const;
-            void renderDebugSceneData(GeometryContainer&);
+            void renderDebugSceneData(uint32_t, GeometryContainer&);
             void renderDeferredSecondPass(uint32_t, unsigned int);
             void renderDebugFramebuffers(unsigned int);
             void postUpdateScene();

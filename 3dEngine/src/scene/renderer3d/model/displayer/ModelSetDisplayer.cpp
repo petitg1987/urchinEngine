@@ -297,7 +297,7 @@ namespace urchin {
             }
             modelInstanceDisplayer->registerRenderingModel(*model);
         }
-        for (const ModelInstanceDisplayer* activeModelDisplayer: activeInstanceDisplayers) {
+        for (ModelInstanceDisplayer* activeModelDisplayer: activeInstanceDisplayers) {
             activeModelDisplayer->prepareRendering(frameCount, renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
@@ -324,16 +324,16 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) const {
+    void ModelSetDisplayer::drawBBox(uint32_t frameCount, GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
-            findModelInstanceDisplayer(*model)->drawBBox(geometryContainer);
+            findModelInstanceDisplayer(*model)->drawBBox(frameCount, geometryContainer);
         }
     }
 
-    void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer) const {
+    void ModelSetDisplayer::drawBaseBones(uint32_t frameCount, GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
             if (model->getConstMeshes()) {
-                findModelInstanceDisplayer(*model)->drawBaseBones(geometryContainer, meshFilter.get());
+                findModelInstanceDisplayer(*model)->drawBaseBones(frameCount, geometryContainer, meshFilter.get());
             }
         }
     }

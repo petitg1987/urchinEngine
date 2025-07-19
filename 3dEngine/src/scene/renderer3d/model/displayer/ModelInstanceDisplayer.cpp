@@ -21,7 +21,8 @@ namespace urchin {
             depthWriteEnabled(true),
             enableFaceCull(true),
             enableLayerIndexDataInShader(false),
-            layersMask(ULLONG_MAX) {
+            layersMask(ULLONG_MAX),
+            displayerLastFrameUsed(0) {
         std::memset(&materialData, 0, sizeof(materialData));
     }
 
@@ -318,6 +319,10 @@ namespace urchin {
         return (unsigned int)instanceModels.size();
     }
 
+    uint32_t ModelInstanceDisplayer::getDisplayerLastFrameUsed() const {
+        return displayerLastFrameUsed;
+    }
+
     void ModelInstanceDisplayer::resetRenderingModels() const {
         instanceMatrices.clear();
         instanceModelMatrices.clear();
@@ -338,7 +343,9 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::prepareRendering(uint32_t /*frameCount*/, unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
+    void ModelInstanceDisplayer::prepareRendering(uint32_t frameCount, unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) {
+        displayerLastFrameUsed = frameCount;
+
         if (instanceMatrices.empty() && instanceModelMatrices.empty()) {
             return;
         }
@@ -364,7 +371,9 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::drawBBox(GeometryContainer& geometryContainer) {
+    void ModelInstanceDisplayer::drawBBox(uint32_t frameCount, GeometryContainer& geometryContainer) {
+        displayerLastFrameUsed = frameCount;
+
         for (const auto& aabboxModel : aabboxModels) {
             geometryContainer.removeGeometry(*aabboxModel);
         }
@@ -377,7 +386,9 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) const {
+    void ModelInstanceDisplayer::drawBaseBones(uint32_t frameCount, GeometryContainer& geometryContainer, const MeshFilter* meshFilter) {
+        displayerLastFrameUsed = frameCount;
+
         for (const Model* instanceModel : instanceModels) {
             if (instanceModel->getMeshes()) {
                 for (unsigned int m = 0; m < instanceModel->getMeshes()->getNumMeshes(); ++m) {

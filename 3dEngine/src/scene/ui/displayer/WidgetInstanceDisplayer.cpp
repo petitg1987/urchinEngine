@@ -13,7 +13,8 @@ namespace urchin {
             instanceId(WidgetDisplayable::INSTANCING_DENY_ID),
             uiRenderer(uiRenderer),
             colorParams({}),
-            cameraInfo({}) {
+            cameraInfo({}),
+            displayerLastFrameUsed(0) {
         std::memset((void*)&colorParams, 0, sizeof(colorParams));
         std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
     }
@@ -190,6 +191,10 @@ namespace urchin {
         return (unsigned int)instanceWidgets.size();
     }
 
+    uint32_t WidgetInstanceDisplayer::getDisplayerLastFrameUsed() const {
+        return displayerLastFrameUsed;
+    }
+
     void WidgetInstanceDisplayer::resetRenderingWidgets() const {
         instanceModelMatrices.clear();
     }
@@ -223,7 +228,9 @@ namespace urchin {
                 0.0f, 0.0f, 0.0f, 1.0f);
     }
 
-    void WidgetInstanceDisplayer::prepareRendering(uint32_t /*frameCount*/, unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& cameraJitter) {
+    void WidgetInstanceDisplayer::prepareRendering(uint32_t frameCount, unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& cameraJitter) {
+        displayerLastFrameUsed = frameCount;
+
         if (uiRenderer.getUi3dData()) {
             Matrix4<float> uiProjectionViewMatrix = projectionViewMatrix * uiRenderer.getUi3dData()->modelMatrix;
             renderer->updateUniformData(PVM_MATRIX_UNIFORM_BINDING, &uiProjectionViewMatrix);

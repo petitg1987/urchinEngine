@@ -46,8 +46,8 @@ namespace urchin {
             void prepareRendering(uint32_t, unsigned int, const Matrix4<float>&);
             void prepareRendering(uint32_t, unsigned int&, const Matrix4<float>&, const ModelSortFunction&, const void*);
 
-            void drawBBox(GeometryContainer&) const;
-            void drawBaseBones(GeometryContainer&) const;
+            void drawBBox(uint32_t, GeometryContainer&) const;
+            void drawBaseBones(uint32_t, GeometryContainer&) const;
 
         private:
             ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
