@@ -15,21 +15,21 @@ namespace urchin {
     }
 
     void WidgetSetDisplayer::onUiRendererSizeUpdated() const {
-        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(exclusiveInstanceDisplayers)) {
             displayer->onUiRendererSizeUpdated();
         }
 
-        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetInstanceDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(shareableInstanceDisplayers)) {
             displayer->onUiRendererSizeUpdated();
         }
     }
 
     void WidgetSetDisplayer::onGammaFactorUpdated() const {
-        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(exclusiveInstanceDisplayers)) {
             displayer->onGammaFactorUpdated();
         }
 
-        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetInstanceDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(shareableInstanceDisplayers)) {
             displayer->onGammaFactorUpdated();
         }
     }
@@ -44,15 +44,15 @@ namespace urchin {
             bool canUpdateDisplayer = false;
             std::size_t newWidgetInstanceId = widget->computeInstanceId();
             if (newWidgetInstanceId != WidgetDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != WidgetDisplayable::INSTANCING_DENY_ID) {
-                if (displayer->getInstanceCount() <= 1 && !widgetInstanceDisplayers.contains(newWidgetInstanceId)) {
+                if (displayer->getInstanceCount() <= 1 && !shareableInstanceDisplayers.contains(newWidgetInstanceId)) {
                     //case: displayer is not shared and there isn't other displayer matching the new instance ID
                     canUpdateDisplayer = true;
 
-                    auto displayerNodeHandler = widgetInstanceDisplayers.extract(displayer->getInstanceId());
+                    auto displayerNodeHandler = shareableInstanceDisplayers.extract(displayer->getInstanceId());
                     assert(displayerNodeHandler.mapped().get() == displayer);
                     displayerNodeHandler.mapped()->updateInstanceId(newWidgetInstanceId);
                     displayerNodeHandler.key() = newWidgetInstanceId;
-                    widgetInstanceDisplayers.insert(std::move(displayerNodeHandler));
+                    shareableInstanceDisplayers.insert(std::move(displayerNodeHandler));
                 } else if (newWidgetInstanceId == displayer->getInstanceId()) {
                     //case: update scale from 1.0 to 1.0, etc.
                     canUpdateDisplayer = true;
@@ -93,17 +93,17 @@ namespace urchin {
     }
 
     void WidgetSetDisplayer::clearDisplayers() {
-        for (Widget* widget : std::views::keys(widgetDisplayers)) {
+        for (Widget* widget : std::views::keys(exclusiveInstanceDisplayers)) {
             unobserveWidgetUpdate(*widget);
         }
-        widgetDisplayers.clear();
+        exclusiveInstanceDisplayers.clear();
 
-        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(widgetInstanceDisplayers)) {
+        for (const std::unique_ptr<WidgetInstanceDisplayer>& displayer : std::views::values(shareableInstanceDisplayers)) {
             for (Widget* widget : displayer->getInstanceWidgets()) {
                 unobserveWidgetUpdate(*widget);
             }
         }
-        widgetInstanceDisplayers.clear();
+        shareableInstanceDisplayers.clear();
     }
 
     void WidgetSetDisplayer::removeWidgetFromDisplayer(Widget& widget, WidgetInstanceDisplayer& widgetInstanceDisplayer) {
@@ -153,15 +153,15 @@ namespace urchin {
             }
 
             if (widgetInstanceId == WidgetDisplayable::INSTANCING_DENY_ID) {
-                const auto& itFind = widgetDisplayers.find(widget);
-                if (itFind != widgetDisplayers.end()) {
+                const auto& itFind = exclusiveInstanceDisplayers.find(widget);
+                if (itFind != exclusiveInstanceDisplayers.end()) {
                     assert(itFind->second->getInstanceCount() == 0);
                     addWidgetToDisplayer(*widget, *itFind->second);
                     continue; //the widget displayer used in past for this widget has been found
                 }
             } else {
-                const auto& itFind = widgetInstanceDisplayers.find(widgetInstanceId);
-                if (itFind != widgetInstanceDisplayers.end()) {
+                const auto& itFind = shareableInstanceDisplayers.find(widgetInstanceId);
+                if (itFind != shareableInstanceDisplayers.end()) {
                     addWidgetToDisplayer(*widget, *itFind->second);
                     continue; //a matching widget instance displayer has been found for the widget
                 }
@@ -171,16 +171,16 @@ namespace urchin {
             addWidgetToDisplayer(*widget, *widgetInstanceDisplayer);
             widgetInstanceDisplayer->initialize();
             if (widgetInstanceId == WidgetDisplayable::INSTANCING_DENY_ID) {
-                widgetDisplayers.try_emplace(widget, std::move(widgetInstanceDisplayer));
+                exclusiveInstanceDisplayers.try_emplace(widget, std::move(widgetInstanceDisplayer));
             } else {
-                widgetInstanceDisplayers.try_emplace(widgetInstanceId, std::move(widgetInstanceDisplayer));
+                shareableInstanceDisplayers.try_emplace(widgetInstanceId, std::move(widgetInstanceDisplayer));
             }
         }
     }
 
     void WidgetSetDisplayer::removeWidget(Widget* widget) {
         if (widget) {
-            widgetDisplayers.erase(widget);
+            exclusiveInstanceDisplayers.erase(widget);
             WidgetInstanceDisplayer* widgetInstanceDisplayer = findWidgetInstanceDisplayer(*widget);
             if (widgetInstanceDisplayer) {
                 removeWidgetFromDisplayer(*widget, *widgetInstanceDisplayer);
@@ -197,17 +197,17 @@ namespace urchin {
     void WidgetSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& cameraJitter) {
         ScopeProfiler sp(Profiler::graphic(), "widgetPreRender");
 
-        activeWidgetDisplayers.clear();
-        activeSortedWidgetDisplayers.clear();
-        for (const Widget* widget : widgets) {
+        activeInstanceDisplayers.clear();
+        activeSortedInstanceDisplayers.clear();
+        for (const Widget* widget : widgets) { //TODO display directly without temporary var !
             WidgetInstanceDisplayer* widgetInstanceDisplayer = findWidgetInstanceDisplayer(*widget);
-            if (activeWidgetDisplayers.insert(widgetInstanceDisplayer)) {
-                activeSortedWidgetDisplayers.push_back(widgetInstanceDisplayer);
+            if (activeInstanceDisplayers.insert(widgetInstanceDisplayer)) {
+                activeSortedInstanceDisplayers.push_back(widgetInstanceDisplayer);
                 widgetInstanceDisplayer->resetRenderingWidgets();
             }
             widgetInstanceDisplayer->registerRenderingWidget(*widget);
         }
-        for (WidgetInstanceDisplayer* activeWidgetDisplayer : activeSortedWidgetDisplayers) {
+        for (WidgetInstanceDisplayer* activeWidgetDisplayer : activeSortedInstanceDisplayers) {
             renderingOrder++;
             activeWidgetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, cameraJitter);
         }

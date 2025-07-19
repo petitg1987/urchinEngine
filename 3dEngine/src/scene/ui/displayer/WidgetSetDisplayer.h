@@ -35,10 +35,10 @@ namespace urchin {
 
             std::vector<Widget*> widgets;
 
-            EverGrowHashSet<WidgetInstanceDisplayer*> activeWidgetDisplayers;
-            std::vector<WidgetInstanceDisplayer*> activeSortedWidgetDisplayers;
-            std::unordered_map<Widget*, std::unique_ptr<WidgetInstanceDisplayer>> widgetDisplayers; //TODO variable no 'instance', map value: instance !!!! => find better name
-            std::unordered_map<std::size_t, std::unique_ptr<WidgetInstanceDisplayer>> widgetInstanceDisplayers;
+            EverGrowHashSet<WidgetInstanceDisplayer*> activeInstanceDisplayers;
+            std::vector<WidgetInstanceDisplayer*> activeSortedInstanceDisplayers;
+            std::unordered_map<Widget*, std::unique_ptr<WidgetInstanceDisplayer>> exclusiveInstanceDisplayers;
+            std::unordered_map<std::size_t, std::unique_ptr<WidgetInstanceDisplayer>> shareableInstanceDisplayers;
     };
 
 }

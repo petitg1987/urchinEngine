@@ -96,15 +96,15 @@ namespace urchin {
             bool canUpdateDisplayer = false;
             std::size_t newModelInstanceId = model->computeInstanceId(displayMode);
             if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
-                if (displayer->getInstanceCount() <= 1 && !modelInstanceDisplayers.contains(newModelInstanceId)) {
+                if (displayer->getInstanceCount() <= 1 && !shareableInstanceDisplayers.contains(newModelInstanceId)) {
                     //case: displayer is not shared and there isn't other displayer matching the new instance ID
                     canUpdateDisplayer = true;
 
-                    auto displayerNodeHandler = modelInstanceDisplayers.extract(displayer->getInstanceId());
+                    auto displayerNodeHandler = shareableInstanceDisplayers.extract(displayer->getInstanceId());
                     assert(displayerNodeHandler.mapped().get() == displayer);
                     displayerNodeHandler.mapped()->updateInstanceId(newModelInstanceId);
                     displayerNodeHandler.key() = newModelInstanceId;
-                    modelInstanceDisplayers.insert(std::move(displayerNodeHandler));
+                    shareableInstanceDisplayers.insert(std::move(displayerNodeHandler));
                 } else if (newModelInstanceId == displayer->getInstanceId()) {
                     //case: update scale from 1.0 to 1.0, etc.
                     canUpdateDisplayer = true;
@@ -141,17 +141,17 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::clearDisplayers() {
-        for (Model* model : std::views::keys(modelDisplayers)) {
+        for (Model* model : std::views::keys(exclusiveInstanceDisplayers)) {
             unobserveModelUpdate(*model);
         }
-        modelDisplayers.clear();
+        exclusiveInstanceDisplayers.clear();
 
-        for (const std::unique_ptr<ModelInstanceDisplayer>& displayer : std::views::values(modelInstanceDisplayers)) {
+        for (const std::unique_ptr<ModelInstanceDisplayer>& displayer : std::views::values(shareableInstanceDisplayers)) {
             for (Model* model : displayer->getInstanceModels()) {
                 unobserveModelUpdate(*model);
             }
         }
-        modelInstanceDisplayers.clear();
+        shareableInstanceDisplayers.clear();
     }
 
     void ModelSetDisplayer::removeModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
@@ -187,10 +187,10 @@ namespace urchin {
     void ModelSetDisplayer::cleanAllModels() {
         this->models.clear();
 
-        for (const std::unique_ptr<ModelInstanceDisplayer>& modelInstanceDisplayer : std::views::values(modelDisplayers)) {
+        for (const std::unique_ptr<ModelInstanceDisplayer>& modelInstanceDisplayer : std::views::values(exclusiveInstanceDisplayers)) {
             modelInstanceDisplayer->updateLayersMask(std::bitset<8>());
         }
-        for (const std::unique_ptr<ModelInstanceDisplayer>& modelInstanceDisplayer : std::views::values(modelInstanceDisplayers)) {
+        for (const std::unique_ptr<ModelInstanceDisplayer>& modelInstanceDisplayer : std::views::values(shareableInstanceDisplayers)) {
             modelInstanceDisplayer->updateLayersMask(std::bitset<8>());
         }
     }
@@ -217,8 +217,8 @@ namespace urchin {
         }
 
         if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
-            const auto& itFind = modelDisplayers.find(model);
-            if (itFind != modelDisplayers.end()) {
+            const auto& itFind = exclusiveInstanceDisplayers.find(model);
+            if (itFind != exclusiveInstanceDisplayers.end()) {
                 assert(itFind->second->getInstanceCount() == 0);
                 assert(itFind->second->getLayersMask().none());
                 addModelToDisplayer(*model, *itFind->second);
@@ -226,8 +226,8 @@ namespace urchin {
                 return; //the model displayer used in past for this model has been found
             }
         } else {
-            const auto& itFind = modelInstanceDisplayers.find(modelInstanceId);
-            if (itFind != modelInstanceDisplayers.end()) {
+            const auto& itFind = shareableInstanceDisplayers.find(modelInstanceId);
+            if (itFind != shareableInstanceDisplayers.end()) {
                 addModelToDisplayer(*model, *itFind->second);
                 itFind->second->updateLayersMask(itFind->second->getLayersMask() | layersMask);
                 return; //a matching model instance displayer has been found for the model
@@ -245,9 +245,9 @@ namespace urchin {
         addModelToDisplayer(*model, *modelInstanceDisplayer);
         modelInstanceDisplayer->initialize();
         if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
-            modelDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
+            exclusiveInstanceDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
         } else {
-            modelInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer));
+            shareableInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer));
         }
     }
 
@@ -262,7 +262,7 @@ namespace urchin {
 
     void ModelSetDisplayer::removeModel(Model* model) {
         if (model) {
-            modelDisplayers.erase(model);
+            exclusiveInstanceDisplayers.erase(model);
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
             if (modelInstanceDisplayer) {
                 removeModelFromDisplayer(*model, *modelInstanceDisplayer);
@@ -289,15 +289,15 @@ namespace urchin {
             throw std::runtime_error("Render target must be specified before call display");
         }
 
-        activeModelDisplayers.clear();
-        for (const Model* model: models) {
+        activeInstanceDisplayers.clear();
+        for (const Model* model: models) { //TODO display directly without temporary var !
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            if (activeModelDisplayers.insert(modelInstanceDisplayer)) {
+            if (activeInstanceDisplayers.insert(modelInstanceDisplayer)) {
                 modelInstanceDisplayer->resetRenderingModels();
             }
             modelInstanceDisplayer->registerRenderingModel(*model);
         }
-        for (const ModelInstanceDisplayer* activeModelDisplayer: activeModelDisplayers) {
+        for (const ModelInstanceDisplayer* activeModelDisplayer: activeInstanceDisplayers) {
             activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
