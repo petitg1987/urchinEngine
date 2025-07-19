@@ -139,7 +139,7 @@ namespace urchin {
     void WidgetSetDisplayer::updateWidgets(std::span<Widget* const> widgets) {
         ScopeProfiler sp(Profiler::graphic(), "updateWidgets");
 
-        this->widgets.assign(widgets.begin(), widgets.end());
+        this->widgets.assign(widgets.begin(), widgets.end()); //TODO if widget removed => not impact on widgetDisplayers ?!
 
         for (Widget* widget : widgets) {
             std::size_t widgetInstanceId = widget->computeInstanceId();
@@ -198,16 +198,16 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "widgetPreRender");
 
         activeWidgetDisplayers.clear();
+        activeSortedWidgetDisplayers.clear();
         for (const Widget* widget : widgets) {
             WidgetInstanceDisplayer* widgetInstanceDisplayer = findWidgetInstanceDisplayer(*widget);
-            bool unknownInstanceDisplayer = std::ranges::none_of(activeWidgetDisplayers, [widgetInstanceDisplayer](const WidgetInstanceDisplayer* v) {return v == widgetInstanceDisplayer;});
-            if (unknownInstanceDisplayer) {
-                activeWidgetDisplayers.push_back(widgetInstanceDisplayer);
+            if (activeWidgetDisplayers.insert(widgetInstanceDisplayer)) {
+                activeSortedWidgetDisplayers.push_back(widgetInstanceDisplayer);
                 widgetInstanceDisplayer->resetRenderingWidgets();
             }
             widgetInstanceDisplayer->registerRenderingWidget(*widget);
         }
-        for (WidgetInstanceDisplayer* activeWidgetDisplayer : activeWidgetDisplayers) {
+        for (WidgetInstanceDisplayer* activeWidgetDisplayer : activeSortedWidgetDisplayers) {
             renderingOrder++;
             activeWidgetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, cameraJitter);
         }
