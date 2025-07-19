@@ -210,7 +210,7 @@ namespace urchin {
     }
 
     void WidgetSetDisplayer::purgeUnusedInstanceDisplayers() {
-        constexpr double OLD_DISPLAYERS_TIME_MS = 10000.0;
+        constexpr double OLD_DISPLAYERS_TIME_MS = 10'000.0;
         auto purgeOldInstanceDisplayers = [](auto& instanceDisplayersMap) {
             auto currentTime = std::chrono::steady_clock::now();
             for (auto it = instanceDisplayersMap.begin(); it != instanceDisplayersMap.end();) {

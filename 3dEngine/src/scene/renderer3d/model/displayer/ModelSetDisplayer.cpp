@@ -321,7 +321,7 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::purgeUnusedInstanceDisplayers() {
-        constexpr double OLD_DISPLAYERS_TIME_MS = 30000.0;
+        constexpr double OLD_DISPLAYERS_TIME_MS = 30'000.0;
         auto purgeOldInstanceDisplayers = [](auto& instanceDisplayersMap) {
             auto currentTime = std::chrono::steady_clock::now();
             for (auto it = instanceDisplayersMap.begin(); it != instanceDisplayersMap.end();) {
