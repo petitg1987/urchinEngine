@@ -43,11 +43,11 @@ namespace urchin {
             std::span<Model* const> getModels() const;
             bool isDisplayerExist(const Model&) const;
 
-            void prepareRendering(uint32_t, unsigned int, const Matrix4<float>&);
-            void prepareRendering(uint32_t, unsigned int&, const Matrix4<float>&, const ModelSortFunction&, const void*);
+            void prepareRendering(unsigned int, const Matrix4<float>&);
+            void prepareRendering(unsigned int&, const Matrix4<float>&, const ModelSortFunction&, const void*);
 
-            void drawBBox(uint32_t, GeometryContainer&) const;
-            void drawBaseBones(uint32_t, GeometryContainer&) const;
+            void drawBBox(GeometryContainer&) const;
+            void drawBaseBones(GeometryContainer&) const;
 
         private:
             ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
@@ -57,6 +57,8 @@ namespace urchin {
 
             void observeModelUpdate(Model&);
             void unobserveModelUpdate(Model&);
+
+            void cleanUnusedDisplayers();
 
             bool isInitialized;
 

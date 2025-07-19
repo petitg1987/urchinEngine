@@ -531,7 +531,7 @@ namespace urchin {
         skyContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix(), camera->getPosition());
 
         deferredRenderingOrder++;
-        modelSetDisplayer->prepareRendering(frameCount, deferredRenderingOrder, camera->getProjectionViewMatrix());
+        modelSetDisplayer->prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
         deferredRenderingOrder++;
         terrainContainer.prepareRendering(deferredRenderingOrder, *camera, dt);
@@ -540,9 +540,9 @@ namespace urchin {
         waterContainer.prepareRendering(deferredRenderingOrder, *camera, fogContainer, dt);
 
         deferredRenderingOrder++;
-        uiContainer.prepareRendering(frameCount, dt, deferredRenderingOrder, *camera);
+        uiContainer.prepareRendering(dt, deferredRenderingOrder, *camera);
 
-        renderDebugSceneData(frameCount, geometryContainer);
+        renderDebugSceneData(geometryContainer);
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
@@ -578,7 +578,7 @@ namespace urchin {
         return numDependenciesToFirstPassOutput;
     }
 
-    void Renderer3d::renderDebugSceneData(uint32_t frameCount, GeometryContainer& geometryContainer) {
+    void Renderer3d::renderDebugSceneData(GeometryContainer& geometryContainer) {
         if (DEBUG_DISPLAY_MODELS_OCCLUSION_CULLER_DATA) {
             if (debugOcclusionCullerGeometries) {
                 geometryContainer.removeGeometry(*debugOcclusionCullerGeometries);
@@ -588,11 +588,11 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
-            modelSetDisplayer->drawBBox(frameCount, geometryContainer);
+            modelSetDisplayer->drawBBox(geometryContainer);
         }
 
         if (DEBUG_DISPLAY_MODEL_BASE_BONES) {
-            modelSetDisplayer->drawBaseBones(frameCount, geometryContainer);
+            modelSetDisplayer->drawBaseBones(geometryContainer);
         }
 
         if (DEBUG_DISPLAY_LIGHTS_OCTREE) {

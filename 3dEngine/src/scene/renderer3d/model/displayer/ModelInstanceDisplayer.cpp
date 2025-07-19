@@ -21,8 +21,7 @@ namespace urchin {
             depthWriteEnabled(true),
             enableFaceCull(true),
             enableLayerIndexDataInShader(false),
-            layersMask(ULLONG_MAX),
-            displayerLastFrameUsed(0) {
+            layersMask(ULLONG_MAX) {
         std::memset(&materialData, 0, sizeof(materialData));
     }
 
@@ -319,8 +318,8 @@ namespace urchin {
         return (unsigned int)instanceModels.size();
     }
 
-    uint32_t ModelInstanceDisplayer::getDisplayerLastFrameUsed() const {
-        return displayerLastFrameUsed;
+    std::chrono::steady_clock::time_point ModelInstanceDisplayer::getLastRenderingTime() const {
+        return lastRenderingTime;
     }
 
     void ModelInstanceDisplayer::resetRenderingModels() const {
@@ -343,8 +342,8 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::prepareRendering(uint32_t frameCount, unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) {
-        displayerLastFrameUsed = frameCount;
+    void ModelInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) {
+        lastRenderingTime = std::chrono::steady_clock::now();
 
         if (instanceMatrices.empty() && instanceModelMatrices.empty()) {
             return;
@@ -371,8 +370,8 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::drawBBox(uint32_t frameCount, GeometryContainer& geometryContainer) {
-        displayerLastFrameUsed = frameCount;
+    void ModelInstanceDisplayer::drawBBox(GeometryContainer& geometryContainer) {
+        lastRenderingTime = std::chrono::steady_clock::now();
 
         for (const auto& aabboxModel : aabboxModels) {
             geometryContainer.removeGeometry(*aabboxModel);
@@ -386,8 +385,8 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::drawBaseBones(uint32_t frameCount, GeometryContainer& geometryContainer, const MeshFilter* meshFilter) {
-        displayerLastFrameUsed = frameCount;
+    void ModelInstanceDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) {
+        lastRenderingTime = std::chrono::steady_clock::now();
 
         for (const Model* instanceModel : instanceModels) {
             if (instanceModel->getMeshes()) {

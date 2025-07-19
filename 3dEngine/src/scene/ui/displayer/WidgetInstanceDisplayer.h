@@ -28,11 +28,11 @@ namespace urchin {
             void addInstanceWidget(Widget&);
             void removeInstanceWidget(Widget&);
             unsigned int getInstanceCount() const;
-            uint32_t getDisplayerLastFrameUsed() const;
+            std::chrono::steady_clock::time_point getLastRenderingTime() const;
 
             void resetRenderingWidgets() const;
             void registerRenderingWidget(const Widget&) const;
-            void prepareRendering(uint32_t, unsigned int, const Matrix4<float>&, const Vector2<float>&);
+            void prepareRendering(unsigned int, const Matrix4<float>&, const Vector2<float>&);
 
         private:
             Widget& getReferenceWidget() const;
@@ -63,7 +63,7 @@ namespace urchin {
             mutable std::vector<Matrix4<float>> instanceModelMatrices;
 
             std::unique_ptr<GenericRenderer> renderer;
-            uint32_t displayerLastFrameUsed;
+            std::chrono::steady_clock::time_point lastRenderingTime;
     };
 
 }

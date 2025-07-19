@@ -109,12 +109,6 @@ namespace urchin {
     void WidgetSetDisplayer::removeWidgetFromDisplayer(Widget& widget, WidgetInstanceDisplayer& widgetInstanceDisplayer) {
         widgetInstanceDisplayer.removeInstanceWidget(widget);
         unobserveWidgetUpdate(widget);
-
-        if (widgetInstanceDisplayer.getInstanceCount() == 0) {
-            //to do:
-            // - remove the displayer based on strategy to define (unused for x seconds, too much unused displayers, etc.)
-            // - erase displayer from widgetDisplayers/widgetInstanceDisplayers
-        }
     }
 
     void WidgetSetDisplayer::addWidgetToDisplayer(Widget& widget, WidgetInstanceDisplayer& widgetInstanceDisplayer) {
@@ -139,7 +133,7 @@ namespace urchin {
     void WidgetSetDisplayer::updateWidgets(std::span<Widget* const> widgets) {
         ScopeProfiler sp(Profiler::graphic(), "updateWidgets");
 
-        this->widgets.assign(widgets.begin(), widgets.end()); //TODO if widget removed => not impact on widgetDisplayers ?!
+        this->widgets.assign(widgets.begin(), widgets.end());
 
         for (Widget* widget : widgets) {
             std::size_t widgetInstanceId = widget->computeInstanceId();
@@ -194,7 +188,7 @@ namespace urchin {
         return widgets;
     }
 
-    void WidgetSetDisplayer::prepareRendering(uint32_t frameCount, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& cameraJitter) {
+    void WidgetSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& cameraJitter) {
         ScopeProfiler sp(Profiler::graphic(), "widgetPreRender");
 
         activeInstanceDisplayers.clear();
@@ -209,8 +203,14 @@ namespace urchin {
         }
         for (WidgetInstanceDisplayer* activeWidgetDisplayer : activeSortedInstanceDisplayers) {
             renderingOrder++;
-            activeWidgetDisplayer->prepareRendering(frameCount, renderingOrder, projectionViewMatrix, cameraJitter);
+            activeWidgetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, cameraJitter);
         }
+
+        cleanUnusedDisplayers();
+    }
+
+    void WidgetSetDisplayer::cleanUnusedDisplayers() {
+        //TODO impl...
     }
 
 }

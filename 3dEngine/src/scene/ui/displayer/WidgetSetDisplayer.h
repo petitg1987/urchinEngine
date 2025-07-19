@@ -20,7 +20,7 @@ namespace urchin {
             void removeWidget(Widget*);
             std::span<Widget* const> getWidgets() const;
 
-            void prepareRendering(uint32_t, unsigned int&, const Matrix4<float>&, const Vector2<float>&);
+            void prepareRendering(unsigned int&, const Matrix4<float>&, const Vector2<float>&);
 
         private:
             WidgetInstanceDisplayer* findWidgetInstanceDisplayer(const Widget&) const;
@@ -30,6 +30,8 @@ namespace urchin {
 
             void observeWidgetUpdate(Widget&);
             void unobserveWidgetUpdate(Widget&);
+
+            void cleanUnusedDisplayers();
 
             const UIRenderer& uiRenderer;
 

@@ -157,12 +157,6 @@ namespace urchin {
     void ModelSetDisplayer::removeModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
         modelInstanceDisplayer.removeInstanceModel(model);
         unobserveModelUpdate(model);
-
-        if (modelInstanceDisplayer.getInstanceCount() == 0) {
-            //to do:
-            // - remove the displayer based on strategy to define (unused for x seconds, too much unused displayers, etc.)
-            // - erase displayer from modelDisplayers/modelInstanceDisplayers
-        }
     }
 
     void ModelSetDisplayer::addModelToDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
@@ -280,7 +274,7 @@ namespace urchin {
         return findModelInstanceDisplayer(model) != nullptr;
     }
 
-    void ModelSetDisplayer::prepareRendering(uint32_t frameCount, unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) {
+    void ModelSetDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 
         if (!isInitialized) {
@@ -298,11 +292,11 @@ namespace urchin {
             modelInstanceDisplayer->registerRenderingModel(*model);
         }
         for (ModelInstanceDisplayer* activeModelDisplayer: activeInstanceDisplayers) {
-            activeModelDisplayer->prepareRendering(frameCount, renderingOrder, projectionViewMatrix, meshFilter.get());
+            activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
 
-    void ModelSetDisplayer::prepareRendering(uint32_t frameCount, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const ModelSortFunction& modelSorter, const void* userData) {
+    void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const ModelSortFunction& modelSorter, const void* userData) {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 
         if (!isInitialized) {
@@ -320,20 +314,26 @@ namespace urchin {
             modelInstanceDisplayer->registerRenderingModel(*model);
 
             renderingOrder++;
-            modelInstanceDisplayer->prepareRendering(frameCount, renderingOrder, projectionViewMatrix, meshFilter.get());
+            modelInstanceDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
+
+        cleanUnusedDisplayers();
     }
 
-    void ModelSetDisplayer::drawBBox(uint32_t frameCount, GeometryContainer& geometryContainer) const {
+    void ModelSetDisplayer::cleanUnusedDisplayers() {
+        //TODO impl...
+    }
+
+    void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
-            findModelInstanceDisplayer(*model)->drawBBox(frameCount, geometryContainer);
+            findModelInstanceDisplayer(*model)->drawBBox(geometryContainer);
         }
     }
 
-    void ModelSetDisplayer::drawBaseBones(uint32_t frameCount, GeometryContainer& geometryContainer) const {
+    void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
             if (model->getConstMeshes()) {
-                findModelInstanceDisplayer(*model)->drawBaseBones(frameCount, geometryContainer, meshFilter.get());
+                findModelInstanceDisplayer(*model)->drawBaseBones(geometryContainer, meshFilter.get());
             }
         }
     }

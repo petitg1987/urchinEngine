@@ -43,14 +43,14 @@ namespace urchin {
             void addInstanceModel(Model&);
             void removeInstanceModel(Model&);
             unsigned int getInstanceCount() const;
-            uint32_t getDisplayerLastFrameUsed() const;
+            std::chrono::steady_clock::time_point getLastRenderingTime() const;
 
             void resetRenderingModels() const;
             void registerRenderingModel(const Model&) const;
-            void prepareRendering(uint32_t, unsigned int, const Matrix4<float>&, const MeshFilter*);
+            void prepareRendering(unsigned int, const Matrix4<float>&, const MeshFilter*);
 
-            void drawBBox(uint32_t, GeometryContainer&);
-            void drawBaseBones(uint32_t, GeometryContainer&, const MeshFilter*);
+            void drawBBox(GeometryContainer&);
+            void drawBaseBones(GeometryContainer&, const MeshFilter*);
 
         private:
             Model& getReferenceModel() const;
@@ -102,7 +102,7 @@ namespace urchin {
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
             std::vector<std::shared_ptr<AABBoxModel>> aabboxModels;
-            uint32_t displayerLastFrameUsed;
+            std::chrono::steady_clock::time_point lastRenderingTime;
     };
 
 }
