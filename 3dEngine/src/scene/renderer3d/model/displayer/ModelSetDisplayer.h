@@ -58,7 +58,7 @@ namespace urchin {
             void observeModelUpdate(Model&);
             void unobserveModelUpdate(Model&);
 
-            void cleanUnusedDisplayers();
+            void purgeUnusedInstanceDisplayers();
 
             bool isInitialized;
 

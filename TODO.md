@@ -17,7 +17,6 @@
     * GPU driven rendering: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>
   * ► **NEW FEATURE**: Use sRGB format for color/albedo framebuffers and swap chain
 * Model
-  * ▲ **OPTIMIZATION**: Remove the ModelInstanceDisplayer in ModelSetDisplayer#removeModelFromDisplayer() for models not displayed for a long time
   * ► **OPTIMIZATION**: Implement draw calls batching: static, dynamic or specific for shadow map
     * See: <https://docs.unity3d.com/Manual/DrawCallBatching.html>
   * ► **OPTIMIZATION**: Parallelize the creation of the ModelDisplayer
@@ -40,7 +39,6 @@
   * ▼ **NEW FEATURE**: Water transparency
     * See: <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>
 * UI
-  * ▲ **OPTIMIZATION**: Remove the WidgetInstanceDisplayer in WidgetSetDisplayer#removeWidgetFromDisplayer() for widgets not displayed for a long time
   * ► **NEW FEATURE**: Render UI into texture to avoid depth shift in 3d UI
   * ► **IMPROVEMENT**: Add missing characters dynamically in the atlas texture(s)
   * ► **IMPROVEMENT**: Implement dynamic scaling of characters like multichannel signed distance or distance field font

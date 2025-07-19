@@ -31,7 +31,7 @@ namespace urchin {
             void observeWidgetUpdate(Widget&);
             void unobserveWidgetUpdate(Widget&);
 
-            void cleanUnusedDisplayers();
+            void purgeUnusedInstanceDisplayers();
 
             const UIRenderer& uiRenderer;
 

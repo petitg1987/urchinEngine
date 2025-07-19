@@ -206,11 +206,24 @@ namespace urchin {
             activeWidgetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, cameraJitter);
         }
 
-        cleanUnusedDisplayers();
+        purgeUnusedInstanceDisplayers();
     }
 
-    void WidgetSetDisplayer::cleanUnusedDisplayers() {
-        //TODO impl...
+    void WidgetSetDisplayer::purgeUnusedInstanceDisplayers() {
+        constexpr double OLD_DISPLAYERS_TIME_MS = 10000.0;
+        auto purgeOldInstanceDisplayers = [](auto& instanceDisplayersMap) {
+            auto currentTime = std::chrono::steady_clock::now();
+            for (auto it = instanceDisplayersMap.begin(); it != instanceDisplayersMap.end();) {
+                auto unusedTimeInMs = (double)std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - it->second->getLastRenderingTime()).count();
+                if (unusedTimeInMs >= OLD_DISPLAYERS_TIME_MS) {
+                    it = instanceDisplayersMap.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+        };
+        purgeOldInstanceDisplayers(exclusiveInstanceDisplayers);
+        purgeOldInstanceDisplayers(shareableInstanceDisplayers);
     }
 
 }

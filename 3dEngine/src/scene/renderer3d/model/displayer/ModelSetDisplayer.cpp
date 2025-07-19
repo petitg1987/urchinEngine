@@ -294,6 +294,8 @@ namespace urchin {
         for (ModelInstanceDisplayer* activeModelDisplayer: activeInstanceDisplayers) {
             activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
+
+        purgeUnusedInstanceDisplayers();
     }
 
     void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const ModelSortFunction& modelSorter, const void* userData) {
@@ -316,12 +318,30 @@ namespace urchin {
             renderingOrder++;
             modelInstanceDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
-
-        cleanUnusedDisplayers();
     }
 
-    void ModelSetDisplayer::cleanUnusedDisplayers() {
-        //TODO impl...
+    void ModelSetDisplayer::purgeUnusedInstanceDisplayers() {
+        constexpr double OLD_DISPLAYERS_TIME_MS = 60000.0;
+        auto purgeOldInstanceDisplayers = [](auto& instanceDisplayersMap) {
+            auto currentTime = std::chrono::steady_clock::now();
+            for (auto it = instanceDisplayersMap.begin(); it != instanceDisplayersMap.end();) {
+                auto unusedTimeInMs = (double)std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - it->second->getLastRenderingTime()).count();
+                if (unusedTimeInMs >= OLD_DISPLAYERS_TIME_MS) {
+                    std::span<Model* const> models = it->second->getInstanceModels();
+                    if (!models.empty()) {
+                        std::cout<<"REMOVED model: "<<models[0]->getName()<<std::endl; //TODO remove me
+                    } else {
+                        std::cout<<"REMOVED model"<<std::endl; //TODO remove me
+                    }
+
+                    it = instanceDisplayersMap.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+        };
+        purgeOldInstanceDisplayers(exclusiveInstanceDisplayers);
+        purgeOldInstanceDisplayers(shareableInstanceDisplayers);
     }
 
     void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) const {
