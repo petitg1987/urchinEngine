@@ -31,7 +31,7 @@ namespace urchin {
 
             void resetRenderingWidgets() const;
             void registerRenderingWidget(const Widget&) const;
-            void prepareRendering(unsigned int, const Matrix4<float>&, const Vector2<float>&);
+            void prepareRendering(uint32_t, unsigned int, const Matrix4<float>&, const Vector2<float>&);
 
         private:
             Widget& getReferenceWidget() const;

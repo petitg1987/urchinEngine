@@ -223,7 +223,7 @@ namespace urchin {
                 0.0f, 0.0f, 0.0f, 1.0f);
     }
 
-    void WidgetInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& cameraJitter) {
+    void WidgetInstanceDisplayer::prepareRendering(uint32_t /*frameCount*/, unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& cameraJitter) {
         if (uiRenderer.getUi3dData()) {
             Matrix4<float> uiProjectionViewMatrix = projectionViewMatrix * uiRenderer.getUi3dData()->modelMatrix;
             renderer->updateUniformData(PVM_MATRIX_UNIFORM_BINDING, &uiProjectionViewMatrix);

@@ -46,7 +46,7 @@ namespace urchin {
 
             void resetRenderingModels() const;
             void registerRenderingModel(const Model&) const;
-            void prepareRendering(unsigned int, const Matrix4<float>&, const MeshFilter*) const;
+            void prepareRendering(uint32_t frameCount, unsigned int, const Matrix4<float>&, const MeshFilter*) const;
 
             void drawBBox(GeometryContainer&);
             void drawBaseBones(GeometryContainer&, const MeshFilter*) const;

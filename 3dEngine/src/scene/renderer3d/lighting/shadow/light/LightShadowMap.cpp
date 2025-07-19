@@ -122,7 +122,7 @@ namespace urchin {
 
     void LightShadowMap::renderModels(uint32_t frameCount, unsigned int numDependenciesToShadowMaps, unsigned int renderingOrder) const {
         renderTarget->disableAllProcessors();
-        shadowModelSetDisplayer->prepareRendering(renderingOrder, Matrix4<float>() /* not used for shadow */);
+        shadowModelSetDisplayer->prepareRendering(frameCount, renderingOrder, Matrix4<float>() /* not used for shadow */);
         renderTarget->render(frameCount, numDependenciesToShadowMaps);
     }
 }

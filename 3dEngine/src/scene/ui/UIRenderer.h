@@ -71,7 +71,7 @@ namespace urchin {
             const std::vector<std::shared_ptr<Widget>>& getWidgets() const;
 
             void prepareRendering(uint32_t, float, unsigned int&) override;
-            void prepareRendering(float, unsigned int&, const Matrix4<float>&, const Vector2<float>&) const;
+            void prepareRendering(uint32_t, float, unsigned int&, const Matrix4<float>&, const Vector2<float>&) const;
 
         private:
             bool adjustMouseCoordinates(Point2<int>&) const;

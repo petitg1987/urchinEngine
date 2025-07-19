@@ -115,7 +115,7 @@ namespace urchin {
         };
 
         renderTarget->disableAllProcessors();
-        modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix(), modelSorter, &sortUserData);
+        modelSetDisplayer->prepareRendering(frameCount, renderingOrder, camera.getProjectionViewMatrix(), modelSorter, &sortUserData);
         renderTarget->render(frameCount, numDependenciesToTransparentTextures);
     }
 

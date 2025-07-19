@@ -531,7 +531,7 @@ namespace urchin {
         skyContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix(), camera->getPosition());
 
         deferredRenderingOrder++;
-        modelSetDisplayer->prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
+        modelSetDisplayer->prepareRendering(frameCount, deferredRenderingOrder, camera->getProjectionViewMatrix());
 
         deferredRenderingOrder++;
         terrainContainer.prepareRendering(deferredRenderingOrder, *camera, dt);
@@ -540,7 +540,7 @@ namespace urchin {
         waterContainer.prepareRendering(deferredRenderingOrder, *camera, fogContainer, dt);
 
         deferredRenderingOrder++;
-        uiContainer.prepareRendering(dt, deferredRenderingOrder, *camera);
+        uiContainer.prepareRendering(frameCount, dt, deferredRenderingOrder, *camera);
 
         renderDebugSceneData(geometryContainer);
         deferredRenderingOrder++;

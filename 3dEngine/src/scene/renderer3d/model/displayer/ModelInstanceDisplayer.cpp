@@ -338,7 +338,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
+    void ModelInstanceDisplayer::prepareRendering(uint32_t /*frameCount*/, unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
         if (instanceMatrices.empty() && instanceModelMatrices.empty()) {
             return;
         }

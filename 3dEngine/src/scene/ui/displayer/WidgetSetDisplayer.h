@@ -20,7 +20,7 @@ namespace urchin {
             void removeWidget(Widget*);
             std::span<Widget* const> getWidgets() const;
 
-            void prepareRendering(unsigned int&, const Matrix4<float>&, const Vector2<float>&);
+            void prepareRendering(uint32_t, unsigned int&, const Matrix4<float>&, const Vector2<float>&);
 
         private:
             WidgetInstanceDisplayer* findWidgetInstanceDisplayer(const Widget&) const;

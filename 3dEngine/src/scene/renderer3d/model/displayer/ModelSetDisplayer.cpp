@@ -280,7 +280,7 @@ namespace urchin {
         return findModelInstanceDisplayer(model) != nullptr;
     }
 
-    void ModelSetDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) {
+    void ModelSetDisplayer::prepareRendering(uint32_t frameCount, unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 
         if (!isInitialized) {
@@ -298,11 +298,11 @@ namespace urchin {
             modelInstanceDisplayer->registerRenderingModel(*model);
         }
         for (const ModelInstanceDisplayer* activeModelDisplayer: activeInstanceDisplayers) {
-            activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
+            activeModelDisplayer->prepareRendering(frameCount, renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
 
-    void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const ModelSortFunction& modelSorter, const void* userData) {
+    void ModelSetDisplayer::prepareRendering(uint32_t frameCount, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const ModelSortFunction& modelSorter, const void* userData) {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 
         if (!isInitialized) {
@@ -320,7 +320,7 @@ namespace urchin {
             modelInstanceDisplayer->registerRenderingModel(*model);
 
             renderingOrder++;
-            modelInstanceDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
+            modelInstanceDisplayer->prepareRendering(frameCount, renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
 

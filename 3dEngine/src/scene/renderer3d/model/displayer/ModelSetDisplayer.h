@@ -43,8 +43,8 @@ namespace urchin {
             std::span<Model* const> getModels() const;
             bool isDisplayerExist(const Model&) const;
 
-            void prepareRendering(unsigned int, const Matrix4<float>&);
-            void prepareRendering(unsigned int&, const Matrix4<float>&, const ModelSortFunction&, const void*);
+            void prepareRendering(uint32_t, unsigned int, const Matrix4<float>&);
+            void prepareRendering(uint32_t, unsigned int&, const Matrix4<float>&, const ModelSortFunction&, const void*);
 
             void drawBBox(GeometryContainer&) const;
             void drawBaseBones(GeometryContainer&) const;

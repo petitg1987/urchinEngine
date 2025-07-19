@@ -24,7 +24,7 @@ namespace urchin {
             UIRenderer& newUI3dRenderer(const Transform<float>&, const Point2<int>&, const Point2<float>&, float);
             void removeUI3dRenderer(const UIRenderer*);
 
-            void prepareRendering(float, unsigned int&, const Camera&) const;
+            void prepareRendering(uint32_t, float, unsigned int&, const Camera&) const;
 
         private:
             RenderTarget& renderTarget;
