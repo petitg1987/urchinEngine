@@ -1,9 +1,9 @@
 #include <cstring>
 
-#include <scene/renderer3d/landscape/water/Water.h>
-#include <resources/ResourceRetriever.h>
-#include <graphics/render/GenericRendererBuilder.h>
-#include <graphics/render/shader/ShaderBuilder.h>
+#include "scene/renderer3d/landscape/water/Water.h"
+#include "resources/ResourceRetriever.h"
+#include "graphics/render/GenericRendererBuilder.h"
+#include "graphics/render/shader/ShaderBuilder.h"
 
 namespace urchin {
 

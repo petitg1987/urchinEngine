@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include <body/model/AbstractBody.h>
-#include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
-#include <collision/narrowphase/algorithm/CollisionAlgorithmSelector.h>
+#include "body/model/AbstractBody.h"
+#include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
 
 namespace urchin {
 

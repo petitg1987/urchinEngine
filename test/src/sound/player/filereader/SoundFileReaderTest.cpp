@@ -2,8 +2,8 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinSoundEngine.h>
 
-#include <AssertHelper.h>
-#include <sound/player/filereader/SoundFileReaderTest.h>
+#include "AssertHelper.h"
+#include "sound/player/filereader/SoundFileReaderTest.h"
 using namespace urchin;
 
 void SoundFileReaderTest::cursorAfterRead() {

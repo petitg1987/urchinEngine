@@ -1,8 +1,8 @@
 #pragma once
 
-#include <resources/Resource.h>
-#include <resources/material/UvScale.h>
-#include <graphics/api/GraphicsApi.h>
+#include "resources/Resource.h"
+#include "resources/material/UvScale.h"
+#include "graphics/api/GraphicsApi.h"
 
 namespace urchin {
 

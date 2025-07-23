@@ -1,7 +1,7 @@
 #pragma once
 
-#include <math/geometry/2d/shape/ConvexShape2D.h>
-#include <math/algebra/vector/Vector2.h>
+#include "math/geometry/2d/shape/ConvexShape2D.h"
+#include "math/algebra/vector/Vector2.h"
 
 namespace urchin {
 

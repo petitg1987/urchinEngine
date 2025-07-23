@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <utility>
 
-#include <profiler/ProfilerNode.h>
+#include "profiler/ProfilerNode.h"
 
 namespace urchin {
 

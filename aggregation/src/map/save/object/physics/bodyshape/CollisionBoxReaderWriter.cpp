@@ -1,4 +1,4 @@
-#include <map/save/object/physics/bodyshape/CollisionBoxReaderWriter.h>
+#include "map/save/object/physics/bodyshape/CollisionBoxReaderWriter.h"
 
 namespace urchin {
 

@@ -7,11 +7,11 @@
 #include <mutex>
 #include <UrchinCommon.h>
 
-#include <body/model/AbstractBody.h>
-#include <body/BodyContainer.h>
-#include <collision/CollisionWorld.h>
-#include <raytest/RayTester.h>
-#include <visualizer/CollisionVisualizer.h>
+#include "body/model/AbstractBody.h"
+#include "body/BodyContainer.h"
+#include "collision/CollisionWorld.h"
+#include "raytest/RayTester.h"
+#include "visualizer/CollisionVisualizer.h"
 
 namespace urchin {
 

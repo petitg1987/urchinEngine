@@ -1,7 +1,7 @@
 #include <cassert>
 
-#include <math/geometry/2d/Line2D.h>
-#include <math/algorithm/MathFunction.h>
+#include "math/geometry/2d/Line2D.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 

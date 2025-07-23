@@ -2,8 +2,8 @@
 #include <cppunit/TestCaller.h>
 #include <Urchin3dEngine.h>
 
-#include <3d/graphics/render/GenericRendererComparatorTest.h>
-#include <AssertHelper.h>
+#include "3d/graphics/render/GenericRendererComparatorTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void GenericRendererComparatorTest::depthTestOrdering() {

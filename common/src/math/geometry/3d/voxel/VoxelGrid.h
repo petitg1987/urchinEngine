@@ -2,7 +2,7 @@
 
 #include <unordered_set>
 
-#include <math/algebra/point/Point3.h>
+#include "math/algebra/point/Point3.h"
 
 namespace urchin {
 

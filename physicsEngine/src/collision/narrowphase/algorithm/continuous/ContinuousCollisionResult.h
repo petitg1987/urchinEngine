@@ -3,7 +3,7 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <body/model/AbstractBody.h>
+#include "body/model/AbstractBody.h"
 
 namespace urchin {
 

@@ -1,13 +1,13 @@
 #include <stdexcept>
 
-#include <map/save/object/physics/bodyshape/CollisionShapeReaderWriterRetriever.h>
-#include <map/save/object/physics/bodyshape/CollisionSphereReaderWriter.h>
-#include <map/save/object/physics/bodyshape/CollisionCapsuleReaderWriter.h>
-#include <map/save/object/physics/bodyshape/CollisionCylinderReaderWriter.h>
-#include <map/save/object/physics/bodyshape/CollisionConeReaderWriter.h>
-#include <map/save/object/physics/bodyshape/CollisionBoxReaderWriter.h>
-#include <map/save/object/physics/bodyshape/CollisionConvexHullReaderWriter.h>
-#include <map/save/object/physics/bodyshape/CollisionCompoundShapeReaderWriter.h>
+#include "map/save/object/physics/bodyshape/CollisionShapeReaderWriterRetriever.h"
+#include "map/save/object/physics/bodyshape/CollisionSphereReaderWriter.h"
+#include "map/save/object/physics/bodyshape/CollisionCapsuleReaderWriter.h"
+#include "map/save/object/physics/bodyshape/CollisionCylinderReaderWriter.h"
+#include "map/save/object/physics/bodyshape/CollisionConeReaderWriter.h"
+#include "map/save/object/physics/bodyshape/CollisionBoxReaderWriter.h"
+#include "map/save/object/physics/bodyshape/CollisionConvexHullReaderWriter.h"
+#include "map/save/object/physics/bodyshape/CollisionCompoundShapeReaderWriter.h"
 
 namespace urchin {
 

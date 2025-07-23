@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <map/save/object/physics/bodyshape/CollisionCylinderReaderWriter.h>
+#include "map/save/object/physics/bodyshape/CollisionCylinderReaderWriter.h"
 
 namespace urchin {
 

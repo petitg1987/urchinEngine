@@ -1,4 +1,4 @@
-#include <character/CharacterEventCallback.h>
+#include "character/CharacterEventCallback.h"
 
 namespace urchin {
 

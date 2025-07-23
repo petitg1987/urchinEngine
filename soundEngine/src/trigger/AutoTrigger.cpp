@@ -1,5 +1,5 @@
-#include <trigger/AutoTrigger.h>
-#include <sound/localizable/LocalizableSound.h>
+#include "trigger/AutoTrigger.h"
+#include "sound/localizable/LocalizableSound.h"
 
 namespace urchin {
 

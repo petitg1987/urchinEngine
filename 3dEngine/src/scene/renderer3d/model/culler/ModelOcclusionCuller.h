@@ -1,7 +1,7 @@
 #pragma once
 
-#include <scene/renderer3d/model/Model.h>
-#include <resources/geometry/aabbox/AABBoxModel.h>
+#include "scene/renderer3d/model/Model.h"
+#include "resources/geometry/aabbox/AABBoxModel.h"
 
 namespace urchin {
 

@@ -2,8 +2,8 @@
 
 #include <array>
 
-#include <math/algebra/point/Point3.h>
-#include <math/geometry/3d/Line3D.h>
+#include "math/algebra/point/Point3.h"
+#include "math/geometry/3d/Line3D.h"
 
 namespace urchin {
 

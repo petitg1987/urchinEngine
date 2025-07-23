@@ -1,9 +1,9 @@
 #include <QHeaderView>
 #include <QVariant>
 
-#include <panel/object/physics/bodyshape/support/LocalizedShapeTableView.h>
-#include <panel/object/physics/bodyshape/BodyShapeWidget.h>
-#include <panel/object/physics/bodyshape/BodyShapeWidgetRetriever.h>
+#include "panel/object/physics/bodyshape/support/LocalizedShapeTableView.h"
+#include "panel/object/physics/bodyshape/BodyShapeWidget.h"
+#include "panel/object/physics/bodyshape/BodyShapeWidgetRetriever.h"
 
 namespace urchin {
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <scene/renderer3d/camera/Camera.h>
-#include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
-#include <scene/renderer3d/lighting/light/LightManager.h>
+#include "scene/renderer3d/camera/Camera.h"
+#include "scene/renderer3d/model/displayer/CustomModelShaderVariable.h"
+#include "scene/renderer3d/lighting/light/LightManager.h"
 
 namespace urchin {
 

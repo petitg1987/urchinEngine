@@ -1,4 +1,4 @@
-#include <collision/narrowphase/algorithm/gjk/GJKConvexObjectWrapper.h>
+#include "collision/narrowphase/algorithm/gjk/GJKConvexObjectWrapper.h"
 
 namespace urchin {
 

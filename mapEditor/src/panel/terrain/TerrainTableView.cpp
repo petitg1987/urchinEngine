@@ -1,7 +1,7 @@
 #include <QHeaderView>
 #include <UrchinAggregation.h>
 
-#include <panel/terrain/TerrainTableView.h>
+#include "panel/terrain/TerrainTableView.h"
 
 namespace urchin {
     TerrainTableView::TerrainTableView(QWidget* parent) :

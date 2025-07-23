@@ -3,9 +3,9 @@
 #include <QtWidgets/QFileDialog>
 #include <UrchinCommon.h>
 
-#include <panel/object/dialog/NewObjectDialog.h>
-#include <widget/style/LabelStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
+#include "panel/object/dialog/NewObjectDialog.h"
+#include "widget/style/LabelStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
 
 namespace urchin {
 

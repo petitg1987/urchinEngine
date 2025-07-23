@@ -1,4 +1,4 @@
-#include <SoundComponent.h>
+#include "SoundComponent.h"
 
 namespace urchin {
 

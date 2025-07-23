@@ -1,6 +1,6 @@
 #include <utility>
 
-#include <request/RequestException.h>
+#include "request/RequestException.h"
 
 namespace urchin {
     RequestException::RequestException(std::string message) :

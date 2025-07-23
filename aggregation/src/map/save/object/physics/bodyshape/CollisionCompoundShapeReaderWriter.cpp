@@ -1,8 +1,8 @@
 #include <vector>
 
-#include <map/save/object/physics/bodyshape/CollisionCompoundShapeReaderWriter.h>
-#include <map/save/object/physics/bodyshape/CollisionShapeReaderWriterRetriever.h>
-#include <map/save/common/OrientationReaderWriter.h>
+#include "map/save/object/physics/bodyshape/CollisionCompoundShapeReaderWriter.h"
+#include "map/save/object/physics/bodyshape/CollisionShapeReaderWriterRetriever.h"
+#include "map/save/common/OrientationReaderWriter.h"
 
 namespace urchin {
 

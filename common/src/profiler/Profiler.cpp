@@ -3,9 +3,9 @@
 #include <cassert>
 #include <thread>
 
-#include <profiler/Profiler.h>
-#include <config/ConfigService.h>
-#include <logger/FileLogger.h>
+#include "profiler/Profiler.h"
+#include "config/ConfigService.h"
+#include "logger/FileLogger.h"
 
 namespace urchin {
 

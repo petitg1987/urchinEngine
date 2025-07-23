@@ -3,8 +3,8 @@
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <AssertHelper.h>
-#include <physics/body/BodyContainerTest.h>
+#include "AssertHelper.h"
+#include "physics/body/BodyContainerTest.h"
 using namespace urchin;
 
 void BodyContainerTest::addAndRemoveBody() {

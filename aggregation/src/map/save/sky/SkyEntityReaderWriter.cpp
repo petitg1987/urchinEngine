@@ -1,7 +1,7 @@
 #include <Urchin3dEngine.h>
 
-#include <map/save/sky/SkyEntityReaderWriter.h>
-#include <util/PathUtil.h>
+#include "map/save/sky/SkyEntityReaderWriter.h"
+#include "util/PathUtil.h"
 
 namespace urchin {
 

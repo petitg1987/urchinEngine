@@ -1,11 +1,11 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <3d/scene/ui/UIRendererTest.h>
-#include <3d/scene/ui/DetachChildrenEventListener.h>
-#include <3d/scene/ui/FocusEventListener.h>
-#include <scene/ui/displayer/WidgetSetDisplayer.h>
-#include <AssertHelper.h>
+#include "3d/scene/ui/UIRendererTest.h"
+#include "3d/scene/ui/DetachChildrenEventListener.h"
+#include "3d/scene/ui/FocusEventListener.h"
+#include "scene/ui/displayer/WidgetSetDisplayer.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void UIRendererTest::focusState() {

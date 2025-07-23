@@ -3,11 +3,11 @@
 #include <string>
 #include <memory>
 
-#include <scene/ui/widget/Widget.h>
-#include <scene/ui/widget/Position.h>
-#include <scene/ui/widget/Size.h>
-#include <scene/ui/widget/text/Text.h>
-#include <graphics/api/GraphicsApi.h>
+#include "scene/ui/widget/Widget.h"
+#include "scene/ui/widget/Position.h"
+#include "scene/ui/widget/Size.h"
+#include "scene/ui/widget/text/Text.h"
+#include "graphics/api/GraphicsApi.h"
 
 namespace urchin {
 

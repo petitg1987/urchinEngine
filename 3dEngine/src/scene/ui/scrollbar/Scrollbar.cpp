@@ -1,9 +1,9 @@
 #include <utility>
 
-#include <scene/ui/scrollbar/Scrollbar.h>
-#include <scene/ui/scrollbar/Scrollable.h>
-#include <resources/ResourceRetriever.h>
-#include <scene/InputDeviceKey.h>
+#include "scene/ui/scrollbar/Scrollbar.h"
+#include "scene/ui/scrollbar/Scrollable.h"
+#include "resources/ResourceRetriever.h"
+#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 

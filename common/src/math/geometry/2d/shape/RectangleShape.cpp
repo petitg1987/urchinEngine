@@ -1,4 +1,4 @@
-#include <math/geometry/2d/shape/RectangleShape.h>
+#include "math/geometry/2d/shape/RectangleShape.h"
 
 namespace urchin {
 

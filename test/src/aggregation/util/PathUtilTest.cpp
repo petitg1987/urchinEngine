@@ -2,8 +2,8 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinAggregation.h>
 
-#include <aggregation/util/PathUtilTest.h>
-#include <AssertHelper.h>
+#include "aggregation/util/PathUtilTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void PathUtilTest::relativePath() {

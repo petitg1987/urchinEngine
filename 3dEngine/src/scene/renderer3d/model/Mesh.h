@@ -2,9 +2,9 @@
 
 #include <UrchinCommon.h>
 
-#include <resources/model/ConstMesh.h>
-#include <resources/geometry/sphere/SphereModel.h>
-#include <resources/geometry/GeometryContainer.h>
+#include "resources/model/ConstMesh.h"
+#include "resources/geometry/sphere/SphereModel.h"
+#include "resources/geometry/GeometryContainer.h"
 
 namespace urchin {
 

@@ -1,5 +1,5 @@
-#include <scene/ui/displayer/WidgetDisplayable.h>
-#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
+#include "scene/ui/displayer/WidgetDisplayable.h"
+#include "scene/ui/displayer/WidgetInstanceDisplayer.h"
 
 namespace urchin {
 

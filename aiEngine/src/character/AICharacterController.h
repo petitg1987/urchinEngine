@@ -1,11 +1,11 @@
 #pragma once
 
 #include <memory>
-
 #include <AIEnvironment.h>
-#include <character/AICharacter.h>
-#include <character/AICharacterEventHandler.h>
-#include <path/PathRequest.h>
+
+#include "character/AICharacter.h"
+#include "character/AICharacterEventHandler.h"
+#include "path/PathRequest.h"
 
 namespace urchin {
 

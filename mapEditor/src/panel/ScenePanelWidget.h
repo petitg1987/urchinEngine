@@ -1,14 +1,14 @@
 #pragma once
 
 #include <string>
-
 #include <UrchinCommon.h>
-#include <controller/SceneController.h>
-#include <panel/object/ObjectPanelWidget.h>
-#include <panel/terrain/TerrainPanelWidget.h>
-#include <panel/water/WaterPanelWidget.h>
-#include <panel/sky/SkyPanelWidget.h>
-#include <panel/ai/AIPanelWidget.h>
+
+#include "controller/SceneController.h"
+#include "panel/object/ObjectPanelWidget.h"
+#include "panel/terrain/TerrainPanelWidget.h"
+#include "panel/water/WaterPanelWidget.h"
+#include "panel/sky/SkyPanelWidget.h"
+#include "panel/ai/AIPanelWidget.h"
 
 namespace urchin {
 

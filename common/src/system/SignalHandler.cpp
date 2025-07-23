@@ -10,12 +10,12 @@
     #include <cxxabi.h>
     #include <unistd.h>
     #include <dlfcn.h>
-    #include <system/CommandExecutor.h>
+    #include "system/CommandExecutor.h"
 #endif
 
-#include <system/SignalHandler.h>
-#include <util/FileUtil.h>
-#include <logger/Logger.h>
+#include "system/SignalHandler.h"
+#include "util/FileUtil.h"
+#include "logger/Logger.h"
 
 namespace urchin {
 

@@ -3,10 +3,10 @@
 #include <QMessageBox>
 #include <UrchinAggregation.h>
 
-#include <panel/sky/SkyPanelWidget.h>
-#include <widget/style/ButtonStyleHelper.h>
-#include <widget/style/GroupBoxStyleHelper.h>
-#include <widget/style/SpinBoxStyleHelper.h>
+#include "panel/sky/SkyPanelWidget.h"
+#include "widget/style/ButtonStyleHelper.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
 
 namespace urchin {
 

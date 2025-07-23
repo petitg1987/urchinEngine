@@ -2,7 +2,7 @@
 #include <limits>
 #include <iomanip>
 
-#include <math/geometry/3d/object/Cone.h>
+#include "math/geometry/3d/object/Cone.h"
 
 namespace urchin {
 

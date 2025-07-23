@@ -4,7 +4,7 @@
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <map/save/object/physics/bodyshape/CollisionShapeReaderWriter.h>
+#include "map/save/object/physics/bodyshape/CollisionShapeReaderWriter.h"
 
 namespace urchin {
 

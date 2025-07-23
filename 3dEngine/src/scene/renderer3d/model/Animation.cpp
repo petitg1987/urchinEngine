@@ -1,4 +1,4 @@
-#include <scene/renderer3d/model/Animation.h>
+#include "scene/renderer3d/model/Animation.h"
 
 namespace urchin {
 

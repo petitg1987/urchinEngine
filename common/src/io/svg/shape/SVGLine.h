@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include <io/svg/shape/SVGShape.h>
-#include <math/geometry/2d/LineSegment2D.h>
+#include "io/svg/shape/SVGShape.h"
+#include "math/geometry/2d/LineSegment2D.h"
 
 namespace urchin {
 

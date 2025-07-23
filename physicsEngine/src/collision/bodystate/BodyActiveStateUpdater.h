@@ -2,10 +2,10 @@
 
 #include <vector>
 
-#include <collision/bodystate/IslandContainer.h>
-#include <collision/ManifoldResult.h>
-#include <body/BodyContainer.h>
-#include <body/model/RigidBody.h>
+#include "collision/bodystate/IslandContainer.h"
+#include "collision/ManifoldResult.h"
+#include "body/BodyContainer.h"
+#include "body/model/RigidBody.h"
 
 namespace urchin {
 

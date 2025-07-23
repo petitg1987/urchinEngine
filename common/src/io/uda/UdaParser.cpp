@@ -5,9 +5,9 @@
 #include <ranges>
 #include <stack>
 
-#include <io/uda/UdaParser.h>
-#include <io/file/FileReader.h>
-#include <util/StringUtil.h>
+#include "io/uda/UdaParser.h"
+#include "io/file/FileReader.h"
+#include "util/StringUtil.h"
 
 namespace urchin {
 

@@ -7,6 +7,7 @@
 #define SEB_SEB_H
 
 #include <vector>
+
 #include "Seb_configure.h"
 #include "Seb_point.h"
 #include "Subspan.h"

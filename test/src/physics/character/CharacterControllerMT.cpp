@@ -1,8 +1,8 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <physics/character/CharacterControllerIT.h>
-#include <physics/character/CharacterControllerMT.h>
+#include "physics/character/CharacterControllerIT.h"
+#include "physics/character/CharacterControllerMT.h"
 using namespace urchin;
 
 CppUnit::Test* CharacterControllerMT::suite() {

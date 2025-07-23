@@ -1,13 +1,13 @@
 #include <stdexcept>
 #include <utility>
 
-#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
-#include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
-#include <scene/renderer3d/lighting/shadow/display/ModelShadowSunShaderVariable.h>
-#include <scene/renderer3d/lighting/shadow/display/ModelShadowOmnidirectionalShaderVariable.h>
-#include <scene/renderer3d/lighting/shadow/display/ModelShadowSpotShaderVariable.h>
-#include <scene/renderer3d/lighting/light/Light.h>
-#include <scene/renderer3d/model/builder/ModelBuilder.h>
+#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
+#include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
+#include "scene/renderer3d/lighting/shadow/display/ModelShadowSunShaderVariable.h"
+#include "scene/renderer3d/lighting/shadow/display/ModelShadowOmnidirectionalShaderVariable.h"
+#include "scene/renderer3d/lighting/shadow/display/ModelShadowSpotShaderVariable.h"
+#include "scene/renderer3d/lighting/light/Light.h"
+#include "scene/renderer3d/model/builder/ModelBuilder.h"
 
 namespace urchin {
 

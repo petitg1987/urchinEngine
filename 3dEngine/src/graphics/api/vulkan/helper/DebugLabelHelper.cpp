@@ -1,7 +1,7 @@
 #include <cstring>
 
-#include <graphics/api/vulkan/helper/DebugLabelHelper.h>
-#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
+#include "graphics/api/vulkan/helper/DebugLabelHelper.h"
+#include "graphics/api/vulkan/setup/GraphicsSetupService.h"
 
 namespace urchin {
 

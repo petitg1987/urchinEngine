@@ -4,7 +4,7 @@
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 
-#include <model/WaterEntity.h>
+#include "model/WaterEntity.h"
 
 namespace urchin {
 

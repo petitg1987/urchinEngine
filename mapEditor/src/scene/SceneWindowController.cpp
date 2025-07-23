@@ -1,5 +1,5 @@
-#include <scene/SceneWindowController.h>
-#include <scene/SceneDisplayerWindow.h>
+#include "scene/SceneWindowController.h"
+#include "scene/SceneDisplayerWindow.h"
 
 namespace urchin {
 

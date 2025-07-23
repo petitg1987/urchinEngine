@@ -1,7 +1,7 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QLabel>
 
-#include <panel/object/dialog/ChangeLightTypeDialog.h>
+#include "panel/object/dialog/ChangeLightTypeDialog.h"
 
 namespace urchin {
 

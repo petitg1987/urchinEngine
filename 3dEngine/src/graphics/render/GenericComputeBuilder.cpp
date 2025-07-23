@@ -1,6 +1,6 @@
 #include <utility>
 
-#include <graphics/render/GenericComputeBuilder.h>
+#include "graphics/render/GenericComputeBuilder.h"
 
 namespace urchin {
 

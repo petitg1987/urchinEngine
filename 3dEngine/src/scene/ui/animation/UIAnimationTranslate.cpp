@@ -1,4 +1,4 @@
-#include <scene/ui/animation/UIAnimationTranslate.h>
+#include "scene/ui/animation/UIAnimationTranslate.h"
 
 namespace urchin {
 

@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <utility>
 
-#include <resources/model/ConstMesh.h>
-#include <resources/model/MeshService.h>
+#include "resources/model/ConstMesh.h"
+#include "resources/model/MeshService.h"
 
 namespace urchin {
 

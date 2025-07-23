@@ -2,7 +2,7 @@
 
 #include <UrchinCommon.h>
 
-#include <scene/InputDeviceKey.h>
+#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 

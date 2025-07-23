@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include <collision/broadphase/VectorPairContainer.h>
+#include "collision/broadphase/VectorPairContainer.h"
 
 namespace urchin {
 

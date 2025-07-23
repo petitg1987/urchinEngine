@@ -1,10 +1,10 @@
 #include <utility>
 #include <UrchinCommon.h>
 
-#include <scene/ui/widget/textbox/TextBox.h>
-#include <scene/ui/widget/TextFieldConst.h>
-#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
-#include <scene/InputDeviceKey.h>
+#include "scene/ui/widget/textbox/TextBox.h"
+#include "scene/ui/widget/TextFieldConst.h"
+#include "scene/ui/displayer/WidgetInstanceDisplayer.h"
+#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 

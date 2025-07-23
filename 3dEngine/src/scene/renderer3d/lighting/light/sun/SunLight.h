@@ -2,7 +2,7 @@
 
 #include <UrchinCommon.h>
 
-#include <scene/renderer3d/lighting/light/Light.h>
+#include "scene/renderer3d/lighting/light/Light.h"
 
 namespace urchin {
 

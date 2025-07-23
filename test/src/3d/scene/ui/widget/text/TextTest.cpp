@@ -1,8 +1,8 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <3d/scene/ui/widget/text/TextTest.h>
-#include <AssertHelper.h>
+#include "3d/scene/ui/widget/text/TextTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void TextTest::twoLines() {

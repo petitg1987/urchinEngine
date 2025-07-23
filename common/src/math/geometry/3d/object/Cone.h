@@ -2,11 +2,11 @@
 
 #include <array>
 
-#include <math/geometry/3d/object/ConvexObject3D.h>
-#include <math/geometry/3d/shape/ConeShape.h>
-#include <math/algebra/point/Point3.h>
-#include <math/algebra/vector/Vector3.h>
-#include <math/algebra/Quaternion.h>
+#include "math/geometry/3d/object/ConvexObject3D.h"
+#include "math/geometry/3d/shape/ConeShape.h"
+#include "math/algebra/point/Point3.h"
+#include "math/algebra/vector/Vector3.h"
+#include "math/algebra/Quaternion.h"
 
 namespace urchin {
 

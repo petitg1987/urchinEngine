@@ -4,8 +4,8 @@
 #include <vector>
 #include <memory>
 
-#include <SoundComponent.h>
-#include <AudioController.h>
+#include "SoundComponent.h"
+#include "AudioController.h"
 
 namespace urchin {
 

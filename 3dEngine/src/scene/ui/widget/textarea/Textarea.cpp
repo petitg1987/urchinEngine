@@ -1,6 +1,6 @@
-#include <scene/ui/widget/textarea/Textarea.h>
-#include <scene/ui/widget/TextFieldConst.h>
-#include <scene/InputDeviceKey.h>
+#include "scene/ui/widget/textarea/Textarea.h"
+#include "scene/ui/widget/TextFieldConst.h"
+#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 

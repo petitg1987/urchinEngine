@@ -1,12 +1,12 @@
 #include <UrchinCommon.h>
 
-#include <libs/vma/vk_mem_alloc.h>
-#include <libs/lodepng/lodepng.h>
-#include <libs/qoi/qoi.h>
-#include <graphics/api/vulkan/capture/CaptureService.h>
-#include <graphics/api/vulkan/helper/CommandBufferHelper.h>
-#include <graphics/api/vulkan/helper/ImageHelper.h>
-#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
+#include "libs/vma/vk_mem_alloc.h"
+#include "libs/lodepng/lodepng.h"
+#include "libs/qoi/qoi.h"
+#include "graphics/api/vulkan/capture/CaptureService.h"
+#include "graphics/api/vulkan/helper/CommandBufferHelper.h"
+#include "graphics/api/vulkan/helper/ImageHelper.h"
+#include "graphics/api/vulkan/setup/GraphicsSetupService.h"
 
 namespace urchin {
 

@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <math/geometry/3d/shape/ConvexShape3D.h>
+#include "math/geometry/3d/shape/ConvexShape3D.h"
 
 namespace urchin {
 

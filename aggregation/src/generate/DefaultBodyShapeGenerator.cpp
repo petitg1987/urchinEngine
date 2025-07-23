@@ -1,4 +1,4 @@
-#include <generate/DefaultBodyShapeGenerator.h>
+#include "generate/DefaultBodyShapeGenerator.h"
 
 namespace urchin {
 

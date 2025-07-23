@@ -3,10 +3,10 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <collision/broadphase/aabbtree/AABBTreeAlgorithm.h>
-#include <collision/OverlappingPair.h>
-#include <body/model/AbstractBody.h>
-#include <body/BodyContainer.h>
+#include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
+#include "collision/OverlappingPair.h"
+#include "body/model/AbstractBody.h"
+#include "body/BodyContainer.h"
 
 namespace urchin {
 

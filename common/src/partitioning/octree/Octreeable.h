@@ -4,8 +4,8 @@
 #include <stdexcept>
 #include <span>
 
-#include <partitioning/octree/Octree.h>
-#include <pattern/observer/Observable.h>
+#include "partitioning/octree/Octree.h"
+#include "pattern/observer/Observable.h"
 
 namespace urchin {
 

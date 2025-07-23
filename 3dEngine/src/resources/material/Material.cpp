@@ -1,7 +1,7 @@
-#include <resources/material/Material.h>
-#include <resources/material/MaterialBuilder.h>
-#include <resources/ResourceRetriever.h>
-#include <loader/texture/LoaderTexture.h>
+#include "resources/material/Material.h"
+#include "resources/material/MaterialBuilder.h"
+#include "resources/ResourceRetriever.h"
+#include "loader/texture/LoaderTexture.h"
 namespace urchin {
 
     Material::Material(const MaterialBuilder& materialBuilder) :

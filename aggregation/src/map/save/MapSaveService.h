@@ -3,8 +3,8 @@
 #include <string>
 #include <UrchinCommon.h>
 
-#include <map/Map.h>
-#include <map/save/LoadMapCallback.h>
+#include "map/Map.h"
+#include "map/save/LoadMapCallback.h"
 
 namespace urchin {
 

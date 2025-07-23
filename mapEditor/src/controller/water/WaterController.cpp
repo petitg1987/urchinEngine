@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <utility>
 
-#include <controller/water/WaterController.h>
-#include <controller/EntityControllerUtil.h>
+#include "controller/water/WaterController.h"
+#include "controller/EntityControllerUtil.h"
 
 namespace urchin {
 

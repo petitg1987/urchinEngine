@@ -1,5 +1,5 @@
-#include <profiler/FpsStats.h>
-#include <math/algorithm/MathFunction.h>
+#include "profiler/FpsStats.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 

@@ -4,9 +4,9 @@
 #include <cmath>
 #include <UrchinCommon.h>
 
-#include <object/CollisionConvexObject3D.h>
-#include <collision/narrowphase/algorithm/epa/EPATriangleData.h>
-#include <collision/narrowphase/algorithm/epa/EPAResult.h>
+#include "object/CollisionConvexObject3D.h"
+#include "collision/narrowphase/algorithm/epa/EPATriangleData.h"
+#include "collision/narrowphase/algorithm/epa/EPAResult.h"
 
 namespace urchin {
 

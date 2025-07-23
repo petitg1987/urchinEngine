@@ -3,8 +3,8 @@
 #include <string>
 #include <memory>
 
-#include <texture/filter/TextureFilter.h>
-#include <graphics/texture/TextureType.h>
+#include "texture/filter/TextureFilter.h"
+#include "graphics/texture/TextureType.h"
 
 namespace urchin {
 

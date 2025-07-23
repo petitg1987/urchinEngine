@@ -1,9 +1,9 @@
-#include <libs/vkenum/vk_enum.h>
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
-#include <graphics/api/vulkan/setup/handler/QueueHandler.h>
-#include <libs/vma/vk_mem_alloc.h>
+#include "libs/vkenum/vk_enum.h"
+#include "libs/vma/vk_mem_alloc.h"
+#include "graphics/api/vulkan/setup/GraphicsSetupService.h"
+#include "graphics/api/vulkan/setup/handler/QueueHandler.h"
 using namespace urchin;
 
 namespace urchin {

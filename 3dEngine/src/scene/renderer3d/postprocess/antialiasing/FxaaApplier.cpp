@@ -1,7 +1,7 @@
-#include <scene/renderer3d/VisualConfig.h>
-#include <scene/renderer3d/postprocess/antialiasing/FxaaApplier.h>
-#include <graphics/render/shader/ShaderBuilder.h>
-#include <graphics/render/GenericRendererBuilder.h>
+#include "scene/renderer3d/VisualConfig.h"
+#include "scene/renderer3d/postprocess/antialiasing/FxaaApplier.h"
+#include "graphics/render/shader/ShaderBuilder.h"
+#include "graphics/render/GenericRendererBuilder.h"
 
 namespace urchin {
 

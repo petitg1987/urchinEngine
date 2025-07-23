@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include <resources/font/Font.h>
-#include <loader/Loader.h>
+#include "resources/font/Font.h"
+#include "loader/Loader.h"
 
 namespace urchin {
 

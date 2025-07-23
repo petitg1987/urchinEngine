@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <trigger/ManualTrigger.h>
+#include "trigger/ManualTrigger.h"
 
 namespace urchin {
 

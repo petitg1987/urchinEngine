@@ -1,7 +1,7 @@
 #include <stdexcept>
 
-#include <model/TerrainEntity.h>
-#include <model/builder/AIEntityBuilder.h>
+#include "model/TerrainEntity.h"
+#include "model/builder/AIEntityBuilder.h"
 
 namespace urchin {
     TerrainEntity::TerrainEntity() :

@@ -1,7 +1,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include <common/util/HashUtilTest.h>
-#include <AssertHelper.h>
+#include "common/util/HashUtilTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void HashUtilTest::hashBool() {

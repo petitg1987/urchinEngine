@@ -3,10 +3,10 @@
 #include <string>
 #include <memory>
 #include <QtWidgets/QDoubleSpinBox>
-
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
-#include <panel/object/physics/bodyshape/BodyShapeWidget.h>
+
+#include "panel/object/physics/bodyshape/BodyShapeWidget.h"
 
 namespace urchin {
 

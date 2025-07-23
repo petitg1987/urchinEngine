@@ -2,9 +2,9 @@
 
 #include <UrchinCommon.h>
 
-#include <resources/Resource.h>
-#include <resources/font/UnicodeUtil.h>
-#include <graphics/api/GraphicsApi.h>
+#include "resources/Resource.h"
+#include "resources/font/UnicodeUtil.h"
+#include "graphics/api/GraphicsApi.h"
 
 namespace urchin {
 

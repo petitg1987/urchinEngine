@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string>
-#include <scene/ui/widget/Widget.h>
-#include <scene/ui/widget/staticbitmap/StaticBitmap.h>
+
+#include "scene/ui/widget/Widget.h"
+#include "scene/ui/widget/staticbitmap/StaticBitmap.h"
 
 namespace urchin {
 

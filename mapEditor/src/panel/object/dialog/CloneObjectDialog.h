@@ -5,7 +5,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
 
-#include <controller/object/ObjectController.h>
+#include "controller/object/ObjectController.h"
 
 namespace urchin {
 

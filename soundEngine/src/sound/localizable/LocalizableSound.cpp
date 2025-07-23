@@ -1,7 +1,7 @@
 #include <utility>
 
-#include <sound/localizable/LocalizableSound.h>
-#include <util/CheckState.h>
+#include "sound/localizable/LocalizableSound.h"
+#include "util/CheckState.h"
 
 namespace urchin {
 

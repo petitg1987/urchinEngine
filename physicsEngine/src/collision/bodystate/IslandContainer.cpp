@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include <collision/bodystate/IslandContainer.h>
+#include "collision/bodystate/IslandContainer.h"
 
 namespace urchin {
 

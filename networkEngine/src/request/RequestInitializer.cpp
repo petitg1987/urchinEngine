@@ -1,7 +1,7 @@
 #include <curl/curl.h>
 #include <stdexcept>
 
-#include <request/RequestInitializer.h>
+#include "request/RequestInitializer.h"
 
 namespace urchin {
 

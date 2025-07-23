@@ -1,8 +1,8 @@
 #include <AL/al.h>
 #include <UrchinCommon.h>
 
-#include <player/stream/StreamUpdateWorker.h>
-#include <util/CheckState.h>
+#include "player/stream/StreamUpdateWorker.h"
+#include "util/CheckState.h"
 
 namespace urchin {
 

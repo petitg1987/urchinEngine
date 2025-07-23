@@ -4,7 +4,7 @@
 #include <array>
 #include <vector>
 
-#include <graphics/render/data/VariableType.h>
+#include "graphics/render/data/VariableType.h"
 
 namespace urchin {
 

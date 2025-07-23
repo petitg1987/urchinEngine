@@ -5,19 +5,19 @@
     #include <windows.h>
     #include <set>
 #else
-    #include <sys/utsname.h>
-    #include <sys/sysinfo.h>
+    #include "sys/utsname.h"
+    #include "sys/sysinfo.h"
     #include <zconf.h>
     #include <algorithm>
-    #include <system/CommandExecutor.h>
-    #include <util/TypeConverter.h>
-    #include <gnu/libc-version.h>
+    #include "system/CommandExecutor.h"
+    #include "util/TypeConverter.h"
+    #include "gnu/libc-version.h"
 #endif
 
-#include <system/SystemInfo.h>
-#include <util/StringUtil.h>
-#include <util/FileUtil.h>
-#include <logger/Logger.h>
+#include "system/SystemInfo.h"
+#include "util/StringUtil.h"
+#include "util/FileUtil.h"
+#include "logger/Logger.h"
 
 namespace urchin {
 

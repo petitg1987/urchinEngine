@@ -2,8 +2,8 @@
 
 #include <ostream>
 
-#include <math/algebra/vector/Vector2.h>
-#include <math/algebra/matrix/Matrix2.h>
+#include "math/algebra/vector/Vector2.h"
+#include "math/algebra/matrix/Matrix2.h"
 
 namespace urchin {
 

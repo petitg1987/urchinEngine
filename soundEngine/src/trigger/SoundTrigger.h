@@ -2,8 +2,8 @@
 
 #include <UrchinCommon.h>
 
-#include <trigger/PlayBehavior.h>
-#include <sound/Sound.h>
+#include "trigger/PlayBehavior.h"
+#include "sound/Sound.h"
 
 namespace urchin {
 

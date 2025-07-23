@@ -2,11 +2,11 @@
 
 #include <UrchinCommon.h>
 
-#include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
-#include <collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h>
-#include <collision/ManifoldResult.h>
-#include <collision/narrowphase/CollisionObjectWrapper.h>
-#include <collision/narrowphase/algorithm/epa/EPAAlgorithm.h>
+#include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h"
+#include "collision/ManifoldResult.h"
+#include "collision/narrowphase/CollisionObjectWrapper.h"
+#include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
 
 namespace urchin {
 

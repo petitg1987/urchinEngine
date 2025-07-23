@@ -2,8 +2,8 @@
 
 #include <UrchinCommon.h>
 
-#include <scene/renderer3d/lighting/shadow/SplitFrustum.h>
-#include <scene/renderer3d/model/Model.h>
+#include "scene/renderer3d/lighting/shadow/SplitFrustum.h"
+#include "scene/renderer3d/model/Model.h"
 
 namespace urchin {
 

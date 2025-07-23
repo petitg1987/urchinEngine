@@ -2,7 +2,7 @@
 #include <fstream>
 #include <UrchinCommon.h>
 
-#include <loader/image/LoaderTGA.h>
+#include "loader/image/LoaderTGA.h"
 
 namespace urchin {
 

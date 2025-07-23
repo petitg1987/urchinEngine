@@ -2,7 +2,7 @@
 #include <cstring>
 #include <UrchinCommon.h>
 
-#include <player/filereader/SoundFileReader.h>
+#include "player/filereader/SoundFileReader.h"
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
-#include <collision/narrowphase/algorithm/CompoundAnyCollisionAlgorithm.h>
-#include <collision/narrowphase/algorithm/CollisionAlgorithmSelector.h>
-#include <shape/CollisionCompoundShape.h>
-#include <shape/CollisionShape3D.h>
+#include "collision/narrowphase/algorithm/CompoundAnyCollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
+#include "shape/CollisionCompoundShape.h"
+#include "shape/CollisionShape3D.h"
 
 namespace urchin {
 

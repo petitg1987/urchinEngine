@@ -3,8 +3,8 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/ui/widget/LengthType.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/ui/widget/LengthType.h"
 
 namespace urchin {
 

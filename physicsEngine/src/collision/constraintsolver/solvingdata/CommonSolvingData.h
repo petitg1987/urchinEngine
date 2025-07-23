@@ -2,7 +2,7 @@
 
 #include <UrchinCommon.h>
 
-#include <body/model/RigidBody.h>
+#include "body/model/RigidBody.h"
 
 namespace urchin {
 

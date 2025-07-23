@@ -4,8 +4,8 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <body/model/AbstractBody.h>
-#include <body/BodyMomentum.h>
+#include "body/model/AbstractBody.h"
+#include "body/BodyMomentum.h"
 
 namespace urchin {
 

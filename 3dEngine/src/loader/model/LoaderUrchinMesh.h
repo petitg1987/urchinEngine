@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include <resources/model/ConstMeshes.h>
-#include <loader/Loader.h>
+#include "resources/model/ConstMeshes.h"
+#include "loader/Loader.h"
 
 namespace urchin {
 

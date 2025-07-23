@@ -1,4 +1,4 @@
-#include <trigger/AreaTrigger.h>
+#include "trigger/AreaTrigger.h"
 
 namespace urchin {
 

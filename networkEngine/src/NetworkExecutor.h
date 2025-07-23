@@ -1,8 +1,8 @@
 #pragma once
 
-#include <request/RequestInitializer.h>
-#include <request/HttpRequest.h>
-#include <request/RequestExecutor.h>
+#include "request/RequestInitializer.h"
+#include "request/HttpRequest.h"
+#include "request/RequestExecutor.h"
 
 namespace urchin {
 

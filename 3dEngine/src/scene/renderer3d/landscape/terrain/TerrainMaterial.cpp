@@ -1,7 +1,7 @@
 #include <stdexcept>
 
-#include <scene/renderer3d/landscape/terrain/TerrainMaterial.h>
-#include <resources/ResourceRetriever.h>
+#include "scene/renderer3d/landscape/terrain/TerrainMaterial.h"
+#include "resources/ResourceRetriever.h"
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
-#include <map/save/object/physics/RigidBodyReaderWriter.h>
-#include <map/save/object/physics/bodyshape/CollisionShapeReaderWriter.h>
-#include <map/save/object/physics/bodyshape/CollisionShapeReaderWriterRetriever.h>
+#include "map/save/object/physics/RigidBodyReaderWriter.h"
+#include "map/save/object/physics/bodyshape/CollisionShapeReaderWriter.h"
+#include "map/save/object/physics/bodyshape/CollisionShapeReaderWriterRetriever.h"
 
 namespace urchin {
 

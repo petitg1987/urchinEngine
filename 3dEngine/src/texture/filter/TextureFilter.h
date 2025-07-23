@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 
-#include <graphics/api/GraphicsApi.h>
+#include "graphics/api/GraphicsApi.h"
 
 namespace urchin {
 

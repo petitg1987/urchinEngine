@@ -1,7 +1,7 @@
 #pragma once
 
-#include <trigger/SoundTrigger.h>
-#include <trigger/shape/SoundShape.h>
+#include "trigger/SoundTrigger.h"
+#include "trigger/shape/SoundShape.h"
 
 namespace urchin {
 

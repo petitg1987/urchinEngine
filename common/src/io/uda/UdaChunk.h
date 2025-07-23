@@ -5,14 +5,14 @@
 #include <map>
 #include <memory>
 
-#include <io/uda/UdaAttribute.h>
-#include <math/algebra/point/Point2.h>
-#include <math/algebra/point/Point3.h>
-#include <math/algebra/point/Point4.h>
-#include <math/algebra/vector/Vector2.h>
-#include <math/algebra/vector/Vector3.h>
-#include <math/algebra/vector/Vector4.h>
-#include <math/algebra/Quaternion.h>
+#include "io/uda/UdaAttribute.h"
+#include "math/algebra/point/Point2.h"
+#include "math/algebra/point/Point3.h"
+#include "math/algebra/point/Point4.h"
+#include "math/algebra/vector/Vector2.h"
+#include "math/algebra/vector/Vector3.h"
+#include "math/algebra/vector/Vector4.h"
+#include "math/algebra/Quaternion.h"
 
 namespace urchin {
 

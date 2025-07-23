@@ -4,11 +4,11 @@
 #include <memory>
 #include <vector>
 
-#include <scene/ui/widget/Widget.h>
-#include <scene/ui/widget/Position.h>
-#include <scene/ui/widget/Size.h>
-#include <scene/ui/widget/text/Text.h>
-#include <scene/ui/EventListener.h>
+#include "scene/ui/widget/Widget.h"
+#include "scene/ui/widget/Position.h"
+#include "scene/ui/widget/Size.h"
+#include "scene/ui/widget/text/Text.h"
+#include "scene/ui/EventListener.h"
 namespace urchin {
 
     class Sequence final : public Widget {

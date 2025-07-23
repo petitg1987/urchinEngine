@@ -2,7 +2,7 @@
 #include <utility>
 #include <sstream>
 
-#include <io/svg/shape/SVGPolygon.h>
+#include "io/svg/shape/SVGPolygon.h"
 
 namespace urchin {
 

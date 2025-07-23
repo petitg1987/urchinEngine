@@ -4,7 +4,7 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <resources/material/Material.h>
+#include "resources/material/Material.h"
 
 namespace urchin {
 

@@ -5,13 +5,13 @@
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QTabWidget>
-
 #include <UrchinCommon.h>
-#include <controller/object/ObjectController.h>
-#include <panel/object/ObjectTableView.h>
-#include <panel/object/physics/PhysicsWidget.h>
-#include <panel/object/light/LightWidget.h>
-#include <panel/object/sound/SoundWidget.h>
+
+#include "controller/object/ObjectController.h"
+#include "panel/object/ObjectTableView.h"
+#include "panel/object/physics/PhysicsWidget.h"
+#include "panel/object/light/LightWidget.h"
+#include "panel/object/sound/SoundWidget.h"
 
 namespace urchin {
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <scene/ui/widget/LengthType.h>
-#include <scene/ui/widget/RelativeTo.h>
-#include <scene/ui/widget/RefPoint.h>
+#include "scene/ui/widget/LengthType.h"
+#include "scene/ui/widget/RelativeTo.h"
+#include "scene/ui/widget/RefPoint.h"
 
 namespace urchin {
 

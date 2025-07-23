@@ -1,12 +1,12 @@
-#include <resources/ResourceRetriever.h>
-#include <loader/image/LoaderTGA.h>
-#include <loader/image/LoaderPNG.h>
-#include <loader/image/LoaderQOI.h>
-#include <loader/model/LoaderUrchinMesh.h>
-#include <loader/model/LoaderUrchinAnim.h>
-#include <loader/material/LoaderMaterial.h>
-#include <loader/font/LoaderTTF.h>
-#include <loader/texture/LoaderTexture.h>
+#include "resources/ResourceRetriever.h"
+#include "loader/image/LoaderTGA.h"
+#include "loader/image/LoaderPNG.h"
+#include "loader/image/LoaderQOI.h"
+#include "loader/model/LoaderUrchinMesh.h"
+#include "loader/model/LoaderUrchinAnim.h"
+#include "loader/material/LoaderMaterial.h"
+#include "loader/font/LoaderTTF.h"
+#include "loader/texture/LoaderTexture.h"
 
 namespace urchin {
 

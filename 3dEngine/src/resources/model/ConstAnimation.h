@@ -2,8 +2,8 @@
 
 #include <UrchinCommon.h>
 
-#include <resources/Resource.h>
-#include <resources/model/ConstMesh.h>
+#include "resources/Resource.h"
+#include "resources/model/ConstMesh.h"
 
 namespace urchin {
 

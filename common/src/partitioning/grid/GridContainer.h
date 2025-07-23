@@ -5,7 +5,7 @@
 #include <utility>
 #include <cstdint>
 
-#include <util/StringUtil.h>
+#include "util/StringUtil.h"
 
 namespace urchin {
 

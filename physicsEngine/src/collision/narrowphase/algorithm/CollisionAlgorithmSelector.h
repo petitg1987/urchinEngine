@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#include <body/model/AbstractBody.h>
-#include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
-#include <collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h>
-#include <utils/pool/SyncFixedSizePool.h>
+#include "body/model/AbstractBody.h"
+#include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h"
+#include "utils/pool/SyncFixedSizePool.h"
 
 namespace urchin {
 

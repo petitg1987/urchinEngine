@@ -1,8 +1,8 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <3d/scene/renderer3d/Renderer3dTest.h>
-#include <AssertHelper.h>
+#include "3d/scene/renderer3d/Renderer3dTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void Renderer3dTest::modelPreWarm() {

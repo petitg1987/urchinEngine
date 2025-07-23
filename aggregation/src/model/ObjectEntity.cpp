@@ -1,7 +1,7 @@
 #include <AIEnvironment.h>
 
-#include <model/ObjectEntity.h>
-#include <model/builder/AIEntityBuilder.h>
+#include "model/ObjectEntity.h"
+#include "model/builder/AIEntityBuilder.h"
 
 namespace urchin {
 

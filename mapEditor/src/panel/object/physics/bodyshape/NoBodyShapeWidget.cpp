@@ -1,4 +1,4 @@
-#include <panel/object/physics/bodyshape/NoBodyShapeWidget.h>
+#include "panel/object/physics/bodyshape/NoBodyShapeWidget.h"
 
 namespace urchin {
 

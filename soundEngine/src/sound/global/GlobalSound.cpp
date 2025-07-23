@@ -1,5 +1,5 @@
-#include <sound/global/GlobalSound.h>
-#include <util/CheckState.h>
+#include "sound/global/GlobalSound.h"
+#include "util/CheckState.h"
 
 namespace urchin {
 

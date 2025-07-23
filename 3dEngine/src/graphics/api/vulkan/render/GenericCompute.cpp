@@ -1,8 +1,8 @@
-#include <libs/vkenum/vk_enum.h>
+#include "libs/vkenum/vk_enum.h"
 
-#include <graphics/api/vulkan/render/GenericCompute.h>
-#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
-#include <graphics/render/GenericComputeBuilder.h>
+#include "graphics/api/vulkan/render/GenericCompute.h"
+#include "graphics/api/vulkan/setup/GraphicsSetupService.h"
+#include "graphics/render/GenericComputeBuilder.h"
 
 namespace urchin {
 

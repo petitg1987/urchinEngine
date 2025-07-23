@@ -1,7 +1,7 @@
 #include <ranges>
 
-#include <scene/ui/displayer/WidgetSetDisplayer.h>
-#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
+#include "scene/ui/displayer/WidgetSetDisplayer.h"
+#include "scene/ui/displayer/WidgetInstanceDisplayer.h"
 
 namespace urchin {
 

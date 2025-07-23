@@ -1,8 +1,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include <math/geometry/3d/util/MeshSimplificationService.h>
-#include <container/VectorUtil.h>
+#include "math/geometry/3d/util/MeshSimplificationService.h"
+#include "container/VectorUtil.h"
 
 namespace urchin {
 

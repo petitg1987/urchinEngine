@@ -3,7 +3,7 @@
     #include <cassert>
 #endif
 
-#include <graphics/render/shader/ShaderConstants.h>
+#include "graphics/render/shader/ShaderConstants.h"
 
 namespace urchin {
 

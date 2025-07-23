@@ -1,7 +1,7 @@
 #include <algorithm>
 
-#include <pattern/tag/TaggableResource.h>
-#include <pattern/tag/TagHolder.h>
+#include "pattern/tag/TaggableResource.h"
+#include "pattern/tag/TagHolder.h"
 
 namespace urchin {
 

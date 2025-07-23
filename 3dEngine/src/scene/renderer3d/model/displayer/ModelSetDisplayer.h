@@ -5,11 +5,11 @@
 #include <unordered_map>
 #include <UrchinCommon.h>
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/renderer3d/model/Model.h>
-#include <scene/renderer3d/model/displayer/DisplayMode.h>
-#include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>
-#include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/renderer3d/model/Model.h"
+#include "scene/renderer3d/model/displayer/DisplayMode.h"
+#include "scene/renderer3d/model/displayer/ModelInstanceDisplayer.h"
+#include "scene/renderer3d/model/displayer/CustomModelShaderVariable.h"
 
 namespace urchin {
 

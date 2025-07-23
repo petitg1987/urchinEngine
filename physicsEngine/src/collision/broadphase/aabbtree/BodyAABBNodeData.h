@@ -3,8 +3,8 @@
 #include <set>
 #include <UrchinCommon.h>
 
-#include <body/model/AbstractBody.h>
-#include <collision/broadphase/PairContainer.h>
+#include "body/model/AbstractBody.h"
+#include "collision/broadphase/PairContainer.h"
 
 namespace urchin {
 

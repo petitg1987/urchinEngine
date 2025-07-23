@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <utility>
 
-#include <body/BodyContainer.h>
+#include "body/BodyContainer.h"
 
 namespace urchin {
 

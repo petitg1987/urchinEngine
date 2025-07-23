@@ -2,7 +2,7 @@
 
 #include <Urchin3dEngine.h>
 
-#include <widget/controller/mouse/MouseController.h>
+#include "widget/controller/mouse/MouseController.h"
 
 namespace urchin {
 

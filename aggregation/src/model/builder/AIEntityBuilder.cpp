@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include <model/builder/AIEntityBuilder.h>
+#include "model/builder/AIEntityBuilder.h"
 
 namespace urchin {
 

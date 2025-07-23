@@ -2,7 +2,7 @@
 #include <QVariant>
 #include <UrchinAggregation.h>
 
-#include <panel/object/ObjectTableView.h>
+#include "panel/object/ObjectTableView.h"
 
 namespace urchin {
 

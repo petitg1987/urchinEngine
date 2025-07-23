@@ -1,7 +1,7 @@
 #pragma once
 
-#include <player/AudioPlayer.h>
-#include <sound/Sound.h>
+#include "player/AudioPlayer.h"
+#include "sound/Sound.h"
 
 namespace urchin {
 

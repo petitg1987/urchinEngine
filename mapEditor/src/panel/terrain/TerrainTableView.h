@@ -2,10 +2,10 @@
 
 #include <QtWidgets/QTableView>
 #include <QStandardItemModel>
-
 #include <UrchinCommon.h>
 #include <UrchinAggregation.h>
-#include <controller/SceneController.h>
+
+#include "controller/SceneController.h"
 
 Q_DECLARE_METATYPE(const urchin::TerrainEntity*)
 

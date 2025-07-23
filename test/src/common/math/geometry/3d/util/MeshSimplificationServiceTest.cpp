@@ -2,8 +2,8 @@
 #include <cppunit/TestCaller.h>
 #include <vector>
 
-#include <common/math/geometry/3d/util/MeshSimplificationServiceTest.h>
-#include <AssertHelper.h>
+#include "common/math/geometry/3d/util/MeshSimplificationServiceTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void MeshSimplificationServiceTest::simplify() {

@@ -1,7 +1,7 @@
 #include <cassert>
 #include <utility>
 
-#include <path/pathfinding/PathNode.h>
+#include "path/pathfinding/PathNode.h"
 
 namespace urchin {
 

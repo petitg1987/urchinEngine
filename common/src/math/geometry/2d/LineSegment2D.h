@@ -2,9 +2,9 @@
 
 #include <array>
 
-#include <math/geometry/2d/Line2D.h>
-#include <math/algebra/point/Point2.h>
-#include <math/algebra/vector/Vector2.h>
+#include "math/geometry/2d/Line2D.h"
+#include "math/algebra/point/Point2.h"
+#include "math/algebra/vector/Vector2.h"
 
 namespace urchin {
 

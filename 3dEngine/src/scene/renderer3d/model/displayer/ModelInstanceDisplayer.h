@@ -2,11 +2,11 @@
 
 #include <bitset>
 
-#include <scene/renderer3d/model/Model.h>
-#include <scene/renderer3d/model/displayer/DisplayMode.h>
-#include <scene/renderer3d/model/displayer/MeshFilter.h>
-#include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
-#include <resources/geometry/aabbox/AABBoxModel.h>
+#include "scene/renderer3d/model/Model.h"
+#include "scene/renderer3d/model/displayer/DisplayMode.h"
+#include "scene/renderer3d/model/displayer/MeshFilter.h"
+#include "scene/renderer3d/model/displayer/CustomModelShaderVariable.h"
+#include "resources/geometry/aabbox/AABBoxModel.h"
 
 namespace urchin {
 

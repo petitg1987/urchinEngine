@@ -1,5 +1,5 @@
-#include <curl/curl.h>
-#include <request/RequestExecutor.h>
+#include "curl/curl.h"
+#include "request/RequestExecutor.h"
 
 namespace urchin {
 

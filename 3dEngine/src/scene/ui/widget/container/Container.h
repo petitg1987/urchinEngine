@@ -1,10 +1,10 @@
 #pragma once
 
-#include <scene/ui/widget/Widget.h>
-#include <scene/ui/widget/Position.h>
-#include <scene/ui/widget/staticbitmap/StaticBitmap.h>
-#include <scene/ui/scrollbar/Scrollbar.h>
-#include <scene/ui/scrollbar/Scrollable.h>
+#include "scene/ui/widget/Widget.h"
+#include "scene/ui/widget/Position.h"
+#include "scene/ui/widget/staticbitmap/StaticBitmap.h"
+#include "scene/ui/scrollbar/Scrollbar.h"
+#include "scene/ui/scrollbar/Scrollable.h"
 
 namespace urchin {
 

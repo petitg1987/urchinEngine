@@ -1,9 +1,9 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <loader/material/LoaderMaterial.h>
-#include <resources/ResourceRetriever.h>
-#include <resources/material/MaterialBuilder.h>
+#include "loader/material/LoaderMaterial.h"
+#include "resources/ResourceRetriever.h"
+#include "resources/material/MaterialBuilder.h"
 
 namespace urchin {
 

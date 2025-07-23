@@ -1,7 +1,7 @@
 #include <utility>
 #include <ranges>
 
-#include <resources/geometry/convexhull/ConvexHullModel.h>
+#include "resources/geometry/convexhull/ConvexHullModel.h"
 
 namespace urchin {
 

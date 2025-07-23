@@ -1,6 +1,6 @@
 #pragma once
 
-#include <math/algebra/MathValue.h>
+#include "math/algebra/MathValue.h"
 
 namespace urchin {
 

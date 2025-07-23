@@ -1,8 +1,8 @@
-#include <panel/object/light/LightWidget.h>
-#include <widget/style/GroupBoxStyleHelper.h>
-#include <widget/style/SpinBoxStyleHelper.h>
-#include <widget/style/LabelStyleHelper.h>
-#include <panel/object/dialog/ChangeLightTypeDialog.h>
+#include "panel/object/light/LightWidget.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/LabelStyleHelper.h"
+#include "panel/object/dialog/ChangeLightTypeDialog.h"
 
 namespace urchin {
 

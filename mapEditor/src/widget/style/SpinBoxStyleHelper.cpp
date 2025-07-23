@@ -1,4 +1,4 @@
-#include <widget/style/SpinBoxStyleHelper.h>
+#include "widget/style/SpinBoxStyleHelper.h"
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <utility>
 
-#include <input/AIEntity.h>
-#include <path/navmesh/model/NavObject.h>
+#include "input/AIEntity.h"
+#include "path/navmesh/model/NavObject.h"
 
 namespace urchin {
     AIEntity::AIEntity(std::string name, const Transform<float>& transform, bool bIsObstacleCandidate) :

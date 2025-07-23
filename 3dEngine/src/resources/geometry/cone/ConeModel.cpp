@@ -1,7 +1,7 @@
 #include <cmath>
 #include <utility>
 
-#include <resources/geometry/cone/ConeModel.h>
+#include "resources/geometry/cone/ConeModel.h"
 
 namespace urchin {
 

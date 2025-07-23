@@ -1,7 +1,7 @@
 #include <limits>
 
-#include <math/geometry/3d/voxel/VoxelService.h>
-#include <math/algorithm/MathFunction.h>
+#include "math/geometry/3d/voxel/VoxelService.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 

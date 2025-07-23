@@ -1,7 +1,7 @@
 #include <cassert>
 #include <utility>
 
-#include <path/pathfinding/FunnelAlgorithm.h>
+#include "path/pathfinding/FunnelAlgorithm.h"
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
 #include <UrchinCommon.h>
 
-#include <loader/image/LoaderPNG.h>
+#include "loader/image/LoaderPNG.h"
 
 namespace urchin {
 

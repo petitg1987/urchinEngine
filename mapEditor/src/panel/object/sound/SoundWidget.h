@@ -6,8 +6,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 
-#include <controller/object/ObjectController.h>
-#include <panel/object/sound/soundshape/SoundShapeWidget.h>
+#include "controller/object/ObjectController.h"
+#include "panel/object/sound/soundshape/SoundShapeWidget.h"
 
 namespace urchin {
 

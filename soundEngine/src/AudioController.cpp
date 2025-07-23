@@ -1,7 +1,7 @@
 #include <utility>
 
-#include <AudioController.h>
-#include <player/stream/AudioStreamPlayer.h>
+#include "AudioController.h"
+#include "player/stream/AudioStreamPlayer.h"
 
 namespace urchin {
 

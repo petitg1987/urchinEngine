@@ -1,8 +1,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <UrchinCommon.h>
 
-#include <common/collision/GJKAlgorithmTest.h>
-#include <AssertHelper.h>
+#include "common/collision/GJKAlgorithmTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void GJKAlgorithmTest::identicalAABBox() {

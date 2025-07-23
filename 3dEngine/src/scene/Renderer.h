@@ -1,6 +1,6 @@
 #pragma once
 
-#include <scene/InputDeviceKey.h>
+#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 

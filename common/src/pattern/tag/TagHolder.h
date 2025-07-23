@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 
-#include <pattern/tag/TaggableResource.h>
+#include "pattern/tag/TaggableResource.h"
 
 namespace urchin {
 

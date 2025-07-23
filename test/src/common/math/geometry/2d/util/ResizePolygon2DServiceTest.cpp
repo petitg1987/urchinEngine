@@ -3,8 +3,8 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <common/math/geometry/2d/util/ResizePolygon2DServiceTest.h>
-#include <AssertHelper.h>
+#include "common/math/geometry/2d/util/ResizePolygon2DServiceTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void ResizePolygon2DServiceTest::reduceTriangle() {

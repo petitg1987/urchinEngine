@@ -1,7 +1,7 @@
 #include <UrchinCommon.h>
 
-#include <resources/model/MeshService.h>
-#include <resources/model/ConstAnimation.h>
+#include "resources/model/MeshService.h"
+#include "resources/model/ConstAnimation.h"
 
 namespace urchin {
 

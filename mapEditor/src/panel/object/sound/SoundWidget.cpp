@@ -1,14 +1,14 @@
-#include <panel/object/sound/SoundWidget.h>
-#include <widget/style/GroupBoxStyleHelper.h>
-#include <widget/style/SpinBoxStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
-#include <widget/style/FrameStyleHelper.h>
+#include "panel/object/sound/SoundWidget.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
+#include "widget/style/FrameStyleHelper.h"
 
-#include <panel/object/sound/dialog/ChangeSoundShapeTypeDialog.h>
-#include <panel/object/sound/dialog/ChangeSoundTriggerTypeDialog.h>
-#include <panel/object/sound/soundshape/SoundShapeWidgetRetriever.h>
-#include <panel/object/sound/soundshape/support/DefaultSoundShapeCreator.h>
-#include <panel/object/dialog/ChangeSoundDialog.h>
+#include "panel/object/sound/dialog/ChangeSoundShapeTypeDialog.h"
+#include "panel/object/sound/dialog/ChangeSoundTriggerTypeDialog.h"
+#include "panel/object/sound/soundshape/SoundShapeWidgetRetriever.h"
+#include "panel/object/sound/soundshape/support/DefaultSoundShapeCreator.h"
+#include "panel/object/dialog/ChangeSoundDialog.h"
 
 namespace urchin {
 

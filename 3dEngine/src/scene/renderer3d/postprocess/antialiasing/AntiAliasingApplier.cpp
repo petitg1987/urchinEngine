@@ -1,5 +1,5 @@
-#include <scene/renderer3d/VisualConfig.h>
-#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
+#include "scene/renderer3d/VisualConfig.h"
+#include "scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h"
 
 namespace urchin {
 

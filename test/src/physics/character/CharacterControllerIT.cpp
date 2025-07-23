@@ -1,8 +1,8 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <physics/character/CharacterControllerIT.h>
-#include <AssertHelper.h>
+#include "physics/character/CharacterControllerIT.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void CharacterControllerIT::fallingCharacterOnObjects() {

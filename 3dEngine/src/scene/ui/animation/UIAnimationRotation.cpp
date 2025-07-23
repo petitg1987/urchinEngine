@@ -1,4 +1,4 @@
-#include <scene/ui/animation/UIAnimationRotation.h>
+#include "scene/ui/animation/UIAnimationRotation.h"
 
 namespace urchin {
 

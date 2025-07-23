@@ -1,5 +1,5 @@
-#include <libs/qoi/qoi.h>
-#include <loader/image/LoaderQOI.h>
+#include "libs/qoi/qoi.h"
+#include "loader/image/LoaderQOI.h"
 
 namespace urchin {
 

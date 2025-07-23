@@ -4,8 +4,8 @@
 #include <string>
 #include <optional>
 
-#include <resources/model/ConstMesh.h>
-#include <resources/Resource.h>
+#include "resources/model/ConstMesh.h"
+#include "resources/Resource.h"
 
 namespace urchin {
 

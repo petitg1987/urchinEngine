@@ -3,9 +3,9 @@
 #include <QtWidgets/QFileDialog>
 #include <UrchinAggregation.h>
 
-#include <panel/terrain/dialog/NewTerrainDialog.h>
-#include <widget/style/LabelStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
+#include "panel/terrain/dialog/NewTerrainDialog.h"
+#include "widget/style/LabelStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
 
 namespace urchin {
     QString NewTerrainDialog::preferredHeightPath = QString();

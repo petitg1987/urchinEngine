@@ -3,10 +3,10 @@
     #include <cassert>
 #endif
 
-#include <collision/GJKResult.h>
-#include <math/algorithm/MathFunction.h>
-#include <config/DebugCheck.h>
-#include <logger/Logger.h>
+#include "collision/GJKResult.h"
+#include "math/algorithm/MathFunction.h"
+#include "config/DebugCheck.h"
+#include "logger/Logger.h"
 
 namespace urchin {
 

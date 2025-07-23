@@ -1,5 +1,5 @@
-#include <scene/renderer3d/model/Mesh.h>
-#include <resources/model/MeshService.h>
+#include "scene/renderer3d/model/Mesh.h"
+#include "resources/model/MeshService.h"
 
 namespace urchin {
 

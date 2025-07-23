@@ -1,8 +1,8 @@
 #pragma once
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/renderer3d/camera/Camera.h>
-#include <texture/filter/gaussianblur/GaussianBlurFilter.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/renderer3d/camera/Camera.h"
+#include "texture/filter/gaussianblur/GaussianBlurFilter.h"
 
 namespace urchin {
 

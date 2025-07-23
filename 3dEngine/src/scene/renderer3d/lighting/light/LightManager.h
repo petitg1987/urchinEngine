@@ -3,11 +3,11 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <graphics/api/GraphicsApi.h>
-#include <graphics/render/GenericRendererBuilder.h>
-#include <resources/geometry/aabbox/AABBoxModel.h>
-#include <resources/geometry/GeometryContainer.h>
-#include <scene/renderer3d/lighting/light/Light.h>
+#include "graphics/api/GraphicsApi.h"
+#include "graphics/render/GenericRendererBuilder.h"
+#include "resources/geometry/aabbox/AABBoxModel.h"
+#include "resources/geometry/GeometryContainer.h"
+#include "scene/renderer3d/lighting/light/Light.h"
 
 namespace urchin {
 

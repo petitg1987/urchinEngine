@@ -1,7 +1,7 @@
 #include <UrchinCommon.h>
 
-#include <AIEnvironment.h>
-#include <path/pathfinding/PathfindingAStar.h>
+#include "AIEnvironment.h"
+#include "path/pathfinding/PathfindingAStar.h"
 
 namespace urchin {
 

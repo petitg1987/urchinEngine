@@ -1,14 +1,14 @@
 #include <stdexcept>
 
-#include <panel/object/physics/bodyshape/BodyShapeWidgetRetriever.h>
-#include <panel/object/physics/bodyshape/BodyShapeWidget.h>
-#include <panel/object/physics/bodyshape/BodySphereShapeWidget.h>
-#include <panel/object/physics/bodyshape/BodyBoxShapeWidget.h>
-#include <panel/object/physics/bodyshape/BodyCapsuleShapeWidget.h>
-#include <panel/object/physics/bodyshape/BodyCylinderShapeWidget.h>
-#include <panel/object/physics/bodyshape/BodyConeShapeWidget.h>
-#include <panel/object/physics/bodyshape/BodyConvexHullShapeWidget.h>
-#include <panel/object/physics/bodyshape/BodyCompoundShapeWidget.h>
+#include "panel/object/physics/bodyshape/BodyShapeWidgetRetriever.h"
+#include "panel/object/physics/bodyshape/BodyShapeWidget.h"
+#include "panel/object/physics/bodyshape/BodySphereShapeWidget.h"
+#include "panel/object/physics/bodyshape/BodyBoxShapeWidget.h"
+#include "panel/object/physics/bodyshape/BodyCapsuleShapeWidget.h"
+#include "panel/object/physics/bodyshape/BodyCylinderShapeWidget.h"
+#include "panel/object/physics/bodyshape/BodyConeShapeWidget.h"
+#include "panel/object/physics/bodyshape/BodyConvexHullShapeWidget.h"
+#include "panel/object/physics/bodyshape/BodyCompoundShapeWidget.h"
 
 namespace urchin {
 

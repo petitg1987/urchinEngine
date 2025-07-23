@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <input/AIEntity.h>
+#include "input/AIEntity.h"
 
 namespace urchin {
 

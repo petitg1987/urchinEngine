@@ -1,12 +1,12 @@
-#include <libs/vkenum/vk_enum.h>
 #include <ranges>
 
-#include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
-#include <graphics/api/vulkan/render/pipeline/PipelineContainer.h>
-#include <graphics/api/vulkan/helper/DebugLabelHelper.h>
-#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
-#include <graphics/render/data/BlendFunction.h>
-#include <graphics/texture/TextureReader.h>
+#include "libs/vkenum/vk_enum.h"
+#include "graphics/api/vulkan/render/pipeline/PipelineBuilder.h"
+#include "graphics/api/vulkan/render/pipeline/PipelineContainer.h"
+#include "graphics/api/vulkan/helper/DebugLabelHelper.h"
+#include "graphics/api/vulkan/setup/GraphicsSetupService.h"
+#include "graphics/render/data/BlendFunction.h"
+#include "graphics/texture/TextureReader.h"
 
 namespace urchin {
 

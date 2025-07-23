@@ -10,8 +10,8 @@
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <panel/object/physics/bodyshape/BodyShapeWidget.h>
-#include <panel/object/physics/bodyshape/support/LocalizedShapeTableView.h>
+#include "panel/object/physics/bodyshape/BodyShapeWidget.h"
+#include "panel/object/physics/bodyshape/support/LocalizedShapeTableView.h"
 
 namespace urchin {
 

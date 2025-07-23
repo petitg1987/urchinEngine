@@ -1,8 +1,8 @@
 #include <utility>
 #include <QtWidgets/QShortcut>
 
-#include <scene/SceneDisplayerWindow.h>
-#include <widget/controller/mouse/MouseController.h>
+#include "scene/SceneDisplayerWindow.h"
+#include "widget/controller/mouse/MouseController.h"
 
 namespace urchin {
 

@@ -1,4 +1,4 @@
-#include <visualizer/CollisionVisualizer.h>
+#include "visualizer/CollisionVisualizer.h"
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <graphics/api/GraphicsApi.h>
-#include <graphics/render/GenericRendererBuilder.h>
+#include "graphics/api/GraphicsApi.h"
+#include "graphics/render/GenericRendererBuilder.h"
 
 namespace urchin {
 

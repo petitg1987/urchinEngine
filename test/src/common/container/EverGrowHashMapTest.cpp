@@ -1,8 +1,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <UrchinCommon.h>
 
-#include <common/container/EverGrowHashMapTest.h>
-#include <AssertHelper.h>
+#include "common/container/EverGrowHashMapTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void EverGrowHashMapTest::insertGetErase() {

@@ -1,17 +1,17 @@
 #include <UrchinAggregation.h>
 
-#include <widget/style/GroupBoxStyleHelper.h>
-#include <widget/style/SpinBoxStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
-#include <widget/style/ComboBoxStyleHelper.h>
-#include <panel/object/ObjectPanelWidget.h>
-#include <panel/object/dialog/NewObjectDialog.h>
-#include <panel/object/dialog/CloneObjectDialog.h>
-#include <panel/object/dialog/RenameObjectDialog.h>
-#include <panel/object/dialog/ChangeLightTypeDialog.h>
-#include <panel/object/dialog/ChangeSoundDialog.h>
-#include <scene/object/ObjectMoveController.h>
-#include <scene/SceneDisplayerWindow.h>
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
+#include "widget/style/ComboBoxStyleHelper.h"
+#include "panel/object/ObjectPanelWidget.h"
+#include "panel/object/dialog/NewObjectDialog.h"
+#include "panel/object/dialog/CloneObjectDialog.h"
+#include "panel/object/dialog/RenameObjectDialog.h"
+#include "panel/object/dialog/ChangeLightTypeDialog.h"
+#include "panel/object/dialog/ChangeSoundDialog.h"
+#include "scene/object/ObjectMoveController.h"
+#include "scene/SceneDisplayerWindow.h"
 
 namespace urchin {
 

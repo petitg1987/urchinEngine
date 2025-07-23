@@ -1,6 +1,6 @@
 #include <cstring>
 
-#include <scene/renderer3d/FirstPassModelShaderVariable.h>
+#include "scene/renderer3d/FirstPassModelShaderVariable.h"
 
 namespace urchin {
 

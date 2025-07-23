@@ -2,9 +2,9 @@
 
 #include <AL/al.h>
 
-#include <player/stream/AudioStreamPlayer.h>
-#include <player/filereader/SoundFileReader.h>
-#include <player/stream/StreamChunk.h>
+#include "player/stream/AudioStreamPlayer.h"
+#include "player/filereader/SoundFileReader.h"
+#include "player/stream/StreamChunk.h"
 
 namespace urchin {
 

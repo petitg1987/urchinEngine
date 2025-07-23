@@ -1,8 +1,8 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <AssertHelper.h>
-#include <physics/collision/bodystate/IslandContainerTest.h>
+#include "AssertHelper.h"
+#include "physics/collision/bodystate/IslandContainerTest.h"
 using namespace urchin;
 
 /**

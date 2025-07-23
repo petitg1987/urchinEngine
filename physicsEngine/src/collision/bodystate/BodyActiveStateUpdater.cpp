@@ -1,4 +1,4 @@
-#include <collision/bodystate/BodyActiveStateUpdater.h>
+#include "collision/bodystate/BodyActiveStateUpdater.h"
 
 namespace urchin {
 

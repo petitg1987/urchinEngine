@@ -1,8 +1,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <UrchinCommon.h>
 
-#include <common/math/geometry/3d/object/Triangle3DTest.h>
-#include <AssertHelper.h>
+#include "common/math/geometry/3d/object/Triangle3DTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void Triangle3DTest::closestPoint() {

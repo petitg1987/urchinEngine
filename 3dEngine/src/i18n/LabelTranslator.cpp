@@ -3,7 +3,7 @@
 #include <ranges>
 #include <UrchinCommon.h>
 
-#include <i18n/LabelTranslator.h>
+#include "i18n/LabelTranslator.h"
 
 namespace urchin {
 

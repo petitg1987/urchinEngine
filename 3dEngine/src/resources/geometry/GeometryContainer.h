@@ -3,8 +3,8 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <graphics/api/GraphicsApi.h>
-#include <resources/geometry/GeometryModel.h>
+#include "graphics/api/GraphicsApi.h"
+#include "resources/geometry/GeometryModel.h"
 
 namespace urchin {
 

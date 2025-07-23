@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#include <character/PhysicsCharacter.h>
-#include <character/CharacterControllerConfig.h>
-#include <body/model/GhostBody.h>
-#include <collision/ManifoldResult.h>
+#include "character/PhysicsCharacter.h"
+#include "character/CharacterControllerConfig.h"
+#include "body/model/GhostBody.h"
+#include "collision/ManifoldResult.h"
 
 namespace urchin {
 

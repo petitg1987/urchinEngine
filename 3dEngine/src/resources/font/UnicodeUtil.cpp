@@ -1,4 +1,4 @@
-#include <resources/font/UnicodeUtil.h>
+#include "resources/font/UnicodeUtil.h"
 
 namespace urchin {
 

@@ -2,16 +2,16 @@
 
 #include <string>
 #include <list>
-
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 #include <UrchinSoundEngine.h>
 #include <UrchinAIEngine.h>
-#include <model/ObjectEntity.h>
-#include <model/TerrainEntity.h>
-#include <model/WaterEntity.h>
-#include <model/SkyEntity.h>
-#include <model/NavMeshAgentEntity.h>
+
+#include "model/ObjectEntity.h"
+#include "model/TerrainEntity.h"
+#include "model/WaterEntity.h"
+#include "model/SkyEntity.h"
+#include "model/NavMeshAgentEntity.h"
 
 namespace urchin {
 

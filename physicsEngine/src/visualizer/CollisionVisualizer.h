@@ -4,8 +4,8 @@
 #include <mutex>
 #include <UrchinCommon.h>
 
-#include <collision/CollisionWorld.h>
-#include <collision/ManifoldResult.h>
+#include "collision/CollisionWorld.h"
+#include "collision/ManifoldResult.h"
 
 namespace urchin {
 

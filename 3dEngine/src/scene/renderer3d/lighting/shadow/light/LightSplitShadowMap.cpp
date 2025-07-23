@@ -1,7 +1,7 @@
-#include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
-#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
-#include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
-#include <scene/renderer3d/lighting/light/spot/SpotLight.h>
+#include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
+#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
+#include "scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h"
+#include "scene/renderer3d/lighting/light/spot/SpotLight.h"
 
 namespace urchin {
 

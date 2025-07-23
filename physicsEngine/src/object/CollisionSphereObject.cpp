@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include <object/CollisionSphereObject.h>
+#include "object/CollisionSphereObject.h"
 
 namespace urchin {
 

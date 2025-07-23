@@ -4,10 +4,10 @@
 #include <Urchin3dEngine.h>
 #include <UrchinAggregation.h>
 
-#include <controller/SceneController.h>
-#include <scene/object/ObjectMoveAxisDisplayer.h>
-#include <widget/controller/statusbar/StatusBarController.h>
-#include <widget/controller/mouse/MouseController.h>
+#include "controller/SceneController.h"
+#include "scene/object/ObjectMoveAxisDisplayer.h"
+#include "widget/controller/statusbar/StatusBarController.h"
+#include "widget/controller/mouse/MouseController.h"
 
 namespace urchin {
 

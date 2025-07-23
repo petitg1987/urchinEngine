@@ -4,8 +4,8 @@
 #include FT_FREETYPE_H
 #include <UrchinCommon.h>
 
-#include <loader/font/LoaderTTF.h>
-#include <resources/image/Image.h>
+#include "loader/font/LoaderTTF.h"
+#include "resources/image/Image.h"
 
 namespace urchin {
 

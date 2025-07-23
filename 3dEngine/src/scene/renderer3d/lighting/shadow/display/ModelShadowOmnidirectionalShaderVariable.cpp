@@ -1,7 +1,7 @@
 #include <cstring>
 
-#include <scene/renderer3d/lighting/shadow/display/ModelShadowOmnidirectionalShaderVariable.h>
-#include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
+#include "scene/renderer3d/lighting/shadow/display/ModelShadowOmnidirectionalShaderVariable.h"
+#include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
 
 namespace urchin {
 

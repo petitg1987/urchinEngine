@@ -1,4 +1,4 @@
-#include <scene/ui/widget/staticbitmap/WidthSize.h>
+#include "scene/ui/widget/staticbitmap/WidthSize.h"
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <UrchinCommon.h>
 
-#include <i18n/I18nService.h>
-#include <i18n/LanguageTranslator.h>
+#include "i18n/I18nService.h"
+#include "i18n/LanguageTranslator.h"
 
 namespace urchin {
 

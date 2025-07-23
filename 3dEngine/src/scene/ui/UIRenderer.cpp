@@ -1,10 +1,10 @@
 #include <utility>
 
-#include <scene/ui/UIRenderer.h>
-#include <scene/ui/displayer/WidgetSetDisplayer.h>
-#include <resources/ResourceRetriever.h>
-#include <resources/font/Font.h>
-#include <graphics/render/shader/ShaderBuilder.h>
+#include "scene/ui/UIRenderer.h"
+#include "scene/ui/displayer/WidgetSetDisplayer.h"
+#include "resources/ResourceRetriever.h"
+#include "resources/font/Font.h"
+#include "graphics/render/shader/ShaderBuilder.h"
 
 namespace urchin {
 

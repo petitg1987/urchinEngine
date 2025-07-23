@@ -3,9 +3,9 @@
 #include <memory>
 #include <array>
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingQuality.h>
-#include <scene/renderer3d/camera/Camera.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/renderer3d/postprocess/antialiasing/AntiAliasingQuality.h"
+#include "scene/renderer3d/camera/Camera.h"
 
 namespace urchin {
 

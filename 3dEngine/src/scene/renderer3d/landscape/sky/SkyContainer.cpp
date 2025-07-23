@@ -1,4 +1,4 @@
-#include <scene/renderer3d/landscape/sky/SkyContainer.h>
+#include "scene/renderer3d/landscape/sky/SkyContainer.h"
 
 namespace urchin {
     SkyContainer::SkyContainer(RenderTarget& renderTarget) :

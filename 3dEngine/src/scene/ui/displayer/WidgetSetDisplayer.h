@@ -3,7 +3,7 @@
 #include <vector>
 #include <unordered_map>
 
-#include <scene/ui/UIRenderer.h>
+#include "scene/ui/UIRenderer.h"
 
 namespace urchin {
 

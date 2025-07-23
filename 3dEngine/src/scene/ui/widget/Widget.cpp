@@ -1,12 +1,12 @@
 #include <algorithm>
 
-#include <scene/ui/widget/Widget.h>
-#include <scene/ui/widget/container/Container.h>
-#include <scene/ui/widget/window/Window.h>
-#include <scene/ui/widget/WidgetTypeUtil.h>
-#include <scene/ui/displayer/WidgetSetDisplayer.h>
-#include <scene/ui/UIRenderer.h>
-#include <scene/InputDeviceKey.h>
+#include "scene/ui/widget/Widget.h"
+#include "scene/ui/widget/container/Container.h"
+#include "scene/ui/widget/window/Window.h"
+#include "scene/ui/widget/WidgetTypeUtil.h"
+#include "scene/ui/displayer/WidgetSetDisplayer.h"
+#include "scene/ui/UIRenderer.h"
+#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 

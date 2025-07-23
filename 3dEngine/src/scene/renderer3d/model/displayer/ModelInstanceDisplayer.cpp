@@ -1,10 +1,10 @@
 #include <memory>
 #include <cstring>
 
-#include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>
-#include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
-#include <resources/material/UvScale.h>
-#include <graphics/render/GenericRendererBuilder.h>
+#include "scene/renderer3d/model/displayer/ModelInstanceDisplayer.h"
+#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
+#include "resources/material/UvScale.h"
+#include "graphics/render/GenericRendererBuilder.h"
 
 namespace urchin {
 

@@ -4,9 +4,9 @@
 #include <map>
 #include <vector>
 
-#include <math/geometry/3d/shape/ConvexHullShape3D.h>
-#include <math/geometry/3d/object/ConvexHull3D.h>
-#include <math/geometry/3d/Plane.h>
+#include "math/geometry/3d/shape/ConvexHullShape3D.h"
+#include "math/geometry/3d/object/ConvexHull3D.h"
+#include "math/geometry/3d/Plane.h"
 
 namespace urchin {
 

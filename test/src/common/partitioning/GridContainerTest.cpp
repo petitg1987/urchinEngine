@@ -2,8 +2,8 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinCommon.h>
 
-#include <common/partitioning/GridContainerTest.h>
-#include <AssertHelper.h>
+#include "common/partitioning/GridContainerTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 MyGridItem::MyGridItem(const Point3<int>& position) :

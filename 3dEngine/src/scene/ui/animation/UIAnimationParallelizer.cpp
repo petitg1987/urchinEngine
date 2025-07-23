@@ -1,4 +1,4 @@
-#include <scene/ui/animation/UIAnimationParallelizer.h>
+#include "scene/ui/animation/UIAnimationParallelizer.h"
 
 namespace urchin {
 

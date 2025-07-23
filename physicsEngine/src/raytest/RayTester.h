@@ -2,8 +2,8 @@
 
 #include <UrchinCommon.h>
 
-#include <raytest/RayTestResult.h>
-#include <collision/CollisionWorld.h>
+#include "raytest/RayTestResult.h"
+#include "collision/CollisionWorld.h"
 
 class CollisionWorldIT;
 

@@ -2,11 +2,11 @@
 
 #include <UrchinCommon.h>
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/Renderer.h>
-#include <scene/ui/widget/Widget.h>
-#include <scene/renderer3d/camera/CameraSpaceService.h>
-#include <texture/render/TextureRenderer.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/Renderer.h"
+#include "scene/ui/widget/Widget.h"
+#include "scene/renderer3d/camera/CameraSpaceService.h"
+#include "texture/render/TextureRenderer.h"
 
 namespace urchin {
 

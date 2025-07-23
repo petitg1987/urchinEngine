@@ -1,4 +1,4 @@
-#include <trigger/shape/SoundSphere.h>
+#include "trigger/shape/SoundSphere.h"
 
 namespace urchin {
 

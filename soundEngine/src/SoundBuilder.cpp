@@ -1,10 +1,10 @@
-#include <SoundBuilder.h>
-#include <SoundEnvironment.h>
-#include <sound/global/GlobalSound.h>
-#include <sound/localizable/LocalizableSound.h>
-#include <trigger/AutoTrigger.h>
-#include <trigger/AreaTrigger.h>
-#include <trigger/ManualTrigger.h>
+#include "SoundBuilder.h"
+#include "SoundEnvironment.h"
+#include "sound/global/GlobalSound.h"
+#include "sound/localizable/LocalizableSound.h"
+#include "trigger/AutoTrigger.h"
+#include "trigger/AreaTrigger.h"
+#include "trigger/ManualTrigger.h"
 
 namespace urchin {
 

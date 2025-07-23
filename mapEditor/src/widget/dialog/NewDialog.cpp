@@ -2,9 +2,9 @@
 #include <QtWidgets/QFileDialog>
 #include <UrchinAggregation.h>
 
-#include <widget/dialog/NewDialog.h>
-#include <widget/style/LabelStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
+#include "widget/dialog/NewDialog.h"
+#include "widget/style/LabelStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
 
 namespace urchin {
 

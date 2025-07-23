@@ -1,7 +1,7 @@
-#include <scene/ui/widget/slider/Slider.h>
-#include <scene/ui/widget/staticbitmap/StaticBitmap.h>
-#include <scene/InputDeviceKey.h>
-#include <resources/ResourceRetriever.h>
+#include "scene/ui/widget/slider/Slider.h"
+#include "scene/ui/widget/staticbitmap/StaticBitmap.h"
+#include "scene/InputDeviceKey.h"
+#include "resources/ResourceRetriever.h"
 
 namespace urchin {
 

@@ -1,4 +1,4 @@
-#include <collision/narrowphase/algorithm/epa/EPATriangleData.h>
+#include "collision/narrowphase/algorithm/epa/EPATriangleData.h"
 
 namespace urchin {
 

@@ -3,7 +3,7 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <resources/geometry/GeometryModel.h>
+#include "resources/geometry/GeometryModel.h"
 
 namespace urchin {
 

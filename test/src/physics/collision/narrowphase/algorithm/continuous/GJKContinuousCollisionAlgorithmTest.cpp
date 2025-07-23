@@ -1,8 +1,8 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <AssertHelper.h>
-#include <physics/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithmTest.h>
+#include "AssertHelper.h"
+#include "physics/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithmTest.h"
 using namespace urchin;
 
 void GJKContinuousCollisionAlgorithmTest::rayTest() { //test created from error logs where fail occurred with MAX_ITERATION=25 / TERMINATION_TOLERANCE=0.0001f

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <texture/filter/TextureFilterBuilder.h>
-#include <texture/filter/gaussianblur/GaussianBlurFilter.h>
+#include "texture/filter/TextureFilterBuilder.h"
+#include "texture/filter/gaussianblur/GaussianBlurFilter.h"
 
 namespace urchin {
 

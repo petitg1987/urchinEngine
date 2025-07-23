@@ -1,8 +1,8 @@
 #include <cstring>
-#include <libs/vkenum/vk_enum.h>
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/setup/handler/ValidationLayer.h>
+#include "libs/vkenum/vk_enum.h"
+#include "graphics/api/vulkan/setup/handler/ValidationLayer.h"
 using namespace urchin;
 
 namespace urchin {

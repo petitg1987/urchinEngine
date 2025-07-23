@@ -1,9 +1,9 @@
 #pragma once
 
-#include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
-#include <collision/ManifoldResult.h>
-#include <shape/CollisionShape3D.h>
-#include <utils/pool/FixedSizePool.h>
+#include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
+#include "collision/ManifoldResult.h"
+#include "shape/CollisionShape3D.h"
+#include "utils/pool/FixedSizePool.h"
 
 namespace urchin {
 

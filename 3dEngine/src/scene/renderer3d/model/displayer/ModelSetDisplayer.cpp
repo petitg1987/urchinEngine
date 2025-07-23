@@ -2,8 +2,8 @@
 #include <stdexcept>
 #include <ranges>
 
-#include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
-#include <graphics/render/shader/ShaderBuilder.h>
+#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
+#include "graphics/render/shader/ShaderBuilder.h"
 
 namespace urchin {
 

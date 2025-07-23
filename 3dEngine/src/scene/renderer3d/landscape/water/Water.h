@@ -3,10 +3,10 @@
 #include <UrchinCommon.h>
 #include <memory>
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/renderer3d/camera/Camera.h>
-#include <scene/renderer3d/landscape/fog/FogContainer.h>
-#include <scene/renderer3d/landscape/fog/Fog.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/renderer3d/camera/Camera.h"
+#include "scene/renderer3d/landscape/fog/FogContainer.h"
+#include "scene/renderer3d/landscape/fog/Fog.h"
 
 namespace urchin {
 

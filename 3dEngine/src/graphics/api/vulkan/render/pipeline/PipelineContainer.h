@@ -3,7 +3,7 @@
 #include <map>
 #include <memory>
 
-#include <graphics/api/vulkan/render/pipeline/Pipeline.h>
+#include "graphics/api/vulkan/render/pipeline/Pipeline.h"
 
 namespace urchin {
 

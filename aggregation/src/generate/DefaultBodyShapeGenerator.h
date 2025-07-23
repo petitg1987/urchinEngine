@@ -1,7 +1,7 @@
 #pragma once
 
-#include <model/ObjectEntity.h>
-#include <generate/DefaultShapeQuality.h>
+#include "model/ObjectEntity.h"
+#include "generate/DefaultShapeQuality.h"
 
 namespace urchin {
 

@@ -2,10 +2,10 @@
 #include <stdexcept>
 #include <cassert>
 
-#include <math/geometry/3d/Simplex.h>
-#include <math/geometry/3d/LineSegment3D.h>
-#include <math/geometry/3d/object/Tetrahedron.h>
-#include <math/geometry/3d/object/Triangle3D.h>
+#include "math/geometry/3d/Simplex.h"
+#include "math/geometry/3d/LineSegment3D.h"
+#include "math/geometry/3d/object/Tetrahedron.h"
+#include "math/geometry/3d/object/Triangle3D.h"
 
 namespace urchin {
 

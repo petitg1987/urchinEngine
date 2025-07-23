@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <path/navmesh/model/output/NavLinkConstraint.h>
+#include "path/navmesh/model/output/NavLinkConstraint.h"
 
 namespace urchin {
 

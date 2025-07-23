@@ -2,8 +2,8 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinCommon.h>
 
-#include <common/math/geometry/3d/voxel/VoxelServiceTest.h>
-#include <AssertHelper.h>
+#include "common/math/geometry/3d/voxel/VoxelServiceTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void VoxelServiceTest::voxelizeObject() {

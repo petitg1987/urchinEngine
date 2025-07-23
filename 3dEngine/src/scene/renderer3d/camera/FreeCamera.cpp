@@ -1,7 +1,7 @@
 #include <UrchinCommon.h>
 
-#include <scene/renderer3d/camera/FreeCamera.h>
-#include <scene/InputDeviceKey.h>
+#include "scene/renderer3d/camera/FreeCamera.h"
+#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 

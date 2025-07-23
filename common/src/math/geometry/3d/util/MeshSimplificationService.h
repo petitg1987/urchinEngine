@@ -1,6 +1,6 @@
 #pragma once
 
-#include <math/geometry/3d/MeshData.h>
+#include "math/geometry/3d/MeshData.h"
 
 namespace urchin {
 

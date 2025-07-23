@@ -3,7 +3,7 @@
 #include <UrchinCommon.h>
 #include <UrchinAggregation.h>
 
-#include <controller/AbstractController.h>
+#include "controller/AbstractController.h"
 
 namespace urchin {
 

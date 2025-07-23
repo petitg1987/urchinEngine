@@ -1,9 +1,9 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QBoxLayout>
 
-#include <panel/object/sound/soundshape/SoundBoxShapeWidget.h>
-#include <widget/style/SpinBoxStyleHelper.h>
-#include <widget/style/ComboBoxStyleHelper.h>
+#include "panel/object/sound/soundshape/SoundBoxShapeWidget.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/ComboBoxStyleHelper.h"
 
 namespace urchin {
 

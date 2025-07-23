@@ -1,9 +1,9 @@
 #include <cassert>
 
-#include <math/geometry/3d/shape/CylinderShape.h>
-#include <math/geometry/3d/object/Cylinder.h>
-#include <math/algorithm/MathFunction.h>
-#include <util/StringUtil.h>
+#include "math/geometry/3d/shape/CylinderShape.h"
+#include "math/geometry/3d/object/Cylinder.h"
+#include "math/algorithm/MathFunction.h"
+#include "util/StringUtil.h"
 
 namespace urchin {
 

@@ -1,11 +1,11 @@
-#include <panel/object/physics/PhysicsWidget.h>
-#include <panel/object/physics/dialog/ChangeBodyShapeDialog.h>
-#include <panel/object/physics/bodyshape/NoBodyShapeWidget.h>
-#include <panel/object/physics/bodyshape/BodyShapeWidgetRetriever.h>
-#include <widget/style/FrameStyleHelper.h>
-#include <widget/style/GroupBoxStyleHelper.h>
-#include <widget/style/SpinBoxStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
+#include "panel/object/physics/PhysicsWidget.h"
+#include "panel/object/physics/dialog/ChangeBodyShapeDialog.h"
+#include "panel/object/physics/bodyshape/NoBodyShapeWidget.h"
+#include "panel/object/physics/bodyshape/BodyShapeWidgetRetriever.h"
+#include "widget/style/FrameStyleHelper.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
 
 namespace urchin {
 

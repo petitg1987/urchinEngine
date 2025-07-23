@@ -1,4 +1,4 @@
-#include <collision/constraintsolver/solvingdata/CommonSolvingData.h>
+#include "collision/constraintsolver/solvingdata/CommonSolvingData.h"
 
 namespace urchin {
 

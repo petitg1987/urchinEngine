@@ -1,6 +1,6 @@
 #include <QHeaderView>
 
-#include <panel/water/WaterTableView.h>
+#include "panel/water/WaterTableView.h"
 
 namespace urchin {
     WaterTableView::WaterTableView(QWidget* parent) :

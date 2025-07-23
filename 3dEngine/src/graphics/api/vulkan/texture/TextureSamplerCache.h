@@ -3,7 +3,7 @@
 #include <vulkan/vulkan.h>
 #include <map>
 
-#include <graphics/api/vulkan/texture/TextureParam.h>
+#include "graphics/api/vulkan/texture/TextureParam.h"
 
 namespace urchin {
 

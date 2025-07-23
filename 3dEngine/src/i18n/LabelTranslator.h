@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <scene/ui/allocator/StringConverterAllocator.h>
+#include "scene/ui/allocator/StringConverterAllocator.h"
 
 namespace urchin {
 

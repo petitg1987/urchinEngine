@@ -1,9 +1,9 @@
 #pragma once
 
-#include <body/BodyContainer.h>
-#include <body/model/RigidBody.h>
-#include <collision/broadphase/BroadPhase.h>
-#include <collision/narrowphase/NarrowPhase.h>
+#include "body/BodyContainer.h"
+#include "body/model/RigidBody.h"
+#include "collision/broadphase/BroadPhase.h"
+#include "collision/narrowphase/NarrowPhase.h"
 
 namespace urchin {
 

@@ -5,26 +5,26 @@
 #include <unordered_set>
 #include <UrchinCommon.h>
 
-#include <scene/Renderer.h>
-#include <scene/renderer3d/VisualConfig.h>
-#include <scene/renderer3d/camera/Camera.h>
-#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
-#include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
-#include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
-#include <scene/renderer3d/postprocess/output/OutputRenderer.h>
-#include <scene/renderer3d/transparent/TransparentManager.h>
-#include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
-#include <scene/renderer3d/lighting/shadow/ShadowManager.h>
-#include <scene/renderer3d/model/Model.h>
-#include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
-#include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>
-#include <scene/renderer3d/landscape/terrain/TerrainContainer.h>
-#include <scene/renderer3d/landscape/fog/FogContainer.h>
-#include <scene/renderer3d/landscape/water/WaterContainer.h>
-#include <scene/renderer3d/landscape/sky/SkyContainer.h>
-#include <scene/renderer3d/ui/UiContainer.h>
-#include <resources/geometry/GeometryContainer.h>
-#include <texture/render/TextureRenderer.h>
+#include "scene/Renderer.h"
+#include "scene/renderer3d/VisualConfig.h"
+#include "scene/renderer3d/camera/Camera.h"
+#include "scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h"
+#include "scene/renderer3d/postprocess/reflection/ReflectionApplier.h"
+#include "scene/renderer3d/postprocess/bloom/BloomEffectApplier.h"
+#include "scene/renderer3d/postprocess/output/OutputRenderer.h"
+#include "scene/renderer3d/transparent/TransparentManager.h"
+#include "scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h"
+#include "scene/renderer3d/lighting/shadow/ShadowManager.h"
+#include "scene/renderer3d/model/Model.h"
+#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
+#include "scene/renderer3d/model/culler/ModelOcclusionCuller.h"
+#include "scene/renderer3d/landscape/terrain/TerrainContainer.h"
+#include "scene/renderer3d/landscape/fog/FogContainer.h"
+#include "scene/renderer3d/landscape/water/WaterContainer.h"
+#include "scene/renderer3d/landscape/sky/SkyContainer.h"
+#include "scene/renderer3d/ui/UiContainer.h"
+#include "resources/geometry/GeometryContainer.h"
+#include "texture/render/TextureRenderer.h"
 
 namespace urchin {
 

@@ -5,8 +5,8 @@
 #include <QtWidgets/QPushButton>
 #include <UrchinPhysicsEngine.h>
 
-#include <controller/object/ObjectController.h>
-#include <panel/object/physics/bodyshape/BodyShapeWidget.h>
+#include "controller/object/ObjectController.h"
+#include "panel/object/physics/bodyshape/BodyShapeWidget.h"
 
 namespace urchin {
 

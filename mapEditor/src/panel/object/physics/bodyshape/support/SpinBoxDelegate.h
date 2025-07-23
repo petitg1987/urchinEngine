@@ -5,7 +5,7 @@
 #include <QtWidgets/QTableView>
 #include <QStandardItemModel>
 
-#include <panel/object/physics/bodyshape/BodyShapeWidget.h>
+#include "panel/object/physics/bodyshape/BodyShapeWidget.h"
 
 namespace urchin {
 

@@ -1,5 +1,6 @@
-#include <scene/SceneFreeCamera.h>
 #include <StateSaveHelper.h>
+
+#include "scene/SceneFreeCamera.h"
 
 namespace urchin {
 

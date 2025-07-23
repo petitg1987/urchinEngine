@@ -1,7 +1,7 @@
 #pragma once
 
-#include <graphics/api/GraphicsApi.h>
-#include <graphics/texture/TextureReader.h>
+#include "graphics/api/GraphicsApi.h"
+#include "graphics/texture/TextureReader.h"
 namespace urchin {
 
     class GenericComputeBuilder : public std::enable_shared_from_this<GenericComputeBuilder> {

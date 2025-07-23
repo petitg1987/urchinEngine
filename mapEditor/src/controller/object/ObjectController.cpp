@@ -2,8 +2,8 @@
 #include <memory>
 #include <utility>
 
-#include <controller/object/ObjectController.h>
-#include <controller/EntityControllerUtil.h>
+#include "controller/object/ObjectController.h"
+#include "controller/EntityControllerUtil.h"
 
 namespace urchin {
 

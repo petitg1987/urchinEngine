@@ -1,5 +1,6 @@
-#include <widget/style/ComboBoxStyleHelper.h>
 #include <UrchinCommon.h>
+
+#include "widget/style/ComboBoxStyleHelper.h"
 
 namespace urchin {
 

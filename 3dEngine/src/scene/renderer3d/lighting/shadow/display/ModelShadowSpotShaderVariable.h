@@ -2,8 +2,8 @@
 
 #include <UrchinCommon.h>
 
-#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
-#include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
+#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
+#include "scene/renderer3d/model/displayer/CustomModelShaderVariable.h"
 
 namespace urchin {
 

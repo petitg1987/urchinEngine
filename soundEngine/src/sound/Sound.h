@@ -3,7 +3,7 @@
 #include <string>
 #include <AL/al.h>
 
-#include <player/filereader/ChunkPreLoader.h>
+#include "player/filereader/ChunkPreLoader.h"
 
 namespace urchin {
 

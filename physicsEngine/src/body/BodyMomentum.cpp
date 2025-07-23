@@ -1,6 +1,6 @@
 #include <limits>
 
-#include <body/BodyMomentum.h>
+#include "body/BodyMomentum.h"
 
 namespace urchin {
 

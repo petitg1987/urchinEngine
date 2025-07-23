@@ -3,10 +3,10 @@
 #include <chrono>
 #include <vector>
 
-#include <scene/InputDeviceKey.h>
-#include <scene/renderer3d/Renderer3d.h>
-#include <scene/ui/UIRenderer.h>
-#include <graphics/api/GraphicsApi.h>
+#include "scene/InputDeviceKey.h"
+#include "scene/renderer3d/Renderer3d.h"
+#include "scene/ui/UIRenderer.h"
+#include "graphics/api/GraphicsApi.h"
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
-#include <map/save/object/sound/SoundTriggerReaderWriter.h>
-#include <map/save/object/sound/soundshape/SoundShapeReaderWriterRetriever.h>
-#include <map/save/object/sound/soundshape/SoundShapeReaderWriter.h>
-#include <trigger/AutoTrigger.h>
+#include "map/save/object/sound/SoundTriggerReaderWriter.h"
+#include "map/save/object/sound/soundshape/SoundShapeReaderWriterRetriever.h"
+#include "map/save/object/sound/soundshape/SoundShapeReaderWriter.h"
+#include "trigger/AutoTrigger.h"
 
 namespace urchin {
 

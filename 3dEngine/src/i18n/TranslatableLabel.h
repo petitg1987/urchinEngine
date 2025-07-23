@@ -1,6 +1,6 @@
 #pragma once
 
-#include <i18n/LanguageTranslator.h>
+#include "i18n/LanguageTranslator.h"
 
 namespace urchin {
 

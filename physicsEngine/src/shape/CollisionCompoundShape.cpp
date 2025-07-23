@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <limits>
 
-#include <shape/CollisionCompoundShape.h>
+#include "shape/CollisionCompoundShape.h"
 
 namespace urchin {
 

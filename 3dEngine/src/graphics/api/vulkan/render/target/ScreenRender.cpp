@@ -1,12 +1,12 @@
 #include <stdexcept>
 #include <utility>
-#include <libs/vkenum/vk_enum.h>
 
-#include <graphics/api/vulkan/render/target/ScreenRender.h>
-#include <graphics/api/vulkan/render/target/OffscreenRender.h>
-#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
-#include <graphics/api/vulkan/helper/ImageHelper.h>
-#include <graphics/api/vulkan/capture/CaptureService.h>
+#include "libs/vkenum/vk_enum.h"
+#include "graphics/api/vulkan/render/target/ScreenRender.h"
+#include "graphics/api/vulkan/render/target/OffscreenRender.h"
+#include "graphics/api/vulkan/setup/GraphicsSetupService.h"
+#include "graphics/api/vulkan/helper/ImageHelper.h"
+#include "graphics/api/vulkan/capture/CaptureService.h"
 
 namespace urchin {
 

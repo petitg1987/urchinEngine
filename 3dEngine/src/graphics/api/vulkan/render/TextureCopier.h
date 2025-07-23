@@ -1,6 +1,6 @@
 #pragma once
 
-#include <graphics/api/vulkan/texture/Texture.h>
+#include "graphics/api/vulkan/texture/Texture.h"
 
 namespace urchin {
 

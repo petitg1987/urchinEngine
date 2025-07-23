@@ -1,7 +1,7 @@
 #pragma once
 
-#include <scene/renderer3d/model/Mesh.h>
-#include <scene/renderer3d/model/Model.h>
+#include "scene/renderer3d/model/Mesh.h"
+#include "scene/renderer3d/model/Model.h"
 
 namespace urchin {
 

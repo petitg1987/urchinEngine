@@ -7,8 +7,8 @@
 #include <QtWidgets/QLineEdit>
 #include <UrchinCommon.h>
 
-#include <controller/terrain/TerrainController.h>
-#include <panel/terrain/TerrainTableView.h>
+#include "controller/terrain/TerrainController.h"
+#include "panel/terrain/TerrainTableView.h"
 
 namespace urchin {
 

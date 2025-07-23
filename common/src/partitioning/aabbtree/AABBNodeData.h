@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <math/geometry/3d/object/AABBox.h>
+#include "math/geometry/3d/object/AABBox.h"
 
 namespace urchin {
 

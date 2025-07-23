@@ -1,6 +1,6 @@
 #include <limits>
 
-#include <math/geometry/3d/Rectangle3D.h>
+#include "math/geometry/3d/Rectangle3D.h"
 
 namespace urchin {
 

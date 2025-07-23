@@ -1,4 +1,4 @@
-#include <character/AICharacterEventHandler.h>
+#include "character/AICharacterEventHandler.h"
 
 namespace urchin {
     void AICharacterEventHandler::startMoving() {

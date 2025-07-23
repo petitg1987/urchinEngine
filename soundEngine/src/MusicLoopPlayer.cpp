@@ -2,9 +2,9 @@
 #include <algorithm>
 #include <random>
 
-#include <MusicLoopPlayer.h>
-#include <SoundBuilder.h>
-#include <SoundEnvironment.h>
+#include "MusicLoopPlayer.h"
+#include "SoundBuilder.h"
+#include "SoundEnvironment.h"
 
 namespace urchin {
 

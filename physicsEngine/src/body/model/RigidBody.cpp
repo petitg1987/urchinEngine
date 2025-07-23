@@ -2,8 +2,8 @@
 #include <mutex>
 #include <thread>
 
-#include <body/model/RigidBody.h>
-#include <body/InertiaCalculation.h>
+#include "body/model/RigidBody.h"
+#include "body/InertiaCalculation.h"
 
 namespace urchin {
 

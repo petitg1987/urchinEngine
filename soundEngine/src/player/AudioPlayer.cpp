@@ -1,8 +1,8 @@
 #include <AL/alc.h>
 #include <stdexcept>
 
-#include <player/AudioPlayer.h>
-#include <util/CheckState.h>
+#include "player/AudioPlayer.h"
+#include "util/CheckState.h"
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <math/algebra/point/Point3.h>
-#include <math/algebra/vector/Vector3.h>
+#include "math/algebra/point/Point3.h"
+#include "math/algebra/vector/Vector3.h"
 
 namespace urchin {
     template<class T> class Point3;

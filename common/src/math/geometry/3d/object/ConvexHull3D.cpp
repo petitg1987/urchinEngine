@@ -1,7 +1,7 @@
-#include <math/geometry/3d/object/ConvexHull3D.h>
-#include <math/geometry/3d/object/Triangle3D.h>
-#include <math/geometry/3d/util/ResizeConvexHull3DService.h>
-#include <collision/GJKAlgorithm.h>
+#include "math/geometry/3d/object/ConvexHull3D.h"
+#include "math/geometry/3d/object/Triangle3D.h"
+#include "math/geometry/3d/util/ResizeConvexHull3DService.h"
+#include "collision/GJKAlgorithm.h"
 
 namespace urchin {
 

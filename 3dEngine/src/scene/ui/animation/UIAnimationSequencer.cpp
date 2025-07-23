@@ -1,4 +1,4 @@
-#include <scene/ui/animation/UIAnimationSequencer.h>
+#include "scene/ui/animation/UIAnimationSequencer.h"
 
 namespace urchin {
 

@@ -1,10 +1,10 @@
 #include <cstring>
 
-#include <scene/renderer3d/VisualConfig.h>
-#include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
-#include <graphics/render/shader/ShaderBuilder.h>
-#include <graphics/render/GenericRendererBuilder.h>
-#include <graphics/render/GenericComputeBuilder.h>
+#include "scene/renderer3d/VisualConfig.h"
+#include "scene/renderer3d/postprocess/bloom/BloomEffectApplier.h"
+#include "graphics/render/shader/ShaderBuilder.h"
+#include "graphics/render/GenericRendererBuilder.h"
+#include "graphics/render/GenericComputeBuilder.h"
 
 namespace urchin {
 

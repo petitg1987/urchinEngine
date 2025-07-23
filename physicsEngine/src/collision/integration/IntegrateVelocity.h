@@ -3,8 +3,8 @@
 #include <UrchinCommon.h>
 #include <vector>
 
-#include <body/BodyContainer.h>
-#include <collision/OverlappingPair.h>
+#include "body/BodyContainer.h"
+#include "collision/OverlappingPair.h"
 
 namespace urchin {
 

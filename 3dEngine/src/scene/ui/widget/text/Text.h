@@ -4,12 +4,12 @@
 #include <memory>
 #include <regex>
 
-#include <scene/ui/widget/Widget.h>
-#include <scene/ui/widget/Position.h>
-#include <scene/ui/allocator/StringConverterAllocator.h>
-#include <i18n/ParameterizedText.h>
-#include <i18n/TranslatableLabel.h>
-#include <resources/font/Font.h>
+#include "scene/ui/widget/Widget.h"
+#include "scene/ui/widget/Position.h"
+#include "scene/ui/allocator/StringConverterAllocator.h"
+#include "i18n/ParameterizedText.h"
+#include "i18n/TranslatableLabel.h"
+#include "resources/font/Font.h"
 
 namespace urchin {
 

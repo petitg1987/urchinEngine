@@ -1,4 +1,4 @@
-#include <body/InertiaCalculation.h>
+#include "body/InertiaCalculation.h"
 
 namespace urchin {
 

@@ -1,7 +1,8 @@
 #pragma once
 
 #include <UrchinCommon.h>
-#include <path/pathfinding/PathNode.h>
+
+#include "path/pathfinding/PathNode.h"
 
 namespace urchin {
 

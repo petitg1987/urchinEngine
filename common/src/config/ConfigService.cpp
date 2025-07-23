@@ -1,9 +1,9 @@
 #include <stdexcept>
 
-#include <config/ConfigService.h>
-#include <config/FileSystem.h>
-#include <io/file/PropertyFileHandler.h>
-#include <util/TypeConverter.h>
+#include "config/ConfigService.h"
+#include "config/FileSystem.h"
+#include "io/file/PropertyFileHandler.h"
+#include "util/TypeConverter.h"
 
 namespace urchin {
 

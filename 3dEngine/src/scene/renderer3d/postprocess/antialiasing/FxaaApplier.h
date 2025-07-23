@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingQuality.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/renderer3d/postprocess/antialiasing/AntiAliasingQuality.h"
 
 namespace urchin {
 

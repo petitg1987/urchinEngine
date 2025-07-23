@@ -1,8 +1,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <UrchinCommon.h>
 
-#include <common/math/algebra/point/PointTest.h>
-#include <AssertHelper.h>
+#include "common/math/algebra/point/PointTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void PointTest::triviallyCopyable() {

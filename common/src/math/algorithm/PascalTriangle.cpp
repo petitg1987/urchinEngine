@@ -1,5 +1,5 @@
-#include <math/algorithm/PascalTriangle.h>
-#include <math/algorithm/MathFunction.h>
+#include "math/algorithm/PascalTriangle.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 

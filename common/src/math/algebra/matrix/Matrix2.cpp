@@ -1,7 +1,7 @@
 #include <cmath>
 #include <iomanip>
 
-#include <math/algebra/matrix/Matrix2.h>
+#include "math/algebra/matrix/Matrix2.h"
 
 namespace urchin {
 

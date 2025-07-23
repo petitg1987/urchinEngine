@@ -4,8 +4,8 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <shape/CollisionShape3D.h>
-#include <shape/CollisionConcaveShape.h>
+#include "shape/CollisionShape3D.h"
+#include "shape/CollisionConcaveShape.h"
 
 namespace urchin {
 

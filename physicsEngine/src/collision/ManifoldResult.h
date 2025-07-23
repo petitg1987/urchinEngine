@@ -2,8 +2,8 @@
 
 #include <UrchinCommon.h>
 
-#include <collision/ManifoldContactPoint.h>
-#include <body/model/AbstractBody.h>
+#include "collision/ManifoldContactPoint.h"
+#include "body/model/AbstractBody.h"
 
 namespace urchin {
 

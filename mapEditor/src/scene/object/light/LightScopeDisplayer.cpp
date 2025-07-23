@@ -1,6 +1,6 @@
 #include <memory>
 
-#include <scene/object/light/LightScopeDisplayer.h>
+#include "scene/object/light/LightScopeDisplayer.h"
 
 namespace urchin {
 

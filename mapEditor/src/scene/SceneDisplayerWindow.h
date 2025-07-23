@@ -5,10 +5,10 @@
 #include <QWindow>
 #include <UrchinCommon.h>
 
-#include <scene/SceneDisplayer.h>
-#include <scene/SceneWindowController.h>
-#include <controller/SceneController.h>
-#include <widget/controller/statusbar/StatusBarController.h>
+#include "scene/SceneDisplayer.h"
+#include "scene/SceneWindowController.h"
+#include "controller/SceneController.h"
+#include "widget/controller/statusbar/StatusBarController.h"
 
 namespace urchin {
 

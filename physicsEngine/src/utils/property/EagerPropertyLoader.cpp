@@ -1,6 +1,6 @@
 #include <UrchinCommon.h>
 
-#include <utils/property/EagerPropertyLoader.h>
+#include "utils/property/EagerPropertyLoader.h"
 
 namespace urchin {
 

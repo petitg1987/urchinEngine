@@ -1,4 +1,4 @@
-#include <map/save/object/light/LightReaderWriter.h>
+#include "map/save/object/light/LightReaderWriter.h"
 
 namespace urchin {
 

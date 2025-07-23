@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include <math/geometry/3d/shape/ConvexShape3D.h>
-#include <math/algebra/vector/Vector3.h>
+#include "math/geometry/3d/shape/ConvexShape3D.h"
+#include "math/algebra/vector/Vector3.h"
 
 namespace urchin {
 

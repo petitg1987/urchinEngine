@@ -3,10 +3,10 @@
 #include <vector>
 #include <optional>
 #include <vulkan/vulkan.h>
-
 #include <UrchinCommon.h>
-#include <graphics/api/vulkan/texture/Texture.h>
-#include <graphics/api/vulkan/render/TextureCopier.h>
+
+#include "graphics/api/vulkan/texture/Texture.h"
+#include "graphics/api/vulkan/render/TextureCopier.h"
 
 namespace urchin {
 

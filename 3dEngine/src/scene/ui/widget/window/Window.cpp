@@ -2,8 +2,8 @@
 #include <utility>
 #include <UrchinCommon.h>
 
-#include <scene/ui/widget/window/Window.h>
-#include <scene/InputDeviceKey.h>
+#include "scene/ui/widget/window/Window.h"
+#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 

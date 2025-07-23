@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <profiler/Profiler.h>
+#include "profiler/Profiler.h"
 
 namespace urchin {
 

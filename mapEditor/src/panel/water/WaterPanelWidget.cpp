@@ -2,11 +2,11 @@
 #include <QMessageBox>
 #include <UrchinAggregation.h>
 
-#include <panel/water/WaterPanelWidget.h>
-#include <widget/style/GroupBoxStyleHelper.h>
-#include <widget/style/SpinBoxStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
-#include <panel/water/dialog/NewWaterDialog.h>
+#include "panel/water/WaterPanelWidget.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
+#include "panel/water/dialog/NewWaterDialog.h"
 
 namespace urchin {
     QString WaterPanelWidget::preferredNormalTexturePath = QString();

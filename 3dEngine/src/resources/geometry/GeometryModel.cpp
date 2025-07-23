@@ -1,6 +1,6 @@
-#include <resources/geometry/GeometryModel.h>
-#include <graphics/render/shader/ShaderBuilder.h>
-#include <graphics/render/GenericRendererBuilder.h>
+#include "resources/geometry/GeometryModel.h"
+#include "graphics/render/shader/ShaderBuilder.h"
+#include "graphics/render/GenericRendererBuilder.h"
 
 namespace urchin {
 

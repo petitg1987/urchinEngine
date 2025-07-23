@@ -3,8 +3,8 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <path/navmesh/model/output/NavLink.h>
-#include <path/navmesh/model/output/NavLinkConstraint.h>
+#include "path/navmesh/model/output/NavLink.h"
+#include "path/navmesh/model/output/NavLinkConstraint.h"
 
 namespace urchin {
 

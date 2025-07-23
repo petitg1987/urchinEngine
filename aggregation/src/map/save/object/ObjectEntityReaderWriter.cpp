@@ -1,9 +1,9 @@
-#include <map/save/object/ObjectEntityReaderWriter.h>
-#include <map/save/object/physics/RigidBodyReaderWriter.h>
-#include <map/save/object/light/LightReaderWriter.h>
-#include <map/save/object/sound/SoundComponentReaderWriter.h>
-#include <map/save/object/ModelReaderWriter.h>
-#include <map/save/common/TagsReaderWriter.h>
+#include "map/save/object/ObjectEntityReaderWriter.h"
+#include "map/save/object/physics/RigidBodyReaderWriter.h"
+#include "map/save/object/light/LightReaderWriter.h"
+#include "map/save/object/sound/SoundComponentReaderWriter.h"
+#include "map/save/object/ModelReaderWriter.h"
+#include "map/save/common/TagsReaderWriter.h"
 
 
 namespace urchin {

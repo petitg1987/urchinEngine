@@ -1,4 +1,4 @@
-#include <graphics/render/data/BlendFunction.h>
+#include "graphics/render/data/BlendFunction.h"
 
 namespace urchin {
 

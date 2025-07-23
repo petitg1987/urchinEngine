@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <UrchinCommon.h>
 
-#include <scene/object/physics/BodyShapeDisplayer.h>
+#include "scene/object/physics/BodyShapeDisplayer.h"
 
 namespace urchin {
 

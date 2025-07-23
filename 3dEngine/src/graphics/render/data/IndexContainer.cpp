@@ -1,6 +1,6 @@
 #include <cstring>
 
-#include <graphics/render/data/IndexContainer.h>
+#include "graphics/render/data/IndexContainer.h"
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include <object/CollisionTriangleObject.h>
+#include "object/CollisionTriangleObject.h"
 
 namespace urchin {
     CollisionTriangleObject::CollisionTriangleObject(float outerMargin, const Point3<float>& point1, const Point3<float>& point2, const Point3<float>& point3) :

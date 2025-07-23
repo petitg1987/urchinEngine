@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include <io/svg/shape/SVGCircle.h>
+#include "io/svg/shape/SVGCircle.h"
 
 namespace urchin {
 

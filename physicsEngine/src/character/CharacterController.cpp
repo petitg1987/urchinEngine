@@ -2,10 +2,10 @@
 #include <limits>
 #include <cmath>
 
-#include <character/CharacterController.h>
-#include <shape/CollisionCapsuleShape.h>
-#include <collision/ManifoldContactPoint.h>
-#include <PhysicsWorld.h>
+#include "PhysicsWorld.h"
+#include "character/CharacterController.h"
+#include "shape/CollisionCapsuleShape.h"
+#include "collision/ManifoldContactPoint.h"
 
 namespace urchin {
 

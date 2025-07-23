@@ -4,8 +4,8 @@
 #include <QMainWindow>
 #include <QtWidgets/QLabel>
 
-#include <widget/controller/statusbar/StatusBarState.h>
-#include <widget/controller/statusbar/StatusBarStateData.h>
+#include "widget/controller/statusbar/StatusBarState.h"
+#include "widget/controller/statusbar/StatusBarStateData.h"
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
 #include <utility>
 
-#include <collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h>
+#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
 
 namespace urchin {
 

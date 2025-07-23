@@ -1,6 +1,6 @@
-#include <math/geometry/3d/util/ResizeConvexHull3DService.h>
-#include <math/algebra/point/Point3.h>
-#include <logger/Logger.h>
+#include "math/geometry/3d/util/ResizeConvexHull3DService.h"
+#include "math/algebra/point/Point3.h"
+#include "logger/Logger.h"
 
 namespace urchin {
 

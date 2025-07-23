@@ -1,7 +1,7 @@
 #pragma once
 
-#include <collision/ManifoldResult.h>
-#include <collision/narrowphase/CollisionObjectWrapper.h>
+#include "collision/ManifoldResult.h"
+#include "collision/narrowphase/CollisionObjectWrapper.h"
 
 namespace urchin {
 

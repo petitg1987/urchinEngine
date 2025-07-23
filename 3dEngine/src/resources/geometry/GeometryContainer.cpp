@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include <resources/geometry/GeometryContainer.h>
+#include "resources/geometry/GeometryContainer.h"
 
 namespace urchin {
 

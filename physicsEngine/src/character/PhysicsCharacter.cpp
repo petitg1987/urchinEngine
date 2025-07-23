@@ -1,6 +1,6 @@
 #include <utility>
 
-#include <character/PhysicsCharacter.h>
+#include "character/PhysicsCharacter.h"
 
 namespace urchin {
 

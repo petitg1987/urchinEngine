@@ -5,11 +5,11 @@
 #include <mutex>
 #include <atomic>
 
-#include <input/AIWorld.h>
-#include <path/navmesh/model/NavObject.h>
-#include <path/navmesh/model/output/NavMeshAgent.h>
-#include <path/navmesh/model/output/NavMesh.h>
-#include <path/navmesh/model/output/NavPolygon.h>
+#include "input/AIWorld.h"
+#include "path/navmesh/model/NavObject.h"
+#include "path/navmesh/model/output/NavMeshAgent.h"
+#include "path/navmesh/model/output/NavMesh.h"
+#include "path/navmesh/model/output/NavPolygon.h"
 
 namespace urchin {
 

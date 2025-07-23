@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 
-#include <io/svg/shape/SVGShape.h>
-#include <math/algebra/point/Point2.h>
+#include "io/svg/shape/SVGShape.h"
+#include "math/algebra/point/Point2.h"
 
 namespace urchin {
 

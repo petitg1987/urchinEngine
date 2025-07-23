@@ -1,6 +1,6 @@
 #pragma once
 
-#include <i18n/LabelTranslator.h>
+#include "i18n/LabelTranslator.h"
 
 namespace urchin {
 

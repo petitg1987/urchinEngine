@@ -1,7 +1,7 @@
 #pragma once
 
-#include <resources/material/UvScaleType.h>
-#include <resources/material/MeshScaleAxis.h>
+#include "resources/material/UvScaleType.h"
+#include "resources/material/MeshScaleAxis.h"
 
 namespace urchin {
 

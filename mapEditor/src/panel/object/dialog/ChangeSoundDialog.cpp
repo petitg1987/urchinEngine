@@ -1,9 +1,9 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include <widget/style/LabelStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
-#include <panel/object/dialog/ChangeSoundDialog.h>
+#include "widget/style/LabelStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
+#include "panel/object/dialog/ChangeSoundDialog.h"
 
 namespace urchin {
 

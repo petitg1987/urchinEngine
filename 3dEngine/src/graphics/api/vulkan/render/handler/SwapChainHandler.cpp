@@ -1,12 +1,12 @@
-#include <libs/vkenum/vk_enum.h>
 #include <cassert>
 #include <string>
 #include <stdexcept>
 #include <algorithm>
 
-#include <graphics/api/vulkan/setup/handler/QueueHandler.h>
-#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
-#include <graphics/api/vulkan/render/handler/SwapChainHandler.h>
+#include "libs/vkenum/vk_enum.h"
+#include "graphics/api/vulkan/setup/handler/QueueHandler.h"
+#include "graphics/api/vulkan/setup/GraphicsSetupService.h"
+#include "graphics/api/vulkan/render/handler/SwapChainHandler.h"
 
 namespace urchin {
 

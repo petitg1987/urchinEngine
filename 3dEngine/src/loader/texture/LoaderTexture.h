@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include <graphics/api/GraphicsApi.h>
-#include <loader/Loader.h>
+#include "graphics/api/GraphicsApi.h"
+#include "loader/Loader.h"
 
 namespace urchin {
 

@@ -2,7 +2,7 @@
 
 #include <UrchinCommon.h>
 
-#include <shape/CollisionTriangleShape.h>
+#include "shape/CollisionTriangleShape.h"
 
 namespace urchin {
 

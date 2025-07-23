@@ -2,10 +2,10 @@
 #include <random>
 #include <cstring>
 
-#include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
-#include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
-#include <graphics/render/shader/ShaderBuilder.h>
-#include <graphics/render/GenericComputeBuilder.h>
+#include "scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h"
+#include "texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
+#include "graphics/render/shader/ShaderBuilder.h"
+#include "graphics/render/GenericComputeBuilder.h"
 
 namespace urchin {
 

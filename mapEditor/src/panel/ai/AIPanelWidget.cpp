@@ -1,9 +1,9 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 
-#include <panel/ai/AIPanelWidget.h>
-#include <widget/style/GroupBoxStyleHelper.h>
-#include <widget/style/SpinBoxStyleHelper.h>
+#include "panel/ai/AIPanelWidget.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
 
 namespace urchin {
 

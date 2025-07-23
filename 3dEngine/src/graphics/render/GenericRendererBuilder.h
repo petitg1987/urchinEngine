@@ -4,13 +4,13 @@
 #include <bitset>
 #include <UrchinCommon.h>
 
-#include <graphics/render/shader/ShaderDataContainer.h>
-#include <graphics/render/data/ShapeType.h>
-#include <graphics/render/data/DataContainer.h>
-#include <graphics/render/data/IndexContainer.h>
-#include <graphics/render/data/BlendFunction.h>
-#include <graphics/texture/TextureReader.h>
-#include <graphics/api/GraphicsApi.h>
+#include "graphics/render/shader/ShaderDataContainer.h"
+#include "graphics/render/data/ShapeType.h"
+#include "graphics/render/data/DataContainer.h"
+#include "graphics/render/data/IndexContainer.h"
+#include "graphics/render/data/BlendFunction.h"
+#include "graphics/texture/TextureReader.h"
+#include "graphics/api/GraphicsApi.h"
 
 namespace urchin {
 

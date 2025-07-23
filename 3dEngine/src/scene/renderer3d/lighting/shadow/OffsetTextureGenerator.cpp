@@ -1,5 +1,6 @@
 #include <random>
-#include <scene/renderer3d/lighting/shadow/OffsetTextureGenerator.h>
+
+#include "scene/renderer3d/lighting/shadow/OffsetTextureGenerator.h"
 
 namespace urchin {
 

@@ -3,7 +3,7 @@
 #include <vector>
 #include <map>
 
-#include <pattern/observer/Observer.h>
+#include "pattern/observer/Observer.h"
 
 namespace urchin {
 

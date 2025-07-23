@@ -1,4 +1,4 @@
-#include <scene/renderer3d/lighting/light/spot/SpotLight.h>
+#include "scene/renderer3d/lighting/light/spot/SpotLight.h"
 
 namespace urchin {
 

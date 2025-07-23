@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include <math/geometry/3d/Line3D.h>
+#include "math/geometry/3d/Line3D.h"
 
 namespace urchin {
 

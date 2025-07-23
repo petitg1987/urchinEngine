@@ -7,12 +7,12 @@
 #include <set>
 #include <cassert>
 
-#include <math/geometry/3d/util/ShapeDetectService.h>
-#include <math/geometry/3d/Plane.h>
-#include <math/geometry/3d/shape/BoxShape.h>
-#include <math/geometry/3d/shape/SphereShape.h>
-#include <math/geometry/3d/shape/ConvexHullShape3D.h>
-#include <math/geometry/3d/voxel/VoxelService.h>
+#include "math/geometry/3d/util/ShapeDetectService.h"
+#include "math/geometry/3d/Plane.h"
+#include "math/geometry/3d/shape/BoxShape.h"
+#include "math/geometry/3d/shape/SphereShape.h"
+#include "math/geometry/3d/shape/ConvexHullShape3D.h"
+#include "math/geometry/3d/voxel/VoxelService.h"
 
 namespace urchin {
 

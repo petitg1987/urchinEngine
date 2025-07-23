@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <io/svg/shape/SVGShape.h>
+#include "io/svg/shape/SVGShape.h"
 
 namespace urchin {
 

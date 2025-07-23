@@ -1,6 +1,6 @@
 #include <QApplication>
 
-#include <MapEditorWindow.h>
+#include "MapEditorWindow.h"
 using namespace urchin;
 
 int main(int argc, char *argv[]) {

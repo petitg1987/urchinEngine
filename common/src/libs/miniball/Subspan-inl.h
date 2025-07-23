@@ -9,6 +9,7 @@
 #include <cmath>
 #include <numeric>
 #include <ostream>
+
 #include "Seb_configure.h"
 
 #include "Subspan.h"  // Note: header included for better syntax highlighting in some IDEs.

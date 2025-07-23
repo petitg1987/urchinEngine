@@ -5,12 +5,12 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <scene/renderer3d/model/Meshes.h>
-#include <scene/renderer3d/model/Animation.h>
-#include <scene/renderer3d/model/AnimRepeat.h>
-#include <scene/renderer3d/model/AnimStart.h>
-#include <scene/renderer3d/model/displayer/ModelDisplayable.h>
-#include <resources/model/ConstMeshes.h>
+#include "scene/renderer3d/model/Meshes.h"
+#include "scene/renderer3d/model/Animation.h"
+#include "scene/renderer3d/model/AnimRepeat.h"
+#include "scene/renderer3d/model/AnimStart.h"
+#include "scene/renderer3d/model/displayer/ModelDisplayable.h"
+#include "resources/model/ConstMeshes.h"
 
 namespace urchin {
 

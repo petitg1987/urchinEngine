@@ -2,11 +2,11 @@
 
 #include <vector>
 
-#include <math/geometry/3d/voxel/VoxelGrid.h>
-#include <math/algebra/point/Point3.h>
-#include <math/geometry/3d/object/AABBox.h>
-#include <math/geometry/3d/object/Triangle3D.h>
-#include <math/geometry/3d/MeshData.h>
+#include "math/geometry/3d/voxel/VoxelGrid.h"
+#include "math/algebra/point/Point3.h"
+#include "math/geometry/3d/object/AABBox.h"
+#include "math/geometry/3d/object/Triangle3D.h"
+#include "math/geometry/3d/MeshData.h"
 
 namespace urchin {
 

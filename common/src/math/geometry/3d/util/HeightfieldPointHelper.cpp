@@ -2,8 +2,8 @@
 #include <cassert>
 #include <cmath>
 
-#include <math/geometry/3d/util/HeightfieldPointHelper.h>
-#include <math/algorithm/MathFunction.h>
+#include "math/geometry/3d/util/HeightfieldPointHelper.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 

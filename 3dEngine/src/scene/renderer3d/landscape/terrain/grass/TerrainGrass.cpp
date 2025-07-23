@@ -3,10 +3,10 @@
 #include <thread>
 #include <cstring>
 
-#include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>
-#include <resources/ResourceRetriever.h>
-#include <graphics/render/shader/ShaderBuilder.h>
-#include <graphics/render/GenericRendererBuilder.h>
+#include "scene/renderer3d/landscape/terrain/grass/TerrainGrass.h"
+#include "resources/ResourceRetriever.h"
+#include "graphics/render/shader/ShaderBuilder.h"
+#include "graphics/render/GenericRendererBuilder.h"
 
 namespace urchin {
 

@@ -3,8 +3,8 @@
     #include <limits>
 #endif
 
-#include <math/geometry/2d/util/ResizeConvexHull2DService.h>
-#include <math/geometry/2d/util/ResizePolygon2DService.h>
+#include "math/geometry/2d/util/ResizeConvexHull2DService.h"
+#include "math/geometry/2d/util/ResizePolygon2DService.h"
 
 namespace urchin {
 

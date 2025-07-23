@@ -1,4 +1,4 @@
-#include <panel/object/sound/soundshape/support/DefaultSoundShapeCreator.h>
+#include "panel/object/sound/soundshape/support/DefaultSoundShapeCreator.h"
 
 namespace urchin {
 

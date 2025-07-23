@@ -1,6 +1,6 @@
 #pragma once
 
-#include <shape/CollisionShape3D.h>
+#include "shape/CollisionShape3D.h"
 
 namespace urchin {
 

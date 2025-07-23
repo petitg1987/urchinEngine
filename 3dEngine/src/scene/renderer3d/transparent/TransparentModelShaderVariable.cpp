@@ -1,6 +1,6 @@
 #include <cstring>
 
-#include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
+#include "scene/renderer3d/transparent/TransparentModelShaderVariable.h"
 
 namespace urchin {
 

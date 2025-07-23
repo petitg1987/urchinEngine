@@ -3,8 +3,8 @@
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <AssertHelper.h>
-#include <physics/shape/ShapeToAABBoxTest.h>
+#include "AssertHelper.h"
+#include "physics/shape/ShapeToAABBoxTest.h"
 using namespace urchin;
 
 void ShapeToAABBoxTest::boxConversion() {

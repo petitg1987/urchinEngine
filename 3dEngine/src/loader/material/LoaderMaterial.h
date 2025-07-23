@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include <resources/material/Material.h>
-#include <resources/material/MeshScaleAxis.h>
-#include <loader/Loader.h>
+#include "resources/material/Material.h"
+#include "resources/material/MeshScaleAxis.h"
+#include "loader/Loader.h"
 
 namespace urchin {
 

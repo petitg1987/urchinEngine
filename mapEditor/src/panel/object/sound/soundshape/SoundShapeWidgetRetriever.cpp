@@ -1,9 +1,9 @@
 #include <stdexcept>
 
-#include <panel/object/sound/soundshape/SoundShapeWidgetRetriever.h>
-#include <panel/object/sound/soundshape/SoundShapeWidget.h>
-#include <panel/object/sound/soundshape/SoundSphereShapeWidget.h>
-#include <panel/object/sound/soundshape/SoundBoxShapeWidget.h>
+#include "panel/object/sound/soundshape/SoundShapeWidgetRetriever.h"
+#include "panel/object/sound/soundshape/SoundShapeWidget.h"
+#include "panel/object/sound/soundshape/SoundSphereShapeWidget.h"
+#include "panel/object/sound/soundshape/SoundBoxShapeWidget.h"
 
 namespace urchin {
 

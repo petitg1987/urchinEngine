@@ -1,7 +1,7 @@
 #include <cmath>
 #include <utility>
 
-#include <resources/geometry/capsule/CapsuleModel.h>
+#include "resources/geometry/capsule/CapsuleModel.h"
 
 namespace urchin {
 

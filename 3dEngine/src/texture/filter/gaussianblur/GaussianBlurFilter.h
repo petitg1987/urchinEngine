@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <texture/filter/TextureFilter.h>
+#include "texture/filter/TextureFilter.h"
 
 namespace urchin {
 

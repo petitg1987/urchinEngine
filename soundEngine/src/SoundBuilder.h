@@ -1,8 +1,8 @@
 #pragma once
 
-#include <SoundComponent.h>
-#include <trigger/AreaTrigger.h>
-#include <player/filereader/ChunkPreLoader.h>
+#include "SoundComponent.h"
+#include "trigger/AreaTrigger.h"
+#include "player/filereader/ChunkPreLoader.h"
 
 namespace urchin {
 

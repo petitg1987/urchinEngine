@@ -1,4 +1,4 @@
-#include <widget/style/GroupBoxStyleHelper.h>
+#include "widget/style/GroupBoxStyleHelper.h"
 
 namespace urchin {
 

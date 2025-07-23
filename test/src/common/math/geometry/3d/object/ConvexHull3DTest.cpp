@@ -4,8 +4,8 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <common/math/geometry/3d/object/ConvexHull3DTest.h>
-#include <AssertHelper.h>
+#include "common/math/geometry/3d/object/ConvexHull3DTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void ConvexHull3DTest::reduceBox() {

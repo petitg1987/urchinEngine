@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <system/thread/LockById.h>
+#include "system/thread/LockById.h"
 
 namespace urchin {
 

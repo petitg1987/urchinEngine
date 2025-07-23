@@ -5,16 +5,16 @@
 #include <optional>
 #include <UrchinCommon.h>
 
-#include <scene/InputDeviceKey.h>
-#include <scene/ui/widget/WidgetType.h>
-#include <scene/ui/widget/Position.h>
-#include <scene/ui/widget/Size.h>
-#include <scene/ui/widget/Scissor.h>
-#include <scene/ui/UISkinService.h>
-#include <scene/ui/EventListener.h>
-#include <scene/ui/ClipboardLocal.h>
-#include <scene/ui/displayer/WidgetDisplayable.h>
-#include <i18n/I18nService.h>
+#include "scene/InputDeviceKey.h"
+#include "scene/ui/widget/WidgetType.h"
+#include "scene/ui/widget/Position.h"
+#include "scene/ui/widget/Size.h"
+#include "scene/ui/widget/Scissor.h"
+#include "scene/ui/UISkinService.h"
+#include "scene/ui/EventListener.h"
+#include "scene/ui/ClipboardLocal.h"
+#include "scene/ui/displayer/WidgetDisplayable.h"
+#include "i18n/I18nService.h"
 
 namespace urchin {
 

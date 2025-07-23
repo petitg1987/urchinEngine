@@ -1,7 +1,8 @@
 #pragma once
 
 #include <UrchinCommon.h>
-#include <utils/pool/SyncFixedSizePool.h>
+
+#include "utils/pool/SyncFixedSizePool.h"
 
 namespace urchin {
 

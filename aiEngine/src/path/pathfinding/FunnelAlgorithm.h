@@ -4,7 +4,7 @@
 #include <utility>
 #include <UrchinCommon.h>
 
-#include <path/pathfinding/PathPortal.h>
+#include "path/pathfinding/PathPortal.h"
 
 namespace urchin {
 

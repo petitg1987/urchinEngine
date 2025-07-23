@@ -1,8 +1,8 @@
 #include <cassert>
 #include <cmath>
 
-#include <math/algebra/point/Point2.h>
-#include <math/algorithm/MathFunction.h>
+#include "math/algebra/point/Point2.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 

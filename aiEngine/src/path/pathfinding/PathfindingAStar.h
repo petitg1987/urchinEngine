@@ -4,11 +4,11 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <path/navmesh/model/output/NavMesh.h>
-#include <path/navmesh/model/output/NavTriangle.h>
-#include <path/pathfinding/PathNode.h>
-#include <path/pathfinding/PathPortal.h>
-#include <path/PathPoint.h>
+#include "path/navmesh/model/output/NavMesh.h"
+#include "path/navmesh/model/output/NavTriangle.h"
+#include "path/pathfinding/PathNode.h"
+#include "path/pathfinding/PathPortal.h"
+#include "path/PathPoint.h"
 
 namespace urchin {
 

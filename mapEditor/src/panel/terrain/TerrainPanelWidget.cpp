@@ -3,11 +3,11 @@
 #include <QSignalMapper>
 #include <UrchinAggregation.h>
 
-#include <panel/terrain/TerrainPanelWidget.h>
-#include <widget/style/GroupBoxStyleHelper.h>
-#include <widget/style/SpinBoxStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
-#include <panel/terrain/dialog/NewTerrainDialog.h>
+#include "panel/terrain/TerrainPanelWidget.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
+#include "panel/terrain/dialog/NewTerrainDialog.h"
 
 namespace urchin {
     QString TerrainPanelWidget::preferredMaskMapPath = QString();

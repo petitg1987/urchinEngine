@@ -1,7 +1,7 @@
 #include <stdexcept>
 
-#include <device/AudioDevice.h>
-#include <util/CheckState.h>
+#include "device/AudioDevice.h"
+#include "util/CheckState.h"
 
 namespace urchin {
 

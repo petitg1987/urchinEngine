@@ -1,7 +1,7 @@
 #include <utility>
 
-#include <resources/material/Material.h>
-#include <resources/material/MaterialBuilder.h>
+#include "resources/material/Material.h"
+#include "resources/material/MaterialBuilder.h"
 
 namespace urchin {
 

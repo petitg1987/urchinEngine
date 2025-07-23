@@ -1,9 +1,9 @@
 #include <cassert>
 
-#include <math/geometry/3d/shape/SphereShape.h>
-#include <math/geometry/3d/object/Sphere.h>
-#include <math/algorithm/MathFunction.h>
-#include <util/StringUtil.h>
+#include "math/geometry/3d/shape/SphereShape.h"
+#include "math/geometry/3d/object/Sphere.h"
+#include "math/algorithm/MathFunction.h"
+#include "util/StringUtil.h"
 
 namespace urchin {
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <sound/Sound.h>
-#include <trigger/SoundTrigger.h>
-#include <trigger/ManualTrigger.h>
-#include <trigger/AreaTrigger.h>
-#include <sound/global/GlobalSound.h>
-#include <sound/localizable/LocalizableSound.h>
+#include "sound/Sound.h"
+#include "trigger/SoundTrigger.h"
+#include "trigger/ManualTrigger.h"
+#include "trigger/AreaTrigger.h"
+#include "sound/global/GlobalSound.h"
+#include "sound/localizable/LocalizableSound.h"
 
 namespace urchin {
 

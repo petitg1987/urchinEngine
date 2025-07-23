@@ -3,8 +3,8 @@
 #include <vector>
 #include <memory>
 
-#include <resources/Resource.h>
-#include <graphics/texture/TextureFormat.h>
+#include "resources/Resource.h"
+#include "graphics/texture/TextureFormat.h"
 
 namespace urchin {
 

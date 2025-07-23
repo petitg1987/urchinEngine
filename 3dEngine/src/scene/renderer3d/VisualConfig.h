@@ -1,11 +1,11 @@
 #pragma once
 
-#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
-#include <scene/renderer3d/lighting/shadow/ShadowManager.h>
-#include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
-#include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
-#include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
-#include <scene/renderer3d/landscape/terrain/TerrainContainer.h>
+#include "scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h"
+#include "scene/renderer3d/lighting/shadow/ShadowManager.h"
+#include "scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h"
+#include "scene/renderer3d/postprocess/bloom/BloomEffectApplier.h"
+#include "scene/renderer3d/postprocess/reflection/ReflectionApplier.h"
+#include "scene/renderer3d/landscape/terrain/TerrainContainer.h"
 
 namespace urchin {
 

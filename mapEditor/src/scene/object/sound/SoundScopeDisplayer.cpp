@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <scene/object/sound/SoundScopeDisplayer.h>
+#include "scene/object/sound/SoundScopeDisplayer.h"
 
 namespace urchin {
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <memory>
-
 #include <UrchinSoundEngine.h>
-#include <map/save/object/sound/soundshape/SoundShapeReaderWriter.h>
+
+#include "map/save/object/sound/soundshape/SoundShapeReaderWriter.h"
 
 namespace urchin {
 

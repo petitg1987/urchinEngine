@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#include <scene/renderer3d/camera/Camera.h>
-#include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
-#include <scene/renderer3d/lighting/light/LightManager.h>
-#include <graphics/api/GraphicsApi.h>
+#include "scene/renderer3d/camera/Camera.h"
+#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
+#include "scene/renderer3d/lighting/light/LightManager.h"
+#include "graphics/api/GraphicsApi.h"
 
 namespace urchin {
 

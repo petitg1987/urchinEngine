@@ -1,7 +1,7 @@
 #pragma once
 
-#include <request/HttpRequest.h>
-#include <request/RequestResult.h>
+#include "request/HttpRequest.h"
+#include "request/RequestResult.h"
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
 #include <utility>
 
-#include <input/AITerrain.h>
+#include "input/AITerrain.h"
 
 namespace urchin {
     AITerrain::AITerrain(std::string name, const Transform<float>& transform, bool bIsObstacleCandidate,

@@ -1,6 +1,6 @@
 #include <UrchinCommon.h>
 
-#include <util/CheckState.h>
+#include "util/CheckState.h"
 using namespace urchin;
 
 namespace urchin {

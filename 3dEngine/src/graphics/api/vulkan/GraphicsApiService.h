@@ -1,7 +1,7 @@
 #pragma once
 
-#include <graphics/setup/FramebufferSizeRetriever.h>
-#include <graphics/setup/SurfaceCreator.h>
+#include "graphics/setup/FramebufferSizeRetriever.h"
+#include "graphics/setup/SurfaceCreator.h"
 
 namespace urchin {
 

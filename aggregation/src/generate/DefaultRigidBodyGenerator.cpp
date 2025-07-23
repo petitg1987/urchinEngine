@@ -1,5 +1,5 @@
-#include <generate/DefaultRigidBodyGenerator.h>
-#include <generate/DefaultBodyShapeGenerator.h>
+#include "generate/DefaultRigidBodyGenerator.h"
+#include "generate/DefaultBodyShapeGenerator.h"
 
 namespace urchin {
 

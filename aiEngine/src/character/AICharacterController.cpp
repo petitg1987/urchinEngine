@@ -1,4 +1,4 @@
-#include <character/AICharacterController.h>
+#include "character/AICharacterController.h"
 
 namespace urchin {
 

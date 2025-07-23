@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include <i18n/TranslatableLabel.h>
-#include <i18n/LabelTranslator.h>
+#include "i18n/TranslatableLabel.h"
+#include "i18n/LabelTranslator.h"
 
 namespace urchin {
 

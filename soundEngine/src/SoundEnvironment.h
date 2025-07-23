@@ -5,12 +5,12 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <AudioController.h>
-#include <sound/Sound.h>
-#include <player/stream/StreamUpdateWorker.h>
-#include <SoundComponent.h>
-#include <MusicLoopPlayer.h>
-#include <SoundBuilder.h>
+#include "AudioController.h"
+#include "sound/Sound.h"
+#include "player/stream/StreamUpdateWorker.h"
+#include "SoundComponent.h"
+#include "MusicLoopPlayer.h"
+#include "SoundBuilder.h"
 
 namespace urchin {
 

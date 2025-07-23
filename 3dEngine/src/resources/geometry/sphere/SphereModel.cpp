@@ -1,7 +1,7 @@
 #include <cmath>
 #include <utility>
 
-#include <resources/geometry/sphere/SphereModel.h>
+#include "resources/geometry/sphere/SphereModel.h"
 
 namespace urchin {
 

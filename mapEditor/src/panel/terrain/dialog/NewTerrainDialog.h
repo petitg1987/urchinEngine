@@ -4,9 +4,9 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
-
 #include <UrchinAggregation.h>
-#include <controller/terrain/TerrainController.h>
+
+#include "controller/terrain/TerrainController.h"
 
 namespace urchin {
 

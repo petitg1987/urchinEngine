@@ -1,9 +1,9 @@
 #include <AL/al.h>
 #include <stdexcept>
 
-#include <SoundEnvironment.h>
-#include <device/AudioDevice.h>
-#include <util/CheckState.h>
+#include "SoundEnvironment.h"
+#include "device/AudioDevice.h"
+#include "util/CheckState.h"
 
 namespace urchin {
 

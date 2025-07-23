@@ -3,8 +3,8 @@
 #include <vector>
 #include <limits>
 
-#include <object/CollisionTriangleObject.h>
-#include <collision/narrowphase/algorithm/epa/EPAAlgorithm.h>
+#include "object/CollisionTriangleObject.h"
+#include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
 
 namespace urchin {
 

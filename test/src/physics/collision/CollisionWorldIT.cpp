@@ -3,8 +3,8 @@
 #include <memory>
 #include <cstdio>
 
-#include <physics/collision/CollisionWorldIT.h>
-#include <AssertHelper.h>
+#include "physics/collision/CollisionWorldIT.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void CollisionWorldIT::fallOnGround() {

@@ -1,8 +1,8 @@
 #include <UrchinCommon.h>
 
-#include <loader/texture/LoaderTexture.h>
-#include <resources/ResourceRetriever.h>
-#include <resources/image/Image.h>
+#include "loader/texture/LoaderTexture.h"
+#include "resources/ResourceRetriever.h"
+#include "resources/image/Image.h"
 
 namespace urchin {
 

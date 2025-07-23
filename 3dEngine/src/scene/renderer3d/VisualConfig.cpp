@@ -1,4 +1,4 @@
-#include <scene/renderer3d/VisualConfig.h>
+#include "scene/renderer3d/VisualConfig.h"
 
 namespace urchin {
 

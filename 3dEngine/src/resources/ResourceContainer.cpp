@@ -1,7 +1,7 @@
 #include <ranges>
 #include <UrchinCommon.h>
 
-#include <resources/ResourceContainer.h>
+#include "resources/ResourceContainer.h"
 
 namespace urchin {
 

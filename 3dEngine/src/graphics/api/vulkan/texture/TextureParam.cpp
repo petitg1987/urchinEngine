@@ -1,9 +1,9 @@
 #include <stdexcept>
-#include <libs/vkenum/vk_enum.h>
 
-#include <graphics/api/vulkan/texture/TextureParam.h>
-#include <graphics/api/vulkan/texture/TextureSamplerCache.h>
-#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
+#include "libs/vkenum/vk_enum.h"
+#include "graphics/api/vulkan/texture/TextureParam.h"
+#include "graphics/api/vulkan/texture/TextureSamplerCache.h"
+#include "graphics/api/vulkan/setup/GraphicsSetupService.h"
 
 namespace urchin {
 

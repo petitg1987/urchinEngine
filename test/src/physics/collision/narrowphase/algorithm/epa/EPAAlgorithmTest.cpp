@@ -3,8 +3,8 @@
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <AssertHelper.h>
-#include <physics/collision/narrowphase/algorithm/epa/EPAAlgorithmTest.h>
+#include "AssertHelper.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPAAlgorithmTest.h"
 using namespace urchin;
 
 void EPAAlgorithmTest::identicalAABBox() {

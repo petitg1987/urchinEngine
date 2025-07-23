@@ -3,7 +3,7 @@
 #include <cctype>
 #include <cassert>
 
-#include <util/StringUtil.h>
+#include "util/StringUtil.h"
 
 namespace urchin {
 

@@ -1,4 +1,4 @@
-#include <scene/ui/animation/UIAnimationDelay.h>
+#include "scene/ui/animation/UIAnimationDelay.h"
 
 namespace urchin {
 

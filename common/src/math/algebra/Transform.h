@@ -1,8 +1,8 @@
 #pragma once
 
-#include <math/algebra/Quaternion.h>
-#include <math/algebra/point/Point3.h>
-#include <math/algebra/matrix/Matrix4.h>
+#include "math/algebra/Quaternion.h"
+#include "math/algebra/point/Point3.h"
+#include "math/algebra/matrix/Matrix4.h"
 
 namespace urchin {
 

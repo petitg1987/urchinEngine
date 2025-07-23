@@ -1,6 +1,6 @@
 #pragma once
 
-#include <graphics/render/data/BlendFactor.h>
+#include "graphics/render/data/BlendFactor.h"
 
 namespace urchin {
 

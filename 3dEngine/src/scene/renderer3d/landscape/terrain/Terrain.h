@@ -3,11 +3,11 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/renderer3d/landscape/terrain/TerrainMaterial.h>
-#include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
-#include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>
-#include <scene/renderer3d/camera/Camera.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/renderer3d/landscape/terrain/TerrainMaterial.h"
+#include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
+#include "scene/renderer3d/landscape/terrain/grass/TerrainGrass.h"
+#include "scene/renderer3d/camera/Camera.h"
 
 namespace urchin {
 

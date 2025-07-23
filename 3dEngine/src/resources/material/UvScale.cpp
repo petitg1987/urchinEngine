@@ -1,4 +1,4 @@
-#include <resources/material/UvScale.h>
+#include "resources/material/UvScale.h"
 
 namespace urchin {
 

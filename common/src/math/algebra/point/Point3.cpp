@@ -1,7 +1,7 @@
 #include <cmath>
 
-#include <math/algebra/point/Point3.h>
-#include <math/algorithm/MathFunction.h>
+#include "math/algebra/point/Point3.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 

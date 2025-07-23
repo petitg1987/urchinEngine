@@ -7,14 +7,14 @@
 #include <UrchinSoundEngine.h>
 #include <UrchinAggregation.h>
 
-#include <widget/controller/mouse/MouseController.h>
-#include <widget/controller/statusbar/StatusBarController.h>
-#include <controller/SceneController.h>
-#include <scene/SceneFreeCamera.h>
-#include <scene/object/physics/BodyShapeDisplayer.h>
-#include <scene/object/ObjectMoveController.h>
-#include <scene/object/light/LightScopeDisplayer.h>
-#include <scene/object/sound/SoundScopeDisplayer.h>
+#include "widget/controller/mouse/MouseController.h"
+#include "widget/controller/statusbar/StatusBarController.h"
+#include "controller/SceneController.h"
+#include "scene/SceneFreeCamera.h"
+#include "scene/object/physics/BodyShapeDisplayer.h"
+#include "scene/object/ObjectMoveController.h"
+#include "scene/object/light/LightScopeDisplayer.h"
+#include "scene/object/sound/SoundScopeDisplayer.h"
 
 namespace urchin {
 

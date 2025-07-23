@@ -1,4 +1,4 @@
-#include <scene/renderer3d/lighting/shadow/SplitFrustum.h>
+#include "scene/renderer3d/lighting/shadow/SplitFrustum.h"
 
 namespace urchin {
 

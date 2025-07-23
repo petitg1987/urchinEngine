@@ -1,5 +1,5 @@
-#include <collision/integration/IntegrateVelocity.h>
-#include <body/model/RigidBody.h>
+#include "collision/integration/IntegrateVelocity.h"
+#include "body/model/RigidBody.h"
 
 namespace urchin {
 

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include <math/algorithm/MathFunction.h>
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 

@@ -1,9 +1,9 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include <panel/object/dialog/CloneObjectDialog.h>
-#include <widget/style/LabelStyleHelper.h>
-#include <controller/EntityControllerUtil.h>
+#include "panel/object/dialog/CloneObjectDialog.h"
+#include "widget/style/LabelStyleHelper.h"
+#include "controller/EntityControllerUtil.h"
 
 namespace urchin {
 

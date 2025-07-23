@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <utility>
 
-#include <scene/ui/widget/sequence/Sequence.h>
-#include <scene/ui/UISkinService.h>
+#include "scene/ui/widget/sequence/Sequence.h"
+#include "scene/ui/UISkinService.h"
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <UrchinCommon.h>
 
-#include <path/navmesh/model/output/NavMesh.h>
-#include <path/navmesh/model/NavModelCopy.h>
+#include "path/navmesh/model/output/NavMesh.h"
+#include "path/navmesh/model/NavModelCopy.h"
 
 namespace urchin {
 

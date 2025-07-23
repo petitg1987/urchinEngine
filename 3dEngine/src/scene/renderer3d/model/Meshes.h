@@ -3,8 +3,8 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <resources/model/ConstMeshes.h>
-#include <scene/renderer3d/model/Mesh.h>
+#include "resources/model/ConstMeshes.h"
+#include "scene/renderer3d/model/Mesh.h"
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
 #include <string>
 
-#include <path/navmesh/NavMeshGenerator.h>
+#include "path/navmesh/NavMeshGenerator.h"
 
 namespace urchin {
 

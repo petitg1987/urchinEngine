@@ -1,9 +1,9 @@
 #include <QHeaderView>
 
-#include <panel/object/physics/bodyshape/BodyConvexHullShapeWidget.h>
-#include <panel/object/physics/bodyshape/support/SpinBoxDelegate.h>
-#include <widget/style/LabelStyleHelper.h>
-#include <widget/style/ButtonStyleHelper.h>
+#include "panel/object/physics/bodyshape/BodyConvexHullShapeWidget.h"
+#include "panel/object/physics/bodyshape/support/SpinBoxDelegate.h"
+#include "widget/style/LabelStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
 
 namespace urchin {
 

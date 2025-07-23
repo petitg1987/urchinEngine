@@ -3,8 +3,8 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <common/math/geometry/3d/util/SortPointsServiceTest.h>
-#include <AssertHelper.h>
+#include "common/math/geometry/3d/util/SortPointsServiceTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void SortPointsServiceTest::threePointsClockwise() {

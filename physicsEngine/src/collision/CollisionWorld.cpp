@@ -1,6 +1,6 @@
 #include <vector>
 
-#include <collision/CollisionWorld.h>
+#include "collision/CollisionWorld.h"
 
 namespace urchin {
 

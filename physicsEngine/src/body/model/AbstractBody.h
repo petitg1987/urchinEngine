@@ -6,8 +6,8 @@
 #include <mutex>
 #include <thread>
 
-#include <collision/bodystate/IslandElement.h>
-#include <shape/CollisionShape3D.h>
+#include "collision/bodystate/IslandElement.h"
+#include "shape/CollisionShape3D.h"
 
 namespace urchin {
 

@@ -5,8 +5,8 @@
 #include <stdexcept>
 #include <typeinfo>
 
-#include <resources/ResourceContainer.h>
-#include <loader/Loader.h>
+#include "resources/ResourceContainer.h"
+#include "loader/Loader.h"
 
 namespace urchin {
 

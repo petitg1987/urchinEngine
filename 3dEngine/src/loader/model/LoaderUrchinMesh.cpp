@@ -2,9 +2,9 @@
 #include <stdexcept>
 #include <UrchinCommon.h>
 
-#include <loader/model/LoaderUrchinMesh.h>
-#include <resources/ResourceRetriever.h>
-#include <resources/material/MaterialBuilder.h>
+#include "loader/model/LoaderUrchinMesh.h"
+#include "resources/ResourceRetriever.h"
+#include "resources/material/MaterialBuilder.h"
 
 namespace urchin {
 

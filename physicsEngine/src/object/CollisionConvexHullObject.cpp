@@ -1,7 +1,7 @@
 #include <sstream>
 #include <utility>
 
-#include <object/CollisionConvexHullObject.h>
+#include "object/CollisionConvexHullObject.h"
 
 namespace urchin {
 

@@ -2,10 +2,10 @@
 
 #include <memory>
 #include <vector>
-
 #include <UrchinCommon.h>
-#include <input/AIEntity.h>
-#include <input/AIShape.h>
+
+#include "input/AIEntity.h"
+#include "input/AIShape.h"
 
 namespace urchin {
 

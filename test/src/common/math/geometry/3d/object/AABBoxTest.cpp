@@ -1,7 +1,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include <common/math/geometry/3d/object/AABBoxTest.h>
-#include <AssertHelper.h>
+#include "common/math/geometry/3d/object/AABBoxTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 

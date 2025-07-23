@@ -1,6 +1,6 @@
 #include <utility>
 
-#include <resources/model/ConstMeshes.h>
+#include "resources/model/ConstMeshes.h"
 
 namespace urchin {
 

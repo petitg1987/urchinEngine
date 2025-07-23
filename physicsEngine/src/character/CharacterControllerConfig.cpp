@@ -1,7 +1,7 @@
 #include <utility>
 #include <UrchinCommon.h>
 
-#include <character/CharacterControllerConfig.h>
+#include "character/CharacterControllerConfig.h"
 
 namespace urchin {
 

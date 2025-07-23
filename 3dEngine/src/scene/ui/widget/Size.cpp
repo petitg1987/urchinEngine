@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <scene/ui/widget/Size.h>
+#include "scene/ui/widget/Size.h"
 
 namespace urchin {
 

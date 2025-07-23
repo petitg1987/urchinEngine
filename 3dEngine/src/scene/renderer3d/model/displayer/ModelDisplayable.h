@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <scene/renderer3d/model/displayer/DisplayMode.h>
+
+#include "scene/renderer3d/model/displayer/DisplayMode.h"
 
 namespace urchin {
 

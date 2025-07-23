@@ -1,5 +1,5 @@
-#include <scene/renderer3d/model/displayer/ModelDisplayable.h>
-#include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>
+#include "scene/renderer3d/model/displayer/ModelDisplayable.h"
+#include "scene/renderer3d/model/displayer/ModelInstanceDisplayer.h"
 
 namespace urchin {
 

@@ -4,7 +4,7 @@
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 
-#include <model/TerrainEntity.h>
+#include "model/TerrainEntity.h"
 
 namespace urchin {
 

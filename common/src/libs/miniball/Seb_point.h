@@ -7,6 +7,7 @@
 #define SEB_POINT_H
 
 #include <vector>
+
 #include "Seb_configure.h"
 
 namespace SEB_NAMESPACE {

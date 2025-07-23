@@ -1,4 +1,4 @@
-#include <graphics/render/shader/ShaderConfig.h>
+#include "graphics/render/shader/ShaderConfig.h"
 
 namespace urchin {
 

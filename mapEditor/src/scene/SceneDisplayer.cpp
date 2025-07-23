@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include <UrchinAggregation.h>
 
-#include <scene/SceneDisplayer.h>
-#include <scene/SceneWindowController.h>
+#include "scene/SceneDisplayer.h"
+#include "scene/SceneWindowController.h"
 
 namespace urchin {
 

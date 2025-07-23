@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <panel/ScenePanelWidget.h>
+#include "panel/ScenePanelWidget.h"
 
 namespace urchin {
 

@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <request/HttpMethod.h>
+#include "request/HttpMethod.h"
 
 namespace urchin {
 

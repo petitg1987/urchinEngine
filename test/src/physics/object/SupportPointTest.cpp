@@ -3,8 +3,8 @@
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <AssertHelper.h>
-#include <physics/object/SupportPointTest.h>
+#include "AssertHelper.h"
+#include "physics/object/SupportPointTest.h"
 using namespace urchin;
 
 void SupportPointTest::sphereSupportPoint() {

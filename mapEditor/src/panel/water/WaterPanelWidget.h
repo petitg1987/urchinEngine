@@ -7,8 +7,8 @@
 #include <QtWidgets/QLineEdit>
 #include <UrchinCommon.h>
 
-#include <controller/water/WaterController.h>
-#include <panel/water/WaterTableView.h>
+#include "controller/water/WaterController.h"
+#include "panel/water/WaterTableView.h"
 
 namespace urchin {
 

@@ -1,4 +1,4 @@
-#include <generate/DefaultShapeQuality.h>
+#include "generate/DefaultShapeQuality.h"
 
 namespace urchin {
 

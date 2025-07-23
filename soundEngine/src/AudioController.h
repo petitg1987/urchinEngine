@@ -2,10 +2,10 @@
 
 #include <UrchinCommon.h>
 
-#include <sound/Sound.h>
-#include <trigger/SoundTrigger.h>
-#include <player/stream/StreamUpdateWorker.h>
-#include <SoundComponent.h>
+#include "sound/Sound.h"
+#include "trigger/SoundTrigger.h"
+#include "player/stream/StreamUpdateWorker.h"
+#include "SoundComponent.h"
 
 namespace urchin {
 

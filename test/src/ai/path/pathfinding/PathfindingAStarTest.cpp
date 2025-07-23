@@ -2,8 +2,8 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinCommon.h>
 
-#include <ai/path/pathfinding/PathfindingAStarTest.h>
-#include <AssertHelper.h>
+#include "ai/path/pathfinding/PathfindingAStarTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void PathfindingAStarTest::straightPath() {

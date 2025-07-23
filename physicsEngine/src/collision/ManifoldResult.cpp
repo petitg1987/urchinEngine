@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include <collision/ManifoldResult.h>
+#include "collision/ManifoldResult.h"
 
 namespace urchin {
 

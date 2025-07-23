@@ -1,6 +1,6 @@
 #include <utility>
 
-#include <math/algebra/Bezier.h>
+#include "math/algebra/Bezier.h"
 
 namespace urchin {
 

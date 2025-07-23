@@ -2,11 +2,11 @@
 
 #include <memory>
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingQuality.h>
-#include <scene/renderer3d/camera/Camera.h>
-#include <scene/renderer3d/postprocess/antialiasing/FxaaApplier.h>
-#include <scene/renderer3d/postprocess/antialiasing/TaaApplier.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/renderer3d/postprocess/antialiasing/AntiAliasingQuality.h"
+#include "scene/renderer3d/camera/Camera.h"
+#include "scene/renderer3d/postprocess/antialiasing/FxaaApplier.h"
+#include "scene/renderer3d/postprocess/antialiasing/TaaApplier.h"
 
 namespace urchin {
 

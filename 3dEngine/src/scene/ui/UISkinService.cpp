@@ -1,10 +1,10 @@
 #include <stdexcept>
 #include <memory>
 
-#include <scene/ui/UISkinService.h>
-#include <scene/ui/widget/LengthType.h>
-#include <resources/ResourceRetriever.h>
-#include <resources/image/Image.h>
+#include "scene/ui/UISkinService.h"
+#include "scene/ui/widget/LengthType.h"
+#include "resources/ResourceRetriever.h"
+#include "resources/image/Image.h"
 
 namespace urchin {
 

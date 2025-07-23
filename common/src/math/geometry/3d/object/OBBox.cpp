@@ -6,9 +6,9 @@
     #include <cassert>
 #endif
 
-#include <math/geometry/3d/object/OBBox.h>
-#include <math/geometry/3d/Rectangle3D.h>
-#include <math/algebra/point/Point4.h>
+#include "math/geometry/3d/object/OBBox.h"
+#include "math/geometry/3d/Rectangle3D.h"
+#include "math/algebra/point/Point4.h"
 namespace urchin {
 
     template<class T> OBBox<T>::OBBox():

@@ -1,4 +1,4 @@
-#include <debug/CollisionPointDisplayer.h>
+#include "debug/CollisionPointDisplayer.h"
 
 namespace urchin {
 

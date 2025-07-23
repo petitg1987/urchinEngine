@@ -2,8 +2,8 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinCommon.h>
 
-#include <common/system/SystemInfoTest.h>
-#include <AssertHelper.h>
+#include "common/system/SystemInfoTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void SystemInfoTest::retrieveOsInfo() {

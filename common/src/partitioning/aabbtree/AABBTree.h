@@ -1,8 +1,8 @@
 #pragma once
 
-#include <partitioning/aabbtree/AABBNode.h>
-#include <partitioning/aabbtree/AABBNodeData.h>
-#include <math/geometry/3d/Ray.h>
+#include "partitioning/aabbtree/AABBNode.h"
+#include "partitioning/aabbtree/AABBNodeData.h"
+#include "math/geometry/3d/Ray.h"
 
 namespace urchin {
 

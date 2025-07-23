@@ -1,5 +1,5 @@
-#include <panel/object/physics/bodyshape/BodyCapsuleShapeWidget.h>
-#include <widget/style/SpinBoxStyleHelper.h>
+#include "panel/object/physics/bodyshape/BodyCapsuleShapeWidget.h"
+#include "widget/style/SpinBoxStyleHelper.h"
 
 namespace urchin {
 

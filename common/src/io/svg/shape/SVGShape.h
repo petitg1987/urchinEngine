@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include <io/svg/SVGColor.h>
-#include <math/geometry/2d/object/Rectangle2D.h>
+#include "io/svg/SVGColor.h"
+#include "math/geometry/2d/object/Rectangle2D.h"
 
 namespace urchin {
 

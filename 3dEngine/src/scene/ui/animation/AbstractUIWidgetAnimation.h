@@ -1,7 +1,7 @@
 #pragma once
 
-#include <scene/ui/widget/Widget.h>
-#include <scene/ui/animation/AbstractUIAnimation.h>
+#include "scene/ui/widget/Widget.h"
+#include "scene/ui/animation/AbstractUIAnimation.h"
 
 namespace urchin {
 

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <graphics/api/GraphicsApi.h>
-#include <scene/renderer3d/camera/Camera.h>
-#include <scene/renderer3d/landscape/water/Water.h>
-#include <scene/renderer3d/landscape/fog/FogContainer.h>
+#include "graphics/api/GraphicsApi.h"
+#include "scene/renderer3d/camera/Camera.h"
+#include "scene/renderer3d/landscape/water/Water.h"
+#include "scene/renderer3d/landscape/fog/FogContainer.h"
 
 namespace urchin {
 

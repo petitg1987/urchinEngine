@@ -3,7 +3,7 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <resources/image/Image.h>
+#include "resources/image/Image.h"
 
 namespace urchin {
 

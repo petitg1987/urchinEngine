@@ -1,10 +1,10 @@
 #include <cstring>
 
-#include <scene/renderer3d/Renderer3d.h>
-#include <scene/renderer3d/FirstPassModelShaderVariable.h>
-#include <scene/renderer3d/OpaqueMeshFilter.h>
-#include <graphics/render/shader/ShaderBuilder.h>
-#include <graphics/render/GenericRendererBuilder.h>
+#include "scene/renderer3d/Renderer3d.h"
+#include "scene/renderer3d/FirstPassModelShaderVariable.h"
+#include "scene/renderer3d/OpaqueMeshFilter.h"
+#include "graphics/render/shader/ShaderBuilder.h"
+#include "graphics/render/GenericRendererBuilder.h"
 
 namespace urchin {
 

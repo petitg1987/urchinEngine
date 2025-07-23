@@ -2,8 +2,8 @@
 #include <algorithm>
 #include <ranges>
 
-#include <scene/renderer3d/model/Model.h>
-#include <resources/ResourceRetriever.h>
+#include "scene/renderer3d/model/Model.h"
+#include "resources/ResourceRetriever.h"
 
 namespace urchin {
 

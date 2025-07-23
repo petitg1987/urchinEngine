@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <model/NavMeshAgentEntity.h>
+#include "model/NavMeshAgentEntity.h"
 
 namespace urchin {
 

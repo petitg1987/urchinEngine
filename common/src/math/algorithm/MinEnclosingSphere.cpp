@@ -1,6 +1,6 @@
-#include <math/algorithm/MinEnclosingSphere.h>
+#include "math/algorithm/MinEnclosingSphere.h"
 
-#include <libs/miniball/Seb.h>
+#include "libs/miniball/Seb.h"
 
 namespace urchin {
 
