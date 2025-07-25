@@ -30,17 +30,17 @@ namespace urchin {
         std::ifstream terrainFrlFile;
         terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
 
-        //if (terrainFrlFile.is_open() && readVersion(terrainFrlFile) == TERRAIN_FRL_FILE_VERSION && readHash(terrainFrlFile) == terrainHash) { //TODO add mode !
-        //    loadTerrainMeshFile(terrainFrlFile);
-        //} else {
+        if (terrainFrlFile.is_open() && readVersion(terrainFrlFile) == TERRAIN_FRL_FILE_VERSION && readHash(terrainFrlFile) == terrainHash) {
+            loadTerrainMeshFile(terrainFrlFile);
+        } else {
             terrainFrlFile.close();
 
             buildVertices(*imgTerrain);
             buildIndices();
             buildNormals();
 
-        //    writeTerrainMeshFile(terrainFrlFilePath, terrainHash);
-        //}
+            writeTerrainMeshFile(terrainFrlFilePath, terrainHash);
+        }
 
         heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(rawVertices, xSize);
     }
@@ -336,6 +336,7 @@ namespace urchin {
         writeVersion(file, TERRAIN_FRL_FILE_VERSION);
         writeHash(file, terrainHash);
 
+        file.write(reinterpret_cast<const char*>(&mode), sizeof(mode));
         file.write(reinterpret_cast<const char*>(rawVertices.data()), (int)(rawVertices.size() * sizeof(float) * 3));
         file.write(reinterpret_cast<const char*>(vertices.data()), (int)(vertices.size() * sizeof(float) * 3));
         file.write(reinterpret_cast<const char*>(indices.data()), (int)(indices.size() * sizeof(unsigned int)));
@@ -353,6 +354,8 @@ namespace urchin {
     }
 
     void TerrainMesh::loadTerrainMeshFile(std::ifstream& file) {
+        file.read(reinterpret_cast<char*>(&mode), sizeof(mode));
+
         rawVertices.resize(computeNumberRawVertices());
         file.read(reinterpret_cast<char*>(rawVertices.data()), (int)(rawVertices.size() * sizeof(float) * 3));
 
