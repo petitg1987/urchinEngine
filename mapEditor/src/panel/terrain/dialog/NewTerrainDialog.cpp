@@ -79,7 +79,7 @@ namespace urchin {
             std::string relativeHeightFilename = PathUtil::computeRelativePath(resourcesDirectory, heightFilename);
             std::vector<std::string> emptyMaterialFilenames;
 
-            auto terrainMesh = std::make_unique<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f);
+            auto terrainMesh = std::make_unique<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f, TerrainMeshMode::NORMAL_BY_VERTEX);
             auto terrainMaterials = std::make_unique<TerrainMaterials>("", emptyMaterialFilenames, 1.0f, 1.0f);
             auto terrain = std::make_shared<Terrain>(std::move(terrainMesh), std::move(terrainMaterials), Point3(0.0f, 0.0f, 0.0f));
 
