@@ -142,7 +142,8 @@ namespace urchin {
     }
 
     void TerrainMesh::buildVertices(const Image& imgTerrain) {
-        rawVertices.reserve(computeNumberRawVertices());
+        std::size_t rawVerticesIndex = 0;
+        rawVertices.resize(computeNumberRawVertices());
         float xStart = (-((float)xSize * xzScale) / 2.0f) + (xzScale / 2.0f);
         float zStart = (-((float)zSize * xzScale) / 2.0f) + (xzScale / 2.0f);
         for (unsigned int z = 0; z < zSize; ++z) {
@@ -157,37 +158,42 @@ namespace urchin {
                 }
                 float xFloat = xStart + (float)x * xzScale;
                 //must match with TerrainMaterial#buildTexCoordinates()
-                rawVertices.emplace_back(xFloat, elevation, zFloat);
+                rawVertices[rawVerticesIndex++] = Point3(xFloat, elevation, zFloat);
             }
         }
+        assert(rawVerticesIndex == rawVertices.size());
 
-        vertices.reserve(computeNumberVertices());
         if (mode == TerrainMeshMode::FLAT) {
+            std::size_t verticesIndex = 0;
+            vertices.resize(computeNumberVertices());
             for (unsigned int z = 0; z < zSize - 1; ++z) {
                 for (unsigned int x = 0; x < xSize - 1; ++x) {
                     //must match with TerrainMaterial#buildTexCoordinates()
-                    vertices.push_back(rawVertices[x + xSize * (z + 1)]);
-                    vertices.push_back(rawVertices[x + xSize * z]);
-                    vertices.push_back(rawVertices[x + 1 + xSize * (z + 1)]);
+                    vertices[verticesIndex++] = rawVertices[x + xSize * (z + 1)];
+                    vertices[verticesIndex++] = rawVertices[x + xSize * z];
+                    vertices[verticesIndex++] = rawVertices[x + 1 + xSize * (z + 1)];
 
-                    vertices.push_back(rawVertices[x + 1 + xSize * (z + 1)]);
-                    vertices.push_back(rawVertices[x + xSize * z]);
-                    vertices.push_back(rawVertices[x + 1 + xSize * z]);
+                    vertices[verticesIndex++] = rawVertices[x + 1 + xSize * (z + 1)];
+                    vertices[verticesIndex++] = rawVertices[x + xSize * z];
+                    vertices[verticesIndex++] = rawVertices[x + 1 + xSize * z];
                 }
             }
+            assert(verticesIndex == vertices.size());
         }
     }
 
     void TerrainMesh::buildIndices() {
-        indices.reserve(computeNumberIndices());
         if (mode == TerrainMeshMode::SMOOTH) {
+            std::size_t indicesIndex = 0;
+            indices.resize(computeNumberIndices());
             for (unsigned int z = 0; z < zSize - 1; ++z) {
                 for (unsigned int x = 0; x < xSize; ++x) {
-                    indices.push_back(x + xSize * (z + 1));
-                    indices.push_back(x + xSize * z);
+                    indices[indicesIndex++] = x + xSize * (z + 1);
+                    indices[indicesIndex++] = x + xSize * z;
                 }
-                indices.push_back(GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE);
+                indices[indicesIndex++] = GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE;
             }
+            assert(indicesIndex == indices.size());
         }
     }
 

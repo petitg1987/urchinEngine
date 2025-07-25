@@ -61,33 +61,35 @@ namespace urchin {
 
     void TerrainMaterials::buildTexCoordinates(unsigned int xSize, unsigned int zSize, TerrainMeshMode mode) {
         texCoordinates.clear();
+        std::size_t texCoordinatesIndex = 0;
 
         if (mode == TerrainMeshMode::SMOOTH) {
-            texCoordinates.reserve(xSize * zSize);
+            texCoordinates.resize(xSize * zSize);
             for (unsigned int z = 0; z < zSize; ++z) {
                 for (unsigned int x = 0; x < xSize; ++x) {
                     //must match with TerrainMesh#buildVertices()
-                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x, z));
+                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x, z);
                 }
             }
         } else {
             assert(mode == TerrainMeshMode::FLAT);
             unsigned int trianglesByRow = (xSize - 1) * 2;
             unsigned int numberTriangles = trianglesByRow * (zSize - 1);
-            texCoordinates.reserve(numberTriangles * 3);
+            texCoordinates.resize(numberTriangles * 3);
             for (unsigned int z = 0; z < zSize - 1; ++z) {
                 for (unsigned int x = 0; x < xSize - 1; ++x) {
                     //must match with TerrainMesh#buildVertices()
-                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x, z + 1));
-                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x, z));
-                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x + 1, z + 1));
+                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x, z + 1);
+                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x, z);
+                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x + 1, z + 1);
 
-                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x + 1, z + 1));
-                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x, z));
-                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x + 1, z));
+                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x + 1, z + 1);
+                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x, z);
+                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x + 1, z);
                 }
             }
         }
+        assert(texCoordinatesIndex == texCoordinates.size());
     }
 
     Point2<float> TerrainMaterials::computeTexCoordinates(unsigned int xSize, unsigned int zSize, unsigned int x, unsigned int z) const {
