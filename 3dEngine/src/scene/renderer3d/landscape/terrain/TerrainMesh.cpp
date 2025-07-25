@@ -111,20 +111,20 @@ namespace urchin {
     unsigned int TerrainMesh::computeNumberVertices() const {
         if (mode == TerrainMeshMode::SMOOTH) {
             return 0;
-        } else if (mode == TerrainMeshMode::FLAT) {
+        } else {
+            assert(mode == TerrainMeshMode::FLAT);
             return computeNumberTriangles() * 3;
         }
-        throw std::runtime_error("Unknown terrain mesh mode: " + std::to_string((int)mode));
     }
 
     unsigned int TerrainMesh::computeNumberIndices() const {
         if (mode == TerrainMeshMode::SMOOTH) {
             unsigned int restartIndices = zSize - 1;
             return ((zSize - 1) * xSize * 2) + restartIndices;
-        } else if (mode == TerrainMeshMode::FLAT) {
+        } else {
+            assert(mode == TerrainMeshMode::FLAT);
             return 0;
         }
-        throw std::runtime_error("Unknown terrain mesh mode: " + std::to_string((int)mode));
     }
 
     unsigned int TerrainMesh::computeNumberTriangles() const {
@@ -135,10 +135,10 @@ namespace urchin {
     unsigned int TerrainMesh::computeNumberVertexNormals() const {
         if (mode == TerrainMeshMode::SMOOTH) {
             return computeNumberRawVertices();
-        } else if (mode == TerrainMeshMode::FLAT) {
+        } else {
+            assert(mode == TerrainMeshMode::FLAT);
             return computeNumberVertices();
         }
-        throw std::runtime_error("Unknown terrain mesh mode: " + std::to_string((int)mode));
     }
 
     void TerrainMesh::buildVertices(const Image& imgTerrain) {
@@ -156,16 +156,16 @@ namespace urchin {
                     elevation = (float)imgTerrain.getTexels16Bits()[x + xSize * z] * scale16BitsTo8Bits * yScale;
                 }
                 float xFloat = xStart + (float)x * xzScale;
+                //must match with TerrainMaterial#buildTexCoordinates()
                 rawVertices.emplace_back(xFloat, elevation, zFloat);
             }
         }
 
-        if (mode == TerrainMeshMode::SMOOTH) {
-            assert(computeNumberVertices() == 0);
-        } else if (mode == TerrainMeshMode::FLAT) {
-            vertices.reserve(computeNumberVertices());
+        vertices.reserve(computeNumberVertices());
+        if (mode == TerrainMeshMode::FLAT) {
             for (unsigned int z = 0; z < zSize - 1; ++z) {
                 for (unsigned int x = 0; x < xSize - 1; ++x) {
+                    //must match with TerrainMaterial#buildTexCoordinates()
                     vertices.push_back(rawVertices[x + xSize * (z + 1)]);
                     vertices.push_back(rawVertices[x + xSize * z]);
                     vertices.push_back(rawVertices[x + 1 + xSize * (z + 1)]);
@@ -175,14 +175,12 @@ namespace urchin {
                     vertices.push_back(rawVertices[x + 1 + xSize * z]);
                 }
             }
-        } else {
-            throw std::runtime_error("Unknown terrain mesh mode: " + std::to_string((int)mode));
         }
     }
 
     void TerrainMesh::buildIndices() {
+        indices.reserve(computeNumberIndices());
         if (mode == TerrainMeshMode::SMOOTH) {
-            indices.reserve(computeNumberIndices());
             for (unsigned int z = 0; z < zSize - 1; ++z) {
                 for (unsigned int x = 0; x < xSize; ++x) {
                     indices.push_back(x + xSize * (z + 1));
@@ -190,22 +188,6 @@ namespace urchin {
                 }
                 indices.push_back(GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE);
             }
-        } else if (mode == TerrainMeshMode::FLAT) {
-            assert(computeNumberIndices() == 0);
-            //TODO remove:
-            for (unsigned int z = 0; z < zSize - 1; ++z) {
-                for (unsigned int x = 0; x < xSize - 1; ++x) {
-                    indices.push_back(x + xSize * (z + 1));
-                    indices.push_back(x + xSize * z);
-                    indices.push_back(x + 1 + xSize * (z + 1));
-
-                    indices.push_back(x + 1 + xSize * (z + 1));
-                    indices.push_back(x + xSize * z);
-                    indices.push_back(x + 1 + xSize * z);
-                }
-            }
-        } else {
-            throw std::runtime_error("Unknown terrain mesh mode: " + std::to_string((int)mode));
         }
     }
 
@@ -243,7 +225,8 @@ namespace urchin {
                         }
 
                         normalTriangles[triangleIndex] = normal.normalize();
-                    } else if (mode == TerrainMeshMode::FLAT) {
+                    } else {
+                        assert(mode == TerrainMeshMode::FLAT);
                         unsigned int startIndex = triangleIndex * 3;
 
                         Point3<float> point1 = vertices[startIndex];
@@ -252,8 +235,6 @@ namespace urchin {
 
                         Vector3<float> normal = (point1.vector(point2).crossProduct(point3.vector(point1)));
                         normalTriangles[triangleIndex] = normal.normalize();
-                    } else {
-                        throw std::runtime_error("Unknown terrain mesh mode: " + std::to_string((int)mode));
                     }
                 }
             });
@@ -281,12 +262,11 @@ namespace urchin {
                 });
             }
             std::ranges::for_each(threadsVertexNormal, [](std::jthread& x){x.join();});
-        } else if (mode == TerrainMeshMode::FLAT) {
+        } else {
+            assert(mode == TerrainMeshMode::FLAT);
             for (unsigned int vertexIndex = 0; vertexIndex < totalVertexNormal; vertexIndex++) {
                 normals[vertexIndex] = normalTriangles[vertexIndex / 3];
             }
-        } else {
-            throw std::runtime_error("Unknown terrain mesh mode: " + std::to_string((int)mode));
         }
     }
 

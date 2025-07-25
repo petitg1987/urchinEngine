@@ -5,6 +5,7 @@
 #include <UrchinCommon.h>
 
 #include "resources/material/Material.h"
+#include "scene/renderer3d/landscape/terrain/TerrainMeshMode.h"
 
 namespace urchin {
 
@@ -14,7 +15,7 @@ namespace urchin {
 
             TerrainMaterials(std::string, const std::vector<std::string>&, float, float);
 
-            void refreshWith(unsigned int, unsigned int);
+            void refreshWith(unsigned int, unsigned int, TerrainMeshMode);
 
             const std::string& getMaskMapFilename() const;
             const std::shared_ptr<Texture>& getMaskTexture() const;
@@ -24,7 +25,8 @@ namespace urchin {
 
         private:
             void initializeMaterial(const std::vector<std::string>&);
-            void buildTexCoordinates(unsigned int, unsigned int);
+            void buildTexCoordinates(unsigned int, unsigned int, TerrainMeshMode);
+            Point2<float> computeSt(unsigned int, unsigned int, unsigned int, unsigned int) const;
 
             std::string maskMapFilename;
             std::shared_ptr<Texture> maskTexture;

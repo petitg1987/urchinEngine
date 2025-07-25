@@ -98,10 +98,10 @@ namespace urchin {
 
     void Terrain::refreshMaterials() const {
         if (materials) {
-            materials->refreshWith(mesh->getXSize(), mesh->getZSize());
+            materials->refreshWith(mesh->getXSize(), mesh->getZSize(), mesh->getMode());
 
             Vector2<float> materialsStRepeat = materials->getStRepeat();
-          //  terrainRenderer->updateData(2, materials->getTexCoordinates()); //TODO correct num of tex coordinate ? Missing assert in updateData ?
+            terrainRenderer->updateData(2, materials->getTexCoordinates());
             terrainRenderer->updateUniformData(ST_UNIFORM_BINDING, &materialsStRepeat);
             terrainRenderer->updateUniformTextureReader(MASK_TEX_UNIFORM_BINDING, TextureReader::build(materials->getMaskTexture(), TextureParam::buildLinear()));
             for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {

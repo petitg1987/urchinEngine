@@ -39,8 +39,8 @@ namespace urchin {
         }
     }
 
-    void TerrainMaterials::refreshWith(unsigned int xSize, unsigned int zSize) {
-        buildTexCoordinates(xSize, zSize);
+    void TerrainMaterials::refreshWith(unsigned int xSize, unsigned int zSize, TerrainMeshMode mode) {
+        buildTexCoordinates(xSize, zSize, mode);
     }
 
     const std::string& TerrainMaterials::getMaskMapFilename() const {
@@ -59,17 +59,37 @@ namespace urchin {
         return materials;
     }
 
-    void TerrainMaterials::buildTexCoordinates(unsigned int xSize, unsigned int zSize) {
-        texCoordinates.reserve(xSize * zSize);
+    void TerrainMaterials::buildTexCoordinates(unsigned int xSize, unsigned int zSize, TerrainMeshMode mode) {
+        if (mode == TerrainMeshMode::SMOOTH) {
+            texCoordinates.reserve(xSize * zSize);
+            for (unsigned int z = 0; z < zSize; ++z) {
+                for (unsigned int x = 0; x < xSize; ++x) {
+                    //must match with TerrainMesh#buildVertices()
+                    texCoordinates.push_back(computeSt(xSize, zSize, x, z));
+                }
+            }
+        } else {
+            assert(mode == TerrainMeshMode::FLAT);
+            unsigned int trianglesByRow = (xSize - 1) * 2;
+            unsigned int numberTriangles = trianglesByRow * (zSize - 1);
+            texCoordinates.reserve(numberTriangles * 3);
+            for (unsigned int z = 0; z < zSize - 1; ++z) {
+                for (unsigned int x = 0; x < xSize - 1; ++x) {
+                    //must match with TerrainMesh#buildVertices()
+                    texCoordinates.push_back(computeSt(xSize, zSize, x, z + 1));
+                    texCoordinates.push_back(computeSt(xSize, zSize, x, z));
+                    texCoordinates.push_back(computeSt(xSize, zSize, x + 1, z + 1));
 
-        for (unsigned int z = 0; z < zSize; ++z) {
-            for (unsigned int x = 0; x < xSize; ++x) {
-                float s = (float)x / (float)xSize * sRepeat;
-                float t = (float)z / (float)zSize * tRepeat;
-
-                texCoordinates.emplace_back(s, t);
+                    texCoordinates.push_back(computeSt(xSize, zSize, x + 1, z + 1));
+                    texCoordinates.push_back(computeSt(xSize, zSize, x, z));
+                    texCoordinates.push_back(computeSt(xSize, zSize, x + 1, z));
+                }
             }
         }
+    }
+
+    Point2<float> TerrainMaterials::computeSt(unsigned int xSize, unsigned int zSize, unsigned int x, unsigned int z) const {
+        return Point2((float)x / (float)xSize * sRepeat, (float)z / (float)zSize * tRepeat);
     }
 
     const std::vector<Point2<float>>& TerrainMaterials::getTexCoordinates() const {
