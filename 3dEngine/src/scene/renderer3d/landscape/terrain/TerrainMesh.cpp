@@ -243,9 +243,9 @@ namespace urchin {
         assert(totalTriangles == normalTriangles.size());
 
         //2. compute vertex normal
-        normals.resize(computeNumberVertices());
-        unsigned int totalVertexNormal = (unsigned int)normals.size();
         if (mode == TerrainMeshMode::SMOOTH) {
+            normals.resize(computeNumberRawVertices());
+            unsigned int totalVertexNormal = (unsigned int)normals.size();
             std::vector<std::jthread> threadsVertexNormal(NUM_THREADS);
             for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
                 unsigned int beginVertexIndex = threadI * totalVertexNormal / NUM_THREADS;
@@ -264,7 +264,8 @@ namespace urchin {
             std::ranges::for_each(threadsVertexNormal, [](std::jthread& x){x.join();});
         } else {
             assert(mode == TerrainMeshMode::FLAT);
-            for (unsigned int vertexIndex = 0; vertexIndex < totalVertexNormal; vertexIndex++) {
+            normals.resize(computeNumberVertices());
+            for (std::size_t vertexIndex = 0; vertexIndex < normals.size(); vertexIndex++) {
                 normals[vertexIndex] = normalTriangles[vertexIndex / 3];
             }
         }
