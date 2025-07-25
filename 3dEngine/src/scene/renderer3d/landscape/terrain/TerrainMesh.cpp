@@ -30,7 +30,7 @@ namespace urchin {
         std::ifstream terrainFrlFile;
         terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
 
-        if (terrainFrlFile.is_open() && readVersion(terrainFrlFile) == TERRAIN_FRL_FILE_VERSION && readHash(terrainFrlFile) == terrainHash) {
+        if (terrainFrlFile.is_open() && readVersion(terrainFrlFile) == TERRAIN_FRL_FILE_VERSION && readHash(terrainFrlFile) == terrainHash) { //TODO still required ?
             loadTerrainMeshFile(terrainFrlFile);
         } else {
             terrainFrlFile.close();
@@ -210,7 +210,7 @@ namespace urchin {
             unsigned int beginTriangleIndex = threadI * totalTriangles / NUM_THREADS;
             unsigned int endTriangleIndex = (threadI + 1) == NUM_THREADS ? totalTriangles : (threadI + 1) * totalTriangles / NUM_THREADS;
 
-            threadsNormalTriangle[threadI] = std::jthread([&] {
+            threadsNormalTriangle[threadI] = std::jthread([&, beginTriangleIndex, endTriangleIndex] {
                 for (unsigned int triangleIndex = beginTriangleIndex; triangleIndex < endTriangleIndex; triangleIndex++) {
                     if (mode == TerrainMeshMode::SMOOTH) {
                         unsigned int indicesByRow = (xSize * 2) + 1 /* strip restart */;
@@ -257,7 +257,7 @@ namespace urchin {
                 unsigned int beginVertexIndex = threadI * totalVertexNormal / NUM_THREADS;
                 unsigned int endVertexIndex = (threadI + 1) == NUM_THREADS ? totalVertexNormal : (threadI + 1) * totalVertexNormal / NUM_THREADS;
 
-                threadsVertexNormal[threadI] = std::jthread([&] {
+                threadsVertexNormal[threadI] = std::jthread([&, beginVertexIndex, endVertexIndex] {
                     for (unsigned int vertexIndex = beginVertexIndex; vertexIndex < endVertexIndex; vertexIndex++) {
                         Vector3<float> vertexNormal(0.0, 0.0, 0.0);
                         for (unsigned int triangleIndex : findTriangleIndices(vertexIndex)) {
