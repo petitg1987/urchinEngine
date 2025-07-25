@@ -30,6 +30,7 @@ namespace urchin {
             static constexpr char HEIGHT_FILENAME_TAG[] = "heightFilename";
             static constexpr char XZ_SCALE_TAG[] = "xzScale";
             static constexpr char Y_SCALE_TAG[] = "yScale";
+            static constexpr char FLAT_MODE_TAG[] = "flatMode";
             static constexpr char MATERIAL_TAG[] = "material";
             static constexpr char MASK_MAP_FILENAME[] = "maskMapFilename";
             static constexpr char S_REPEAT_TAG[] = "sRepeat";

@@ -25,16 +25,26 @@ namespace urchin {
             materialGroupBox(nullptr),
             grassGroupBox(nullptr),
             disableTerrainEvent(false),
-            positionX(nullptr), positionY(nullptr), positionZ(nullptr),
+            positionX(nullptr),
+            positionY(nullptr),
+            positionZ(nullptr),
             ambient(nullptr),
-            xzScale(nullptr), yScale(nullptr),
-            sRepeat(nullptr), tRepeat(nullptr),
+            xzScale(nullptr),
+            yScale(nullptr),
+            flatMode(nullptr),
+            sRepeat(nullptr),
+            tRepeat(nullptr),
             maskMapFilenameText(nullptr),
             grassTextureFilenameText(nullptr),
             grassMaskFilenameText(nullptr),
             numGrassInTex(nullptr),
-            grassQuantity(nullptr), grassHeight(nullptr), grassWidth(nullptr),
-            windDirectionX(nullptr), windDirectionY(nullptr), windDirectionZ(nullptr), windStrength(nullptr) {
+            grassQuantity(nullptr),
+            grassHeight(nullptr),
+            grassWidth(nullptr),
+            windDirectionX(nullptr),
+            windDirectionY(nullptr),
+            windDirectionZ(nullptr),
+            windStrength(nullptr) {
         auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -131,6 +141,10 @@ namespace urchin {
         yScale->setMinimum(0.0);
         yScale->setSingleStep(0.01);
         connect(yScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
+
+        flatMode = new QCheckBox("Flat mode");
+        meshLayout->addWidget(flatMode, 2, 0, 1, 4);
+        connect(flatMode, SIGNAL(stateChanged(int)), this, SLOT(updateTerrainMesh()));
     }
 
     void TerrainPanelWidget::setupMaterialBox(QVBoxLayout* mainLayout) {
@@ -371,6 +385,7 @@ namespace urchin {
 
         this->xzScale->setValue(terrain->getMesh()->getXZScale());
         this->yScale->setValue(terrain->getMesh()->getYScale());
+        this->flatMode->setChecked(terrain->getMesh()->getMode() == TerrainMeshMode::FLAT);
 
         this->sRepeat->setValue(terrain->getMaterials()->getStRepeat().X);
         this->tRepeat->setValue(terrain->getMaterials()->getStRepeat().Y);
@@ -440,8 +455,9 @@ namespace urchin {
     void TerrainPanelWidget::updateTerrainMesh() const {
         if (!disableTerrainEvent) {
             const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
+            TerrainMeshMode mode = flatMode->isChecked() ? TerrainMeshMode::FLAT : TerrainMeshMode::SMOOTH;
 
-            terrainController->updateTerrainMesh(terrainEntity, (float)xzScale->value(), (float)yScale->value());
+            terrainController->updateTerrainMesh(terrainEntity, (float)xzScale->value(), (float)yScale->value(), mode);
         }
     }
 

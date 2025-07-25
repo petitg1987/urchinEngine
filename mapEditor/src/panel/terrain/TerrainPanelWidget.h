@@ -5,6 +5,7 @@
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QCheckBox>
 #include <UrchinCommon.h>
 
 #include "controller/terrain/TerrainController.h"
@@ -55,6 +56,7 @@ namespace urchin {
             //mesh properties
             QDoubleSpinBox* xzScale;
             QDoubleSpinBox* yScale;
+            QCheckBox* flatMode;
 
             //material properties
             QDoubleSpinBox* sRepeat;

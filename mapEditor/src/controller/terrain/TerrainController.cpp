@@ -43,11 +43,11 @@ namespace urchin {
         return terrainEntity;
     }
 
-    const TerrainEntity& TerrainController::updateTerrainMesh(const TerrainEntity& constTerrainEntity, float xzScale, float yScale) {
+    const TerrainEntity& TerrainController::updateTerrainMesh(const TerrainEntity& constTerrainEntity, float xzScale, float yScale, TerrainMeshMode mode) {
         const TerrainEntity& terrainEntity = findTerrainEntity(constTerrainEntity);
         Terrain* terrain = terrainEntity.getTerrain();
 
-        auto terrainMesh = std::make_unique<TerrainMesh>(terrain->getMesh()->getHeightFilename(), xzScale, yScale, TerrainMeshMode::FLAT /* TODO review */);
+        auto terrainMesh = std::make_unique<TerrainMesh>(terrain->getMesh()->getHeightFilename(), xzScale, yScale, mode);
         terrain->setMesh(std::move(terrainMesh));
 
         markModified();

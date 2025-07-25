@@ -40,6 +40,7 @@ namespace urchin {
         auto tRepeatChunk = udaParser.getFirstChunk(true, T_REPEAT_TAG, UdaAttribute(), materialChunk);
         auto materialFilenamesChunk = udaParser.getFirstChunk(true, MATERIAL_FILENAMES, UdaAttribute(), materialChunk);
         std::vector<std::string> materialFilenames;
+        materialFilenames.reserve(TerrainMaterials::MAX_MATERIAL);
         for (unsigned int i = 0; i < TerrainMaterials::MAX_MATERIAL; ++i) {
             auto materialFilenameChunk = udaParser.getFirstChunk(false, MATERIAL_FILENAME, UdaAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
             if (materialFilenameChunk) {
