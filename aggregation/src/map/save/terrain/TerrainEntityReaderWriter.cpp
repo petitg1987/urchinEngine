@@ -32,7 +32,9 @@ namespace urchin {
         auto heightFilenameChunk = udaParser.getFirstChunk(true, HEIGHT_FILENAME_TAG, UdaAttribute(), meshChunk);
         auto xzScaleChunk = udaParser.getFirstChunk(true, XZ_SCALE_TAG, UdaAttribute(), meshChunk);
         auto yScaleChunk = udaParser.getFirstChunk(true, Y_SCALE_TAG, UdaAttribute(), meshChunk);
-        auto terrainMesh = std::make_unique<TerrainMesh>(heightFilenameChunk->getStringValue(), xzScaleChunk->getFloatValue(), yScaleChunk->getFloatValue(), TerrainMeshMode::FLAT /* TODO review */);
+        auto flatModeChunk = udaParser.getFirstChunk(true, FLAT_MODE_TAG, UdaAttribute(), meshChunk);
+        TerrainMeshMode mode = flatModeChunk->getBoolValue() ? TerrainMeshMode::FLAT : TerrainMeshMode::SMOOTH;
+        auto terrainMesh = std::make_unique<TerrainMesh>(heightFilenameChunk->getStringValue(), xzScaleChunk->getFloatValue(), yScaleChunk->getFloatValue(), mode);
 
         auto materialChunk = udaParser.getFirstChunk(true, MATERIAL_TAG, UdaAttribute(), terrainEntityChunk);
         auto maskMapFilenameChunk = udaParser.getFirstChunk(true, MASK_MAP_FILENAME, UdaAttribute(), materialChunk);
@@ -62,6 +64,7 @@ namespace urchin {
         udaParser.createChunk(HEIGHT_FILENAME_TAG, UdaAttribute(), &meshChunk).setStringValue(relativeHeightFilename);
         udaParser.createChunk(XZ_SCALE_TAG, UdaAttribute(), &meshChunk).setFloatValue(terrain.getMesh()->getXZScale());
         udaParser.createChunk(Y_SCALE_TAG, UdaAttribute(), &meshChunk).setFloatValue(terrain.getMesh()->getYScale());
+        udaParser.createChunk(FLAT_MODE_TAG, UdaAttribute(), &meshChunk).setBoolValue(terrain.getMesh()->getMode() == TerrainMeshMode::FLAT);
 
         auto& materialChunk = udaParser.createChunk(MATERIAL_TAG, UdaAttribute(), &terrainEntityChunk);
         std::string relativeMaskMapFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), terrain.getMaterials()->getMaskMapFilename());
