@@ -26,7 +26,7 @@ namespace urchin {
         private:
             void initializeMaterial(const std::vector<std::string>&);
             void buildTexCoordinates(unsigned int, unsigned int, TerrainMeshMode);
-            Point2<float> computeSt(unsigned int, unsigned int, unsigned int, unsigned int) const;
+            Point2<float> computeTexCoordinates(unsigned int, unsigned int, unsigned int, unsigned int) const;
 
             std::string maskMapFilename;
             std::shared_ptr<Texture> maskTexture;

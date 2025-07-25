@@ -54,6 +54,7 @@ namespace urchin {
         auto terrainRendererBuilder = GenericRendererBuilder::create("terrain", *renderTarget, *terrainShader, shapeType)
                 ->enableDepthTest()
                 ->enableDepthWrite();
+
         if (mesh->getMode() == TerrainMeshMode::SMOOTH) {
             dummyTextureCoordinates.resize(mesh->getRawVertices().size(), Point2(0.0f, 0.0f));
             terrainRendererBuilder
@@ -61,20 +62,21 @@ namespace urchin {
                 ->addData(mesh->getNormals())
                 ->addData(dummyTextureCoordinates)
                 ->indices(mesh->getIndices());
-        } else if (mesh->getMode() == TerrainMeshMode::FLAT) {
+        } else {
+            assert(mesh->getMode() == TerrainMeshMode::FLAT);
             dummyTextureCoordinates.resize(mesh->getVertices().size(), Point2(0.0f, 0.0f));
             terrainRendererBuilder
                 ->addData(mesh->getVertices())
                 ->addData(mesh->getNormals())
                 ->addData(dummyTextureCoordinates);
-        } else {
-            throw std::runtime_error("Unknown terrain mesh mode: " + std::to_string((int)mesh->getMode()));
         }
+
         terrainRendererBuilder
                 ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projViewMatrix), &projViewMatrix)
                 ->addUniformData(POSITION_UNIFORM_BINDING, sizeof(position), &position)
                 ->addUniformData(ST_UNIFORM_BINDING, sizeof(materialsStRepeat), &materialsStRepeat)
                 ->addUniformTextureReader(MASK_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyRgba("terrain empty mask"), TextureParam::buildNearest())); //mask texture
+
         for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
             terrainRendererBuilder->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING[i], TextureReader::build(Texture::buildEmptyRgba("terrain empty material"), TextureParam::buildNearest()));
         }

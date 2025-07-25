@@ -65,7 +65,7 @@ namespace urchin {
             for (unsigned int z = 0; z < zSize; ++z) {
                 for (unsigned int x = 0; x < xSize; ++x) {
                     //must match with TerrainMesh#buildVertices()
-                    texCoordinates.push_back(computeSt(xSize, zSize, x, z));
+                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x, z));
                 }
             }
         } else {
@@ -76,19 +76,19 @@ namespace urchin {
             for (unsigned int z = 0; z < zSize - 1; ++z) {
                 for (unsigned int x = 0; x < xSize - 1; ++x) {
                     //must match with TerrainMesh#buildVertices()
-                    texCoordinates.push_back(computeSt(xSize, zSize, x, z + 1));
-                    texCoordinates.push_back(computeSt(xSize, zSize, x, z));
-                    texCoordinates.push_back(computeSt(xSize, zSize, x + 1, z + 1));
+                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x, z + 1));
+                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x, z));
+                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x + 1, z + 1));
 
-                    texCoordinates.push_back(computeSt(xSize, zSize, x + 1, z + 1));
-                    texCoordinates.push_back(computeSt(xSize, zSize, x, z));
-                    texCoordinates.push_back(computeSt(xSize, zSize, x + 1, z));
+                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x + 1, z + 1));
+                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x, z));
+                    texCoordinates.push_back(computeTexCoordinates(xSize, zSize, x + 1, z));
                 }
             }
         }
     }
 
-    Point2<float> TerrainMaterials::computeSt(unsigned int xSize, unsigned int zSize, unsigned int x, unsigned int z) const {
+    Point2<float> TerrainMaterials::computeTexCoordinates(unsigned int xSize, unsigned int zSize, unsigned int x, unsigned int z) const {
         return Point2((float)x / (float)xSize * sRepeat, (float)z / (float)zSize * tRepeat);
     }
 
