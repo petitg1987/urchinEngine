@@ -60,6 +60,8 @@ namespace urchin {
     }
 
     void TerrainMaterials::buildTexCoordinates(unsigned int xSize, unsigned int zSize, TerrainMeshMode mode) {
+        texCoordinates.clear();
+
         if (mode == TerrainMeshMode::SMOOTH) {
             texCoordinates.reserve(xSize * zSize);
             for (unsigned int z = 0; z < zSize; ++z) {
