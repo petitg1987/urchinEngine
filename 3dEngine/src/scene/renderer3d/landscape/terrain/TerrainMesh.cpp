@@ -1,6 +1,4 @@
 #include <thread>
-#include <functional>
-#include <fstream>
 
 #include "graphics/api/GraphicsApi.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
@@ -21,34 +19,11 @@ namespace urchin {
         xSize = imgTerrain->getWidth();
         zSize = imgTerrain->getHeight();
 
-        std::string terrainHash = generateTerrainMeshHash(this->heightFilename, xzScale, yScale);
-
-        std::string terrainFrlFilePath = FileSystem::instance().getEngineUserCacheDirectory()
-                + FileUtil::getFileNameNoExtension(this->heightFilename)
-                + "_" + std::to_string(std::hash<std::string>{}(this->heightFilename))
-                + ".frl"; //extension for FRL files (Fast Resource Loading)
-        std::ifstream terrainFrlFile;
-        terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
-
-        if (terrainFrlFile.is_open() && readVersion(terrainFrlFile) == TERRAIN_FRL_FILE_VERSION && readHash(terrainFrlFile) == terrainHash) { //TODO still required ?
-            loadTerrainMeshFile(terrainFrlFile);
-        } else {
-            terrainFrlFile.close();
-
-            buildVertices(*imgTerrain);
-            buildIndices();
-            buildNormals();
-
-            writeTerrainMeshFile(terrainFrlFilePath, terrainHash);
-        }
+        buildVertices(*imgTerrain);
+        buildIndices();
+        buildNormals();
 
         heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(rawVertices, xSize);
-    }
-
-    std::string TerrainMesh::generateTerrainMeshHash(const std::string& terrainFilePath, float xzScale, float yScale) {
-        std::size_t terrainHashInt = std::hash<std::string>{}(FileReader::readFile(terrainFilePath) + "#" + std::to_string(xzScale) + "#" + std::to_string(yScale));
-        std::string terrainHash = std::to_string(terrainHashInt);
-        return std::string(TERRAIN_HASH_SIZE - terrainHash.length(), '0') + terrainHash;
     }
 
     const std::string& TerrainMesh::getHeightFilename() const {
@@ -324,63 +299,6 @@ namespace urchin {
         }
 
         return triangleIndices;
-    }
-
-    void TerrainMesh::writeTerrainMeshFile(const std::string& filePath, const std::string& terrainHash) const {
-        std::ofstream file;
-        file.open(filePath, std::ios::out | std::ios::binary | std::ios::trunc);
-        if (!file.is_open()) {
-            throw UserAuthorityException("Unable to open file: " + filePath, "Check that the application has enough right to create the file: " + filePath);
-        }
-
-        writeVersion(file, TERRAIN_FRL_FILE_VERSION);
-        writeHash(file, terrainHash);
-
-        file.write(reinterpret_cast<const char*>(&mode), sizeof(mode));
-        file.write(reinterpret_cast<const char*>(rawVertices.data()), (int)(rawVertices.size() * sizeof(float) * 3));
-        file.write(reinterpret_cast<const char*>(vertices.data()), (int)(vertices.size() * sizeof(float) * 3));
-        file.write(reinterpret_cast<const char*>(indices.data()), (int)(indices.size() * sizeof(unsigned int)));
-        file.write(reinterpret_cast<const char*>(normals.data()), (int)(normals.size() * sizeof(float) * 3));
-
-        file.close();
-    }
-
-    void TerrainMesh::writeVersion(std::ofstream& file, unsigned int version) const {
-        file.write(reinterpret_cast<char*>(&version), sizeof(version));
-    }
-
-    void TerrainMesh::writeHash(std::ofstream& file, const std::string& hash) const {
-        file.write(hash.c_str(), (int)(hash.size() * sizeof(char)));
-    }
-
-    void TerrainMesh::loadTerrainMeshFile(std::ifstream& file) {
-        file.read(reinterpret_cast<char*>(&mode), sizeof(mode));
-
-        rawVertices.resize(computeNumberRawVertices());
-        file.read(reinterpret_cast<char*>(rawVertices.data()), (int)(rawVertices.size() * sizeof(float) * 3));
-
-        vertices.resize(computeNumberVertices());
-        file.read(reinterpret_cast<char*>(vertices.data()), (int)(vertices.size() * sizeof(float) * 3));
-
-        indices.resize(computeNumberIndices());
-        file.read(reinterpret_cast<char*>(indices.data()), (int)(indices.size() * sizeof(unsigned int)));
-
-        normals.resize(computeNumberVertexNormals());
-        file.read(reinterpret_cast<char*>(normals.data()), (int)(normals.size() * sizeof(float) * 3));
-
-        file.close();
-    }
-
-    unsigned int TerrainMesh::readVersion(std::ifstream& file) const {
-        unsigned int version;
-        file.read(reinterpret_cast<char*>(&version), sizeof(version));
-        return version;
-    }
-
-    std::string TerrainMesh::readHash(std::ifstream& file) const {
-        std::string hash(TERRAIN_HASH_SIZE, '\0');
-        file.read(hash.data(), TERRAIN_HASH_SIZE);
-        return hash;
     }
 
 }
