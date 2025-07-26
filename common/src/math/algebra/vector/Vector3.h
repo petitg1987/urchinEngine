@@ -16,11 +16,11 @@ namespace urchin {
             void setValues(T, T, T);
             void setNull();
 
-            [[nodiscard]] Vector3<T> normalize() const;
-            T length() const;
-            T squareLength() const;
-            T dotProduct(const Vector3<T>&) const;
-            Vector3<T> crossProduct(const Vector3<T>&) const;
+            [[nodiscard]] Vector3<T> normalize() const noexcept;
+            T length() const noexcept;
+            T squareLength() const noexcept;
+            T dotProduct(const Vector3<T>&) const noexcept;
+            Vector3<T> crossProduct(const Vector3<T>&) const noexcept;
             Vector3<T> perpendicularVector() const;
             [[nodiscard]] Vector3<T> truncate(T) const;
             Vector2<T> xy() const;

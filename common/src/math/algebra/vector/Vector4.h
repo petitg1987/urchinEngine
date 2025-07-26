@@ -16,10 +16,10 @@ namespace urchin {
             void setValues(T, T, T, T);
             void setNull();
 
-            [[nodiscard]] Vector4<T> normalize() const;
-            T length() const;
-            T squareLength() const;
-            T dotProduct(const Vector4<T>&) const;
+            [[nodiscard]] Vector4<T> normalize() const noexcept;
+            T length() const noexcept;
+            T squareLength() const noexcept;
+            T dotProduct(const Vector4<T>&) const noexcept;
             Vector3<T> xyz() const;
 
             Vector4<T> operator +() const;

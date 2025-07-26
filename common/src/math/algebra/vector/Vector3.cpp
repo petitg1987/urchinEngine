@@ -30,28 +30,29 @@ namespace urchin {
         X = Y = Z = 0;
     }
 
-    template<class T> Vector3<T> Vector3<T>::normalize() const {
+    template<class T> Vector3<T> Vector3<T>::normalize() const noexcept {
         const auto norm = (T)std::sqrt(X * X + Y * Y + Z * Z);
         if (norm > 0.0) [[likely]] {
-            return Vector3<T>(X / norm, Y / norm, Z / norm);
+            T invNorm = (T)1.0 / norm;
+            return Vector3<T>(X * invNorm, Y * invNorm, Z * invNorm);
         }
 
         return Vector3<T>(X, Y, Z);
     }
 
-    template<class T> T Vector3<T>::length() const {
+    template<class T> T Vector3<T>::length() const noexcept {
         return (T)std::sqrt(X * X + Y * Y + Z * Z);
     }
 
-    template<class T> T Vector3<T>::squareLength() const {
+    template<class T> T Vector3<T>::squareLength() const noexcept {
         return (X * X + Y * Y + Z * Z);
     }
 
-    template<class T> T Vector3<T>::dotProduct(const Vector3<T>& v) const {
+    template<class T> T Vector3<T>::dotProduct(const Vector3<T>& v) const noexcept {
         return (X * v.X + Y * v.Y + Z * v.Z);
     }
 
-    template<class T> Vector3<T> Vector3<T>::crossProduct(const Vector3<T>& v) const {
+    template<class T> Vector3<T> Vector3<T>::crossProduct(const Vector3<T>& v) const noexcept {
         return Vector3<T>(Y * v.Z - Z * v.Y,
                           Z * v.X - X * v.Z,
                           X * v.Y - Y * v.X);
