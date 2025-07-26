@@ -138,7 +138,10 @@ namespace urchin {
         }
         assert(rawVerticesIndex == rawVertices.size());
 
-        if (mode == TerrainMeshMode::FLAT) {
+        if (mode == TerrainMeshMode::SMOOTH) {
+            assert(computeNumberVertices() == 0);
+        } else {
+            assert(mode == TerrainMeshMode::FLAT);
             std::size_t verticesIndex = 0;
             vertices.resize(computeNumberVertices());
             for (unsigned int z = 0; z < zSize - 1; ++z) {
@@ -169,6 +172,9 @@ namespace urchin {
                 indices[indicesIndex++] = GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE;
             }
             assert(indicesIndex == indices.size());
+        } else {
+            assert(mode == TerrainMeshMode::FLAT);
+            assert(computeNumberIndices() == 0);
         }
     }
 
