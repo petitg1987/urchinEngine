@@ -97,7 +97,6 @@ float computeShadowAttenuation(int shadowLightIndex, int splitShadowMapIndex, ve
     const float SOFT_EDGE_LENGTH = 1.5f;
     float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[shadowLightIndex], 0));
     int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
-    float singleShadowQuantity = (1.0 - max(0.0, NdotL / 5.0)); //NdotL is a hijack to apply normal map in shadow
     vec2 sceneResolution = textureSize(depthTex, 0);
     ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneResolution) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
 
@@ -108,7 +107,7 @@ float computeShadowAttenuation(int shadowLightIndex, int splitShadowMapIndex, ve
         float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
         float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
         if (shadowCoord.z - adjustedBias > shadowDepth) {
-            totalShadow += singleShadowQuantity;
+            totalShadow += 1.0f;
             testPointsInShadow++;
         }
     }
@@ -119,7 +118,7 @@ float computeShadowAttenuation(int shadowLightIndex, int splitShadowMapIndex, ve
             float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
             float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
             if (shadowCoord.z - adjustedBias > shadowDepth) {
-                totalShadow += singleShadowQuantity;
+                totalShadow += 1.0f;
             }
         }
     }
