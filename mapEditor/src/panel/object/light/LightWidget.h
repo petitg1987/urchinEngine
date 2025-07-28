@@ -45,6 +45,7 @@ namespace urchin {
             QDoubleSpinBox* colorB;
             QCheckBox* enablePbrCheckBox;
             QCheckBox* produceShadowCheckBox;
+            QDoubleSpinBox* shadowStrength;
 
             //specific properties
             QLabel* sunDirectionLabel;

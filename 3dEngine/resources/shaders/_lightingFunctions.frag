@@ -3,14 +3,15 @@ const int LIGHT_FLAG_PBR_ENABLED = 0x02; //must match with Light.h
 
 struct LightInfo {
     bool isExist;
-    int lightFlags;
     int lightType;
+    int lightFlags;
+    float shadowStrength;
+    vec3 lightColor;
     vec3 direction;
     vec3 position;
     float exponentialAttenuation;
     float innerCosAngle;
     float outerCosAngle;
-    vec3 lightColor;
 };
 
 struct LightValues {

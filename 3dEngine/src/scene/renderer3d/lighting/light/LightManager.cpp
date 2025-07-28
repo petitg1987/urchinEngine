@@ -134,10 +134,11 @@ namespace urchin {
                 const Light* light = lights[i];
 
                 currentLightInfo.isExist = true;
+                currentLightInfo.lightType = (int)light->getLightType();
                 currentLightInfo.lightFlags =
                         (light->isProduceShadow() ? Light::LIGHT_FLAG_PRODUCE_SHADOW : 0) |
                         (light->isPbrEnabled() ? Light::LIGHT_FLAG_PBR_ENABLED : 0);
-                currentLightInfo.lightType = (int)light->getLightType();
+                currentLightInfo.shadowStrength = light->getShadowStrength();
                 currentLightInfo.lightColor = light->getLightColor();
 
                 if (lights[i]->getLightType() == Light::LightType::SUN) {

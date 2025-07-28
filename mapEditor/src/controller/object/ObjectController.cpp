@@ -151,15 +151,15 @@ namespace urchin {
         markModified();
     }
 
-    const ObjectEntity& ObjectController::updateLightGeneralProperties(const ObjectEntity& constObjectEntity, const Point3<float>& lightColor, bool enablePbr, bool isProduceShadow) {
+    const ObjectEntity& ObjectController::updateLightGeneralProperties(const ObjectEntity& constObjectEntity, const Point3<float>& lightColor, bool enablePbr, bool isProduceShadow,
+            float shadowStrength) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         Light* light = objectEntity.getLight();
 
         light->setLightColor(lightColor);
         light->setPbrEnabled(enablePbr);
-        if (light->isProduceShadow() != isProduceShadow) {
-            light->setProduceShadow(isProduceShadow);
-        }
+        light->setProduceShadow(isProduceShadow);
+        light->setShadowStrength(shadowStrength);
 
         markModified();
         return objectEntity;
@@ -186,8 +186,8 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ObjectController::updateSpotLightProperties(const ObjectEntity& constObjectEntity, float attenuation, const Point3<float>& position, const Vector3<float>& direction,
-                                                                    float innerAngleInDegrees, float outerAngleInDegrees) {
+    const ObjectEntity& ObjectController::updateSpotLightProperties(const ObjectEntity& constObjectEntity, float attenuation, const Point3<float>& position,
+            const Vector3<float>& direction, float innerAngleInDegrees, float outerAngleInDegrees) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         auto* spotLight = static_cast<SpotLight*>(objectEntity.getLight());
 

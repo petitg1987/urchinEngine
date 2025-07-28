@@ -35,7 +35,6 @@ namespace urchin {
         lightProjectionViewMatrices.resize(maxMatricesLightProjectionViewSize, Matrix4<float>{});
 
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
-        shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
 
         deferredSecondPassRendererBuilder
                 ->addUniformData(projViewMatricesUniformBinding, maxMatricesLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
@@ -115,7 +114,6 @@ namespace urchin {
 
     void ShadowManager::updateConfig(const Config& config) {
         if (this->config.blurFilterBoxSize != config.blurFilterBoxSize ||
-                this->config.shadowStrengthFactor != config.shadowStrengthFactor ||
                 this->config.nbSunShadowMaps != config.nbSunShadowMaps ||
                 this->config.sunShadowMapResolution != config.sunShadowMapResolution ||
                 this->config.sunShadowViewDistance != config.sunShadowViewDistance ||
@@ -326,7 +324,6 @@ namespace urchin {
         deferredSecondPassRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
 
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
-        shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
         deferredSecondPassRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);
 
         //shadow map offset texture

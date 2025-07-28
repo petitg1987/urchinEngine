@@ -32,7 +32,6 @@ namespace urchin {
 
             struct Config {
                 unsigned int blurFilterBoxSize = 3;
-                float shadowStrengthFactor = 1.0f;
                 unsigned int nbSunShadowMaps = 5;
                 unsigned int sunShadowMapResolution = 1024;
                 float sunShadowViewDistance = 75.0f;
@@ -97,7 +96,6 @@ namespace urchin {
             std::shared_ptr<Texture> shadowMapOffsetTexture;
             struct {
                 alignas(4) int offsetSampleCount;
-                alignas(4) float shadowStrengthFactor;
             } shadowMapInfo;
 
             //shadow lights information

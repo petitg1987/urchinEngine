@@ -38,7 +38,6 @@ layout(std140, set = 0, binding = 4) uniform ShadowMapData {
 } shadowMapData;
 layout(std140, set = 0, binding = 5) uniform ShadowMapInfo {
     int offsetSampleCount;
-    float shadowStrengthFactor;
 } shadowMapInfo;
 
 //fog
@@ -83,8 +82,8 @@ float maxComponent(vec3 components) {
     return max(max(components.x, components.y), components.z);
 }
 
-float computeShadowAttenuation(int shadowLightIndex, int splitShadowMapIndex, vec4 worldPosition, float NdotL, float biasReduceFactor) {
-    float totalShadow = 0.0f;
+float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 worldPosition, float NdotL, float biasReduceFactor) {
+    float shadowQuantity = 0.0f;
 
     vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SPLIT_SHADOW_MAPS + splitShadowMapIndex] * worldPosition;
     shadowCoord.xyz /= shadowCoord.w;
@@ -107,7 +106,7 @@ float computeShadowAttenuation(int shadowLightIndex, int splitShadowMapIndex, ve
         float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
         float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
         if (shadowCoord.z - adjustedBias > shadowDepth) {
-            totalShadow += 1.0f;
+            shadowQuantity += 1.0f;
             testPointsInShadow++;
         }
     }
@@ -118,34 +117,34 @@ float computeShadowAttenuation(int shadowLightIndex, int splitShadowMapIndex, ve
             float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
             float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
             if (shadowCoord.z - adjustedBias > shadowDepth) {
-                totalShadow += 1.0f;
+                shadowQuantity += 1.0f;
             }
         }
     }
-    totalShadow /= offsetSampleIndex;
+    shadowQuantity /= offsetSampleIndex;
 
     //DEBUG: fetch shadow map one time, no PCF filter
-    /* totalShadow = 0.0f;
+    /* shadowQuantity = 0.0f;
     float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, splitShadowMapIndex)).r;
     if (shadowCoord.z - bias > shadowDepth) {
-        totalShadow = 1.0f;
+        shadowQuantity = 1.0f;
     } */
 
-    return 1.0 - (totalShadow * shadowMapInfo.shadowStrengthFactor);
+    return shadowQuantity;
 }
 
-float computeSunShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
+float computeSunShadowQuantity(int shadowLightIndex, vec4 worldPosition, float NdotL) {
     for (int splitShadowMapIndex = 0; splitShadowMapIndex < MAX_SPLIT_SHADOW_MAPS; ++splitShadowMapIndex) {
         float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[splitShadowMapIndex].xyz);
         float frustumRadius = shadowMapData.splitData[splitShadowMapIndex].w;
         if (frustumCenterDist < frustumRadius) {
-            return computeShadowAttenuation(shadowLightIndex, splitShadowMapIndex, worldPosition, NdotL, 1.0f);
+            return computeShadowQuantity(shadowLightIndex, splitShadowMapIndex, worldPosition, NdotL, 1.0f);
         }
     }
-    return 1.0;
+    return 0.0;
 }
 
-float computeOmnidirectionalShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL, vec3 lightPosition) {
+float computeOmnidirectionalShadowQuantity(int shadowLightIndex, vec4 worldPosition, float NdotL, vec3 lightPosition) {
     vec3 lightToFragment = vec3(worldPosition) - lightPosition;
     vec3 absDir = abs(lightToFragment);
 
@@ -159,12 +158,12 @@ float computeOmnidirectionalShadowAttenuation(int shadowLightIndex, vec4 worldPo
     }
 
     float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear
-    return computeShadowAttenuation(shadowLightIndex, shadowMapIndex, worldPosition, NdotL, biasReduceFactor);
+    return computeShadowQuantity(shadowLightIndex, shadowMapIndex, worldPosition, NdotL, biasReduceFactor);
 }
 
-float computeSpotShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
+float computeSpotShadowQuantity(int shadowLightIndex, vec4 worldPosition, float NdotL) {
     float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear
-    return computeShadowAttenuation(shadowLightIndex, 0, worldPosition, NdotL, biasReduceFactor);
+    return computeShadowQuantity(shadowLightIndex, 0, worldPosition, NdotL, biasReduceFactor);
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
@@ -273,14 +272,18 @@ void main() {
             //shadow
             float shadowAttenuation = 1.0; //1.0 = no shadow
             if (sceneInfo.hasShadow && (lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0) {
+                float shadowQuantity = 0.0f;
                 if (lightsData.lightsInfo[lightIndex].lightType == 0) { //sun
-                    shadowAttenuation = computeSunShadowAttenuation(shadowLightIndex, worldPosition, lightValues.NdotL);
+                    shadowQuantity = computeSunShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL);
                 } else if (lightsData.lightsInfo[lightIndex].lightType == 1) { //omnidirectional
                     vec3 lightPosition = lightsData.lightsInfo[lightIndex].position;
-                    shadowAttenuation = computeOmnidirectionalShadowAttenuation(shadowLightIndex, worldPosition, lightValues.NdotL, lightPosition);
+                    shadowQuantity = computeOmnidirectionalShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL, lightPosition);
                 } else if (lightsData.lightsInfo[lightIndex].lightType == 2) { //spot
-                    shadowAttenuation = computeSpotShadowAttenuation(shadowLightIndex, worldPosition, lightValues.NdotL);
+                    shadowQuantity = computeSpotShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL);
                 }
+
+                shadowAttenuation = 1.0 - (shadowQuantity * lightsData.lightsInfo[lightIndex].shadowStrength);
+
                 shadowLightIndex++;
             }
 

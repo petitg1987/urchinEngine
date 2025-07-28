@@ -18,6 +18,7 @@ namespace urchin {
             colorB(nullptr),
             enablePbrCheckBox(nullptr),
             produceShadowCheckBox(nullptr),
+            shadowStrength(nullptr),
             sunDirectionLabel(nullptr),
             sunDirectionX(nullptr),
             sunDirectionY(nullptr),
@@ -96,6 +97,17 @@ namespace urchin {
         produceShadowCheckBox = new QCheckBox("Product Shadow");
         generalPropertiesLayout->addWidget(produceShadowCheckBox, 2, 0, 1, 2);
         connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
+
+        auto* shadowStrengthLabel= new QLabel("Shadow Strength:");
+        generalPropertiesLayout->addWidget(shadowStrengthLabel, 3, 0);
+
+        shadowStrength = new QDoubleSpinBox();
+        generalPropertiesLayout->addWidget(shadowStrength, 3, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(shadowStrength);
+        shadowStrength->setMinimum(0.05);
+        shadowStrength->setMaximum(1.00);
+        shadowStrength->setSingleStep(0.05);
+        connect(shadowStrength, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
     }
 
     void LightWidget::setupSpecificSunLightBox(QVBoxLayout* mainLayout) {
@@ -253,6 +265,7 @@ namespace urchin {
 
         this->enablePbrCheckBox->setChecked(light->isPbrEnabled());
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
+        this->shadowStrength->setValue(light->getShadowStrength());
 
         if (light->getLightType() == Light::LightType::SUN) {
             setupSunLightDataFrom(static_cast<const SunLight*>(light));
@@ -319,8 +332,9 @@ namespace urchin {
             Point3 lightColor((float)colorR->value(), (float)colorG->value(), (float)colorB->value());
             bool enablePbr = enablePbrCheckBox->isChecked();
             bool produceShadow = produceShadowCheckBox->isChecked();
+            float shadowStrengthValue = (float)shadowStrength->value();
 
-            objectController->updateLightGeneralProperties(*objectEntity, lightColor, enablePbr, produceShadow);
+            objectController->updateLightGeneralProperties(*objectEntity, lightColor, enablePbr, produceShadow, shadowStrengthValue);
         }
     }
 

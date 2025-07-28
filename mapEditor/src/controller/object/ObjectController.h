@@ -33,7 +33,7 @@ namespace urchin {
             const ObjectEntity& updateObjectPhysicsShape(const ObjectEntity&, std::unique_ptr<const CollisionShape3D>);
 
             void changeLightType(const ObjectEntity&, std::optional<Light::LightType>);
-            const ObjectEntity& updateLightGeneralProperties(const ObjectEntity&, const Point3<float>&, bool, bool);
+            const ObjectEntity& updateLightGeneralProperties(const ObjectEntity&, const Point3<float>&, bool, bool, float);
             const ObjectEntity& updateSunLightProperties(const ObjectEntity&, const Vector3<float>&);
             const ObjectEntity& updateOmnidirectionalLightProperties(const ObjectEntity&, float, const Point3<float>&);
             const ObjectEntity& updateSpotLightProperties(const ObjectEntity&, float, const Point3<float>&, const Vector3<float>&, float, float);

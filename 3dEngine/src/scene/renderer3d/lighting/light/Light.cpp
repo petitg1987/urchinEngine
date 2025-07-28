@@ -5,7 +5,8 @@ namespace urchin {
     Light::Light() :
             lightColor(Point3(1.0f, 1.0f, 1.0f)),
             pbrEnabled(true),
-            produceShadow(false) {
+            produceShadow(false),
+            shadowStrength(1.0f) {
 
     }
 
@@ -37,13 +38,23 @@ namespace urchin {
     }
 
     void Light::setProduceShadow(bool produceShadow) {
-        this->produceShadow = produceShadow;
+        if (this->produceShadow != produceShadow) {
+            this->produceShadow = produceShadow;
 
-        notifyObservers(this, PRODUCE_SHADOW);
+            notifyObservers(this, PRODUCE_SHADOW);
+        }
     }
 
     bool Light::isProduceShadow() const {
         return produceShadow;
+    }
+
+    void Light::setShadowStrength(float shadowStrength) {
+        this->shadowStrength = shadowStrength;
+    }
+
+    float Light::getShadowStrength() const {
+        return shadowStrength;
     }
 
 }
