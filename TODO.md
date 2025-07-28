@@ -90,8 +90,8 @@
 * `None`
 
 # Map editor
-* 
-* Physics
+* Objects
+  * ► **NEW FEATURE**: Use tree instead of table for objects
   * ► **NEW FEATURE**: Make objects without physics selectable with left click
   * ► **NEW FEATURE**: Display box around objects which don't have mesh (allow to select them easily with left click)
 * UI
