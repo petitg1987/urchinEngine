@@ -100,6 +100,9 @@ namespace urchin {
 
         auto produceShadowChunk = udaParser.getFirstChunk(true, PRODUCE_SHADOW_TAG, UdaAttribute(), lightChunk);
         light.setProduceShadow(produceShadowChunk->getBoolValue());
+
+        auto shadowStrengthChunk = udaParser.getFirstChunk(true, SHADOW_STRENGTH_TAG, UdaAttribute(), lightChunk);
+        light.setShadowStrength(shadowStrengthChunk->getFloatValue());
     }
 
     void LightReaderWriter::writeFlags(UdaChunk& lightChunk, const Light& light, UdaParser& udaParser) {
@@ -108,6 +111,9 @@ namespace urchin {
 
         auto& produceShadowChunk = udaParser.createChunk(PRODUCE_SHADOW_TAG, UdaAttribute(), &lightChunk);
         produceShadowChunk.setBoolValue(light.isProduceShadow());
+
+        auto& shadowStrengthChunk = udaParser.createChunk(SHADOW_STRENGTH_TAG, UdaAttribute(), &lightChunk);
+        shadowStrengthChunk.setFloatValue(light.getShadowStrength());
     }
 
 }
