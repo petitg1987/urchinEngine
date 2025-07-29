@@ -9,7 +9,7 @@ namespace urchin {
         std::unique_ptr<Terrain> terrain = buildTerrain(terrainEntityChunk, udaParser);
         loadProperties(*terrain, terrainEntityChunk, udaParser);
         loadGrass(*terrain, terrainEntityChunk, udaParser);
-        auto collisionTerrainShape = std::make_unique<CollisionHeightfieldShape>(terrain->getMesh()->getRawVertices(), terrain->getMesh()->getXSize(), terrain->getMesh()->getZSize());
+        auto collisionTerrainShape = std::make_unique<CollisionHeightfieldShape>(terrain->getMesh()->getVertices(), terrain->getMesh()->getXSize(), terrain->getMesh()->getZSize());
         auto terrainRigidBody = std::make_unique<RigidBody>(terrainEntity->getName(), PhysicsTransform(terrain->getPosition()), std::move(collisionTerrainShape));
 
         terrainEntity->setName(terrainEntityChunk->getAttributeValue(NAME_ATTR));

@@ -22,7 +22,7 @@ find_package(Qt5Gui)
 SET(QT_LIB Qt5::Core Qt5::Widgets Qt5::Gui)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-add_custom_target(mapSyncShaders ALL rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/spirv/ ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/ DEPENDS urchin3dEngine)
+add_custom_target(mapSyncShaders ALL rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/spirv/ ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/ --delete DEPENDS urchin3dEngine)
 add_executable(urchinMapEditor ${SOURCE_FILES})
 add_dependencies(urchinMapEditor mapSyncShaders)
 target_link_libraries(urchinMapEditor ${LINK_OPT} ${QT_LIB} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinAggregation)

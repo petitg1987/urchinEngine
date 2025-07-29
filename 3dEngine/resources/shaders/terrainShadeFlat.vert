@@ -9,16 +9,17 @@ layout(std140, set = 0, binding = 1) uniform PositioningData {
 } positioningData;
 
 layout(location = 0) in vec3 vertexPosition;
-layout(location = 1) in vec3 vertexNormal;
-layout(location = 2) in vec2 texCoord;
+layout(location = 1) in vec2 texCoord;
 
 layout(location = 0) out vec2 texCoordinates;
-layout(location = 1) out vec3 normal;
+layout(location = 1) out vec3 worldPosition;
 invariant gl_Position;
 
 void main() {
-    texCoordinates = texCoord;
-    normal = vertexNormal;
+    vec3 modelPosition = positioningData.vPosition + vertexPosition;
 
-    gl_Position = matrices.mProjectionView * vec4(positioningData.vPosition + vertexPosition, 1.0);
+    texCoordinates = texCoord;
+    worldPosition = modelPosition;
+
+    gl_Position = matrices.mProjectionView * vec4(modelPosition, 1.0);
 }

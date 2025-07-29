@@ -23,7 +23,7 @@ namespace urchin {
         buildIndices();
         buildNormals();
 
-        heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(rawVertices, xSize);
+        heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(vertices, xSize);
     }
 
     const std::string& TerrainMesh::getHeightFilename() const {
@@ -53,12 +53,7 @@ namespace urchin {
     /**
      * @return Terrain local vertices. First point is the far left point (min X, min Z) and the last pint the near right point (max X, max Z).
      */
-    const std::vector<Point3<float>>& TerrainMesh::getRawVertices() const {
-        return rawVertices;
-    }
-
     const std::vector<Point3<float>>& TerrainMesh::getVertices() const {
-        assert(!vertices.empty());
         return vertices;
     }
 
@@ -79,27 +74,13 @@ namespace urchin {
         return heightfieldPointHelper->findHeightAt(xzCoordinate);
     }
 
-    unsigned int TerrainMesh::computeNumberRawVertices() const {
+    unsigned int TerrainMesh::computeNumberVertices() const {
         return xSize * zSize;
     }
 
-    unsigned int TerrainMesh::computeNumberVertices() const {
-        if (mode == TerrainMeshMode::SMOOTH) {
-            return 0;
-        } else {
-            assert(mode == TerrainMeshMode::FLAT);
-            return computeNumberTriangles() * 3;
-        }
-    }
-
     unsigned int TerrainMesh::computeNumberIndices() const {
-        if (mode == TerrainMeshMode::SMOOTH) {
-            unsigned int restartIndices = zSize - 1;
-            return ((zSize - 1) * xSize * 2) + restartIndices;
-        } else {
-            assert(mode == TerrainMeshMode::FLAT);
-            return 0;
-        }
+        unsigned int restartIndices = zSize - 1;
+        return ((zSize - 1) * xSize * 2) + restartIndices;
     }
 
     unsigned int TerrainMesh::computeNumberTriangles() const {
@@ -109,16 +90,16 @@ namespace urchin {
 
     unsigned int TerrainMesh::computeNumberVertexNormals() const {
         if (mode == TerrainMeshMode::SMOOTH) {
-            return computeNumberRawVertices();
+            return computeNumberVertices();
         } else {
             assert(mode == TerrainMeshMode::FLAT);
-            return computeNumberVertices();
+            return 0; //computed dynamically in the shader
         }
     }
 
     void TerrainMesh::buildVertices(const Image& imgTerrain) {
-        std::size_t rawVerticesIndex = 0;
-        rawVertices.resize(computeNumberRawVertices());
+        std::size_t verticesIndex = 0;
+        vertices.resize(computeNumberVertices());
         float xStart = (-((float)xSize * xzScale) / 2.0f) + (xzScale / 2.0f);
         float zStart = (-((float)zSize * xzScale) / 2.0f) + (xzScale / 2.0f);
         for (unsigned int z = 0; z < zSize; ++z) {
@@ -133,75 +114,49 @@ namespace urchin {
                 }
                 float xFloat = xStart + (float)x * xzScale;
                 //must match with TerrainMaterial#buildTexCoordinates()
-                rawVertices[rawVerticesIndex++] = Point3(xFloat, elevation, zFloat);
+                vertices[verticesIndex++] = Point3(xFloat, elevation, zFloat);
             }
         }
-        assert(rawVerticesIndex == rawVertices.size());
-
-        if (mode == TerrainMeshMode::SMOOTH) {
-            assert(computeNumberVertices() == 0);
-        } else {
-            assert(mode == TerrainMeshMode::FLAT);
-            std::size_t verticesIndex = 0;
-            vertices.resize(computeNumberVertices());
-            for (unsigned int z = 0; z < zSize - 1; ++z) {
-                for (unsigned int x = 0; x < xSize - 1; ++x) {
-                    //must match with TerrainMaterial#buildTexCoordinates()
-                    vertices[verticesIndex++] = rawVertices[x + xSize * (z + 1)];
-                    vertices[verticesIndex++] = rawVertices[x + xSize * z];
-                    vertices[verticesIndex++] = rawVertices[x + 1 + xSize * (z + 1)];
-
-                    vertices[verticesIndex++] = rawVertices[x + 1 + xSize * (z + 1)];
-                    vertices[verticesIndex++] = rawVertices[x + xSize * z];
-                    vertices[verticesIndex++] = rawVertices[x + 1 + xSize * z];
-                }
-            }
-            assert(verticesIndex == vertices.size());
-        }
+        assert(verticesIndex == vertices.size());
     }
 
     void TerrainMesh::buildIndices() {
-        if (mode == TerrainMeshMode::SMOOTH) {
-            std::size_t indicesIndex = 0;
-            indices.resize(computeNumberIndices());
-            for (unsigned int z = 0; z < zSize - 1; ++z) {
-                for (unsigned int x = 0; x < xSize; ++x) {
-                    indices[indicesIndex++] = x + xSize * (z + 1);
-                    indices[indicesIndex++] = x + xSize * z;
-                }
-                indices[indicesIndex++] = GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE;
+        std::size_t indicesIndex = 0;
+        indices.resize(computeNumberIndices());
+        for (unsigned int z = 0; z < zSize - 1; ++z) {
+            for (unsigned int x = 0; x < xSize; ++x) {
+                indices[indicesIndex++] = x + xSize * (z + 1);
+                indices[indicesIndex++] = x + xSize * z;
             }
-            assert(indicesIndex == indices.size());
-        } else {
-            assert(mode == TerrainMeshMode::FLAT);
-            assert(computeNumberIndices() == 0);
+            indices[indicesIndex++] = GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE;
         }
+        assert(indicesIndex == indices.size());
     }
 
     void TerrainMesh::buildNormals() {
-        const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
+        if (mode == TerrainMeshMode::SMOOTH) {
+            const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
 
-        //1. compute triangles normal
-        unsigned int totalTriangles = computeNumberTriangles();
-        unsigned int trianglesByRow = (xSize - 1) * 2;
-        std::vector<Vector3<float>> normalTriangles;
-        normalTriangles.resize(totalTriangles);
-        std::vector<std::jthread> threadsNormalTriangle(NUM_THREADS);
-        for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
-            unsigned int beginTriangleIndex = threadI * totalTriangles / NUM_THREADS;
-            unsigned int endTriangleIndex = (threadI + 1) == NUM_THREADS ? totalTriangles : (threadI + 1) * totalTriangles / NUM_THREADS;
+            //1. compute triangles normal
+            unsigned int totalTriangles = computeNumberTriangles();
+            unsigned int trianglesByRow = (xSize - 1) * 2;
+            std::vector<Vector3<float>> normalTriangles;
+            normalTriangles.resize(totalTriangles);
+            std::vector<std::jthread> threadsNormalTriangle(NUM_THREADS);
+            for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
+                unsigned int beginTriangleIndex = threadI * totalTriangles / NUM_THREADS;
+                unsigned int endTriangleIndex = (threadI + 1) == NUM_THREADS ? totalTriangles : (threadI + 1) * totalTriangles / NUM_THREADS;
 
-            threadsNormalTriangle[threadI] = std::jthread([&, beginTriangleIndex, endTriangleIndex] {
-                for (unsigned int triangleIndex = beginTriangleIndex; triangleIndex < endTriangleIndex; triangleIndex++) {
-                    if (mode == TerrainMeshMode::SMOOTH) {
+                threadsNormalTriangle[threadI] = std::jthread([&, beginTriangleIndex, endTriangleIndex] {
+                    for (unsigned int triangleIndex = beginTriangleIndex; triangleIndex < endTriangleIndex; triangleIndex++) {
                         unsigned int indicesByRow = (xSize * 2) + 1 /* strip restart */;
                         unsigned int triangleZValue = triangleIndex / trianglesByRow;
                         unsigned int triangleXValue = triangleIndex % trianglesByRow;
                         unsigned int indicesStartIndex = triangleZValue * indicesByRow + triangleXValue;
 
-                        Point3<float> point1 = rawVertices[indices[indicesStartIndex]];
-                        Point3<float> point2 = rawVertices[indices[indicesStartIndex + 1]];
-                        Point3<float> point3 = rawVertices[indices[indicesStartIndex + 2]];
+                        Point3<float> point1 = vertices[indices[indicesStartIndex]];
+                        Point3<float> point2 = vertices[indices[indicesStartIndex + 1]];
+                        Point3<float> point3 = vertices[indices[indicesStartIndex + 2]];
 
                         bool isCwTriangle = (indicesStartIndex % indicesByRow) % 2 == 0;
                         Vector3<float> normal;
@@ -212,26 +167,14 @@ namespace urchin {
                         }
 
                         normalTriangles[triangleIndex] = normal.normalize();
-                    } else {
-                        assert(mode == TerrainMeshMode::FLAT);
-                        unsigned int startIndex = triangleIndex * 3;
-
-                        Point3<float> point1 = vertices[startIndex];
-                        Point3<float> point2 = vertices[startIndex + 1];
-                        Point3<float> point3 = vertices[startIndex + 2];
-
-                        Vector3<float> normal = (point1.vector(point2).crossProduct(point3.vector(point1)));
-                        normalTriangles[triangleIndex] = normal.normalize();
                     }
-                }
-            });
-        }
-        std::ranges::for_each(threadsNormalTriangle, [](std::jthread& x){x.join();});
-        assert(totalTriangles == normalTriangles.size());
+                });
+            }
+            std::ranges::for_each(threadsNormalTriangle, [](std::jthread& x){x.join();});
+            assert(totalTriangles == normalTriangles.size());
 
-        //2. compute vertex normal
-        if (mode == TerrainMeshMode::SMOOTH) {
-            normals.resize(computeNumberRawVertices());
+            //2. compute vertex normal
+            normals.resize(computeNumberVertexNormals());
             unsigned int totalVertexNormal = (unsigned int)normals.size();
             std::vector<std::jthread> threadsVertexNormal(NUM_THREADS);
             for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
@@ -251,16 +194,11 @@ namespace urchin {
             std::ranges::for_each(threadsVertexNormal, [](std::jthread& x){x.join();});
         } else {
             assert(mode == TerrainMeshMode::FLAT);
-            normals.resize(computeNumberVertices());
-            for (std::size_t vertexIndex = 0; vertexIndex < normals.size(); vertexIndex++) {
-                normals[vertexIndex] = normalTriangles[vertexIndex / 3];
-            }
+            assert(computeNumberVertexNormals() == 0);
         }
     }
 
     std::vector<unsigned int> TerrainMesh::findTriangleIndices(unsigned int vertexIndex) const {
-        assert(mode == TerrainMeshMode::SMOOTH);
-
         std::vector<unsigned int> triangleIndices;
         triangleIndices.reserve(6);
 

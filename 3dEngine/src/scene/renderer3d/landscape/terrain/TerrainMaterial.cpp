@@ -39,8 +39,8 @@ namespace urchin {
         }
     }
 
-    void TerrainMaterials::refreshWith(unsigned int xSize, unsigned int zSize, TerrainMeshMode mode) {
-        buildTexCoordinates(xSize, zSize, mode);
+    void TerrainMaterials::refreshWith(unsigned int xSize, unsigned int zSize) {
+        buildTexCoordinates(xSize, zSize);
     }
 
     const std::string& TerrainMaterials::getMaskMapFilename() const {
@@ -59,34 +59,15 @@ namespace urchin {
         return materials;
     }
 
-    void TerrainMaterials::buildTexCoordinates(unsigned int xSize, unsigned int zSize, TerrainMeshMode mode) {
+    void TerrainMaterials::buildTexCoordinates(unsigned int xSize, unsigned int zSize) {
         texCoordinates.clear();
+
         std::size_t texCoordinatesIndex = 0;
-
-        if (mode == TerrainMeshMode::SMOOTH) {
-            texCoordinates.resize(xSize * zSize);
-            for (unsigned int z = 0; z < zSize; ++z) {
-                for (unsigned int x = 0; x < xSize; ++x) {
-                    //must match with TerrainMesh#buildVertices()
-                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x, z);
-                }
-            }
-        } else {
-            assert(mode == TerrainMeshMode::FLAT);
-            unsigned int trianglesByRow = (xSize - 1) * 2;
-            unsigned int numberTriangles = trianglesByRow * (zSize - 1);
-            texCoordinates.resize(numberTriangles * 3);
-            for (unsigned int z = 0; z < zSize - 1; ++z) {
-                for (unsigned int x = 0; x < xSize - 1; ++x) {
-                    //must match with TerrainMesh#buildVertices()
-                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x, z + 1);
-                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x, z);
-                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x + 1, z + 1);
-
-                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x + 1, z + 1);
-                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x, z);
-                    texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x + 1, z);
-                }
+        texCoordinates.resize(xSize * zSize);
+        for (unsigned int z = 0; z < zSize; ++z) {
+            for (unsigned int x = 0; x < xSize; ++x) {
+                //must match with TerrainMesh#buildVertices()
+                texCoordinates[texCoordinatesIndex++] = computeTexCoordinates(xSize, zSize, x, z);
             }
         }
         assert(texCoordinatesIndex == texCoordinates.size());

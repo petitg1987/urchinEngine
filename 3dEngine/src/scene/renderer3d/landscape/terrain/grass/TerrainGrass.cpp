@@ -124,9 +124,9 @@ namespace urchin {
                         unsigned int vertexIndex = retrieveVertexIndex(Point2(xValue, zValue));
                         Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3(0.5f, 0.5f, 0.5f);
 
-                        float globalXValue = terrainPosition.X + mesh->getRawVertices()[0].X + xValue;
-                        float globalZValue = terrainPosition.Z + mesh->getRawVertices()[0].Z + zValue;
-                        float globalYValue = terrainPosition.Y + mesh->getRawVertices()[vertexIndex].Y;
+                        float globalXValue = terrainPosition.X + mesh->getVertices()[0].X + xValue;
+                        float globalZValue = terrainPosition.Z + mesh->getVertices()[0].Z + zValue;
+                        float globalYValue = terrainPosition.Y + mesh->getVertices()[vertexIndex].Y;
                         Point3 globalGrassPosition(globalXValue, globalYValue, globalZValue);
 
                         unsigned int parcelXIndex = std::min((unsigned int)(xValue / parcelSizeX), parcelQuantityX);
@@ -160,10 +160,10 @@ namespace urchin {
     }
 
     unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float>& localXzCoordinate) const {
-        float xInterval = mesh->getRawVertices()[1].X - mesh->getRawVertices()[0].X;
+        float xInterval = mesh->getVertices()[1].X - mesh->getVertices()[0].X;
         unsigned int xIndex = std::clamp(MathFunction::roundToUInt(localXzCoordinate.X / xInterval), 0u, mesh->getXSize() - 1);
 
-        float zInterval = mesh->getRawVertices()[mesh->getXSize()].Z - mesh->getRawVertices()[0].Z;
+        float zInterval = mesh->getVertices()[mesh->getXSize()].Z - mesh->getVertices()[0].Z;
         unsigned int zIndex = std::clamp(MathFunction::roundToUInt(localXzCoordinate.Y / zInterval), 0u, mesh->getZSize() - 1);
 
         return xIndex + zIndex * mesh->getXSize();

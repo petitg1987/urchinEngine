@@ -19,7 +19,6 @@ namespace urchin {
             unsigned int getZSize() const;
             TerrainMeshMode getMode() const;
 
-            const std::vector<Point3<float>>& getRawVertices() const;
             const std::vector<Point3<float>>& getVertices() const;
             const std::vector<unsigned int>& getIndices() const;
             const std::vector<Vector3<float>>& getNormals() const;
@@ -28,7 +27,6 @@ namespace urchin {
             float findHeightAt(const Point2<float>&) const;
 
         private:
-            unsigned int computeNumberRawVertices() const;
             unsigned int computeNumberVertices() const;
             unsigned int computeNumberIndices() const;
             unsigned int computeNumberTriangles() const;
@@ -47,9 +45,8 @@ namespace urchin {
             unsigned int xSize;
             unsigned int zSize;
 
-            std::vector<Point3<float>> rawVertices;
-            std::vector<Point3<float>> vertices; //either vertices or indices
-            std::vector<unsigned int> indices; //either vertices or indices
+            std::vector<Point3<float>> vertices;
+            std::vector<unsigned int> indices;
             std::vector<Vector3<float>> normals;
             std::unique_ptr<HeightfieldPointHelper<float>> heightfieldPointHelper;
     };

@@ -4,6 +4,7 @@
 
 # 3d Engine
 * Graphics API
+  * ► **OPTIMIZATION**: Compile shader on the fly in SPIR-V to use #define on options that can be enabled/disabled
   * ► **OPTIMIZATION**: Use bind-less rendering technique to bind almost everything at frame start
     * See: <https://www.youtube.com/watch?v=SVm0HanVTRw>
     * See: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>

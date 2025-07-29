@@ -42,36 +42,33 @@ namespace urchin {
 
     void Terrain::createOrUpdateRenderer() {
         std::vector<Point2<float>> dummyTextureCoordinates;
+        dummyTextureCoordinates.resize(mesh->getVertices().size(), Point2(0.0f, 0.0f));
+
         Matrix4<float> projViewMatrix;
         Vector2<float> materialsStRepeat = materials->getStRepeat();
 
         TerrainShaderConst terrainShaderConst {.ambient = ambient};
         std::vector variablesSize = {sizeof(TerrainShaderConst::ambient)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &terrainShaderConst);
-        terrainShader = ShaderBuilder::createShader("terrain.vert.spv", "terrain.frag.spv", std::move(shaderConstants), false);
-
-        ShapeType shapeType = mesh->getMode() == TerrainMeshMode::SMOOTH ? ShapeType::TRIANGLE_STRIP : ShapeType::TRIANGLE;
-        auto terrainRendererBuilder = GenericRendererBuilder::create("terrain", *renderTarget, *terrainShader, shapeType)
-                ->enableDepthTest()
-                ->enableDepthWrite();
-
         if (mesh->getMode() == TerrainMeshMode::SMOOTH) {
-            dummyTextureCoordinates.resize(mesh->getRawVertices().size(), Point2(0.0f, 0.0f));
-            terrainRendererBuilder
-                ->addData(mesh->getRawVertices())
-                ->addData(mesh->getNormals())
-                ->addData(dummyTextureCoordinates)
-                ->indices(mesh->getIndices());
+            terrainShader = ShaderBuilder::createShader("terrainShadeSmooth.vert.spv", "terrainShadeSmooth.frag.spv", std::move(shaderConstants), false);
         } else {
             assert(mesh->getMode() == TerrainMeshMode::FLAT);
-            dummyTextureCoordinates.resize(mesh->getVertices().size(), Point2(0.0f, 0.0f));
-            terrainRendererBuilder
+            terrainShader = ShaderBuilder::createShader("terrainShadeFlat.vert.spv", "terrainShadeFlat.frag.spv", std::move(shaderConstants), false);
+        }
+
+        auto terrainRendererBuilder = GenericRendererBuilder::create("terrain", *renderTarget, *terrainShader, ShapeType::TRIANGLE_STRIP)
+                ->enableDepthTest()
+                ->enableDepthWrite()
                 ->addData(mesh->getVertices())
-                ->addData(mesh->getNormals())
                 ->addData(dummyTextureCoordinates);
+
+        if (mesh->getMode() == TerrainMeshMode::SMOOTH) {
+            terrainRendererBuilder->addData(mesh->getNormals());
         }
 
         terrainRendererBuilder
+                ->indices(mesh->getIndices())
                 ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projViewMatrix), &projViewMatrix)
                 ->addUniformData(POSITION_UNIFORM_BINDING, sizeof(position), &position)
                 ->addUniformData(ST_UNIFORM_BINDING, sizeof(materialsStRepeat), &materialsStRepeat)
@@ -100,10 +97,10 @@ namespace urchin {
 
     void Terrain::refreshMaterials() const {
         if (materials) {
-            materials->refreshWith(mesh->getXSize(), mesh->getZSize(), mesh->getMode());
+            materials->refreshWith(mesh->getXSize(), mesh->getZSize());
 
             Vector2<float> materialsStRepeat = materials->getStRepeat();
-            terrainRenderer->updateData(2, materials->getTexCoordinates());
+            terrainRenderer->updateData(1, materials->getTexCoordinates());
             terrainRenderer->updateUniformData(ST_UNIFORM_BINDING, &materialsStRepeat);
             terrainRenderer->updateUniformTextureReader(MASK_TEX_UNIFORM_BINDING, TextureReader::build(materials->getMaskTexture(), TextureParam::buildLinear()));
             for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
