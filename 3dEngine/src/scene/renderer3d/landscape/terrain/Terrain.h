@@ -49,7 +49,7 @@ namespace urchin {
             static constexpr uint32_t POSITION_UNIFORM_BINDING = 1;
             static constexpr uint32_t ST_UNIFORM_BINDING = 2;
             static constexpr uint32_t MASK_TEX_UNIFORM_BINDING = 3;
-            static constexpr std::array<uint32_t, TerrainMaterials::MAX_MATERIAL> MATERIAL_TEX_UNIFORM_BINDING = {4, 5, 6, 7};
+            static constexpr std::array<uint32_t, TerrainMaterials::MAX_MATERIAL> MATERIAL_TEX_UNIFORM_BINDING = {4, 5, 6};
 
             bool isInitialized;
             RenderTarget* renderTarget;

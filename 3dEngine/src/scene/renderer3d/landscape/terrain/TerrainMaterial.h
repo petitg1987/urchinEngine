@@ -10,7 +10,7 @@ namespace urchin {
 
     class TerrainMaterials {
         public:
-            static constexpr unsigned int MAX_MATERIAL = 4;
+            static constexpr unsigned int MAX_MATERIAL = 3;
 
             TerrainMaterials(std::string, const std::vector<std::string>&, float, float);
 

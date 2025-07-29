@@ -10,7 +10,6 @@ layout(binding = 3) uniform sampler2D maskTex;
 layout(binding = 4) uniform sampler2D albedoTex1;
 layout(binding = 5) uniform sampler2D albedoTex2;
 layout(binding = 6) uniform sampler2D albedoTex3;
-layout(binding = 7) uniform sampler2D albedoTex4;
 
 layout(location = 0) in vec2 texCoordinates;
 layout(location = 1) in vec3 worldPosition;
@@ -27,13 +26,11 @@ void main() {
     vec3 albedoValue1 = texture(albedoTex1, texCoordinates).rgb;
     vec3 albedoValue2 = texture(albedoTex2, texCoordinates).rgb;
     vec3 albedoValue3 = texture(albedoTex3, texCoordinates).rgb;
-    vec3 albedoValue4 = texture(albedoTex4, texCoordinates).rgb;
 
     fragAlbedoAndEmissive.rgb =
             maskValue.r * albedoValue1 +
             maskValue.g * albedoValue2 +
-            maskValue.b * albedoValue3 +
-            maskValue.a * albedoValue4;
+            maskValue.b * albedoValue3;
     fragAlbedoAndEmissive.a = 0.0;
 
     //normal and ambient
