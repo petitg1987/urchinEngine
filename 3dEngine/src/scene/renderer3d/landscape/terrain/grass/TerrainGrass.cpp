@@ -73,7 +73,7 @@ namespace urchin {
         if (!mesh) {
             return;
         }
-
+//TODO do nto execute if no grass !!!
         this->mesh = mesh;
         this->terrainPosition = terrainPosition;
 
@@ -317,7 +317,7 @@ namespace urchin {
         } else {
             grassTexture = ResourceRetriever::instance().getResource<Texture>(this->grassTextureFilename, {{"mipMap", "1"}});
 
-            for (auto* renderer: getAllRenderers()) {
+            for (auto* renderer: getAllRenderers()) { //TODO render could be null ? call generateGrass ?
                 renderer->updateUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam));
             }
         }

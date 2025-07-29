@@ -89,12 +89,7 @@ namespace urchin {
     }
 
     unsigned int TerrainMesh::computeNumberVertexNormals() const {
-        if (mode == TerrainMeshMode::SMOOTH) {
-            return computeNumberVertices();
-        } else {
-            assert(mode == TerrainMeshMode::FLAT);
-            return 0; //computed dynamically in the shader
-        }
+        return computeNumberVertices();
     }
 
     void TerrainMesh::buildVertices(const Image& imgTerrain) {
@@ -134,68 +129,63 @@ namespace urchin {
     }
 
     void TerrainMesh::buildNormals() {
-        if (mode == TerrainMeshMode::SMOOTH) {
-            const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
+        const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
 
-            //1. compute triangles normal
-            unsigned int totalTriangles = computeNumberTriangles();
-            unsigned int trianglesByRow = (xSize - 1) * 2;
-            std::vector<Vector3<float>> normalTriangles;
-            normalTriangles.resize(totalTriangles);
-            std::vector<std::jthread> threadsNormalTriangle(NUM_THREADS);
-            for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
-                unsigned int beginTriangleIndex = threadI * totalTriangles / NUM_THREADS;
-                unsigned int endTriangleIndex = (threadI + 1) == NUM_THREADS ? totalTriangles : (threadI + 1) * totalTriangles / NUM_THREADS;
+        //1. compute triangles normal
+        unsigned int totalTriangles = computeNumberTriangles();
+        unsigned int trianglesByRow = (xSize - 1) * 2;
+        std::vector<Vector3<float>> normalTriangles;
+        normalTriangles.resize(totalTriangles);
+        std::vector<std::jthread> threadsNormalTriangle(NUM_THREADS);
+        for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
+            unsigned int beginTriangleIndex = threadI * totalTriangles / NUM_THREADS;
+            unsigned int endTriangleIndex = (threadI + 1) == NUM_THREADS ? totalTriangles : (threadI + 1) * totalTriangles / NUM_THREADS;
 
-                threadsNormalTriangle[threadI] = std::jthread([&, beginTriangleIndex, endTriangleIndex] {
-                    for (unsigned int triangleIndex = beginTriangleIndex; triangleIndex < endTriangleIndex; triangleIndex++) {
-                        unsigned int indicesByRow = (xSize * 2) + 1 /* strip restart */;
-                        unsigned int triangleZValue = triangleIndex / trianglesByRow;
-                        unsigned int triangleXValue = triangleIndex % trianglesByRow;
-                        unsigned int indicesStartIndex = triangleZValue * indicesByRow + triangleXValue;
+            threadsNormalTriangle[threadI] = std::jthread([&, beginTriangleIndex, endTriangleIndex] {
+                for (unsigned int triangleIndex = beginTriangleIndex; triangleIndex < endTriangleIndex; triangleIndex++) {
+                    unsigned int indicesByRow = (xSize * 2) + 1 /* strip restart */;
+                    unsigned int triangleZValue = triangleIndex / trianglesByRow;
+                    unsigned int triangleXValue = triangleIndex % trianglesByRow;
+                    unsigned int indicesStartIndex = triangleZValue * indicesByRow + triangleXValue;
 
-                        Point3<float> point1 = vertices[indices[indicesStartIndex]];
-                        Point3<float> point2 = vertices[indices[indicesStartIndex + 1]];
-                        Point3<float> point3 = vertices[indices[indicesStartIndex + 2]];
+                    Point3<float> point1 = vertices[indices[indicesStartIndex]];
+                    Point3<float> point2 = vertices[indices[indicesStartIndex + 1]];
+                    Point3<float> point3 = vertices[indices[indicesStartIndex + 2]];
 
-                        bool isCwTriangle = (indicesStartIndex % indicesByRow) % 2 == 0;
-                        Vector3<float> normal;
-                        if (isCwTriangle) {
-                            normal = (point1.vector(point2).crossProduct(point3.vector(point1)));
-                        } else {
-                            normal = (point1.vector(point2).crossProduct(point1.vector(point3)));
-                        }
-
-                        normalTriangles[triangleIndex] = normal.normalize();
+                    bool isCwTriangle = (indicesStartIndex % indicesByRow) % 2 == 0;
+                    Vector3<float> normal;
+                    if (isCwTriangle) {
+                        normal = (point1.vector(point2).crossProduct(point3.vector(point1)));
+                    } else {
+                        normal = (point1.vector(point2).crossProduct(point1.vector(point3)));
                     }
-                });
-            }
-            std::ranges::for_each(threadsNormalTriangle, [](std::jthread& x){x.join();});
-            assert(totalTriangles == normalTriangles.size());
 
-            //2. compute vertex normal
-            normals.resize(computeNumberVertexNormals());
-            unsigned int totalVertexNormal = (unsigned int)normals.size();
-            std::vector<std::jthread> threadsVertexNormal(NUM_THREADS);
-            for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
-                unsigned int beginVertexIndex = threadI * totalVertexNormal / NUM_THREADS;
-                unsigned int endVertexIndex = (threadI + 1) == NUM_THREADS ? totalVertexNormal : (threadI + 1) * totalVertexNormal / NUM_THREADS;
-
-                threadsVertexNormal[threadI] = std::jthread([&, beginVertexIndex, endVertexIndex] {
-                    for (unsigned int vertexIndex = beginVertexIndex; vertexIndex < endVertexIndex; vertexIndex++) {
-                        Vector3<float> vertexNormal(0.0, 0.0, 0.0);
-                        for (unsigned int triangleIndex : findTriangleIndices(vertexIndex)) {
-                            vertexNormal += normalTriangles[triangleIndex];
-                        }
-                        normals[vertexIndex] = vertexNormal.normalize();
-                    }
-                });
-            }
-            std::ranges::for_each(threadsVertexNormal, [](std::jthread& x){x.join();});
-        } else {
-            assert(mode == TerrainMeshMode::FLAT);
-            assert(computeNumberVertexNormals() == 0);
+                    normalTriangles[triangleIndex] = normal.normalize();
+                }
+            });
         }
+        std::ranges::for_each(threadsNormalTriangle, [](std::jthread& x){x.join();});
+        assert(totalTriangles == normalTriangles.size());
+
+        //2. compute vertex normal
+        normals.resize(computeNumberVertexNormals());
+        unsigned int totalVertexNormal = (unsigned int)normals.size();
+        std::vector<std::jthread> threadsVertexNormal(NUM_THREADS);
+        for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
+            unsigned int beginVertexIndex = threadI * totalVertexNormal / NUM_THREADS;
+            unsigned int endVertexIndex = (threadI + 1) == NUM_THREADS ? totalVertexNormal : (threadI + 1) * totalVertexNormal / NUM_THREADS;
+
+            threadsVertexNormal[threadI] = std::jthread([&, beginVertexIndex, endVertexIndex] {
+                for (unsigned int vertexIndex = beginVertexIndex; vertexIndex < endVertexIndex; vertexIndex++) {
+                    Vector3<float> vertexNormal(0.0, 0.0, 0.0);
+                    for (unsigned int triangleIndex : findTriangleIndices(vertexIndex)) {
+                        vertexNormal += normalTriangles[triangleIndex];
+                    }
+                    normals[vertexIndex] = vertexNormal.normalize();
+                }
+            });
+        }
+        std::ranges::for_each(threadsVertexNormal, [](std::jthread& x){x.join();});
     }
 
     std::vector<unsigned int> TerrainMesh::findTriangleIndices(unsigned int vertexIndex) const {
