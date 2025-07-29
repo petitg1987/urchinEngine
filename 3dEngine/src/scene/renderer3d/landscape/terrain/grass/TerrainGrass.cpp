@@ -70,78 +70,78 @@ namespace urchin {
     }
 
     void TerrainGrass::generateGrass(const TerrainMesh* mesh, const Point3<float>& terrainPosition) {
-        if (!mesh) {
-            return;
-        }
-//TODO do nto execute if no grass !!!
         this->mesh = mesh;
         this->terrainPosition = terrainPosition;
 
-        const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
-        unsigned int seed = 0; //no need to generate different random numbers at each start
-        std::default_random_engine generator(seed);
-        std::uniform_real_distribution distribution(-GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity, GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity);
+        if (grassTexture && renderTarget) {
+            const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
+            unsigned int seed = 0; //no need to generate different random numbers at each start
+            std::default_random_engine generator(seed);
+            std::uniform_real_distribution distribution(-GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity, GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity);
 
-        float terrainSizeX = mesh->getXZScale() * (float)mesh->getXSize();
-        float terrainSizeZ = mesh->getXZScale() * (float)mesh->getZSize();
-        unsigned int parcelQuantityX = MathFunction::roundToUInt(terrainSizeX / grassParcelSize);
-        unsigned int parcelQuantityZ = MathFunction::roundToUInt(terrainSizeZ / grassParcelSize);
-        float parcelSizeX = terrainSizeX / (float)parcelQuantityX;
-        float parcelSizeZ = terrainSizeZ / (float)parcelQuantityZ;
-        unsigned int grassXQuantity = MathFunction::roundToUInt(terrainSizeX * grassQuantity);
-        unsigned int grassZQuantity = MathFunction::roundToUInt(terrainSizeZ * grassQuantity);
+            float terrainSizeX = mesh->getXZScale() * (float)mesh->getXSize();
+            float terrainSizeZ = mesh->getXZScale() * (float)mesh->getZSize();
+            unsigned int parcelQuantityX = MathFunction::roundToUInt(terrainSizeX / grassParcelSize);
+            unsigned int parcelQuantityZ = MathFunction::roundToUInt(terrainSizeZ / grassParcelSize);
+            float parcelSizeX = terrainSizeX / (float)parcelQuantityX;
+            float parcelSizeZ = terrainSizeZ / (float)parcelQuantityZ;
+            unsigned int grassXQuantity = MathFunction::roundToUInt(terrainSizeX * grassQuantity);
+            unsigned int grassZQuantity = MathFunction::roundToUInt(terrainSizeZ * grassQuantity);
 
-        std::shared_ptr<Image> grassMaskImage;
-        if (!grassMaskFilename.empty()) {
-            grassMaskImage = ResourceRetriever::instance().getResource<Image>(this->grassMaskFilename);
-        }
+            std::shared_ptr<Image> grassMaskImage;
+            if (!grassMaskFilename.empty()) {
+                grassMaskImage = ResourceRetriever::instance().getResource<Image>(this->grassMaskFilename);
+            }
 
-        std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassParcels;
-        leafGrassParcels.reserve((std::size_t)parcelQuantityX * parcelQuantityZ);
-        for (unsigned int i = 0; i < parcelQuantityX * parcelQuantityZ; ++i) {
-            leafGrassParcels.push_back(std::make_unique<TerrainGrassQuadtree>());
-        }
+            std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassParcels;
+            leafGrassParcels.reserve((std::size_t)parcelQuantityX * parcelQuantityZ);
+            for (unsigned int i = 0; i < parcelQuantityX * parcelQuantityZ; ++i) {
+                leafGrassParcels.push_back(std::make_unique<TerrainGrassQuadtree>());
+            }
 
-        std::vector<std::jthread> threads(NUM_THREADS);
-        for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
-            unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
-            unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
+            std::vector<std::jthread> threads(NUM_THREADS);
+            for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
+                unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
+                unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
 
-            threads[threadI] = std::jthread([&, beginX, endX] {
-                for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex) {
-                    for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex) {
-                        float xValue = ((float)xIndex / grassQuantity) + distribution(generator);
-                        float zValue = ((float)zIndex / grassQuantity) + distribution(generator);
-                        if (xValue <= 0.0f || xValue >= terrainSizeX || zValue <= 0.0f || zValue >= terrainSizeZ) {
-                            continue;
+                threads[threadI] = std::jthread([&, beginX, endX] {
+                    for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex) {
+                        for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex) {
+                            float xValue = ((float)xIndex / grassQuantity) + distribution(generator);
+                            float zValue = ((float)zIndex / grassQuantity) + distribution(generator);
+                            if (xValue <= 0.0f || xValue >= terrainSizeX || zValue <= 0.0f || zValue >= terrainSizeZ) {
+                                continue;
+                            }
+
+                            if (discardGrass(grassMaskImage.get(), xValue, zValue, terrainSizeX, terrainSizeZ)) {
+                                continue;
+                            }
+
+                            //Use the same normal as terrain to have identical lighting. Convert normal range from (-1.0, 1.0) to (0.0, 1.0).
+                            unsigned int vertexIndex = retrieveVertexIndex(Point2(xValue, zValue));
+                            Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3(0.5f, 0.5f, 0.5f);
+
+                            float globalXValue = terrainPosition.X + mesh->getVertices()[0].X + xValue;
+                            float globalZValue = terrainPosition.Z + mesh->getVertices()[0].Z + zValue;
+                            float globalYValue = terrainPosition.Y + mesh->getVertices()[vertexIndex].Y;
+                            Point3 globalGrassPosition(globalXValue, globalYValue, globalZValue);
+
+                            unsigned int parcelXIndex = std::min((unsigned int)(xValue / parcelSizeX), parcelQuantityX);
+                            unsigned int parcelZIndex = std::min((unsigned int)(zValue / parcelSizeZ), parcelQuantityZ);
+                            unsigned int parcelIndex = (parcelZIndex * parcelQuantityX) + parcelXIndex;
+
+                            leafGrassParcels[parcelIndex]->addGrassInstanceData(globalGrassPosition, grassNormal);
                         }
-
-                        if (discardGrass(grassMaskImage.get(), xValue, zValue, terrainSizeX, terrainSizeZ)) {
-                            continue;
-                        }
-
-                        //Use the same normal as terrain to have identical lighting. Convert normal range from (-1.0, 1.0) to (0.0, 1.0).
-                        unsigned int vertexIndex = retrieveVertexIndex(Point2(xValue, zValue));
-                        Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3(0.5f, 0.5f, 0.5f);
-
-                        float globalXValue = terrainPosition.X + mesh->getVertices()[0].X + xValue;
-                        float globalZValue = terrainPosition.Z + mesh->getVertices()[0].Z + zValue;
-                        float globalYValue = terrainPosition.Y + mesh->getVertices()[vertexIndex].Y;
-                        Point3 globalGrassPosition(globalXValue, globalYValue, globalZValue);
-
-                        unsigned int parcelXIndex = std::min((unsigned int)(xValue / parcelSizeX), parcelQuantityX);
-                        unsigned int parcelZIndex = std::min((unsigned int)(zValue / parcelSizeZ), parcelQuantityZ);
-                        unsigned int parcelIndex = (parcelZIndex * parcelQuantityX) + parcelXIndex;
-
-                        leafGrassParcels[parcelIndex]->addGrassInstanceData(globalGrassPosition, grassNormal);
                     }
-                }
-            });
-        }
-        std::ranges::for_each(threads, [](std::jthread& x){x.join();});
+                });
+            }
+            std::ranges::for_each(threads, [](std::jthread& x){x.join();});
 
-        createRenderers(leafGrassParcels);
-        buildGrassQuadtree(std::move(leafGrassParcels), parcelQuantityX, parcelQuantityZ);
+            createRenderers(leafGrassParcels);
+            buildGrassQuadtree(std::move(leafGrassParcels), parcelQuantityX, parcelQuantityZ);
+        } else {
+            mainGrassQuadtree = std::unique_ptr<TerrainGrassQuadtree>(nullptr);
+        }
     }
 
     bool TerrainGrass::discardGrass(const Image* grassMaskImage, float xValue, float zValue, float terrainSizeX, float terrainSizeZ) const {
@@ -211,28 +211,26 @@ namespace urchin {
     }
 
     void TerrainGrass::createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& leafGrassParcels) const {
-        if (grassTexture && renderTarget) {
-            std::vector<Point3<float>> grassVertex;
-            std::vector<Point2<float>> grassUv;
-            generateGrassMesh(grassVertex, grassUv);
+        std::vector<Point3<float>> grassVertex;
+        std::vector<Point2<float>> grassUv;
+        generateGrassMesh(grassVertex, grassUv);
 
-            for (auto& grassQuadtree : leafGrassParcels) {
-                if (!grassQuadtree->getGrassInstanceData().empty()) {
-                    auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::TRIANGLE)
-                            ->enableDepthTest()
-                            ->enableDepthWrite()
-                            ->disableCullFace()
-                            ->addData(grassVertex)
-                            ->addData(grassUv)
-                            ->instanceData(grassQuadtree->getGrassInstanceData().size(), {VariableType::VEC3_FLOAT, VariableType::VEC3_FLOAT}, (const float *)grassQuadtree->getGrassInstanceData().data())
-                            ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
-                            ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
-                            ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
-                            ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam))
-                            ->build();
+        for (auto& grassQuadtree : leafGrassParcels) {
+            if (!grassQuadtree->getGrassInstanceData().empty()) {
+                auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::TRIANGLE)
+                        ->enableDepthTest()
+                        ->enableDepthWrite()
+                        ->disableCullFace()
+                        ->addData(grassVertex)
+                        ->addData(grassUv)
+                        ->instanceData(grassQuadtree->getGrassInstanceData().size(), {VariableType::VEC3_FLOAT, VariableType::VEC3_FLOAT}, (const float *)grassQuadtree->getGrassInstanceData().data())
+                        ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
+                        ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
+                        ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
+                        ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam))
+                        ->build();
 
-                    grassQuadtree->setRenderer(std::move(renderer));
-                }
+                grassQuadtree->setRenderer(std::move(renderer));
             }
         }
     }
@@ -306,20 +304,22 @@ namespace urchin {
     }
 
     void TerrainGrass::setGrassTexture(std::string grassTextureFilename) {
+        std::string newGrassTextureFilename;
         if (grassTextureFilename.empty() || FileUtil::isAbsolutePath(grassTextureFilename)) {
-            this->grassTextureFilename = std::move(grassTextureFilename);
+            newGrassTextureFilename = std::move(grassTextureFilename);
         } else {
-            this->grassTextureFilename = FileSystem::instance().getResourcesDirectory() + std::move(grassTextureFilename);
+            newGrassTextureFilename = FileSystem::instance().getResourcesDirectory() + std::move(grassTextureFilename);
         }
 
-        if (this->grassTextureFilename.empty()) {
-            grassTexture = nullptr;
-        } else {
-            grassTexture = ResourceRetriever::instance().getResource<Texture>(this->grassTextureFilename, {{"mipMap", "1"}});
+        if (this->grassTextureFilename != newGrassTextureFilename) {
+            this->grassTextureFilename = newGrassTextureFilename;
 
-            for (auto* renderer: getAllRenderers()) { //TODO render could be null ? call generateGrass ?
-                renderer->updateUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam));
+            if (this->grassTextureFilename.empty()) {
+                grassTexture = nullptr;
+            } else {
+                grassTexture = ResourceRetriever::instance().getResource<Texture>(this->grassTextureFilename, {{"mipMap", "1"}});
             }
+            generateGrass(mesh, terrainPosition);
         }
     }
 
@@ -328,13 +328,17 @@ namespace urchin {
     }
 
     void TerrainGrass::setMaskTexture(std::string grassMaskFilename) {
+        std::string newGrassMaskFilename;
         if (grassMaskFilename.empty() || FileUtil::isAbsolutePath(grassMaskFilename)) {
-            this->grassMaskFilename = std::move(grassMaskFilename);
+            newGrassMaskFilename = std::move(grassMaskFilename);
         } else {
-            this->grassMaskFilename = FileSystem::instance().getResourcesDirectory() + std::move(grassMaskFilename);
+            newGrassMaskFilename = FileSystem::instance().getResourcesDirectory() + std::move(grassMaskFilename);
         }
 
-        generateGrass(mesh, terrainPosition);
+        if (this->grassMaskFilename != newGrassMaskFilename) {
+            this->grassMaskFilename = newGrassMaskFilename;
+            generateGrass(mesh, terrainPosition);
+        }
     }
 
     float TerrainGrass::getGrassDisplayDistance() const {
@@ -355,9 +359,10 @@ namespace urchin {
     }
 
     void TerrainGrass::setGrassHeight(float grassHeight) {
-        grassProperties.grassHeight = grassHeight;
-
-        generateGrass(mesh, terrainPosition);
+        if (grassProperties.grassHeight != grassHeight) {
+            grassProperties.grassHeight = grassHeight;
+            generateGrass(mesh, terrainPosition);
+        }
     }
 
     float TerrainGrass::getGrassWidth() const {
@@ -365,9 +370,10 @@ namespace urchin {
     }
 
     void TerrainGrass::setGrassWidth(float grassWidth) {
-        this->grassWidth = grassWidth;
-
-        generateGrass(mesh, terrainPosition);
+        if (this->grassWidth != grassWidth) {
+            this->grassWidth = grassWidth;
+            generateGrass(mesh, terrainPosition);
+        }
     }
 
     unsigned int TerrainGrass::getNumGrassInTexture() const {
@@ -375,9 +381,10 @@ namespace urchin {
     }
 
     void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) {
-        this->numGrassInTex = (int)numGrassInTex;
-
-        generateGrass(mesh, terrainPosition);
+        if (this->numGrassInTex != (int)numGrassInTex) {
+            this->numGrassInTex = (int)numGrassInTex;
+            generateGrass(mesh, terrainPosition);
+        }
     }
 
     float TerrainGrass::getGrassQuantity() const {
@@ -385,9 +392,10 @@ namespace urchin {
     }
 
     void TerrainGrass::setGrassQuantity(float grassQuantity) {
-        this->grassQuantity = grassQuantity;
-
-        generateGrass(mesh, terrainPosition);
+        if (this->grassQuantity != grassQuantity) {
+            this->grassQuantity = grassQuantity;
+            generateGrass(mesh, terrainPosition);
+        }
     }
 
     Vector3<float> TerrainGrass::getWindDirection() const {
