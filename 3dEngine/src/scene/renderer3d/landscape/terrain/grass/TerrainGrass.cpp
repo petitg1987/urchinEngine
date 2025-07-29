@@ -94,9 +94,9 @@ namespace urchin {
             }
 
             std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassParcels;
-            leafGrassParcels.reserve((std::size_t)parcelQuantityX * parcelQuantityZ);
-            for (unsigned int i = 0; i < parcelQuantityX * parcelQuantityZ; ++i) {
-                leafGrassParcels.push_back(std::make_unique<TerrainGrassQuadtree>());
+            leafGrassParcels.resize(parcelQuantityX * parcelQuantityZ);
+            for (std::unique_ptr<TerrainGrassQuadtree>& leafGrassParcel : leafGrassParcels) {
+                leafGrassParcel = std::make_unique<TerrainGrassQuadtree>();
             }
 
             std::vector<std::jthread> threads(NUM_THREADS);
