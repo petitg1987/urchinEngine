@@ -7,24 +7,37 @@
 namespace urchin {
 
     ObjectTableView::ObjectTableView(QWidget* parent) :
-            QTableView(parent) {
+            QTreeView(parent) {
         objectsListModel = new QStandardItemModel(0, 1, this);
         objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
-        QTableView::setModel(objectsListModel);
+        QTreeView::setModel(objectsListModel);
 
-        horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
-        horizontalHeader()->resizeSection(0, 340);
-        verticalHeader()->hide();
+        header()->setSectionResizeMode(0, QHeaderView::Fixed);
+        header()->resizeSection(0, 340);
 
         setSelectionMode(ExtendedSelection);
         setSelectionBehavior(SelectRows);
+    }
 
-        connect(selectionModel(), &QItemSelectionModel::selectionChanged, [&](const QItemSelection&, const QItemSelection&) {
-            notifyObservers(this, OBJECT_SELECTION_CHANGED);
-        });
-        connect(selectionModel(), &QItemSelectionModel::currentChanged, [&](const QModelIndex&, const QModelIndex&) {
-            notifyObservers(this, OBJECT_SELECTION_CHANGED);
-        });
+    void ObjectTableView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected) {
+        QTreeView::selectionChanged(selected, deselected);
+        notifyObservers(this, OBJECT_SELECTION_CHANGED);
+    }
+
+    void ObjectTableView::currentChanged(const QModelIndex& current, const QModelIndex& previous) {
+        QTreeView::currentChanged(current, previous);
+        notifyObservers(this, OBJECT_SELECTION_CHANGED);
+    }
+
+    void ObjectTableView::selectRow(int row) {
+        QModelIndex index = this->model()->index(row, 0);
+        if (!index.isValid()) {
+            return;
+        }
+
+        scrollTo(index);
+        setCurrentIndex(index);
+        selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
 
     QStandardItem* ObjectTableView::buildObjectEntityItem(const ObjectEntity& objectEntity) const {
@@ -66,7 +79,7 @@ namespace urchin {
         return objectEntities;
     }
 
-    int ObjectTableView::addObject(const ObjectEntity& objectEntity, std::size_t insertPosition) {
+    int ObjectTableView::addObject(const ObjectEntity& objectEntity, std::size_t insertPosition) const {
         int insertRow = (int)insertPosition;
         if (insertRow > objectsListModel->rowCount()) {
             throw std::runtime_error("Unable to add an object at position " + std::to_string(insertPosition) + " while the list contains only "
@@ -76,25 +89,22 @@ namespace urchin {
         objectsListModel->insertRow(insertRow);
         objectsListModel->setItem(insertRow, 0, buildObjectEntityItem(objectEntity));
 
-        resizeRowsToContents();
         return insertRow;
     }
 
-    bool ObjectTableView::removeSelectedObject() {
+    bool ObjectTableView::removeSelectedObject() const {
         if (hasObjectEntitySelected()) {
             objectsListModel->removeRow(this->currentIndex().row());
-            resizeRowsToContents();
             return true;
         }
         return false;
     }
 
-    bool ObjectTableView::updateSelectedObject(const ObjectEntity& updatedObjectEntity) {
+    bool ObjectTableView::updateSelectedObject(const ObjectEntity& updatedObjectEntity) const {
         if (hasObjectEntitySelected()) {
             const ObjectEntity* selectObjectEntity = getMainSelectedObjectEntity();
             if (selectObjectEntity == &updatedObjectEntity) {
                 objectsListModel->setItem(currentIndex().row(), 0, buildObjectEntityItem(updatedObjectEntity));
-                resizeRowsToContents();
                 return true;
             } else {
                 throw std::runtime_error("Update the selected object with a different instance is not allowed");
@@ -103,9 +113,8 @@ namespace urchin {
         return false;
     }
 
-    void ObjectTableView::removeAllObjects() {
+    void ObjectTableView::removeAllObjects() const {
         objectsListModel->removeRows(0, objectsListModel->rowCount());
-        resizeRowsToContents();
     }
 
 }
