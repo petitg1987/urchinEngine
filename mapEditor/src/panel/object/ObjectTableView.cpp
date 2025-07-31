@@ -42,7 +42,7 @@ namespace urchin {
 
     QStandardItem* ObjectTableView::buildObjectEntityItem(const ObjectEntity& objectEntity) const {
         auto* itemObjectName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
-        itemObjectName->setData(true /* is object entity */, IS_OBJECT_ENTITY_DATA);
+        itemObjectName->setData(true, IS_OBJECT_ENTITY_DATA);
         itemObjectName->setData(QVariant::fromValue(&objectEntity), GROUP_OR_OBJECT_ENTITY_DATA);
         itemObjectName->setEditable(false);
         return itemObjectName;
