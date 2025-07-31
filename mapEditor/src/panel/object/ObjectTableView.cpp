@@ -54,11 +54,14 @@ namespace urchin {
 
     void ObjectTableView::selectObjectEntity(const ObjectEntity& expectedObjectEntity) {
         for (int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
-            QModelIndex index = objectsListModel->index(rowId, 0);
-            auto* objectEntity = index.data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
-            if (expectedObjectEntity.getName() == objectEntity->getName()) {
-                selectRow(rowId);
-                break;
+            QModelIndex modelIndex = objectsListModel->index(rowId, 0);
+            bool isObjectEntity = modelIndex.data(IS_OBJECT_ENTITY_DATA).value<bool>();
+            if (isObjectEntity) {
+                auto* objectEntity = modelIndex.data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
+                if (expectedObjectEntity.getName() == objectEntity->getName()) {
+                    selectRow(rowId);
+                    break;
+                }
             }
         }
     }
@@ -82,8 +85,8 @@ namespace urchin {
     void ObjectTableView::addObject(const ObjectEntity& objectEntity) { //TODO insert at correct place: group
         int insertRowId;
         for (insertRowId = 0; insertRowId < objectsListModel->rowCount(); ++insertRowId) {
-            QModelIndex index = objectsListModel->index(insertRowId, 0);
-            QStandardItem *standardItem = objectsListModel->itemFromIndex(index);
+            QModelIndex modelIndex = objectsListModel->index(insertRowId, 0);
+            QStandardItem *standardItem = objectsListModel->itemFromIndex(modelIndex);
             auto* existingObjectEntity = standardItem->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
             if (objectEntity.getName().compare(existingObjectEntity->getName()) < 0) {
                 break;
