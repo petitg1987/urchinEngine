@@ -29,9 +29,7 @@ int main(int argc, char *argv[]) {
 
     QApplication::setStyle("Fusion");
 
-    auto* window = new MapEditorWindow(std::string(argv[0]));
-    window->setVisible(true);
-    window->showMaximized();
+    new MapEditorWindow(std::string(argv[0]));
 
     int mainResult = QApplication::exec();
     if (mainResult == 0) {

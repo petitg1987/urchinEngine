@@ -30,16 +30,17 @@ namespace urchin {
             scenePanelWidget(nullptr),
             objectTabSelected(ObjectPanelWidget::ObjectTab::MODEL) {
         this->setAttribute(Qt::WA_DeleteOnClose);
-        this->setWindowTitle(getBaseWindowTitle());
         this->resize(1200, 675);
-        auto* centralWidget = new QWidget(this);
-
-        auto* horizontalLayout = new QHBoxLayout(centralWidget);
-        horizontalLayout->setSpacing(6);
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        this->showMaximized();
+        this->setWindowTitle(getBaseWindowTitle());
 
         setupMenu();
         statusBarController.clearState();
+
+        auto* centralWidget = new QWidget(this);
+        auto* horizontalLayout = new QHBoxLayout(centralWidget);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
         setupSceneDisplayerWidget(centralWidget, horizontalLayout);
         setupSceneControllerWidget(centralWidget, horizontalLayout);

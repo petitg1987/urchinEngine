@@ -64,7 +64,7 @@ namespace urchin {
 
         scene = std::make_unique<Scene>(SceneWindowController::windowRequiredExtensions(), windowController.getSurfaceCreator(), windowController.getFramebufferSizeRetriever(), true);
         scene->newUIRenderer(true);
-        scene->getActiveUIRenderer()->addWidget(StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, SCREEN_PERCENT), "resources/emptyScene.png"));
+        scene->getActiveUIRenderer()->addWidget(StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, SCREEN_PERCENT), "emptyScene.png"));
 
         isInitialized = true;
     }
@@ -72,6 +72,7 @@ namespace urchin {
     void SceneDisplayer::initializeEngineResources(const std::string& mapEditorPath) {
         std::string mapEditorResourcesDirectory = FileUtil::getDirectory(mapEditorPath) + "resources/";
 
+        FileSystem::instance().setupResourcesDirectory(mapEditorResourcesDirectory);
         ConfigService::instance().loadProperties("engine.properties", mapEditorResourcesDirectory);
         ShaderConfig::instance().replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);
     }
