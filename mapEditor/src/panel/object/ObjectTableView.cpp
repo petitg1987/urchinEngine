@@ -79,11 +79,20 @@ namespace urchin {
         return objectEntities;
     }
 
-    int ObjectTableView::addObject(const ObjectEntity& objectEntity) const { //TODO insert at correct place: group + sorted
-        objectsListModel->insertRow(0);
-        objectsListModel->setItem(0, 0, buildObjectEntityItem(objectEntity));
+    int ObjectTableView::addObject(const ObjectEntity& objectEntity) const { //TODO insert at correct place: group
+        int insertRowId;
+        for (insertRowId = 0; insertRowId < objectsListModel->rowCount(); ++insertRowId) {
+            QModelIndex index = objectsListModel->index(insertRowId, 0);
+            auto* existingObjectEntity = index.data(Qt::UserRole + 1).value<const ObjectEntity*>();
+            if (objectEntity.getName().compare(existingObjectEntity->getName()) < 0) {
+                break;
+            }
+        }
 
-        return 0;
+        objectsListModel->insertRow(insertRowId);
+        objectsListModel->setItem(insertRowId, 0, buildObjectEntityItem(objectEntity));
+
+        return insertRowId;
     }
 
     bool ObjectTableView::removeSelectedObject() const {
