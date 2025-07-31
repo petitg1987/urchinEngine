@@ -18,6 +18,9 @@ namespace urchin {
             void setName(std::string);
             const std::string& getName() const;
 
+            void setGroupHierarchy(std::vector<std::string>);
+            const std::vector<std::string>& getGroupHierarchy() const;
+
             void setModel(const std::shared_ptr<Model>&);
             Model* getModel() const;
             const std::shared_ptr<Model>& getModelPtr() const;
@@ -55,6 +58,8 @@ namespace urchin {
             AIEnvironment* aiEnvironment;
 
             std::string name;
+            std::vector<std::string> groupHierarchy;
+
             std::shared_ptr<Model> model;
             std::shared_ptr<RigidBody> rigidBody;
             std::shared_ptr<Light> light;

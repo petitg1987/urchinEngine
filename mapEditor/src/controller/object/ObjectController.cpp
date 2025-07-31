@@ -27,8 +27,8 @@ namespace urchin {
         return nullptr;
     }
 
-    std::pair<ObjectEntity*, std::size_t> ObjectController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
-        std::pair<ObjectEntity*, std::size_t> addedObjectEntity = getMap().addObjectEntity(std::move(objectEntity));
+    ObjectEntity& ObjectController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
+        ObjectEntity& addedObjectEntity = getMap().addObjectEntity(std::move(objectEntity));
 
         markModified();
         return addedObjectEntity;
@@ -41,7 +41,7 @@ namespace urchin {
         markModified();
     }
 
-    std::pair<ObjectEntity*, std::size_t> ObjectController::cloneObjectEntity(std::string newObjectName, const ObjectEntity& toCloneObjectEntity) {
+    ObjectEntity& ObjectController::cloneObjectEntity(std::string newObjectName, const ObjectEntity& toCloneObjectEntity) {
         return addObjectEntity(toCloneObjectEntity.clone(std::move(newObjectName)));
     }
 

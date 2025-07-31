@@ -56,6 +56,14 @@ namespace urchin {
         return name;
     }
 
+    void ObjectEntity::setGroupHierarchy(std::vector<std::string> groupHierarchy) {
+        this->groupHierarchy = std::move(groupHierarchy);
+    }
+
+    const std::vector<std::string>& ObjectEntity::getGroupHierarchy() const {
+        return groupHierarchy;
+    }
+
     void ObjectEntity::setModel(const std::shared_ptr<Model>& model) {
         if (renderer3d) {
             renderer3d->removeModel(this->model.get());

@@ -92,7 +92,6 @@
 
 # Map editor
 * Objects
-  * ► **NEW FEATURE**: Use tree instead of table for objects
   * ► **NEW FEATURE**: Make objects without physics selectable with left click
 * UI
   * ▼ **NEW FEATURE**: Allow undoing the actions

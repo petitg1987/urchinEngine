@@ -79,17 +79,11 @@ namespace urchin {
         return objectEntities;
     }
 
-    int ObjectTableView::addObject(const ObjectEntity& objectEntity, std::size_t insertPosition) const {
-        int insertRow = (int)insertPosition;
-        if (insertRow > objectsListModel->rowCount()) {
-            throw std::runtime_error("Unable to add an object at position " + std::to_string(insertPosition) + " while the list contains only "
-                + std::to_string(objectsListModel->rowCount()) + " objects");
-        }
+    int ObjectTableView::addObject(const ObjectEntity& objectEntity) const { //TODO insert at correct place: group + sorted
+        objectsListModel->insertRow(0);
+        objectsListModel->setItem(0, 0, buildObjectEntityItem(objectEntity));
 
-        objectsListModel->insertRow(insertRow);
-        objectsListModel->setItem(insertRow, 0, buildObjectEntityItem(objectEntity));
-
-        return insertRow;
+        return 0;
     }
 
     bool ObjectTableView::removeSelectedObject() const {

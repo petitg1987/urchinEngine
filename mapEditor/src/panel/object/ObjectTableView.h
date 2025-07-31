@@ -28,7 +28,7 @@ namespace urchin {
 
             int getObjectEntityRow(const ObjectEntity*) const;
 
-            int addObject(const ObjectEntity&, std::size_t) const;
+            int addObject(const ObjectEntity&) const;
             bool removeSelectedObject() const;
             bool updateSelectedObject(const ObjectEntity&) const;
             void removeAllObjects() const;

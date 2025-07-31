@@ -74,25 +74,12 @@ namespace urchin {
         return tmpObjectEntities[0];
     }
 
-    std::pair<ObjectEntity*, std::size_t> Map::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
+    ObjectEntity& Map::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
         objectEntity->setup(renderer3d, physicsWorld, soundEnvironment, aiEnvironment);
         objectEntitiesTagHolder.addTaggableResource(*objectEntity);
 
-        std::size_t insertPosition = 0;
-        auto insertIt = objectEntities.end();
-        for (auto it = objectEntities.begin(); it != objectEntities.end(); ++it) {
-            if (objectEntity->getName().compare((*it)->getName()) < 0) {
-                insertIt = objectEntities.insert(it, std::move(objectEntity));
-                break;
-            }
-            insertPosition++;
-        }
-        if (insertIt == objectEntities.end()) {
-            objectEntities.push_back(std::move(objectEntity));
-            insertIt = --objectEntities.end();
-        }
-
-        return std::make_pair(insertIt->get(), insertPosition);
+        objectEntities.push_back(std::move(objectEntity));
+        return *objectEntities.back();
     }
 
     void Map::removeObjectEntity(ObjectEntity& objectEntity) {

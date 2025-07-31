@@ -17,9 +17,9 @@ namespace urchin {
 
             std::list<const ObjectEntity*> getObjectEntities() const;
             const ObjectEntity* findObjectEntityByBodyId(std::string_view) const;
-            std::pair<ObjectEntity*, std::size_t> addObjectEntity(std::unique_ptr<ObjectEntity>);
+            ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(const ObjectEntity&);
-            std::pair<ObjectEntity*, std::size_t> cloneObjectEntity(std::string, const ObjectEntity&);
+            ObjectEntity& cloneObjectEntity(std::string, const ObjectEntity&);
             void renameObjectEntity(const ObjectEntity&, std::string);
 
             void moveObjectInFrontOfCamera(const ObjectEntity&, bool);

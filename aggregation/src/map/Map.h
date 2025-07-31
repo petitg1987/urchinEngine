@@ -32,9 +32,8 @@ namespace urchin {
             void findObjectEntitiesByTag(std::string_view, std::vector<ObjectEntity*>&) const;
             std::vector<ObjectEntity*> findObjectEntitiesByTag(std::string_view) const;
             ObjectEntity* findObjectEntityByTag(std::string_view) const;
-            std::pair<ObjectEntity*, std::size_t> addObjectEntity(std::unique_ptr<ObjectEntity>);
+            ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(ObjectEntity&);
-            template<class Compare> void sortObjectEntity(Compare);
 
             const std::list<std::unique_ptr<TerrainEntity>>& getTerrainEntities() const;
             TerrainEntity& getTerrainEntity(std::string_view) const;
@@ -72,7 +71,5 @@ namespace urchin {
             std::unique_ptr<SkyEntity> skyEntity;
             std::unique_ptr<NavMeshAgentEntity> navMeshAgentEntity;
     };
-
-    #include "Map.inl"
 
 }

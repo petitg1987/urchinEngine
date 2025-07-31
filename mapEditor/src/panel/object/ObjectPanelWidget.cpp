@@ -353,10 +353,8 @@ namespace urchin {
     void ObjectPanelWidget::load(ObjectController& objectController) {
         this->objectController = &objectController;
 
-        std::size_t insertPosition = 0;
         for (auto& objectEntity : this->objectController->getObjectEntities()) {
-            objectTableView->addObject(*objectEntity, insertPosition);
-            insertPosition++;
+            objectTableView->addObject(*objectEntity);
         }
     }
 
@@ -547,11 +545,11 @@ namespace urchin {
 
         if (newObjectEntityDialog.result() == QDialog::Accepted) {
             std::unique_ptr<ObjectEntity> objectEntity = newObjectEntityDialog.moveObjectEntity();
-            std::pair<ObjectEntity*, std::size_t> objectEntityInserted = objectController->addObjectEntity(std::move(objectEntity));
-            objectController->createDefaultBody(*objectEntityInserted.first);
-            objectController->moveObjectInFrontOfCamera(*objectEntityInserted.first, false);
+            ObjectEntity& objectEntityInserted = objectController->addObjectEntity(std::move(objectEntity));
+            objectController->createDefaultBody(objectEntityInserted);
+            objectController->moveObjectInFrontOfCamera(objectEntityInserted, false);
 
-            int row = objectTableView->addObject(*objectEntityInserted.first, objectEntityInserted.second);
+            int row = objectTableView->addObject(objectEntityInserted);
             objectTableView->selectRow(row);
         }
     }
@@ -573,10 +571,10 @@ namespace urchin {
         if (cloneObjectEntityDialog.result() == QDialog::Accepted) {
             const std::string& newObjectName = cloneObjectEntityDialog.getObjectName();
             const ObjectEntity& toCloneObjectEntity = *objectTableView->getMainSelectedObjectEntity();
-            const std::pair<ObjectEntity*, std::size_t> objectEntityInserted = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
-            objectController->moveObjectInFrontOfCamera(*objectEntityInserted.first, true);
+            ObjectEntity& objectEntityInserted = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
+            objectController->moveObjectInFrontOfCamera(objectEntityInserted, true);
 
-            int row = objectTableView->addObject(*objectEntityInserted.first, objectEntityInserted.second);
+            int row = objectTableView->addObject(objectEntityInserted);
             objectTableView->selectRow(row);
         }
     }
