@@ -23,7 +23,7 @@ namespace urchin {
             ~ObjectPanelWidget() override = default;
 
             enum class ObjectTab {
-                GENERAL = 0,
+                MODEL = 0,
                 PHYSICS,
                 LIGHT,
                 SOUND,
@@ -42,6 +42,7 @@ namespace urchin {
             void unload();
 
         private:
+            void setupMeshesBox(QVBoxLayout*);
             void setupTransformBox(QVBoxLayout*);
             void setupPosition(QGridLayout*);
             void setupOrientation(QGridLayout*);
@@ -54,7 +55,7 @@ namespace urchin {
 
             void notify(Observable*, int) override;
             void setupObjectDataFrom(const ObjectEntity&);
-            void setupObjectGeneralDataFrom(const ObjectEntity&);
+            void setupObjectModelDataFrom(const ObjectEntity&);
             void setupObjectPhysicsDataFrom(const ObjectEntity&);
             void setupObjectLightDataFrom(const ObjectEntity&);
             void setupObjectSoundDataFrom(const ObjectEntity&);
@@ -80,7 +81,8 @@ namespace urchin {
             const ObjectEntity* objectEntitySelected;
             bool disableObjectEvent;
 
-            //general
+            //model
+            QLabel* meshesFile;
             QDoubleSpinBox* positionX;
             QDoubleSpinBox* positionY;
             QDoubleSpinBox* positionZ;

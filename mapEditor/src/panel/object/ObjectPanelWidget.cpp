@@ -23,9 +23,10 @@ namespace urchin {
             cloneObjectButton(nullptr),
             renameObjectButton(nullptr),
             tabWidget(nullptr),
-            tabSelected(ObjectTab::GENERAL),
+            tabSelected(ObjectTab::MODEL),
             objectEntitySelected(nullptr),
             disableObjectEvent(false),
+            meshesFile(nullptr),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr),
             orientationType(nullptr),
             eulerAxis0(nullptr), eulerAxis1(nullptr), eulerAxis2(nullptr),
@@ -81,14 +82,15 @@ namespace urchin {
         mainLayout->addWidget(tabWidget);
         tabWidget->hide();
 
-        //general properties
-        auto* tabGeneral = new QWidget();
-        auto* generalLayout = new QVBoxLayout(tabGeneral);
-        generalLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
-        generalLayout->setContentsMargins(1, 1, 1, 1);
-        setupTransformBox(generalLayout);
-        setupPropertiesBox(generalLayout);
-        tabWidget->addTab(tabGeneral, "General");
+        //model properties
+        auto* tabModel = new QWidget();
+        auto* modelLayout = new QVBoxLayout(tabModel);
+        modelLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+        modelLayout->setContentsMargins(1, 1, 1, 1);
+        setupMeshesBox(modelLayout);
+        setupTransformBox(modelLayout);
+        setupPropertiesBox(modelLayout);
+        tabWidget->addTab(tabModel, "Model");
 
         //physics properties
         auto* tabPhysics = new QWidget();
@@ -143,9 +145,25 @@ namespace urchin {
         return physicsWidget;
     }
 
-    void ObjectPanelWidget::setupTransformBox(QVBoxLayout* generalLayout) {
+    void ObjectPanelWidget::setupMeshesBox(QVBoxLayout* modelLayout) {
+        auto* meshGroupBox = new QGroupBox("Meshes");
+        modelLayout->addWidget(meshGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(meshGroupBox);
+        meshGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        auto* meshLayout = new QGridLayout(meshGroupBox);
+        meshLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+
+        auto* meshesFileLabel = new QLabel("Meshes File:");
+        meshLayout->addWidget(meshesFileLabel, 0, 0);
+
+        meshesFile = new QLabel("");
+        meshLayout->addWidget(meshesFile, 0, 1);
+    }
+
+    void ObjectPanelWidget::setupTransformBox(QVBoxLayout* modelLayout) {
         auto* transformGroupBox = new QGroupBox("Transform");
-        generalLayout->addWidget(transformGroupBox);
+        modelLayout->addWidget(transformGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
         transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
@@ -228,9 +246,9 @@ namespace urchin {
         connect(scaleZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
     }
 
-    void ObjectPanelWidget::setupPropertiesBox(QVBoxLayout* generalLayout) {
+    void ObjectPanelWidget::setupPropertiesBox(QVBoxLayout* modelLayout) {
         auto* propertiesGroupBox = new QGroupBox("Properties");
-        generalLayout->addWidget(propertiesGroupBox);
+        modelLayout->addWidget(propertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(propertiesGroupBox);
         propertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
@@ -388,18 +406,27 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::setupObjectDataFrom(const ObjectEntity& objectEntity) {
-        setupObjectGeneralDataFrom(objectEntity);
+        setupObjectModelDataFrom(objectEntity);
         setupObjectPhysicsDataFrom(objectEntity);
         setupObjectLightDataFrom(objectEntity);
         setupObjectSoundDataFrom(objectEntity);
         setupObjectTagsDataFrom(objectEntity);
     }
 
-    void ObjectPanelWidget::setupObjectGeneralDataFrom(const ObjectEntity& objectEntity) {
+    void ObjectPanelWidget::setupObjectModelDataFrom(const ObjectEntity& objectEntity) {
         disableObjectEvent = true;
 
         const Model* model = objectEntity.getModel();
+        const ConstMeshes* constMeshes = objectEntity.getModel()->getConstMeshes();
         const Transform<float>& modelTransform = model->getTransform();
+
+        if (constMeshes) {
+            meshesFile->setText(QString::fromStdString(constMeshes->getMeshesName()));
+            meshesFile->setToolTip(QString::fromStdString(PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), constMeshes->getMeshesFilename())));
+        } else {
+            meshesFile->setText("/");
+            meshesFile->setToolTip("");
+        }
 
         this->positionX->setValue(modelTransform.getPosition().X);
         this->positionY->setValue(modelTransform.getPosition().Y);

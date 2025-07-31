@@ -33,7 +33,7 @@ namespace urchin {
 
         private:
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
-            std::vector<QStandardItem*> buildObjectEntityItems(const ObjectEntity&) const;
+            QStandardItem* buildObjectEntityItem(const ObjectEntity&) const;
 
             QStandardItemModel* objectsListModel;
     };

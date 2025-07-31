@@ -28,7 +28,7 @@ namespace urchin {
             sceneController(nullptr),
             sceneDisplayerWindow(nullptr),
             scenePanelWidget(nullptr),
-            objectTabSelected(ObjectPanelWidget::ObjectTab::GENERAL) {
+            objectTabSelected(ObjectPanelWidget::ObjectTab::MODEL) {
         this->setAttribute(Qt::WA_DeleteOnClose);
         this->setWindowTitle(getBaseWindowTitle());
         this->resize(1200, 675);

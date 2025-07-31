@@ -8,15 +8,12 @@ namespace urchin {
 
     ObjectTableView::ObjectTableView(QWidget* parent) :
             QTableView(parent) {
-        objectsListModel = new QStandardItemModel(0, 2, this);
+        objectsListModel = new QStandardItemModel(0, 1, this);
         objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
-        objectsListModel->setHorizontalHeaderItem(1, new QStandardItem("Meshes File"));
         QTableView::setModel(objectsListModel);
 
         horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
-        horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
-        horizontalHeader()->resizeSection(0, 180);
-        horizontalHeader()->resizeSection(1, 160);
+        horizontalHeader()->resizeSection(0, 340);
         verticalHeader()->hide();
 
         setSelectionMode(ExtendedSelection);
@@ -25,35 +22,16 @@ namespace urchin {
 
     void ObjectTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
         //hack to refresh selection
-        horizontalHeader()->resizeSection(0, 180);
-        horizontalHeader()->resizeSection(0, 160);
+        horizontalHeader()->resizeSection(0, 340);
 
         notifyObservers(this, OBJECT_SELECTION_CHANGED);
     }
 
-    std::vector<QStandardItem*> ObjectTableView::buildObjectEntityItems(const ObjectEntity& objectEntity) const {
-        std::vector<QStandardItem*> objectEntityItems;
-        objectEntityItems.reserve(2);
-
+    QStandardItem* ObjectTableView::buildObjectEntityItem(const ObjectEntity& objectEntity) const {
         auto* itemObjectName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
-        itemObjectName->setToolTip(QString::fromStdString(objectEntity.getName()));
         itemObjectName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
         itemObjectName->setEditable(false);
-        objectEntityItems.push_back(itemObjectName);
-
-        std::string meshesName;
-        std::string relativeMeshesFilename;
-        if (objectEntity.getModel()->getConstMeshes()) {
-            meshesName = objectEntity.getModel()->getConstMeshes()->getMeshesName();
-            relativeMeshesFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), objectEntity.getModel()->getConstMeshes()->getMeshesFilename());
-        }
-        auto* itemMeshName = new QStandardItem(QString::fromStdString(meshesName));
-        itemMeshName->setToolTip(QString::fromStdString(relativeMeshesFilename));
-        itemMeshName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
-        itemMeshName->setEditable(false);
-        objectEntityItems.push_back(itemMeshName);
-
-        return objectEntityItems;
+        return itemObjectName;
     }
 
     bool ObjectTableView::hasObjectEntitySelected() const {
@@ -96,12 +74,7 @@ namespace urchin {
         }
 
         objectsListModel->insertRow(insertRow);
-
-        std::vector<QStandardItem*> objectEntityItems = buildObjectEntityItems(objectEntity);
-        int column = 0;
-        for (QStandardItem* objectEntityItem : objectEntityItems) {
-            objectsListModel->setItem(insertRow, column++, objectEntityItem);
-        }
+        objectsListModel->setItem(insertRow, 0, buildObjectEntityItem(objectEntity));
 
         resizeRowsToContents();
         return insertRow;
@@ -120,12 +93,7 @@ namespace urchin {
         if (hasObjectEntitySelected()) {
             const ObjectEntity* selectObjectEntity = getMainSelectedObjectEntity();
             if (selectObjectEntity == &updatedObjectEntity) {
-                std::vector<QStandardItem*> objectEntityItems = buildObjectEntityItems(updatedObjectEntity);
-                int column = 0;
-                for (QStandardItem* objectEntityItem : objectEntityItems) {
-                    objectsListModel->setItem(currentIndex().row(), column++, objectEntityItem);
-                }
-
+                objectsListModel->setItem(currentIndex().row(), 0, buildObjectEntityItem(updatedObjectEntity));
                 resizeRowsToContents();
                 return true;
             } else {

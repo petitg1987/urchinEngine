@@ -1,6 +1,7 @@
 #Idea
 .idea/workspace.xml
 .idea/sonarlint/issuestore/
+.idea/shelf/
 
 #Target build
 .build/
