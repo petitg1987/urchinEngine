@@ -4,7 +4,7 @@
 
 #include "panel/object/ObjectTableView.h"
 
-namespace urchin {
+namespace urchin { //TODO review all methods for group
 
     ObjectTableView::ObjectTableView(QWidget* parent) :
             QTreeView(parent) {
@@ -40,12 +40,20 @@ namespace urchin {
         selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
 
+    QStandardItem* ObjectTableView::buildGroupEntityItem(const std::string& groupName) const {
+        auto* itemGroup = new QStandardItem(QString::fromStdString(groupName));
+        itemGroup->setData(false, IS_OBJECT_ENTITY_DATA);
+        itemGroup->setData(QString::fromStdString(groupName), GROUP_OR_OBJECT_ENTITY_DATA);
+        itemGroup->setEditable(false);
+        return itemGroup;
+    }
+
     QStandardItem* ObjectTableView::buildObjectEntityItem(const ObjectEntity& objectEntity) const {
-        auto* itemObjectName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
-        itemObjectName->setData(true, IS_OBJECT_ENTITY_DATA);
-        itemObjectName->setData(QVariant::fromValue(&objectEntity), GROUP_OR_OBJECT_ENTITY_DATA);
-        itemObjectName->setEditable(false);
-        return itemObjectName;
+        auto* itemObjectEntity = new QStandardItem(QString::fromStdString(objectEntity.getName()));
+        itemObjectEntity->setData(true, IS_OBJECT_ENTITY_DATA);
+        itemObjectEntity->setData(QVariant::fromValue(&objectEntity), GROUP_OR_OBJECT_ENTITY_DATA);
+        itemObjectEntity->setEditable(false);
+        return itemObjectEntity;
     }
 
     bool ObjectTableView::hasObjectEntitySelected() const {
@@ -82,12 +90,11 @@ namespace urchin {
         return objectEntities;
     }
 
-    void ObjectTableView::addObject(const ObjectEntity& objectEntity) { //TODO insert at correct place: group
+    void ObjectTableView::addObject(const ObjectEntity& objectEntity) {
         int insertRowId;
         for (insertRowId = 0; insertRowId < objectsListModel->rowCount(); ++insertRowId) {
             QModelIndex modelIndex = objectsListModel->index(insertRowId, 0);
-            QStandardItem *standardItem = objectsListModel->itemFromIndex(modelIndex);
-            auto* existingObjectEntity = standardItem->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
+            auto* existingObjectEntity = modelIndex.data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
             if (objectEntity.getName().compare(existingObjectEntity->getName()) < 0) {
                 break;
             }
@@ -95,6 +102,11 @@ namespace urchin {
 
         objectsListModel->insertRow(insertRowId);
         objectsListModel->setItem(insertRowId, 0, buildObjectEntityItem(objectEntity));
+
+        //TODO remove
+        QModelIndex modelIndex = objectsListModel->index(insertRowId, 0);
+        QStandardItem *standardItem = objectsListModel->itemFromIndex(modelIndex);
+        standardItem->appendRow(buildGroupEntityItem("lol"));
 
         selectRow(insertRowId);
     }
@@ -121,6 +133,7 @@ namespace urchin {
     }
 
     void ObjectTableView::removeAllObjects() const {
+        std::cout<<objectsListModel->rowCount()<<std::endl;
         objectsListModel->removeRows(0, objectsListModel->rowCount());
     }
 

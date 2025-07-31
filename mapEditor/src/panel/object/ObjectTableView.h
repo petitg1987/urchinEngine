@@ -34,6 +34,7 @@ namespace urchin {
             void selectRow(int);
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
             void currentChanged(const QModelIndex&, const QModelIndex&) override;
+            QStandardItem* buildGroupEntityItem(const std::string&) const;
             QStandardItem* buildObjectEntityItem(const ObjectEntity&) const;
 
             static constexpr int IS_OBJECT_ENTITY_DATA = Qt::UserRole + 1;

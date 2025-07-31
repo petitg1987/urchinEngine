@@ -54,7 +54,7 @@ namespace urchin {
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        addObjectButton = new QPushButton("Add Obj");
+        addObjectButton = new QPushButton("New");
         buttonsLayout->addWidget(addObjectButton);
         ButtonStyleHelper::applyNormalStyle(addObjectButton);
         connect(addObjectButton, SIGNAL(clicked()), this, SLOT(showAddObjectDialog()));
