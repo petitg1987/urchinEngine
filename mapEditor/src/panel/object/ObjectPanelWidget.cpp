@@ -5,7 +5,7 @@
 #include "widget/style/ButtonStyleHelper.h"
 #include "widget/style/ComboBoxStyleHelper.h"
 #include "panel/object/ObjectPanelWidget.h"
-#include "panel/object/dialog/NewObjectDialog.h"
+#include "panel/object/dialog/AddObjectDialog.h"
 #include "panel/object/dialog/CloneObjectDialog.h"
 #include "panel/object/dialog/RenameObjectDialog.h"
 #include "panel/object/dialog/ChangeLightTypeDialog.h"
@@ -540,11 +540,11 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showAddObjectDialog() {
-        NewObjectDialog newObjectEntityDialog(this, objectController);
-        newObjectEntityDialog.exec();
+        AddObjectDialog addObjectEntityDialog(this, objectController);
+        addObjectEntityDialog.exec();
 
-        if (newObjectEntityDialog.result() == QDialog::Accepted) {
-            std::unique_ptr<ObjectEntity> objectEntity = newObjectEntityDialog.moveObjectEntity();
+        if (addObjectEntityDialog.result() == QDialog::Accepted) {
+            std::unique_ptr<ObjectEntity> objectEntity = addObjectEntityDialog.moveObjectEntity();
             ObjectEntity& objectEntityInserted = objectController->addObjectEntity(std::move(objectEntity));
             objectController->createDefaultBody(objectEntityInserted);
             objectController->moveObjectInFrontOfCamera(objectEntityInserted, false);

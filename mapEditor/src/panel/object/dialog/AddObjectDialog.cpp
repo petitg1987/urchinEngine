@@ -1,13 +1,13 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include "panel/object/dialog/NewObjectDialog.h"
+#include "panel/object/dialog/AddObjectDialog.h"
 #include "widget/style/LabelStyleHelper.h"
 #include "widget/style/ButtonStyleHelper.h"
 
 namespace urchin {
 
-    NewObjectDialog::NewObjectDialog(QWidget* parent, const ObjectController* objectController) :
+    AddObjectDialog::AddObjectDialog(QWidget* parent, const ObjectController* objectController) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
@@ -31,7 +31,7 @@ namespace urchin {
         connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewObjectDialog::setupNameFields(QGridLayout* mainLayout) {
+    void AddObjectDialog::setupNameFields(QGridLayout* mainLayout) {
         objectNameLabel = new QLabel("Object Name:");
         mainLayout->addWidget(objectNameLabel, 0, 0);
 
@@ -40,25 +40,25 @@ namespace urchin {
         objectNameText->setFixedWidth(360);
     }
 
-    void NewObjectDialog::updateObjectName() {
+    void AddObjectDialog::updateObjectName() {
         QString objectName = objectNameText->text();
         if (!objectName.isEmpty()) {
             this->objectName = objectName.toUtf8().constData();
         }
     }
 
-    int NewObjectDialog::buildObjectEntity(int result) {
+    int AddObjectDialog::buildObjectEntity(int result) {
         objectEntity = std::make_unique<ObjectEntity>();
         objectEntity->setModel(Model::fromMeshesFile(""));
         objectEntity->setName(objectName);
         return result;
     }
 
-    std::unique_ptr<ObjectEntity> NewObjectDialog::moveObjectEntity() {
+    std::unique_ptr<ObjectEntity> AddObjectDialog::moveObjectEntity() {
         return std::move(objectEntity);
     }
 
-    void NewObjectDialog::done(int r) {
+    void AddObjectDialog::done(int r) {
         if (Accepted == r) {
             bool hasError = false;
 
@@ -82,7 +82,7 @@ namespace urchin {
         }
     }
 
-    bool NewObjectDialog::isObjectEntityExist(std::string_view name) const {
+    bool AddObjectDialog::isObjectEntityExist(std::string_view name) const {
         std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
         return std::ranges::any_of(objectEntities, [name](const auto& so){ return so->getName() == name; });
     }

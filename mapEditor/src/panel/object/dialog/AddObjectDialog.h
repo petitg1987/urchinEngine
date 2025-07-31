@@ -10,11 +10,11 @@
 
 namespace urchin {
 
-    class NewObjectDialog final : public QDialog { //TODO rename in AddObjectDialog
+    class AddObjectDialog final : public QDialog {
         Q_OBJECT
 
         public:
-            NewObjectDialog(QWidget*, const ObjectController*);
+            AddObjectDialog(QWidget*, const ObjectController*);
 
             std::unique_ptr<ObjectEntity> moveObjectEntity();
 
