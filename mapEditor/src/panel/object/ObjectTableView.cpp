@@ -133,7 +133,6 @@ namespace urchin { //TODO review all methods for group
     }
 
     void ObjectTableView::removeAllObjects() const {
-        std::cout<<objectsListModel->rowCount()<<std::endl;
         objectsListModel->removeRows(0, objectsListModel->rowCount());
     }
 
