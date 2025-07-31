@@ -1,4 +1,4 @@
-#[[#include]]# <${HEADER_FILENAME}>
+#[[#include]]# "${HEADER_FILENAME}"
 
 namespace urchin {
 
