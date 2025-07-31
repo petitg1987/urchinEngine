@@ -391,10 +391,7 @@ namespace urchin {
                 const std::string& bodyId = sceneDisplayerWidget->getLastPickedBodyId();
                 const ObjectEntity* objectEntity = bodyId.empty() ? nullptr : objectController->findObjectEntityByBodyId(bodyId);
                 if (objectEntity) {
-                    int row = this->objectTableView->getObjectEntityRow(objectEntity);
-                    if (row >= 0) {
-                        this->objectTableView->selectRow(row);
-                    }
+                    this->objectTableView->selectObjectEntity(*objectEntity);
                 } else {
                     this->objectTableView->clearSelection();
                 }
@@ -549,8 +546,7 @@ namespace urchin {
             objectController->createDefaultBody(objectEntityInserted);
             objectController->moveObjectInFrontOfCamera(objectEntityInserted, false);
 
-            int row = objectTableView->addObject(objectEntityInserted);
-            objectTableView->selectRow(row);
+            objectTableView->addObject(objectEntityInserted);
         }
     }
 
@@ -574,8 +570,7 @@ namespace urchin {
             ObjectEntity& objectEntityInserted = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
             objectController->moveObjectInFrontOfCamera(objectEntityInserted, true);
 
-            int row = objectTableView->addObject(objectEntityInserted);
-            objectTableView->selectRow(row);
+            objectTableView->addObject(objectEntityInserted);
         }
     }
 

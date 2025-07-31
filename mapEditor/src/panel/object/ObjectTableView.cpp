@@ -42,7 +42,8 @@ namespace urchin {
 
     QStandardItem* ObjectTableView::buildObjectEntityItem(const ObjectEntity& objectEntity) const {
         auto* itemObjectName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
-        itemObjectName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
+        itemObjectName->setData(true /* is object entity */, IS_OBJECT_ENTITY_DATA);
+        itemObjectName->setData(QVariant::fromValue(&objectEntity), GROUP_OR_OBJECT_ENTITY_DATA);
         itemObjectName->setEditable(false);
         return itemObjectName;
     }
@@ -51,21 +52,20 @@ namespace urchin {
         return this->currentIndex().row() != -1 && this->selectionModel()->isSelected(currentIndex());
     }
 
-    int ObjectTableView::getObjectEntityRow(const ObjectEntity* expectedObjectEntity) const {
+    void ObjectTableView::selectObjectEntity(const ObjectEntity& expectedObjectEntity) {
         for (int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
             QModelIndex index = objectsListModel->index(rowId, 0);
-            auto* objectEntity = index.data(Qt::UserRole + 1).value<const ObjectEntity*>();
-            if (expectedObjectEntity->getName() == objectEntity->getName()) {
-                return rowId;
+            auto* objectEntity = index.data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
+            if (expectedObjectEntity.getName() == objectEntity->getName()) {
+                selectRow(rowId);
+                break;
             }
         }
-
-        return -1;
     }
 
     const ObjectEntity* ObjectTableView::getMainSelectedObjectEntity() const {
         if (hasObjectEntitySelected()) {
-            return this->currentIndex().data(Qt::UserRole + 1).value<const ObjectEntity*>();
+            return this->currentIndex().data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
         }
         return nullptr;
     }
@@ -74,16 +74,17 @@ namespace urchin {
         std::vector<const ObjectEntity*> objectEntities;
         objectEntities.reserve(this->selectedIndexes().size());
         for (const QModelIndex& modelIndex : this->selectedIndexes()) {
-            objectEntities.push_back(modelIndex.data(Qt::UserRole + 1).value<const ObjectEntity*>());
+            objectEntities.push_back(modelIndex.data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>());
         }
         return objectEntities;
     }
 
-    int ObjectTableView::addObject(const ObjectEntity& objectEntity) const { //TODO insert at correct place: group
+    void ObjectTableView::addObject(const ObjectEntity& objectEntity) { //TODO insert at correct place: group
         int insertRowId;
         for (insertRowId = 0; insertRowId < objectsListModel->rowCount(); ++insertRowId) {
             QModelIndex index = objectsListModel->index(insertRowId, 0);
-            auto* existingObjectEntity = index.data(Qt::UserRole + 1).value<const ObjectEntity*>();
+            QStandardItem *standardItem = objectsListModel->itemFromIndex(index);
+            auto* existingObjectEntity = standardItem->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
             if (objectEntity.getName().compare(existingObjectEntity->getName()) < 0) {
                 break;
             }
@@ -92,7 +93,7 @@ namespace urchin {
         objectsListModel->insertRow(insertRowId);
         objectsListModel->setItem(insertRowId, 0, buildObjectEntityItem(objectEntity));
 
-        return insertRowId;
+        selectRow(insertRowId);
     }
 
     bool ObjectTableView::removeSelectedObject() const {
