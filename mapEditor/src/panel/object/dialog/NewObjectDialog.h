@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    class NewObjectDialog final : public QDialog {
+    class NewObjectDialog final : public QDialog { //TODO rename in AddObjectDialog
         Q_OBJECT
 
         public:
@@ -20,7 +20,6 @@ namespace urchin {
 
         private:
             void setupNameFields(QGridLayout*);
-            void setupMeshFilenameFields(QGridLayout*);
 
             void updateObjectName();
             int buildObjectEntity(int);
@@ -32,16 +31,9 @@ namespace urchin {
 
             QLabel* objectNameLabel;
             QLineEdit* objectNameText;
-            QLabel* meshesFilenameLabel;
-            QLineEdit* meshesFilenameText;
 
             std::string objectName;
-            std::string meshesFilename;
             std::unique_ptr<ObjectEntity> objectEntity;
-            static QString preferredMeshesPath;
-
-        private slots:
-            void showMeshFilenameDialog();
     };
 
 }

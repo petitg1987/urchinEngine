@@ -103,12 +103,10 @@ namespace urchin {
 
             //light
             QLabel* lightTypeValueLabel;
-            QPushButton* changeLightTypeButton;
             LightWidget* lightWidget;
 
             //sound
             QLabel* soundTypeValueLabel;
-            QPushButton* changeSoundTypeButton;
             SoundWidget* soundWidget;
 
         private slots:
@@ -123,6 +121,8 @@ namespace urchin {
             void updateObjectScale() const;
             void updateObjectProperties() const;
             void updateObjectTags() const;
+
+            void showChangeMeshesFileDialog();
 
             void rigidBodyToggled(int);
 

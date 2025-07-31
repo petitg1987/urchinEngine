@@ -22,13 +22,14 @@ namespace urchin {
             std::pair<ObjectEntity*, std::size_t> cloneObjectEntity(std::string, const ObjectEntity&);
             void renameObjectEntity(const ObjectEntity&, std::string);
 
-            void createDefaultBody(const ObjectEntity&);
-            void changeBodyShape(const ObjectEntity&, const DefaultShapeQuality&, CollisionShape3D::ShapeType);
             void moveObjectInFrontOfCamera(const ObjectEntity&, bool);
-            void removeBody(const ObjectEntity&);
-
+            void changeMeshesFile(const ObjectEntity&, const std::string&);
             const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
             const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowBehavior, Model::CullBehavior);
+
+            void createDefaultBody(const ObjectEntity&);
+            void changeBodyShape(const ObjectEntity&, const DefaultShapeQuality&, CollisionShape3D::ShapeType);
+            void removeBody(const ObjectEntity&);
             const ObjectEntity& updateObjectPhysicsProperties(const ObjectEntity&, float, float, float, float, float, float, const Vector3<float>&, const Vector3<float>&);
             const ObjectEntity& updateObjectPhysicsShape(const ObjectEntity&, std::unique_ptr<const CollisionShape3D>);
 

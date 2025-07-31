@@ -143,13 +143,13 @@ namespace urchin {
         triggerTypeLayout->setSpacing(15);
         generalLayout->addLayout(triggerTypeLayout, 1, 0, 1, 2);
 
-        auto* soundTriggerTypeLabel= new QLabel("Trigger Type:");
+        auto* soundTriggerTypeLabel = new QLabel("Trigger Type:");
         triggerTypeLayout->addWidget(soundTriggerTypeLabel);
 
         soundTriggerType = new QLabel();
         triggerTypeLayout->addWidget(soundTriggerType);
 
-        changeSoundTriggerTypeButton = new QPushButton("Change");
+        auto* changeSoundTriggerTypeButton = new QPushButton("Change");
         triggerTypeLayout->addWidget(changeSoundTriggerTypeButton);
         ButtonStyleHelper::applyNormalStyle(changeSoundTriggerTypeButton);
         connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerTypeDialog()));
@@ -174,7 +174,7 @@ namespace urchin {
         soundShapeType = new QLabel();
         shapeTypeLayout->addWidget(soundShapeType);
 
-        changeSoundShapeTypeButton = new QPushButton("Change");
+        auto* changeSoundShapeTypeButton = new QPushButton("Change");
         shapeTypeLayout->addWidget(changeSoundShapeTypeButton);
         ButtonStyleHelper::applyNormalStyle(changeSoundShapeTypeButton);
         connect(changeSoundShapeTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundShapeTypeDialog()));

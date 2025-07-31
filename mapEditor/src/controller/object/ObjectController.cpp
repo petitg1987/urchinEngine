@@ -52,19 +52,6 @@ namespace urchin {
         markModified();
     }
 
-    void ObjectController::createDefaultBody(const ObjectEntity& constObjectEntity) {
-        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        auto rigidBody = DefaultRigidBodyGenerator(constObjectEntity).generate();
-        objectEntity.setupInteractiveBody(std::move(rigidBody));
-
-        markModified();
-    }
-
-    void ObjectController::changeBodyShape(const ObjectEntity& constObjectEntity, const DefaultShapeQuality& defaultShapeQuality, CollisionShape3D::ShapeType shapeType) {
-        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeGenerator(constObjectEntity, defaultShapeQuality).generate(shapeType);
-        updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
-    }
-
     void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity, bool isClonedEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
@@ -75,9 +62,20 @@ namespace urchin {
         markModified();
     }
 
-    void ObjectController::removeBody(const ObjectEntity& constObjectEntity) {
+    void ObjectController::changeMeshesFile(const ObjectEntity& constObjectEntity, const std::string& meshesFilename) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        objectEntity.setupInteractiveBody(nullptr);
+
+        Transform<float> transform = objectEntity.getModel()->getTransform();
+        Model::ShadowBehavior shadowBehavior = objectEntity.getModel()->getShadowBehavior();
+        Model::CullBehavior cullBehavior = objectEntity.getModel()->getCullBehavior();
+        bool hasPreviousMeshes = objectEntity.getModel()->getConstMeshes();
+
+        objectEntity.setModel(Model::fromMeshesFile(meshesFilename));
+        objectEntity.getModel()->setTransform(transform);
+        updateObjectProperties(constObjectEntity, shadowBehavior, cullBehavior);
+        if (!hasPreviousMeshes && !meshesFilename.empty()) {
+            createDefaultBody(constObjectEntity);
+        }
 
         markModified();
     }
@@ -100,6 +98,26 @@ namespace urchin {
 
         markModified();
         return objectEntity;
+    }
+
+    void ObjectController::createDefaultBody(const ObjectEntity& constObjectEntity) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        auto rigidBody = DefaultRigidBodyGenerator(constObjectEntity).generate();
+        objectEntity.setupInteractiveBody(std::move(rigidBody));
+
+        markModified();
+    }
+
+    void ObjectController::changeBodyShape(const ObjectEntity& constObjectEntity, const DefaultShapeQuality& defaultShapeQuality, CollisionShape3D::ShapeType shapeType) {
+        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeGenerator(constObjectEntity, defaultShapeQuality).generate(shapeType);
+        updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
+    }
+
+    void ObjectController::removeBody(const ObjectEntity& constObjectEntity) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        objectEntity.setupInteractiveBody(nullptr);
+
+        markModified();
     }
 
     const ObjectEntity& ObjectController::updateObjectPhysicsProperties(const ObjectEntity& constObjectEntity, float mass, float restitution, float friction, float rollingFriction,

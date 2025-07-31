@@ -28,7 +28,6 @@ namespace urchin {
             angularFactorY(nullptr),
             angularFactorZ(nullptr),
             shapeTypeValueLabel(nullptr),
-            changeBodyShapeButton(nullptr),
             bodyShapeWidget(nullptr) {
         setContentsMargins(0, 0, 0, 0);
 
@@ -213,7 +212,7 @@ namespace urchin {
         shapeTypeValueLabel = new QLabel();
         shapeTypeLayout->addWidget(shapeTypeValueLabel);
 
-        changeBodyShapeButton = new QPushButton("Change");
+        auto* changeBodyShapeButton = new QPushButton("Change");
         shapeTypeLayout->addWidget(changeBodyShapeButton);
         ButtonStyleHelper::applyNormalStyle(changeBodyShapeButton);
         connect(changeBodyShapeButton, SIGNAL(clicked()), this, SLOT(showChangeBodyShapeDialog()));

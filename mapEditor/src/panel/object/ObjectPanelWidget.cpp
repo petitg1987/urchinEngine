@@ -9,6 +9,7 @@
 #include "panel/object/dialog/CloneObjectDialog.h"
 #include "panel/object/dialog/RenameObjectDialog.h"
 #include "panel/object/dialog/ChangeLightTypeDialog.h"
+#include "panel/object/dialog/ChangeMeshesFileDialog.h"
 #include "panel/object/dialog/ChangeSoundDialog.h"
 #include "scene/object/ObjectMoveController.h"
 #include "scene/SceneDisplayerWindow.h"
@@ -37,10 +38,8 @@ namespace urchin {
             hasRigidBody(nullptr),
             physicsWidget(nullptr),
             lightTypeValueLabel(nullptr),
-            changeLightTypeButton(nullptr),
             lightWidget(nullptr),
             soundTypeValueLabel(nullptr),
-            changeSoundTypeButton(nullptr),
             soundWidget(nullptr) {
         auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
@@ -55,7 +54,7 @@ namespace urchin {
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        addObjectButton = new QPushButton("New");
+        addObjectButton = new QPushButton("Add Obj");
         buttonsLayout->addWidget(addObjectButton);
         ButtonStyleHelper::applyNormalStyle(addObjectButton);
         connect(addObjectButton, SIGNAL(clicked()), this, SLOT(showAddObjectDialog()));
@@ -151,14 +150,20 @@ namespace urchin {
         GroupBoxStyleHelper::applyNormalStyle(meshGroupBox);
         meshGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-        auto* meshLayout = new QGridLayout(meshGroupBox);
-        meshLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+        auto* meshesFileLayout = new QHBoxLayout(meshGroupBox);
+        meshesFileLayout->setAlignment(Qt::AlignLeft);
+        meshesFileLayout->setSpacing(15);
 
-        auto* meshesFileLabel = new QLabel("Meshes File:");
-        meshLayout->addWidget(meshesFileLabel, 0, 0);
+        auto* meshesFilenameLabel = new QLabel("Filename:");
+        meshesFileLayout->addWidget(meshesFilenameLabel);
 
-        meshesFile = new QLabel("");
-        meshLayout->addWidget(meshesFile, 0, 1);
+        meshesFile = new QLabel();
+        meshesFileLayout->addWidget(meshesFile);
+
+        auto* changeMeshesFileButton = new QPushButton("Change");
+        meshesFileLayout->addWidget(changeMeshesFileButton);
+        ButtonStyleHelper::applyNormalStyle(changeMeshesFileButton);
+        connect(changeMeshesFileButton, SIGNAL(clicked()), this, SLOT(showChangeMeshesFileDialog()));
     }
 
     void ObjectPanelWidget::setupTransformBox(QVBoxLayout* modelLayout) {
@@ -298,7 +303,7 @@ namespace urchin {
         lightTypeValueLabel = new QLabel();
         lightTypeLayout->addWidget(lightTypeValueLabel);
 
-        changeLightTypeButton = new QPushButton("Change");
+        auto* changeLightTypeButton = new QPushButton("Change");
         lightTypeLayout->addWidget(changeLightTypeButton);
         ButtonStyleHelper::applyNormalStyle(changeLightTypeButton);
         connect(changeLightTypeButton, SIGNAL(clicked()), this, SLOT(showChangeLightTypeDialog()));
@@ -319,7 +324,7 @@ namespace urchin {
         soundTypeValueLabel = new QLabel();
         soundTypeLayout->addWidget(soundTypeValueLabel);
 
-        changeSoundTypeButton = new QPushButton("Change");
+        auto* changeSoundTypeButton = new QPushButton("Change");
         soundTypeLayout->addWidget(changeSoundTypeButton);
         ButtonStyleHelper::applyNormalStyle(changeSoundTypeButton);
         connect(changeSoundTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundDialog()));
@@ -659,6 +664,19 @@ namespace urchin {
 
             std::string tagsValues = tags->text().toUtf8().constData();
             objectController->updateObjectTags(objectEntity, tagsValues);
+        }
+    }
+
+    void ObjectPanelWidget::showChangeMeshesFileDialog() {
+        ChangeMeshesFileDialog changeMeshesFileDialog(this);
+        changeMeshesFileDialog.exec();
+
+        if (changeMeshesFileDialog.result() == QDialog::Accepted) {
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
+            std::string meshesFilename = changeMeshesFileDialog.getMeshesFilename();
+
+            objectController->changeMeshesFile(objectEntity, meshesFilename);
+            setupObjectModelDataFrom(objectEntity);
         }
     }
 

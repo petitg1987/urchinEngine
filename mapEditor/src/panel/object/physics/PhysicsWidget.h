@@ -55,7 +55,6 @@ namespace urchin {
             QDoubleSpinBox* angularFactorY;
             QDoubleSpinBox* angularFactorZ;
             QLabel* shapeTypeValueLabel;
-            QPushButton* changeBodyShapeButton;
             BodyShapeWidget* bodyShapeWidget;
 
         private slots:

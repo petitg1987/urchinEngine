@@ -66,9 +66,7 @@ namespace urchin {
 
             //sound trigger specific properties
             QVBoxLayout* triggerShapeLayout;
-            QPushButton* changeSoundTriggerTypeButton;
             QLabel* soundShapeType;
-            QPushButton* changeSoundShapeTypeButton;
             SoundShapeWidget* soundShapeWidget;
 
         private slots:
