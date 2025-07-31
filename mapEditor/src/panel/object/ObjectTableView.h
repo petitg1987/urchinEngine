@@ -32,7 +32,6 @@ namespace urchin {
             void removeAllObjects();
 
         private:
-            void selectionChanged(const QItemSelection&, const QItemSelection&) override;
             QStandardItem* buildObjectEntityItem(const ObjectEntity&) const;
 
             QStandardItemModel* objectsListModel;

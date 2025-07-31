@@ -15,24 +15,22 @@ namespace urchin {
 
         setSelectionMode(SingleSelection);
         setSelectionBehavior(SelectRows);
-    }
 
-    void WaterTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
-        //hack to refresh selection
-        horizontalHeader()->resizeSection(0, 341);
-        horizontalHeader()->resizeSection(0, 340);
-
-        notifyObservers(this, SELECTION_CHANGED);
+        connect(selectionModel(), &QItemSelectionModel::selectionChanged, [&](const QItemSelection&, const QItemSelection&) {
+            notifyObservers(this, SELECTION_CHANGED);
+        });
+        connect(selectionModel(), &QItemSelectionModel::currentChanged, [&](const QModelIndex&, const QModelIndex&) {
+            notifyObservers(this, SELECTION_CHANGED);
+        });
     }
 
     bool WaterTableView::hasWaterEntitySelected() const {
-        return this->currentIndex().row() != -1;
+        return this->currentIndex().row() != -1 && this->selectionModel()->isSelected(currentIndex());
     }
 
     const WaterEntity* WaterTableView::getSelectedWaterEntity() const {
-        QModelIndex selectedIndex = this->currentIndex();
-        if (selectedIndex.row() != -1) {
-            return selectedIndex.data(Qt::UserRole + 1).value<const WaterEntity*>();
+        if (hasWaterEntitySelected()) {
+            return this->currentIndex().data(Qt::UserRole + 1).value<const WaterEntity*>();
         }
         return nullptr;
     }

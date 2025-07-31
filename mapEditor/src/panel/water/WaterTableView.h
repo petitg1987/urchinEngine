@@ -30,8 +30,6 @@ namespace urchin {
 
         private:
             QStandardItemModel* watersListModel;
-
-            void selectionChanged(const QItemSelection&, const QItemSelection&) override;
     };
 
 }

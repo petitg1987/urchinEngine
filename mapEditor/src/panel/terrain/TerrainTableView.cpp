@@ -19,24 +19,22 @@ namespace urchin {
 
         setSelectionMode(SingleSelection);
         setSelectionBehavior(SelectRows);
-    }
 
-    void TerrainTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
-        //hack to refresh selection
-        horizontalHeader()->resizeSection(0, 180);
-        horizontalHeader()->resizeSection(0, 160);
-
-        notifyObservers(this, SELECTION_CHANGED);
+        connect(selectionModel(), &QItemSelectionModel::selectionChanged, [&](const QItemSelection&, const QItemSelection&) {
+            notifyObservers(this, SELECTION_CHANGED);
+        });
+        connect(selectionModel(), &QItemSelectionModel::currentChanged, [&](const QModelIndex&, const QModelIndex&) {
+            notifyObservers(this, SELECTION_CHANGED);
+        });
     }
 
     bool TerrainTableView::hasTerrainEntitySelected() const {
-        return this->currentIndex().row() != -1;
+        return this->currentIndex().row() != -1 && this->selectionModel()->isSelected(currentIndex());
     }
 
     const TerrainEntity* TerrainTableView::getSelectedTerrainEntity() const {
-        QModelIndex selectedIndex = this->currentIndex();
-        if (selectedIndex.row() != -1) {
-            return selectedIndex.data(Qt::UserRole + 1).value<const TerrainEntity*>();
+        if (hasTerrainEntitySelected()) {
+            return this->currentIndex().data(Qt::UserRole + 1).value<const TerrainEntity*>();
         }
         return nullptr;
     }

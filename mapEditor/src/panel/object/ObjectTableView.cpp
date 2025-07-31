@@ -18,13 +18,13 @@ namespace urchin {
 
         setSelectionMode(ExtendedSelection);
         setSelectionBehavior(SelectRows);
-    }
 
-    void ObjectTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
-        //hack to refresh selection
-        horizontalHeader()->resizeSection(0, 340);
-
-        notifyObservers(this, OBJECT_SELECTION_CHANGED);
+        connect(selectionModel(), &QItemSelectionModel::selectionChanged, [&](const QItemSelection&, const QItemSelection&) {
+            notifyObservers(this, OBJECT_SELECTION_CHANGED);
+        });
+        connect(selectionModel(), &QItemSelectionModel::currentChanged, [&](const QModelIndex&, const QModelIndex&) {
+            notifyObservers(this, OBJECT_SELECTION_CHANGED);
+        });
     }
 
     QStandardItem* ObjectTableView::buildObjectEntityItem(const ObjectEntity& objectEntity) const {
@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     bool ObjectTableView::hasObjectEntitySelected() const {
-        return this->currentIndex().row() != -1 && !this->selectedIndexes().empty();
+        return this->currentIndex().row() != -1 && this->selectionModel()->isSelected(currentIndex());
     }
 
     int ObjectTableView::getObjectEntityRow(const ObjectEntity* expectedObjectEntity) const {
