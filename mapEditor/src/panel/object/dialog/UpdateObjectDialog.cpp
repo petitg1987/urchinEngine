@@ -10,8 +10,8 @@ namespace urchin {
             QDialog(parent),
             originalName(std::move(originalName)),
             objectController(objectController),
-            objectNameLabel(nullptr),
-            objectNameText(nullptr) {
+            updatedNameLabel(nullptr),
+            updatedNameText(nullptr) {
         this->setWindowTitle("Update");
         this->resize(530, 80);
         this->setFixedSize(this->width(), this->height());
@@ -31,38 +31,30 @@ namespace urchin {
     }
 
     void UpdateObjectDialog::setupNameFields(QGridLayout* mainLayout) {
-        objectNameLabel = new QLabel("New Name:");
-        mainLayout->addWidget(objectNameLabel, 0, 0);
+        updatedNameLabel = new QLabel("Updated Name:");
+        mainLayout->addWidget(updatedNameLabel, 0, 0);
 
-        objectNameText = new QLineEdit();
-        mainLayout->addWidget(objectNameText, 0, 1);
-        objectNameText->setFixedWidth(360);
-        objectNameText->setText(QString::fromStdString(originalName));
+        updatedNameText = new QLineEdit();
+        mainLayout->addWidget(updatedNameText, 0, 1);
+        updatedNameText->setFixedWidth(360);
+        updatedNameText->setText(QString::fromStdString(originalName));
     }
 
-    void UpdateObjectDialog::updateObjectName() {
-        QString objectName = objectNameText->text();
-        if (!objectName.isEmpty()) {
-            this->objectName = objectName.toUtf8().constData();
-        }
-    }
-
-    std::string UpdateObjectDialog::getObjectName() const {
-        return objectName;
+    std::string UpdateObjectDialog::getUpdatedName() const {
+        return updatedNameText->text().toStdString();
     }
 
     void UpdateObjectDialog::done(int r) {
         if (Accepted == r) {
             bool hasError = false;
 
-            updateObjectName();
-            LabelStyleHelper::applyNormalStyle(objectNameLabel);
+            LabelStyleHelper::applyNormalStyle(updatedNameLabel);
 
-            if (objectName.empty()) {
-                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
+            if (getUpdatedName().empty()) {
+                LabelStyleHelper::applyErrorStyle(updatedNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (objectName != originalName && isObjectEntityExist(objectName)) {
-                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
+            } else if (getUpdatedName() != originalName && isObjectEntityExist(getUpdatedName())) {
+                LabelStyleHelper::applyErrorStyle(updatedNameLabel, "Object name is already used");
                 hasError = true;
             }
 

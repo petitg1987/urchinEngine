@@ -589,9 +589,9 @@ namespace urchin {
         updateObjectDialog.exec();
 
         if (updateObjectDialog.result() == QDialog::Accepted) {
-            const std::string& newObjectName = updateObjectDialog.getObjectName();
+            const std::string& updatedName = updateObjectDialog.getUpdatedName();
             const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
-            objectController->renameObjectEntity(objectEntity, newObjectName);
+            objectController->renameObjectEntity(objectEntity, updatedName);
 
             objectTableView->refreshMainSelectedObjectEntity();
         }

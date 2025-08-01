@@ -16,12 +16,10 @@ namespace urchin {
         public:
             UpdateObjectDialog(QWidget*, std::string, const ObjectController*);
 
-            std::string getObjectName() const;
+            std::string getUpdatedName() const;
 
         private:
             void setupNameFields(QGridLayout*);
-
-            void updateObjectName();
 
             void done(int) override;
             bool isObjectEntityExist(std::string_view) const;
@@ -29,10 +27,10 @@ namespace urchin {
             std::string originalName;
             const ObjectController* objectController;
 
-            QLabel* objectNameLabel;
-            QLineEdit* objectNameText;
+            QLabel* updatedNameLabel;
+            QLineEdit* updatedNameText;
 
-            std::string objectName;
+            std::string updatedName;
     };
 
 }
