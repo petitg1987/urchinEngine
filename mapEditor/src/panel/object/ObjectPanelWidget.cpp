@@ -9,7 +9,7 @@
 
 #include "panel/object/dialog/AddObjectDialog.h"
 #include "panel/object/dialog/CloneObjectDialog.h"
-#include "panel/object/dialog/RenameObjectDialog.h"
+#include "panel/object/dialog/UpdateObjectDialog.h"
 #include "panel/object/dialog/ChangeLightTypeDialog.h"
 #include "panel/object/dialog/ChangeMeshesFileDialog.h"
 #include "panel/object/dialog/ChangeSoundDialog.h"
@@ -24,7 +24,7 @@ namespace urchin {
             addObjectButton(nullptr),
             removeObjectButton(nullptr),
             cloneObjectButton(nullptr),
-            renameObjectButton(nullptr),
+            updateObjectButton(nullptr),
             tabWidget(nullptr),
             tabSelected(ObjectTab::MODEL),
             objectEntitySelected(nullptr),
@@ -73,11 +73,11 @@ namespace urchin {
         cloneObjectButton->setEnabled(false);
         connect(cloneObjectButton, SIGNAL(clicked()), this, SLOT(showCloneObjectDialog()));
 
-        renameObjectButton = new QPushButton("Rename");
-        buttonsLayout->addWidget(renameObjectButton);
-        ButtonStyleHelper::applyNormalStyle(renameObjectButton);
-        renameObjectButton->setEnabled(false);
-        connect(renameObjectButton, SIGNAL(clicked()), this, SLOT(showRenameObjectDialog()));
+        updateObjectButton = new QPushButton("Update");
+        buttonsLayout->addWidget(updateObjectButton);
+        ButtonStyleHelper::applyNormalStyle(updateObjectButton);
+        updateObjectButton->setEnabled(false);
+        connect(updateObjectButton, SIGNAL(clicked()), this, SLOT(showUpdateObjectDialog()));
 
         tabWidget = new QTabWidget();
         mainLayout->addWidget(tabWidget);
@@ -377,14 +377,14 @@ namespace urchin {
 
                     removeObjectButton->setEnabled(true);
                     cloneObjectButton->setEnabled(true);
-                    renameObjectButton->setEnabled(true);
+                    updateObjectButton->setEnabled(true);
                     tabWidget->show();
                 } else {
                     objectEntitySelected = nullptr;
 
                     removeObjectButton->setEnabled(false);
                     cloneObjectButton->setEnabled(false);
-                    renameObjectButton->setEnabled(false);
+                    updateObjectButton->setEnabled(false);
                     tabWidget->hide();
                 }
             }
@@ -582,13 +582,13 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::showRenameObjectDialog() {
+    void ObjectPanelWidget::showUpdateObjectDialog() {
         std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
-        RenameObjectDialog renameObjectEntityDialog(this, originalName, objectController);
-        renameObjectEntityDialog.exec();
+        UpdateObjectDialog updateObjectDialog(this, originalName, objectController);
+        updateObjectDialog.exec();
 
-        if (renameObjectEntityDialog.result() == QDialog::Accepted) {
-            const std::string& newObjectName = renameObjectEntityDialog.getObjectName();
+        if (updateObjectDialog.result() == QDialog::Accepted) {
+            const std::string& newObjectName = updateObjectDialog.getObjectName();
             const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             objectController->renameObjectEntity(objectEntity, newObjectName);
 

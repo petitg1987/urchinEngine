@@ -1,18 +1,18 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include "panel/object/dialog/RenameObjectDialog.h"
+#include "panel/object/dialog/UpdateObjectDialog.h"
 #include "widget/style/LabelStyleHelper.h"
 
 namespace urchin {
 
-    RenameObjectDialog::RenameObjectDialog(QWidget* parent, std::string originalName, const ObjectController* objectController) :
+    UpdateObjectDialog::UpdateObjectDialog(QWidget* parent, std::string originalName, const ObjectController* objectController) :
             QDialog(parent),
             originalName(std::move(originalName)),
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr) {
-        this->setWindowTitle("Rename Object");
+        this->setWindowTitle("Update");
         this->resize(530, 80);
         this->setFixedSize(this->width(), this->height());
 
@@ -30,7 +30,7 @@ namespace urchin {
         connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void RenameObjectDialog::setupNameFields(QGridLayout* mainLayout) {
+    void UpdateObjectDialog::setupNameFields(QGridLayout* mainLayout) {
         objectNameLabel = new QLabel("New Name:");
         mainLayout->addWidget(objectNameLabel, 0, 0);
 
@@ -40,18 +40,18 @@ namespace urchin {
         objectNameText->setText(QString::fromStdString(originalName));
     }
 
-    void RenameObjectDialog::updateObjectName() {
+    void UpdateObjectDialog::updateObjectName() {
         QString objectName = objectNameText->text();
         if (!objectName.isEmpty()) {
             this->objectName = objectName.toUtf8().constData();
         }
     }
 
-    std::string RenameObjectDialog::getObjectName() const {
+    std::string UpdateObjectDialog::getObjectName() const {
         return objectName;
     }
 
-    void RenameObjectDialog::done(int r) {
+    void UpdateObjectDialog::done(int r) {
         if (Accepted == r) {
             bool hasError = false;
 
@@ -74,7 +74,7 @@ namespace urchin {
         }
     }
 
-    bool RenameObjectDialog::isObjectEntityExist(std::string_view name) const {
+    bool UpdateObjectDialog::isObjectEntityExist(std::string_view name) const {
         std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
         return std::ranges::any_of(objectEntities, [name](const auto& so){ return so->getName() == name; });
     }

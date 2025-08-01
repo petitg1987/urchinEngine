@@ -10,11 +10,11 @@
 
 namespace urchin {
 
-    class RenameObjectDialog final : public QDialog {
+    class UpdateObjectDialog final : public QDialog {
         Q_OBJECT
 
         public:
-            RenameObjectDialog(QWidget*, std::string, const ObjectController*);
+            UpdateObjectDialog(QWidget*, std::string, const ObjectController*);
 
             std::string getObjectName() const;
 
