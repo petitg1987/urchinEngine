@@ -27,7 +27,7 @@ namespace urchin {
 
             void addObjectEntity(const ObjectEntity&, bool);
             void removeSelectedItems() const;
-            void refreshMainSelectedObjectEntity() const;
+            void refreshMainSelectedObjectEntity();
             void removeAll() const;
 
         private:
@@ -38,6 +38,7 @@ namespace urchin {
             QStandardItem* buildObjectEntityItem(const ObjectEntity&) const;
             QStandardItem* findOrCreateGroupHierarchy(const std::vector<std::string>&) const;
             QStandardItem* findOrCreateGroup(const std::string&, QStandardItem*) const;
+            void removeItemsByIndexes(QModelIndexList) const;
 
             static constexpr int IS_OBJECT_ENTITY_DATA = Qt::UserRole + 1;
             static constexpr int GROUP_OR_OBJECT_ENTITY_DATA = Qt::UserRole + 2;

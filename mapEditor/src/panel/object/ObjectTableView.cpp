@@ -178,10 +178,14 @@ namespace urchin {
     }
 
     void ObjectTableView::removeSelectedItems() const {
+        removeItemsByIndexes(selectedIndexes());
+    }
+
+    void ObjectTableView::removeItemsByIndexes(QModelIndexList indexesToRemove) const {
         //Use persistent index to avoid invalid index after first row removed
         QList<QPersistentModelIndex> persistentIndexes;
         QList<QPersistentModelIndex> persistentGroupIndexes;
-        for (const QModelIndex &index : selectedIndexes()) {
+        for (const QModelIndex &index : indexesToRemove) {
             persistentIndexes.append(QPersistentModelIndex(index));
             persistentGroupIndexes.append(QPersistentModelIndex(index.parent()));
         }
@@ -205,10 +209,15 @@ namespace urchin {
         }
     }
 
-    void ObjectTableView::refreshMainSelectedObjectEntity() const { //TODO impl correctly refresh of the name + group
+    void ObjectTableView::refreshMainSelectedObjectEntity() {
         if (hasMainObjectEntitySelected()) {
             const ObjectEntity* selectObjectEntity = getMainSelectedObjectEntity();
-            objectsListModel->setItem(currentIndex().row(), 0, buildObjectEntityItem(*selectObjectEntity));
+
+            QModelIndexList indexesToRemove;
+            indexesToRemove.push_back(currentIndex());
+            removeItemsByIndexes(indexesToRemove);
+
+            addObjectEntity(*selectObjectEntity, true);
         }
     }
 
