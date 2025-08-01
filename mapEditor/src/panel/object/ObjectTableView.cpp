@@ -137,17 +137,42 @@ namespace urchin {
             }
         }
 
-        QStandardItem* newItem = buildObjectEntityItem(objectEntity);
-        groupItem->insertRow(childRow, buildObjectEntityItem(objectEntity));
-        selectItem(newItem->index());
+        QStandardItem* newObjectEntityItem = buildObjectEntityItem(objectEntity);
+        groupItem->insertRow(childRow, newObjectEntityItem);
+        selectItem(newObjectEntityItem->index());
     }
 
-    QStandardItem* ObjectTableView::findOrCreateGroupHierarchy(const std::vector<std::string>& /*groupHierarchy*/) {
-        return objectsListModel->invisibleRootItem();
-        //TODO impl..
-        // QModelIndex modelIndex = objectsListModel->index(insertRowId, 0);
-        // QStandardItem *standardItem = objectsListModel->itemFromIndex(modelIndex);
-        // standardItem->appendRow(buildGroupEntityItem("lol"));
+    QStandardItem* ObjectTableView::findOrCreateGroupHierarchy(const std::vector<std::string>& groupHierarchy) {
+        QStandardItem* current = objectsListModel->invisibleRootItem();
+        for (const std::string& group : groupHierarchy) {
+            current = findOrCreateGroup(group, current);
+        }
+        return current;
+    }
+
+    QStandardItem* ObjectTableView::findOrCreateGroup(const std::string& group, QStandardItem* parent) {
+        int childRow;
+        for (childRow = 0; childRow < parent->rowCount(); ++childRow) {
+            QStandardItem* child = parent->child(childRow);
+            std::string childItemName;
+            if (child->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
+                childItemName = child->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>()->getName();
+            } else {
+                childItemName = child->text().toStdString();
+                if (childItemName == group) {
+                    return child;
+                }
+            }
+
+            if (group.compare(childItemName) < 0) {
+                break;
+            }
+        }
+
+        QStandardItem* newGroupItem = buildGroupEntityItem(group);
+        parent->insertRow(childRow, newGroupItem);
+        selectItem(newGroupItem->index());
+        return newGroupItem;
     }
 
     bool ObjectTableView::removeSelectedItem() const {

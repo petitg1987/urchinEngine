@@ -37,6 +37,7 @@ namespace urchin {
             QStandardItem* buildGroupEntityItem(const std::string&) const;
             QStandardItem* buildObjectEntityItem(const ObjectEntity&) const;
             QStandardItem* findOrCreateGroupHierarchy(const std::vector<std::string>&);
+            QStandardItem* findOrCreateGroup(const std::string&, QStandardItem*);
 
             static constexpr int IS_OBJECT_ENTITY_DATA = Qt::UserRole + 1;
             static constexpr int GROUP_OR_OBJECT_ENTITY_DATA = Qt::UserRole + 2;
