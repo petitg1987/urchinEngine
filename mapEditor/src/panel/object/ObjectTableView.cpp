@@ -29,15 +29,15 @@ namespace urchin { //TODO review all methods for group
         notifyObservers(this, OBJECT_SELECTION_CHANGED);
     }
 
-    void ObjectTableView::selectRow(int row) {
-        QModelIndex index = this->model()->index(row, 0);
-        if (!index.isValid()) {
+    void ObjectTableView::selectItem(const QModelIndex& itemIndex) {
+        if (!itemIndex.isValid()) {
             return;
         }
 
-        scrollTo(index);
-        setCurrentIndex(index);
-        selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        expand(itemIndex.parent());
+        scrollTo(itemIndex);
+        setCurrentIndex(itemIndex);
+        selectionModel()->select(itemIndex, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
 
     QStandardItem* ObjectTableView::buildGroupEntityItem(const std::string& groupName) const {
@@ -56,29 +56,49 @@ namespace urchin { //TODO review all methods for group
         return itemObjectEntity;
     }
 
-    bool ObjectTableView::hasObjectEntitySelected() const {
-        return this->currentIndex().row() != -1 && this->selectionModel()->isSelected(currentIndex());
-    }
-
-    void ObjectTableView::selectObjectEntity(const ObjectEntity& expectedObjectEntity) {
-        for (int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
-            QModelIndex modelIndex = objectsListModel->index(rowId, 0);
-            bool isObjectEntity = modelIndex.data(IS_OBJECT_ENTITY_DATA).value<bool>();
-            if (isObjectEntity) {
-                auto* objectEntity = modelIndex.data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
-                if (expectedObjectEntity.getName() == objectEntity->getName()) {
-                    selectRow(rowId);
-                    break;
-                }
-            }
+    bool ObjectTableView::hasMainObjectEntitySelected() const {
+        if (currentIndex().row() == -1 || !selectionModel()->isSelected(currentIndex())) {
+            return false;
         }
+
+        QStandardItem* selectedItem = objectsListModel->itemFromIndex(currentIndex());
+        return selectedItem->data(IS_OBJECT_ENTITY_DATA).value<bool>();
     }
 
     const ObjectEntity* ObjectTableView::getMainSelectedObjectEntity() const {
-        if (hasObjectEntitySelected()) {
+        if (hasMainObjectEntitySelected()) {
             return this->currentIndex().data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
         }
         return nullptr;
+    }
+
+    bool ObjectTableView::hasObjectEntitiesSelected() const {
+        if (currentIndex().row() == -1 || !selectionModel()->isSelected(currentIndex())) {
+            return false;
+        }
+
+        QStandardItem* selectedItem = objectsListModel->itemFromIndex(currentIndex());
+        if (selectedItem->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
+            return true;
+        } else {
+            std::stack<QStandardItem*> allChildItems;
+            allChildItems.push(selectedItem);
+
+            while (!allChildItems.empty()) {
+                QStandardItem* current = allChildItems.top();
+                allChildItems.pop();
+
+                if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
+                    return true;
+                }
+
+                for (int row = current->rowCount() - 1; row >= 0; --row) {
+                    QStandardItem* child = current->child(row);
+                    allChildItems.push(child);
+                }
+            }
+        }
+        return false;
     }
 
     std::vector<const ObjectEntity*> ObjectTableView::getAllSelectedObjectEntities() const {
@@ -90,7 +110,30 @@ namespace urchin { //TODO review all methods for group
         return objectEntities;
     }
 
-    void ObjectTableView::addObject(const ObjectEntity& objectEntity) {
+    void ObjectTableView::selectObjectEntity(const ObjectEntity& expectedObjectEntity) {
+        std::stack<QStandardItem*> allChildItems;
+        allChildItems.push(objectsListModel->invisibleRootItem());
+
+        while (!allChildItems.empty()) {
+            QStandardItem* current = allChildItems.top();
+            allChildItems.pop();
+
+            if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
+                auto* objectEntity = current->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
+                if (expectedObjectEntity.getName() == objectEntity->getName()) {
+                    selectItem(current->index());
+                    return;
+                }
+            }
+
+            for (int row = current->rowCount() - 1; row >= 0; --row) {
+                QStandardItem* child = current->child(row);
+                allChildItems.push(child);
+            }
+        }
+    }
+
+    void ObjectTableView::addObjectEntity(const ObjectEntity& objectEntity) {
         int insertRowId;
         for (insertRowId = 0; insertRowId < objectsListModel->rowCount(); ++insertRowId) {
             QModelIndex modelIndex = objectsListModel->index(insertRowId, 0);
@@ -108,31 +151,27 @@ namespace urchin { //TODO review all methods for group
         QStandardItem *standardItem = objectsListModel->itemFromIndex(modelIndex);
         standardItem->appendRow(buildGroupEntityItem("lol"));
 
-        selectRow(insertRowId);
+        selectItem(this->model()->index(insertRowId, 0));
     }
 
-    bool ObjectTableView::removeSelectedObject() const {
-        if (hasObjectEntitySelected()) {
+    bool ObjectTableView::removeSelectedItem() const {
+        if (hasObjectEntitiesSelected()) {
             objectsListModel->removeRow(this->currentIndex().row());
             return true;
         }
         return false;
     }
 
-    bool ObjectTableView::updateSelectedObject(const ObjectEntity& updatedObjectEntity) const {
-        if (hasObjectEntitySelected()) {
+    bool ObjectTableView::refreshSelectedObjectEntity() const {
+        if (hasMainObjectEntitySelected()) {
             const ObjectEntity* selectObjectEntity = getMainSelectedObjectEntity();
-            if (selectObjectEntity == &updatedObjectEntity) {
-                objectsListModel->setItem(currentIndex().row(), 0, buildObjectEntityItem(updatedObjectEntity));
-                return true;
-            } else {
-                throw std::runtime_error("Update the selected object with a different instance is not allowed");
-            }
+            objectsListModel->setItem(currentIndex().row(), 0, buildObjectEntityItem(*selectObjectEntity));
+            return true;
         }
         return false;
     }
 
-    void ObjectTableView::removeAllObjects() const {
+    void ObjectTableView::removeAll() const {
         objectsListModel->removeRows(0, objectsListModel->rowCount());
     }
 

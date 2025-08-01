@@ -354,12 +354,12 @@ namespace urchin {
         this->objectController = &objectController;
 
         for (auto& objectEntity : this->objectController->getObjectEntities()) {
-            objectTableView->addObject(*objectEntity);
+            objectTableView->addObjectEntity(*objectEntity);
         }
     }
 
     void ObjectPanelWidget::unload() {
-        objectTableView->removeAllObjects();
+        objectTableView->removeAll();
 
         objectController = nullptr;
     }
@@ -367,7 +367,7 @@ namespace urchin {
     void ObjectPanelWidget::notify(Observable* observable, int notificationType) {
         if (const auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
-                if (objectTableView->hasObjectEntitySelected()) {
+                if (objectTableView->hasMainObjectEntitySelected()) {
                     const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
                     objectEntitySelected = &objectEntity;
 
@@ -546,16 +546,16 @@ namespace urchin {
             objectController->createDefaultBody(objectEntityInserted);
             objectController->moveObjectInFrontOfCamera(objectEntityInserted, false);
 
-            objectTableView->addObject(objectEntityInserted);
+            objectTableView->addObjectEntity(objectEntityInserted);
         }
     }
 
-    void ObjectPanelWidget::removeSelectedObject() const {
-        if (objectTableView->hasObjectEntitySelected()) {
+    void ObjectPanelWidget::removeSelectedObject() const { //TODO review for remove group !
+        if (objectTableView->hasMainObjectEntitySelected()) {
             const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             objectController->removeObjectEntity(objectEntity);
 
-            objectTableView->removeSelectedObject();
+            objectTableView->removeSelectedItem();
         }
     }
 
@@ -570,7 +570,7 @@ namespace urchin {
             ObjectEntity& objectEntityInserted = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
             objectController->moveObjectInFrontOfCamera(objectEntityInserted, true);
 
-            objectTableView->addObject(objectEntityInserted);
+            objectTableView->addObjectEntity(objectEntityInserted);
         }
     }
 
@@ -584,7 +584,7 @@ namespace urchin {
             const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             objectController->renameObjectEntity(objectEntity, newObjectName);
 
-            objectTableView->updateSelectedObject(objectEntity);
+            objectTableView->refreshSelectedObjectEntity();
         }
     }
 

@@ -20,18 +20,19 @@ namespace urchin {
                 OBJECT_SELECTION_CHANGED
             };
 
-            bool hasObjectEntitySelected() const;
+            bool hasMainObjectEntitySelected() const;
             const ObjectEntity* getMainSelectedObjectEntity() const;
+            bool hasObjectEntitiesSelected() const;
             std::vector<const ObjectEntity*> getAllSelectedObjectEntities() const;
             void selectObjectEntity(const ObjectEntity&);
 
-            void addObject(const ObjectEntity&);
-            bool removeSelectedObject() const;
-            bool updateSelectedObject(const ObjectEntity&) const;
-            void removeAllObjects() const;
+            void addObjectEntity(const ObjectEntity&);
+            bool removeSelectedItem() const;
+            bool refreshSelectedObjectEntity() const;
+            void removeAll() const;
 
         private:
-            void selectRow(int);
+            void selectItem(const QModelIndex&);
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
             void currentChanged(const QModelIndex&, const QModelIndex&) override;
             QStandardItem* buildGroupEntityItem(const std::string&) const;
