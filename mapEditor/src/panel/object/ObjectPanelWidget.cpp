@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include <UrchinAggregation.h>
 
 #include "widget/style/GroupBoxStyleHelper.h"
@@ -5,6 +6,7 @@
 #include "widget/style/ButtonStyleHelper.h"
 #include "widget/style/ComboBoxStyleHelper.h"
 #include "panel/object/ObjectPanelWidget.h"
+
 #include "panel/object/dialog/AddObjectDialog.h"
 #include "panel/object/dialog/CloneObjectDialog.h"
 #include "panel/object/dialog/RenameObjectDialog.h"
@@ -550,13 +552,19 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::removeSelectedObject() const { //TODO review for remove group !
-        if (objectTableView->hasMainObjectEntitySelected()) {
-            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
-            objectController->removeObjectEntity(objectEntity);
-
-            objectTableView->removeSelectedItem();
+    void ObjectPanelWidget::removeSelectedObject() const {
+        std::vector<const ObjectEntity*> selectedEntityObjects = objectTableView->getAllSelectedObjectEntities();
+        if (selectedEntityObjects.size() > 1) {
+            QMessageBox::StandardButton reply = QMessageBox::question(nullptr, "Confirm Delete", "Are you sure you want to delete these items ?");
+            if (reply != QMessageBox::Yes) {
+                return;
+            }
         }
+
+        for (const ObjectEntity* selectedEntityObject : selectedEntityObjects) {
+            objectController->removeObjectEntity(*selectedEntityObject);
+        }
+        objectTableView->removeSelectedItems();
     }
 
     void ObjectPanelWidget::showCloneObjectDialog() {

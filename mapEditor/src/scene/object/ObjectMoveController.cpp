@@ -158,7 +158,7 @@ namespace urchin {
         bool propagateEvent = true;
 
         if (selectedAxis != -1) {
-            statusBarController.applyPreviousState();
+            statusBarController.applyState(MODEL_SELECTED);
             selectedAxis = -1;
             propagateEvent = false;
         }
@@ -166,14 +166,14 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool ObjectMoveController::onEscapeKey() {
+    bool ObjectMoveController::onEscapeKey() { //TODO not work correctly when item is selected from the panel
         bool propagateEvent = true;
         if (selectedAxis != -1) {
             for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
                 updateObjectPosition(selectedObjectEntity, savedPositions.at(selectedObjectEntity));
             }
 
-            statusBarController.applyPreviousState();
+            statusBarController.applyState(MODEL_SELECTED);
             selectedAxis = -1;
             propagateEvent = false;
         }
@@ -187,7 +187,7 @@ namespace urchin {
         if (!this->selectedObjectEntities.empty()) {
             statusBarController.applyState(MODEL_SELECTED);
         } else {
-            statusBarController.applyPreviousState();
+            statusBarController.applyState(MAP_LOADED);
         }
     }
 

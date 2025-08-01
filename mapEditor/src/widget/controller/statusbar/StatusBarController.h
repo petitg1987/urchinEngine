@@ -5,7 +5,6 @@
 #include <QtWidgets/QLabel>
 
 #include "widget/controller/statusbar/StatusBarState.h"
-#include "widget/controller/statusbar/StatusBarStateData.h"
 
 namespace urchin {
 
@@ -15,10 +14,9 @@ namespace urchin {
 
             void clearState();
             void applyState(StatusBarState);
-            void applyPreviousState();
 
         private:
-            static StatusBarStateData getStateData(StatusBarState);
+            static std::vector<std::string> getStateLabels(StatusBarState);
 
             void applyCurrentState();
             void addStatusBarWidget(QWidget*);

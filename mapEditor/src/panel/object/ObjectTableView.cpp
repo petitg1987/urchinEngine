@@ -174,12 +174,12 @@ namespace urchin {
         return newGroupItem;
     }
 
-    bool ObjectTableView::removeSelectedItem() const {
+    bool ObjectTableView::removeSelectedItems() const {
         if (currentIndex().row() == -1 || !selectionModel()->isSelected(currentIndex())) {
             return false;
         }
 
-        objectsListModel->removeRow(this->currentIndex().row());
+        objectsListModel->removeRow(currentIndex().row(), currentIndex().parent());
         return true;
     }
 

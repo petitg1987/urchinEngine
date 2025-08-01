@@ -23,30 +23,16 @@ namespace urchin {
         applyCurrentState();
     }
 
-    void StatusBarController::applyPreviousState() {
-        StatusBarState previousState = getStateData(currentState).getPreviousState();
-        if (previousState == currentState) {
-            throw std::runtime_error("No previous state for current state: " + std::to_string(currentState));
-        }
-
-        currentState = previousState;
-        applyCurrentState();
-    }
-
-    StatusBarStateData StatusBarController::getStateData(StatusBarState state) {
+    std::vector<std::string> StatusBarController::getStateLabels(StatusBarState state) {
         switch(state) {
             case NONE:
-                return StatusBarStateData({}, NONE);
+                return {};
             case MAP_LOADED:
-                return StatusBarStateData({"Select model: LMB"}, NONE);
+                return {"Select model: LMB"};
             case MODEL_SELECTED:
-                return StatusBarStateData({"Select model: LMB",
-                                           "Move selected: Ctrl + X/Y/Z"}, MAP_LOADED);
+                return {"Select model: LMB", "Move selected: Ctrl + X/Y/Z"};
             case MODEL_MOVE:
-                return StatusBarStateData({"Move selected: mouse",
-                                           "Switch axis: Ctrl + X/Y/Z",
-                                           "Confirm move: LMB",
-                                           "Cancel move: Esc"}, MODEL_SELECTED);
+                return {"Move selected: mouse", "Switch axis: Ctrl + X/Y/Z", "Confirm move: LMB", "Cancel move: Esc"};
             default:
                 throw std::runtime_error("Unknown status bar state: " + std::to_string(state));
         }
@@ -55,10 +41,10 @@ namespace urchin {
     void StatusBarController::applyCurrentState() {
         clearState();
 
-        auto statusLabels = getStateData(currentState).getLabels();
-        for (std::size_t i = 0; i < statusLabels.size(); ++i) {
-            addStatusBarWidget(new QLabel(QString(statusLabels[i].c_str())));
-            if (i != statusLabels.size() - 1) {
+        auto stateLabels = getStateLabels(currentState);
+        for (std::size_t i = 0; i < stateLabels.size(); ++i) {
+            addStatusBarWidget(new QLabel(QString::fromStdString(stateLabels[i])));
+            if (i != stateLabels.size() - 1) {
                 addStatusBarWidget(createSeparator());
             }
         }
