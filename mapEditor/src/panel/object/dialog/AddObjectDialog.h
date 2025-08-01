@@ -15,21 +15,18 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            AddObjectDialog(QWidget*, const ObjectController*, const std::vector<std::string>&);
+            AddObjectDialog(QWidget*, const std::vector<std::string>&, const ObjectController*);
 
             std::unique_ptr<ObjectEntity> moveObjectEntity();
 
         private:
             void setupNameField(QGridLayout*);
             void setupGroupFields(QGridLayout*, const std::vector<std::string>&);
-            std::vector<std::vector<std::string>> getAllGroupHierarchy() const;
 
             int buildObjectEntity(int);
 
             void done(int) override;
             bool isObjectEntityExist(std::string_view) const;
-
-            static constexpr std::string GROUP_DELIMITER = " > ";
 
             const ObjectController* objectController;
 

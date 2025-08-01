@@ -540,7 +540,7 @@ namespace urchin {
         if (objectTableView->hasMainObjectEntitySelected()) {
             defaultGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
         }
-        AddObjectDialog addObjectEntityDialog(this, objectController, defaultGroupHierarchy);
+        AddObjectDialog addObjectEntityDialog(this, defaultGroupHierarchy, objectController);
         addObjectEntityDialog.exec();
 
         if (addObjectEntityDialog.result() == QDialog::Accepted) {
@@ -585,11 +585,12 @@ namespace urchin {
 
     void ObjectPanelWidget::showUpdateObjectDialog() {
         std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
-        UpdateObjectDialog updateObjectDialog(this, originalName, objectController);
+        std::vector<std::string> originalGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
+        UpdateObjectDialog updateObjectDialog(this, originalName, originalGroupHierarchy, objectController);
         updateObjectDialog.exec();
 
         if (updateObjectDialog.result() == QDialog::Accepted) {
-            const std::string& updatedName = updateObjectDialog.getUpdatedName();
+            const std::string& updatedName = updateObjectDialog.getNewObjectName(); //TODO use also getNewGroupHierarchy()
             const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             objectController->renameObjectEntity(objectEntity, updatedName);
 
