@@ -166,7 +166,7 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool ObjectMoveController::onEscapeKey() { //TODO not work correctly when item is selected from the panel
+    bool ObjectMoveController::onEscapeKey() {
         bool propagateEvent = true;
         if (selectedAxis != -1) {
             for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {

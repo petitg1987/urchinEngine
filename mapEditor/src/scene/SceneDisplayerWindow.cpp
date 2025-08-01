@@ -20,9 +20,9 @@ namespace urchin {
             mouseY(0) {
         setSurfaceType(VulkanSurface);
 
-        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), SIGNAL(activated()), this, SLOT(onCtrlXPressed()));
-        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Y), parent), SIGNAL(activated()), this, SLOT(onCtrlYPressed()));
-        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Z), parent), SIGNAL(activated()), this, SLOT(onCtrlZPressed()));
+        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), &QShortcut::activated, this, [this]() {onCtrlXYZPressed(0);});
+        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Y), parent), &QShortcut::activated, this, [this]() {onCtrlXYZPressed(1);});
+        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Z), parent), &QShortcut::activated, this, [this]() {onCtrlXYZPressed(2);});
     }
 
     void SceneDisplayerWindow::exposeEvent(QExposeEvent *) {
@@ -356,21 +356,10 @@ namespace urchin {
         sceneDisplayer->getObjectMoveController()->addObserver(observer, notificationType);
     }
 
-    void SceneDisplayerWindow::onCtrlXPressed() const {
+    void SceneDisplayerWindow::onCtrlXYZPressed(int axisIndex) {
+        requestActivate(); //requested to ensure next keys pressed (e.g.: escape) works correctly
         if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
-            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(0);
-        }
-    }
-
-    void SceneDisplayerWindow::onCtrlYPressed() const {
-        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
-            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(1);
-        }
-    }
-
-    void SceneDisplayerWindow::onCtrlZPressed() const {
-        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
-            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(2);
+            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(axisIndex);
         }
     }
 

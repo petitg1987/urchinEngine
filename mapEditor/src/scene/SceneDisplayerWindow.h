@@ -72,9 +72,7 @@ namespace urchin {
             std::string lastPickedBodyId;
 
         private slots:
-            void onCtrlXPressed() const;
-            void onCtrlYPressed() const;
-            void onCtrlZPressed() const;
+            void onCtrlXYZPressed(int);
     };
 
 }
