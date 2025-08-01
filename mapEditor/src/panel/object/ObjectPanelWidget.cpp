@@ -369,24 +369,21 @@ namespace urchin {
     void ObjectPanelWidget::notify(Observable* observable, int notificationType) {
         if (const auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
-                if (objectTableView->hasMainObjectEntitySelected()) {
+                bool hasMainObjectEntitySelected = objectTableView->hasMainObjectEntitySelected();
+                bool hasObjectsEntitiesSelected = !objectTableView->getAllSelectedObjectEntities().empty();
+                if (hasMainObjectEntitySelected) {
                     const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
                     objectEntitySelected = &objectEntity;
-
                     setupObjectDataFrom(objectEntity);
-
-                    removeObjectButton->setEnabled(true);
-                    cloneObjectButton->setEnabled(true);
-                    updateObjectButton->setEnabled(true);
                     tabWidget->show();
                 } else {
                     objectEntitySelected = nullptr;
-
-                    removeObjectButton->setEnabled(false);
-                    cloneObjectButton->setEnabled(false);
-                    updateObjectButton->setEnabled(false);
                     tabWidget->hide();
                 }
+
+                removeObjectButton->setEnabled(hasObjectsEntitiesSelected);
+                cloneObjectButton->setEnabled(hasMainObjectEntitySelected);
+                updateObjectButton->setEnabled(hasMainObjectEntitySelected);
             }
         } else if (const auto* sceneDisplayerWidget = dynamic_cast<SceneDisplayerWindow*>(observable)) {
             if (notificationType == SceneDisplayerWindow::BODY_PICKED) {
@@ -552,10 +549,10 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::removeSelectedObject() const {
+    void ObjectPanelWidget::removeSelectedObject() {
         std::vector<const ObjectEntity*> selectedEntityObjects = objectTableView->getAllSelectedObjectEntities();
         if (selectedEntityObjects.size() > 1) {
-            QMessageBox::StandardButton reply = QMessageBox::question(nullptr, "Confirm Delete", "Are you sure you want to delete these items ?");
+            QMessageBox::StandardButton reply = QMessageBox::question(this, "Confirm Delete", "Are you sure you want to delete all the selected objects ?");
             if (reply != QMessageBox::Yes) {
                 return;
             }
@@ -592,7 +589,7 @@ namespace urchin {
             const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
             objectController->renameObjectEntity(objectEntity, newObjectName);
 
-            objectTableView->refreshSelectedObjectEntity();
+            objectTableView->refreshMainSelectedObjectEntity();
         }
     }
 

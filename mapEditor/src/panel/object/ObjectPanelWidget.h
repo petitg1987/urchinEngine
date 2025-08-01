@@ -111,7 +111,7 @@ namespace urchin {
 
         private slots:
             void showAddObjectDialog();
-            void removeSelectedObject() const;
+            void removeSelectedObject();
             void showCloneObjectDialog();
             void showUpdateObjectDialog();
             void onObjectTabChanged(int);

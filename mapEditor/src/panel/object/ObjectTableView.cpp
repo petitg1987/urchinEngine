@@ -73,26 +73,27 @@ namespace urchin {
 
     std::vector<const ObjectEntity*> ObjectTableView::getAllSelectedObjectEntities() const {
         std::vector<const ObjectEntity*> objectEntities;
-        if (currentIndex().row() == -1 || !selectionModel()->isSelected(currentIndex())) {
-            return objectEntities;
-        }
 
-        std::stack<QStandardItem*> itemsToProcess;
-        itemsToProcess.push(objectsListModel->itemFromIndex(currentIndex()));
+        for (const QModelIndex& modelIndex : this->selectedIndexes()) {
+            std::stack<QStandardItem*> itemsToProcess;
+            itemsToProcess.push(objectsListModel->itemFromIndex(modelIndex));
 
-        while (!itemsToProcess.empty()) {
-            QStandardItem* current = itemsToProcess.top();
-            itemsToProcess.pop();
+            while (!itemsToProcess.empty()) {
+                QStandardItem* current = itemsToProcess.top();
+                itemsToProcess.pop();
 
-            if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
-                objectEntities.push_back(current->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>());
-            } else {
-                for (int row = current->rowCount() - 1; row >= 0; --row) {
-                    QStandardItem* child = current->child(row);
-                    itemsToProcess.push(child);
+                if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
+                    objectEntities.push_back(current->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>());
+                } else {
+                    for (int row = current->rowCount() - 1; row >= 0; --row) {
+                        QStandardItem* child = current->child(row);
+                        itemsToProcess.push(child);
+                    }
                 }
             }
         }
+
+        VectorUtil::removeDuplicates(objectEntities);
         return objectEntities;
     }
 
@@ -174,16 +175,13 @@ namespace urchin {
         return newGroupItem;
     }
 
-    bool ObjectTableView::removeSelectedItems() const {
-        if (currentIndex().row() == -1 || !selectionModel()->isSelected(currentIndex())) {
-            return false;
+    void ObjectTableView::removeSelectedItems() const {
+        for (const QModelIndex& modelIndex : this->selectedIndexes()) {
+            objectsListModel->removeRow(modelIndex.row(), modelIndex.parent());
         }
-
-        objectsListModel->removeRow(currentIndex().row(), currentIndex().parent());
-        return true;
     }
 
-    bool ObjectTableView::refreshSelectedObjectEntity() const {
+    bool ObjectTableView::refreshMainSelectedObjectEntity() const {
         if (hasMainObjectEntitySelected()) {
             const ObjectEntity* selectObjectEntity = getMainSelectedObjectEntity();
             objectsListModel->setItem(currentIndex().row(), 0, buildObjectEntityItem(*selectObjectEntity));
