@@ -177,15 +177,27 @@ namespace urchin {
         return newGroupItem;
     }
 
-    void ObjectTableView::removeSelectedItems() const { //TODO if parent is empty group => remove it, etc
+    void ObjectTableView::removeSelectedItems() const {
         //Convert selection into persistent index because at first remove, the index are updated
         QList<QPersistentModelIndex> persistentIndexes;
         for (const QModelIndex &index : selectedIndexes()) {
             persistentIndexes.append(QPersistentModelIndex(index));
         }
 
-        for (const QPersistentModelIndex &pIndex : persistentIndexes) {
-            objectsListModel->removeRow(pIndex.row(), pIndex.parent());
+        for (const QPersistentModelIndex &persistentIndex : persistentIndexes) {
+            objectsListModel->removeRow(persistentIndex.row(), persistentIndex.parent());
+
+            //TODO does not work
+            //TODO test remove objectEntity + group
+            //remove empty group
+            QModelIndex current = persistentIndex.parent();
+            while (current.isValid()) {
+                int childCount = objectsListModel->rowCount(current);
+                if (childCount == 0) {
+                    objectsListModel->removeRow(current.row(), current.parent());
+                }
+                current = current.parent();
+            }
         }
     }
 
