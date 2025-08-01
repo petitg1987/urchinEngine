@@ -178,25 +178,29 @@ namespace urchin {
     }
 
     void ObjectTableView::removeSelectedItems() const {
-        //Convert selection into persistent index because at first remove, the index are updated
+        //Use persistent index to avoid invalid index after first row removed
         QList<QPersistentModelIndex> persistentIndexes;
+        QList<QPersistentModelIndex> persistentGroupIndexes;
         for (const QModelIndex &index : selectedIndexes()) {
             persistentIndexes.append(QPersistentModelIndex(index));
+            persistentGroupIndexes.append(QPersistentModelIndex(index.parent()));
         }
 
         for (const QPersistentModelIndex &persistentIndex : persistentIndexes) {
             objectsListModel->removeRow(persistentIndex.row(), persistentIndex.parent());
+        }
 
-            //TODO does not work
-            //TODO test remove objectEntity + group
-            //remove empty group
-            QModelIndex current = persistentIndex.parent();
-            while (current.isValid()) {
-                int childCount = objectsListModel->rowCount(current);
-                if (childCount == 0) {
-                    objectsListModel->removeRow(current.row(), current.parent());
+        //remove empty group
+        for (const QPersistentModelIndex &persistentGroupIndex : persistentGroupIndexes) {
+            std::optional<QModelIndex> topIndexToRemove = std::nullopt;
+            if (!objectsListModel->hasChildren(persistentGroupIndex)) {
+                topIndexToRemove = persistentGroupIndex;
+                while (objectsListModel->rowCount(topIndexToRemove->parent()) <= 1) {
+                    topIndexToRemove = topIndexToRemove->parent();
                 }
-                current = current.parent();
+            }
+            if (topIndexToRemove) {
+                objectsListModel->removeRow(topIndexToRemove->row(), topIndexToRemove->parent());
             }
         }
     }
