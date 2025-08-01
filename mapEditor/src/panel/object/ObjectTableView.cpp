@@ -43,7 +43,6 @@ namespace urchin {
     QStandardItem* ObjectTableView::buildGroupEntityItem(const std::string& groupName) const {
         auto* itemGroup = new QStandardItem(QString::fromStdString(groupName));
         itemGroup->setData(false, IS_OBJECT_ENTITY_DATA);
-        itemGroup->setData(QString::fromStdString(groupName), GROUP_OR_OBJECT_ENTITY_DATA);
         itemGroup->setEditable(false);
         return itemGroup;
     }
@@ -120,25 +119,35 @@ namespace urchin {
         }
     }
 
-    void ObjectTableView::addObjectEntity(const ObjectEntity& objectEntity) { //TODO update for group
-        int insertRowId;
-        for (insertRowId = 0; insertRowId < objectsListModel->rowCount(); ++insertRowId) {
-            QModelIndex modelIndex = objectsListModel->index(insertRowId, 0);
-            auto* existingObjectEntity = modelIndex.data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
-            if (objectEntity.getName().compare(existingObjectEntity->getName()) < 0) {
+    void ObjectTableView::addObjectEntity(const ObjectEntity& objectEntity) {
+        QStandardItem* groupItem = findOrCreateGroupHierarchy(objectEntity.getGroupHierarchy());
+
+        int childRow;
+        for (childRow = 0; childRow < groupItem->rowCount(); ++childRow) {
+            QStandardItem* child = groupItem->child(childRow);
+            std::string childItemName;
+            if (child->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
+                childItemName = child->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>()->getName();
+            } else {
+                childItemName = child->text().toStdString();
+            }
+
+            if (objectEntity.getName().compare(childItemName) < 0) {
                 break;
             }
         }
 
-        objectsListModel->insertRow(insertRowId);
-        objectsListModel->setItem(insertRowId, 0, buildObjectEntityItem(objectEntity));
+        QStandardItem* newItem = buildObjectEntityItem(objectEntity);
+        groupItem->insertRow(childRow, buildObjectEntityItem(objectEntity));
+        selectItem(newItem->index());
+    }
 
-        //TODO remove
-        QModelIndex modelIndex = objectsListModel->index(insertRowId, 0);
-        QStandardItem *standardItem = objectsListModel->itemFromIndex(modelIndex);
-        standardItem->appendRow(buildGroupEntityItem("lol"));
-
-        selectItem(this->model()->index(insertRowId, 0));
+    QStandardItem* ObjectTableView::findOrCreateGroupHierarchy(const std::vector<std::string>& /*groupHierarchy*/) {
+        return objectsListModel->invisibleRootItem();
+        //TODO impl..
+        // QModelIndex modelIndex = objectsListModel->index(insertRowId, 0);
+        // QStandardItem *standardItem = objectsListModel->itemFromIndex(modelIndex);
+        // standardItem->appendRow(buildGroupEntityItem("lol"));
     }
 
     bool ObjectTableView::removeSelectedItem() const {
