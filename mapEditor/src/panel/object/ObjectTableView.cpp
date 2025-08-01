@@ -142,7 +142,7 @@ namespace urchin {
         selectItem(newObjectEntityItem->index());
     }
 
-    QStandardItem* ObjectTableView::findOrCreateGroupHierarchy(const std::vector<std::string>& groupHierarchy) {
+    QStandardItem* ObjectTableView::findOrCreateGroupHierarchy(const std::vector<std::string>& groupHierarchy) const {
         QStandardItem* current = objectsListModel->invisibleRootItem();
         for (const std::string& group : groupHierarchy) {
             current = findOrCreateGroup(group, current);
@@ -150,7 +150,7 @@ namespace urchin {
         return current;
     }
 
-    QStandardItem* ObjectTableView::findOrCreateGroup(const std::string& group, QStandardItem* parent) {
+    QStandardItem* ObjectTableView::findOrCreateGroup(const std::string& group, QStandardItem* parent) const {
         int childRow;
         for (childRow = 0; childRow < parent->rowCount(); ++childRow) {
             QStandardItem* child = parent->child(childRow);
@@ -171,7 +171,6 @@ namespace urchin {
 
         QStandardItem* newGroupItem = buildGroupEntityItem(group);
         parent->insertRow(childRow, newGroupItem);
-        selectItem(newGroupItem->index());
         return newGroupItem;
     }
 
