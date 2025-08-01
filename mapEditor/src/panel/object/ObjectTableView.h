@@ -27,7 +27,7 @@ namespace urchin {
 
             void addObjectEntity(const ObjectEntity&, bool);
             void removeSelectedItems() const;
-            bool refreshMainSelectedObjectEntity() const;
+            void refreshMainSelectedObjectEntity() const;
             void removeAll() const;
 
         private:

@@ -205,13 +205,11 @@ namespace urchin {
         }
     }
 
-    bool ObjectTableView::refreshMainSelectedObjectEntity() const { //TODO impl correctly refresh of the name + group
+    void ObjectTableView::refreshMainSelectedObjectEntity() const { //TODO impl correctly refresh of the name + group
         if (hasMainObjectEntitySelected()) {
             const ObjectEntity* selectObjectEntity = getMainSelectedObjectEntity();
             objectsListModel->setItem(currentIndex().row(), 0, buildObjectEntityItem(*selectObjectEntity));
-            return true;
         }
-        return false;
     }
 
     void ObjectTableView::removeAll() const {

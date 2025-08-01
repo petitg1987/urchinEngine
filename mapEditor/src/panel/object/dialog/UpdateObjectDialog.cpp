@@ -86,10 +86,10 @@ namespace urchin {
 
             LabelStyleHelper::applyNormalStyle(updatedObjectNameLabel);
 
-            if (getNewObjectName().empty()) {
+            if (getUpdatedObjectName().empty()) {
                 LabelStyleHelper::applyErrorStyle(updatedObjectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (getNewObjectName() != originalName && isObjectEntityExist(getNewObjectName())) {
+            } else if (getUpdatedObjectName() != originalName && isObjectEntityExist(getUpdatedObjectName())) {
                 LabelStyleHelper::applyErrorStyle(updatedObjectNameLabel, "Object name is already used");
                 hasError = true;
             }
