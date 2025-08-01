@@ -177,7 +177,7 @@ namespace urchin {
         return newGroupItem;
     }
 
-    void ObjectTableView::removeSelectedItems() const {
+    void ObjectTableView::removeSelectedItems() const { //TODO if parent is empty group => remove it, etc
         //Convert selection into persistent index because at first remove, the index are updated
         QList<QPersistentModelIndex> persistentIndexes;
         for (const QModelIndex &index : selectedIndexes()) {
