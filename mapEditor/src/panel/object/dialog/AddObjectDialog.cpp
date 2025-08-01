@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    AddObjectDialog::AddObjectDialog(QWidget* parent, const ObjectController* objectController) :
+    AddObjectDialog::AddObjectDialog(QWidget* parent, const ObjectController* objectController, const std::vector<std::string>& defaultGroupHierarchy) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
@@ -24,7 +24,7 @@ namespace urchin {
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         setupNameField(mainLayout);
-        setupGroupFields(mainLayout);
+        setupGroupFields(mainLayout, defaultGroupHierarchy);
 
         auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 3, 0, 1, 2);
@@ -41,20 +41,24 @@ namespace urchin {
 
         objectNameText = new QLineEdit();
         mainLayout->addWidget(objectNameText, 0, 1);
-        objectNameText->setFixedWidth(360);
     }
 
-    void AddObjectDialog::setupGroupFields(QGridLayout* mainLayout) {
+    void AddObjectDialog::setupGroupFields(QGridLayout* mainLayout, const std::vector<std::string>& defaultGroupHierarchy) {
         auto* groupLabel = new QLabel("Group*:");
         mainLayout->addWidget(groupLabel, 1, 0);
 
+        std::string defaultGroupHierarchyString = StringUtil::join(defaultGroupHierarchy, GROUP_DELIMITER);
         std::vector<std::vector<std::string>> allGroupHierarchy = getAllGroupHierarchy();
+
         groupComboBox = new QComboBox();
         mainLayout->addWidget(groupComboBox, 1, 1);
         groupComboBox->addItem("(root)", QVariant(""));
         for (const std::vector<std::string>& groupHierarchy : allGroupHierarchy) {
             std::string groupHierarchyString = StringUtil::join(groupHierarchy, GROUP_DELIMITER);
             groupComboBox->addItem(QString::fromStdString(groupHierarchyString), QVariant(QString::fromStdString(groupHierarchyString)));
+            if (groupHierarchyString == defaultGroupHierarchyString) {
+                groupComboBox->setCurrentIndex(groupComboBox->count() - 1);
+            }
         }
 
         auto* newGroupLabel = new QLabel("New group:");

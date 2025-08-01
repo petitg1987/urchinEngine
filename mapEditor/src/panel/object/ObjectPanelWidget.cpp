@@ -536,7 +536,11 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showAddObjectDialog() {
-        AddObjectDialog addObjectEntityDialog(this, objectController);
+        std::vector<std::string> defaultGroupHierarchy;
+        if (objectTableView->hasMainObjectEntitySelected()) {
+            defaultGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
+        }
+        AddObjectDialog addObjectEntityDialog(this, objectController, defaultGroupHierarchy);
         addObjectEntityDialog.exec();
 
         if (addObjectEntityDialog.result() == QDialog::Accepted) {
