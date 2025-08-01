@@ -41,28 +41,20 @@ namespace urchin {
         objectNameText->setText(QString::fromStdString(proposedName));
     }
 
-    void CloneObjectDialog::updateObjectName() {
-        QString objectName = objectNameText->text();
-        if (!objectName.isEmpty()) {
-            this->objectName = objectName.toUtf8().constData();
-        }
-    }
-
-    const std::string& CloneObjectDialog::getObjectName() const {
-        return objectName;
+    std::string CloneObjectDialog::getObjectName() const {
+        return objectNameText->text().toStdString();
     }
 
     void CloneObjectDialog::done(int r) {
         if (Accepted == r) {
             bool hasError = false;
 
-            updateObjectName();
             LabelStyleHelper::applyNormalStyle(objectNameLabel);
 
-            if (objectName.empty()) {
+            if (getObjectName().empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (isObjectEntityExist(objectName)) {
+            } else if (isObjectEntityExist(getObjectName())) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }

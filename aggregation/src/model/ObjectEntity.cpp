@@ -177,6 +177,7 @@ namespace urchin {
     std::unique_ptr<ObjectEntity> ObjectEntity::clone(std::string newName) const {
         auto newObject = std::make_unique<ObjectEntity>();
         newObject->setName(std::move(newName));
+        newObject->setGroupHierarchy(getGroupHierarchy());
         newObject->setModel(std::make_unique<Model>(*getModel()));
 
         RigidBody* toCloneRigidBody = getRigidBody();
