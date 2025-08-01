@@ -20,7 +20,7 @@ namespace urchin {
             ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(const ObjectEntity&);
             ObjectEntity& cloneObjectEntity(std::string, const ObjectEntity&);
-            void renameObjectEntity(const ObjectEntity&, std::string);
+            void updateObjectEntity(const ObjectEntity&, std::string, std::vector<std::string>);
 
             void moveObjectInFrontOfCamera(const ObjectEntity&, bool);
             void changeMeshesFile(const ObjectEntity&, const std::string&);

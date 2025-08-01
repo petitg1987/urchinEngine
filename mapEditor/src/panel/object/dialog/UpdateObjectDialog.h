@@ -17,8 +17,8 @@ namespace urchin {
         public:
             UpdateObjectDialog(QWidget*, std::string, const std::vector<std::string>&, const ObjectController*);
 
-            std::string getNewObjectName() const;
-            std::vector<std::string> getNewGroupHierarchy() const;
+            std::string getUpdatedObjectName() const;
+            std::vector<std::string> getUpdatedGroupHierarchy() const;
 
         private:
             void setupNameFields(QGridLayout*);

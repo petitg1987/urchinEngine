@@ -68,11 +68,11 @@ namespace urchin {
         mainLayout->addWidget(newGroupText, 2, 1);
     }
 
-    std::string UpdateObjectDialog::getNewObjectName() const {
+    std::string UpdateObjectDialog::getUpdatedObjectName() const {
         return updatedObjectNameText->text().toStdString();
     }
 
-    std::vector<std::string> UpdateObjectDialog::getNewGroupHierarchy() const {
+    std::vector<std::string> UpdateObjectDialog::getUpdatedGroupHierarchy() const {
         std::vector<std::string> groupHierarchy = StringUtil::split(updatedGroupComboBox->currentData().toString().toStdString(), GroupHierarchyHelper::GROUP_DELIMITER);
         if (!newGroupText->text().isEmpty()) {
             groupHierarchy.push_back(newGroupText->text().toStdString());

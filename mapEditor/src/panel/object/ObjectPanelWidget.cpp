@@ -590,9 +590,8 @@ namespace urchin {
         updateObjectDialog.exec();
 
         if (updateObjectDialog.result() == QDialog::Accepted) {
-            const std::string& updatedName = updateObjectDialog.getNewObjectName(); //TODO use also getNewGroupHierarchy()
             const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
-            objectController->renameObjectEntity(objectEntity, updatedName);
+            objectController->updateObjectEntity(objectEntity, updateObjectDialog.getUpdatedObjectName(), updateObjectDialog.getUpdatedGroupHierarchy());
 
             objectTableView->refreshMainSelectedObjectEntity();
         }
