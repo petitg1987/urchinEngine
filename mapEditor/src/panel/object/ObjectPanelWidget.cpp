@@ -356,7 +356,7 @@ namespace urchin {
         this->objectController = &objectController;
 
         for (auto& objectEntity : this->objectController->getObjectEntities()) {
-            objectTableView->addObjectEntity(*objectEntity);
+            objectTableView->addObjectEntity(*objectEntity, false);
         }
     }
 
@@ -549,7 +549,7 @@ namespace urchin {
             objectController->createDefaultBody(objectEntityInserted);
             objectController->moveObjectInFrontOfCamera(objectEntityInserted, false);
 
-            objectTableView->addObjectEntity(objectEntityInserted);
+            objectTableView->addObjectEntity(objectEntityInserted, true);
         }
     }
 
@@ -579,7 +579,7 @@ namespace urchin {
             ObjectEntity& objectEntityInserted = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
             objectController->moveObjectInFrontOfCamera(objectEntityInserted, true);
 
-            objectTableView->addObjectEntity(objectEntityInserted);
+            objectTableView->addObjectEntity(objectEntityInserted, true);
         }
     }
 

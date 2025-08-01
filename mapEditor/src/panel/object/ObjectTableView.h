@@ -25,7 +25,7 @@ namespace urchin {
             std::vector<const ObjectEntity*> getAllSelectedObjectEntities() const;
             void selectObjectEntity(const ObjectEntity&);
 
-            void addObjectEntity(const ObjectEntity&);
+            void addObjectEntity(const ObjectEntity&, bool);
             void removeSelectedItems() const;
             bool refreshMainSelectedObjectEntity() const;
             void removeAll() const;
