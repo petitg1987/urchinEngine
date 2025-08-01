@@ -36,6 +36,7 @@ namespace urchin {
             QLabel* objectNameLabel;
             QLineEdit* objectNameText;
             QComboBox* groupComboBox;
+            QLineEdit* newGroupText;
 
             std::unique_ptr<ObjectEntity> objectEntity;
     };

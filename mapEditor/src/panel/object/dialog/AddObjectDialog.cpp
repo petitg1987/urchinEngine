@@ -13,6 +13,8 @@ namespace urchin {
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr),
+            groupComboBox(nullptr),
+            newGroupText(nullptr),
             objectEntity(nullptr) {
         this->setWindowTitle("Add Object");
         this->resize(530, 150);
@@ -58,7 +60,8 @@ namespace urchin {
         auto* newGroupLabel = new QLabel("New group:");
         mainLayout->addWidget(newGroupLabel, 2, 0);
 
-        //TODO line edit !
+        newGroupText = new QLineEdit();
+        mainLayout->addWidget(newGroupText, 2, 1);
     }
 
     std::vector<std::vector<std::string>> AddObjectDialog::getAllGroupHierarchy() const {
@@ -83,6 +86,9 @@ namespace urchin {
 
     int AddObjectDialog::buildObjectEntity(int result) {
         std::vector<std::string> groupHierarchy = StringUtil::split(groupComboBox->currentData().toString().toStdString(), GROUP_DELIMITER);
+        if (!newGroupText->text().isEmpty()) {
+            groupHierarchy.push_back(newGroupText->text().toStdString());
+        }
 
         objectEntity = std::make_unique<ObjectEntity>();
         objectEntity->setModel(Model::fromMeshesFile(""));

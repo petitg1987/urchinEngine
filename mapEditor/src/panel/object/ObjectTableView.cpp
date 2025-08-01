@@ -200,34 +200,4 @@ namespace urchin {
         objectsListModel->removeRows(0, objectsListModel->rowCount());
     }
 
-    std::vector<std::vector<std::string>> ObjectTableView::getAllGroupHierarchy() const {
-        std::vector<std::vector<std::string>> allGroupHierarchy;
-
-        std::stack<QStandardItem*> itemsToProcess;
-        itemsToProcess.push(objectsListModel->invisibleRootItem());
-
-        while (!itemsToProcess.empty()) {
-            QStandardItem* current = itemsToProcess.top();
-            itemsToProcess.pop();
-
-            if (!current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
-                std::vector<std::string> groupHierarchy;
-                QStandardItem* currentRoute = current;
-                do {
-                    groupHierarchy.push_back(currentRoute->text().toStdString());
-                    currentRoute = current->parent();
-                } while (currentRoute != nullptr);
-                std::ranges::reverse(groupHierarchy);
-                allGroupHierarchy.push_back(groupHierarchy);
-            }
-
-            for (int row = current->rowCount() - 1; row >= 0; --row) {
-                QStandardItem* child = current->child(row);
-                itemsToProcess.push(child);
-            }
-        }
-
-        return allGroupHierarchy;
-    }
-
 }
