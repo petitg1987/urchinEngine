@@ -74,7 +74,7 @@ namespace urchin {
     std::vector<const ObjectEntity*> ObjectTableView::getAllSelectedObjectEntities() const {
         std::vector<const ObjectEntity*> objectEntities;
 
-        for (const QModelIndex& modelIndex : this->selectedIndexes()) {
+        for (const QModelIndex& modelIndex : selectedIndexes()) {
             std::stack<QStandardItem*> itemsToProcess;
             itemsToProcess.push(objectsListModel->itemFromIndex(modelIndex));
 
@@ -176,8 +176,14 @@ namespace urchin {
     }
 
     void ObjectTableView::removeSelectedItems() const {
-        for (const QModelIndex& modelIndex : this->selectedIndexes()) {
-            objectsListModel->removeRow(modelIndex.row(), modelIndex.parent());
+        //Convert selection into persistent index because at first remove, the index are updated
+        QList<QPersistentModelIndex> persistentIndexes;
+        for (const QModelIndex &index : selectedIndexes()) {
+            persistentIndexes.append(QPersistentModelIndex(index));
+        }
+
+        for (const QPersistentModelIndex &pIndex : persistentIndexes) {
+            objectsListModel->removeRow(pIndex.row(), pIndex.parent());
         }
     }
 
