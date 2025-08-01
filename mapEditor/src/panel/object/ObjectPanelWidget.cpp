@@ -583,7 +583,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::showUpdateObjectDialog() {
+    void ObjectPanelWidget::showUpdateObjectDialog() { //TODO create dialog to update group !
         std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
         std::vector<std::string> originalGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
         UpdateObjectDialog updateObjectDialog(this, originalName, originalGroupHierarchy, objectController);
