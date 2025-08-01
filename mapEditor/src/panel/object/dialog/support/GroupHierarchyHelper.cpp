@@ -4,14 +4,17 @@
 
 namespace urchin {
 
-    std::vector<std::vector<std::string>> GroupHierarchyHelper::getAllGroupHierarchy(const ObjectController& objectController) { //TODO missing intermediate group !
+    std::vector<std::vector<std::string>> GroupHierarchyHelper::getAllGroupHierarchy(const ObjectController& objectController) {
         std::map<std::string, std::vector<std::string>> allGroupHierarchyMap;
         std::list<const ObjectEntity*> allObjectEntities = objectController.getObjectEntities();
         for (const ObjectEntity* objectEntity : allObjectEntities) {
             const std::vector<std::string>& groupHierarchy = objectEntity->getGroupHierarchy();
-            if (!groupHierarchy.empty()) {
-                std::string key = StringUtil::join(groupHierarchy, '#');
-                allGroupHierarchyMap.insert({key, groupHierarchy});
+
+            std::vector<std::string> currentGroup;
+            for (std::string groupName : groupHierarchy) {
+                currentGroup.push_back(groupName);
+                std::string key = StringUtil::join(currentGroup, '#');
+                allGroupHierarchyMap.insert({key, currentGroup});
             }
         }
 
