@@ -1,5 +1,6 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
+#include <ranges>
 
 #include "panel/object/dialog/AddObjectDialog.h"
 #include "widget/style/LabelStyleHelper.h"
@@ -13,17 +14,18 @@ namespace urchin {
             objectNameLabel(nullptr),
             objectNameText(nullptr),
             objectEntity(nullptr) {
-        this->setWindowTitle("New Object");
-        this->resize(530, 90);
+        this->setWindowTitle("Add Object");
+        this->resize(530, 150);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        setupNameFields(mainLayout);
+        setupNameField(mainLayout);
+        setupGroupFields(mainLayout);
 
         auto* buttonBox = new QDialogButtonBox();
-        mainLayout->addWidget(buttonBox, 2, 0, 1, 2);
+        mainLayout->addWidget(buttonBox, 3, 0, 1, 2);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -31,8 +33,8 @@ namespace urchin {
         connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void AddObjectDialog::setupNameFields(QGridLayout* mainLayout) {
-        objectNameLabel = new QLabel("Object Name:");
+    void AddObjectDialog::setupNameField(QGridLayout* mainLayout) {
+        objectNameLabel = new QLabel("Object Name*:");
         mainLayout->addWidget(objectNameLabel, 0, 0);
 
         objectNameText = new QLineEdit();
@@ -40,17 +42,52 @@ namespace urchin {
         objectNameText->setFixedWidth(360);
     }
 
-    void AddObjectDialog::updateObjectName() {
-        QString objectName = objectNameText->text();
-        if (!objectName.isEmpty()) {
-            this->objectName = objectName.toUtf8().constData();
+    void AddObjectDialog::setupGroupFields(QGridLayout* mainLayout) {
+        auto* groupLabel = new QLabel("Group*:");
+        mainLayout->addWidget(groupLabel, 1, 0);
+
+        std::vector<std::vector<std::string>> allGroupHierarchy = getAllGroupHierarchy();
+        groupComboBox = new QComboBox();
+        mainLayout->addWidget(groupComboBox, 1, 1);
+        groupComboBox->addItem("(root)", QVariant(""));
+        for (const std::vector<std::string>& groupHierarchy : allGroupHierarchy) {
+            std::string groupHierarchyString = StringUtil::join(groupHierarchy, GROUP_DELIMITER);
+            groupComboBox->addItem(QString::fromStdString(groupHierarchyString), QVariant(QString::fromStdString(groupHierarchyString)));
         }
+
+        auto* newGroupLabel = new QLabel("New group:");
+        mainLayout->addWidget(newGroupLabel, 2, 0);
+
+        //TODO line edit !
+    }
+
+    std::vector<std::vector<std::string>> AddObjectDialog::getAllGroupHierarchy() const {
+        std::map<std::string, std::vector<std::string>> allGroupHierarchyMap;
+        std::list<const ObjectEntity*> allObjectEntities = objectController->getObjectEntities();
+        for (const ObjectEntity* objectEntity : allObjectEntities) {
+            const std::vector<std::string>& groupHierarchy = objectEntity->getGroupHierarchy();
+            if (!groupHierarchy.empty()) {
+                std::string key = StringUtil::join(groupHierarchy, '#');
+                allGroupHierarchyMap.insert({key, groupHierarchy});
+            }
+        }
+
+        std::vector<std::vector<std::string>> allGroupHierarchy;
+        allGroupHierarchy.reserve(allGroupHierarchyMap.size());
+        for (const std::vector<std::string>& groupHierarchy : std::views::values(allGroupHierarchyMap)) {
+            allGroupHierarchy.push_back(groupHierarchy);
+        }
+
+        return allGroupHierarchy;
     }
 
     int AddObjectDialog::buildObjectEntity(int result) {
+        std::vector<std::string> groupHierarchy = StringUtil::split(groupComboBox->currentData().toString().toStdString(), GROUP_DELIMITER);
+
         objectEntity = std::make_unique<ObjectEntity>();
         objectEntity->setModel(Model::fromMeshesFile(""));
-        objectEntity->setName(objectName);
+        objectEntity->setName(objectNameText->text().toStdString());
+        objectEntity->setGroupHierarchy(groupHierarchy);
         return result;
     }
 
@@ -62,13 +99,12 @@ namespace urchin {
         if (Accepted == r) {
             bool hasError = false;
 
-            updateObjectName();
             LabelStyleHelper::applyNormalStyle(objectNameLabel);
 
-            if (objectName.empty()) {
+            if (objectNameText->text().isEmpty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (isObjectEntityExist(objectName)) {
+            } else if (isObjectEntityExist(objectNameText->text().toStdString())) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }

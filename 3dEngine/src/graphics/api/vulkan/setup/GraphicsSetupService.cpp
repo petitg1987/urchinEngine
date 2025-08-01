@@ -91,7 +91,7 @@ namespace urchin {
     }
 
     void GraphicsSetupService::createInstance(const std::vector<std::string>& windowRequiredExtensions) const {
-        Logger::instance().logInfo("Creating a Vulkan instance with window required extensions: " + StringUtil::merge(windowRequiredExtensions, ','));
+        Logger::instance().logInfo("Creating a Vulkan instance with window required extensions: " + StringUtil::join(windowRequiredExtensions, ','));
 
         VkApplicationInfo applicationInfo{};
         applicationInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;

@@ -14,8 +14,10 @@ namespace urchin {
 
             static void split(std::string_view, const char&, std::vector<std::string>&);
             static std::vector<std::string> split(std::string_view, const char&);
-            static std::string merge(const std::vector<std::string>&, const char&);
-            static std::string merge(const std::vector<std::string>&, const std::string&);
+            static void split(std::string_view, const std::string&, std::vector<std::string>&);
+            static std::vector<std::string> split(std::string_view, const std::string&);
+            static std::string join(const std::vector<std::string>&, const char&);
+            static std::string join(const std::vector<std::string>&, const std::string&);
             static std::size_t countOccurrence(std::string_view, std::string_view);
 
             static void ltrim(std::string&);

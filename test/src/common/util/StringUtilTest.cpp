@@ -5,7 +5,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void StringUtilTest::splitString() {
+void StringUtilTest::splitStringByChar() {
     std::string str = "str1,str2,str3";
     std::vector<std::string> splitStr;
 
@@ -17,7 +17,7 @@ void StringUtilTest::splitString() {
     AssertHelper::assertStringEquals(splitStr[2], "str3");
 }
 
-void StringUtilTest::splitEmptyString() {
+void StringUtilTest::splitEmptyStringByChar() {
     std::string str = "str1,,str2";
     std::vector<std::string> splitStr;
 
@@ -29,12 +29,42 @@ void StringUtilTest::splitEmptyString() {
     AssertHelper::assertStringEquals(splitStr[2], "str2");
 }
 
-void StringUtilTest::mergeString() {
+void StringUtilTest::splitStringByString() {
+    std::string str = "str1,str2, str3";
+    std::vector<std::string> splitStr;
+
+    StringUtil::split(str, ", ", splitStr);
+
+    AssertHelper::assertUnsignedIntEquals(splitStr.size(), 2);
+    AssertHelper::assertStringEquals(splitStr[0], "str1,str2");
+    AssertHelper::assertStringEquals(splitStr[1], "str3");
+}
+
+void StringUtilTest::splitUniqueStringByString() {
+    std::string str = "str1";
+    std::vector<std::string> splitStr;
+
+    StringUtil::split(str, ", ", splitStr);
+
+    AssertHelper::assertUnsignedIntEquals(splitStr.size(), 1);
+    AssertHelper::assertStringEquals(splitStr[0], "str1");
+}
+
+void StringUtilTest::splitEmptyStringByString() {
+    std::string str = "";
+    std::vector<std::string> splitStr;
+
+    StringUtil::split(str, ", ", splitStr);
+
+    AssertHelper::assertTrue(splitStr.empty());
+}
+
+void StringUtilTest::joinString() {
     std::vector<std::string> splitStr = {"str1", "", "str2"};
 
-    std::string merged = StringUtil::merge(splitStr, ',');
+    std::string joined = StringUtil::join(splitStr, ',');
 
-    AssertHelper::assertStringEquals(merged, "str1,,str2");
+    AssertHelper::assertStringEquals(joined, "str1,,str2");
 }
 
 void StringUtilTest::camelToKebabCase() {
@@ -52,9 +82,12 @@ void StringUtilTest::kebabToCamelCase() {
 CppUnit::Test* StringUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("StringUtilTest");
 
-    suite->addTest(new CppUnit::TestCaller("splitString", &StringUtilTest::splitString));
-    suite->addTest(new CppUnit::TestCaller("splitEmptyString", &StringUtilTest::splitEmptyString));
-    suite->addTest(new CppUnit::TestCaller("mergeString", &StringUtilTest::mergeString));
+    suite->addTest(new CppUnit::TestCaller("splitStringByChar", &StringUtilTest::splitStringByChar));
+    suite->addTest(new CppUnit::TestCaller("splitEmptyStringByChar", &StringUtilTest::splitEmptyStringByChar));
+    suite->addTest(new CppUnit::TestCaller("splitStringByString", &StringUtilTest::splitStringByString));
+    suite->addTest(new CppUnit::TestCaller("splitUniqueStringByString", &StringUtilTest::splitUniqueStringByString));
+    suite->addTest(new CppUnit::TestCaller("splitEmptyStringByString", &StringUtilTest::splitEmptyStringByString));
+    suite->addTest(new CppUnit::TestCaller("joinString", &StringUtilTest::joinString));
 
     suite->addTest(new CppUnit::TestCaller("camelToKebabCase", &StringUtilTest::camelToKebabCase));
     suite->addTest(new CppUnit::TestCaller("kebabToCamelCase", &StringUtilTest::kebabToCamelCase));

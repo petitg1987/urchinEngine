@@ -30,6 +30,8 @@ namespace urchin {
             bool refreshMainSelectedObjectEntity() const;
             void removeAll() const;
 
+            std::vector<std::vector<std::string>> getAllGroupHierarchy() const; //TODO to remove ?
+
         private:
             void selectItem(const QModelIndex&);
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;

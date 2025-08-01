@@ -2,8 +2,9 @@
 
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QComboBox>
 #include <UrchinAggregation.h>
 
 #include "controller/object/ObjectController.h"
@@ -19,20 +20,23 @@ namespace urchin {
             std::unique_ptr<ObjectEntity> moveObjectEntity();
 
         private:
-            void setupNameFields(QGridLayout*);
+            void setupNameField(QGridLayout*);
+            void setupGroupFields(QGridLayout*);
+            std::vector<std::vector<std::string>> getAllGroupHierarchy() const;
 
-            void updateObjectName();
             int buildObjectEntity(int);
 
             void done(int) override;
             bool isObjectEntityExist(std::string_view) const;
 
+            static constexpr std::string GROUP_DELIMITER = " > ";
+
             const ObjectController* objectController;
 
             QLabel* objectNameLabel;
             QLineEdit* objectNameText;
+            QComboBox* groupComboBox;
 
-            std::string objectName;
             std::unique_ptr<ObjectEntity> objectEntity;
     };
 

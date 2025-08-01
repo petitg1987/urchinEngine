@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <stdexcept>
 #include <cctype>
-#include <cassert>
 
 #include "util/StringUtil.h"
 
@@ -56,26 +55,46 @@ namespace urchin {
         return tokens;
     }
 
-    std::string StringUtil::merge(const std::vector<std::string>& values, const char& delimiter) {
-        std::string mergedValues;
-        for (unsigned int i = 0; i < values.size(); ++i) {
-            mergedValues += values[i];
-            if (i + 1 < values.size()) {
-                mergedValues += delimiter;
+    void StringUtil::split(std::string_view str, const std::string& delimiter, std::vector<std::string>& tokens) {
+        auto start = str.begin();
+
+        while (start != str.end()) {
+            auto temp = std::search(start, str.end(), delimiter.begin(), delimiter.end());
+            tokens.emplace_back(start, temp);
+
+            start = temp;
+            if (start != str.end()) {
+                std::advance(start, delimiter.size());
             }
         }
-        return mergedValues;
     }
 
-    std::string StringUtil::merge(const std::vector<std::string>& values, const std::string& delimiter) {
-        std::string mergedValues;
+    std::vector<std::string> StringUtil::split(std::string_view str, const std::string& delimiter) {
+        std::vector<std::string> tokens;
+        split(str, delimiter, tokens);
+        return tokens;
+    }
+
+    std::string StringUtil::join(const std::vector<std::string>& values, const char& delimiter) {
+        std::string joinedValues;
         for (unsigned int i = 0; i < values.size(); ++i) {
-            mergedValues += values[i];
+            joinedValues += values[i];
             if (i + 1 < values.size()) {
-                mergedValues += delimiter;
+                joinedValues += delimiter;
             }
         }
-        return mergedValues;
+        return joinedValues;
+    }
+
+    std::string StringUtil::join(const std::vector<std::string>& values, const std::string& delimiter) {
+        std::string joinedValues;
+        for (unsigned int i = 0; i < values.size(); ++i) {
+            joinedValues += values[i];
+            if (i + 1 < values.size()) {
+                joinedValues += delimiter;
+            }
+        }
+        return joinedValues;
     }
 
     std::size_t StringUtil::countOccurrence(std::string_view str, std::string_view searchStr) {

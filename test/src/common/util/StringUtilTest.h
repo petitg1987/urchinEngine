@@ -7,9 +7,12 @@ class StringUtilTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
-        void splitString();
-        void splitEmptyString();
-        void mergeString();
+        void splitStringByChar();
+        void splitEmptyStringByChar();
+        void splitStringByString();
+        void splitUniqueStringByString();
+        void splitEmptyStringByString();
+        void joinString();
 
         void camelToKebabCase();
         void kebabToCamelCase();
