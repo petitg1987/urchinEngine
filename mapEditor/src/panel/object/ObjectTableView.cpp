@@ -4,7 +4,7 @@
 
 #include "panel/object/ObjectTableView.h"
 
-namespace urchin { //TODO review all methods for group
+namespace urchin {
 
     ObjectTableView::ObjectTableView(QWidget* parent) :
             QTreeView(parent) {
@@ -72,51 +72,38 @@ namespace urchin { //TODO review all methods for group
         return nullptr;
     }
 
-    bool ObjectTableView::hasObjectEntitiesSelected() const {
-        if (currentIndex().row() == -1 || !selectionModel()->isSelected(currentIndex())) {
-            return false;
-        }
-
-        QStandardItem* selectedItem = objectsListModel->itemFromIndex(currentIndex());
-        if (selectedItem->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
-            return true;
-        } else {
-            std::stack<QStandardItem*> allChildItems;
-            allChildItems.push(selectedItem);
-
-            while (!allChildItems.empty()) {
-                QStandardItem* current = allChildItems.top();
-                allChildItems.pop();
-
-                if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
-                    return true;
-                }
-
-                for (int row = current->rowCount() - 1; row >= 0; --row) {
-                    QStandardItem* child = current->child(row);
-                    allChildItems.push(child);
-                }
-            }
-        }
-        return false;
-    }
-
     std::vector<const ObjectEntity*> ObjectTableView::getAllSelectedObjectEntities() const {
         std::vector<const ObjectEntity*> objectEntities;
-        objectEntities.reserve(this->selectedIndexes().size());
-        for (const QModelIndex& modelIndex : this->selectedIndexes()) {
-            objectEntities.push_back(modelIndex.data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>());
+        if (currentIndex().row() == -1 || !selectionModel()->isSelected(currentIndex())) {
+            return objectEntities;
+        }
+
+        std::stack<QStandardItem*> itemsToProcess;
+        itemsToProcess.push(objectsListModel->itemFromIndex(currentIndex()));
+
+        while (!itemsToProcess.empty()) {
+            QStandardItem* current = itemsToProcess.top();
+            itemsToProcess.pop();
+
+            if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
+                objectEntities.push_back(current->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>());
+            } else {
+                for (int row = current->rowCount() - 1; row >= 0; --row) {
+                    QStandardItem* child = current->child(row);
+                    itemsToProcess.push(child);
+                }
+            }
         }
         return objectEntities;
     }
 
     void ObjectTableView::selectObjectEntity(const ObjectEntity& expectedObjectEntity) {
-        std::stack<QStandardItem*> allChildItems;
-        allChildItems.push(objectsListModel->invisibleRootItem());
+        std::stack<QStandardItem*> itemsToProcess;
+        itemsToProcess.push(objectsListModel->invisibleRootItem());
 
-        while (!allChildItems.empty()) {
-            QStandardItem* current = allChildItems.top();
-            allChildItems.pop();
+        while (!itemsToProcess.empty()) {
+            QStandardItem* current = itemsToProcess.top();
+            itemsToProcess.pop();
 
             if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
                 auto* objectEntity = current->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
@@ -128,12 +115,12 @@ namespace urchin { //TODO review all methods for group
 
             for (int row = current->rowCount() - 1; row >= 0; --row) {
                 QStandardItem* child = current->child(row);
-                allChildItems.push(child);
+                itemsToProcess.push(child);
             }
         }
     }
 
-    void ObjectTableView::addObjectEntity(const ObjectEntity& objectEntity) {
+    void ObjectTableView::addObjectEntity(const ObjectEntity& objectEntity) { //TODO update for group
         int insertRowId;
         for (insertRowId = 0; insertRowId < objectsListModel->rowCount(); ++insertRowId) {
             QModelIndex modelIndex = objectsListModel->index(insertRowId, 0);
@@ -155,11 +142,12 @@ namespace urchin { //TODO review all methods for group
     }
 
     bool ObjectTableView::removeSelectedItem() const {
-        if (hasObjectEntitiesSelected()) {
-            objectsListModel->removeRow(this->currentIndex().row());
-            return true;
+        if (currentIndex().row() == -1 || !selectionModel()->isSelected(currentIndex())) {
+            return false;
         }
-        return false;
+
+        objectsListModel->removeRow(this->currentIndex().row());
+        return true;
     }
 
     bool ObjectTableView::refreshSelectedObjectEntity() const {
