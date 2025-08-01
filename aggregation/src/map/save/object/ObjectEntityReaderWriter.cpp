@@ -13,6 +13,17 @@ namespace urchin {
 
         objectEntity->setName(objectEntityChunk->getAttributeValue(NAME_ATTR));
 
+        std::vector<std::string> groupHierarchy;
+        auto groupHierarchyChunk = udaParser.getFirstChunk(false, GROUP_HIERARCHY_TAG, UdaAttribute(), objectEntityChunk);
+        if (groupHierarchyChunk != nullptr) {
+            auto groupListChunk = udaParser.getChunks(GROUP_TAG, UdaAttribute(), groupHierarchyChunk);
+            groupHierarchy.reserve(groupListChunk.size());
+            for (const auto& groupChunk : groupListChunk) {
+                groupHierarchy.emplace_back(groupChunk->getStringValue());
+            }
+        }
+        objectEntity->setGroupHierarchy(groupHierarchy);
+
         auto modelChunk = udaParser.getFirstChunk(true, MODEL_TAG, UdaAttribute(), objectEntityChunk);
         objectEntity->setModel(ModelReaderWriter::load(modelChunk, udaParser));
 
@@ -43,6 +54,13 @@ namespace urchin {
 
     void ObjectEntityReaderWriter::write(UdaChunk& objectEntityChunk, const ObjectEntity& objectEntity, UdaParser& udaParser) {
         objectEntityChunk.addAttribute(UdaAttribute(NAME_ATTR, objectEntity.getName()));
+
+        if (!objectEntity.getGroupHierarchy().empty()) {
+            auto& groupHierarchyChunk = udaParser.createChunk(GROUP_HIERARCHY_TAG, UdaAttribute(), &objectEntityChunk);
+            for (const std::string& group : objectEntity.getGroupHierarchy()) {
+                udaParser.createChunk(GROUP_TAG, UdaAttribute(), &groupHierarchyChunk).setStringValue(group);
+            }
+        }
 
         auto& modelChunk = udaParser.createChunk(MODEL_TAG, UdaAttribute(), &objectEntityChunk);
         ModelReaderWriter::write(modelChunk, *objectEntity.getModel(), udaParser);
