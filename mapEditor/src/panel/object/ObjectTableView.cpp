@@ -55,13 +55,34 @@ namespace urchin {
         return itemObjectEntity;
     }
 
-    bool ObjectTableView::hasMainObjectEntitySelected() const {
-        if (currentIndex().row() == -1 || !selectionModel()->isSelected(currentIndex())) {
-            return false;
+    bool ObjectTableView::hasMainGroupHierarchySelected() const {
+        if (currentIndex().row() != -1 && selectionModel()->isSelected(currentIndex())) {
+            QStandardItem* selectedItem = objectsListModel->itemFromIndex(currentIndex());
+            return !selectedItem->data(IS_OBJECT_ENTITY_DATA).value<bool>();
         }
+        return false;
+    }
 
-        QStandardItem* selectedItem = objectsListModel->itemFromIndex(currentIndex());
-        return selectedItem->data(IS_OBJECT_ENTITY_DATA).value<bool>();
+    std::optional<std::vector<std::string>> ObjectTableView::getMainGroupHierarchySelected() const {
+        if (hasMainGroupHierarchySelected()) {
+            std::vector<std::string> result;
+            QStandardItem* currentItem = objectsListModel->itemFromIndex(currentIndex());
+            do {
+                result.push_back(currentItem->text().toStdString());
+                currentItem = currentItem->parent();
+            } while (currentItem != nullptr);
+            std::ranges::reverse(result);
+            return std::make_optional(std::move(result));
+        }
+        return std::nullopt;
+    }
+
+    bool ObjectTableView::hasMainObjectEntitySelected() const {
+        if (currentIndex().row() != -1 && selectionModel()->isSelected(currentIndex())) {
+            QStandardItem* selectedItem = objectsListModel->itemFromIndex(currentIndex());
+            return selectedItem->data(IS_OBJECT_ENTITY_DATA).value<bool>();
+        }
+        return false;
     }
 
     const ObjectEntity* ObjectTableView::getMainSelectedObjectEntity() const {

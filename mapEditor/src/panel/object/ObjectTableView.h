@@ -20,6 +20,8 @@ namespace urchin {
                 OBJECT_SELECTION_CHANGED
             };
 
+            bool hasMainGroupHierarchySelected() const;
+            std::optional<std::vector<std::string>> getMainGroupHierarchySelected() const;
             bool hasMainObjectEntitySelected() const;
             const ObjectEntity* getMainSelectedObjectEntity() const;
             std::vector<const ObjectEntity*> getAllSelectedObjectEntities() const;

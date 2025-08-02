@@ -22,9 +22,9 @@ namespace urchin {
             objectController(nullptr),
             objectTableView(nullptr),
             addObjectButton(nullptr),
-            removeObjectButton(nullptr),
+            removeItemsButton(nullptr),
             cloneObjectButton(nullptr),
-            updateObjectButton(nullptr),
+            updateItemsButton(nullptr),
             tabWidget(nullptr),
             tabSelected(ObjectTab::MODEL),
             objectEntitySelected(nullptr),
@@ -61,11 +61,11 @@ namespace urchin {
         ButtonStyleHelper::applyNormalStyle(addObjectButton);
         connect(addObjectButton, SIGNAL(clicked()), this, SLOT(showAddObjectDialog()));
 
-        removeObjectButton = new QPushButton("Remove");
-        buttonsLayout->addWidget(removeObjectButton);
-        ButtonStyleHelper::applyNormalStyle(removeObjectButton);
-        removeObjectButton->setEnabled(false);
-        connect(removeObjectButton, SIGNAL(clicked()), this, SLOT(removeSelectedObject()));
+        removeItemsButton = new QPushButton("Remove");
+        buttonsLayout->addWidget(removeItemsButton);
+        ButtonStyleHelper::applyNormalStyle(removeItemsButton);
+        removeItemsButton->setEnabled(false);
+        connect(removeItemsButton, SIGNAL(clicked()), this, SLOT(removeSelectedItems()));
 
         cloneObjectButton = new QPushButton("Clone");
         buttonsLayout->addWidget(cloneObjectButton);
@@ -73,11 +73,11 @@ namespace urchin {
         cloneObjectButton->setEnabled(false);
         connect(cloneObjectButton, SIGNAL(clicked()), this, SLOT(showCloneObjectDialog()));
 
-        updateObjectButton = new QPushButton("Update");
-        buttonsLayout->addWidget(updateObjectButton);
-        ButtonStyleHelper::applyNormalStyle(updateObjectButton);
-        updateObjectButton->setEnabled(false);
-        connect(updateObjectButton, SIGNAL(clicked()), this, SLOT(showUpdateObjectDialog()));
+        updateItemsButton = new QPushButton("Update");
+        buttonsLayout->addWidget(updateItemsButton);
+        ButtonStyleHelper::applyNormalStyle(updateItemsButton);
+        updateItemsButton->setEnabled(false);
+        connect(updateItemsButton, SIGNAL(clicked()), this, SLOT(showUpdateItemsDialog()));
 
         tabWidget = new QTabWidget();
         mainLayout->addWidget(tabWidget);
@@ -369,6 +369,7 @@ namespace urchin {
     void ObjectPanelWidget::notify(Observable* observable, int notificationType) {
         if (const auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
+                bool hasMainGroupHierarchySelected = objectTableView->hasMainGroupHierarchySelected();
                 bool hasMainObjectEntitySelected = objectTableView->hasMainObjectEntitySelected();
                 bool hasObjectsEntitiesSelected = !objectTableView->getAllSelectedObjectEntities().empty();
                 if (hasMainObjectEntitySelected) {
@@ -381,9 +382,9 @@ namespace urchin {
                     tabWidget->hide();
                 }
 
-                removeObjectButton->setEnabled(hasObjectsEntitiesSelected);
+                removeItemsButton->setEnabled(hasObjectsEntitiesSelected);
                 cloneObjectButton->setEnabled(hasMainObjectEntitySelected);
-                updateObjectButton->setEnabled(hasMainObjectEntitySelected);
+                updateItemsButton->setEnabled(hasMainGroupHierarchySelected || hasMainObjectEntitySelected);
             }
         } else if (const auto* sceneDisplayerWidget = dynamic_cast<SceneDisplayerWindow*>(observable)) {
             if (notificationType == SceneDisplayerWindow::BODY_PICKED) {
@@ -553,7 +554,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::removeSelectedObject() {
+    void ObjectPanelWidget::removeSelectedItems() {
         std::vector<const ObjectEntity*> selectedEntityObjects = objectTableView->getAllSelectedObjectEntities();
         if (selectedEntityObjects.size() > 1) {
             QMessageBox::StandardButton reply = QMessageBox::question(this, "Confirm Delete", "Are you sure you want to delete all the selected objects ?");
@@ -583,17 +584,26 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::showUpdateObjectDialog() { //TODO create dialog to update group !
-        std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
-        std::vector<std::string> originalGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
-        UpdateObjectDialog updateObjectDialog(this, originalName, originalGroupHierarchy, objectController);
-        updateObjectDialog.exec();
+    void ObjectPanelWidget::showUpdateItemsDialog() {
+        if (objectTableView->hasMainObjectEntitySelected()) {
+            std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
+            std::vector<std::string> originalGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
+            UpdateObjectDialog updateObjectDialog(this, originalName, originalGroupHierarchy, objectController);
+            updateObjectDialog.exec();
 
-        if (updateObjectDialog.result() == QDialog::Accepted) {
-            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
-            objectController->updateObjectEntity(objectEntity, updateObjectDialog.getUpdatedObjectName(), updateObjectDialog.getUpdatedGroupHierarchy());
+            if (updateObjectDialog.result() == QDialog::Accepted) {
+                const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
+                objectController->updateObjectEntity(objectEntity, updateObjectDialog.getUpdatedObjectName(), updateObjectDialog.getUpdatedGroupHierarchy());
 
-            objectTableView->refreshMainSelectedObjectEntity();
+                objectTableView->refreshMainSelectedObjectEntity();
+            }
+        } else if (objectTableView->hasMainGroupHierarchySelected()) {
+            std::vector<std::string> groupHierarchy = objectTableView->getMainGroupHierarchySelected().value();
+            //TODO create dialog to update group !
+            for (std::string group : groupHierarchy) {
+                std::cout<<group<<std::endl;
+            }
+            std::cout<<std::endl;
         }
     }
 
