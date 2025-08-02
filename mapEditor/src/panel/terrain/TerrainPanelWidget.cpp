@@ -79,7 +79,6 @@ namespace urchin {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
-        generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         generalPropertiesGroupBox->hide();
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
@@ -117,7 +116,6 @@ namespace urchin {
         meshGroupBox = new QGroupBox("Mesh");
         mainLayout->addWidget(meshGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(meshGroupBox);
-        meshGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         meshGroupBox->hide();
 
         auto* meshLayout = new QGridLayout(meshGroupBox);
@@ -151,7 +149,6 @@ namespace urchin {
         materialGroupBox = new QGroupBox("Material");
         mainLayout->addWidget(materialGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(materialGroupBox);
-        materialGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         materialGroupBox->hide();
 
         auto* materialLayout = new QGridLayout(materialGroupBox);
@@ -226,7 +223,6 @@ namespace urchin {
         grassGroupBox = new QGroupBox("Grass");
         mainLayout->addWidget(grassGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(grassGroupBox);
-        grassGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         grassGroupBox->hide();
 
         auto* grassLayout = new QGridLayout(grassGroupBox);

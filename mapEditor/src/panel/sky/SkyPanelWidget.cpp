@@ -44,7 +44,6 @@ namespace urchin {
         auto* skyboxGroupBox = new QGroupBox("Skybox");
         mainLayout->addWidget(skyboxGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(skyboxGroupBox);
-        skyboxGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* skyboxLayout = new QGridLayout(skyboxGroupBox);
 

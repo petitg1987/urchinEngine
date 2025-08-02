@@ -62,7 +62,6 @@ namespace urchin {
         auto* generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
-        generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
@@ -114,7 +113,6 @@ namespace urchin {
         specificSunLightGroupBox = new QGroupBox("Sun Light");
         mainLayout->addWidget(specificSunLightGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(specificSunLightGroupBox);
-        specificSunLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         specificSunLightGroupBox->hide();
 
         auto* sunLightLayout = new QGridLayout(specificSunLightGroupBox);
@@ -142,7 +140,6 @@ namespace urchin {
         specificOmnidirectionalLightGroupBox = new QGroupBox("Omnidirectional Light");
         mainLayout->addWidget(specificOmnidirectionalLightGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(specificOmnidirectionalLightGroupBox);
-        specificOmnidirectionalLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         specificOmnidirectionalLightGroupBox->hide();
 
         auto* omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
@@ -180,7 +177,6 @@ namespace urchin {
         specificSpotLightGroupBox = new QGroupBox("Spot Light");
         mainLayout->addWidget(specificSpotLightGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(specificSpotLightGroupBox);
-        specificSpotLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         specificSpotLightGroupBox->hide();
 
         auto* spotLightLayout = new QGridLayout(specificSpotLightGroupBox);

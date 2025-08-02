@@ -60,7 +60,6 @@ namespace urchin {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
-        generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         generalPropertiesGroupBox->hide();
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
@@ -106,7 +105,6 @@ namespace urchin {
         waterSurfacePropertiesGroupBox = new QGroupBox("Surface");
         mainLayout->addWidget(waterSurfacePropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(waterSurfacePropertiesGroupBox);
-        waterSurfacePropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         waterSurfacePropertiesGroupBox->hide();
 
         auto* waterSurfacePropertiesLayout = new QGridLayout(waterSurfacePropertiesGroupBox);
@@ -221,7 +219,6 @@ namespace urchin {
         underWaterPropertiesGroupBox = new QGroupBox("Under Water");
         mainLayout->addWidget(underWaterPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(underWaterPropertiesGroupBox);
-        underWaterPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         underWaterPropertiesGroupBox->hide();
 
         auto* underWaterPropertiesLayout = new QGridLayout(underWaterPropertiesGroupBox);

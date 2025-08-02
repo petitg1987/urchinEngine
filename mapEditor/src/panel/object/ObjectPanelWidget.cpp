@@ -150,7 +150,6 @@ namespace urchin {
         auto* meshGroupBox = new QGroupBox("Meshes");
         modelLayout->addWidget(meshGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(meshGroupBox);
-        meshGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* meshesFileLayout = new QHBoxLayout(meshGroupBox);
         meshesFileLayout->setAlignment(Qt::AlignLeft);
@@ -172,7 +171,6 @@ namespace urchin {
         auto* transformGroupBox = new QGroupBox("Transform");
         modelLayout->addWidget(transformGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
-        transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* transformLayout = new QGridLayout(transformGroupBox);
 
@@ -257,7 +255,6 @@ namespace urchin {
         auto* propertiesGroupBox = new QGroupBox("Properties");
         modelLayout->addWidget(propertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(propertiesGroupBox);
-        propertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* propertiesLayout = new QGridLayout(propertiesGroupBox);
         propertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
@@ -339,7 +336,6 @@ namespace urchin {
         auto* tagsGroupBox = new QGroupBox("Tags");
         mainTagsLayout->addWidget(tagsGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(tagsGroupBox);
-        tagsGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* tagsLayout = new QGridLayout(tagsGroupBox);
 

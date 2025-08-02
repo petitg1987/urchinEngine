@@ -26,7 +26,6 @@ namespace urchin {
         auto* soundPropertiesGroupBox = new QGroupBox("Sound Properties");
         mainLayout->addWidget(soundPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(soundPropertiesGroupBox);
-        soundPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* soundPropertiesLayout = new QVBoxLayout(soundPropertiesGroupBox);
         setupSoundGeneralPropertiesBox(soundPropertiesLayout);
@@ -35,7 +34,6 @@ namespace urchin {
         auto* soundTriggerGroupBox = new QGroupBox("Sound Trigger");
         mainLayout->addWidget(soundTriggerGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(soundTriggerGroupBox);
-        soundTriggerGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
         setupSoundTriggerGeneralPropertiesBox(soundTriggerLayout);

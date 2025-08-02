@@ -70,7 +70,6 @@ namespace urchin {
         auto* rigidBodyGeneralBox = new QGroupBox("General");
         physicsPropertiesLayout->addWidget(rigidBodyGeneralBox);
         GroupBoxStyleHelper::applyNormalStyle(rigidBodyGeneralBox);
-        rigidBodyGeneralBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* rigidBodyGeneralLayout = new QGridLayout(rigidBodyGeneralBox);
 
@@ -118,7 +117,6 @@ namespace urchin {
         auto* rigidBodyDampingBox = new QGroupBox("Damping");
         physicsPropertiesLayout->addWidget(rigidBodyDampingBox);
         GroupBoxStyleHelper::applyNormalStyle(rigidBodyDampingBox);
-        rigidBodyDampingBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* rigidBodyDampingLayout = new QGridLayout(rigidBodyDampingBox);
 
@@ -147,7 +145,6 @@ namespace urchin {
         auto* rigidBodyFactorBox = new QGroupBox("Factor");
         physicsPropertiesLayout->addWidget(rigidBodyFactorBox);
         GroupBoxStyleHelper::applyNormalStyle(rigidBodyFactorBox);
-        rigidBodyFactorBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* rigidBodyFactorLayout = new QGridLayout(rigidBodyFactorBox);
 

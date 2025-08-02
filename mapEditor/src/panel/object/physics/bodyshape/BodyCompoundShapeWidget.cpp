@@ -103,7 +103,6 @@ namespace urchin {
         auto* transformGroupBox = new QGroupBox("Transform");
         localizedShapeLayout->addWidget(transformGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
-        transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* transformLayout = new QGridLayout(transformGroupBox);
         setupPosition(transformLayout, localizedShape->transform.getPosition());
@@ -172,7 +171,6 @@ namespace urchin {
         auto* shapeGroupBox = new QGroupBox("Shape");
         localizedShapeLayout->addWidget(shapeGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);
-        shapeGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* shapeLayout = new QGridLayout(shapeGroupBox);
         bodyShapeWidget = BodyShapeWidgetRetriever(getObjectEntity()).createBodyShapeWidget(localizedShape->shape->getShapeType());

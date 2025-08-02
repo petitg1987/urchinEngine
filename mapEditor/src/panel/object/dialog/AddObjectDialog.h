@@ -23,6 +23,7 @@ namespace urchin {
             void setupNameField(QGridLayout*);
             void setupGroupFields(QGridLayout*, const std::vector<std::string>&);
 
+            std::vector<std::string> getGroupHierarchy() const;
             int buildObjectEntity(int);
 
             void done(int) override;
@@ -34,6 +35,7 @@ namespace urchin {
             QLineEdit* objectNameText;
             QComboBox* groupComboBox;
             QLineEdit* newGroupText;
+            QLabel* groupResultText;
 
             std::unique_ptr<ObjectEntity> objectEntity;
     };

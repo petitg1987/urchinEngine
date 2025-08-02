@@ -34,6 +34,7 @@ namespace urchin {
             QLineEdit* updatedObjectNameText;
             QComboBox* updatedGroupComboBox;
             QLineEdit* newGroupText;
+            QLabel* groupResultText;
     };
 
 }

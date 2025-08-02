@@ -19,7 +19,8 @@ namespace urchin {
         }
 
         std::vector<std::vector<std::string>> allGroupHierarchy;
-        allGroupHierarchy.reserve(allGroupHierarchyMap.size());
+        allGroupHierarchy.reserve(allGroupHierarchyMap.size() + 1);
+        allGroupHierarchy.push_back({}); //root
         for (const std::vector<std::string>& groupHierarchy : std::views::values(allGroupHierarchyMap)) {
             allGroupHierarchy.push_back(groupHierarchy);
         }

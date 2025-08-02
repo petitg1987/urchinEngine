@@ -36,7 +36,6 @@ namespace urchin {
         auto* navMeshAgentGroupBox = new QGroupBox("Nav Mesh Agent");
         mainLayout->addWidget(navMeshAgentGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(navMeshAgentGroupBox);
-        navMeshAgentGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* navMeshAgentLayout = new QGridLayout(navMeshAgentGroupBox);
 

@@ -5,6 +5,7 @@
 #include "panel/object/dialog/support/GroupHierarchyHelper.h"
 #include "widget/style/LabelStyleHelper.h"
 #include "widget/style/ButtonStyleHelper.h"
+#include "widget/style/GroupBoxStyleHelper.h"
 
 namespace urchin {
 
@@ -17,7 +18,7 @@ namespace urchin {
             newGroupText(nullptr),
             objectEntity(nullptr) {
         this->setWindowTitle("Add Object");
-        this->resize(530, 150);
+        this->resize(530, 200);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
@@ -44,40 +45,55 @@ namespace urchin {
     }
 
     void AddObjectDialog::setupGroupFields(QGridLayout* mainLayout, const std::vector<std::string>& defaultGroupHierarchy) {
+        auto* groupGroupBox = new QGroupBox("Group Hierarchy");
+        mainLayout->addWidget(groupGroupBox, 1, 0, 1, 2);
+        GroupBoxStyleHelper::applyNormalStyle(groupGroupBox);
+        auto* groupLayout = new QGridLayout(groupGroupBox);
+
         auto* groupLabel = new QLabel("Group*:");
-        mainLayout->addWidget(groupLabel, 1, 0);
+        groupLayout->addWidget(groupLabel, 0, 0);
 
-        std::string defaultGroupHierarchyString = StringUtil::join(defaultGroupHierarchy, GroupHierarchyHelper::GROUP_DELIMITER);
         std::vector<std::vector<std::string>> allGroupHierarchy = GroupHierarchyHelper::getAllGroupHierarchy(*objectController);
-
         groupComboBox = new QComboBox();
-        mainLayout->addWidget(groupComboBox, 1, 1);
-        groupComboBox->addItem("(root)", QVariant(""));
+        groupLayout->addWidget(groupComboBox, 0, 1);
         for (const std::vector<std::string>& groupHierarchy : allGroupHierarchy) {
-            std::string groupHierarchyString = StringUtil::join(groupHierarchy, GroupHierarchyHelper::GROUP_DELIMITER);
+            std::string groupHierarchyString = StringUtil::join(groupHierarchy, GroupHierarchyHelper::GROUP_DELIMITER); //TODO move all join & split in helper
             groupComboBox->addItem(QString::fromStdString(groupHierarchyString), QVariant(QString::fromStdString(groupHierarchyString)));
-            if (groupHierarchyString == defaultGroupHierarchyString) {
-                groupComboBox->setCurrentIndex(groupComboBox->count() - 1);
-            }
         }
+        groupComboBox->setCurrentText(QString::fromStdString(StringUtil::join(defaultGroupHierarchy, GroupHierarchyHelper::GROUP_DELIMITER)));
 
         auto* newGroupLabel = new QLabel("New group:");
-        mainLayout->addWidget(newGroupLabel, 2, 0);
+        groupLayout->addWidget(newGroupLabel, 1, 0);
 
         newGroupText = new QLineEdit();
-        mainLayout->addWidget(newGroupText, 2, 1);
+        groupLayout->addWidget(newGroupText, 1, 1);
+
+        auto* groupResultLabel = new QLabel("Result:");
+        groupLayout->addWidget(groupResultLabel, 2, 0);
+
+        groupResultText = new QLabel(QString::fromStdString(StringUtil::join(getGroupHierarchy(), GroupHierarchyHelper::GROUP_DELIMITER)));
+        groupLayout->addWidget(groupResultText, 2, 1);
+        connect(groupComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [&](int){
+            groupResultText->setText(QString::fromStdString(StringUtil::join(getGroupHierarchy(), GroupHierarchyHelper::GROUP_DELIMITER)));
+        });
+        connect(newGroupText, &QLineEdit::textChanged, [&](const QString&){
+            groupResultText->setText(QString::fromStdString(StringUtil::join(getGroupHierarchy(), GroupHierarchyHelper::GROUP_DELIMITER)));
+        });
     }
 
-    int AddObjectDialog::buildObjectEntity(int result) {
+    std::vector<std::string> AddObjectDialog::getGroupHierarchy() const {
         std::vector<std::string> groupHierarchy = StringUtil::split(groupComboBox->currentData().toString().toStdString(), GroupHierarchyHelper::GROUP_DELIMITER);
         if (!newGroupText->text().isEmpty()) {
             groupHierarchy.push_back(newGroupText->text().toStdString());
         }
+        return groupHierarchy;
+    }
 
+    int AddObjectDialog::buildObjectEntity(int result) {
         objectEntity = std::make_unique<ObjectEntity>();
         objectEntity->setModel(Model::fromMeshesFile(""));
         objectEntity->setName(objectNameText->text().toStdString());
-        objectEntity->setGroupHierarchy(groupHierarchy);
+        objectEntity->setGroupHierarchy(getGroupHierarchy());
         return result;
     }
 
