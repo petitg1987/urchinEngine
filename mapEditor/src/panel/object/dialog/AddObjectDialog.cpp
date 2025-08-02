@@ -18,7 +18,7 @@ namespace urchin {
             newGroupText(nullptr),
             objectEntity(nullptr) {
         this->setWindowTitle("Add Object");
-        this->resize(530, 200);
+        this->resize(530, 220);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
@@ -28,7 +28,7 @@ namespace urchin {
         setupGroupFields(mainLayout, defaultGroupHierarchy);
 
         auto* buttonBox = new QDialogButtonBox();
-        mainLayout->addWidget(buttonBox, 3, 0, 1, 2);
+        mainLayout->addWidget(buttonBox, 3, 0);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -37,17 +37,24 @@ namespace urchin {
     }
 
     void AddObjectDialog::setupNameField(QGridLayout* mainLayout) {
+        auto* generalGroupBox = new QGroupBox("General");
+        mainLayout->addWidget(generalGroupBox, 0, 0);
+        GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
+
+        auto* groupLayout = new QGridLayout(generalGroupBox);
+
         objectNameLabel = new QLabel("Object Name*:");
-        mainLayout->addWidget(objectNameLabel, 0, 0);
+        groupLayout->addWidget(objectNameLabel, 0, 0);
 
         objectNameText = new QLineEdit();
-        mainLayout->addWidget(objectNameText, 0, 1);
+        groupLayout->addWidget(objectNameText, 0, 1);
     }
 
     void AddObjectDialog::setupGroupFields(QGridLayout* mainLayout, const std::vector<std::string>& defaultGroupHierarchy) {
         auto* groupGroupBox = new QGroupBox("Group Hierarchy");
-        mainLayout->addWidget(groupGroupBox, 1, 0, 1, 2);
+        mainLayout->addWidget(groupGroupBox, 1, 0);
         GroupBoxStyleHelper::applyNormalStyle(groupGroupBox);
+
         auto* groupLayout = new QGridLayout(groupGroupBox);
 
         auto* groupLabel = new QLabel("Group*:");
