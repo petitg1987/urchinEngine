@@ -43,7 +43,7 @@ namespace urchin {
 
         auto* groupLayout = new QGridLayout(generalGroupBox);
 
-        objectNameLabel = new QLabel("Object Name*:");
+        objectNameLabel = new QLabel("Object Name:");
         groupLayout->addWidget(objectNameLabel, 0, 0);
 
         objectNameText = new QLineEdit();
@@ -57,7 +57,7 @@ namespace urchin {
 
         auto* groupLayout = new QGridLayout(groupGroupBox);
 
-        auto* groupLabel = new QLabel("Group*:");
+        auto* groupLabel = new QLabel("Group:");
         groupLayout->addWidget(groupLabel, 0, 0);
 
         std::vector<std::vector<std::string>> allGroupHierarchy = GroupHierarchyHelper::getAllGroupHierarchy(*objectController);

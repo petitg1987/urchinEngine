@@ -56,7 +56,7 @@ namespace urchin {
         GroupBoxStyleHelper::applyNormalStyle(groupGroupBox);
         auto* groupLayout = new QGridLayout(groupGroupBox);
 
-        auto* groupLabel = new QLabel("Updated Group*:");
+        auto* groupLabel = new QLabel("Updated Group:");
         groupLayout->addWidget(groupLabel, 0, 0);
 
         std::vector<std::vector<std::string>> allGroupHierarchy = GroupHierarchyHelper::getAllGroupHierarchy(*objectController);
