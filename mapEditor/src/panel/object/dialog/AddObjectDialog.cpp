@@ -57,10 +57,10 @@ namespace urchin {
         groupComboBox = new QComboBox();
         groupLayout->addWidget(groupComboBox, 0, 1);
         for (const std::vector<std::string>& groupHierarchy : allGroupHierarchy) {
-            std::string groupHierarchyString = StringUtil::join(groupHierarchy, GroupHierarchyHelper::GROUP_DELIMITER); //TODO move all join & split in helper
+            std::string groupHierarchyString = GroupHierarchyHelper::groupHierarchyToString(groupHierarchy);
             groupComboBox->addItem(QString::fromStdString(groupHierarchyString), QVariant(QString::fromStdString(groupHierarchyString)));
         }
-        groupComboBox->setCurrentText(QString::fromStdString(StringUtil::join(defaultGroupHierarchy, GroupHierarchyHelper::GROUP_DELIMITER)));
+        groupComboBox->setCurrentText(QString::fromStdString(GroupHierarchyHelper::groupHierarchyToString(defaultGroupHierarchy)));
 
         auto* newGroupLabel = new QLabel("New group:");
         groupLayout->addWidget(newGroupLabel, 1, 0);
@@ -71,18 +71,18 @@ namespace urchin {
         auto* groupResultLabel = new QLabel("Result:");
         groupLayout->addWidget(groupResultLabel, 2, 0);
 
-        groupResultText = new QLabel(QString::fromStdString(StringUtil::join(getGroupHierarchy(), GroupHierarchyHelper::GROUP_DELIMITER)));
+        groupResultText = new QLabel(QString::fromStdString(GroupHierarchyHelper::groupHierarchyToString(getGroupHierarchy())));
         groupLayout->addWidget(groupResultText, 2, 1);
         connect(groupComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [&](int){
-            groupResultText->setText(QString::fromStdString(StringUtil::join(getGroupHierarchy(), GroupHierarchyHelper::GROUP_DELIMITER)));
+            groupResultText->setText(QString::fromStdString(GroupHierarchyHelper::groupHierarchyToString(getGroupHierarchy())));
         });
         connect(newGroupText, &QLineEdit::textChanged, [&](const QString&){
-            groupResultText->setText(QString::fromStdString(StringUtil::join(getGroupHierarchy(), GroupHierarchyHelper::GROUP_DELIMITER)));
+            groupResultText->setText(QString::fromStdString(GroupHierarchyHelper::groupHierarchyToString(getGroupHierarchy())));
         });
     }
 
     std::vector<std::string> AddObjectDialog::getGroupHierarchy() const {
-        std::vector<std::string> groupHierarchy = StringUtil::split(groupComboBox->currentData().toString().toStdString(), GroupHierarchyHelper::GROUP_DELIMITER);
+        std::vector<std::string> groupHierarchy = GroupHierarchyHelper::stringToGroupHierarchy(groupComboBox->currentData().toString().toStdString());
         if (!newGroupText->text().isEmpty()) {
             groupHierarchy.push_back(newGroupText->text().toStdString());
         }

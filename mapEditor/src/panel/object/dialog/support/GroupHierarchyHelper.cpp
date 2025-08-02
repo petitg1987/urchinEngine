@@ -28,4 +28,18 @@ namespace urchin {
         return allGroupHierarchy;
     }
 
+    std::string GroupHierarchyHelper::groupHierarchyToString(const std::vector<std::string>& groupHierarchy) {
+        if (groupHierarchy.size() == 0) {
+            return ROOT_TEXT;
+        }
+        return StringUtil::join(groupHierarchy, GROUP_DELIMITER);
+    }
+
+    std::vector<std::string> GroupHierarchyHelper::stringToGroupHierarchy(const std::string& groupHierarchyString) {
+        if (groupHierarchyString.empty() || groupHierarchyString == ROOT_TEXT) {
+            return {};
+        }
+        return StringUtil::split(groupHierarchyString, GROUP_DELIMITER);
+    }
+
 }
