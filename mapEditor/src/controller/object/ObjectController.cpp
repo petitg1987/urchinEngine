@@ -69,8 +69,8 @@ namespace urchin {
 
                 if (replaceGroupHierarchy) {
                     std::vector<std::string> updatedGroupHierarchy = newGroupHierarchy;
-                    auto nextGroups = std::vector(objectEntity->getGroupHierarchy().begin() + oldGroupHierarchy.size(), objectEntity->getGroupHierarchy().end());
-                    updatedGroupHierarchy.insert(updatedGroupHierarchy.end(), nextGroups.begin(), nextGroups.end());
+                    auto nextGroupHierarchy = std::vector(objectEntity->getGroupHierarchy().begin() + oldGroupHierarchy.size(), objectEntity->getGroupHierarchy().end());
+                    updatedGroupHierarchy.insert(updatedGroupHierarchy.end(), nextGroupHierarchy.begin(), nextGroupHierarchy.end());
 
                     objectEntity->setGroupHierarchy(updatedGroupHierarchy);
                     updatedObjectEntities.push_back(objectEntity.get());
