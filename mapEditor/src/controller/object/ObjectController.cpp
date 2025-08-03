@@ -53,13 +53,32 @@ namespace urchin {
         markModified();
     }
 
-    std::vector<const ObjectEntity*> ObjectController::updateObjectEntities(const std::vector<std::string>& /*oldGroupHierarchy*/, const std::vector<std::string>& /*newGroupHierarchy*/) {
-        std::vector<const ObjectEntity*> result;
+    std::vector<const ObjectEntity*> ObjectController::updateObjectEntities(const std::vector<std::string>& oldGroupHierarchy, const std::vector<std::string>& /*newGroupHierarchy*/) {
+        std::vector<const ObjectEntity*> updatedObjectEntities;
 
-        //TODO impl
+        const std::list<std::unique_ptr<ObjectEntity>>& objectEntities = getMap().getObjectEntities();
+        for (const std::unique_ptr<ObjectEntity>& objectEntity : objectEntities) {
+            if (objectEntity->getGroupHierarchy().size() >= oldGroupHierarchy.size()) {
+                bool replaceGroupHierarchy = true;
+                for (std::size_t i = 0; i < oldGroupHierarchy.size(); ++i) {
+                   if (objectEntity->getGroupHierarchy()[i] != oldGroupHierarchy[i]) {
+                       replaceGroupHierarchy = false;
+                       break;
+                   }
+                }
+
+                if (replaceGroupHierarchy) {
+                    std::vector<std::string> updatedGroupHierarchy = oldGroupHierarchy;
+                    //TODO add missing group
+
+                    objectEntity->setGroupHierarchy(updatedGroupHierarchy);
+                    updatedObjectEntities.push_back(objectEntity.get());
+                }
+            }
+        }
 
         markModified();
-        return result;
+        return updatedObjectEntities;
     }
 
     void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity, bool isClonedEntity) {
