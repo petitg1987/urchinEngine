@@ -60,12 +60,12 @@ namespace urchin {
 
         addTerrainButton = new QPushButton("New");
         buttonsLayout->addWidget(addTerrainButton);
-        ButtonStyleHelper::applyNormalStyle(addTerrainButton);
+        ButtonStyleHelper::applyDefaultStyle(addTerrainButton);
         connect(addTerrainButton, SIGNAL(clicked()), this, SLOT(showAddTerrainDialog()));
 
         removeTerrainButton = new QPushButton("Remove");
         buttonsLayout->addWidget(removeTerrainButton);
-        ButtonStyleHelper::applyNormalStyle(removeTerrainButton);
+        ButtonStyleHelper::applyDefaultStyle(removeTerrainButton);
         removeTerrainButton->setEnabled(false);
         connect(removeTerrainButton, SIGNAL(clicked()), this, SLOT(removeSelectedTerrain()));
 
@@ -78,7 +78,7 @@ namespace urchin {
     void TerrainPanelWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(generalPropertiesGroupBox);
         generalPropertiesGroupBox->hide();
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
@@ -113,7 +113,7 @@ namespace urchin {
     void TerrainPanelWidget::setupMeshBox(QVBoxLayout* mainLayout) {
         meshGroupBox = new QGroupBox("Mesh");
         mainLayout->addWidget(meshGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(meshGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(meshGroupBox);
         meshGroupBox->hide();
 
         auto* meshLayout = new QGridLayout(meshGroupBox);
@@ -142,7 +142,7 @@ namespace urchin {
     void TerrainPanelWidget::setupMaterialBox(QVBoxLayout* mainLayout) {
         materialGroupBox = new QGroupBox("Material");
         mainLayout->addWidget(materialGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(materialGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(materialGroupBox);
         materialGroupBox->hide();
 
         auto* materialLayout = new QGridLayout(materialGroupBox);
@@ -169,13 +169,13 @@ namespace urchin {
 
         auto* selectMaskFileButton = new QPushButton("...");
         materialLayout->addWidget(selectMaskFileButton, 1, 3);
-        ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
+        ButtonStyleHelper::applyDefaultStyle(selectMaskFileButton);
         selectMaskFileButton->setFixedWidth(22);
         connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showMaskFilenameDialog()));
 
         auto* clearMaskFileButton = new QPushButton("Clr");
         materialLayout->addWidget(clearMaskFileButton, 1, 4);
-        ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
+        ButtonStyleHelper::applyDefaultStyle(clearMaskFileButton);
         clearMaskFileButton->setFixedWidth(22);
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
 
@@ -191,7 +191,7 @@ namespace urchin {
 
             auto* selectMaterialFileButton = new QPushButton("...");
             materialLayout->addWidget(selectMaterialFileButton, 2 + (int)i, 3);
-            ButtonStyleHelper::applyNormalStyle(selectMaterialFileButton);
+            ButtonStyleHelper::applyDefaultStyle(selectMaterialFileButton);
             selectMaterialFileButton->setFixedWidth(22);
             auto* selectSignalMapper = new QSignalMapper();
             connect(selectMaterialFileButton, SIGNAL(clicked()), selectSignalMapper, SLOT(map()));
@@ -200,7 +200,7 @@ namespace urchin {
 
             auto* clearMaterialFileButton = new QPushButton("Clr");
             materialLayout->addWidget(clearMaterialFileButton, 2 + (int)i, 4);
-            ButtonStyleHelper::applyNormalStyle(clearMaterialFileButton);
+            ButtonStyleHelper::applyDefaultStyle(clearMaterialFileButton);
             clearMaterialFileButton->setFixedWidth(22);
             auto* clearSignalMapper = new QSignalMapper();
             connect(clearMaterialFileButton, SIGNAL(clicked()), clearSignalMapper, SLOT(map()));
@@ -212,7 +212,7 @@ namespace urchin {
     void TerrainPanelWidget::setupGrassBox(QVBoxLayout* mainLayout) {
         grassGroupBox = new QGroupBox("Grass");
         mainLayout->addWidget(grassGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(grassGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(grassGroupBox);
         grassGroupBox->hide();
 
         auto* grassLayout = new QGridLayout(grassGroupBox);
@@ -226,13 +226,13 @@ namespace urchin {
 
         auto* selectTextureFileButton = new QPushButton("...");
         grassLayout->addWidget(selectTextureFileButton, 1, 4);
-        ButtonStyleHelper::applyNormalStyle(selectTextureFileButton);
+        ButtonStyleHelper::applyDefaultStyle(selectTextureFileButton);
         selectTextureFileButton->setFixedWidth(22);
         connect(selectTextureFileButton, SIGNAL(clicked()), this, SLOT(showGrassTextureFilenameDialog()));
 
         auto* clearTextureFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearTextureFileButton, 1, 5);
-        ButtonStyleHelper::applyNormalStyle(clearTextureFileButton);
+        ButtonStyleHelper::applyDefaultStyle(clearTextureFileButton);
         clearTextureFileButton->setFixedWidth(22);
         connect(clearTextureFileButton, SIGNAL(clicked()), this, SLOT(clearGrassTextureFilename()));
 
@@ -245,13 +245,13 @@ namespace urchin {
 
         auto* selectMaskFileButton = new QPushButton("...");
         grassLayout->addWidget(selectMaskFileButton, 2, 4);
-        ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
+        ButtonStyleHelper::applyDefaultStyle(selectMaskFileButton);
         selectMaskFileButton->setFixedWidth(22);
         connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showGrassMaskFilenameDialog()));
 
         auto* clearMaskFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearMaskFileButton, 2, 5);
-        ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
+        ButtonStyleHelper::applyDefaultStyle(clearMaskFileButton);
         clearMaskFileButton->setFixedWidth(22);
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearGrassMaskFilename()));
 

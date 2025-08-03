@@ -58,24 +58,24 @@ namespace urchin {
 
         addObjectButton = new QPushButton("New");
         buttonsLayout->addWidget(addObjectButton);
-        ButtonStyleHelper::applyNormalStyle(addObjectButton);
+        ButtonStyleHelper::applyDefaultStyle(addObjectButton);
         connect(addObjectButton, SIGNAL(clicked()), this, SLOT(showAddObjectDialog()));
 
         removeItemsButton = new QPushButton("Remove");
         buttonsLayout->addWidget(removeItemsButton);
-        ButtonStyleHelper::applyNormalStyle(removeItemsButton);
+        ButtonStyleHelper::applyDefaultStyle(removeItemsButton);
         removeItemsButton->setEnabled(false);
         connect(removeItemsButton, SIGNAL(clicked()), this, SLOT(removeSelectedItems()));
 
         cloneObjectButton = new QPushButton("Clone");
         buttonsLayout->addWidget(cloneObjectButton);
-        ButtonStyleHelper::applyNormalStyle(cloneObjectButton);
+        ButtonStyleHelper::applyDefaultStyle(cloneObjectButton);
         cloneObjectButton->setEnabled(false);
         connect(cloneObjectButton, SIGNAL(clicked()), this, SLOT(showCloneObjectDialog()));
 
         updateItemsButton = new QPushButton("Update");
         buttonsLayout->addWidget(updateItemsButton);
-        ButtonStyleHelper::applyNormalStyle(updateItemsButton);
+        ButtonStyleHelper::applyDefaultStyle(updateItemsButton);
         updateItemsButton->setEnabled(false);
         connect(updateItemsButton, SIGNAL(clicked()), this, SLOT(showUpdateItemsDialog()));
 
@@ -149,7 +149,7 @@ namespace urchin {
     void ObjectPanelWidget::setupMeshesBox(QVBoxLayout* modelLayout) {
         auto* meshGroupBox = new QGroupBox("Meshes");
         modelLayout->addWidget(meshGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(meshGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(meshGroupBox);
 
         auto* meshesFileLayout = new QHBoxLayout(meshGroupBox);
         meshesFileLayout->setAlignment(Qt::AlignLeft);
@@ -163,14 +163,14 @@ namespace urchin {
 
         auto* changeMeshesFileButton = new QPushButton("Change");
         meshesFileLayout->addWidget(changeMeshesFileButton);
-        ButtonStyleHelper::applyNormalStyle(changeMeshesFileButton);
+        ButtonStyleHelper::applyDefaultStyle(changeMeshesFileButton);
         connect(changeMeshesFileButton, SIGNAL(clicked()), this, SLOT(showChangeMeshesFileDialog()));
     }
 
     void ObjectPanelWidget::setupTransformBox(QVBoxLayout* modelLayout) {
         auto* transformGroupBox = new QGroupBox("Transform");
         modelLayout->addWidget(transformGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(transformGroupBox);
 
         auto* transformLayout = new QGridLayout(transformGroupBox);
 
@@ -251,7 +251,7 @@ namespace urchin {
     void ObjectPanelWidget::setupPropertiesBox(QVBoxLayout* modelLayout) {
         auto* propertiesGroupBox = new QGroupBox("Properties");
         modelLayout->addWidget(propertiesGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(propertiesGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(propertiesGroupBox);
 
         auto* propertiesLayout = new QGridLayout(propertiesGroupBox);
         propertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
@@ -301,7 +301,7 @@ namespace urchin {
 
         auto* changeLightTypeButton = new QPushButton("Change");
         lightTypeLayout->addWidget(changeLightTypeButton);
-        ButtonStyleHelper::applyNormalStyle(changeLightTypeButton);
+        ButtonStyleHelper::applyDefaultStyle(changeLightTypeButton);
         connect(changeLightTypeButton, SIGNAL(clicked()), this, SLOT(showChangeLightTypeDialog()));
 
         lightWidget = new LightWidget();
@@ -322,7 +322,7 @@ namespace urchin {
 
         auto* changeSoundTypeButton = new QPushButton("Change");
         soundTypeLayout->addWidget(changeSoundTypeButton);
-        ButtonStyleHelper::applyNormalStyle(changeSoundTypeButton);
+        ButtonStyleHelper::applyDefaultStyle(changeSoundTypeButton);
         connect(changeSoundTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundDialog()));
 
         soundWidget = new SoundWidget();
@@ -332,7 +332,7 @@ namespace urchin {
     void ObjectPanelWidget::setupTagsBox(QVBoxLayout* mainTagsLayout) {
         auto* tagsGroupBox = new QGroupBox("Tags");
         mainTagsLayout->addWidget(tagsGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(tagsGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(tagsGroupBox);
 
         auto* tagsLayout = new QGridLayout(tagsGroupBox);
 

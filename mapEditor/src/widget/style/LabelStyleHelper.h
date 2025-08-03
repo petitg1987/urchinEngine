@@ -10,7 +10,7 @@ namespace urchin {
             LabelStyleHelper() = delete;
 
             static void applyErrorStyle(QLabel*, const std::string&);
-            static void applyNormalStyle(QLabel*);
+            static void resetErrorStyle(QLabel*);
     };
 
 }

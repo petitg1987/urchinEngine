@@ -35,7 +35,7 @@ namespace urchin {
     void AIPanelWidget::setupNavMeshAgentBox(QVBoxLayout* mainLayout) {
         auto* navMeshAgentGroupBox = new QGroupBox("Nav Mesh Agent");
         mainLayout->addWidget(navMeshAgentGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(navMeshAgentGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(navMeshAgentGroupBox);
 
         auto* navMeshAgentLayout = new QGridLayout(navMeshAgentGroupBox);
 

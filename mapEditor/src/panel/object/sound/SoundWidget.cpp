@@ -25,7 +25,7 @@ namespace urchin {
 
         auto* soundPropertiesGroupBox = new QGroupBox("Sound Properties");
         mainLayout->addWidget(soundPropertiesGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(soundPropertiesGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(soundPropertiesGroupBox);
 
         auto* soundPropertiesLayout = new QVBoxLayout(soundPropertiesGroupBox);
         setupSoundGeneralPropertiesBox(soundPropertiesLayout);
@@ -33,7 +33,7 @@ namespace urchin {
 
         auto* soundTriggerGroupBox = new QGroupBox("Sound Trigger");
         mainLayout->addWidget(soundTriggerGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(soundTriggerGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(soundTriggerGroupBox);
 
         auto* soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
         setupSoundTriggerGeneralPropertiesBox(soundTriggerLayout);
@@ -52,7 +52,7 @@ namespace urchin {
     void SoundWidget::setupSoundGeneralPropertiesBox(QVBoxLayout* soundPropertiesLayout) {
         auto* generalGroupBox = new QGroupBox("General");
         soundPropertiesLayout->addWidget(generalGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(generalGroupBox);
 
         auto* generalPropertiesLayout = new QGridLayout(generalGroupBox);
         generalPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
@@ -82,7 +82,7 @@ namespace urchin {
     void SoundWidget::setupSpecificLocalizableSoundBox(QVBoxLayout* soundPropertiesLayout) {
         specificLocalizableSoundGroupBox = new QGroupBox("Localizable Sound");
         soundPropertiesLayout->addWidget(specificLocalizableSoundGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificLocalizableSoundGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(specificLocalizableSoundGroupBox);
         specificLocalizableSoundGroupBox->hide();
 
         auto* localizableSoundLayout = new QGridLayout(specificLocalizableSoundGroupBox);
@@ -119,7 +119,7 @@ namespace urchin {
     void SoundWidget::setupSoundTriggerGeneralPropertiesBox(QVBoxLayout* soundTriggerLayout) {
         auto* generalGroupBox = new QGroupBox("General");
         soundTriggerLayout->addWidget(generalGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(generalGroupBox);
 
         auto* generalLayout = new QGridLayout(generalGroupBox);
         generalLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
@@ -146,14 +146,14 @@ namespace urchin {
 
         auto* changeSoundTriggerTypeButton = new QPushButton("Change");
         triggerTypeLayout->addWidget(changeSoundTriggerTypeButton);
-        ButtonStyleHelper::applyNormalStyle(changeSoundTriggerTypeButton);
+        ButtonStyleHelper::applyDefaultStyle(changeSoundTriggerTypeButton);
         connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerTypeDialog()));
     }
 
     void SoundWidget::setupSpecificAreaTriggerBox(QVBoxLayout* soundTriggerLayout) {
         specificAreaTriggerGroupBox = new QGroupBox("Area Trigger");
         soundTriggerLayout->addWidget(specificAreaTriggerGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificAreaTriggerGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(specificAreaTriggerGroupBox);
         specificAreaTriggerGroupBox->hide();
 
         triggerShapeLayout = new QVBoxLayout(specificAreaTriggerGroupBox);
@@ -171,7 +171,7 @@ namespace urchin {
 
         auto* changeSoundShapeTypeButton = new QPushButton("Change");
         shapeTypeLayout->addWidget(changeSoundShapeTypeButton);
-        ButtonStyleHelper::applyNormalStyle(changeSoundShapeTypeButton);
+        ButtonStyleHelper::applyDefaultStyle(changeSoundShapeTypeButton);
         connect(changeSoundShapeTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundShapeTypeDialog()));
 
         auto* frameLine = new QFrame();

@@ -56,7 +56,7 @@ namespace urchin {
 
         auto* selectSoundFileButton = new QPushButton("...");
         mainLayout->addWidget(selectSoundFileButton, 1, 2);
-        ButtonStyleHelper::applyNormalStyle(selectSoundFileButton);
+        ButtonStyleHelper::applyDefaultStyle(selectSoundFileButton);
         selectSoundFileButton->setFixedWidth(22);
         connect(selectSoundFileButton, SIGNAL(clicked()), this, SLOT(showSoundFilenameDialog()));
     }
@@ -77,7 +77,7 @@ namespace urchin {
         if (Accepted == r) {
             bool hasError = false;
 
-            LabelStyleHelper::applyNormalStyle(soundFilenameLabel);
+            LabelStyleHelper::resetErrorStyle(soundFilenameLabel);
 
             int soundTypeIndex = soundTypeComboBox->currentData().toInt();
             if (soundFilename.empty() && soundTypeIndex != -1) {

@@ -38,7 +38,7 @@ namespace urchin {
     void AddOrUpdateObjectDialog::setupNameFields(QGridLayout* mainLayout) {
         auto* generalGroupBox = new QGroupBox("General");
         mainLayout->addWidget(generalGroupBox, 0, 0);
-        GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(generalGroupBox);
 
         auto* groupLayout = new QGridLayout(generalGroupBox);
 
@@ -53,7 +53,7 @@ namespace urchin {
     void AddOrUpdateObjectDialog::setupGroupFields(QGridLayout* mainLayout, const std::vector<std::string>& defaultGroupHierarchy) {
         auto* groupGroupBox = new QGroupBox("Group Hierarchy");
         mainLayout->addWidget(groupGroupBox, 1, 0);
-        GroupBoxStyleHelper::applyNormalStyle(groupGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(groupGroupBox);
         auto* groupLayout = new QGridLayout(groupGroupBox);
 
         auto* groupLabel = new QLabel("Group:");
@@ -111,7 +111,7 @@ namespace urchin {
         if (Accepted == r) {
             bool hasError = false;
 
-            LabelStyleHelper::applyNormalStyle(objectNameLabel);
+            LabelStyleHelper::resetErrorStyle(objectNameLabel);
 
             if (getObjectName().empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");

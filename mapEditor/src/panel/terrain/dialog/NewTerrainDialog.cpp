@@ -57,7 +57,7 @@ namespace urchin {
 
         auto* selectHeightFileButton = new QPushButton("...");
         mainLayout->addWidget(selectHeightFileButton, 1, 2);
-        ButtonStyleHelper::applyNormalStyle(selectHeightFileButton);
+        ButtonStyleHelper::applyDefaultStyle(selectHeightFileButton);
         selectHeightFileButton->setFixedWidth(22);
         connect(selectHeightFileButton, SIGNAL(clicked()), this, SLOT(showHeightFilenameDialog()));
     }
@@ -113,8 +113,8 @@ namespace urchin {
             bool hasError = false;
 
             updateTerrainName();
-            LabelStyleHelper::applyNormalStyle(terrainNameLabel);
-            LabelStyleHelper::applyNormalStyle(heightFilenameLabel);
+            LabelStyleHelper::resetErrorStyle(terrainNameLabel);
+            LabelStyleHelper::resetErrorStyle(heightFilenameLabel);
 
             if (terrainName.empty()) {
                 LabelStyleHelper::applyErrorStyle(terrainNameLabel, "Terrain name is mandatory");

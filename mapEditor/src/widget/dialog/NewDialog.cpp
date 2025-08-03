@@ -57,7 +57,7 @@ namespace urchin {
 
         auto* selectMapDirButton = new QPushButton("...");
         mainLayout->addWidget(selectMapDirButton, 1, 2);
-        ButtonStyleHelper::applyNormalStyle(selectMapDirButton);
+        ButtonStyleHelper::applyDefaultStyle(selectMapDirButton);
         selectMapDirButton->setFixedWidth(22);
         connect(selectMapDirButton, SIGNAL(clicked()), this, SLOT(showMapDirectoryDialog()));
     }
@@ -73,7 +73,7 @@ namespace urchin {
 
         auto* selectMapWorkingDirButton = new QPushButton("...");
         mainLayout->addWidget(selectMapWorkingDirButton, 2, 2);
-        ButtonStyleHelper::applyNormalStyle(selectMapWorkingDirButton);
+        ButtonStyleHelper::applyDefaultStyle(selectMapWorkingDirButton);
         selectMapWorkingDirButton->setFixedWidth(22);
         connect(selectMapWorkingDirButton, SIGNAL(clicked()), this, SLOT(showMapWorkingDirectoryDialog()));
 
@@ -137,9 +137,9 @@ namespace urchin {
             bool hasError = false;
 
             updateMapFilename();
-            LabelStyleHelper::applyNormalStyle(mapNameLabel);
-            LabelStyleHelper::applyNormalStyle(mapDirectoryLabel);
-            LabelStyleHelper::applyNormalStyle(mapWorkingDirectoryLabel);
+            LabelStyleHelper::resetErrorStyle(mapNameLabel);
+            LabelStyleHelper::resetErrorStyle(mapDirectoryLabel);
+            LabelStyleHelper::resetErrorStyle(mapWorkingDirectoryLabel);
 
             if (mapFilename.empty()) {
                 LabelStyleHelper::applyErrorStyle(mapNameLabel, "Map name is mandatory");

@@ -61,7 +61,7 @@ namespace urchin {
     void LightWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
         auto* generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(generalPropertiesGroupBox);
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
@@ -103,7 +103,7 @@ namespace urchin {
     void LightWidget::setupSpecificSunLightBox(QVBoxLayout* mainLayout) {
         specificSunLightGroupBox = new QGroupBox("Sun Light");
         mainLayout->addWidget(specificSunLightGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificSunLightGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(specificSunLightGroupBox);
         specificSunLightGroupBox->hide();
 
         auto* sunLightLayout = new QGridLayout(specificSunLightGroupBox);
@@ -130,7 +130,7 @@ namespace urchin {
     void LightWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout* mainLayout) {
         specificOmnidirectionalLightGroupBox = new QGroupBox("Omnidirectional Light");
         mainLayout->addWidget(specificOmnidirectionalLightGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificOmnidirectionalLightGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(specificOmnidirectionalLightGroupBox);
         specificOmnidirectionalLightGroupBox->hide();
 
         auto* omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
@@ -165,7 +165,7 @@ namespace urchin {
     void LightWidget::setupSpecificSpotLightBox(QVBoxLayout* mainLayout) {
         specificSpotLightGroupBox = new QGroupBox("Spot Light");
         mainLayout->addWidget(specificSpotLightGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificSpotLightGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(specificSpotLightGroupBox);
         specificSpotLightGroupBox->hide();
 
         auto* spotLightLayout = new QGridLayout(specificSpotLightGroupBox);

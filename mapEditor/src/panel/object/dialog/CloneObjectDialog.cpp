@@ -49,7 +49,7 @@ namespace urchin {
         if (Accepted == r) {
             bool hasError = false;
 
-            LabelStyleHelper::applyNormalStyle(objectNameLabel);
+            LabelStyleHelper::resetErrorStyle(objectNameLabel);
 
             if (getObjectName().empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");

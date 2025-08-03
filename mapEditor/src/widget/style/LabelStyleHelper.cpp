@@ -7,7 +7,7 @@ namespace urchin {
         label->setToolTip(QString::fromStdString(errorMsg));
     }
 
-    void LabelStyleHelper::applyNormalStyle(QLabel* label) {
+    void LabelStyleHelper::resetErrorStyle(QLabel* label) {
         label->setStyleSheet("QLabel {}");
         label->setToolTip("");
     }

@@ -38,12 +38,12 @@ namespace urchin {
 
         addPointButton = new QPushButton("New");
         buttonLayout->addWidget(addPointButton);
-        ButtonStyleHelper::applyNormalStyle(addPointButton);
+        ButtonStyleHelper::applyDefaultStyle(addPointButton);
         connect(addPointButton, SIGNAL(clicked()), this, SLOT(addNewPoint()));
 
         removePointButton = new QPushButton("Remove");
         buttonLayout->addWidget(removePointButton);
-        ButtonStyleHelper::applyNormalStyle(removePointButton);
+        ButtonStyleHelper::applyDefaultStyle(removePointButton);
         connect(removePointButton, SIGNAL(clicked()), this, SLOT(removeSelectedPoint()));
     }
 
@@ -62,7 +62,7 @@ namespace urchin {
 
     std::unique_ptr<const CollisionShape3D> BodyConvexHullShapeWidget::createBodyShape() const {
         try {
-            LabelStyleHelper::applyNormalStyle(pointsLabel);
+            LabelStyleHelper::resetErrorStyle(pointsLabel);
             auto scaledShape = std::make_unique<const CollisionConvexHullShape>(getPoints());
 
             //test construction of original shape because can throw an exception due to imprecision of float

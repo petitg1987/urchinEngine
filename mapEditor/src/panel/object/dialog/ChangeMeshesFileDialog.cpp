@@ -42,7 +42,7 @@ namespace urchin {
 
         auto* selectMeshFileButton = new QPushButton("...");
         mainLayout->addWidget(selectMeshFileButton, 0, 2);
-        ButtonStyleHelper::applyNormalStyle(selectMeshFileButton);
+        ButtonStyleHelper::applyDefaultStyle(selectMeshFileButton);
         selectMeshFileButton->setFixedWidth(22);
         connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showMeshFilenameDialog()));
     }

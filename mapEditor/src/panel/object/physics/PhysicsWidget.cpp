@@ -69,7 +69,7 @@ namespace urchin {
     void PhysicsWidget::setupPhysicsGeneralPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto* rigidBodyGeneralBox = new QGroupBox("General");
         physicsPropertiesLayout->addWidget(rigidBodyGeneralBox);
-        GroupBoxStyleHelper::applyNormalStyle(rigidBodyGeneralBox);
+        GroupBoxStyleHelper::applyDefaultStyle(rigidBodyGeneralBox);
 
         auto* rigidBodyGeneralLayout = new QGridLayout(rigidBodyGeneralBox);
 
@@ -109,7 +109,7 @@ namespace urchin {
     void PhysicsWidget::setupPhysicsDampingPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto* rigidBodyDampingBox = new QGroupBox("Damping");
         physicsPropertiesLayout->addWidget(rigidBodyDampingBox);
-        GroupBoxStyleHelper::applyNormalStyle(rigidBodyDampingBox);
+        GroupBoxStyleHelper::applyDefaultStyle(rigidBodyDampingBox);
 
         auto* rigidBodyDampingLayout = new QGridLayout(rigidBodyDampingBox);
 
@@ -133,7 +133,7 @@ namespace urchin {
     void PhysicsWidget::setupPhysicsFactorPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto* rigidBodyFactorBox = new QGroupBox("Factor");
         physicsPropertiesLayout->addWidget(rigidBodyFactorBox);
-        GroupBoxStyleHelper::applyNormalStyle(rigidBodyFactorBox);
+        GroupBoxStyleHelper::applyDefaultStyle(rigidBodyFactorBox);
 
         auto* rigidBodyFactorLayout = new QGridLayout(rigidBodyFactorBox);
 
@@ -194,7 +194,7 @@ namespace urchin {
 
         auto* changeBodyShapeButton = new QPushButton("Change");
         shapeTypeLayout->addWidget(changeBodyShapeButton);
-        ButtonStyleHelper::applyNormalStyle(changeBodyShapeButton);
+        ButtonStyleHelper::applyDefaultStyle(changeBodyShapeButton);
         connect(changeBodyShapeButton, SIGNAL(clicked()), this, SLOT(showChangeBodyShapeDialog()));
 
         auto* frameLine = new QFrame();

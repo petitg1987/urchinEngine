@@ -36,12 +36,12 @@ namespace urchin {
 
         addShapeButton = new QPushButton("New");
         buttonLayout->addWidget(addShapeButton);
-        ButtonStyleHelper::applyNormalStyle(addShapeButton);
+        ButtonStyleHelper::applyDefaultStyle(addShapeButton);
         connect(addShapeButton, SIGNAL(clicked()), this, SLOT(addNewLocalizedShape()));
 
         removeShapeButton = new QPushButton("Remove");
         buttonLayout->addWidget(removeShapeButton);
-        ButtonStyleHelper::applyNormalStyle(removeShapeButton);
+        ButtonStyleHelper::applyDefaultStyle(removeShapeButton);
         connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));
     }
 
@@ -65,7 +65,7 @@ namespace urchin {
 
     std::unique_ptr<const CollisionShape3D> BodyCompoundShapeWidget::createBodyShape() const {
         try {
-            LabelStyleHelper::applyNormalStyle(shapesLabel);
+            LabelStyleHelper::resetErrorStyle(shapesLabel);
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes = localizedShapeTableView->getLocalizedShapes();
             return std::make_unique<const CollisionCompoundShape>(std::move(localizedCollisionShapes));
         } catch (const std::invalid_argument& e) {
@@ -102,7 +102,7 @@ namespace urchin {
     void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout* localizedShapeLayout, const LocalizedCollisionShape* localizedShape) {
         auto* transformGroupBox = new QGroupBox("Transform");
         localizedShapeLayout->addWidget(transformGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(transformGroupBox);
 
         auto* transformLayout = new QGridLayout(transformGroupBox);
         setupPosition(transformLayout, localizedShape->transform.getPosition());
@@ -170,7 +170,7 @@ namespace urchin {
     void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout* localizedShapeLayout, const LocalizedCollisionShape* localizedShape) {
         auto* shapeGroupBox = new QGroupBox("Shape");
         localizedShapeLayout->addWidget(shapeGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(shapeGroupBox);
 
         auto* shapeLayout = new QGridLayout(shapeGroupBox);
         bodyShapeWidget = BodyShapeWidgetRetriever(getObjectEntity()).createBodyShapeWidget(localizedShape->shape->getShapeType());

@@ -71,7 +71,7 @@ namespace urchin {
             bool hasError = false;
 
             updateWaterName();
-            LabelStyleHelper::applyNormalStyle(waterNameLabel);
+            LabelStyleHelper::resetErrorStyle(waterNameLabel);
 
             if (waterName.empty()) {
                 LabelStyleHelper::applyErrorStyle(waterNameLabel, "Water name is mandatory");

@@ -43,7 +43,7 @@ namespace urchin {
     void SkyPanelWidget::setupSkyboxBox(QVBoxLayout* mainLayout) {
         auto* skyboxGroupBox = new QGroupBox("Skybox");
         mainLayout->addWidget(skyboxGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(skyboxGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(skyboxGroupBox);
 
         auto* skyboxLayout = new QGridLayout(skyboxGroupBox);
 
@@ -108,7 +108,7 @@ namespace urchin {
     QPushButton* SkyPanelWidget::createSelectFileButton(QHBoxLayout* skyboxFilenameLayout) const {
         auto* selectSkyboxFileButton = new QPushButton("...");
         skyboxFilenameLayout->addWidget(selectSkyboxFileButton);
-        ButtonStyleHelper::applyNormalStyle(selectSkyboxFileButton);
+        ButtonStyleHelper::applyDefaultStyle(selectSkyboxFileButton);
         selectSkyboxFileButton->setFixedWidth(22);
 
         return selectSkyboxFileButton;
@@ -117,7 +117,7 @@ namespace urchin {
     QPushButton* SkyPanelWidget::createClearFileButton(QHBoxLayout* skyboxFilenameLayout) const {
         auto* clearSkyboxFileButton = new QPushButton("Clr");
         skyboxFilenameLayout->addWidget(clearSkyboxFileButton);
-        ButtonStyleHelper::applyNormalStyle(clearSkyboxFileButton);
+        ButtonStyleHelper::applyDefaultStyle(clearSkyboxFileButton);
         clearSkyboxFileButton->setFixedWidth(22);
 
         return clearSkyboxFileButton;

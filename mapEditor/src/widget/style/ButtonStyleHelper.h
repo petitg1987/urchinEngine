@@ -8,7 +8,7 @@ namespace urchin {
         public:
             ButtonStyleHelper() = delete;
 
-            static void applyNormalStyle(QPushButton*);
+            static void applyDefaultStyle(QPushButton*);
     };
 
 }

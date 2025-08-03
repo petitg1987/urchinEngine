@@ -42,12 +42,12 @@ namespace urchin {
 
         addWaterButton = new QPushButton("New");
         buttonsLayout->addWidget(addWaterButton);
-        ButtonStyleHelper::applyNormalStyle(addWaterButton);
+        ButtonStyleHelper::applyDefaultStyle(addWaterButton);
         connect(addWaterButton, SIGNAL(clicked()), this, SLOT(showAddWaterDialog()));
 
         removeWaterButton = new QPushButton("Remove");
         buttonsLayout->addWidget(removeWaterButton);
-        ButtonStyleHelper::applyNormalStyle(removeWaterButton);
+        ButtonStyleHelper::applyDefaultStyle(removeWaterButton);
         removeWaterButton->setEnabled(false);
         connect(removeWaterButton, SIGNAL(clicked()), this, SLOT(removeSelectedWater()));
 
@@ -59,7 +59,7 @@ namespace urchin {
     void WaterPanelWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(generalPropertiesGroupBox);
         generalPropertiesGroupBox->hide();
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
@@ -100,7 +100,7 @@ namespace urchin {
     void WaterPanelWidget::setupWaterSurfaceProperties(QVBoxLayout* mainLayout) {
         waterSurfacePropertiesGroupBox = new QGroupBox("Surface");
         mainLayout->addWidget(waterSurfacePropertiesGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(waterSurfacePropertiesGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(waterSurfacePropertiesGroupBox);
         waterSurfacePropertiesGroupBox->hide();
 
         auto* waterSurfacePropertiesLayout = new QGridLayout(waterSurfacePropertiesGroupBox);
@@ -134,13 +134,13 @@ namespace urchin {
 
         auto* selectNormalTextureFileButton = new QPushButton("...");
         normalTextureLayout->addWidget(selectNormalTextureFileButton);
-        ButtonStyleHelper::applyNormalStyle(selectNormalTextureFileButton);
+        ButtonStyleHelper::applyDefaultStyle(selectNormalTextureFileButton);
         selectNormalTextureFileButton->setFixedWidth(22);
         connect(selectNormalTextureFileButton, SIGNAL(clicked()), this, SLOT(showNormalTextureFilenameDialog()));
 
         auto* clearNormalTextureFileButton = new QPushButton("Clr");
         normalTextureLayout->addWidget(clearNormalTextureFileButton);
-        ButtonStyleHelper::applyNormalStyle(clearNormalTextureFileButton);
+        ButtonStyleHelper::applyDefaultStyle(clearNormalTextureFileButton);
         clearNormalTextureFileButton->setFixedWidth(22);
         connect(clearNormalTextureFileButton, SIGNAL(clicked()), this, SLOT(clearNormalTextureFilename()));
 
@@ -155,13 +155,13 @@ namespace urchin {
 
         auto* selectDudvMapFileButton = new QPushButton("...");
         dudvMapLayout->addWidget(selectDudvMapFileButton);
-        ButtonStyleHelper::applyNormalStyle(selectDudvMapFileButton);
+        ButtonStyleHelper::applyDefaultStyle(selectDudvMapFileButton);
         selectDudvMapFileButton->setFixedWidth(22);
         connect(selectDudvMapFileButton, SIGNAL(clicked()), this, SLOT(showDudvMapFilenameDialog()));
 
         auto* clearDudvMapFileButton = new QPushButton("Clr");
         dudvMapLayout->addWidget(clearDudvMapFileButton);
-        ButtonStyleHelper::applyNormalStyle(clearDudvMapFileButton);
+        ButtonStyleHelper::applyDefaultStyle(clearDudvMapFileButton);
         clearDudvMapFileButton->setFixedWidth(22);
         connect(clearDudvMapFileButton, SIGNAL(clicked()), this, SLOT(clearDudvMapFilename()));
 
@@ -200,7 +200,7 @@ namespace urchin {
     void WaterPanelWidget::setupUnderWaterProperties(QVBoxLayout* mainLayout) {
         underWaterPropertiesGroupBox = new QGroupBox("Under Water");
         mainLayout->addWidget(underWaterPropertiesGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(underWaterPropertiesGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(underWaterPropertiesGroupBox);
         underWaterPropertiesGroupBox->hide();
 
         auto* underWaterPropertiesLayout = new QGridLayout(underWaterPropertiesGroupBox);
