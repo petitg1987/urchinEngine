@@ -13,7 +13,7 @@ namespace urchin {
             Q_OBJECT
 
         public:
-            CloneObjectDialog(QWidget*, const std::string&, const ObjectController*);
+            CloneObjectDialog(QWidget*, const std::string&, const ObjectController&);
 
             std::string getObjectName() const;
 
@@ -24,7 +24,7 @@ namespace urchin {
             bool isObjectEntityExist(std::string_view) const;
 
             std::string proposedName;
-            const ObjectController* objectController;
+            const ObjectController& objectController;
 
             QLabel* objectNameLabel;
             QLineEdit* objectNameText;

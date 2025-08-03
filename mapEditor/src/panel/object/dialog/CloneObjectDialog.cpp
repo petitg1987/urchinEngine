@@ -7,9 +7,9 @@
 
 namespace urchin {
 
-    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const std::string& originalName, const ObjectController* objectController) :
+    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const std::string& originalName, const ObjectController& objectController) :
             QDialog(parent),
-            proposedName(EntityControllerUtil::determineNewCloneName(originalName, objectController->getObjectEntities())),
+            proposedName(EntityControllerUtil::determineNewCloneName(originalName, objectController.getObjectEntities())),
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr) {
@@ -68,7 +68,7 @@ namespace urchin {
     }
 
     bool CloneObjectDialog::isObjectEntityExist(std::string_view name) const {
-        std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
+        std::list<const ObjectEntity*> objectEntities = objectController.getObjectEntities();
         return std::ranges::any_of(objectEntities, [name](const auto& so){ return so->getName() == name; });
     }
 

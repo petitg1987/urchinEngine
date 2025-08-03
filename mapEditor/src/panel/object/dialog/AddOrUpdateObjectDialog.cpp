@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    AddOrUpdateObjectDialog::AddOrUpdateObjectDialog(QWidget* parent, std::string defaultName, const std::vector<std::string>& defaultGroupHierarchy, const ObjectController* objectController) :
+    AddOrUpdateObjectDialog::AddOrUpdateObjectDialog(QWidget* parent, std::string defaultName, const std::vector<std::string>& defaultGroupHierarchy, const ObjectController& objectController) :
             QDialog(parent),
             defaultName(std::move(defaultName)),
             objectController(objectController),
@@ -59,7 +59,7 @@ namespace urchin {
         auto* groupLabel = new QLabel("Group:");
         groupLayout->addWidget(groupLabel, 0, 0);
 
-        std::vector<std::vector<std::string>> allGroupHierarchy = GroupHierarchyHelper::getAllGroupHierarchy(*objectController);
+        std::vector<std::vector<std::string>> allGroupHierarchy = GroupHierarchyHelper::getAllGroupHierarchy(objectController);
         groupComboBox = new QComboBox();
         groupLayout->addWidget(groupComboBox, 0, 1);
         for (const std::vector<std::string>& groupHierarchy : allGroupHierarchy) {
@@ -130,7 +130,7 @@ namespace urchin {
     }
 
     bool AddOrUpdateObjectDialog::isObjectEntityExist(std::string_view name) const {
-        std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
+        std::list<const ObjectEntity*> objectEntities = objectController.getObjectEntities();
         return std::ranges::any_of(objectEntities, [name](const auto& so){ return so->getName() == name; });
     }
 

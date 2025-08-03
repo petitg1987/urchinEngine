@@ -15,10 +15,9 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            AddOrUpdateObjectDialog(QWidget*, std::string, const std::vector<std::string>&, const ObjectController*);
+            AddOrUpdateObjectDialog(QWidget*, std::string, const std::vector<std::string>&, const ObjectController&);
 
             std::unique_ptr<ObjectEntity> getNewObjectEntity();
-
             std::string getObjectName() const;
             std::vector<std::string> getGroupHierarchy() const;
 
@@ -30,7 +29,7 @@ namespace urchin {
             bool isObjectEntityExist(std::string_view) const;
 
             std::string defaultName;
-            const ObjectController* objectController;
+            const ObjectController& objectController;
 
             QLabel* objectNameLabel;
             QLineEdit* objectNameText;

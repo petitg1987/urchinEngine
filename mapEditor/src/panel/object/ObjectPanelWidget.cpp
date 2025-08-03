@@ -9,6 +9,7 @@
 
 #include "panel/object/dialog/CloneObjectDialog.h"
 #include "panel/object/dialog/AddOrUpdateObjectDialog.h"
+#include "panel/object/dialog/UpdateGroupDialog.h"
 #include "panel/object/dialog/ChangeLightTypeDialog.h"
 #include "panel/object/dialog/ChangeMeshesFileDialog.h"
 #include "panel/object/dialog/ChangeSoundDialog.h"
@@ -534,7 +535,7 @@ namespace urchin {
     void ObjectPanelWidget::showAddObjectDialog() {
         std::string defaultName = "";
         std::vector<std::string> defaultGroupHierarchy = objectTableView->hasMainObjectEntitySelected() ? objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy() : std::vector<std::string>{};
-        AddOrUpdateObjectDialog addObjectEntityDialog(this, defaultName, defaultGroupHierarchy, objectController);
+        AddOrUpdateObjectDialog addObjectEntityDialog(this, defaultName, defaultGroupHierarchy, *objectController);
         addObjectEntityDialog.exec();
 
         if (addObjectEntityDialog.result() == QDialog::Accepted) {
@@ -564,7 +565,7 @@ namespace urchin {
 
     void ObjectPanelWidget::showCloneObjectDialog() {
         std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
-        CloneObjectDialog cloneObjectEntityDialog(this, originalName, objectController);
+        CloneObjectDialog cloneObjectEntityDialog(this, originalName, *objectController);
         cloneObjectEntityDialog.exec();
 
         if (cloneObjectEntityDialog.result() == QDialog::Accepted) {
@@ -581,22 +582,27 @@ namespace urchin {
         if (objectTableView->hasMainObjectEntitySelected()) {
             std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
             std::vector<std::string> originalGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
-            AddOrUpdateObjectDialog updateObjectDialog(this, originalName, originalGroupHierarchy, objectController);
+            AddOrUpdateObjectDialog updateObjectDialog(this, originalName, originalGroupHierarchy, *objectController);
             updateObjectDialog.exec();
 
             if (updateObjectDialog.result() == QDialog::Accepted) {
                 const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
                 objectController->updateObjectEntity(objectEntity, updateObjectDialog.getObjectName(), updateObjectDialog.getGroupHierarchy());
-
                 objectTableView->refreshMainSelectedObjectEntity();
             }
         } else if (objectTableView->hasMainGroupHierarchySelected()) {
-            std::vector<std::string> groupHierarchy = objectTableView->getMainGroupHierarchySelected().value();
-            //TODO create dialog to update group !
-            for (std::string group : groupHierarchy) {
-                std::cout<<group<<std::endl;
+            std::vector<std::string> defaultGroupHierarchy = objectTableView->getMainGroupHierarchySelected().value();
+            std::string defaultGroupName = defaultGroupHierarchy.back();
+            defaultGroupHierarchy.pop_back();
+
+            UpdateGroupDialog updateGroupDialog(this, defaultGroupHierarchy, defaultGroupName, *objectController);
+            updateGroupDialog.exec();
+
+            if (updateGroupDialog.result() == QDialog::Accepted) {
+                std::vector<std::string> oldGroupHierarchy = objectTableView->getMainGroupHierarchySelected().value();
+                std::vector<std::string> newGroupHierarchy = updateGroupDialog.getUpdatedGroupHierarchy();
+                //TODO impl update
             }
-            std::cout<<std::endl;
         }
     }
 
