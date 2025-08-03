@@ -588,7 +588,7 @@ namespace urchin {
             if (updateObjectDialog.result() == QDialog::Accepted) {
                 const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
                 objectController->updateObjectEntity(objectEntity, updateObjectDialog.getObjectName(), updateObjectDialog.getGroupHierarchy());
-                objectTableView->refreshMainSelectedObjectEntity();
+                objectTableView->refreshObjectEntity(objectEntity);
             }
         } else if (objectTableView->hasMainGroupHierarchySelected()) {
             std::vector<std::string> defaultGroupHierarchy = objectTableView->getMainGroupHierarchySelected().value();

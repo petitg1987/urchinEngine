@@ -29,13 +29,15 @@ namespace urchin {
 
             void addObjectEntity(const ObjectEntity&, bool);
             void removeSelectedItems() const;
-            void refreshMainSelectedObjectEntity();
+            void refreshObjectEntity(const ObjectEntity&);
             void removeAll() const;
 
         private:
-            void selectItem(const QModelIndex&);
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
             void currentChanged(const QModelIndex&, const QModelIndex&) override;
+
+            QStandardItem* findItemByObjectEntity(const ObjectEntity&) const;
+            void selectItem(const QModelIndex&);
             QStandardItem* buildGroupEntityItem(const std::string&) const;
             QStandardItem* buildObjectEntityItem(const ObjectEntity&) const;
             QStandardItem* findOrCreateGroupHierarchy(const std::vector<std::string>&) const;

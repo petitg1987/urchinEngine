@@ -40,6 +40,29 @@ namespace urchin {
         selectionModel()->select(itemIndex, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
 
+    QStandardItem* ObjectTableView::findItemByObjectEntity(const ObjectEntity& objectEntityToFind) const {
+        std::stack<QStandardItem*> itemsToProcess;
+        itemsToProcess.push(objectsListModel->invisibleRootItem());
+
+        while (!itemsToProcess.empty()) {
+            QStandardItem* current = itemsToProcess.top();
+            itemsToProcess.pop();
+
+            if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
+                auto* objectEntity = current->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
+                if (objectEntityToFind.getName() == objectEntity->getName()) {
+                    return current;
+                }
+            }
+
+            for (int row = current->rowCount() - 1; row >= 0; --row) {
+                QStandardItem* child = current->child(row);
+                itemsToProcess.push(child);
+            }
+        }
+        return nullptr;
+    }
+
     QStandardItem* ObjectTableView::buildGroupEntityItem(const std::string& groupName) const {
         auto* itemGroup = new QStandardItem(QString::fromStdString(groupName));
         itemGroup->setData(false, IS_OBJECT_ENTITY_DATA);
@@ -118,26 +141,10 @@ namespace urchin {
         return objectEntities;
     }
 
-    void ObjectTableView::selectObjectEntity(const ObjectEntity& expectedObjectEntity) {
-        std::stack<QStandardItem*> itemsToProcess;
-        itemsToProcess.push(objectsListModel->invisibleRootItem());
-
-        while (!itemsToProcess.empty()) {
-            QStandardItem* current = itemsToProcess.top();
-            itemsToProcess.pop();
-
-            if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
-                auto* objectEntity = current->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
-                if (expectedObjectEntity.getName() == objectEntity->getName()) {
-                    selectItem(current->index());
-                    return;
-                }
-            }
-
-            for (int row = current->rowCount() - 1; row >= 0; --row) {
-                QStandardItem* child = current->child(row);
-                itemsToProcess.push(child);
-            }
+    void ObjectTableView::selectObjectEntity(const ObjectEntity& objectEntity) {
+        QStandardItem* item = findItemByObjectEntity(objectEntity);
+        if (item) {
+            selectItem(item->index());
         }
     }
 
@@ -230,15 +237,11 @@ namespace urchin {
         }
     }
 
-    void ObjectTableView::refreshMainSelectedObjectEntity() {
-        if (hasMainObjectEntitySelected()) {
-            const ObjectEntity* selectObjectEntity = getMainSelectedObjectEntity();
-
-            QModelIndexList indexesToRemove;
-            indexesToRemove.push_back(currentIndex());
-            removeItemsByIndexes(indexesToRemove);
-
-            addObjectEntity(*selectObjectEntity, true);
+    void ObjectTableView::refreshObjectEntity(const ObjectEntity& objectEntity) {
+        QStandardItem* item = findItemByObjectEntity(objectEntity);
+        if (item) {
+            removeItemsByIndexes({item->index()});
+            addObjectEntity(objectEntity, true);
         }
     }
 
