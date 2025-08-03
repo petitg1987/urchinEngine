@@ -601,7 +601,10 @@ namespace urchin {
             if (updateGroupDialog.result() == QDialog::Accepted) {
                 std::vector<std::string> oldGroupHierarchy = objectTableView->getMainGroupHierarchySelected().value();
                 std::vector<std::string> newGroupHierarchy = updateGroupDialog.getUpdatedGroupHierarchy();
-                //TODO impl update
+                std::vector<const ObjectEntity*> updatedObjectEntities = objectController->updateObjectEntities(oldGroupHierarchy, newGroupHierarchy);
+                for (const ObjectEntity* updatedObjectEntity : updatedObjectEntities) {
+                    objectTableView->refreshObjectEntity(*updatedObjectEntity);
+                }
             }
         }
     }

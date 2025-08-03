@@ -53,6 +53,15 @@ namespace urchin {
         markModified();
     }
 
+    std::vector<const ObjectEntity*> ObjectController::updateObjectEntities(const std::vector<std::string>& /*oldGroupHierarchy*/, const std::vector<std::string>& /*newGroupHierarchy*/) {
+        std::vector<const ObjectEntity*> result;
+
+        //TODO impl
+
+        markModified();
+        return result;
+    }
+
     void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity, bool isClonedEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
