@@ -4,10 +4,6 @@
 
 namespace urchin {
 
-    void ComboBoxStyleHelper::applyDefaultStyleOn(QComboBox* comboBox) {
-        comboBox->setLocale(QLocale::English);
-    }
-
     void ComboBoxStyleHelper::applyOrientationStyleOn(QComboBox* comboBox) {
         comboBox->addItem(EULER_XYZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XYZ));
         comboBox->addItem(EULER_XZY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XZY));
@@ -21,8 +17,6 @@ namespace urchin {
         comboBox->addItem(EULER_YZY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YZY));
         comboBox->addItem(EULER_ZXZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZXZ));
         comboBox->addItem(EULER_ZYZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZYZ));
-
-        comboBox->setLocale(QLocale::English);
     }
 
 }

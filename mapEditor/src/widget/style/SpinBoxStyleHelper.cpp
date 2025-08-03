@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     void SpinBoxStyleHelper::applyDefaultStyleOn(QDoubleSpinBox* spinBox, double min, double max, double step) {
-        spinBox->setDecimals(4);
+        spinBox->setDecimals(5);
         spinBox->setMinimum(min);
         spinBox->setMaximum(max);
         spinBox->setSingleStep(step);

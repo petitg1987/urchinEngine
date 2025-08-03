@@ -21,7 +21,6 @@ namespace urchin {
 
             ComboBoxStyleHelper() = delete;
 
-            static void applyDefaultStyleOn(QComboBox*);
             static void applyOrientationStyleOn(QComboBox*);
     };
 
