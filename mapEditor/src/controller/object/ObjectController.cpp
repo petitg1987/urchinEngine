@@ -53,7 +53,7 @@ namespace urchin {
         markModified();
     }
 
-    std::vector<const ObjectEntity*> ObjectController::updateObjectEntities(const std::vector<std::string>& oldGroupHierarchy, const std::vector<std::string>& /*newGroupHierarchy*/) {
+    std::vector<const ObjectEntity*> ObjectController::updateObjectEntities(const std::vector<std::string>& oldGroupHierarchy, const std::vector<std::string>& newGroupHierarchy) {
         std::vector<const ObjectEntity*> updatedObjectEntities;
 
         const std::list<std::unique_ptr<ObjectEntity>>& objectEntities = getMap().getObjectEntities();
@@ -68,8 +68,9 @@ namespace urchin {
                 }
 
                 if (replaceGroupHierarchy) {
-                    std::vector<std::string> updatedGroupHierarchy = oldGroupHierarchy;
-                    //TODO add missing group
+                    std::vector<std::string> updatedGroupHierarchy = newGroupHierarchy;
+                    auto nextGroups = std::vector(objectEntity->getGroupHierarchy().begin() + oldGroupHierarchy.size(), objectEntity->getGroupHierarchy().end());
+                    updatedGroupHierarchy.insert(updatedGroupHierarchy.end(), nextGroups.begin(), nextGroups.end());
 
                     objectEntity->setGroupHierarchy(updatedGroupHierarchy);
                     updatedObjectEntities.push_back(objectEntity.get());
