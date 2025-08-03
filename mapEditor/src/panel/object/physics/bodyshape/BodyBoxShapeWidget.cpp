@@ -12,15 +12,15 @@ namespace urchin {
         mainLayout->addLayout(halfSizeLayout, 0, 1);
         halfSizeX = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeX, 0.001);
+        SpinBoxStyleHelper::applyDefaultStyle(halfSizeX, 0.001);
         connect(halfSizeX, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
         halfSizeY = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeY, 0.001);
+        SpinBoxStyleHelper::applyDefaultStyle(halfSizeY, 0.001);
         connect(halfSizeY, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
         halfSizeZ = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ, 0.001);
+        SpinBoxStyleHelper::applyDefaultStyle(halfSizeZ, 0.001);
         connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
     }
 

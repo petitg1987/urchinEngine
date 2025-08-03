@@ -16,15 +16,15 @@ namespace urchin {
         mainLayout->addLayout(positionLayout, 1, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::applyDefaultStyle(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::applyDefaultStyle(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
         auto* halfSizesLabel = new QLabel("Half Sizes:");
@@ -34,15 +34,15 @@ namespace urchin {
         mainLayout->addLayout(halfSizeLayout, 2, 1);
         halfSizeX = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeX, 0.001);
+        SpinBoxStyleHelper::applyDefaultStyle(halfSizeX, 0.001);
         connect(halfSizeX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         halfSizeY = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeY, 0.001);
+        SpinBoxStyleHelper::applyDefaultStyle(halfSizeY, 0.001);
         connect(halfSizeY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         halfSizeZ = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ, 0.001);
+        SpinBoxStyleHelper::applyDefaultStyle(halfSizeZ, 0.001);
         connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
         auto* orientationTypeLabel = new QLabel("Orient. Type:");
@@ -50,7 +50,7 @@ namespace urchin {
 
         orientationType = new QComboBox();
         mainLayout->addWidget(orientationType, 3, 1);
-        ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
+        ComboBoxStyleHelper::applyOrientationStyle(orientationType);
         connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateShapeOrientationType()));
 
         auto* eulerAngleLabel = new QLabel("Euler Angle:");
@@ -60,15 +60,15 @@ namespace urchin {
         mainLayout->addLayout(eulerAxisLayout, 4, 1);
         eulerAxis0 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis0);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis0);
         connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         eulerAxis1 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis1);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis1);
         connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         eulerAxis2 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis2);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis2);
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }
 

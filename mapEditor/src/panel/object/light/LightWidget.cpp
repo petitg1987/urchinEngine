@@ -72,15 +72,15 @@ namespace urchin {
         generalPropertiesLayout->addLayout(colorLayout, 0, 1);
         colorR = new QDoubleSpinBox();
         colorLayout->addWidget(colorR);
-        SpinBoxStyleHelper::applyDefaultStyleOn(colorR, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(colorR, 0.0, 1.0);
         connect(colorR, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
         colorG = new QDoubleSpinBox();
         colorLayout->addWidget(colorG);
-        SpinBoxStyleHelper::applyDefaultStyleOn(colorG, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(colorG, 0.0, 1.0);
         connect(colorG, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
         colorB = new QDoubleSpinBox();
         colorLayout->addWidget(colorB);
-        SpinBoxStyleHelper::applyDefaultStyleOn(colorB, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(colorB, 0.0, 1.0);
         connect(colorB, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
 
         enablePbrCheckBox = new QCheckBox("Enable PBR");
@@ -96,7 +96,7 @@ namespace urchin {
 
         shadowStrength = new QDoubleSpinBox();
         generalPropertiesLayout->addWidget(shadowStrength, 3, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(shadowStrength, 0.05, 1.0, 0.05);
+        SpinBoxStyleHelper::applyDefaultStyle(shadowStrength, 0.05, 1.0, 0.05);
         connect(shadowStrength, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
     }
 
@@ -115,15 +115,15 @@ namespace urchin {
         sunLightLayout->addLayout(directionLayout, 0, 1);
         sunDirectionX = new QDoubleSpinBox();
         directionLayout->addWidget(sunDirectionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(sunDirectionX);
+        SpinBoxStyleHelper::applyDefaultStyle(sunDirectionX);
         connect(sunDirectionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         sunDirectionY = new QDoubleSpinBox();
         directionLayout->addWidget(sunDirectionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(sunDirectionY);
+        SpinBoxStyleHelper::applyDefaultStyle(sunDirectionY);
         connect(sunDirectionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         sunDirectionZ = new QDoubleSpinBox();
         directionLayout->addWidget(sunDirectionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(sunDirectionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(sunDirectionZ);
         connect(sunDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
@@ -142,15 +142,15 @@ namespace urchin {
         omniLightLayout->addLayout(positionLayout, 0, 1);
         omniPositionX = new QDoubleSpinBox();
         positionLayout->addWidget(omniPositionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(omniPositionX);
+        SpinBoxStyleHelper::applyDefaultStyle(omniPositionX);
         connect(omniPositionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         omniPositionY = new QDoubleSpinBox();
         positionLayout->addWidget(omniPositionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(omniPositionY);
+        SpinBoxStyleHelper::applyDefaultStyle(omniPositionY);
         connect(omniPositionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         omniPositionZ = new QDoubleSpinBox();
         positionLayout->addWidget(omniPositionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(omniPositionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(omniPositionZ);
         connect(omniPositionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* attenuationLabel = new QLabel("Expo. Att.:");
@@ -158,7 +158,7 @@ namespace urchin {
 
         omniAttenuation = new QDoubleSpinBox();
         omniLightLayout->addWidget(omniAttenuation, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(omniAttenuation, 0.01, 0.05);
+        SpinBoxStyleHelper::applyDefaultStyle(omniAttenuation, 0.01, 0.05);
         connect(omniAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
@@ -177,15 +177,15 @@ namespace urchin {
         spotLightLayout->addLayout(positionLayout, 0, 1);
         spotPositionX = new QDoubleSpinBox();
         positionLayout->addWidget(spotPositionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotPositionX);
+        SpinBoxStyleHelper::applyDefaultStyle(spotPositionX);
         connect(spotPositionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         spotPositionY = new QDoubleSpinBox();
         positionLayout->addWidget(spotPositionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotPositionY);
+        SpinBoxStyleHelper::applyDefaultStyle(spotPositionY);
         connect(spotPositionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         spotPositionZ = new QDoubleSpinBox();
         positionLayout->addWidget(spotPositionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotPositionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(spotPositionZ);
         connect(spotPositionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         spotDirectionLabel = new QLabel("Direction:");
@@ -195,15 +195,15 @@ namespace urchin {
         spotLightLayout->addLayout(directionLayout, 1, 1);
         spotDirectionX = new QDoubleSpinBox();
         directionLayout->addWidget(spotDirectionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotDirectionX);
+        SpinBoxStyleHelper::applyDefaultStyle(spotDirectionX);
         connect(spotDirectionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         spotDirectionY = new QDoubleSpinBox();
         directionLayout->addWidget(spotDirectionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotDirectionY);
+        SpinBoxStyleHelper::applyDefaultStyle(spotDirectionY);
         connect(spotDirectionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         spotDirectionZ = new QDoubleSpinBox();
         directionLayout->addWidget(spotDirectionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotDirectionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(spotDirectionZ);
         connect(spotDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* innerAngleLabel = new QLabel("Inner angle (°):");
@@ -211,7 +211,7 @@ namespace urchin {
 
         spotInnerAngle = new QDoubleSpinBox();
         spotLightLayout->addWidget(spotInnerAngle, 2, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotInnerAngle, 1.0, SpotLight::MAX_ANGLE_DEGREE, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(spotInnerAngle, 1.0, SpotLight::MAX_ANGLE_DEGREE, 1.0);
         connect(spotInnerAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* outerAngleLabel= new QLabel("Outer angle (°):");
@@ -219,7 +219,7 @@ namespace urchin {
 
         spotOuterAngle = new QDoubleSpinBox();
         spotLightLayout->addWidget(spotOuterAngle, 3, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotOuterAngle, 1.0, SpotLight::MAX_ANGLE_DEGREE, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(spotOuterAngle, 1.0, SpotLight::MAX_ANGLE_DEGREE, 1.0);
         connect(spotOuterAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* attenuationLabel = new QLabel("Expo. Att.:");
@@ -227,7 +227,7 @@ namespace urchin {
 
         spotAttenuation = new QDoubleSpinBox();
         spotLightLayout->addWidget(spotAttenuation, 4, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotAttenuation, 0.01, 0.05);
+        SpinBoxStyleHelper::applyDefaultStyle(spotAttenuation, 0.01, 0.05);
         connect(spotAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 

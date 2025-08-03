@@ -75,7 +75,7 @@ namespace urchin {
         generalPropertiesLayout->addWidget(initialVolumeLabel, 2, 0);
         initialVolume = new QDoubleSpinBox();
         generalPropertiesLayout->addWidget(initialVolume);
-        SpinBoxStyleHelper::applyDefaultStyleOn(initialVolume, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(initialVolume, 0.0, 1.0);
         connect(initialVolume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
     }
 
@@ -95,15 +95,15 @@ namespace urchin {
         localizableSoundLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::applyDefaultStyle(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::applyDefaultStyle(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
 
         auto* radiusLabel= new QLabel("Radius:");
@@ -112,7 +112,7 @@ namespace urchin {
 
         radius = new QDoubleSpinBox();
         localizableSoundLayout->addWidget(radius, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(radius, 0.001);
+        SpinBoxStyleHelper::applyDefaultStyle(radius, 0.001);
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundComponent()));
     }
 

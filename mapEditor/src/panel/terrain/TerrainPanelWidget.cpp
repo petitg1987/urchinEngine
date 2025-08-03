@@ -90,15 +90,15 @@ namespace urchin {
         generalPropertiesLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::applyDefaultStyle(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::applyDefaultStyle(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
 
         auto* ambientLabel= new QLabel("Ambient:");
@@ -106,7 +106,7 @@ namespace urchin {
 
         ambient = new QDoubleSpinBox();
         generalPropertiesLayout->addWidget(ambient, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(ambient, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(ambient, 0.0, 1.0);
         connect(ambient, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
     }
 
@@ -123,7 +123,7 @@ namespace urchin {
 
         xzScale = new QDoubleSpinBox();
         meshLayout->addWidget(xzScale, 0, 1, 1, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(xzScale, 0.0, 1000.0, 0.05);
+        SpinBoxStyleHelper::applyDefaultStyle(xzScale, 0.0, 1000.0, 0.05);
         connect(xzScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
 
         auto* yScaleLabel= new QLabel("Y scale:");
@@ -131,7 +131,7 @@ namespace urchin {
 
         yScale = new QDoubleSpinBox();
         meshLayout->addWidget(yScale, 1, 1, 1, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(yScale, 0.0, 1000.0, 0.01);
+        SpinBoxStyleHelper::applyDefaultStyle(yScale, 0.0, 1000.0, 0.01);
         connect(yScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
 
         flatMode = new QCheckBox("Flat mode");
@@ -152,12 +152,12 @@ namespace urchin {
 
         sRepeat = new QDoubleSpinBox();
         materialLayout->addWidget(sRepeat, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(sRepeat, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(sRepeat, 0.0, 1.0);
         connect(sRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
 
         tRepeat = new QDoubleSpinBox();
         materialLayout->addWidget(tRepeat, 0, 2, 1, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(tRepeat, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(tRepeat, 0.0, 1.0);
         connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
 
         auto* maskMapLabel= new QLabel("Mask map:");
@@ -260,7 +260,7 @@ namespace urchin {
 
         numGrassInTex = new QSpinBox();
         grassLayout->addWidget(numGrassInTex, 3, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(numGrassInTex, 1, 1000, 1);
+        SpinBoxStyleHelper::applyDefaultStyle(numGrassInTex, 1, 1000, 1);
         connect(numGrassInTex, SIGNAL(valueChanged(int)), this, SLOT(updateTerrainGrass()));
 
         auto* grassQuantityLabel= new QLabel("Grass quantity:");
@@ -268,7 +268,7 @@ namespace urchin {
 
         grassQuantity = new QDoubleSpinBox();
         grassLayout->addWidget(grassQuantity, 4, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(grassQuantity, 0.0, 10000.0, 0.1);
+        SpinBoxStyleHelper::applyDefaultStyle(grassQuantity, 0.0, 10000.0, 0.1);
         connect(grassQuantity, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         auto* grassHeightLabel= new QLabel("Height/width:");
@@ -276,12 +276,12 @@ namespace urchin {
 
         grassHeight = new QDoubleSpinBox();
         grassLayout->addWidget(grassHeight, 5, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(grassHeight, 0.0, 10000.0, 0.05);
+        SpinBoxStyleHelper::applyDefaultStyle(grassHeight, 0.0, 10000.0, 0.05);
         connect(grassHeight, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         grassWidth = new QDoubleSpinBox();
         grassLayout->addWidget(grassWidth, 5, 2);
-        SpinBoxStyleHelper::applyDefaultStyleOn(grassWidth, 0.0, 10000.0, 0.05);
+        SpinBoxStyleHelper::applyDefaultStyle(grassWidth, 0.0, 10000.0, 0.05);
         connect(grassWidth, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         auto* windDirectionLabel= new QLabel("Wind direction:");
@@ -289,15 +289,15 @@ namespace urchin {
 
         windDirectionX = new QDoubleSpinBox();
         grassLayout->addWidget(windDirectionX, 6, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionX);
+        SpinBoxStyleHelper::applyDefaultStyle(windDirectionX);
         connect(windDirectionX, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
         windDirectionY = new QDoubleSpinBox();
         grassLayout->addWidget(windDirectionY, 6, 2);
-        SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionY);
+        SpinBoxStyleHelper::applyDefaultStyle(windDirectionY);
         connect(windDirectionY, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
         windDirectionZ = new QDoubleSpinBox();
         grassLayout->addWidget(windDirectionZ, 6, 3, 1, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(windDirectionZ);
         connect(windDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         auto* windStrengthLabel= new QLabel("Wind strength:");
@@ -305,7 +305,7 @@ namespace urchin {
 
         windStrength = new QDoubleSpinBox();
         grassLayout->addWidget(windStrength, 7, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(windStrength, 0.0);
+        SpinBoxStyleHelper::applyDefaultStyle(windStrength, 0.0);
         connect(windStrength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
     }
 

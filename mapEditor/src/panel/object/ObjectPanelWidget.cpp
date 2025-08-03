@@ -187,15 +187,15 @@ namespace urchin {
         transformLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::applyDefaultStyle(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::applyDefaultStyle(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
     }
 
@@ -205,7 +205,7 @@ namespace urchin {
 
         orientationType = new QComboBox();
         transformLayout->addWidget(orientationType, 1, 1);
-        ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
+        ComboBoxStyleHelper::applyOrientationStyle(orientationType);
         connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectOrientationType()));
 
         auto* eulerAngleLabel = new QLabel("Euler Angle:");
@@ -215,16 +215,16 @@ namespace urchin {
         transformLayout->addLayout(eulerAxisLayout, 2, 1);
         eulerAxis0 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis0);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis0);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis0);
         connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
         eulerAxis1 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis1);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis1);
         connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
         eulerAxis2 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis2);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis2);
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
     }
 
@@ -236,15 +236,15 @@ namespace urchin {
         transformLayout->addLayout(positionLayout, 3, 1);
         scaleX = new QDoubleSpinBox();
         positionLayout->addWidget(scaleX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(scaleX, 0.01);
+        SpinBoxStyleHelper::applyDefaultStyle(scaleX, 0.01);
         connect(scaleX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
         scaleY = new QDoubleSpinBox();
         positionLayout->addWidget(scaleY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(scaleY, 0.01);
+        SpinBoxStyleHelper::applyDefaultStyle(scaleY, 0.01);
         connect(scaleY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
         scaleZ = new QDoubleSpinBox();
         positionLayout->addWidget(scaleZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(scaleZ, 0.01);
+        SpinBoxStyleHelper::applyDefaultStyle(scaleZ, 0.01);
         connect(scaleZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
     }
 

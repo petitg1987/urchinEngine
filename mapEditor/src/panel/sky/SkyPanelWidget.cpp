@@ -88,7 +88,7 @@ namespace urchin {
 
         offsetY = new QDoubleSpinBox();
         skyboxLayout->addWidget(offsetY, 6, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(offsetY);
+        SpinBoxStyleHelper::applyDefaultStyle(offsetY);
         connect(offsetY, SIGNAL(valueChanged(double)), this, SLOT(skyChanged()));
     }
 

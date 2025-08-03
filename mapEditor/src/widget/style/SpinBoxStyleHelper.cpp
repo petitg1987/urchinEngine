@@ -3,7 +3,7 @@
 namespace urchin {
 
 
-    void SpinBoxStyleHelper::applyDefaultStyleOn(QSpinBox* spinBox, int min, int max, int step) {
+    void SpinBoxStyleHelper::applyDefaultStyle(QSpinBox* spinBox, int min, int max, int step) {
         spinBox->setMinimum(min);
         spinBox->setMaximum(max);
         spinBox->setSingleStep(step);
@@ -13,7 +13,7 @@ namespace urchin {
         spinBox->setFixedSize(QSize(80, 22));
     }
 
-    void SpinBoxStyleHelper::applyDefaultStyleOn(QDoubleSpinBox* spinBox, double min, double max, double step) {
+    void SpinBoxStyleHelper::applyDefaultStyle(QDoubleSpinBox* spinBox, double min, double max, double step) {
         spinBox->setDecimals(5);
         spinBox->setMinimum(min);
         spinBox->setMaximum(max);
@@ -24,7 +24,7 @@ namespace urchin {
         spinBox->setFixedSize(QSize(80, 22));
     }
 
-    void SpinBoxStyleHelper::applyAngleStyleOn(QDoubleSpinBox* spinBox) {
+    void SpinBoxStyleHelper::applyAngleStyle(QDoubleSpinBox* spinBox) {
         spinBox->setDecimals(3);
         spinBox->setMinimum(-360);
         spinBox->setMaximum(360);
@@ -35,7 +35,7 @@ namespace urchin {
         spinBox->setFixedSize(QSize(80, 22));
     }
 
-    void SpinBoxStyleHelper::applyPercentageStyleOn(QDoubleSpinBox* spinBox) {
+    void SpinBoxStyleHelper::applyPercentageStyle(QDoubleSpinBox* spinBox) {
         spinBox->setDecimals(0);
         spinBox->setMinimum(0);
         spinBox->setMaximum(100);

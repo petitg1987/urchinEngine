@@ -78,7 +78,7 @@ namespace urchin {
 
         mass = new QDoubleSpinBox();
         rigidBodyGeneralLayout->addWidget(mass, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(mass, 0.0);
+        SpinBoxStyleHelper::applyDefaultStyle(mass, 0.0);
         connect(mass, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
         auto* restitutionLabel = new QLabel("Restitution:");
@@ -86,7 +86,7 @@ namespace urchin {
 
         restitution = new QDoubleSpinBox();
         rigidBodyGeneralLayout->addWidget(restitution, 0, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(restitution, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(restitution, 0.0, 1.0);
         connect(restitution, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
         auto* frictionLabel = new QLabel("Friction:");
@@ -94,7 +94,7 @@ namespace urchin {
 
         friction = new QDoubleSpinBox();
         rigidBodyGeneralLayout->addWidget(friction, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(friction, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(friction, 0.0, 1.0);
         connect(friction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
         auto* rollingFrictionLabel = new QLabel("Rolling Friction:");
@@ -102,7 +102,7 @@ namespace urchin {
 
         rollingFriction = new QDoubleSpinBox();
         rigidBodyGeneralLayout->addWidget(rollingFriction, 1, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(rollingFriction, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(rollingFriction, 0.0, 1.0);
         connect(rollingFriction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
     }
 
@@ -118,7 +118,7 @@ namespace urchin {
 
         linearDamping = new QDoubleSpinBox();
         rigidBodyDampingLayout->addWidget(linearDamping, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearDamping, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(linearDamping, 0.0, 1.0);
         connect(linearDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
         auto* angularDampingLabel = new QLabel("Angular:");
@@ -126,7 +126,7 @@ namespace urchin {
 
         angularDamping = new QDoubleSpinBox();
         rigidBodyDampingLayout->addWidget(angularDamping, 0, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularDamping, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(angularDamping, 0.0, 1.0);
         connect(angularDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
     }
 
@@ -144,15 +144,15 @@ namespace urchin {
         rigidBodyFactorLayout->addLayout(linearFactorLayout, 0, 1);
         linearFactorX = new QDoubleSpinBox();
         linearFactorLayout->addWidget(linearFactorX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorX, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(linearFactorX, 0.0, 1.0);
         connect(linearFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
         linearFactorY = new QDoubleSpinBox();
         linearFactorLayout->addWidget(linearFactorY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorY, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(linearFactorY, 0.0, 1.0);
         connect(linearFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
         linearFactorZ = new QDoubleSpinBox();
         linearFactorLayout->addWidget(linearFactorZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorZ, 0.0, 1.0);
+        SpinBoxStyleHelper::applyDefaultStyle(linearFactorZ, 0.0, 1.0);
         connect(linearFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
         auto* angularFactorLabel = new QLabel("Angular:");
@@ -162,19 +162,19 @@ namespace urchin {
         rigidBodyFactorLayout->addLayout(angularFactorLayout, 1, 1);
         angularFactorX = new QDoubleSpinBox();
         angularFactorLayout->addWidget(angularFactorX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorX);
+        SpinBoxStyleHelper::applyDefaultStyle(angularFactorX);
         angularFactorX->setMinimum(0.0);
         angularFactorX->setMaximum(1.0);
         connect(angularFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
         angularFactorY = new QDoubleSpinBox();
         angularFactorLayout->addWidget(angularFactorY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorY);
+        SpinBoxStyleHelper::applyDefaultStyle(angularFactorY);
         angularFactorY->setMinimum(0.0);
         angularFactorY->setMaximum(1.0);
         connect(angularFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
         angularFactorZ = new QDoubleSpinBox();
         angularFactorLayout->addWidget(angularFactorZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorZ);
+        SpinBoxStyleHelper::applyDefaultStyle(angularFactorZ);
         angularFactorZ->setMinimum(0.0);
         angularFactorZ->setMaximum(1.0);
         connect(angularFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));

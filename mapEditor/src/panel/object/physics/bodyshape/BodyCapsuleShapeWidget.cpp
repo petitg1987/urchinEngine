@@ -10,7 +10,7 @@ namespace urchin {
 
         radius = new QDoubleSpinBox();
         mainLayout->addWidget(radius, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(radius, 0.001);
+        SpinBoxStyleHelper::applyDefaultStyle(radius, 0.001);
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
         auto* cylinderHeightLabel = new QLabel("Cylinder Height:");
@@ -18,7 +18,7 @@ namespace urchin {
 
         cylinderHeight = new QDoubleSpinBox();
         mainLayout->addWidget(cylinderHeight, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(cylinderHeight, 0.001);
+        SpinBoxStyleHelper::applyDefaultStyle(cylinderHeight, 0.001);
         connect(cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
         auto* orientationLabel = new QLabel("Orientation:");

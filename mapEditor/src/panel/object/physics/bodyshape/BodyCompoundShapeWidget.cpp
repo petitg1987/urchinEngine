@@ -117,17 +117,17 @@ namespace urchin {
         transformLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::applyDefaultStyle(positionX);
         positionX->setValue(position.X);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::applyDefaultStyle(positionY);
         positionY->setValue(position.Y);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::applyDefaultStyle(positionZ);
         positionZ->setValue(position.Z);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
     }
@@ -138,7 +138,7 @@ namespace urchin {
 
         orientationType = new QComboBox();
         transformLayout->addWidget(orientationType, 1, 1);
-        ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
+        ComboBoxStyleHelper::applyOrientationStyle(orientationType);
         connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLocalizedShapeOrientationType()));
 
         auto* eulerAngleLabel = new QLabel("Euler Angle:");
@@ -152,17 +152,17 @@ namespace urchin {
         transformLayout->addLayout(eulerAxisLayout, 2, 1);
         eulerAxis0 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis0);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis0);
         eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
         connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
         eulerAxis1 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis1);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis1);
         eulerAxis1->setValue(AngleConverter<float>::toDegree(eulerAngle.Y));
         connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
         eulerAxis2 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis2);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
+        SpinBoxStyleHelper::applyAngleStyle(eulerAxis2);
         eulerAxis2->setValue(AngleConverter<float>::toDegree(eulerAngle.Z));
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
     }
