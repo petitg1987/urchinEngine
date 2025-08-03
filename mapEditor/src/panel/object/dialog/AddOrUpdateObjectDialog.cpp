@@ -1,30 +1,29 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include "panel/object/dialog/AddObjectDialog.h"
+#include "panel/object/dialog/AddOrUpdateObjectDialog.h"
 #include "panel/object/dialog/support/GroupHierarchyHelper.h"
-#include "widget/style/LabelStyleHelper.h"
-#include "widget/style/ButtonStyleHelper.h"
 #include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/LabelStyleHelper.h"
 
 namespace urchin {
 
-    AddObjectDialog::AddObjectDialog(QWidget* parent, const std::vector<std::string>& defaultGroupHierarchy, const ObjectController* objectController) :
+    AddOrUpdateObjectDialog::AddOrUpdateObjectDialog(QWidget* parent, std::string defaultName, const std::vector<std::string>& defaultGroupHierarchy, const ObjectController* objectController) :
             QDialog(parent),
+            defaultName(std::move(defaultName)),
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr),
             groupComboBox(nullptr),
-            newGroupText(nullptr),
-            objectEntity(nullptr) {
-        this->setWindowTitle("Add Object");
+            newGroupText(nullptr) {
+        this->setWindowTitle("Update Object");
         this->resize(530, 220);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        setupNameField(mainLayout);
+        setupNameFields(mainLayout);
         setupGroupFields(mainLayout, defaultGroupHierarchy);
 
         auto* buttonBox = new QDialogButtonBox();
@@ -36,25 +35,25 @@ namespace urchin {
         connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void AddObjectDialog::setupNameField(QGridLayout* mainLayout) {
+    void AddOrUpdateObjectDialog::setupNameFields(QGridLayout* mainLayout) {
         auto* generalGroupBox = new QGroupBox("General");
         mainLayout->addWidget(generalGroupBox, 0, 0);
         GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
 
         auto* groupLayout = new QGridLayout(generalGroupBox);
 
-        objectNameLabel = new QLabel("Object Name:");
+        objectNameLabel = new QLabel("Name:");
         groupLayout->addWidget(objectNameLabel, 0, 0);
 
         objectNameText = new QLineEdit();
         groupLayout->addWidget(objectNameText, 0, 1);
+        objectNameText->setText(QString::fromStdString(defaultName));
     }
 
-    void AddObjectDialog::setupGroupFields(QGridLayout* mainLayout, const std::vector<std::string>& defaultGroupHierarchy) {
+    void AddOrUpdateObjectDialog::setupGroupFields(QGridLayout* mainLayout, const std::vector<std::string>& defaultGroupHierarchy) {
         auto* groupGroupBox = new QGroupBox("Group Hierarchy");
         mainLayout->addWidget(groupGroupBox, 1, 0);
         GroupBoxStyleHelper::applyNormalStyle(groupGroupBox);
-
         auto* groupLayout = new QGridLayout(groupGroupBox);
 
         auto* groupLabel = new QLabel("Group:");
@@ -88,7 +87,19 @@ namespace urchin {
         });
     }
 
-    std::vector<std::string> AddObjectDialog::getGroupHierarchy() const {
+    std::unique_ptr<ObjectEntity> AddOrUpdateObjectDialog::getNewObjectEntity() {
+        auto objectEntity = std::make_unique<ObjectEntity>();
+        objectEntity->setModel(Model::fromMeshesFile(""));
+        objectEntity->setName(objectNameText->text().toStdString());
+        objectEntity->setGroupHierarchy(getGroupHierarchy());
+        return objectEntity;
+    }
+
+    std::string AddOrUpdateObjectDialog::getObjectName() const {
+        return objectNameText->text().toStdString();
+    }
+
+    std::vector<std::string> AddOrUpdateObjectDialog::getGroupHierarchy() const {
         std::vector<std::string> groupHierarchy = GroupHierarchyHelper::stringToGroupHierarchy(groupComboBox->currentData().toString().toStdString());
         if (!newGroupText->text().isEmpty()) {
             groupHierarchy.push_back(newGroupText->text().toStdString());
@@ -96,34 +107,21 @@ namespace urchin {
         return groupHierarchy;
     }
 
-    int AddObjectDialog::buildObjectEntity(int result) {
-        objectEntity = std::make_unique<ObjectEntity>();
-        objectEntity->setModel(Model::fromMeshesFile(""));
-        objectEntity->setName(objectNameText->text().toStdString());
-        objectEntity->setGroupHierarchy(getGroupHierarchy());
-        return result;
-    }
-
-    std::unique_ptr<ObjectEntity> AddObjectDialog::moveObjectEntity() {
-        return std::move(objectEntity);
-    }
-
-    void AddObjectDialog::done(int r) {
+    void AddOrUpdateObjectDialog::done(int r) {
         if (Accepted == r) {
             bool hasError = false;
 
             LabelStyleHelper::applyNormalStyle(objectNameLabel);
 
-            if (objectNameText->text().isEmpty()) {
+            if (getObjectName().empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (isObjectEntityExist(objectNameText->text().toStdString())) {
+            } else if (getObjectName() != defaultName && isObjectEntityExist(getObjectName())) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }
 
             if (!hasError) {
-                r = buildObjectEntity(r);
                 QDialog::done(r);
             }
         } else {
@@ -131,7 +129,7 @@ namespace urchin {
         }
     }
 
-    bool AddObjectDialog::isObjectEntityExist(std::string_view name) const {
+    bool AddOrUpdateObjectDialog::isObjectEntityExist(std::string_view name) const {
         std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
         return std::ranges::any_of(objectEntities, [name](const auto& so){ return so->getName() == name; });
     }

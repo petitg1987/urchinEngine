@@ -1,34 +1,35 @@
 #pragma once
 
+#include <string>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QComboBox>
-#include <UrchinAggregation.h>
 
 #include "controller/object/ObjectController.h"
 
 namespace urchin {
 
-    class AddObjectDialog final : public QDialog {
+    class AddOrUpdateObjectDialog final : public QDialog {
         Q_OBJECT
 
         public:
-            AddObjectDialog(QWidget*, const std::vector<std::string>&, const ObjectController*);
+            AddOrUpdateObjectDialog(QWidget*, std::string, const std::vector<std::string>&, const ObjectController*);
 
-            std::unique_ptr<ObjectEntity> moveObjectEntity();
+            std::unique_ptr<ObjectEntity> getNewObjectEntity();
+
+            std::string getObjectName() const;
+            std::vector<std::string> getGroupHierarchy() const;
 
         private:
-            void setupNameField(QGridLayout*);
+            void setupNameFields(QGridLayout*);
             void setupGroupFields(QGridLayout*, const std::vector<std::string>&);
-
-            std::vector<std::string> getGroupHierarchy() const;
-            int buildObjectEntity(int);
 
             void done(int) override;
             bool isObjectEntityExist(std::string_view) const;
 
+            std::string defaultName;
             const ObjectController* objectController;
 
             QLabel* objectNameLabel;
@@ -36,8 +37,6 @@ namespace urchin {
             QComboBox* groupComboBox;
             QLineEdit* newGroupText;
             QLabel* groupResultText;
-
-            std::unique_ptr<ObjectEntity> objectEntity;
     };
 
 }

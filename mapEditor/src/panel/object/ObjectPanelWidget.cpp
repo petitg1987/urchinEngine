@@ -7,9 +7,8 @@
 #include "widget/style/ComboBoxStyleHelper.h"
 #include "panel/object/ObjectPanelWidget.h"
 
-#include "panel/object/dialog/AddObjectDialog.h"
 #include "panel/object/dialog/CloneObjectDialog.h"
-#include "panel/object/dialog/UpdateObjectDialog.h"
+#include "panel/object/dialog/AddOrUpdateObjectDialog.h"
 #include "panel/object/dialog/ChangeLightTypeDialog.h"
 #include "panel/object/dialog/ChangeMeshesFileDialog.h"
 #include "panel/object/dialog/ChangeSoundDialog.h"
@@ -533,15 +532,13 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showAddObjectDialog() {
-        std::vector<std::string> defaultGroupHierarchy;
-        if (objectTableView->hasMainObjectEntitySelected()) {
-            defaultGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
-        }
-        AddObjectDialog addObjectEntityDialog(this, defaultGroupHierarchy, objectController);
+        std::string defaultName = "";
+        std::vector<std::string> defaultGroupHierarchy = objectTableView->hasMainObjectEntitySelected() ? objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy() : std::vector<std::string>{};
+        AddOrUpdateObjectDialog addObjectEntityDialog(this, defaultName, defaultGroupHierarchy, objectController);
         addObjectEntityDialog.exec();
 
         if (addObjectEntityDialog.result() == QDialog::Accepted) {
-            std::unique_ptr<ObjectEntity> objectEntity = addObjectEntityDialog.moveObjectEntity();
+            std::unique_ptr<ObjectEntity> objectEntity = addObjectEntityDialog.getNewObjectEntity();
             ObjectEntity& objectEntityInserted = objectController->addObjectEntity(std::move(objectEntity));
             objectController->createDefaultBody(objectEntityInserted);
             objectController->moveObjectInFrontOfCamera(objectEntityInserted, false);
@@ -584,12 +581,12 @@ namespace urchin {
         if (objectTableView->hasMainObjectEntitySelected()) {
             std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
             std::vector<std::string> originalGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
-            UpdateObjectDialog updateObjectDialog(this, originalName, originalGroupHierarchy, objectController);
+            AddOrUpdateObjectDialog updateObjectDialog(this, originalName, originalGroupHierarchy, objectController);
             updateObjectDialog.exec();
 
             if (updateObjectDialog.result() == QDialog::Accepted) {
                 const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
-                objectController->updateObjectEntity(objectEntity, updateObjectDialog.getUpdatedObjectName(), updateObjectDialog.getUpdatedGroupHierarchy());
+                objectController->updateObjectEntity(objectEntity, updateObjectDialog.getObjectName(), updateObjectDialog.getGroupHierarchy());
 
                 objectTableView->refreshMainSelectedObjectEntity();
             }
