@@ -236,18 +236,15 @@ namespace urchin {
         transformLayout->addLayout(positionLayout, 3, 1);
         scaleX = new QDoubleSpinBox();
         positionLayout->addWidget(scaleX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(scaleX);
-        scaleX->setMinimum(0.01);
+        SpinBoxStyleHelper::applyDefaultStyleOn(scaleX, 0.01);
         connect(scaleX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
         scaleY = new QDoubleSpinBox();
         positionLayout->addWidget(scaleY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(scaleY);
-        scaleY->setMinimum(0.01);
+        SpinBoxStyleHelper::applyDefaultStyleOn(scaleY, 0.01);
         connect(scaleY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
         scaleZ = new QDoubleSpinBox();
         positionLayout->addWidget(scaleZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(scaleZ);
-        scaleZ->setMinimum(0.01);
+        SpinBoxStyleHelper::applyDefaultStyleOn(scaleZ, 0.01);
         connect(scaleZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
     }
 

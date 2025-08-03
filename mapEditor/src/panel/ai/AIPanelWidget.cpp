@@ -44,8 +44,7 @@ namespace urchin {
 
         agentHeight = new QDoubleSpinBox();
         navMeshAgentLayout->addWidget(agentHeight, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(agentHeight);
-        agentHeight->setMinimum(0.0);
+        SpinBoxStyleHelper::applyDefaultStyleOn(agentHeight, 0.0);
         connect(agentHeight, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
         auto* agentRadiusLabel = new QLabel("Agent Radius:");
@@ -53,8 +52,7 @@ namespace urchin {
 
         agentRadius = new QDoubleSpinBox();
         navMeshAgentLayout->addWidget(agentRadius, 0, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(agentRadius);
-        agentRadius->setMinimum(0.0);
+        SpinBoxStyleHelper::applyDefaultStyleOn(agentRadius, 0.0);
         connect(agentRadius, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
         auto* maxSlopeLabel = new QLabel("Max Slope (°):");
@@ -72,8 +70,7 @@ namespace urchin {
 
         jumpDistance = new QDoubleSpinBox();
         navMeshAgentLayout->addWidget(jumpDistance, 1, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(jumpDistance);
-        jumpDistance->setMinimum(0.0);
+        SpinBoxStyleHelper::applyDefaultStyleOn(jumpDistance, 0.0);
         connect(jumpDistance, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
     }
 

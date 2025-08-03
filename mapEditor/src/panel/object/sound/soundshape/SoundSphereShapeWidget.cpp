@@ -31,8 +31,7 @@ namespace urchin {
 
         radius = new QDoubleSpinBox();
         mainLayout->addWidget(radius, 2, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(radius);
-        radius->setMinimum(0.0);
+        SpinBoxStyleHelper::applyDefaultStyleOn(radius, 0.0);
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }
 

@@ -2,11 +2,22 @@
 
 namespace urchin {
 
-    void SpinBoxStyleHelper::applyDefaultStyleOn(QDoubleSpinBox* spinBox) {
-        spinBox->setDecimals(5);
-        spinBox->setMinimum(-1e+09);
-        spinBox->setMaximum(1e+09);
-        spinBox->setSingleStep(0.1);
+
+    void SpinBoxStyleHelper::applyDefaultStyleOn(QSpinBox* spinBox, int min, int max, int step) {
+        spinBox->setMinimum(min);
+        spinBox->setMaximum(max);
+        spinBox->setSingleStep(step);
+        spinBox->setKeyboardTracking(true);
+        spinBox->setAccelerated(true);
+        spinBox->setLocale(QLocale::English);
+        spinBox->setFixedSize(QSize(80, 22));
+    }
+
+    void SpinBoxStyleHelper::applyDefaultStyleOn(QDoubleSpinBox* spinBox, double min, double max, double step) {
+        spinBox->setDecimals(4);
+        spinBox->setMinimum(min);
+        spinBox->setMaximum(max);
+        spinBox->setSingleStep(step);
         spinBox->setKeyboardTracking(true);
         spinBox->setAccelerated(true);
         spinBox->setLocale(QLocale::English);
@@ -29,16 +40,6 @@ namespace urchin {
         spinBox->setMinimum(0);
         spinBox->setMaximum(100);
         spinBox->setSingleStep(5);
-        spinBox->setKeyboardTracking(true);
-        spinBox->setAccelerated(true);
-        spinBox->setLocale(QLocale::English);
-        spinBox->setFixedSize(QSize(80, 22));
-    }
-
-    void SpinBoxStyleHelper::applyDefaultStyleOn(QSpinBox* spinBox) {
-        spinBox->setMinimum(-std::numeric_limits<int>::max());
-        spinBox->setMaximum(std::numeric_limits<int>::max());
-        spinBox->setSingleStep(1);
         spinBox->setKeyboardTracking(true);
         spinBox->setAccelerated(true);
         spinBox->setLocale(QLocale::English);

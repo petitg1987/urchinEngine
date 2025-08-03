@@ -72,21 +72,15 @@ namespace urchin {
         generalPropertiesLayout->addLayout(colorLayout, 0, 1);
         colorR = new QDoubleSpinBox();
         colorLayout->addWidget(colorR);
-        SpinBoxStyleHelper::applyDefaultStyleOn(colorR);
-        colorR->setMinimum(0.0);
-        colorR->setMaximum(1.0);
+        SpinBoxStyleHelper::applyDefaultStyleOn(colorR, 0.0, 1.0);
         connect(colorR, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
         colorG = new QDoubleSpinBox();
         colorLayout->addWidget(colorG);
-        SpinBoxStyleHelper::applyDefaultStyleOn(colorG);
-        colorG->setMinimum(0.0);
-        colorG->setMaximum(1.0);
+        SpinBoxStyleHelper::applyDefaultStyleOn(colorG, 0.0, 1.0);
         connect(colorG, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
         colorB = new QDoubleSpinBox();
         colorLayout->addWidget(colorB);
-        SpinBoxStyleHelper::applyDefaultStyleOn(colorB);
-        colorB->setMinimum(0.0);
-        colorB->setMaximum(1.0);
+        SpinBoxStyleHelper::applyDefaultStyleOn(colorB, 0.0, 1.0);
         connect(colorB, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
 
         enablePbrCheckBox = new QCheckBox("Enable PBR");
@@ -102,10 +96,7 @@ namespace urchin {
 
         shadowStrength = new QDoubleSpinBox();
         generalPropertiesLayout->addWidget(shadowStrength, 3, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(shadowStrength);
-        shadowStrength->setMinimum(0.05);
-        shadowStrength->setMaximum(1.00);
-        shadowStrength->setSingleStep(0.05);
+        SpinBoxStyleHelper::applyDefaultStyleOn(shadowStrength, 0.05, 1.0, 0.05);
         connect(shadowStrength, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
     }
 
@@ -167,9 +158,7 @@ namespace urchin {
 
         omniAttenuation = new QDoubleSpinBox();
         omniLightLayout->addWidget(omniAttenuation, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(omniAttenuation);
-        omniAttenuation->setMinimum(0.01);
-        omniAttenuation->setSingleStep(0.05);
+        SpinBoxStyleHelper::applyDefaultStyleOn(omniAttenuation, 0.01, 0.05);
         connect(omniAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
@@ -222,10 +211,7 @@ namespace urchin {
 
         spotInnerAngle = new QDoubleSpinBox();
         spotLightLayout->addWidget(spotInnerAngle, 2, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotInnerAngle);
-        spotInnerAngle->setMinimum(1.0);
-        spotInnerAngle->setMaximum(SpotLight::MAX_ANGLE_DEGREE);
-        spotInnerAngle->setSingleStep(1.0);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotInnerAngle, 1.0, SpotLight::MAX_ANGLE_DEGREE, 1.0);
         connect(spotInnerAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* outerAngleLabel= new QLabel("Outer angle (°):");
@@ -233,10 +219,7 @@ namespace urchin {
 
         spotOuterAngle = new QDoubleSpinBox();
         spotLightLayout->addWidget(spotOuterAngle, 3, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotOuterAngle);
-        spotOuterAngle->setMinimum(1.0);
-        spotOuterAngle->setMaximum(SpotLight::MAX_ANGLE_DEGREE);
-        spotOuterAngle->setSingleStep(1.0);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotOuterAngle, 1.0, SpotLight::MAX_ANGLE_DEGREE, 1.0);
         connect(spotOuterAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* attenuationLabel = new QLabel("Expo. Att.:");
@@ -244,9 +227,7 @@ namespace urchin {
 
         spotAttenuation = new QDoubleSpinBox();
         spotLightLayout->addWidget(spotAttenuation, 4, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(spotAttenuation);
-        spotAttenuation->setMinimum(0.01);
-        spotAttenuation->setSingleStep(0.05);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotAttenuation, 0.01, 0.05);
         connect(spotAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 

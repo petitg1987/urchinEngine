@@ -34,15 +34,15 @@ namespace urchin {
         mainLayout->addLayout(halfSizeLayout, 2, 1);
         halfSizeX = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeX, 0.001);
         connect(halfSizeX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         halfSizeY = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeY, 0.001);
         connect(halfSizeY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         halfSizeZ = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ, 0.001);
         connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
         auto* orientationTypeLabel = new QLabel("Orient. Type:");
