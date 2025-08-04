@@ -103,6 +103,11 @@ namespace urchin {
             model.setShadowBehavior(Model::ShadowBehavior::RECEIVER_AND_CASTER);
         }
 
+        auto lightMaskChunk = udaParser.getFirstChunk(false, LIGHT_MASK_TAG, UdaAttribute(), modelChunk);
+        if (lightMaskChunk) {
+            model.setLightMask(static_cast<uint8_t>(lightMaskChunk->getUnsignedIntValue()));
+        }
+
         auto cullBehaviorChunk = udaParser.getFirstChunk(false, CULL_BEHAVIOR_TAG, UdaAttribute(), modelChunk);
         if (cullBehaviorChunk) {
             if (cullBehaviorChunk->getStringValue() == CULL_VALUE) {
@@ -127,6 +132,11 @@ namespace urchin {
             } else {
                 throw std::runtime_error("Unknown shadow class: " + std::to_string((int)model.getShadowBehavior()));
             }
+        }
+
+        if (model.getLightMask() != std::numeric_limits<uint8_t>::max()) {
+            auto& lightMaskChunk = udaParser.createChunk(LIGHT_MASK_TAG, UdaAttribute(), &modelChunk);
+            lightMaskChunk.setUnsignedIntValue(model.getLightMask());
         }
 
         if (model.getCullBehavior() != Model::CullBehavior::CULL) { //not default value

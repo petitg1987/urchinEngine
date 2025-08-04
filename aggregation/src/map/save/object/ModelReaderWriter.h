@@ -33,6 +33,7 @@ namespace urchin {
             static constexpr char RECEIVER_AND_CASTER_VALUE[] = "RECEIVER_AND_CASTER";
             static constexpr char RECEIVER_ONLY_VALUE[] = "RECEIVER_ONLY";
             static constexpr char NONE_VALUE[] = "NONE";
+            static constexpr char LIGHT_MASK_TAG[] = "lightMask";
             static constexpr char CULL_BEHAVIOR_TAG[] = "cullBehavior";
             static constexpr char CULL_VALUE[] = "CULL";
             static constexpr char NO_CULL_VALUE[] = "NO_CULL";

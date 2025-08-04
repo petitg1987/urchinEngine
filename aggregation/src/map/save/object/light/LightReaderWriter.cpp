@@ -98,6 +98,9 @@ namespace urchin {
         auto pbrEnabledChunk = udaParser.getFirstChunk(true, PBR_ENABLED_TAG, UdaAttribute(), lightChunk);
         light.setPbrEnabled(pbrEnabledChunk->getBoolValue());
 
+        auto lightMaskChunk = udaParser.getFirstChunk(true, LIGHT_MASK_TAG, UdaAttribute(), lightChunk);
+        light.setLightMask(static_cast<uint8_t>(lightMaskChunk->getUnsignedIntValue()));
+
         auto produceShadowChunk = udaParser.getFirstChunk(true, PRODUCE_SHADOW_TAG, UdaAttribute(), lightChunk);
         light.setProduceShadow(produceShadowChunk->getBoolValue());
 
@@ -108,6 +111,9 @@ namespace urchin {
     void LightReaderWriter::writeFlags(UdaChunk& lightChunk, const Light& light, UdaParser& udaParser) {
         auto& pbrEnabledChunk = udaParser.createChunk(PBR_ENABLED_TAG, UdaAttribute(), &lightChunk);
         pbrEnabledChunk.setBoolValue(light.isPbrEnabled());
+
+        auto& lightMaskChunk = udaParser.createChunk(LIGHT_MASK_TAG, UdaAttribute(), &lightChunk);
+        lightMaskChunk.setUnsignedIntValue(light.getLightMask());
 
         auto& produceShadowChunk = udaParser.createChunk(PRODUCE_SHADOW_TAG, UdaAttribute(), &lightChunk);
         produceShadowChunk.setBoolValue(light.isProduceShadow());
