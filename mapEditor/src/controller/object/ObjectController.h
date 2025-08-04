@@ -26,7 +26,7 @@ namespace urchin {
             void moveObjectInFrontOfCamera(const ObjectEntity&, bool);
             void changeMeshesFile(const ObjectEntity&, const std::string&);
             const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
-            const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowBehavior, Model::CullBehavior);
+            const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowBehavior, uint8_t, Model::CullBehavior);
 
             void createDefaultBody(const ObjectEntity&);
             void changeBodyShape(const ObjectEntity&, const DefaultShapeQuality&, CollisionShape3D::ShapeType);
@@ -35,7 +35,7 @@ namespace urchin {
             const ObjectEntity& updateObjectPhysicsShape(const ObjectEntity&, std::unique_ptr<const CollisionShape3D>);
 
             void changeLightType(const ObjectEntity&, std::optional<Light::LightType>);
-            const ObjectEntity& updateLightGeneralProperties(const ObjectEntity&, const Point3<float>&, bool, bool, float);
+            const ObjectEntity& updateLightGeneralProperties(const ObjectEntity&, const Point3<float>&, bool, uint8_t, bool, float);
             const ObjectEntity& updateSunLightProperties(const ObjectEntity&, const Vector3<float>&);
             const ObjectEntity& updateOmnidirectionalLightProperties(const ObjectEntity&, float, const Point3<float>&);
             const ObjectEntity& updateSpotLightProperties(const ObjectEntity&, float, const Point3<float>&, const Vector3<float>&, float, float);

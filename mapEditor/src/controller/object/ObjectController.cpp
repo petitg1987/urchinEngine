@@ -97,12 +97,13 @@ namespace urchin {
 
         Transform<float> transform = objectEntity.getModel()->getTransform();
         Model::ShadowBehavior shadowBehavior = objectEntity.getModel()->getShadowBehavior();
+        uint8_t lightMask = objectEntity.getModel()->getLightMask();
         Model::CullBehavior cullBehavior = objectEntity.getModel()->getCullBehavior();
         bool hasPreviousMeshes = objectEntity.getModel()->getConstMeshes();
 
         objectEntity.setModel(Model::fromMeshesFile(meshesFilename));
         objectEntity.getModel()->setTransform(transform);
-        updateObjectProperties(constObjectEntity, shadowBehavior, cullBehavior);
+        updateObjectProperties(constObjectEntity, shadowBehavior, lightMask, cullBehavior);
         if (!hasPreviousMeshes && !meshesFilename.empty()) {
             createDefaultBody(constObjectEntity);
         }
@@ -119,11 +120,13 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ObjectController::updateObjectProperties(const ObjectEntity& constObjectEntity, Model::ShadowBehavior shadowBehavior, Model::CullBehavior cullBehavior) {
+    const ObjectEntity& ObjectController::updateObjectProperties(const ObjectEntity& constObjectEntity, Model::ShadowBehavior shadowBehavior, uint8_t lightMask,
+            Model::CullBehavior cullBehavior) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         Model* model = objectEntity.getModel();
 
         model->setShadowBehavior(shadowBehavior);
+        model->setLightMask(lightMask);
         model->setCullBehavior(cullBehavior);
 
         markModified();
@@ -199,13 +202,14 @@ namespace urchin {
         markModified();
     }
 
-    const ObjectEntity& ObjectController::updateLightGeneralProperties(const ObjectEntity& constObjectEntity, const Point3<float>& lightColor, bool enablePbr, bool isProduceShadow,
-            float shadowStrength) {
+    const ObjectEntity& ObjectController::updateLightGeneralProperties(const ObjectEntity& constObjectEntity, const Point3<float>& lightColor, bool enablePbr, uint8_t lightMask,
+            bool isProduceShadow, float shadowStrength) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         Light* light = objectEntity.getLight();
 
         light->setLightColor(lightColor);
         light->setPbrEnabled(enablePbr);
+        light->setLightMask(lightMask);
         light->setProduceShadow(isProduceShadow);
         light->setShadowStrength(shadowStrength);
 

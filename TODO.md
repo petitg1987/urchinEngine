@@ -27,7 +27,6 @@
   * ▲ **OPTIMIZATION**: Free shadow map memory when light is not displayed on the scene
   * ► **IMPROVEMENT**: Use distance to light instead of depth in spot/omnidirectional shadow map: allow to avoid artifacts due to wrong bias
     * See: <https://learnopengl.com/Advanced-Lighting/Shadows/Point-Shadows>
-  * ► **NEW FEATURE**: Add light masks (Unity) or lighting channels (Unreal) to control which objects are affected by specific lights to preventing sun from lighting interiors
   * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
   * ▼ **NEW FEATURE**: Implement scalable ambient obscurance
 * Anti-aliasing

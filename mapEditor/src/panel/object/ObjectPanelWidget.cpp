@@ -260,18 +260,25 @@ namespace urchin {
         propertiesLayout->addWidget(shadowBehaviorLabel, 0, 0);
 
         shadowBehavior = new QComboBox();
-        propertiesLayout->addWidget(shadowBehavior, 0, 1, 1, 3);
+        propertiesLayout->addWidget(shadowBehavior, 0, 1);
         shadowBehavior->setFixedWidth(150);
         shadowBehavior->addItem(RECEIVER_AND_CASTER_LABEL, QVariant((int)Model::ShadowBehavior::RECEIVER_AND_CASTER));
         shadowBehavior->addItem(RECEIVER_ONLY_LABEL, QVariant((int)Model::ShadowBehavior::RECEIVER_ONLY));
         shadowBehavior->addItem(NONE_LABEL, QVariant((int)Model::ShadowBehavior::NONE));
         connect(shadowBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectProperties()));
 
+        auto* lightMaskLabel= new QLabel("Light mask:");
+        propertiesLayout->addWidget(lightMaskLabel, 1, 0);
+
+        lightMask = new BitsetComboBox(nullptr, 8, 255);
+        propertiesLayout->addWidget(lightMask, 1, 1);
+        connect(lightMask, SIGNAL(onBitChanged()), this, SLOT(updateObjectProperties()));
+
         auto* cullBehaviorLabel = new QLabel("Cull behavior:");
-        propertiesLayout->addWidget(cullBehaviorLabel, 1, 0);
+        propertiesLayout->addWidget(cullBehaviorLabel, 2, 0);
 
         cullBehavior = new QComboBox();
-        propertiesLayout->addWidget(cullBehavior, 1, 1, 1, 3);
+        propertiesLayout->addWidget(cullBehavior, 2, 1);
         cullBehavior->setFixedWidth(150);
         cullBehavior->addItem(CULL_LABEL, QVariant((int)Model::CullBehavior::CULL));
         cullBehavior->addItem(NO_CULL_LABEL, QVariant((int)Model::CullBehavior::NO_CULL));
@@ -662,10 +669,12 @@ namespace urchin {
             QVariant shadowBehaviorVariant = shadowBehavior->currentData();
             auto shadowBehaviorValue = static_cast<Model::ShadowBehavior>(shadowBehaviorVariant.toInt());
 
+            uint8_t lightMaskValue = static_cast<uint8_t>(lightMask->getBitValues());
+
             QVariant cullBehaviorVariant = cullBehavior->currentData();
             auto cullBehaviorValue = static_cast<Model::CullBehavior>(cullBehaviorVariant.toInt());
 
-            objectController->updateObjectProperties(objectEntity, shadowBehaviorValue, cullBehaviorValue);
+            objectController->updateObjectProperties(objectEntity, shadowBehaviorValue, lightMaskValue, cullBehaviorValue);
         }
     }
 

@@ -8,6 +8,7 @@
 #include <UrchinAggregation.h>
 
 #include "controller/object/ObjectController.h"
+#include "widget/BitsetComboBox.h"
 
 namespace urchin {
 
@@ -46,6 +47,7 @@ namespace urchin {
             QCheckBox* enablePbrCheckBox;
             QCheckBox* produceShadowCheckBox;
             QDoubleSpinBox* shadowStrength;
+            BitsetComboBox* lightMask;
 
             //specific properties
             QLabel* sunDirectionLabel;

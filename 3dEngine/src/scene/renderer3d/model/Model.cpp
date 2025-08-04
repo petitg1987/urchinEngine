@@ -13,6 +13,7 @@ namespace urchin {
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             shadowBehavior(ShadowBehavior::RECEIVER_AND_CASTER),
+            lightMask(std::numeric_limits<uint8_t>::max()),
             cullBehavior(CullBehavior::CULL),
             originalVerticesOrUvUpdated(false) {
         if (!meshesFilename.empty()) {
@@ -29,6 +30,7 @@ namespace urchin {
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             shadowBehavior(ShadowBehavior::RECEIVER_AND_CASTER),
+            lightMask(std::numeric_limits<uint8_t>::max()),
             cullBehavior(CullBehavior::CULL),
             originalVerticesOrUvUpdated(false) {
         initialize();
@@ -42,6 +44,7 @@ namespace urchin {
             stopAnimationAtLastFrame(false),
             transform(model.getTransform()),
             shadowBehavior(model.getShadowBehavior()),
+            lightMask(model.getLightMask()),
             cullBehavior(model.getCullBehavior()),
             originalVerticesOrUvUpdated(model.isOriginalVerticesOrUvUpdated()) {
         if (model.meshes) {
@@ -342,6 +345,14 @@ namespace urchin {
             return ShadowBehavior::NONE;
         }
         return shadowBehavior;
+    }
+
+    void Model::setLightMask(uint8_t lightMask) {
+        this->lightMask = lightMask;
+    }
+
+    uint8_t Model::getLightMask() const {
+        return lightMask;
     }
 
     void Model::setCullBehavior(CullBehavior cullBehavior) {

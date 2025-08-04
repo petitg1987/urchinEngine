@@ -5,7 +5,7 @@ namespace urchin {
     Light::Light() :
             lightColor(Point3(1.0f, 1.0f, 1.0f)),
             pbrEnabled(true),
-            lightMask(255),
+            lightMask(std::numeric_limits<uint8_t>::max()),
             produceShadow(false),
             shadowStrength(1.0f) {
 

@@ -45,5 +45,5 @@ void main() {
     //pbr & mask
     fragPbrAndMask.r = 255; //roughness
     fragPbrAndMask.g = 0; //metalness
-    fragPbrAndMask.b = 255; //TODO review !
+    fragPbrAndMask.b = 255; //light mask
 }

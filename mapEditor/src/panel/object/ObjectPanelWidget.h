@@ -12,6 +12,7 @@
 #include "panel/object/physics/PhysicsWidget.h"
 #include "panel/object/light/LightWidget.h"
 #include "panel/object/sound/SoundWidget.h"
+#include "widget/BitsetComboBox.h"
 
 namespace urchin {
 
@@ -94,6 +95,7 @@ namespace urchin {
             QDoubleSpinBox* scaleY;
             QDoubleSpinBox* scaleZ;
             QComboBox* shadowBehavior;
+            BitsetComboBox* lightMask;
             QComboBox* cullBehavior;
             QLineEdit* tags;
 

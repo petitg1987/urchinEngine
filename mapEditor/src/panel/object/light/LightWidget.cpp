@@ -91,13 +91,20 @@ namespace urchin {
         generalPropertiesLayout->addWidget(produceShadowCheckBox, 2, 0, 1, 2);
         connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
 
-        auto* shadowStrengthLabel= new QLabel("Shadow Strength:");
+        auto* shadowStrengthLabel= new QLabel("Shad. Strength:");
         generalPropertiesLayout->addWidget(shadowStrengthLabel, 3, 0);
 
         shadowStrength = new QDoubleSpinBox();
         generalPropertiesLayout->addWidget(shadowStrength, 3, 1);
         SpinBoxStyleHelper::applyDefaultStyle(shadowStrength, 0.05, 1.0, 0.05);
         connect(shadowStrength, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
+
+        auto* lightMaskLabel= new QLabel("Light mask:");
+        generalPropertiesLayout->addWidget(lightMaskLabel, 4, 0);
+
+        lightMask = new BitsetComboBox(nullptr, 8, 255);
+        generalPropertiesLayout->addWidget(lightMask, 4, 1);
+        connect(lightMask, SIGNAL(onBitChanged()), this, SLOT(updateLightGeneralProperties()));
     }
 
     void LightWidget::setupSpecificSunLightBox(QVBoxLayout* mainLayout) {
@@ -308,10 +315,11 @@ namespace urchin {
         if (!disableLightEvent) {
             Point3 lightColor((float)colorR->value(), (float)colorG->value(), (float)colorB->value());
             bool enablePbr = enablePbrCheckBox->isChecked();
+            uint8_t lightMaskValue = static_cast<uint8_t>(lightMask->getBitValues());
             bool produceShadow = produceShadowCheckBox->isChecked();
             float shadowStrengthValue = (float)shadowStrength->value();
 
-            objectController->updateLightGeneralProperties(*objectEntity, lightColor, enablePbr, produceShadow, shadowStrengthValue);
+            objectController->updateLightGeneralProperties(*objectEntity, lightColor, enablePbr, lightMaskValue, produceShadow, shadowStrengthValue);
         }
     }
 

@@ -44,5 +44,5 @@ void main() {
     //pbr & mask
     fragPbrAndMask.r = uint(texture(roughnessTex, unjitterUv).r * 255.0);
     fragPbrAndMask.g = uint(texture(metalnessTex, unjitterUv).r * 255.0);
-    fragPbrAndMask.b = 255; //TODO review !
+    fragPbrAndMask.b = 255; //light mask //TODO review !
 }

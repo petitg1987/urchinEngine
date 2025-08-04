@@ -68,6 +68,8 @@ namespace urchin {
 
             void setShadowBehavior(ShadowBehavior);
             ShadowBehavior getShadowBehavior() const;
+            void setLightMask(uint8_t);
+            uint8_t getLightMask() const;
             void setCullBehavior(CullBehavior);
             CullBehavior getCullBehavior() const;
             bool isOriginalVerticesOrUvUpdated() const;
@@ -107,6 +109,7 @@ namespace urchin {
 
             //properties
             ShadowBehavior shadowBehavior;
+            uint8_t lightMask;
             CullBehavior cullBehavior;
             std::vector<bool> meshesUpdated;
             bool originalVerticesOrUvUpdated;
