@@ -53,7 +53,7 @@ layout(std140, set = 0, binding = 6) uniform Fog {
 layout(binding = 7) uniform sampler2D depthTex; //depth (32 bits)
 layout(binding = 8) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 bits) + emissive factor (8 bits)
 layout(binding = 9) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
-layout(binding = 10) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
+layout(binding = 10) uniform usampler2D materialAndMaskTex; //roughness (8 bits) + metalness (8 bits) + light mask (8 bits)
 layout(binding = 11) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
 layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (32 bits * nbSplit * nbLight)
 layout(binding = 13) uniform sampler2DArray shadowMapOffsetTex; //shadow maps offset (32 bits)
@@ -96,8 +96,8 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
     const float SOFT_EDGE_LENGTH = 1.5f;
     float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[shadowLightIndex], 0));
     int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
-    vec2 sceneResolution = textureSize(depthTex, 0);
-    ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneResolution) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
+    vec2 sceneSize = textureSize(depthTex, 0);
+    ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
 
     int testPointsInShadow = 0;
     int offsetSampleIndex = 0;
@@ -225,6 +225,7 @@ void main() {
     float modelAmbientFactor = normalAndAmbient.a;
 
     if (modelAmbientFactor < 0.9999) { //apply lighting
+        vec2 sceneSize = textureSize(depthTex, 0);
         vec3 vertexToCameraPos = normalize(positioningData.viewPosition - vec3(worldPosition));
         vec3 normal = normalize(vec3(normalAndAmbient) * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
         vec3 modelAmbient = albedo * modelAmbientFactor;
@@ -237,9 +238,9 @@ void main() {
         }
 
         const vec3 dielectricSurfacesBaseReflectivity = vec3(0.04); //value is a mean of all no-metallic surfaces (plastic, water, ruby, diamond, glass...)
-        vec2 materialValues = texture(materialTex, texCoordinates).rg;
-        float roughness = materialValues.r;
-        float metallic = materialValues.g;
+        uvec2 materialValues = texelFetch(materialAndMaskTex, ivec2(texCoordinates * sceneSize), 0).rg;
+        float roughness = float(materialValues.r) / 255.0;
+        float metallic = float(materialValues.g) / 255.0;
         vec3 baseReflectivity = mix(dielectricSurfacesBaseReflectivity, albedo, metallic);
 
         fragColor.rgb += albedo * emissiveFactor; //add emissive lighting

@@ -16,7 +16,7 @@ layout(location = 1) in vec3 worldPosition;
 
 layout(location = 0) out vec4 fragAlbedoAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
-layout(location = 2) out vec2 fragPbrAndMask;
+layout(location = 2) out uvec4 fragPbrAndMask;
 
 void main() {
     //albedo
@@ -38,6 +38,6 @@ void main() {
     fragNormalAndAmbient = vec4(texNormal, AMBIENT);
 
     //pbr
-    fragPbrAndMask.r = 1.0;
-    fragPbrAndMask.g = 0.0;
+    fragPbrAndMask.r = 255;
+    fragPbrAndMask.g = 0;
 }

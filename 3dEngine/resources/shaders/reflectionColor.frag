@@ -17,7 +17,7 @@ layout(std140, set = 0, binding = 1) uniform PositioningData {
 
 layout(binding = 2) uniform sampler2D depthTex;
 layout(binding = 3) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
-layout(binding = 4) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
+layout(binding = 4) uniform usampler2D materialAndMaskTex; //roughness (8 bits) + metalness (8 bits) + light mask (8 bits)
 layout(binding = 5) uniform sampler2D sceneTex;
 
 layout(location = 0) in vec2 texCoordinates;
@@ -58,8 +58,9 @@ void main() {
         return;
     }
 
+    vec2 sceneSize = textureSize(depthTex, 0);
+    float materialRoughness = float(texelFetch(materialAndMaskTex, ivec2(texCoordinates * sceneSize), 0).r) / 255.0;
     const float MAX_MATERIAL_ROUGHNESS = 0.9;
-    float materialRoughness = texture(materialTex, texCoordinates).r;
     visibility *= (MAX_MATERIAL_ROUGHNESS - materialRoughness);
     if (visibility < 0.075) {
         fragColor = vec4(0.5, 0.5, 0.5, 0.0); //use neutral color value as the color could be used in the blurring step
@@ -69,7 +70,6 @@ void main() {
     vec4 startViewSpacePosition = viewSpacePosition;
     vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * MAX_DISTANCE), 1.0);
 
-    vec2 sceneSize = textureSize(depthTex, 0);
     vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(viewSpacePosition, sceneSize);
     vec2 endFrag = computeFragPosition(endViewSpacePosition, sceneSize);
 

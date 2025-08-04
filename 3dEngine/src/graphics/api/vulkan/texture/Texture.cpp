@@ -452,7 +452,7 @@ namespace urchin {
 
     unsigned int Texture::getBytesByPixel() const {
         if (format == TextureFormat::DEPTH_32_FLOAT || format == TextureFormat::GRAYSCALE_32_FLOAT || format == TextureFormat::RGBA_8_UINT_NORM
-            || format == TextureFormat::RG_16_FLOAT || format == TextureFormat::B10G11R11_FLOAT) {
+            || format == TextureFormat::RGBA_8_UINT || format == TextureFormat::RG_16_FLOAT || format == TextureFormat::B10G11R11_FLOAT) {
             return 4;
         } else if (format == TextureFormat::GRAYSCALE_8_UINT_NORM) {
             return 1;
@@ -504,6 +504,8 @@ namespace urchin {
             return VK_FORMAT_B10G11R11_UFLOAT_PACK32;
         } else if (format == TextureFormat::RGBA_8_UINT_NORM) {
             return VK_FORMAT_R8G8B8A8_UNORM;
+        } else if (format == TextureFormat::RGBA_8_UINT) {
+            return VK_FORMAT_R8G8B8A8_UINT;
         } else if (format == TextureFormat::RGBA_16_FLOAT) {
             return VK_FORMAT_R16G16B16A16_SFLOAT;
         } else if (format == TextureFormat::RGBA_32_FLOAT) {
