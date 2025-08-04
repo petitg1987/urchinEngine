@@ -84,7 +84,7 @@ namespace urchin {
     TextureFormat Image::retrieveTextureFormat() const {
         if (format == IMAGE_GRAYSCALE) {
             if (channelPrecision == CHANNEL_8_INT) {
-                return TextureFormat::GRAYSCALE_8_INT;
+                return TextureFormat::GRAYSCALE_8_UINT_NORM;
             } else if (channelPrecision == CHANNEL_16_INT) {
                 return TextureFormat::GRAYSCALE_16_FLOAT;
             } else {
@@ -92,7 +92,7 @@ namespace urchin {
             }
         } else if (format == IMAGE_RGBA) {
             if (channelPrecision == CHANNEL_8_INT) {
-                return TextureFormat::RGBA_8_INT;
+                return TextureFormat::RGBA_8_UINT_NORM;
             } else {
                 throw std::invalid_argument("Unsupported channel precision for RGBA format: " + std::to_string(channelPrecision));
             }

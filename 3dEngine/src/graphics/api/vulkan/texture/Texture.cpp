@@ -75,7 +75,7 @@ namespace urchin {
     std::shared_ptr<Texture> Texture::buildEmptyRgba(std::string name) {
         std::array<uint8_t, 4> textureArrayData = {255, 20, 147, 255}; //pink
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr, TextureDataType::INT_8));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_UINT_NORM, allDataPtr, TextureDataType::INT_8));
         texture->setName(std::move(name));
         return texture;
     }
@@ -83,7 +83,7 @@ namespace urchin {
     std::shared_ptr<Texture> Texture::buildEmptyGreyscale(std::string name) {
         std::array textureData = {(uint8_t)0};
         std::vector<const void*> allDataPtr(1, textureData.data());
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_INT, allDataPtr, TextureDataType::INT_8));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, allDataPtr, TextureDataType::INT_8));
         texture->setName(std::move(name));
         return texture;
     }
@@ -451,12 +451,12 @@ namespace urchin {
     }
 
     unsigned int Texture::getBytesByPixel() const {
-        if (format == TextureFormat::DEPTH_32_FLOAT || format == TextureFormat::GRAYSCALE_32_FLOAT || format == TextureFormat::RGBA_8_INT
+        if (format == TextureFormat::DEPTH_32_FLOAT || format == TextureFormat::GRAYSCALE_32_FLOAT || format == TextureFormat::RGBA_8_UINT_NORM
             || format == TextureFormat::RG_16_FLOAT || format == TextureFormat::B10G11R11_FLOAT) {
             return 4;
-        } else if (format == TextureFormat::GRAYSCALE_8_INT) {
+        } else if (format == TextureFormat::GRAYSCALE_8_UINT_NORM) {
             return 1;
-        } else if (format == TextureFormat::GRAYSCALE_16_FLOAT || format == TextureFormat::RG_8_INT) {
+        } else if (format == TextureFormat::GRAYSCALE_16_FLOAT || format == TextureFormat::RG_8_UINT_NORM) {
             return 2;
         } else if (format == TextureFormat::RG_32_FLOAT || format == TextureFormat::RGBA_16_FLOAT) {
             return 8;
@@ -488,13 +488,13 @@ namespace urchin {
         //Note: the columns to look at depends on ImageHelper::usageFlagToFeatureFlag (mainly: COLOR_ATTACHMENT & TRANSFER_DST)
         if (format == TextureFormat::DEPTH_32_FLOAT) {
             return VK_FORMAT_D32_SFLOAT;
-        } else if (format == TextureFormat::GRAYSCALE_8_INT) {
+        } else if (format == TextureFormat::GRAYSCALE_8_UINT_NORM) {
             return VK_FORMAT_R8_UNORM;
         } else if (format == TextureFormat::GRAYSCALE_16_FLOAT) {
             return VK_FORMAT_R16_SFLOAT;
         } else if (format == TextureFormat::GRAYSCALE_32_FLOAT) {
             return VK_FORMAT_R32_SFLOAT;
-        } else if (format == TextureFormat::RG_8_INT) {
+        } else if (format == TextureFormat::RG_8_UINT_NORM) {
             return VK_FORMAT_R8G8_UNORM;
         } else if (format == TextureFormat::RG_16_FLOAT) {
             return VK_FORMAT_R16G16_SFLOAT;
@@ -502,7 +502,7 @@ namespace urchin {
             return VK_FORMAT_R32G32_SFLOAT;
         } else if (format == TextureFormat::B10G11R11_FLOAT) {
             return VK_FORMAT_B10G11R11_UFLOAT_PACK32;
-        } else if (format == TextureFormat::RGBA_8_INT) {
+        } else if (format == TextureFormat::RGBA_8_UINT_NORM) {
             return VK_FORMAT_R8G8B8A8_UNORM;
         } else if (format == TextureFormat::RGBA_16_FLOAT) {
             return VK_FORMAT_R16G16B16A16_SFLOAT;

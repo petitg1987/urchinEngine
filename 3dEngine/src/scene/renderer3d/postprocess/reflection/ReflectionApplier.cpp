@@ -68,7 +68,7 @@ namespace urchin {
     }
 
     void ReflectionApplier::createOrUpdateRenderTargets() {
-        auto reflectionColorTextureFormat = TextureFormat::RGBA_8_INT;
+        auto reflectionColorTextureFormat = TextureFormat::RGBA_8_UINT_NORM;
         auto reflectionColorTextureSizeX = (unsigned int)((float)depthTexture->getWidth() / (float)retrieveTextureSizeFactor());
         auto reflectionColorTextureSizeY = (unsigned int)((float)depthTexture->getHeight() / (float)retrieveTextureSizeFactor());
         reflectionColorTexture = Texture::build("reflection color", reflectionColorTextureSizeX, reflectionColorTextureSizeY, reflectionColorTextureFormat);

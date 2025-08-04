@@ -60,7 +60,7 @@ namespace urchin {
     void AmbientOcclusionManager::createOrUpdateRenderTarget() {
         TextureFormat textureFormat;
         if (config.textureBits == AO_8_BITS) {
-            textureFormat = TextureFormat::GRAYSCALE_8_INT;
+            textureFormat = TextureFormat::GRAYSCALE_8_UINT_NORM;
         } else if (config.textureBits == AO_16_BITS) {
             textureFormat = TextureFormat::GRAYSCALE_16_FLOAT;
         } else {
@@ -183,7 +183,7 @@ namespace urchin {
             ssaoNoise.emplace_back(0); //z
             ssaoNoise.emplace_back(255); //w (not used)
         }
-        noiseTexture = Texture::build("AO noise", config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_INT, ssaoNoise.data(), TextureDataType::INT_8);
+        noiseTexture = Texture::build("AO noise", config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_UINT_NORM, ssaoNoise.data(), TextureDataType::INT_8);
     }
 
     void AmbientOcclusionManager::exportSVG(std::string filename, const std::vector<Vector4<float>>& ssaoKernel) const {

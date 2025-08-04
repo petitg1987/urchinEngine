@@ -47,8 +47,8 @@ namespace urchin {
 
         if (getTextureType() != TextureType::DEFAULT) {
             throw std::invalid_argument("Unsupported texture type for gaussian blur 3d filter: " + std::to_string((int)getTextureType()));
-        } else if (getTextureFormat() != TextureFormat::GRAYSCALE_8_INT && getTextureFormat() != TextureFormat::GRAYSCALE_16_FLOAT && getTextureFormat() != TextureFormat::GRAYSCALE_32_FLOAT
-                && getTextureFormat() != TextureFormat::RGBA_8_INT && getTextureFormat() != TextureFormat::RGBA_16_FLOAT && getTextureFormat() != TextureFormat::RGBA_32_FLOAT) {
+        } else if (getTextureFormat() != TextureFormat::GRAYSCALE_8_UINT_NORM && getTextureFormat() != TextureFormat::GRAYSCALE_16_FLOAT && getTextureFormat() != TextureFormat::GRAYSCALE_32_FLOAT
+                && getTextureFormat() != TextureFormat::RGBA_8_UINT_NORM && getTextureFormat() != TextureFormat::RGBA_16_FLOAT && getTextureFormat() != TextureFormat::RGBA_32_FLOAT) {
             throw std::invalid_argument("Unsupported texture format for gaussian blur 3d filter: " + std::to_string((int)getTextureFormat()));
         }
 

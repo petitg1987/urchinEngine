@@ -91,7 +91,7 @@ namespace urchin {
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
-        texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
+        texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, cursorColor.data());
         Size cursorSize(TextFieldConst::CURSOR_WIDTH_PIXEL, (float)text->getFont().getHeight() + ((float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2.0f), PIXEL);
         cursor = StaticBitmap::create(textContainer.get(), Position(0.0f, 0.0f, PIXEL), cursorSize, texCursorAlbedo);
         cursor->setIsVisible(false);

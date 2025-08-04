@@ -34,7 +34,7 @@ namespace urchin {
 
             std::vector rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
                                                   (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
-            albedoTexture = Texture::build(filename + " - albedo", 1, 1, TextureFormat::RGBA_8_INT, rgbaColor.data(), TextureDataType::INT_8);
+            albedoTexture = Texture::build(filename + " - albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, rgbaColor.data(), TextureDataType::INT_8);
             hasTransparency = !MathFunction::isOne(color.W);
         }
         std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, albedoTexture, hasTransparency);
@@ -61,7 +61,7 @@ namespace urchin {
             auto roughnessTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), roughnessChunk);
             if (roughnessTextureChunk) {
                 roughnessTexture = ResourceRetriever::instance().getResource<Texture>(roughnessTextureChunk->getStringValue(), {{"mipMap", "1"}});
-                if (roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_8_INT && roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_16_FLOAT && roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_32_FLOAT) {
+                if (roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_8_UINT_NORM && roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_16_FLOAT && roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_32_FLOAT) {
                     throw std::runtime_error("Material defines a roughness texture not in grayscale: " + filename);
                 }
             }
@@ -78,7 +78,7 @@ namespace urchin {
                 }
 
                 std::vector roughnessTextureData({(unsigned char) (255.0f * roughness)});
-                roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_INT, roughnessTextureData.data(), TextureDataType::INT_8);
+                roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, roughnessTextureData.data(), TextureDataType::INT_8);
             }
 
             if (roughnessTexture) {
@@ -94,7 +94,7 @@ namespace urchin {
             auto metalnessTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), metalnessChunk);
             if (metalnessTextureChunk) {
                 metalnessTexture = ResourceRetriever::instance().getResource<Texture>(metalnessTextureChunk->getStringValue(), {{"mipMap", "1"}});
-                if (metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_8_INT && metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_16_FLOAT && metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_32_FLOAT) {
+                if (metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_8_UINT_NORM && metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_16_FLOAT && metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_32_FLOAT) {
                     throw std::runtime_error("Material defines a metalness texture not in grayscale: " + filename);
                 }
             }
@@ -111,7 +111,7 @@ namespace urchin {
                 }
 
                 std::vector metalnessTextureData({(unsigned char) (255.0f * metalness)});
-                metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_INT, metalnessTextureData.data(), TextureDataType::INT_8);
+                metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, metalnessTextureData.data(), TextureDataType::INT_8);
             }
 
             if (metalnessTexture) {

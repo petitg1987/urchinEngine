@@ -3,11 +3,11 @@
 namespace urchin {
 
     //static
-    const TextureFormat VisualConfig::ALBEDO_AND_EMISSIVE_TEXTURE_FORMAT = TextureFormat::RGBA_8_INT;
-    const TextureFormat VisualConfig::NORMAL_AND_AMBIENT_TEXTURE_FORMAT = TextureFormat::RGBA_8_INT;
-    const TextureFormat VisualConfig::MATERIAL_AND_MASK_TEXTURE_FORMAT = TextureFormat::RGBA_8_INT;
+    const TextureFormat VisualConfig::ALBEDO_AND_EMISSIVE_TEXTURE_FORMAT = TextureFormat::RGBA_8_UINT_NORM;
+    const TextureFormat VisualConfig::NORMAL_AND_AMBIENT_TEXTURE_FORMAT = TextureFormat::RGBA_8_UINT_NORM;
+    const TextureFormat VisualConfig::MATERIAL_AND_MASK_TEXTURE_FORMAT = TextureFormat::RGBA_8_UINT_NORM;
     const TextureFormat VisualConfig::SCENE_HDR_TEXTURE_FORMAT = TextureFormat::RGBA_16_FLOAT;
-    const TextureFormat VisualConfig::SCENE_TEXTURE_FORMAT = TextureFormat::RGBA_8_INT;
+    const TextureFormat VisualConfig::SCENE_TEXTURE_FORMAT = TextureFormat::RGBA_8_UINT_NORM;
 
     VisualConfig::VisualConfig() :
             renderingScale(1.0f),

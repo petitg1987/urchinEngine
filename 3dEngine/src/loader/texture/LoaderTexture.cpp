@@ -14,13 +14,13 @@ namespace urchin {
             std::string defaultTextureType = params.at("textureType");
             if (defaultTextureType == "normal") {
                 std::vector<unsigned char> defaultNormalColor({127, 127, 255, 255});
-                return Texture::build("defaultNormal", 1, 1, TextureFormat::RGBA_8_INT, defaultNormalColor.data(), TextureDataType::INT_8);
+                return Texture::build("defaultNormal", 1, 1, TextureFormat::RGBA_8_UINT_NORM, defaultNormalColor.data(), TextureDataType::INT_8);
             } else if (defaultTextureType == "roughness") {
                 std::vector<unsigned char> defaultRoughnessValue({255});
-                return Texture::build("defaultRoughness", 1, 1, TextureFormat::GRAYSCALE_8_INT, defaultRoughnessValue.data(), TextureDataType::INT_8);
+                return Texture::build("defaultRoughness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, defaultRoughnessValue.data(), TextureDataType::INT_8);
             } else if (defaultTextureType == "metalness") {
                 std::vector<unsigned char> defaultMetalnessValue({0});
-                return Texture::build("defaultMetalness", 1, 1, TextureFormat::GRAYSCALE_8_INT, defaultMetalnessValue.data(), TextureDataType::INT_8);
+                return Texture::build("defaultMetalness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, defaultMetalnessValue.data(), TextureDataType::INT_8);
             } else {
                  throw std::runtime_error("Unknown default texture type: " + defaultTextureType);
             }

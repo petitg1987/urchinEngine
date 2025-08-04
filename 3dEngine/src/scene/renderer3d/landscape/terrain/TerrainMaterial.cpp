@@ -16,10 +16,10 @@ namespace urchin {
 
         if (this->maskMapFilename.empty()) {
             std::vector<unsigned char> terrainMaskColor({255, 0, 0, 0});
-            maskTexture = Texture::build("default terrain mask", 1, 1, TextureFormat::RGBA_8_INT, terrainMaskColor.data(), TextureDataType::INT_8);
+            maskTexture = Texture::build("default terrain mask", 1, 1, TextureFormat::RGBA_8_UINT_NORM, terrainMaskColor.data(), TextureDataType::INT_8);
         } else {
             maskTexture = ResourceRetriever::instance().getResource<Texture>(this->maskMapFilename, {{"mipMap", "0"}});
-            if (maskTexture->getFormat() != TextureFormat::RGBA_8_INT) {
+            if (maskTexture->getFormat() != TextureFormat::RGBA_8_UINT_NORM) {
                 throw std::runtime_error("Mask texture must have 4 components (RGBA). Texture format: " + std::to_string((int)maskTexture->getFormat()));
             }
         }
