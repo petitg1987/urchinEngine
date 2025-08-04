@@ -73,7 +73,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
-            std::shared_ptr<Texture> materialTexture;
+            std::shared_ptr<Texture> materialAndMaskTexture;
             std::shared_ptr<Texture> sceneTexture;
 
             struct {

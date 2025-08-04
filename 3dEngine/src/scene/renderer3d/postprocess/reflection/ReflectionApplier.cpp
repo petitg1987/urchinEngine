@@ -36,14 +36,14 @@ namespace urchin {
     }
 
     void ReflectionApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture,
-                                                const std::shared_ptr<Texture>& materialTexture, const std::shared_ptr<Texture>& sceneTexture) {
+                                                const std::shared_ptr<Texture>& materialAndMaskTexture, const std::shared_ptr<Texture>& sceneTexture) {
         if (depthTexture.get() != this->depthTexture.get()
                 || normalAndAmbientTexture.get() != this->normalAndAmbientTexture.get()
-                || materialTexture.get() != this->materialTexture.get()
+                || materialAndMaskTexture.get() != this->materialAndMaskTexture.get()
                 || sceneTexture.get() != this->sceneTexture.get()) {
             this->depthTexture = depthTexture;
             this->normalAndAmbientTexture = normalAndAmbientTexture;
-            this->materialTexture = materialTexture;
+            this->materialAndMaskTexture = materialAndMaskTexture;
             this->sceneTexture = sceneTexture;
 
             createOrUpdateRenderingObjects();
@@ -124,7 +124,7 @@ namespace urchin {
                 ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialAndMaskTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(R_COLOR_SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
                 ->build();
 

@@ -12,7 +12,7 @@ namespace urchin {
     constexpr auto DEBUG_DISPLAY_DEPTH_BUFFER = False();
     constexpr auto DEBUG_DISPLAY_ALBEDO_EMISSIVE_BUFFER = False();
     constexpr auto DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = False();
-    constexpr auto DEBUG_DISPLAY_MATERIAL_BUFFER = False();
+    constexpr auto DEBUG_DISPLAY_MATERIAL_MASK_BUFFER = False();
     constexpr auto DEBUG_DISPLAY_ILLUMINATED_BUFFER = False();
     constexpr auto DEBUG_DISPLAY_TRANSPARENT_BUFFER = False();
     constexpr auto DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = False();
@@ -375,13 +375,13 @@ namespace urchin {
 
         albedoAndEmissiveTexture = Texture::build("albedo and emissive", renderingSceneWidth, renderingSceneHeight, VisualConfig::ALBEDO_AND_EMISSIVE_TEXTURE_FORMAT);
         normalAndAmbientTexture = Texture::build("normal and ambient", renderingSceneWidth, renderingSceneHeight, VisualConfig::NORMAL_AND_AMBIENT_TEXTURE_FORMAT);
-        materialTexture = Texture::build("material and mask", renderingSceneWidth, renderingSceneHeight, VisualConfig::MATERIAL_AND_MASK_TEXTURE_FORMAT);
+        materialAndMaskTexture = Texture::build("material and mask", renderingSceneWidth, renderingSceneHeight, VisualConfig::MATERIAL_AND_MASK_TEXTURE_FORMAT);
 
         auto* deferredFirstPassOffscreenRender = static_cast<OffscreenRender*>(deferredFirstPassRenderTarget.get());
         deferredFirstPassOffscreenRender->resetOutput();
         deferredFirstPassOffscreenRender->addOutputTexture(albedoAndEmissiveTexture);
         deferredFirstPassOffscreenRender->addOutputTexture(normalAndAmbientTexture);
-        deferredFirstPassOffscreenRender->addOutputTexture(materialTexture);
+        deferredFirstPassOffscreenRender->addOutputTexture(materialAndMaskTexture);
         deferredFirstPassOffscreenRender->initialize();
 
         //deferred second pass
@@ -422,7 +422,7 @@ namespace urchin {
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(deferredFirstPassRenderTarget->getDepthTexture(), TextureParam::buildNearest()))
                 ->addUniformTextureReader(ALBEDO_EMISSIVE_TEX_UNIFORM_BINDING, TextureReader::build(albedoAndEmissiveTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(MATERIAL_MASK_TEX_UNIFORM_BINDING, TextureReader::build(materialAndMaskTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(AO_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest()))
                 ->addUniformTextureReaderArray(SM_TEX_UNIFORM_BINDING, shadowMapTextureReaders)
                 ->addUniformTextureReader(SM_OFFSET_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyArrayRg("empty SM offset"), TextureParam::buildNearest()))
@@ -470,7 +470,7 @@ namespace urchin {
         currentSceneTexture = bloomEffectApplier.getOutputTexture();
 
         if (isReflectionActivated) {
-            reflectionApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), normalAndAmbientTexture, materialTexture, currentSceneTexture);
+            reflectionApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), normalAndAmbientTexture, materialAndMaskTexture, currentSceneTexture);
             currentSceneTexture = reflectionApplier.getOutputTexture();
         }
 
@@ -572,7 +572,7 @@ namespace urchin {
             numDependenciesToFirstPassOutput += 2; //TAA velocity & TAA resolve
         }
         numDependenciesToFirstPassOutput += 1; //transparent
-        if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_EMISSIVE_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
+        if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_EMISSIVE_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_MASK_BUFFER) {
             numDependenciesToFirstPassOutput++;
         }
         return numDependenciesToFirstPassOutput;
@@ -653,10 +653,10 @@ namespace urchin {
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
-            if (DEBUG_DISPLAY_MATERIAL_BUFFER) {
-                auto textureRenderer = std::make_unique<TextureRenderer>(materialTexture, TextureRenderer::DEFAULT_VALUE);
+            if (DEBUG_DISPLAY_MATERIAL_MASK_BUFFER) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(materialAndMaskTexture, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
-                textureRenderer->initialize("[DEBUG] material texture", finalRenderTarget, sceneWidth, sceneHeight);
+                textureRenderer->initialize("[DEBUG] material/mask texture", finalRenderTarget, sceneWidth, sceneHeight);
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 

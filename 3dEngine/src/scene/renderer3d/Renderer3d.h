@@ -123,7 +123,7 @@ namespace urchin {
             static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 7;
             static constexpr uint32_t ALBEDO_EMISSIVE_TEX_UNIFORM_BINDING = 8;
             static constexpr uint32_t NORMAL_AMBIENT_TEX_UNIFORM_BINDING = 9;
-            static constexpr uint32_t MATERIAL_TEX_UNIFORM_BINDING = 10;
+            static constexpr uint32_t MATERIAL_MASK_TEX_UNIFORM_BINDING = 10;
             static constexpr uint32_t AO_TEX_UNIFORM_BINDING = 11;
             static constexpr uint32_t SM_TEX_UNIFORM_BINDING = 12;
             static constexpr uint32_t SM_OFFSET_TEX_UNIFORM_BINDING = 13;
@@ -156,7 +156,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> albedoAndEmissiveTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
-            std::shared_ptr<Texture> materialTexture;
+            std::shared_ptr<Texture> materialAndMaskTexture;
             std::shared_ptr<Texture> illuminatedTexture;
 
             //deferred second pass rendering + post process
