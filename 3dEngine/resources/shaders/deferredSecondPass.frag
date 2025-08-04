@@ -218,13 +218,13 @@ void main() {
     float depthValue = texture(depthTex, texCoordinates).r;
     vec4 albedoAndEmissive = texture(albedoAndEmissiveTex, texCoordinates);
     uvec3 materialAndMaskValues = texelFetch(materialAndMaskTex, ivec2(texCoordinates * sceneSize), 0).rgb;
-    uint modelLightMask = materialAndMaskValues.b;
+    uint meshLightMask = materialAndMaskValues.b;
 
     vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
     vec3 albedo = albedoAndEmissive.rgb;
     float emissiveFactor = albedoAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
 
-    if (modelLightMask != 0) { //apply lighting
+    if (meshLightMask != 0) { //apply lighting
         vec4 normalAndAmbient = texture(normalAndAmbientTex, texCoordinates);
         vec3 vertexToCameraPos = normalize(positioningData.viewPosition - vec3(worldPosition));
         vec3 normal = normalize(vec3(normalAndAmbient) * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
@@ -249,8 +249,8 @@ void main() {
 
             if (!lightInfo.isExist) {
                 break; //no more light
-            } else if ((lightInfo.lightMask & modelLightMask) == 0) {
-                continue; //no lighting on this model
+            } else if ((lightInfo.lightMask & meshLightMask) == 0) {
+                continue; //no lighting on this mesh
             }
 
             LightValues lightValues = computeLightValues(lightInfo, normal, vec3(worldPosition));

@@ -48,21 +48,25 @@ void main() {
     vec3 normal = tbnMatrix * texNormal;
     float emissiveFactor = meshData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
 
-    if (meshData.ambientFactor < 0.9999) { //apply lighting //TODO review ?
+    if (meshData.lightMask != 0) { //apply lighting
         vec3 modelAmbient = albedo.rgb * meshData.ambientFactor;
         fragColor = vec4(lightsData.globalAmbient, albedo.a);
 
         for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
-            if (lightsData.lightsInfo[lightIndex].isExist) {
-                LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
-                float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.007);
+            LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
 
-                vec3 ambient = lightsData.lightsInfo[lightIndex].lightColor * modelAmbient;
-
-                fragColor.rgb += lightAttenuation * ((albedo.rgb * lightValues.NdotL) + ambient);
-            } else {
+            if (!lightInfo.isExist) {
                 break; //no more light
+            } else if ((lightInfo.lightMask & meshData.lightMask) == 0) {
+                continue; //no lighting on this mesh
             }
+
+            LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
+            float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.007);
+
+            vec3 ambient = lightsData.lightsInfo[lightIndex].lightColor * modelAmbient;
+
+            fragColor.rgb += lightAttenuation * ((albedo.rgb * lightValues.NdotL) + ambient);
         }
         fragColor.rgb += albedo.rgb * emissiveFactor;
     } else { //do not apply lighting
