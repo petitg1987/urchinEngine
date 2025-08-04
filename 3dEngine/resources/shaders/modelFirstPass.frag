@@ -22,7 +22,7 @@ layout(location = 3) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragAlbedoAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
-layout(location = 2) out vec2 fragPbr;
+layout(location = 2) out vec4 fragPbrAndMask;
 
 vec2 unjitterTextureUv(vec2 uv) {
     //Tips to debug the following code: increase the camera jittering of 50.0f and check that textures don't jitter despite the camera jittering
@@ -42,6 +42,6 @@ void main() {
     fragNormalAndAmbient = vec4(normal, materialData.ambientFactor);
 
     //pbr
-    fragPbr.r = texture(roughnessTex, unjitterUv).r;
-    fragPbr.g = texture(metalnessTex, unjitterUv).r;
+    fragPbrAndMask.r = texture(roughnessTex, unjitterUv).r;
+    fragPbrAndMask.g = texture(metalnessTex, unjitterUv).r;
 }

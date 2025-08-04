@@ -375,7 +375,7 @@ namespace urchin {
 
         albedoAndEmissiveTexture = Texture::build("albedo and emissive", renderingSceneWidth, renderingSceneHeight, VisualConfig::ALBEDO_AND_EMISSIVE_TEXTURE_FORMAT);
         normalAndAmbientTexture = Texture::build("normal and ambient", renderingSceneWidth, renderingSceneHeight, VisualConfig::NORMAL_AND_AMBIENT_TEXTURE_FORMAT);
-        materialTexture = Texture::build("material", renderingSceneWidth, renderingSceneHeight, VisualConfig::MATERIAL_TEXTURE_FORMAT);
+        materialTexture = Texture::build("material and mask", renderingSceneWidth, renderingSceneHeight, VisualConfig::MATERIAL_AND_MASK_TEXTURE_FORMAT);
 
         auto* deferredFirstPassOffscreenRender = static_cast<OffscreenRender*>(deferredFirstPassRenderTarget.get());
         deferredFirstPassOffscreenRender->resetOutput();
