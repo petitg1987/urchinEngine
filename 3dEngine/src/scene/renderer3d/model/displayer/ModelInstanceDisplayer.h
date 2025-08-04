@@ -55,12 +55,12 @@ namespace urchin {
         private:
             Model& getReferenceModel() const;
 
-            void fillMaterialData(const Mesh&) const;
+            void fillMeshData(const Model&, const Mesh&) const;
             std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const std::vector<Vector3<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
             static constexpr uint32_t PROJ_VIEW_MATRIX_UNIFORM_BINDING = 0;
-            static constexpr uint32_t MAT_DATA_UNIFORM_BINDING = 1;
+            static constexpr uint32_t MESH_DATA_UNIFORM_BINDING = 1;
             static constexpr uint32_t CUSTOM1_UNIFORM_BINDING = 2;
             static constexpr uint32_t CUSTOM2_UNIFORM_BINDING = 3;
             static constexpr uint32_t MAT_ALBEDO_UNIFORM_BINDING = 4;
@@ -87,9 +87,10 @@ namespace urchin {
             mutable std::vector<InstanceMatrix> instanceMatrices; //for DEFAULT_MODE only
             mutable std::vector<Matrix4<float>> instanceModelMatrices; //for DEPTH_ONLY_MODE only
             mutable struct {
+                alignas(4) unsigned int lightMask;
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;
-            } materialData;
+            } meshData;
 
             CustomModelShaderVariable* customShaderVariable;
             bool depthTestEnabled;

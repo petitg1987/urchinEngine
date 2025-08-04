@@ -7,10 +7,11 @@ layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightMan
 layout(constant_id = 1) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
-layout(std140, set = 0, binding = 1) uniform MaterialData {
+layout(std140, set = 0, binding = 1) uniform MeshData {
+    uint lightMask;
     float encodedEmissiveFactor; //encoded between 0.0 (no emissive) and 1.0 (max emissive)
     float ambientFactor;
-} materialData;
+} meshData;
 layout(std140, set = 0, binding = 2) uniform CameraPlanes {
     float nearPlane;
     float farPlane;
@@ -45,10 +46,10 @@ void main() {
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
     vec3 texNormal = normalize(vec3(texture(normalTex, texCoordinates)) * 2.0 - 1.0);
     vec3 normal = tbnMatrix * texNormal;
-    float emissiveFactor = materialData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
+    float emissiveFactor = meshData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
 
-    if (materialData.ambientFactor < 0.9999) { //apply lighting
-        vec3 modelAmbient = albedo.rgb * materialData.ambientFactor;
+    if (meshData.ambientFactor < 0.9999) { //apply lighting //TODO review ?
+        vec3 modelAmbient = albedo.rgb * meshData.ambientFactor;
         fragColor = vec4(lightsData.globalAmbient, albedo.a);
 
         for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {

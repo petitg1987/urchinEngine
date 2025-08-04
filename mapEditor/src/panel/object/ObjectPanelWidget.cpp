@@ -30,11 +30,18 @@ namespace urchin {
             objectEntitySelected(nullptr),
             disableObjectEvent(false),
             meshesFile(nullptr),
-            positionX(nullptr), positionY(nullptr), positionZ(nullptr),
+            positionX(nullptr),
+            positionY(nullptr),
+            positionZ(nullptr),
             orientationType(nullptr),
-            eulerAxis0(nullptr), eulerAxis1(nullptr), eulerAxis2(nullptr),
-            scaleX(nullptr), scaleY(nullptr), scaleZ(nullptr),
+            eulerAxis0(nullptr),
+            eulerAxis1(nullptr),
+            eulerAxis2(nullptr),
+            scaleX(nullptr),
+            scaleY(nullptr),
+            scaleZ(nullptr),
             shadowBehavior(nullptr),
+            lightMask(nullptr),
             cullBehavior(nullptr),
             tags(nullptr),
             hasRigidBody(nullptr),
@@ -450,6 +457,8 @@ namespace urchin {
         if (shadowBehaviorIndex != -1) {
             shadowBehavior->setCurrentIndex(shadowBehaviorIndex);
         }
+
+        this->lightMask->setBitValues(model->getLightMask());
 
         int cullBehaviorIndex = cullBehavior->findData((int)model->getCullBehavior());
         if (cullBehaviorIndex != -1) {

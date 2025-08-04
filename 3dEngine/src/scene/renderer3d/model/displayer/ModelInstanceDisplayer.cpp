@@ -15,14 +15,14 @@ namespace urchin {
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
-            materialData({}),
+            meshData({}),
             customShaderVariable(nullptr),
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true),
             enableLayerIndexDataInShader(false),
             layersMask(ULLONG_MAX) {
-        std::memset(&materialData, 0, sizeof(materialData));
+        std::memset(&meshData, 0, sizeof(meshData));
     }
 
     ModelInstanceDisplayer::~ModelInstanceDisplayer() {
@@ -95,13 +95,13 @@ namespace urchin {
             auto meshName = getReferenceModel().getMeshes()->getConstMeshes().getMeshesName();
 
             Matrix4<float> projectionViewMatrix;
-            fillMaterialData(mesh);
+            fillMeshData(getReferenceModel(), mesh);
 
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
                     ->indices(std::span(reinterpret_cast<const unsigned int*>(constMesh.getTrianglesIndices().data()), constMesh.getTrianglesIndices().size() * 3))
                     ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projectionViewMatrix), &projectionViewMatrix)
-                    ->addUniformData(MAT_DATA_UNIFORM_BINDING, sizeof(materialData), &materialData); //only used in DEFAULT_MODE
+                    ->addUniformData(MESH_DATA_UNIFORM_BINDING, sizeof(meshData), &meshData); //only used in DEFAULT_MODE
 
             if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                 instanceMatrices.emplace_back(InstanceMatrix{.modelMatrix = Matrix4<float>(), .normalMatrix = Matrix4<float>()});
@@ -211,8 +211,8 @@ namespace urchin {
             for (const auto& meshRenderer : meshRenderers) {
                 if (model->isMeshUpdated(meshIndex)) {
                     const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
-                    fillMaterialData(mesh);
-                    meshRenderer->updateUniformData(MAT_DATA_UNIFORM_BINDING, &materialData);
+                    fillMeshData(*model, mesh);
+                    meshRenderer->updateUniformData(MESH_DATA_UNIFORM_BINDING, &meshData);
 
                     if (meshRenderer->getUniformTextureReader(MAT_ALBEDO_UNIFORM_BINDING)->getTexture() != mesh.getMaterial().getAlbedoTexture().get()) {
                         meshRenderer->updateUniformTextureReader(MAT_ALBEDO_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)));
@@ -254,9 +254,10 @@ namespace urchin {
         return *instanceModels[0];
     }
 
-    void ModelInstanceDisplayer::fillMaterialData(const Mesh& mesh) const {
-        materialData.encodedEmissiveFactor = std::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
-        materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
+    void ModelInstanceDisplayer::fillMeshData(const Model& model, const Mesh& mesh) const {
+        meshData.lightMask = model.getLightMask();
+        meshData.encodedEmissiveFactor = std::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
+        meshData.ambientFactor = mesh.getMaterial().getAmbientFactor();
     }
 
     std::vector<Point2<float>> ModelInstanceDisplayer::scaleUv(const std::vector<Point2<float>>& uvTexture, const std::vector<Vector3<float>>& normals, const UvScale& uvScale) const {

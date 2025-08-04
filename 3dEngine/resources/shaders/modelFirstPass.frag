@@ -1,10 +1,11 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(std140, set = 0, binding = 1) uniform MaterialData {
+layout(std140, set = 0, binding = 1) uniform MeshData {
+    uint lightMask;
     float encodedEmissiveFactor; //encoded between 0.0 (no emissive) and 1.0 (max emissive)
     float ambientFactor;
-} materialData;
+} meshData;
 
 layout(std140, set = 0, binding = 2) uniform CameraInfo {
     vec2 jitterInPixel;
@@ -33,16 +34,16 @@ void main() {
     vec2 unjitterUv = unjitterTextureUv(texCoordinates);
 
     //albedo and emissive
-    fragAlbedoAndEmissive = vec4(texture(albedoTex, unjitterUv).rgb, materialData.encodedEmissiveFactor);
+    fragAlbedoAndEmissive = vec4(texture(albedoTex, unjitterUv).rgb, meshData.encodedEmissiveFactor);
 
     //normal and ambient factor
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
     vec3 texNormal = normalize(texture(normalTex, unjitterUv).rgb * 2.0 - 1.0);
     vec3 normal = ((tbnMatrix * texNormal) + 1.0) / 2.0;
-    fragNormalAndAmbient = vec4(normal, materialData.ambientFactor);
+    fragNormalAndAmbient = vec4(normal, meshData.ambientFactor);
 
     //pbr & mask
     fragPbrAndMask.r = uint(texture(roughnessTex, unjitterUv).r * 255.0);
     fragPbrAndMask.g = uint(texture(metalnessTex, unjitterUv).r * 255.0);
-    fragPbrAndMask.b = 255; //light mask //TODO review !
+    fragPbrAndMask.b = meshData.lightMask;
 }

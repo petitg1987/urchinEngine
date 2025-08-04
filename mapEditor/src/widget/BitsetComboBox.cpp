@@ -29,6 +29,17 @@ namespace urchin {
         model->appendRow(item);
     }
 
+    void BitsetComboBox::setBitValues(unsigned long bitValues) {
+        model->blockSignals(true);
+
+        std::bitset<32> bits(bitValues);
+        for (unsigned int i = 0; i < totalBits; ++i) {
+            model->item(i)->setCheckState(bits.test(i) ? Qt::Checked : Qt::Unchecked);
+        }
+
+        model->blockSignals(false);
+    }
+
     unsigned long BitsetComboBox::getBitValues() const {
         std::bitset<32> bits;
         for (unsigned int i = 0; i < totalBits; ++i) {

@@ -19,6 +19,7 @@ namespace urchin {
             enablePbrCheckBox(nullptr),
             produceShadowCheckBox(nullptr),
             shadowStrength(nullptr),
+            lightMask(nullptr),
             sunDirectionLabel(nullptr),
             sunDirectionX(nullptr),
             sunDirectionY(nullptr),
@@ -248,6 +249,7 @@ namespace urchin {
         this->colorB->setValue(light->getLightColor().Z);
 
         this->enablePbrCheckBox->setChecked(light->isPbrEnabled());
+        this->lightMask->setBitValues(light->getLightMask());
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
         this->shadowStrength->setValue(light->getShadowStrength());
 

@@ -12,6 +12,7 @@ namespace urchin {
             BitsetComboBox(QWidget*, unsigned int, unsigned long);
             ~BitsetComboBox() override = default;
 
+            void setBitValues(unsigned long);
             unsigned long getBitValues() const;
 
         protected:
