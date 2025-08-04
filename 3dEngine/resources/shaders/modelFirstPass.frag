@@ -41,7 +41,8 @@ void main() {
     vec3 normal = ((tbnMatrix * texNormal) + 1.0) / 2.0;
     fragNormalAndAmbient = vec4(normal, materialData.ambientFactor);
 
-    //pbr
+    //pbr & mask
     fragPbrAndMask.r = uint(texture(roughnessTex, unjitterUv).r * 255.0);
     fragPbrAndMask.g = uint(texture(metalnessTex, unjitterUv).r * 255.0);
+    fragPbrAndMask.b = 255; //TODO review !
 }

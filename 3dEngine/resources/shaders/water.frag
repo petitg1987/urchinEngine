@@ -42,7 +42,8 @@ void main() {
     vec3 globalNormal = toGlobalNormal(localNormal);
     fragNormalAndAmbient = vec4((globalNormal + 1.0) / 2.0, 0.3);
 
-    //pbr
-    fragPbrAndMask.r = 255;
-    fragPbrAndMask.g = 0;
+    //pbr & mask
+    fragPbrAndMask.r = 255; //roughness
+    fragPbrAndMask.g = 0; //metalness
+    fragPbrAndMask.b = 255; //TODO review !
 }

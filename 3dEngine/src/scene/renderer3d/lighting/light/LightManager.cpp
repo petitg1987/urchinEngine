@@ -138,6 +138,7 @@ namespace urchin {
                 currentLightInfo.lightFlags =
                         (light->isProduceShadow() ? Light::LIGHT_FLAG_PRODUCE_SHADOW : 0) |
                         (light->isPbrEnabled() ? Light::LIGHT_FLAG_PBR_ENABLED : 0);
+                currentLightInfo.lightMask = light->getLightMask();
                 currentLightInfo.shadowStrength = light->getShadowStrength();
                 currentLightInfo.lightColor = light->getLightColor();
 

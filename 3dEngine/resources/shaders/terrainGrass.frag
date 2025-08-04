@@ -25,7 +25,8 @@ void main() {
     fragAlbedoAndEmissive = vec4(color.rgb, 0.0);
     fragNormalAndAmbient = vec4(normal, lighting.ambient);
 
-    //pbr
-    fragPbrAndMask.r = 255;
-    fragPbrAndMask.g = 0;
+    //pbr & mask
+    fragPbrAndMask.r = 255; //roughness
+    fragPbrAndMask.g = 0; //metalness
+    fragPbrAndMask.b = 255; //TODO review !
 }

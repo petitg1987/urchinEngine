@@ -40,6 +40,8 @@ namespace urchin {
 
             void setPbrEnabled(bool);
             bool isPbrEnabled() const;
+            void setLightMask(uint8_t);
+            uint8_t getLightMask() const;
 
             void setProduceShadow(bool);
             bool isProduceShadow() const;
@@ -53,6 +55,7 @@ namespace urchin {
             Point3<float> lightColor;
 
             bool pbrEnabled;
+            uint8_t lightMask;
 
             bool produceShadow;
             float shadowStrength;

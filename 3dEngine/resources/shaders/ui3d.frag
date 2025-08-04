@@ -39,7 +39,8 @@ void main() {
     vec3 encodedNormal = (normalize(normal) + 1.0) / 2.0;
     fragNormalAndAmbient = vec4(encodedNormal, AMBIENT);
 
-    //pbr
-    fragPbrAndMask.r = 255;
-    fragPbrAndMask.g = 0;
+    //pbr & mask
+    fragPbrAndMask.r = 255; //roughness
+    fragPbrAndMask.g = 0; //metalness
+    fragPbrAndMask.b = 255; //light mask
 }

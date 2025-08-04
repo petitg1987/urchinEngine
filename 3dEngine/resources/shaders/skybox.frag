@@ -13,6 +13,6 @@ void main() {
     //albedo and emissive
     fragAlbedoAndEmissive = vec4(texture(albedoText, texCoordinates).rgb, 0.0);
 
-    //ambient factor
-    fragNormalAndAmbient.a = 1.0; //no lighting
+    //pbr & mask
+    fragPbrAndMask.b = 0; //no lighting
 }

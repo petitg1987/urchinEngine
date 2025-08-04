@@ -5,6 +5,7 @@ namespace urchin {
     Light::Light() :
             lightColor(Point3(1.0f, 1.0f, 1.0f)),
             pbrEnabled(true),
+            lightMask(255),
             produceShadow(false),
             shadowStrength(1.0f) {
 
@@ -35,6 +36,14 @@ namespace urchin {
 
     bool Light::isPbrEnabled() const {
         return pbrEnabled;
+    }
+
+    void Light::setLightMask(uint8_t lightMask) {
+        this->lightMask = lightMask;
+    }
+
+    uint8_t Light::getLightMask() const {
+        return lightMask;
     }
 
     void Light::setProduceShadow(bool produceShadow) {

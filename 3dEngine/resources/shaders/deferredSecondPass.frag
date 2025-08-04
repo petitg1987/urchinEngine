@@ -214,23 +214,23 @@ vec3 fresnelSchlick(vec3 halfWay, vec3 vertexToCameraPos, vec3 baseReflectivity)
 }
 
 void main() {
-    float alphaValue = 1.0f;
+    vec2 sceneSize = textureSize(depthTex, 0);
     float depthValue = texture(depthTex, texCoordinates).r;
     vec4 albedoAndEmissive = texture(albedoAndEmissiveTex, texCoordinates);
-    vec4 normalAndAmbient = texture(normalAndAmbientTex, texCoordinates);
+    uvec3 materialAndMaskValues = texelFetch(materialAndMaskTex, ivec2(texCoordinates * sceneSize), 0).rgb;
+    uint modelLightMask = materialAndMaskValues.b;
 
     vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
     vec3 albedo = albedoAndEmissive.rgb;
     float emissiveFactor = albedoAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
-    float modelAmbientFactor = normalAndAmbient.a;
 
-    if (modelAmbientFactor < 0.9999) { //apply lighting
-        vec2 sceneSize = textureSize(depthTex, 0);
+    if (modelLightMask != 0) { //apply lighting
+        vec4 normalAndAmbient = texture(normalAndAmbientTex, texCoordinates);
         vec3 vertexToCameraPos = normalize(positioningData.viewPosition - vec3(worldPosition));
         vec3 normal = normalize(vec3(normalAndAmbient) * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
-        vec3 modelAmbient = albedo * modelAmbientFactor;
+        vec3 modelAmbient = albedo * normalAndAmbient.a;
 
-        fragColor = vec4(lightsData.globalAmbient, alphaValue); //start with global ambient
+        fragColor = vec4(lightsData.globalAmbient, 1.0); //start with global ambient
 
         if (sceneInfo.hasAmbientOcclusion) {
             float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r * AO_STRENGTH;
@@ -238,24 +238,27 @@ void main() {
         }
 
         const vec3 dielectricSurfacesBaseReflectivity = vec3(0.04); //value is a mean of all no-metallic surfaces (plastic, water, ruby, diamond, glass...)
-        uvec2 materialValues = texelFetch(materialAndMaskTex, ivec2(texCoordinates * sceneSize), 0).rg;
-        float roughness = float(materialValues.r) / 255.0;
-        float metallic = float(materialValues.g) / 255.0;
+        float roughness = float(materialAndMaskValues.r) / 255.0;
+        float metallic = float(materialAndMaskValues.g) / 255.0;
         vec3 baseReflectivity = mix(dielectricSurfacesBaseReflectivity, albedo, metallic);
 
         fragColor.rgb += albedo * emissiveFactor; //add emissive lighting
 
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
-            if (!lightsData.lightsInfo[lightIndex].isExist) {
-                break;//no more light
+            LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
+
+            if (!lightInfo.isExist) {
+                break; //no more light
+            } else if ((lightInfo.lightMask & modelLightMask) == 0) {
+                continue; //no lighting on this model
             }
 
-            LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
+            LightValues lightValues = computeLightValues(lightInfo, normal, vec3(worldPosition));
             float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.008);
 
-            vec3 lightRadiance = lightsData.lightsInfo[lightIndex].lightColor * lightAttenuation;
+            vec3 lightRadiance = lightInfo.lightColor * lightAttenuation;
             vec3 bidirectionalReflectanceDist;
-            if ((lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PBR_ENABLED) != 0) {
+            if ((lightInfo.lightFlags & LIGHT_FLAG_PBR_ENABLED) != 0) {
                 //PBR formulas (see https://www.youtube.com/watch?v=RRE-F57fbXw & https://learnopengl.com/PBR/Theory)
                 vec3 halfWay = normalize(vertexToCameraPos + lightValues.vertexToLight);
                 float normalDistribution = distributionGGX(normal, halfWay, roughness);
@@ -272,18 +275,18 @@ void main() {
 
             //shadow
             float shadowAttenuation = 1.0; //1.0 = no shadow
-            if (sceneInfo.hasShadow && (lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0) {
+            if (sceneInfo.hasShadow && (lightInfo.lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0) {
                 float shadowQuantity = 0.0f;
-                if (lightsData.lightsInfo[lightIndex].lightType == 0) { //sun
+                if (lightInfo.lightType == 0) { //sun
                     shadowQuantity = computeSunShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL);
-                } else if (lightsData.lightsInfo[lightIndex].lightType == 1) { //omnidirectional
-                    vec3 lightPosition = lightsData.lightsInfo[lightIndex].position;
+                } else if (lightInfo.lightType == 1) { //omnidirectional
+                    vec3 lightPosition = lightInfo.position;
                     shadowQuantity = computeOmnidirectionalShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL, lightPosition);
-                } else if (lightsData.lightsInfo[lightIndex].lightType == 2) { //spot
+                } else if (lightInfo.lightType == 2) { //spot
                     shadowQuantity = computeSpotShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL);
                 }
 
-                shadowAttenuation = 1.0 - (shadowQuantity * lightsData.lightsInfo[lightIndex].shadowStrength);
+                shadowAttenuation = 1.0 - (shadowQuantity * lightInfo.shadowStrength);
 
                 shadowLightIndex++;
             }
@@ -296,7 +299,7 @@ void main() {
             fragColor.rgb += shadowAttenuation * pbrFragColor;
         }
     } else { //do not apply lighting (e.g. skybox, geometry models...)
-        fragColor.rgba = vec4(albedo * (1.0 + emissiveFactor), alphaValue); //albedo + add emissive lighting
+        fragColor.rgba = vec4(albedo * (1.0 + emissiveFactor), 1.0); //albedo + add emissive lighting
     }
 
     fragColor.rgb = addFog(fragColor.rgb, worldPosition);

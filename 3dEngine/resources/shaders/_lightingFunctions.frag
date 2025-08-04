@@ -5,6 +5,7 @@ struct LightInfo {
     bool isExist;
     int lightType;
     int lightFlags;
+    uint lightMask;
     float shadowStrength;
     vec3 lightColor;
     vec3 direction;
