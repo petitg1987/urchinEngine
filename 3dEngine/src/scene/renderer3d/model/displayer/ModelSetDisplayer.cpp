@@ -122,6 +122,8 @@ namespace urchin {
                     displayer->updateMaterial(model);
                 } else if (notificationType == Model::SCALE_UPDATED) {
                     displayer->updateScale();
+                } else if (notificationType == Model::MODEL_PROPERTIES_UPDATED) {
+                    displayer->updateModelProperties(model);
                 }
             } else {
                 //The displayer will be replaced in the 'updateModels' method, but it is already detached here.
@@ -169,6 +171,7 @@ namespace urchin {
         model.addObserver(this, Model::MESH_UV_UPDATED);
         model.addObserver(this, Model::MATERIAL_UPDATED);
         model.addObserver(this, Model::SCALE_UPDATED);
+        model.addObserver(this, Model::MODEL_PROPERTIES_UPDATED);
     }
 
     void ModelSetDisplayer::unobserveModelUpdate(Model& model) {
@@ -176,6 +179,7 @@ namespace urchin {
         model.removeObserver(this, Model::MATERIAL_UPDATED);
         model.removeObserver(this, Model::MESH_UV_UPDATED);
         model.removeObserver(this, Model::MESH_VERTICES_UPDATED);
+        model.removeObserver(this, Model::MODEL_PROPERTIES_UPDATED);
     }
 
     void ModelSetDisplayer::cleanAllModels() {

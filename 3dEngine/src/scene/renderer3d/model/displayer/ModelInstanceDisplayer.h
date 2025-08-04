@@ -34,6 +34,7 @@ namespace urchin {
             void updateMeshUv(const Model*) const;
             void updateMaterial(const Model*) const;
             void updateScale() const;
+            void updateModelProperties(const Model*) const;
 
             const ModelSetDisplayer& getModelSetDisplayer() const;
             std::size_t getInstanceId() const;

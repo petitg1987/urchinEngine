@@ -348,7 +348,10 @@ namespace urchin {
     }
 
     void Model::setLightMask(uint8_t lightMask) {
-        this->lightMask = lightMask;
+        if (this->lightMask != lightMask) {
+            this->lightMask = lightMask;
+            notifyObservers(this, MODEL_PROPERTIES_UPDATED);
+        }
     }
 
     uint8_t Model::getLightMask() const {

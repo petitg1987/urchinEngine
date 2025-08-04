@@ -245,6 +245,19 @@ namespace urchin {
         }
     }
 
+    void ModelInstanceDisplayer::updateModelProperties(const Model* model) const {
+        if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
+            unsigned int meshIndex = 0;
+            for (const auto& meshRenderer : meshRenderers) {
+                const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
+                fillMeshData(*model, mesh);
+                meshRenderer->updateUniformData(MESH_DATA_UNIFORM_BINDING, &meshData);
+
+                meshIndex++;
+            }
+        }
+    }
+
     Model& ModelInstanceDisplayer::getReferenceModel() const {
         //A reference model is a model which can be used to represent all instance models.
         //For unique properties (e.g. Model#getTransform()#getPosition()): do not use the reference model.
@@ -255,7 +268,10 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::fillMeshData(const Model& model, const Mesh& mesh) const {
+        //model properties
         meshData.lightMask = model.getLightMask();
+
+        //material
         meshData.encodedEmissiveFactor = std::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
         meshData.ambientFactor = mesh.getMaterial().getAmbientFactor();
     }

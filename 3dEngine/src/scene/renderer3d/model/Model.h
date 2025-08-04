@@ -23,6 +23,7 @@ namespace urchin {
                 SCALE_UPDATED,
                 ANIMATION_STARTED,
                 ANIMATION_ENDED,
+                MODEL_PROPERTIES_UPDATED,
                 CULL_BEHAVIOR_UPDATED
             };
             enum class ShadowBehavior {
