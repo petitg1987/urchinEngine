@@ -12,6 +12,7 @@ namespace urchin {
             virtual ~Observable();
 
             void addObserver(Observer*, int);
+            void addObserverAndTriggerNotify(Observer*, int);
             void removeObserver(Observer*, int);
 
             void notifyObservers(Observable*, int);

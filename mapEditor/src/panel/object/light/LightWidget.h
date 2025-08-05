@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    class LightWidget final : public QWidget {
+    class LightWidget final : public QWidget, public Observer {
         Q_OBJECT
 
         public:
@@ -21,6 +21,8 @@ namespace urchin {
             void load(const ObjectEntity&, ObjectController&);
 
         private:
+            void notify(Observable*, int);
+
             void setupGeneralPropertiesBox(QVBoxLayout*);
             void setupSpecificSunLightBox(QVBoxLayout*);
             void setupSpecificOmnidirectionalLightBox(QVBoxLayout*);

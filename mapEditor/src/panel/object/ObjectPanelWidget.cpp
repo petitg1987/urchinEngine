@@ -366,8 +366,8 @@ namespace urchin {
             objectTableView->addObjectEntity(*objectEntity, false);
         }
 
-        lightMask->updateLabels(sceneController.getLightMaskNames());
-        sceneController.addObserver(this, SceneController::LIGHT_MASK_NAMES_UPDATED);
+        sceneController.addObserverAndTriggerNotify(this, SceneController::LIGHT_MASK_NAMES_UPDATED);
+        sceneController.addObserverAndTriggerNotify(lightWidget, SceneController::LIGHT_MASK_NAMES_UPDATED);
     }
 
     void ObjectPanelWidget::unload() {

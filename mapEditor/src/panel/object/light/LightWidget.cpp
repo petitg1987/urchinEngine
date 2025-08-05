@@ -1,4 +1,5 @@
 #include "panel/object/light/LightWidget.h"
+#include "controller/SceneController.h"
 #include "widget/style/GroupBoxStyleHelper.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 #include "widget/style/LabelStyleHelper.h"
@@ -56,6 +57,14 @@ namespace urchin {
 
         if (objectEntity.getLight()) {
             setupLightDataFrom();
+        }
+    }
+
+    void LightWidget::notify(Observable* observable, int notificationType) {
+        if (const auto* sceneController = dynamic_cast<SceneController*>(observable)) {
+            if (notificationType == SceneController::LIGHT_MASK_NAMES_UPDATED) {
+                lightMask->updateLabels(sceneController->getLightMaskNames());
+            }
         }
     }
 

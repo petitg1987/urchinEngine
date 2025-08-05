@@ -20,6 +20,11 @@ namespace urchin {
         }
     }
 
+    void Observable::addObserverAndTriggerNotify(Observer* observer, int notificationType) {
+        addObserver(observer, notificationType);
+        notifyObservers(this, notificationType);
+    }
+
     void Observable::removeObserver(Observer* observer, int notificationType) {
         auto itFind = mapObservers.find(notificationType);
         if (itFind != mapObservers.end()) {
