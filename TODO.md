@@ -23,9 +23,9 @@
   * ► **OPTIMIZATION**: Parallelize the creation of the ModelDisplayer
   * ► **OPTIMIZATION**: Models LOD
 * Lighting & Shadow
-  * ▲ **NEW FEATURE**: Use storage buffer to provide light data info to the GPU
+  * ▲ **NEW FEATURE**: Use storage buffer to provide light and shadow data info to the GPU
+  * ▲ **NEW FEATURE**: Limit the number of light with shadow based on their distance to camera and reuse shadow map texture/memory
   * ▲ **NEW FEATURE**: Review light scope radius formula to attenuate light more quickly
-  * ▲ **OPTIMIZATION**: Free shadow map memory when light is not displayed on the scene
   * ► **IMPROVEMENT**: Use distance to light instead of depth in spot/omnidirectional shadow map: allow to avoid artifacts due to wrong bias
     * See: <https://learnopengl.com/Advanced-Lighting/Shadows/Point-Shadows>
 * Anti-aliasing
