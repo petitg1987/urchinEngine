@@ -48,8 +48,14 @@ namespace urchin {
         Matrix4<float> projViewMatrix;
         Vector2<float> materialsStRepeat = materials->getStRepeat();
 
-        TerrainShaderConst terrainShaderConst {.ambient = ambient};
-        std::vector variablesSize = {sizeof(TerrainShaderConst::ambient)};
+        TerrainShaderConst terrainShaderConst {
+            .ambient = ambient,
+            .lightMask = lightMask
+        };
+        std::vector variablesSize = {
+            sizeof(TerrainShaderConst::ambient),
+            sizeof(TerrainShaderConst::lightMask)
+        };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &terrainShaderConst);
         if (mesh->getMode() == TerrainMeshMode::SMOOTH) {
             terrainShader = ShaderBuilder::createShader("terrainShadeSmooth.vert.spv", "terrainShadeSmooth.frag.spv", std::move(shaderConstants), false);
@@ -165,18 +171,24 @@ namespace urchin {
     }
 
     void Terrain::setAmbient(float ambient) {
-        this->ambient = ambient;
+        if (this->ambient != ambient) {
+            this->ambient = ambient;
 
-        if (isInitialized) {
-            createOrUpdateRenderer();
-            refreshGrassAmbient(); //grass uses ambient value: refresh is required
+            if (isInitialized) {
+                createOrUpdateRenderer();
+                refreshGrassAmbient(); //grass uses ambient value: refresh is required
+            }
         }
     }
 
     void Terrain::setLightMask(uint8_t lightMask) {
         if (this->lightMask != lightMask) {
             this->lightMask = lightMask;
-            //TODO ...notifyObservers(this, MODEL_PROPERTIES_UPDATED);
+
+            if (isInitialized) {
+                createOrUpdateRenderer();
+                //TODO refrehs grass !
+            }
         }
     }
 

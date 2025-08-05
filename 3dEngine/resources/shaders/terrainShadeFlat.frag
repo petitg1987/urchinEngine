@@ -2,6 +2,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(constant_id = 0) const float AMBIENT = 0.0;
+layout(constant_id = 1) const uint LIGHT_MASK = 255;
 
 layout(std140, set = 0, binding = 2) uniform Material {
     vec2 stRepeat;
@@ -40,5 +41,5 @@ void main() {
     //pbr & mask
     fragPbrAndMask.r = 255; //roughness
     fragPbrAndMask.g = 0; //metalness
-    fragPbrAndMask.b = 255; //light mask //TODO review !
+    fragPbrAndMask.b = LIGHT_MASK; //light mask
 }

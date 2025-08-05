@@ -41,6 +41,7 @@ namespace urchin {
         private:
             struct TerrainShaderConst {
                 float ambient;
+                unsigned int lightMask;
             };
 
             void createOrUpdateRenderer();

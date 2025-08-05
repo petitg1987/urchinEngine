@@ -29,6 +29,7 @@ namespace urchin {
             positionY(nullptr),
             positionZ(nullptr),
             ambient(nullptr),
+            lightMask(nullptr),
             xzScale(nullptr),
             yScale(nullptr),
             flatMode(nullptr),
@@ -372,6 +373,7 @@ namespace urchin {
         this->positionY->setValue(terrain->getPosition().Y);
         this->positionZ->setValue(terrain->getPosition().Z);
         this->ambient->setValue(terrain->getAmbient());
+        this->lightMask->setBitValues(terrain->getLightMask());
 
         this->xzScale->setValue(terrain->getMesh()->getXZScale());
         this->yScale->setValue(terrain->getMesh()->getYScale());
