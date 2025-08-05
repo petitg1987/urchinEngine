@@ -7,7 +7,7 @@
 namespace urchin {
 
     /**
-     * The goal of this class is to encapsulate an unique buffer (BufferHandler). However, if the buffer needs to be updated: the buffer is duplicated.
+     * The goal of this class is to encapsulate a unique buffer (BufferHandler). However, if the buffer needs to be updated: the buffer is duplicated.
      * This duplication prevents to update a buffer which is currently used in the graphic pipeline.
      * This mechanism allows to have a minimum memory footprint on the static buffers and support parallelism for the dynamic/updated buffers.
      */
