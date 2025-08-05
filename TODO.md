@@ -28,8 +28,6 @@
   * ▲ **OPTIMIZATION**: Free shadow map memory when light is not displayed on the scene
   * ► **IMPROVEMENT**: Use distance to light instead of depth in spot/omnidirectional shadow map: allow to avoid artifacts due to wrong bias
     * See: <https://learnopengl.com/Advanced-Lighting/Shadows/Point-Shadows>
-  * ▼ **OPTIMIZATION**: Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
-  * ▼ **NEW FEATURE**: Implement scalable ambient obscurance
 * Anti-aliasing
   * ► **NEW FEATURE**: Handling moving objects in TAA
     * See: <https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/>
