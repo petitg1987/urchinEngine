@@ -16,14 +16,15 @@ namespace urchin {
             bIsInitialized(false),
             renderTarget(nullptr),
             positioningData({}),
-            ambient(0.5f),
-            grassWidth(5.0f),
+            lightingProperties({.ambient = 0.5f, .lightMask = std::numeric_limits<uint8_t>::max()}),
+            grassWidth(1.0f),
             numGrassInTex(1),
-            grassQuantity(0.0f),
-            grassProperties({}),
+            grassQuantity(0.1f),
+            grassProperties({.displayDistance = 100.0f, .grassHeight = 1.0f, .windStrength = 1.0f, .windDirection = Vector3(1.0f, 0.0f, 0.0f)}),
             mesh(nullptr),
             grassTextureParam(TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)) {
         std::memset((void*)&positioningData, 0, sizeof(positioningData));
+        std::memset((void*)&lightingProperties, 0, sizeof(lightingProperties));
         std::memset((void*)&grassProperties, 0, sizeof(grassProperties));
 
         float grassAlphaTest = ConfigService::instance().getFloatValue("terrain.grassAlphaTest");
@@ -33,13 +34,6 @@ namespace urchin {
 
         setGrassTexture(grassTextureFilename);
         setMaskTexture("");
-        setNumGrassInTexture(1);
-        setGrassDisplayDistance(100.0f);
-        setGrassWidth(1.0f);
-        setGrassHeight(1.0f);
-        setGrassQuantity(0.1f);
-        setWindDirection(Vector3(1.0f, 0.0f, 0.0f));
-        setWindStrength(1.0f);
     }
 
     void TerrainGrass::initialize(RenderTarget& renderTarget) {
@@ -60,12 +54,13 @@ namespace urchin {
         generateGrass(mesh, terrainPosition);
     }
 
-    void TerrainGrass::refreshWith(float ambient) {
+    void TerrainGrass::refreshWith(float ambient, uint8_t lightMask) {
         assert(bIsInitialized);
-        this->ambient = ambient;
+        this->lightingProperties.ambient = ambient;
+        this->lightingProperties.lightMask = lightMask;
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(AMBIENT_UNIFORM_BINDING, &ambient);
+            renderer->updateUniformData(LIGHTING_PROPS_UNIFORM_BINDING, &lightingProperties);
         }
     }
 
@@ -226,7 +221,7 @@ namespace urchin {
                         ->instanceData(grassQuadtree->getGrassInstanceData().size(), {VariableType::VEC3_FLOAT, VariableType::VEC3_FLOAT}, (const float *)grassQuadtree->getGrassInstanceData().data())
                         ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                         ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
-                        ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
+                        ->addUniformData(LIGHTING_PROPS_UNIFORM_BINDING, sizeof(lightingProperties), &lightingProperties)
                         ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam))
                         ->build();
 

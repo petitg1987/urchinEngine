@@ -29,7 +29,7 @@ namespace urchin {
         setMaterials(std::move(materials));
 
         refreshGrassMesh();
-        refreshGrassAmbient();
+        refreshGrassLightingProperties();
 
         isInitialized = true;
     }
@@ -133,9 +133,9 @@ namespace urchin {
         }
     }
 
-    void Terrain::refreshGrassAmbient() {
+    void Terrain::refreshGrassLightingProperties() {
         if (grass.isInitialized()) {
-            grass.refreshWith(ambient);
+            grass.refreshWith(ambient, lightMask);
         }
     }
 
@@ -176,7 +176,7 @@ namespace urchin {
 
             if (isInitialized) {
                 createOrUpdateRenderer();
-                refreshGrassAmbient(); //grass uses ambient value: refresh is required
+                refreshGrassLightingProperties();
             }
         }
     }
@@ -187,7 +187,7 @@ namespace urchin {
 
             if (isInitialized) {
                 createOrUpdateRenderer();
-                //TODO refrehs grass !
+                refreshGrassLightingProperties();
             }
         }
     }

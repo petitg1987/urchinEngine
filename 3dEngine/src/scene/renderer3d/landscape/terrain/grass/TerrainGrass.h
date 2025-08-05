@@ -19,7 +19,7 @@ namespace urchin {
             bool isInitialized() const;
 
             void refreshWith(const TerrainMesh*, const Point3<float>&);
-            void refreshWith(float);
+            void refreshWith(float, uint8_t);
 
             const std::string& getGrassTexture() const;
             void setGrassTexture(std::string);
@@ -66,7 +66,7 @@ namespace urchin {
 
             static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
             static constexpr uint32_t GRASS_PROPS_UNIFORM_BINDING = 1;
-            static constexpr uint32_t AMBIENT_UNIFORM_BINDING = 2;
+            static constexpr uint32_t LIGHTING_PROPS_UNIFORM_BINDING = 2;
             static constexpr uint32_t GRASS_TEX_UNIFORM_BINDING = 3;
 
             const float grassParcelSize;
@@ -82,10 +82,15 @@ namespace urchin {
                 alignas(4) float sumTimeStep;
             } positioningData;
 
-            float ambient;
+            struct LightingProperties {
+                alignas(4) float ambient;
+                alignas(4) unsigned int lightMask;
+            } lightingProperties;
+
             float grassWidth;
             int numGrassInTex;
             float grassQuantity;
+
             struct GrassProperties {
                 alignas(4) float displayDistance;
                 alignas(4) float grassHeight;

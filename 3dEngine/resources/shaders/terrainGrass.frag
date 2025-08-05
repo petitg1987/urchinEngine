@@ -5,6 +5,7 @@ layout(constant_id = 0) const float GRASS_ALPHA_TEST = 0.0;
 
 layout(std140, set = 0, binding = 2) uniform Lighting {
     float ambient;
+    uint lightMask;
 } lighting;
 layout(binding = 3) uniform sampler2D grassTex;
 
@@ -28,5 +29,5 @@ void main() {
     //pbr & mask
     fragPbrAndMask.r = 255; //roughness
     fragPbrAndMask.g = 0; //metalness
-    fragPbrAndMask.b = 255; //light mask //TODO review !
+    fragPbrAndMask.b = lighting.lightMask; //light mask
 }

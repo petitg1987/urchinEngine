@@ -47,7 +47,7 @@ namespace urchin {
             void createOrUpdateRenderer();
             void refreshMaterials() const;
             void refreshGrassMesh();
-            void refreshGrassAmbient();
+            void refreshGrassLightingProperties();
 
             static constexpr uint32_t PROJ_VIEW_MATRIX_UNIFORM_BINDING = 0;
             static constexpr uint32_t POSITION_UNIFORM_BINDING = 1;
