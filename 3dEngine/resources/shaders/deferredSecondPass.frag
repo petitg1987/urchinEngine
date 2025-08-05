@@ -244,12 +244,18 @@ void main() {
 
         fragColor.rgb += albedo * emissiveFactor; //add emissive lighting
 
-        for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
+        for (int lightIndex = 0, shadowLightIndex = -1; lightIndex < MAX_LIGHTS; ++lightIndex) {
             LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
-
             if (!lightInfo.isExist) {
                 break; //no more light
-            } else if ((lightInfo.lightMask & meshLightMask) == 0) {
+            }
+
+            bool hasShadow = sceneInfo.hasShadow && (lightInfo.lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0;
+            if (hasShadow) {
+                shadowLightIndex++;
+            }
+
+            if ((lightInfo.lightMask & meshLightMask) == 0) {
                 continue; //no lighting on this mesh
             }
 
@@ -275,7 +281,7 @@ void main() {
 
             //shadow
             float shadowAttenuation = 1.0; //1.0 = no shadow
-            if (sceneInfo.hasShadow && (lightInfo.lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0) {
+            if (hasShadow) {
                 float shadowQuantity = 0.0f;
                 if (lightInfo.lightType == 0) { //sun
                     shadowQuantity = computeSunShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL);
@@ -285,10 +291,7 @@ void main() {
                 } else if (lightInfo.lightType == 2) { //spot
                     shadowQuantity = computeSpotShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL);
                 }
-
                 shadowAttenuation = 1.0 - (shadowQuantity * lightInfo.shadowStrength);
-
-                shadowLightIndex++;
             }
 
             //add ambient
