@@ -15,21 +15,24 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            AddOrUpdateObjectDialog(QWidget*, std::string, const std::vector<std::string>&, const ObjectController&);
+            AddOrUpdateObjectDialog(QWidget*, const ObjectController&, std::string);
 
-            std::unique_ptr<ObjectEntity> getNewObjectEntity();
+            void setDefaultValues(const std::string&, const std::vector<std::string>&, uint8_t);
+
+            std::unique_ptr<ObjectEntity> getNewObjectEntity() const;
             std::string getObjectName() const;
             std::vector<std::string> getGroupHierarchy() const;
 
         private:
             void setupNameFields(QGridLayout*);
-            void setupGroupFields(QGridLayout*, const std::vector<std::string>&);
+            void setupGroupFields(QGridLayout*);
 
             void done(int) override;
             bool isObjectEntityExist(std::string_view) const;
 
-            std::string defaultName;
+            std::string originalName;
             const ObjectController& objectController;
+            uint8_t defaultLightMask;
 
             QLabel* objectNameLabel;
             QLineEdit* objectNameText;

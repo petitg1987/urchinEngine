@@ -8,15 +8,16 @@
 
 namespace urchin {
 
-    AddOrUpdateObjectDialog::AddOrUpdateObjectDialog(QWidget* parent, std::string defaultName, const std::vector<std::string>& defaultGroupHierarchy, const ObjectController& objectController) :
+    AddOrUpdateObjectDialog::AddOrUpdateObjectDialog(QWidget* parent, const ObjectController& objectController, std::string originalName) :
             QDialog(parent),
-            defaultName(std::move(defaultName)),
+            originalName(std::move(originalName)),
             objectController(objectController),
+            defaultLightMask(std::numeric_limits<uint8_t>::max()),
             objectNameLabel(nullptr),
             objectNameText(nullptr),
             groupComboBox(nullptr),
             newGroupText(nullptr) {
-        this->setWindowTitle("Update Object");
+        this->setWindowTitle("Add/Update Object");
         this->resize(530, 220);
         this->setFixedSize(this->width(), this->height());
 
@@ -24,7 +25,7 @@ namespace urchin {
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         setupNameFields(mainLayout);
-        setupGroupFields(mainLayout, defaultGroupHierarchy);
+        setupGroupFields(mainLayout);
 
         auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 3, 0);
@@ -47,10 +48,9 @@ namespace urchin {
 
         objectNameText = new QLineEdit();
         groupLayout->addWidget(objectNameText, 0, 1);
-        objectNameText->setText(QString::fromStdString(defaultName));
     }
 
-    void AddOrUpdateObjectDialog::setupGroupFields(QGridLayout* mainLayout, const std::vector<std::string>& defaultGroupHierarchy) {
+    void AddOrUpdateObjectDialog::setupGroupFields(QGridLayout* mainLayout) {
         auto* groupGroupBox = new QGroupBox("Group Hierarchy");
         mainLayout->addWidget(groupGroupBox, 1, 0);
         GroupBoxStyleHelper::applyDefaultStyle(groupGroupBox);
@@ -66,7 +66,6 @@ namespace urchin {
             std::string groupHierarchyString = GroupHierarchyHelper::groupHierarchyToString(groupHierarchy);
             groupComboBox->addItem(QString::fromStdString(groupHierarchyString), QVariant(QString::fromStdString(groupHierarchyString)));
         }
-        groupComboBox->setCurrentText(QString::fromStdString(GroupHierarchyHelper::groupHierarchyToString(defaultGroupHierarchy)));
 
         auto* newGroupLabel = new QLabel("New group:");
         groupLayout->addWidget(newGroupLabel, 1, 0);
@@ -87,9 +86,16 @@ namespace urchin {
         });
     }
 
-    std::unique_ptr<ObjectEntity> AddOrUpdateObjectDialog::getNewObjectEntity() {
+    void AddOrUpdateObjectDialog::setDefaultValues(const std::string& defaultName, const std::vector<std::string>& defaultGroupHierarchy, uint8_t defaultLightMask) {
+        objectNameText->setText(QString::fromStdString(defaultName));
+        groupComboBox->setCurrentText(QString::fromStdString(GroupHierarchyHelper::groupHierarchyToString(defaultGroupHierarchy)));
+        this->defaultLightMask = defaultLightMask;
+    }
+
+    std::unique_ptr<ObjectEntity> AddOrUpdateObjectDialog::getNewObjectEntity() const {
         auto objectEntity = std::make_unique<ObjectEntity>();
         objectEntity->setModel(Model::fromMeshesFile(""));
+        objectEntity->getModel()->setLightMask(defaultLightMask);
         objectEntity->setName(objectNameText->text().toStdString());
         objectEntity->setGroupHierarchy(getGroupHierarchy());
         return objectEntity;
@@ -116,7 +122,7 @@ namespace urchin {
             if (getObjectName().empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (getObjectName() != defaultName && isObjectEntityExist(getObjectName())) {
+            } else if (getObjectName() != originalName && isObjectEntityExist(getObjectName())) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }

@@ -553,9 +553,15 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showAddObjectDialog() {
-        std::string defaultName = "";
         std::vector<std::string> defaultGroupHierarchy = objectTableView->hasMainObjectEntitySelected() ? objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy() : std::vector<std::string>{};
-        AddOrUpdateObjectDialog addObjectEntityDialog(this, defaultName, defaultGroupHierarchy, *objectController);
+        uint8_t defaultLightMask = std::numeric_limits<uint8_t>::max();
+        if (objectTableView->hasMainObjectEntitySelected()) {
+            defaultLightMask = objectTableView->getMainSelectedObjectEntity()->getModel()->getLightMask();
+        } else if (!objectTableView->getAllSelectedObjectEntities().empty()) {
+            defaultLightMask = objectTableView->getAllSelectedObjectEntities()[0]->getModel()->getLightMask();
+        }
+        AddOrUpdateObjectDialog addObjectEntityDialog(this, *objectController, "");
+        addObjectEntityDialog.setDefaultValues("", defaultGroupHierarchy, defaultLightMask);
         addObjectEntityDialog.exec();
 
         if (addObjectEntityDialog.result() == QDialog::Accepted) {
@@ -602,7 +608,8 @@ namespace urchin {
         if (objectTableView->hasMainObjectEntitySelected()) {
             std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
             std::vector<std::string> originalGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
-            AddOrUpdateObjectDialog updateObjectDialog(this, originalName, originalGroupHierarchy, *objectController);
+            AddOrUpdateObjectDialog updateObjectDialog(this, *objectController, originalName);
+            updateObjectDialog.setDefaultValues(originalName, originalGroupHierarchy, std::numeric_limits<uint8_t>::max());
             updateObjectDialog.exec();
 
             if (updateObjectDialog.result() == QDialog::Accepted) {
