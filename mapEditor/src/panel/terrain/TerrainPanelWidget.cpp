@@ -108,6 +108,13 @@ namespace urchin {
         generalPropertiesLayout->addWidget(ambient, 1, 1);
         SpinBoxStyleHelper::applyDefaultStyle(ambient, 0.0, 1.0);
         connect(ambient, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
+
+        auto* lightMaskLabel= new QLabel("Light mask:");
+        generalPropertiesLayout->addWidget(lightMaskLabel, 2, 0);
+
+        lightMask = new BitsetComboBox(nullptr, 8, 255);
+        generalPropertiesLayout->addWidget(lightMask, 2, 1);
+        connect(lightMask, SIGNAL(onBitChanged()), this, SLOT(updateObjectProperties()));
     }
 
     void TerrainPanelWidget::setupMeshBox(QVBoxLayout* mainLayout) {
@@ -313,13 +320,15 @@ namespace urchin {
         return terrainTableView;
     }
 
-    void TerrainPanelWidget::load(TerrainController& terrainController) {
-        this->terrainController = &terrainController;
+    void TerrainPanelWidget::load(SceneController& sceneController) {
+        this->terrainController = &sceneController.getTerrainController();
 
         std::list<const TerrainEntity*> terrainEntities = this->terrainController->getTerrainEntities();
         for (auto& terrainEntity : terrainEntities) {
             terrainTableView->addTerrain(*terrainEntity);
         }
+
+        sceneController.addObserverAndTriggerNotify(this, SceneController::LIGHT_MASK_NAMES_UPDATED);
     }
 
     void TerrainPanelWidget::unload() {
@@ -329,7 +338,11 @@ namespace urchin {
     }
 
     void TerrainPanelWidget::notify(Observable* observable, int notificationType) {
-        if (const auto* terrainTableView = dynamic_cast<TerrainTableView*>(observable)) {
+        if (const auto* sceneController = dynamic_cast<SceneController*>(observable)) {
+            if (notificationType == SceneController::LIGHT_MASK_NAMES_UPDATED) {
+                lightMask->updateLabels(sceneController->getLightMaskNames());
+            }
+        } else if (const auto* terrainTableView = dynamic_cast<TerrainTableView*>(observable)) {
             if (notificationType == TerrainTableView::SELECTION_CHANGED) {
                 if (terrainTableView->hasTerrainEntitySelected()) {
                     const TerrainEntity* terrainEntity = terrainTableView->getSelectedTerrainEntity();

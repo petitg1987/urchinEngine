@@ -53,7 +53,7 @@ namespace urchin {
 
         setEnabled(true);
         tabObjects->load(sceneController);
-        tabTerrains->load(sceneController.getTerrainController());
+        tabTerrains->load(sceneController);
         tabWaters->load(sceneController.getWaterController());
         tabSky->load(sceneController.getSkyController());
         tabAI->load(sceneController.getAIController());

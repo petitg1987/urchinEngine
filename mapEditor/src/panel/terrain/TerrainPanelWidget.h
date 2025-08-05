@@ -10,6 +10,7 @@
 
 #include "controller/terrain/TerrainController.h"
 #include "panel/terrain/TerrainTableView.h"
+#include "widget/BitsetComboBox.h"
 
 namespace urchin {
 
@@ -22,7 +23,7 @@ namespace urchin {
 
             TerrainTableView* getTerrainTableView() const;
 
-            void load(TerrainController&);
+            void load(SceneController&);
             void unload();
 
         private:
@@ -52,6 +53,7 @@ namespace urchin {
             QDoubleSpinBox* positionY;
             QDoubleSpinBox* positionZ;
             QDoubleSpinBox* ambient;
+            BitsetComboBox* lightMask;
 
             //mesh properties
             QDoubleSpinBox* xzScale;
