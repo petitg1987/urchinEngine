@@ -140,7 +140,7 @@ namespace urchin {
     void LightSplitShadowMap::updateVisibleModels() {
         models.clear();
         lightShadowMap->getModelOcclusionCuller().getModelsInConvexObject(*lightScopeConvexObject, models, true, [this](const Model *const model) {
-            return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER; //TODO add this ???: && (model->getLightMask() & lightShadowMap->getLight().getLightMask()) != 0;
+            return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER && (model->getLightMask() & lightShadowMap->getLight().getLightMask()) != 0;
         });
     }
 
