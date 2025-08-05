@@ -59,12 +59,12 @@ namespace urchin {
         resetModified();
     }
 
-    std::string SceneController::getUserData(const std::string& key) const {
-        return getMap().getUserData(key);
+    const std::array<std::string, 8>& SceneController::getLightMaskNames() const {
+        return getMap().getLightMaskNames();
     }
 
-    void SceneController::updateUserData(const std::string& key, const std::string& data) {
-        getMap().addUserData(key, data);
+    void SceneController::setLightMaskNames(std::array<std::string, 8> lightMaskName) {
+        getMap().setLightMaskNames(std::move(lightMaskName));
         markModified();
     }
 

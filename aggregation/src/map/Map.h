@@ -26,9 +26,9 @@ namespace urchin {
 
             void setRelativeWorkingDirectory(std::string);
             const std::string& getRelativeWorkingDirectory() const;
-            void addUserData(const std::string&, const std::string&);
-            const std::map<std::string, std::string>& getUserData() const;
-            std::string getUserData(const std::string&) const;
+
+            void setLightMaskNames(const std::array<std::string, 8>&);
+            const std::array<std::string, 8>& getLightMaskNames() const;
 
             const std::list<std::unique_ptr<ObjectEntity>>& getObjectEntities() const;
             ObjectEntity& getObjectEntity(std::string_view) const;
@@ -65,7 +65,8 @@ namespace urchin {
             AIEnvironment* aiEnvironment;
 
             std::string relativeWorkingDirectory;
-            std::map<std::string, std::string> userData;
+
+            std::array<std::string, 8> lightMaskNames;
 
             TagHolder objectEntitiesTagHolder;
             mutable std::vector<ObjectEntity*> tmpObjectEntities;

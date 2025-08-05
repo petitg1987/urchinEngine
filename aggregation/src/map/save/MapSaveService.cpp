@@ -24,6 +24,15 @@ namespace urchin {
         const UdaChunk* workingDirChunk = udaParser.getFirstChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
         map.setRelativeWorkingDirectory(workingDirChunk->getStringValue());
 
+        const UdaChunk* lightMaskNamesChunk = udaParser.getFirstChunk(true, LIGHT_MASK_NAMES_TAG);
+        std::vector<UdaChunk*> lightMaskNamesChunkList = udaParser.getChunks(LIGHT_MASK_NAME_TAG, UdaAttribute(), lightMaskNamesChunk);
+        std::array<std::string, 8> lightMaskNames;
+        assert(lightMaskNamesChunkList.size() == lightMaskNames.size());
+        for (std::size_t i = 0; i < lightMaskNames.size(); ++i) {
+            lightMaskNames[i] = lightMaskNamesChunkList[i]->getStringValue();
+        }
+        map.setLightMaskNames(lightMaskNames);
+
         const UdaChunk* sceneChunk = udaParser.getFirstChunk(true, SCENE_TAG);
         loadMap(map, sceneChunk, udaParser, loadMapCallback);
     }
@@ -104,10 +113,9 @@ namespace urchin {
         auto& workingDirChunk = udaParser.createChunk(WORKING_DIR_TAG, UdaAttribute(), &configChunk);
         workingDirChunk.setStringValue(map.getRelativeWorkingDirectory());
 
-        auto& userDataChunk = udaParser.createChunk(USER_DATA_TAG);
-        for (const auto& [key, dataValue] : map.getUserData()) {
-            udaParser.createChunk(USER_DATA_KEY_TAG, UdaAttribute(), &userDataChunk).setStringValue(key);
-            udaParser.createChunk(USER_DATA_VALUE_TAG, UdaAttribute(), &userDataChunk).setStringValue(dataValue);
+        auto& lightMaskNamesChunk = udaParser.createChunk(LIGHT_MASK_NAMES_TAG);
+        for (const std::string& lightMaskName : map.getLightMaskNames()) {
+            udaParser.createChunk(LIGHT_MASK_NAME_TAG, UdaAttribute(), &lightMaskNamesChunk).setStringValue(lightMaskName);
         }
 
         auto& sceneChunk = udaParser.createChunk(SCENE_TAG);

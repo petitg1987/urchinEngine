@@ -32,9 +32,8 @@ namespace urchin {
 
             static constexpr char CONFIG_TAG[] = "config";
             static constexpr char WORKING_DIR_TAG[] = "relativeWorkingDirectory";
-            static constexpr char USER_DATA_TAG[] = "userData";
-            static constexpr char USER_DATA_KEY_TAG[] = "key";
-            static constexpr char USER_DATA_VALUE_TAG[] = "value";
+            static constexpr char LIGHT_MASK_NAMES_TAG[] = "lightMaskNames";
+            static constexpr char LIGHT_MASK_NAME_TAG[] = "name";
             static constexpr char SCENE_TAG[] = "scene";
 
             static constexpr char OBJECTS_TAG[] = "objects";

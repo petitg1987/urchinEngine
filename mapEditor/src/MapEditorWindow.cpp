@@ -340,19 +340,11 @@ namespace urchin {
     }
 
     void MapEditorWindow::showLightMaskNameDialog() {
-        static constexpr std::string LIGHT_MASK_NAMES_KEY = "lightMaskNames";
-        static constexpr char LIGHT_MASK_NAMES_SEPARATOR = '#';
-
-        std::array<std::string, 8> existingLightMaskNames;
-        std::vector<std::string> existingLightMaskNamesVec = StringUtil::split(sceneController->getUserData(LIGHT_MASK_NAMES_KEY), LIGHT_MASK_NAMES_SEPARATOR);
-        if (existingLightMaskNamesVec.size() == existingLightMaskNames.size()) {
-            std::copy_n(std::make_move_iterator(existingLightMaskNamesVec.begin()), 8, existingLightMaskNames.begin());
-        }
-        LightMaskNameDialog lightMaskConfigDialog(this, existingLightMaskNames);
+        LightMaskNameDialog lightMaskConfigDialog(this, sceneController->getLightMaskNames());
         lightMaskConfigDialog.exec();
 
         if (lightMaskConfigDialog.result() == QDialog::Accepted) {
-            sceneController->updateUserData(LIGHT_MASK_NAMES_KEY, StringUtil::join(lightMaskConfigDialog.getLightMaskNames(), LIGHT_MASK_NAMES_SEPARATOR));
+            sceneController->setLightMaskNames(lightMaskConfigDialog.getLightMaskNames());
             sceneController->forceModified();
         }
     }

@@ -39,16 +39,12 @@ namespace urchin {
         return relativeWorkingDirectory;
     }
 
-    void Map::addUserData(const std::string& key, const std::string& data) {
-        userData.insert({key, data});
+    void Map::setLightMaskNames(const std::array<std::string, 8>& lightMaskNames) {
+        this->lightMaskNames = lightMaskNames;
     }
 
-    const std::map<std::string, std::string>& Map::getUserData() const {
-        return userData;
-    }
-
-    std::string Map::getUserData(const std::string& key) const {
-        return MapUtil::getWithDefault(userData, key, (std::string)"");
+    const std::array<std::string, 8>& Map::getLightMaskNames() const {
+        return lightMaskNames;
     }
 
     const std::list<std::unique_ptr<ObjectEntity>>& Map::getObjectEntities() const {
