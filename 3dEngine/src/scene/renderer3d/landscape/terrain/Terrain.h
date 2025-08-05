@@ -30,6 +30,9 @@ namespace urchin {
             float getAmbient() const;
             void setAmbient(float);
 
+            void setLightMask(uint8_t);
+            uint8_t getLightMask() const;
+
             Point3<float> findPointAt(const Point2<float>&) const;
             float findHeightAt(const Point2<float>&) const;
 
@@ -63,6 +66,7 @@ namespace urchin {
             TerrainGrass grass;
 
             float ambient;
+            uint8_t lightMask;
     };
 
 }

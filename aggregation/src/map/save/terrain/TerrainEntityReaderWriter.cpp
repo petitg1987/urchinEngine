@@ -87,11 +87,21 @@ namespace urchin {
     void TerrainEntityReaderWriter::loadProperties(Terrain& terrain, const UdaChunk* terrainChunk, const UdaParser& udaParser) {
         auto ambientChunk = udaParser.getFirstChunk(true, AMBIENT_TAG, UdaAttribute(), terrainChunk);
         terrain.setAmbient(ambientChunk->getFloatValue());
+
+        auto lightMaskChunk = udaParser.getFirstChunk(false, LIGHT_MASK_TAG, UdaAttribute(), terrainChunk);
+        if (lightMaskChunk) {
+            terrain.setLightMask(static_cast<uint8_t>(lightMaskChunk->getUnsignedIntValue()));
+        }
     }
 
     void TerrainEntityReaderWriter::writeProperties(UdaChunk& terrainEntityChunk, const Terrain& terrain, UdaParser& udaParser) {
         auto& ambientChunk = udaParser.createChunk(AMBIENT_TAG, UdaAttribute(), &terrainEntityChunk);
         ambientChunk.setFloatValue(terrain.getAmbient());
+
+        if (terrain.getLightMask() != std::numeric_limits<uint8_t>::max()) {
+            auto& lightMaskChunk = udaParser.createChunk(LIGHT_MASK_TAG, UdaAttribute(), &terrainEntityChunk);
+            lightMaskChunk.setUnsignedIntValue(terrain.getLightMask());
+        }
     }
 
     void TerrainEntityReaderWriter::loadGrass(Terrain& terrain, const UdaChunk* terrainChunk, const UdaParser& udaParser) {

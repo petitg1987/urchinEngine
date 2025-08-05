@@ -114,7 +114,7 @@ namespace urchin {
 
         lightMask = new BitsetComboBox(nullptr, 8, 255);
         generalPropertiesLayout->addWidget(lightMask, 2, 1);
-        connect(lightMask, SIGNAL(onBitChanged()), this, SLOT(updateObjectProperties()));
+        connect(lightMask, SIGNAL(onBitChanged()), this, SLOT(updateTerrainGeneralProperties()));
     }
 
     void TerrainPanelWidget::setupMeshBox(QVBoxLayout* mainLayout) {
@@ -438,7 +438,8 @@ namespace urchin {
             const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 
             Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
-            terrainController->updateTerrainGeneralProperties(terrainEntity, position, (float)ambient->value());
+            uint8_t lightMaskValue = static_cast<uint8_t>(lightMask->getBitValues());
+            terrainController->updateTerrainGeneralProperties(terrainEntity, position, (float)ambient->value(), lightMaskValue);
         }
     }
 

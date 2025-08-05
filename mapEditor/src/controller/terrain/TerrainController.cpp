@@ -27,8 +27,8 @@ namespace urchin {
         markModified();
     }
 
-    const TerrainEntity& TerrainController::updateTerrainGeneralProperties(const TerrainEntity& constTerrainEntity,
-                                                                           const Point3<float>& position, float ambient) {
+    const TerrainEntity& TerrainController::updateTerrainGeneralProperties(const TerrainEntity& constTerrainEntity, const Point3<float>& position,
+            float ambient, uint8_t lightMask) {
         const TerrainEntity& terrainEntity = findTerrainEntity(constTerrainEntity);
         Terrain* terrain = terrainEntity.getTerrain();
 
@@ -38,6 +38,7 @@ namespace urchin {
         }
 
         terrain->setAmbient(ambient);
+        terrain->setLightMask(lightMask);
 
         markModified();
         return terrainEntity;

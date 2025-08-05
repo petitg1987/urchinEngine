@@ -13,7 +13,8 @@ namespace urchin {
             mesh(std::move(mesh)),
             materials(std::move(materials)),
             grass(TerrainGrass("")),
-            ambient(0.0f) {
+            ambient(0.0f),
+            lightMask(std::numeric_limits<uint8_t>::max()) {
         setPosition(position);
         setAmbient(0.3f);
     }
@@ -170,6 +171,17 @@ namespace urchin {
             createOrUpdateRenderer();
             refreshGrassAmbient(); //grass uses ambient value: refresh is required
         }
+    }
+
+    void Terrain::setLightMask(uint8_t lightMask) {
+        if (this->lightMask != lightMask) {
+            this->lightMask = lightMask;
+            //TODO ...notifyObservers(this, MODEL_PROPERTIES_UPDATED);
+        }
+    }
+
+    uint8_t Terrain::getLightMask() const {
+        return lightMask;
     }
 
     Point3<float> Terrain::findPointAt(const Point2<float>& globalXzCoordinate) const {

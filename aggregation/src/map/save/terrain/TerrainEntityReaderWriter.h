@@ -39,6 +39,7 @@ namespace urchin {
             static constexpr char MATERIAL_FILENAME[] = "materialFilename";
             static constexpr char POSITION_TAG[] = "position";
             static constexpr char AMBIENT_TAG[] = "ambient";
+            static constexpr char LIGHT_MASK_TAG[] = "lightMask";
             static constexpr char GRASS_TAG[] = "grass";
             static constexpr char GRASS_TEXTURE_FILENAME_TAG[] = "grassTextureFilename";
             static constexpr char GRASS_MASK_FILENAME_TAG[] = "grassMaskFilename";
