@@ -359,12 +359,15 @@ namespace urchin {
         connect(tags, SIGNAL(textChanged(QString)), this, SLOT(updateObjectTags()));
     }
 
-    void ObjectPanelWidget::load(ObjectController& objectController) {
-        this->objectController = &objectController;
+    void ObjectPanelWidget::load(SceneController& sceneController) {
+        this->objectController = &sceneController.getObjectController();
 
         for (auto& objectEntity : this->objectController->getObjectEntities()) {
             objectTableView->addObjectEntity(*objectEntity, false);
         }
+
+        lightMask->updateLabels(sceneController.getLightMaskNames());
+        sceneController.addObserver(this, SceneController::LIGHT_MASK_NAMES_UPDATED);
     }
 
     void ObjectPanelWidget::unload() {
@@ -374,7 +377,11 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::notify(Observable* observable, int notificationType) {
-        if (const auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
+        if (const auto* sceneController = dynamic_cast<SceneController*>(observable)) {
+            if (notificationType == SceneController::LIGHT_MASK_NAMES_UPDATED) {
+                lightMask->updateLabels(sceneController->getLightMaskNames());
+            }
+        } else if (const auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 bool hasMainGroupHierarchySelected = objectTableView->hasMainGroupHierarchySelected();
                 bool hasMainObjectEntitySelected = objectTableView->hasMainObjectEntitySelected();

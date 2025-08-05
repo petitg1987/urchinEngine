@@ -1,5 +1,4 @@
 #include <QStylePainter>
-#include <ranges>
 
 #include "widget/BitsetComboBox.h"
 
@@ -10,6 +9,7 @@ namespace urchin {
             totalBits(totalBits) {
         model = new QStandardItemModel(this);
         this->setModel(model);
+
         connect(model, &QStandardItemModel::itemChanged, this, [this]() {
             update(); //trigger paint event
             emit onBitChanged();
@@ -17,19 +17,33 @@ namespace urchin {
 
         std::bitset<32> defaultBits(defaultBitValues);
         for (unsigned int i = 0; i < totalBits; ++i) {
-            std::string text = std::to_string(i + 1);
-            addCheckItem(QString::fromStdString(text), defaultBits.test(i));
+            bool checked = defaultBits.test(i);
+            auto item = new QStandardItem("");
+            item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+            item->setData(checked ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole);
+            model->appendRow(item);
         }
+
+        std::vector<std::string> defaultLabels(totalBits, "");
+        updateLabels(defaultLabels);
     }
 
-    void BitsetComboBox::addCheckItem(const QString& text, bool checked) const {
-        auto item = new QStandardItem(text);
-        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
-        item->setData(checked ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole);
-        model->appendRow(item);
+    void BitsetComboBox::updateLabels(std::span<const std::string> labels) const {
+        model->blockSignals(true);
+
+        assert(totalBits == labels.size());
+        for (unsigned int i = 0; i < totalBits; ++i) {
+            std::string text = std::to_string(i + 1);
+            if (!labels[i].empty()) {
+                text += " (" + labels[i] + ")";
+            }
+            model->item(i)->setText(QString::fromStdString(text));
+        }
+
+        model->blockSignals(false);
     }
 
-    void BitsetComboBox::setBitValues(unsigned long bitValues) {
+    void BitsetComboBox::setBitValues(unsigned long bitValues) const {
         model->blockSignals(true);
 
         std::bitset<32> bits(bitValues);

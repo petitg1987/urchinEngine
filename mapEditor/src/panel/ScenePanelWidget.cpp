@@ -52,7 +52,7 @@ namespace urchin {
         this->sceneController = &sceneController;
 
         setEnabled(true);
-        tabObjects->load(sceneController.getObjectController());
+        tabObjects->load(sceneController);
         tabTerrains->load(sceneController.getTerrainController());
         tabWaters->load(sceneController.getWaterController());
         tabSky->load(sceneController.getSkyController());

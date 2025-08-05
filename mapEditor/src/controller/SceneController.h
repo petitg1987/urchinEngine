@@ -16,6 +16,10 @@ namespace urchin {
         public:
             SceneController();
 
+            enum SceneNotificationType {
+                LIGHT_MASK_NAMES_UPDATED = 100
+            };
+
             void setup(Map&) override;
             void addObserverOnAllControllers(Observer*, int);
 

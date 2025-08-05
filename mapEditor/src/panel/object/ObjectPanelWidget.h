@@ -7,7 +7,7 @@
 #include <QtWidgets/QTabWidget>
 #include <UrchinCommon.h>
 
-#include "controller/object/ObjectController.h"
+#include "controller/SceneController.h"
 #include "panel/object/ObjectTableView.h"
 #include "panel/object/physics/PhysicsWidget.h"
 #include "panel/object/light/LightWidget.h"
@@ -39,7 +39,7 @@ namespace urchin {
             ObjectTab getTabSelected() const;
             PhysicsWidget* getPhysicsWidget() const;
 
-            void load(ObjectController&);
+            void load(SceneController&);
             void unload();
 
         private:

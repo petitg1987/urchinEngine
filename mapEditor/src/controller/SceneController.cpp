@@ -65,6 +65,7 @@ namespace urchin {
 
     void SceneController::setLightMaskNames(std::array<std::string, 8> lightMaskName) {
         getMap().setLightMaskNames(std::move(lightMaskName));
+        notifyObservers(this, LIGHT_MASK_NAMES_UPDATED);
         markModified();
     }
 

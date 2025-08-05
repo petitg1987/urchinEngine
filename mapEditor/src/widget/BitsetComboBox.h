@@ -12,7 +12,9 @@ namespace urchin {
             BitsetComboBox(QWidget*, unsigned int, unsigned long);
             ~BitsetComboBox() override = default;
 
-            void setBitValues(unsigned long);
+            void updateLabels(std::span<const std::string>) const;
+
+            void setBitValues(unsigned long) const;
             unsigned long getBitValues() const;
 
         protected:
@@ -22,8 +24,6 @@ namespace urchin {
             void onBitChanged();
 
         private:
-            void addCheckItem(const QString&, bool) const;
-
             unsigned int totalBits;
             QStandardItemModel* model;
     };
