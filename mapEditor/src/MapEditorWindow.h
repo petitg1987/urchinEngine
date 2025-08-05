@@ -43,6 +43,7 @@ namespace urchin {
             QAction* closeAction;
             QAction* reloadAction;
             std::map<SceneDisplayer::ViewProperties, QAction*> viewActions;
+            QAction* lightMaskNameAction;
 
             std::string mapEditorPath;
             std::string mapFilename;
@@ -60,6 +61,8 @@ namespace urchin {
             bool executeCloseAction();
             bool executeReloadAction();
             void executeExitAction();
+
+            void showLightMaskNameDialog();
 
             void executeViewPropertiesChangeAction();
             static ScenePanelWidget::MainTab getConcernedTabFor(SceneDisplayer::ViewProperties);

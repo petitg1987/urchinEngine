@@ -75,7 +75,7 @@ namespace urchin {
         return tokens;
     }
 
-    std::string StringUtil::join(const std::vector<std::string>& values, const char& delimiter) {
+    std::string StringUtil::join(std::span<const std::string> values, const char& delimiter) {
         std::string joinedValues;
         for (unsigned int i = 0; i < values.size(); ++i) {
             joinedValues += values[i];
@@ -86,7 +86,7 @@ namespace urchin {
         return joinedValues;
     }
 
-    std::string StringUtil::join(const std::vector<std::string>& values, const std::string& delimiter) {
+    std::string StringUtil::join(std::span<const std::string> values, const std::string& delimiter) {
         std::string joinedValues;
         for (unsigned int i = 0; i < values.size(); ++i) {
             joinedValues += values[i];

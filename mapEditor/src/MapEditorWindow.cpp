@@ -11,6 +11,7 @@
 #include "MapEditorWindow.h"
 #include "widget/dialog/NewDialog.h"
 #include "widget/dialog/NotSavedDialog.h"
+#include "widget/dialog/LightMaskNameDialog.h"
 #include "panel/object/ObjectTableView.h"
 #include "panel/object/physics/bodyshape/BodyCompoundShapeWidget.h"
 #include "panel/object/physics/bodyshape/support/LocalizedShapeTableView.h"
@@ -137,8 +138,16 @@ namespace urchin {
         viewActions[SceneDisplayer::NAV_MESH] = viewNavMeshAction;
         connect(viewNavMeshAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
+        auto* configMenu = new QMenu("Config");
+
+        lightMaskNameAction = new QAction("Light Mask Names", this);
+        lightMaskNameAction->setEnabled(false);
+        configMenu->addAction(lightMaskNameAction);
+        connect(lightMaskNameAction, SIGNAL(triggered()), this, SLOT(showLightMaskNameDialog()));
+
         menu->addMenu(fileMenu);
         menu->addMenu(viewMenu);
+        menu->addMenu(configMenu);
         this->setMenuBar(menu);
     }
 
@@ -330,6 +339,24 @@ namespace urchin {
         }
     }
 
+    void MapEditorWindow::showLightMaskNameDialog() {
+        static constexpr std::string LIGHT_MASK_NAMES_KEY = "lightMaskNames";
+        static constexpr char LIGHT_MASK_NAMES_SEPARATOR = '#';
+
+        std::array<std::string, 8> existingLightMaskNames;
+        std::vector<std::string> existingLightMaskNamesVec = StringUtil::split(sceneController->getUserData(LIGHT_MASK_NAMES_KEY), LIGHT_MASK_NAMES_SEPARATOR);
+        if (existingLightMaskNamesVec.size() == existingLightMaskNames.size()) {
+            std::copy_n(std::make_move_iterator(existingLightMaskNamesVec.begin()), 8, existingLightMaskNames.begin());
+        }
+        LightMaskNameDialog lightMaskConfigDialog(this, existingLightMaskNames);
+        lightMaskConfigDialog.exec();
+
+        if (lightMaskConfigDialog.result() == QDialog::Accepted) {
+            sceneController->updateUserData(LIGHT_MASK_NAMES_KEY, StringUtil::join(lightMaskConfigDialog.getLightMaskNames(), LIGHT_MASK_NAMES_SEPARATOR));
+            sceneController->forceModified();
+        }
+    }
+
     void MapEditorWindow::closeEvent(QCloseEvent* event) {
         if (executeCloseAction()) {
             close();
@@ -365,6 +392,7 @@ namespace urchin {
         for (QAction* action : std::views::values(viewActions)) {
             action->setEnabled(hasMapOpen);
         }
+        lightMaskNameAction->setEnabled(hasMapOpen);
 
         refreshWindowTitle();
     }

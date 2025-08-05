@@ -25,6 +25,9 @@ namespace urchin {
 
             void saveMapOnFile(const std::string&);
 
+            std::string getUserData(const std::string&) const;
+            void updateUserData(const std::string&, const std::string&);
+
             ObjectController& getObjectController() const;
             TerrainController& getTerrainController() const;
             WaterController& getWaterController() const;

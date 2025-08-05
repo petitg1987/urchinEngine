@@ -17,8 +17,6 @@ namespace urchin {
         private:
             void setupMeshFilenameFields(QGridLayout*);
 
-            void done(int) override;
-
             QLineEdit* meshesFilenameText;
 
             std::string meshesFilename;

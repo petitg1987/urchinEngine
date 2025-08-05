@@ -59,14 +59,6 @@ namespace urchin {
         }
     }
 
-    void ChangeMeshesFileDialog::done(int r) {
-        if (Accepted == r) {
-            QDialog::done(r);
-        } else {
-            QDialog::done(r);
-        }
-    }
-
     std::string ChangeMeshesFileDialog::getMeshesFilename() const {
         return meshesFilename;
     }

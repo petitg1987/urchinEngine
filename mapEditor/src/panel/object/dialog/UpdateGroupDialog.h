@@ -22,8 +22,6 @@ namespace urchin {
         private:
             void setupGroupFields(QGridLayout*, const std::vector<std::string>&, const std::string&);
 
-            void done(int) override;
-
             const ObjectController& objectController;
 
             QComboBox* baseGroupComboBox;

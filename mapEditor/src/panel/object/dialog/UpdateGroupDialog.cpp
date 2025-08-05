@@ -71,12 +71,4 @@ namespace urchin {
         return groupHierarchy;
     }
 
-    void UpdateGroupDialog::done(int r) {
-        if (Accepted == r) {
-            QDialog::done(r);
-        } else {
-            QDialog::done(r);
-        }
-    }
-
 }

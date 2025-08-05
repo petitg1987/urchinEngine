@@ -39,6 +39,18 @@ namespace urchin {
         return relativeWorkingDirectory;
     }
 
+    void Map::addUserData(const std::string& key, const std::string& data) {
+        userData.insert({key, data});
+    }
+
+    const std::map<std::string, std::string>& Map::getUserData() const {
+        return userData;
+    }
+
+    std::string Map::getUserData(const std::string& key) const {
+        return MapUtil::getWithDefault(userData, key, (std::string)"");
+    }
+
     const std::list<std::unique_ptr<ObjectEntity>>& Map::getObjectEntities() const {
         return objectEntities;
     }

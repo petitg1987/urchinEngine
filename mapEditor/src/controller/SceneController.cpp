@@ -59,6 +59,15 @@ namespace urchin {
         resetModified();
     }
 
+    std::string SceneController::getUserData(const std::string& key) const {
+        return getMap().getUserData(key);
+    }
+
+    void SceneController::updateUserData(const std::string& key, const std::string& data) {
+        getMap().addUserData(key, data);
+        markModified();
+    }
+
     ObjectController& SceneController::getObjectController() const {
         return *objectController;
     }
