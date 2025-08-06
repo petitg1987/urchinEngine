@@ -272,6 +272,14 @@ namespace urchin {
         return lengthToMinPlane < ray.getLength() && lengthToMaxPlane > 0.0;
     }
 
+    template<class T> Point3<T> AABBox<T>::closestPointOnAABBox(const Point3<T>& point) const {
+        return Point3<T>(
+            std::max(min.X, std::min(point.X, max.X)),
+            std::max(min.Y, std::min(point.Y, max.Y)),
+            std::max(min.Z, std::min(point.Z, max.Z))
+        );
+    }
+
     /**
      * Allow to access to min and max value as an array (const).
      */

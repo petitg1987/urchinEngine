@@ -51,6 +51,7 @@ namespace urchin {
             bool collideWithPoint(const Point3<T>&) const override;
             bool collideWithAABBox(const AABBox<T>&) const override;
             bool collideWithRay(const Ray<T>&) const override;
+            Point3<T> closestPointOnAABBox(const Point3<T>&) const;
 
             const Point3<T>& operator [](std::size_t) const;
             Point3<T>& operator [](std::size_t);

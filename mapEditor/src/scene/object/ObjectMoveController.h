@@ -36,6 +36,7 @@ namespace urchin {
             bool adjustMousePosition();
             void moveObjects(const Point2<float>&, const Point2<float>&);
             Point3<float> computeSelectObjectsMeanPosition() const;
+            AABBox<float> computeSelectObjectsAABBox() const;
             void updateObjectPosition(const ObjectEntity*, const Point3<float>&);
 
             unsigned int sceneWidth;

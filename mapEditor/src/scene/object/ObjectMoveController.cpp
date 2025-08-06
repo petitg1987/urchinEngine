@@ -127,7 +127,10 @@ namespace urchin {
         Vector3<float> axisVector = startAxisPointNdcSpace.vector(endAxisPointNdcSpace);
 
         float moveFactor = axisVector.normalize().dotProduct(mouseVector);
-        float moveSpeed = scene.getActiveRenderer3d()->getCamera().getPosition().distance(modelsPosition);
+
+        AABBox<float> objectsAABBox = computeSelectObjectsAABBox();
+        Point3<float> closestPointOnAABBox = objectsAABBox.closestPointOnAABBox(scene.getActiveRenderer3d()->getCamera().getPosition());
+        float moveSpeed = scene.getActiveRenderer3d()->getCamera().getPosition().distance(closestPointOnAABBox);
 
         for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
             Point3<float> newPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
@@ -143,6 +146,14 @@ namespace urchin {
         }
         meanPosition /= (float)selectedObjectEntities.size();
         return meanPosition;
+    }
+
+    AABBox<float> ObjectMoveController::computeSelectObjectsAABBox() const {
+        AABBox<float> aabbox = selectedObjectEntities[0]->getModel()->getAABBox();
+        for (std::size_t i = 1; i < selectedObjectEntities.size(); ++i) {
+            aabbox = aabbox.merge(selectedObjectEntities[i]->getModel()->getAABBox());
+        }
+        return aabbox;
     }
 
     void ObjectMoveController::updateObjectPosition(const ObjectEntity* objectEntity, const Point3<float>& newPosition) {
