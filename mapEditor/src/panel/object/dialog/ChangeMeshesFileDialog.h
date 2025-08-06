@@ -10,12 +10,14 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit ChangeMeshesFileDialog(QWidget*);
+            ChangeMeshesFileDialog(QWidget*, const std::string&);
 
             std::string getMeshesFilename() const;
 
         private:
-            void setupMeshFilenameFields(QGridLayout*);
+            void setupMeshesFilenameFields(QGridLayout*, const std::string&);
+
+            void setupFilename(const std::string&) const;
 
             QLineEdit* meshesFilenameText;
 
@@ -23,7 +25,8 @@ namespace urchin {
             static QString preferredMeshesPath;
 
         private slots:
-            void showMeshFilenameDialog();
+            void showMeshesFilenameDialog();
+            void clearMeshesFilename();
     };
 
 }

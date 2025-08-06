@@ -711,14 +711,15 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showChangeMeshesFileDialog() {
-        ChangeMeshesFileDialog changeMeshesFileDialog(this);
+        const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
+        std::string initialMeshesFile = objectEntity.getModel()->getConstMeshes() != nullptr ? objectEntity.getModel()->getConstMeshes()->getMeshesFilename() : "";
+
+        ChangeMeshesFileDialog changeMeshesFileDialog(this, initialMeshesFile);
         changeMeshesFileDialog.exec();
 
         if (changeMeshesFileDialog.result() == QDialog::Accepted) {
-            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
-            std::string meshesFilename = changeMeshesFileDialog.getMeshesFilename();
-
-            objectController->changeMeshesFile(objectEntity, meshesFilename);
+            std::string newMeshesFilename = changeMeshesFileDialog.getMeshesFilename();
+            objectController->changeMeshesFile(objectEntity, newMeshesFilename);
             setupObjectModelDataFrom(objectEntity);
         }
     }
