@@ -352,7 +352,7 @@ namespace urchin {
         QString directory = preferredNormalTexturePath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredNormalTexturePath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            std::string imageFilenamePath = filename.toUtf8().constData();
+            std::string imageFilenamePath = filename.toStdString();
             std::string relativeTgaFilenamePath = PathUtil::computeRelativePath(resourcesDirectory, imageFilenamePath);
             this->normalTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
@@ -379,7 +379,7 @@ namespace urchin {
         QString directory = preferredDudvMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredDudvMapPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            std::string filenamePath = filename.toUtf8().constData();
+            std::string filenamePath = filename.toStdString();
             std::string relativeFilenamePath = PathUtil::computeRelativePath(resourcesDirectory, filenamePath);
             this->dudvMapFilenameText->setText(QString::fromStdString(relativeFilenamePath));
 

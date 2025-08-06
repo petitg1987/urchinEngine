@@ -42,7 +42,7 @@ namespace urchin {
     void NewWaterDialog::updateWaterName() {
         QString waterName = waterNameText->text();
         if (!waterName.isEmpty()) {
-            this->waterName = waterName.toUtf8().constData();
+            this->waterName = waterName.toStdString();
         }
     }
 

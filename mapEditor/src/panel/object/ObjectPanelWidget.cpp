@@ -705,7 +705,7 @@ namespace urchin {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
 
-            std::string tagsValues = tags->text().toUtf8().constData();
+            std::string tagsValues = tags->text().toStdString();
             objectController->updateObjectTags(objectEntity, tagsValues);
         }
     }

@@ -97,7 +97,7 @@ namespace urchin {
     void NewDialog::updateMapFilename() {
         QString mapFilename = mapNameText->text();
         if (!mapFilename.isEmpty()) {
-            this->mapFilename = mapFilename.toUtf8().constData();
+            this->mapFilename = mapFilename.toStdString();
             std::string fileExtension = FileUtil::getFileExtension(this->mapFilename);
             if (!StringUtil::insensitiveEquals(fileExtension, ".uda")) {
                 this->mapFilename += ".uda";
@@ -108,7 +108,7 @@ namespace urchin {
     void NewDialog::showMapDirectoryDialog() {
         QString mapDirectory = QFileDialog::getExistingDirectory(this, tr("Select Directory"), "./", QFileDialog::DontUseNativeDialog|QFileDialog::ShowDirsOnly);
         if (!mapDirectory.isEmpty()) {
-            this->mapDirectory = std::string(mapDirectory.toUtf8().constData()) + "/";
+            this->mapDirectory = std::string(mapDirectory.toStdString()) + "/";
 
             mapDirectoryText->setText(mapDirectory);
             updateRelativeWorkingDirectory();
@@ -118,7 +118,7 @@ namespace urchin {
     void NewDialog::showMapWorkingDirectoryDialog() {
         QString mapWorkingDirectory = QFileDialog::getExistingDirectory(this, tr("Select working Directory"), "./", QFileDialog::DontUseNativeDialog|QFileDialog::ShowDirsOnly);
         if (!mapWorkingDirectory.isEmpty()) {
-            this->mapWorkingDirectory = std::string(mapWorkingDirectory.toUtf8().constData()) + "/";
+            this->mapWorkingDirectory = std::string(mapWorkingDirectory.toStdString()) + "/";
 
             mapWorkingDirectoryText->setText(mapWorkingDirectory);
             updateRelativeWorkingDirectory();

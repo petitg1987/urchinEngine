@@ -257,7 +257,7 @@ namespace urchin {
         if (checkCurrentMapSaved()) {
             QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "UDA file (*.uda)", nullptr, QFileDialog::DontUseNativeDialog);
             if (!filename.isNull()) {
-                std::string mapFilename = filename.toUtf8().constData();
+                std::string mapFilename = filename.toStdString();
                 std::string relativeWorkingDirectory = MapSaveService::getRelativeWorkingDirectory(mapFilename);
                 loadMap(mapFilename, relativeWorkingDirectory);
             }
@@ -289,7 +289,7 @@ namespace urchin {
     void MapEditorWindow::showSaveAsDialog() {
         QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), getPreferredMapPath(), "UDA file (*.uda)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            std::string filenameString = filename.toUtf8().constData();
+            std::string filenameString = filename.toStdString();
             std::string fileExtension = FileUtil::getFileExtension(filenameString);
             if (!StringUtil::insensitiveEquals(fileExtension, ".uda")) {
                 filenameString += ".uda";

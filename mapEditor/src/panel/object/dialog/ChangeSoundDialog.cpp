@@ -65,7 +65,7 @@ namespace urchin {
         QString directory = preferredSoundPath.isEmpty() ? QString::fromStdString(FileSystem::instance().getResourcesDirectory()) : preferredSoundPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open sound file"), directory, "Sound file (*.ogg)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            this->soundFilename = filename.toUtf8().constData();
+            this->soundFilename = filename.toStdString();
             this->soundFilenameText->setText(filename);
 
             std::string preferredSoundPathString = FileUtil::getDirectory(soundFilename);

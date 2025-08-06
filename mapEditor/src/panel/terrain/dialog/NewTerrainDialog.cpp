@@ -65,7 +65,7 @@ namespace urchin {
     void NewTerrainDialog::updateTerrainName() {
         QString terrainName = terrainNameText->text();
         if (!terrainName.isEmpty()) {
-            this->terrainName = terrainName.toUtf8().constData();
+            this->terrainName = terrainName.toStdString();
         }
     }
 
@@ -100,7 +100,7 @@ namespace urchin {
         QString directory = preferredHeightPath.isEmpty() ? QString::fromStdString(FileSystem::instance().getResourcesDirectory()) : preferredHeightPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.png *.tga *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            this->heightFilename = filename.toUtf8().constData();
+            this->heightFilename = filename.toStdString();
             this->heightFilenameText->setText(filename);
 
             std::string preferredHeightPathString = FileUtil::getDirectory(heightFilename);

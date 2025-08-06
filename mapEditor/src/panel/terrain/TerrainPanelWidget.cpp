@@ -485,7 +485,7 @@ namespace urchin {
         QString directory = preferredMaskMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredMaskMapPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            std::string filenamePath = filename.toUtf8().constData();
+            std::string filenamePath = filename.toStdString();
             std::string relativeMaskMapFilename = PathUtil::computeRelativePath(resourcesDirectory, filenamePath);
             this->maskMapFilenameText->setText(QString::fromStdString(relativeMaskMapFilename));
 
@@ -514,7 +514,7 @@ namespace urchin {
         QString directory = preferredMaterialPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredMaterialPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open material file"), directory, "Material file (*.uda)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            std::string mtrFilenamePath = filename.toUtf8().constData();
+            std::string mtrFilenamePath = filename.toStdString();
             std::string relativeMtrFilenamePath = PathUtil::computeRelativePath(resourcesDirectory, mtrFilenamePath);
             this->materialFilenameTexts[i]->setText(QString::fromStdString(relativeMtrFilenamePath));
 
@@ -542,7 +542,7 @@ namespace urchin {
         QString directory = preferredGrassTexturePath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredGrassTexturePath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            std::string filenamePath = filename.toUtf8().constData();
+            std::string filenamePath = filename.toStdString();
             std::string relativeGrassTexFilename = PathUtil::computeRelativePath(resourcesDirectory, filenamePath);
             this->grassTextureFilenameText->setText(QString::fromStdString(relativeGrassTexFilename));
 
@@ -569,7 +569,7 @@ namespace urchin {
         QString directory = preferredGrassMaskPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredGrassMaskPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            std::string filenamePath = filename.toUtf8().constData();
+            std::string filenamePath = filename.toStdString();
             std::string relativeGrassTexFilename = PathUtil::computeRelativePath(resourcesDirectory, filenamePath);
             this->grassMaskFilenameText->setText(QString::fromStdString(relativeGrassTexFilename));
 
