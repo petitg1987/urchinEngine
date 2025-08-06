@@ -33,7 +33,7 @@
     * See: <https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/>
   * ▼ **OPTIMIZATION**: Use computer shaders
 * Landscape
-  * ► **IMPROVEMENT**: Review grass to be more generic (rocks, flowers) and use instancing of different models
+  * ▲ **IMPROVEMENT**: Review grass to be more generic (rocks, flowers) and use instancing of different models
   * ► **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)
   * ▼ **NEW FEATURE**: Use material textures (normal map...) for terrain
   * ▼ **NEW FEATURE**: Add auto shadow on terrain
