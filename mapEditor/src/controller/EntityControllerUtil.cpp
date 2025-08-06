@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     Point3<float> EntityControllerUtil::computeFrontCameraPosition(const Camera& camera) {
-        return camera.getPosition().translate(camera.getView() * 5.0f);
+        return camera.getPosition().translate(camera.getView() * 0.75f);
     }
 
 }
