@@ -130,7 +130,7 @@ namespace urchin {
 
         AABBox<float> objectsAABBox = computeSelectObjectsAABBox();
         Point3<float> closestPointOnAABBox = objectsAABBox.closestPointOnAABBox(scene.getActiveRenderer3d()->getCamera().getPosition());
-        float moveSpeed = scene.getActiveRenderer3d()->getCamera().getPosition().distance(closestPointOnAABBox);
+        float moveSpeed = std::max(0.05f, scene.getActiveRenderer3d()->getCamera().getPosition().distance(closestPointOnAABBox));
 
         for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
             Point3<float> newPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
