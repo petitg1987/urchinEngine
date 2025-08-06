@@ -35,7 +35,7 @@ namespace urchin {
             const CollisionShape3D& bodyShape = selectedObjectEntity->getRigidBody()->getShape();
 
             Vector3 activeObjectColor(0.2f, 0.8f, 0.2f);
-            Vector3 inactiveObjectColor(0.0f, 0.5f, 0.0f);
+            Vector3 inactiveObjectColor(0.0f, 0.3f, 0.0f);
 
             if (bodyShape.isConcave()) {
                 PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
