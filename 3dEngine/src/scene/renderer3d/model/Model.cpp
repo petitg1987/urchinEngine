@@ -341,9 +341,6 @@ namespace urchin {
     }
 
     Model::ShadowBehavior Model::getShadowBehavior() const {
-        if (!getMeshes()) {
-            return ShadowBehavior::NONE;
-        }
         return shadowBehavior;
     }
 
