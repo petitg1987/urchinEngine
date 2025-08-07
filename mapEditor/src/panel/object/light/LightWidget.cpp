@@ -174,7 +174,7 @@ namespace urchin {
 
         omniAttenuation = new QDoubleSpinBox();
         omniLightLayout->addWidget(omniAttenuation, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyle(omniAttenuation, 0.01, 0.05);
+        SpinBoxStyleHelper::applyDefaultStyle(omniAttenuation, 0.01, std::numeric_limits<float>::max(), 0.05);
         connect(omniAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
@@ -243,7 +243,7 @@ namespace urchin {
 
         spotAttenuation = new QDoubleSpinBox();
         spotLightLayout->addWidget(spotAttenuation, 4, 1);
-        SpinBoxStyleHelper::applyDefaultStyle(spotAttenuation, 0.01, 0.05);
+        SpinBoxStyleHelper::applyDefaultStyle(spotAttenuation, 0.01, std::numeric_limits<float>::max(), 0.05);
         connect(spotAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
