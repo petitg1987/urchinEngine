@@ -6,7 +6,6 @@
 
 #include "util/TypeConverter.h"
 #include "util/StringUtil.h"
-#include "logger/Logger.h"
 
 namespace urchin {
 
