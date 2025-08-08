@@ -47,10 +47,18 @@ namespace urchin {
         //mesh
         std::vector<std::unique_ptr<const ConstMesh>> constMeshes;
         for (std::size_t ii = 0; ii < numMeshes; ii++) {
+            FileReader::nextLine(file, buffer); //buffer= "mesh {"
+
+            //mesh name
+            std::string meshName;
+            FileReader::nextLine(file, buffer);
+            iss.clear(); iss.str(buffer);
+            iss >> sdata >> meshName;
+            meshName = meshName.substr(1, meshName.length() - 2); //remove quote
+
             //material
             std::shared_ptr<Material> material;
             std::string materialFilename;
-            FileReader::nextLine(file, buffer); //buffer= "mesh {"
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> materialFilename;
@@ -113,7 +121,7 @@ namespace urchin {
             }
             FileReader::nextLine(file, buffer); //buffer= "}"
 
-            constMeshes.push_back(std::make_unique<ConstMesh>(material, vertices, texCoords, trianglesIndices, weights, baseSkeleton));
+            constMeshes.push_back(std::make_unique<ConstMesh>(meshName, material, vertices, texCoords, trianglesIndices, weights, baseSkeleton));
         }
 
         file.close();

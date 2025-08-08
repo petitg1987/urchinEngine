@@ -142,7 +142,8 @@ class SubMesh:
         self.generate_weights()
         self.report_double_faces()
 
-        buf = "\tmaterial \"%s\"\n\n" % (self.material.to_urchin_mesh())
+        buf = "\tname \"%s\"\n" % self.name
+        buf = buf + "\tmaterial \"%s\"\n\n" % (self.material.to_urchin_mesh())
 
         # vertices
         buf = buf + "\tnumVerts %i\n" % (len(self.vertices))

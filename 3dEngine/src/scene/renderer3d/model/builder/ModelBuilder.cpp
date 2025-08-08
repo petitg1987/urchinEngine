@@ -34,7 +34,7 @@ namespace urchin {
     std::unique_ptr<Model> ModelBuilder::newModel(const std::string& meshesName, const std::vector<Point3<float>>& vertices,
                                                   const std::vector<std::array<uint32_t, 3>>& trianglesIndices, const std::vector<Point2<float>>& uvTexture) const {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector;
-        constMeshesVector.push_back(buildConstMesh(vertices, trianglesIndices, uvTexture));
+        constMeshesVector.push_back(buildConstMesh(meshesName, vertices, trianglesIndices, uvTexture));
         auto constMeshes = ConstMeshes::fromMemory(meshesName, std::move(constMeshesVector));
         constMeshes->setId("_" + std::to_string(nextId++));
 
@@ -42,7 +42,7 @@ namespace urchin {
         return Model::fromMemory(std::move(meshes));
     }
 
-    std::unique_ptr<const ConstMesh> ModelBuilder::buildConstMesh(const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,
+    std::unique_ptr<const ConstMesh> ModelBuilder::buildConstMesh(const std::string& meshName, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,
             const std::vector<Point2<float>>& uvTexture) const {
         if (vertices.size() != uvTexture.size()) {
             throw std::runtime_error("Vertices (" + std::to_string(vertices.size()) + ") must have exactly one UV coordinate (" + std::to_string(uvTexture.size()) + ")");
@@ -82,7 +82,7 @@ namespace urchin {
         modelBone.orient = Quaternion<float>();
         modelBaseSkeleton.push_back(modelBone);
 
-        return std::make_unique<ConstMesh>(material, modelVertices, uvTexture, trianglesIndices, modelWeights, modelBaseSkeleton);
+        return std::make_unique<ConstMesh>(meshName, material, modelVertices, uvTexture, trianglesIndices, modelWeights, modelBaseSkeleton);
     }
     
 }

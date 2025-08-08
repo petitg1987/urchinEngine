@@ -11,14 +11,14 @@ namespace urchin {
 
     }
 
-    std::unique_ptr<ConstMeshes> ConstMeshes::fromMeshesFile(const std::string& meshFilename, std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector) {
-        std::string meshName = FileUtil::getFileName(meshFilename);
-        return std::unique_ptr<ConstMeshes>(new ConstMeshes(meshName, std::make_optional(meshFilename), std::move(constMeshesVector)));
+    std::unique_ptr<ConstMeshes> ConstMeshes::fromMeshesFile(const std::string& meshesFilename, std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector) {
+        std::string meshesName = FileUtil::getFileName(meshesFilename);
+        return std::unique_ptr<ConstMeshes>(new ConstMeshes(meshesName, std::make_optional(meshesFilename), std::move(constMeshesVector)));
     }
 
-    std::unique_ptr<ConstMeshes> ConstMeshes::fromMemory(const std::string& meshName, std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector) {
-        auto constMeshes = std::unique_ptr<ConstMeshes>(new ConstMeshes(meshName, std::nullopt, std::move(constMeshesVector)));
-        constMeshes->setName(meshName);
+    std::unique_ptr<ConstMeshes> ConstMeshes::fromMemory(const std::string& meshesName, std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector) {
+        auto constMeshes = std::unique_ptr<ConstMeshes>(new ConstMeshes(meshesName, std::nullopt, std::move(constMeshesVector)));
+        constMeshes->setName(meshesName);
         return constMeshes;
     }
 

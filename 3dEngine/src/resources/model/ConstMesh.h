@@ -34,9 +34,10 @@ namespace urchin {
      */
     class ConstMesh {
         public:
-            ConstMesh(std::shared_ptr<Material>, const std::vector<Vertex>&, std::vector<Point2<float>>,
+            ConstMesh(std::string, std::shared_ptr<Material>, const std::vector<Vertex>&, std::vector<Point2<float>>,
                     std::vector<std::array<uint32_t, 3>>, std::vector<Weight>, const std::vector<Bone>&);
 
+            const std::string& getMeshName() const;
             const std::shared_ptr<Material>& getInitialMaterialPtr() const;
 
             unsigned int getNumberVertices() const;
@@ -58,6 +59,7 @@ namespace urchin {
             const std::vector<Vector3<float>>& getBaseTangents() const;
 
         private:
+            std::string meshName;
             std::shared_ptr<Material> initialMaterial;
 
             std::vector<Vertex> vertices;

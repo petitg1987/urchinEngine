@@ -6,8 +6,9 @@
 
 namespace urchin {
 
-    ConstMesh::ConstMesh(std::shared_ptr<Material> initialMaterial, const std::vector<Vertex>& vertices, std::vector<Point2<float>> uv,
+    ConstMesh::ConstMesh(std::string meshName, std::shared_ptr<Material> initialMaterial, const std::vector<Vertex>& vertices, std::vector<Point2<float>> uv,
             std::vector<std::array<uint32_t, 3>> trianglesIndices, std::vector<Weight> weights, const std::vector<Bone>& baseSkeleton) :
+            meshName(std::move(meshName)),
             initialMaterial(std::move(initialMaterial)),
             vertices(vertices),
             uv(std::move(uv)),
@@ -29,6 +30,10 @@ namespace urchin {
                 usedBoneIndices.push_back(weight.boneIndex);
             }
         }
+    }
+
+    const std::string& ConstMesh::getMeshName() const {
+        return meshName;
     }
 
     const std::shared_ptr<Material>& ConstMesh::getInitialMaterialPtr() const {
