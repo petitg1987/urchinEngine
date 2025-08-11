@@ -6,8 +6,6 @@ namespace urchin {
             constAnimation(std::move(constAnimation)),
             meshes(meshes),
             animationInformation() {
-        skeleton.resize(this->constAnimation->getNumberBones());
-
         for (unsigned int meshIndex = 0; meshIndex < meshes.getNumMeshes(); ++meshIndex) {
             for (std::size_t boneIndex : meshes.getConstMeshes().getConstMesh(meshIndex).getUsedBoneIndices()) {
                 if (this->constAnimation->isAnimatedBone(boneIndex) && std::ranges::find(animatedMeshIndices, meshIndex) == animatedMeshIndices.end()) {
@@ -20,6 +18,11 @@ namespace urchin {
         animationInformation.frameTotalTimeSec = 1.0f / (float)this->constAnimation->getFrameRate();
         animationInformation.currentFrame = 0;
         computeNextFrame();
+
+        skeleton.resize(this->constAnimation->getNumberBones());
+        for (unsigned int i = 0; i < this->constAnimation->getNumberBones(); ++i) {
+            skeleton[i] = this->constAnimation->getBone(animationInformation.currentFrame, i);
+        }
     }
 
     const std::vector<Bone>& Animation::getSkeleton() const {
