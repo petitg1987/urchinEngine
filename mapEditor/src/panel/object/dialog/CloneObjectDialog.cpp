@@ -1,5 +1,4 @@
 #include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QFileDialog>
 
 #include "panel/object/dialog/CloneObjectDialog.h"
 #include "widget/style/LabelStyleHelper.h"
@@ -7,9 +6,10 @@
 
 namespace urchin {
 
-    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const std::string& originalName, const ObjectController& objectController) :
+    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const std::string& originalName, std::vector<std::string> groupHierarchy, const ObjectController& objectController) :
             QDialog(parent),
             proposedName(EntityControllerUtil::determineNewCloneName(originalName, objectController.getObjectEntities())),
+            groupHierarchy(std::move(groupHierarchy)),
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr) {
@@ -54,7 +54,7 @@ namespace urchin {
             if (getObjectName().empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (isObjectEntityExist(getObjectName())) {
+            } else if (isObjectEntityExist()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }
@@ -67,9 +67,9 @@ namespace urchin {
         }
     }
 
-    bool CloneObjectDialog::isObjectEntityExist(std::string_view name) const {
+    bool CloneObjectDialog::isObjectEntityExist() const {
         std::list<const ObjectEntity*> objectEntities = objectController.getObjectEntities();
-        return std::ranges::any_of(objectEntities, [name](const auto& so){ return so->getName() == name; });
+        return std::ranges::any_of(objectEntities, [&](const auto& so){ return so->getName() == getObjectName() && so->getGroupHierarchy() == groupHierarchy; });
     }
 
 }

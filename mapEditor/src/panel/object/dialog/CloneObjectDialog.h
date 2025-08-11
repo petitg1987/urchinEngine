@@ -13,7 +13,7 @@ namespace urchin {
             Q_OBJECT
 
         public:
-            CloneObjectDialog(QWidget*, const std::string&, const ObjectController&);
+            CloneObjectDialog(QWidget*, const std::string&, std::vector<std::string>, const ObjectController&);
 
             std::string getObjectName() const;
 
@@ -21,9 +21,10 @@ namespace urchin {
             void setupNameFields(QGridLayout*);
 
             void done(int) override;
-            bool isObjectEntityExist(std::string_view) const;
+            bool isObjectEntityExist() const;
 
             std::string proposedName;
+            std::vector<std::string> groupHierarchy;
             const ObjectController& objectController;
 
             QLabel* objectNameLabel;

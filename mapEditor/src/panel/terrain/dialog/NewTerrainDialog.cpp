@@ -139,6 +139,6 @@ namespace urchin {
 
     bool NewTerrainDialog::isTerrainEntityExist(std::string_view name) const {
         std::list<const TerrainEntity*> terrainEntities = terrainController->getTerrainEntities();
-        return std::ranges::any_of(terrainEntities, [name](const auto& st){ return st->getName() == name; });
+        return std::ranges::any_of(terrainEntities, [name](const auto& te){ return te->getName() == name; });
     }
 }

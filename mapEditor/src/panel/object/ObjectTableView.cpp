@@ -50,7 +50,7 @@ namespace urchin {
 
             if (current->data(IS_OBJECT_ENTITY_DATA).value<bool>()) {
                 auto* objectEntity = current->data(GROUP_OR_OBJECT_ENTITY_DATA).value<const ObjectEntity*>();
-                if (objectEntityToFind.getName() == objectEntity->getName()) {
+                if (objectEntityToFind.getName() == objectEntity->getName() && objectEntityToFind.getGroupHierarchy() == objectEntity->getGroupHierarchy()) {
                     return current;
                 }
             }

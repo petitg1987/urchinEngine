@@ -88,7 +88,7 @@ namespace urchin {
     void ObjectEntity::updateObjectPhysicsShape(std::unique_ptr<const CollisionShape3D> newCollisionShape) {
         PhysicsTransform physicsTransform(getModel()->getTransform().getPosition(), getModel()->getTransform().getOrientation());
 
-        auto newRigidBody = std::make_unique<RigidBody>(getName(), physicsTransform, std::move(newCollisionShape));
+        auto newRigidBody = std::make_unique<RigidBody>(getName(), physicsTransform, std::move(newCollisionShape)); //TODO use fullname ?
         newRigidBody->setMass(getRigidBody()->getMass());
         newRigidBody->setRestitution(getRigidBody()->getRestitution());
         newRigidBody->setFriction(getRigidBody()->getFriction());

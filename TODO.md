@@ -91,7 +91,6 @@
 
 # Map editor
 * Objects
-  * ▲ **NEW FEATURE**: Allow to have same name for object entity in different group hierarchy
   * ▲ **NEW FEATURE**: Add a button to convert a convex hull of a compound shape into a box
   * ► **NEW FEATURE**: Make objects without physics selectable with left click
 * UI

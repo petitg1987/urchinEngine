@@ -591,7 +591,8 @@ namespace urchin {
 
     void ObjectPanelWidget::showCloneObjectDialog() {
         std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
-        CloneObjectDialog cloneObjectEntityDialog(this, originalName, *objectController);
+        std::vector<std::string> groupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
+        CloneObjectDialog cloneObjectEntityDialog(this, originalName, groupHierarchy, *objectController);
         cloneObjectEntityDialog.exec();
 
         if (cloneObjectEntityDialog.result() == QDialog::Accepted) {
