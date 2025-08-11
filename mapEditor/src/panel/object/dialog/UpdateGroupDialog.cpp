@@ -1,9 +1,7 @@
 #include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QFileDialog>
 
 #include "panel/object/dialog/UpdateGroupDialog.h"
 #include "panel/object/dialog/support/GroupHierarchyHelper.h"
-#include "widget/style/LabelStyleHelper.h"
 
 namespace urchin {
 

@@ -31,7 +31,7 @@ namespace urchin {
             const std::array<std::string, 8>& getLightMaskNames() const;
 
             const std::list<std::unique_ptr<ObjectEntity>>& getObjectEntities() const;
-            ObjectEntity& getObjectEntity(std::string_view) const;
+            ObjectEntity& getObjectEntity(std::string_view, const std::vector<std::string>&) const;
             void findObjectEntitiesByTag(std::string_view, std::vector<ObjectEntity*>&) const;
             std::vector<ObjectEntity*> findObjectEntitiesByTag(std::string_view) const;
             ObjectEntity* findObjectEntityByTag(std::string_view) const;

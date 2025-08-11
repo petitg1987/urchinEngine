@@ -51,9 +51,9 @@ namespace urchin {
         return objectEntities;
     }
 
-    ObjectEntity& Map::getObjectEntity(std::string_view name) const {
+    ObjectEntity& Map::getObjectEntity(std::string_view name, const std::vector<std::string>& groupHierarchy) const {
         for (auto& objectEntity : objectEntities) {
-            if (objectEntity->getName() == name) {
+            if (objectEntity->getName() == name && objectEntity->getGroupHierarchy() == groupHierarchy) {
                 return *objectEntity;
             }
         }

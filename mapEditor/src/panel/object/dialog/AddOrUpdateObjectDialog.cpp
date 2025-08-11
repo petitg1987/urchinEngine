@@ -122,7 +122,7 @@ namespace urchin {
             if (getObjectName().empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (getObjectName() != originalName && isObjectEntityExist(getObjectName())) {
+            } else if (getObjectName() != originalName && isObjectEntityExist()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }
@@ -135,9 +135,9 @@ namespace urchin {
         }
     }
 
-    bool AddOrUpdateObjectDialog::isObjectEntityExist(std::string_view name) const {
+    bool AddOrUpdateObjectDialog::isObjectEntityExist() const {
         std::list<const ObjectEntity*> objectEntities = objectController.getObjectEntities();
-        return std::ranges::any_of(objectEntities, [name](const auto& so){ return so->getName() == name; });
+        return std::ranges::any_of(objectEntities, [&](const auto& oe){ return oe->getName() == getObjectName() && oe->getGroupHierarchy() == getGroupHierarchy(); });
     }
 
 }

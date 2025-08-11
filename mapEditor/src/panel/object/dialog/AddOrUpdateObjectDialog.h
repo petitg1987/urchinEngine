@@ -28,7 +28,7 @@ namespace urchin {
             void setupGroupFields(QGridLayout*);
 
             void done(int) override;
-            bool isObjectEntityExist(std::string_view) const;
+            bool isObjectEntityExist() const;
 
             std::string originalName;
             const ObjectController& objectController;
