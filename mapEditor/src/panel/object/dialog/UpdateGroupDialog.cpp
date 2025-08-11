@@ -69,4 +69,23 @@ namespace urchin {
         return groupHierarchy;
     }
 
+    void UpdateGroupDialog::done(int r) { //TODO review for validation not duplicate !
+        if (Accepted == r) {
+            bool hasError = false;
+
+            LabelStyleHelper::resetErrorStyle(groupResultText);
+
+            if (getUpdatedGroupHierarchy() != originalGroupHierarchy && isObjectEntityExist()) {
+                LabelStyleHelper::applyErrorStyle(groupResultText, "Object name/group is duplicated");
+                hasError = true;
+            }
+
+            if (!hasError) {
+                QDialog::done(r);
+            }
+        } else {
+            QDialog::done(r);
+        }
+    }
+
 }

@@ -123,7 +123,7 @@ namespace urchin {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
             } else if (getObjectName() != originalName && isObjectEntityExist()) {
-                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
+                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name/group is duplicated");
                 hasError = true;
             }
 
