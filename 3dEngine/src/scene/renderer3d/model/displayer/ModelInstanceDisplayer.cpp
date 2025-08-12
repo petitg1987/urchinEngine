@@ -75,13 +75,6 @@ namespace urchin {
         this->layersMask = layersMask;
     }
 
-    void ModelInstanceDisplayer::setupCustomTextures(const std::array<std::shared_ptr<TextureReader>, 2>& textureReaders) {
-        if (isInitialized) {
-            throw std::runtime_error("Can not define a custom texture on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
-        }
-        this->textureReaders = textureReaders;
-    }
-
     void ModelInstanceDisplayer::initialize() {
         if (isInitialized) {
             throw std::runtime_error("Model displayer is already initialized: " + getReferenceModel().getConstMeshes()->getName());
@@ -112,7 +105,7 @@ namespace urchin {
             }
 
             if (customShaderVariable) {
-                customShaderVariable->setupMeshRenderer(meshRendererBuilder, CUSTOM1_UNIFORM_BINDING, CUSTOM2_UNIFORM_BINDING);
+                customShaderVariable->setupMeshRenderer(meshRendererBuilder, CUSTOM1_UNIFORM_BINDING, CUSTOM2_UNIFORM_BINDING, CUSTOM1_STORAGE_BUFFER_BINDING);
             }
             int customDummyValue = 0;
             if (!meshRendererBuilder->getUniformData().contains(CUSTOM1_UNIFORM_BINDING)) {
@@ -151,13 +144,6 @@ namespace urchin {
                         ->addUniformTextureReader(MAT_NORMAL_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)))
                         ->addUniformTextureReader(MAT_ROUGHNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)))
                         ->addUniformTextureReader(MAT_METALNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
-
-                if (textureReaders[0]) {
-                    meshRendererBuilder->addUniformTextureReader(CUSTOM1_TEX_UNIFORM_BINDING, textureReaders[0]);
-                }
-                if (textureReaders[1]) {
-                    meshRendererBuilder->addUniformTextureReader(CUSTOM2_TEX_UNIFORM_BINDING, textureReaders[1]);
-                }
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());
@@ -380,7 +366,7 @@ namespace urchin {
             }
             meshRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &projectionViewMatrix);
             if (customShaderVariable) {
-                customShaderVariable->loadCustomShaderVariables(*meshRenderer, CUSTOM1_UNIFORM_BINDING, CUSTOM2_UNIFORM_BINDING);
+                customShaderVariable->loadCustomShaderVariables(*meshRenderer, CUSTOM1_UNIFORM_BINDING, CUSTOM2_UNIFORM_BINDING, CUSTOM1_STORAGE_BUFFER_BINDING);
             }
 
             meshRenderer->enableRenderer(renderingOrder);

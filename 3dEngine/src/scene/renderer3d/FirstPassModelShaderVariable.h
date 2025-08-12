@@ -10,8 +10,8 @@ namespace urchin {
         public:
             FirstPassModelShaderVariable(const Camera&, unsigned int, unsigned int);
 
-            void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t) override;
-            void loadCustomShaderVariables(GenericRenderer&, uint32_t, uint32_t) override;
+            void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t, uint32_t) override;
+            void loadCustomShaderVariables(GenericRenderer&, uint32_t, uint32_t, uint32_t) override;
 
         private:
             struct CameraInfo {

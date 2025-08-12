@@ -13,11 +13,11 @@ namespace urchin {
         cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
     }
 
-    void FirstPassModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t) {
+    void FirstPassModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t, uint32_t) {
         meshRendererBuilder->addUniformData(uniformBinding1, sizeof(cameraInfo), &cameraInfo);
     }
 
-    void FirstPassModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t uniformBinding1, uint32_t) {
+    void FirstPassModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t uniformBinding1, uint32_t, uint32_t) {
         constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;
         cameraInfo.jitterInPixel = camera.getAppliedJitter() * Vector2(renderingSceneWidth * NDC_SPACE_TO_UV_COORDS_SCALE, renderingSceneHeight * NDC_SPACE_TO_UV_COORDS_SCALE);
 

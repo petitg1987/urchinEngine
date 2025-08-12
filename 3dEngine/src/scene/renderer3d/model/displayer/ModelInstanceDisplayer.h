@@ -23,7 +23,6 @@ namespace urchin {
             void setupBlendFunctions(const std::vector<BlendFunction>&);
             void setupLayerIndexDataInShader(bool);
             void setupLayersMask(std::bitset<8>);
-            void setupCustomTextures(const std::array<std::shared_ptr<TextureReader>, 2>&);
 
             void initialize();
 
@@ -64,12 +63,11 @@ namespace urchin {
             static constexpr uint32_t MESH_DATA_UNIFORM_BINDING = 1;
             static constexpr uint32_t CUSTOM1_UNIFORM_BINDING = 2;
             static constexpr uint32_t CUSTOM2_UNIFORM_BINDING = 3;
-            static constexpr uint32_t MAT_ALBEDO_UNIFORM_BINDING = 4;
-            static constexpr uint32_t MAT_NORMAL_UNIFORM_BINDING = 5;
-            static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING = 6;
-            static constexpr uint32_t MAT_METALNESS_UNIFORM_BINDING = 7;
-            static constexpr uint32_t CUSTOM1_TEX_UNIFORM_BINDING = 8;
-            static constexpr uint32_t CUSTOM2_TEX_UNIFORM_BINDING = 9;
+            static constexpr uint32_t CUSTOM1_STORAGE_BUFFER_BINDING = 4;
+            static constexpr uint32_t MAT_ALBEDO_UNIFORM_BINDING = 5;
+            static constexpr uint32_t MAT_NORMAL_UNIFORM_BINDING = 6;
+            static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING = 7;
+            static constexpr uint32_t MAT_METALNESS_UNIFORM_BINDING = 8;
 
             bool isInitialized;
 
@@ -100,7 +98,6 @@ namespace urchin {
             std::vector<BlendFunction> blendFunctions;
             bool enableLayerIndexDataInShader;
             std::bitset<8> layersMask;
-            std::array<std::shared_ptr<TextureReader>, 2> textureReaders;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
             std::vector<std::shared_ptr<AABBoxModel>> aabboxModels;

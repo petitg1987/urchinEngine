@@ -24,13 +24,8 @@ namespace urchin {
     }
 
     void LightManager::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t lightsDataBinding) const {
-        if (lightsDataBinding == 2) { //TODO remove if
-            deferredSecondPassRendererBuilder
-                    ->addStorageBufferData(lightsDataBinding, sizeof(LightsData), &lightsData);
-        } else {
-            deferredSecondPassRendererBuilder
-                    ->addUniformData(lightsDataBinding, sizeof(LightsData), &lightsData);
-        }
+        deferredSecondPassRendererBuilder
+                ->addStorageBufferData(lightsDataBinding, sizeof(LightsData), &lightsData);
     }
 
     OctreeManager<Light>& LightManager::getLightOctreeManager() {
@@ -170,11 +165,7 @@ namespace urchin {
             }
         }
 
-        if (lightsDataBinding == 2) { //TODO remove if
-            deferredSecondPassRenderer.updateStorageBufferData(lightsDataBinding, &lightsData);
-        } else {
-            deferredSecondPassRenderer.updateUniformData(lightsDataBinding, &lightsData);
-        }
+        deferredSecondPassRenderer.updateStorageBufferData(lightsDataBinding, &lightsData);
     }
 
     void LightManager::postUpdateVisibleLights() {

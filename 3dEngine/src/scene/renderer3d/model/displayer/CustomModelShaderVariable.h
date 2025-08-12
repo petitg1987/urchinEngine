@@ -12,8 +12,8 @@ namespace urchin {
         public:
             virtual ~CustomModelShaderVariable() = default;
 
-            virtual void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t) = 0;
-            virtual void loadCustomShaderVariables(GenericRenderer&, uint32_t, uint32_t) = 0;
+            virtual void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t, uint32_t) = 0;
+            virtual void loadCustomShaderVariables(GenericRenderer&, uint32_t, uint32_t, uint32_t) = 0;
 
     };
 

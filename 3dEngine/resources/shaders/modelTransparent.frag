@@ -18,16 +18,16 @@ layout(std140, set = 0, binding = 2) uniform CameraPlanes {
 } cameraPlanes;
 
 //lighting
-layout(std140, set = 0, binding = 3) uniform LightsData {
+layout(std140, set = 0, binding = 4) readonly buffer LightsData {
     LightInfo lightsInfo[MAX_LIGHTS];
     vec3 globalAmbient;
 } lightsData;
 
 //texture
-layout(binding = 4) uniform sampler2D albedoTex;
-layout(binding = 5) uniform sampler2D normalTex;
-layout(binding = 6) uniform sampler2D roughnessTex; //usage of this texture not implemented
-layout(binding = 7) uniform sampler2D metalnessTex; //usage of this texture not implemented
+layout(binding = 5) uniform sampler2D albedoTex;
+layout(binding = 6) uniform sampler2D normalTex;
+layout(binding = 7) uniform sampler2D roughnessTex; //usage of this texture not implemented
+layout(binding = 8) uniform sampler2D metalnessTex; //usage of this texture not implemented
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;

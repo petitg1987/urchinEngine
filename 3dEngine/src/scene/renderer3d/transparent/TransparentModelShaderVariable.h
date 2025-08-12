@@ -9,8 +9,8 @@ namespace urchin {
         public:
             TransparentModelShaderVariable(float, float, LightManager&);
 
-            void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t) override;
-            void loadCustomShaderVariables(GenericRenderer&, uint32_t, uint32_t) override;
+            void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t, uint32_t) override;
+            void loadCustomShaderVariables(GenericRenderer&, uint32_t, uint32_t, uint32_t) override;
 
         private:
             struct {

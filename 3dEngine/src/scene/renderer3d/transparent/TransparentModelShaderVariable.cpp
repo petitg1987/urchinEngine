@@ -13,13 +13,13 @@ namespace urchin {
         cameraPlanes.farPlane = fatPlane;
     }
 
-    void TransparentModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t uniformBinding2) {
+    void TransparentModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t, uint32_t storageBufferBinding1) {
         meshRendererBuilder->addUniformData(uniformBinding1, sizeof(cameraPlanes), &cameraPlanes);
-        lightManager.setupDeferredSecondPassRenderer(meshRendererBuilder, uniformBinding2);
+        lightManager.setupDeferredSecondPassRenderer(meshRendererBuilder, storageBufferBinding1);
     }
 
-    void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t, uint32_t uniformBinding2) {
-        lightManager.loadVisibleLights(meshRenderer, uniformBinding2);
+    void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t, uint32_t, uint32_t storageBufferBinding1) {
+        lightManager.loadVisibleLights(meshRenderer, storageBufferBinding1);
     }
 
 }
