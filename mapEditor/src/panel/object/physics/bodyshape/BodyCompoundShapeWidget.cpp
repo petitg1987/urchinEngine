@@ -43,6 +43,11 @@ namespace urchin {
         buttonLayout->addWidget(removeShapeButton);
         ButtonStyleHelper::applyDefaultStyle(removeShapeButton);
         connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));
+
+        boxifyButton = new QPushButton("Boxify");
+        buttonLayout->addWidget(boxifyButton);
+        ButtonStyleHelper::applyDefaultStyle(boxifyButton);
+        connect(boxifyButton, SIGNAL(clicked()), this, SLOT(boxifySelectedLocalizedShape()));
     }
 
     std::string BodyCompoundShapeWidget::getBodyShapeName() const {
@@ -91,9 +96,13 @@ namespace urchin {
                     setupTransformBox(localizedShapeLayout, localizedShape);
                     setupShapeBox(localizedShapeLayout, localizedShape);
 
+                    boxifyButton->setEnabled(localizedShape->shape->getShapeType() == CollisionShape3D::CONVEX_HULL_SHAPE);
+
                     localizedShapeDetails->show();
                 } else {
                     localizedShapeDetails = nullptr;
+
+                    boxifyButton->setEnabled(false);
                 }
             }
         }
@@ -233,15 +242,8 @@ namespace urchin {
             DefaultShapeQuality defaultShapeQuality = changeBodyShapeDialog.getDefaultShapeQuality();
             std::unique_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeGenerator(*getObjectEntity(), defaultShapeQuality).generate(shapeType);
 
-            std::size_t nextShapeIndex = 0;
-            for (std::size_t i = 0; i < localizedShapeTableView->getLocalizedShapes().size(); ++i) {
-                if (nextShapeIndex <= localizedShapeTableView->getLocalizedShapes()[i]->shapeIndex) {
-                    nextShapeIndex = localizedShapeTableView->getLocalizedShapes()[i]->shapeIndex + 1;
-                }
-            }
-
             auto localizedShape = std::make_shared<LocalizedCollisionShape>();
-            localizedShape->shapeIndex = nextShapeIndex;
+            localizedShape->shapeIndex = retrieveNextShapeIndex();
             localizedShape->shape = std::move(defaultNewShape);
             localizedShape->transform = PhysicsTransform();
 
@@ -252,9 +254,48 @@ namespace urchin {
         }
     }
 
+    std::size_t BodyCompoundShapeWidget::retrieveNextShapeIndex() const {
+        std::size_t nextShapeIndex = 0;
+        for (std::size_t i = 0; i < localizedShapeTableView->getLocalizedShapes().size(); ++i) {
+            if (nextShapeIndex <= localizedShapeTableView->getLocalizedShapes()[i]->shapeIndex) {
+                nextShapeIndex = localizedShapeTableView->getLocalizedShapes()[i]->shapeIndex + 1;
+            }
+        }
+        return nextShapeIndex;
+    }
+
     void BodyCompoundShapeWidget::removeSelectedLocalizedShape() {
         if (localizedShapeTableView->removeSelectedLocalizedShape()) {
             updateBodyShape();
         }
+    }
+
+    void BodyCompoundShapeWidget::boxifySelectedLocalizedShape() {
+        const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
+        auto* convexHullShape = static_cast<const CollisionConvexHullShape*>(localizedShape->shape.get());
+        Point3 min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+        Point3 max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+        for (const Point3<float>& vertex : convexHullShape->getPoints()) {
+            min.X = std::min(min.X, vertex.X);
+            min.Y = std::min(min.Y, vertex.Y);
+            min.Z = std::min(min.Z, vertex.Z);
+
+            max.X = std::max(max.X, vertex.X);
+            max.Y = std::max(max.Y, vertex.Y);
+            max.Z = std::max(max.Z, vertex.Z);
+        }
+        Point3<float> centerPoint = (min + max) / 2.0f;
+        auto newShape = std::make_unique<CollisionBoxShape>(min.vector(centerPoint));
+
+        auto newLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+        newLocalizedShape->shapeIndex = retrieveNextShapeIndex();
+        newLocalizedShape->shape = std::move(newShape);
+        newLocalizedShape->transform = PhysicsTransform(localizedShape->transform.getPosition() + centerPoint, localizedShape->transform.getOrientation());
+
+        localizedShapeTableView->removeSelectedLocalizedShape();
+        int rowId = localizedShapeTableView->addLocalizedShape(newLocalizedShape);
+        localizedShapeTableView->selectLocalizedShape(rowId);
+
+        updateBodyShape();
     }
 }

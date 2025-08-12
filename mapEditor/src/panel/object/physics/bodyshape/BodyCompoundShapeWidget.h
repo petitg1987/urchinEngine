@@ -41,6 +41,7 @@ namespace urchin {
             LocalizedShapeTableView* localizedShapeTableView;
             QPushButton* addShapeButton;
             QPushButton* removeShapeButton;
+            QPushButton* boxifyButton;
 
             QWidget* localizedShapeDetails;
             QDoubleSpinBox* positionX;
@@ -55,6 +56,9 @@ namespace urchin {
         private slots:
             void addNewLocalizedShape();
             void removeSelectedLocalizedShape();
+            void boxifySelectedLocalizedShape();
+            std::size_t retrieveNextShapeIndex() const;
+
             void updateLocalizedShapeOrientationType();
             void updateSelectedLocalizedShape();
 
