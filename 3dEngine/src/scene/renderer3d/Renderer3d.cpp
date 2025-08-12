@@ -409,7 +409,7 @@ namespace urchin {
                 ->addData(textureCoord)
                 ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                 ->addUniformData(SCENE_INFO_UNIFORM_BINDING, sizeof(sceneInfo), &sceneInfo);
-        lightManager.setupDeferredSecondPassRenderer(deferredSecondPassRendererBuilder, LIGHTS_DATA_BINDING);
+        lightManager.setupDeferredSecondPassRenderer(deferredSecondPassRendererBuilder, LIGHTS_DATA_STORAGE_BUFFER_BINDING);
         shadowManager.setupDeferredSecondPassRenderer(deferredSecondPassRendererBuilder, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING);
         fogContainer.setupDeferredSecondPassRenderer(deferredSecondPassRendererBuilder, FOG_UNIFORM_BINDING);
 
@@ -611,7 +611,7 @@ namespace urchin {
         positioningData.viewPosition = camera->getPosition();
         deferredSecondPassRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
 
-        lightManager.loadVisibleLights(*deferredSecondPassRenderer, LIGHTS_DATA_BINDING);
+        lightManager.loadVisibleLights(*deferredSecondPassRenderer, LIGHTS_DATA_STORAGE_BUFFER_BINDING);
 
         fogContainer.loadFog(*deferredSecondPassRenderer, FOG_UNIFORM_BINDING);
 
@@ -620,8 +620,8 @@ namespace urchin {
         }
 
         if (sceneInfo.isShadowActivated) {
-            shadowManager.loadShadowMaps(*deferredSecondPassRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING,
-                                         SM_TEX_UNIFORM_BINDING, SM_OFFSET_TEX_UNIFORM_BINDING);
+            shadowManager.loadShadowMaps(*deferredSecondPassRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING,
+                SM_INFO_UNIFORM_BINDING, SM_TEX_UNIFORM_BINDING, SM_OFFSET_TEX_UNIFORM_BINDING);
         }
 
         deferredSecondPassRenderTarget->render(frameCount, numDependenciesToSecondPassOutput);
