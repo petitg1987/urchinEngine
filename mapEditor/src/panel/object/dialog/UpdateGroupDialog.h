@@ -15,15 +15,16 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            UpdateGroupDialog(QWidget*, const std::vector<std::string>&, const std::string&, const ObjectController&);
+            UpdateGroupDialog(QWidget*, const std::vector<std::string>&, const ObjectController&);
 
             std::vector<std::string> getUpdatedGroupHierarchy() const;
 
         private:
-            void setupGroupFields(QGridLayout*, const std::vector<std::string>&, const std::string&);
+            void setupGroupFields(QGridLayout*);
 
             void done(int) override;
 
+            std::vector<std::string> originalGroupHierarchy;
             const ObjectController& objectController;
 
             QComboBox* baseGroupComboBox;

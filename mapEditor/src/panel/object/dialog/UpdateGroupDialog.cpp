@@ -5,11 +5,13 @@
 
 namespace urchin {
 
-    UpdateGroupDialog::UpdateGroupDialog(QWidget* parent, const std::vector<std::string>& defaultGroupHierarchy, const std::string& defaultGroupName, const ObjectController& objectController) :
+    UpdateGroupDialog::UpdateGroupDialog(QWidget* parent, const std::vector<std::string>& originalGroupHierarchy, const ObjectController& objectController) :
             QDialog(parent),
+            originalGroupHierarchy(originalGroupHierarchy),
             objectController(objectController),
             baseGroupComboBox(nullptr),
             groupNameText(nullptr) {
+
         this->setWindowTitle("Update Group");
         this->resize(530, 130);
         this->setFixedSize(this->width(), this->height());
@@ -17,7 +19,7 @@ namespace urchin {
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        setupGroupFields(mainLayout, defaultGroupHierarchy, defaultGroupName);
+        setupGroupFields(mainLayout);
 
         auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 3, 0, 1, 2);
@@ -28,7 +30,7 @@ namespace urchin {
         connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void UpdateGroupDialog::setupGroupFields(QGridLayout* mainLayout, const std::vector<std::string>& defaultGroupHierarchy, const std::string& defaultGroupName) {
+    void UpdateGroupDialog::setupGroupFields(QGridLayout* mainLayout) {
         auto* baseGroupLabel = new QLabel("Base Group:");
         mainLayout->addWidget(baseGroupLabel, 0, 0);
 
@@ -39,14 +41,16 @@ namespace urchin {
             std::string groupHierarchyString = GroupHierarchyHelper::groupHierarchyToString(groupHierarchy);
             baseGroupComboBox->addItem(QString::fromStdString(groupHierarchyString), QVariant(QString::fromStdString(groupHierarchyString)));
         }
-        baseGroupComboBox->setCurrentText(QString::fromStdString(GroupHierarchyHelper::groupHierarchyToString(defaultGroupHierarchy)));
+        std::vector<std::string> selectedGroupHierarchy = originalGroupHierarchy;
+        selectedGroupHierarchy.pop_back();
+        baseGroupComboBox->setCurrentText(QString::fromStdString(GroupHierarchyHelper::groupHierarchyToString(selectedGroupHierarchy)));
 
         auto* newGroupLabel = new QLabel("Group name:");
         mainLayout->addWidget(newGroupLabel, 1, 0);
 
         groupNameText = new QLineEdit();
         mainLayout->addWidget(groupNameText, 1, 1);
-        groupNameText->setText(QString::fromStdString(defaultGroupName));
+        groupNameText->setText(QString::fromStdString(originalGroupHierarchy.back()));
 
         auto* groupResultLabel = new QLabel("Result:");
         mainLayout->addWidget(groupResultLabel, 2, 0);
