@@ -619,15 +619,11 @@ namespace urchin {
                 objectTableView->refreshObjectEntity(objectEntity);
             }
         } else if (objectTableView->hasMainGroupHierarchySelected()) {
-            std::vector<std::string> defaultGroupHierarchy = objectTableView->getMainGroupHierarchySelected().value();
-            std::string defaultGroupName = defaultGroupHierarchy.back();
-            defaultGroupHierarchy.pop_back();
-
-            UpdateGroupDialog updateGroupDialog(this, defaultGroupHierarchy, defaultGroupName, *objectController);
+            std::vector<std::string> oldGroupHierarchy = objectTableView->getMainGroupHierarchySelected().value();
+            UpdateGroupDialog updateGroupDialog(this, oldGroupHierarchy, *objectController);
             updateGroupDialog.exec();
 
             if (updateGroupDialog.result() == QDialog::Accepted) {
-                std::vector<std::string> oldGroupHierarchy = objectTableView->getMainGroupHierarchySelected().value();
                 std::vector<std::string> newGroupHierarchy = updateGroupDialog.getUpdatedGroupHierarchy();
                 std::vector<const ObjectEntity*> updatedObjectEntities = objectController->updateObjectEntities(oldGroupHierarchy, newGroupHierarchy);
                 for (const ObjectEntity* updatedObjectEntity : updatedObjectEntities) {
