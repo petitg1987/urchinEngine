@@ -29,7 +29,7 @@ namespace urchin {
 
         auto physicsChunk = udaParser.getFirstChunk(false, PHYSICS_TAG, UdaAttribute(), objectEntityChunk);
         if (physicsChunk != nullptr) {
-            const std::string& rigidBodyId = objectEntity->getName();
+            const std::string& rigidBodyId = objectEntity->retrieveFullName();
             const Transform<float>& modelTransform = objectEntity->getModel()->getTransform();
             objectEntity->setupInteractiveBody(RigidBodyReaderWriter::load(physicsChunk, rigidBodyId, modelTransform, udaParser));
         }
