@@ -17,9 +17,9 @@ namespace urchin {
 
             void setName(std::string);
             const std::string& getName() const;
-
             void setGroupHierarchy(std::vector<std::string>);
             const std::vector<std::string>& getGroupHierarchy() const;
+            std::string retrieveFullName() const;
 
             void setModel(const std::shared_ptr<Model>&);
             Model* getModel() const;

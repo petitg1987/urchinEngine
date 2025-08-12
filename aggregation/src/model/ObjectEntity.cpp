@@ -64,6 +64,10 @@ namespace urchin {
         return groupHierarchy;
     }
 
+    std::string ObjectEntity::retrieveFullName() const {
+        return StringUtil::join(groupHierarchy, '>') + ">" + name;
+    }
+
     void ObjectEntity::setModel(const std::shared_ptr<Model>& model) {
         if (renderer3d) {
             renderer3d->removeModel(this->model.get());

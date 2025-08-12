@@ -13,7 +13,7 @@ namespace urchin {
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
         std::unique_ptr<const CollisionShape3D> bodyShape = DefaultBodyShapeGenerator(objectEntity, DefaultShapeQuality::LOW).generate(CollisionShape3D::ShapeType::BOX_SHAPE);
 
-        return std::make_unique<RigidBody>(objectEntity.getName(), physicsTransform, std::move(bodyShape)); //TODO use fullname
+        return std::make_unique<RigidBody>(objectEntity.retrieveFullName(), physicsTransform, std::move(bodyShape));
     }
 
 }

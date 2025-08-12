@@ -319,7 +319,7 @@ namespace urchin {
             return *(*it);
         }
 
-        throw std::invalid_argument("Impossible to find object entity: " + constObjectEntity.getName()); //TODO use fullname
+        throw std::invalid_argument("Impossible to find object entity: " + constObjectEntity.retrieveFullName());
     }
 
 }
