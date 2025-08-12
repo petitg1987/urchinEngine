@@ -8,9 +8,10 @@
 
 namespace urchin {
 
-    AddOrUpdateObjectDialog::AddOrUpdateObjectDialog(QWidget* parent, const ObjectController& objectController, std::string originalName) :
+    AddOrUpdateObjectDialog::AddOrUpdateObjectDialog(QWidget* parent, const ObjectController& objectController, std::string originalName, std::vector<std::string> originalGroupHierarchy) :
             QDialog(parent),
             originalName(std::move(originalName)),
+            originalGroupHierarchy(std::move(originalGroupHierarchy)),
             objectController(objectController),
             defaultLightMask(std::numeric_limits<uint8_t>::max()),
             objectNameLabel(nullptr),
@@ -122,7 +123,7 @@ namespace urchin {
             if (getObjectName().empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (getObjectName() != originalName && isObjectEntityExist()) {
+            } else if ((getObjectName() != originalName || getGroupHierarchy() != originalGroupHierarchy) && isObjectEntityExist()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name/group is duplicated");
                 hasError = true;
             }

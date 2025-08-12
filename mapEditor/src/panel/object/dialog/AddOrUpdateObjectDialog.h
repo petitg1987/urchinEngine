@@ -15,7 +15,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            AddOrUpdateObjectDialog(QWidget*, const ObjectController&, std::string);
+            AddOrUpdateObjectDialog(QWidget*, const ObjectController&, std::string, std::vector<std::string>);
 
             void setDefaultValues(const std::string&, const std::vector<std::string>&, uint8_t);
 
@@ -31,6 +31,7 @@ namespace urchin {
             bool isObjectEntityExist() const;
 
             std::string originalName;
+            std::vector<std::string> originalGroupHierarchy;
             const ObjectController& objectController;
             uint8_t defaultLightMask;
 

@@ -560,7 +560,7 @@ namespace urchin {
         } else if (!objectTableView->getAllSelectedObjectEntities().empty()) {
             defaultLightMask = objectTableView->getAllSelectedObjectEntities()[0]->getModel()->getLightMask();
         }
-        AddOrUpdateObjectDialog addObjectEntityDialog(this, *objectController, "");
+        AddOrUpdateObjectDialog addObjectEntityDialog(this, *objectController, "", {});
         addObjectEntityDialog.setDefaultValues("", defaultGroupHierarchy, defaultLightMask);
         addObjectEntityDialog.exec();
 
@@ -609,7 +609,7 @@ namespace urchin {
         if (objectTableView->hasMainObjectEntitySelected()) {
             std::string originalName = objectTableView->getMainSelectedObjectEntity()->getName();
             std::vector<std::string> originalGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
-            AddOrUpdateObjectDialog updateObjectDialog(this, *objectController, originalName);
+            AddOrUpdateObjectDialog updateObjectDialog(this, *objectController, originalName, originalGroupHierarchy);
             updateObjectDialog.setDefaultValues(originalName, originalGroupHierarchy, std::numeric_limits<uint8_t>::max());
             updateObjectDialog.exec();
 
