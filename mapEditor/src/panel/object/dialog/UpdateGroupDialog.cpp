@@ -73,13 +73,13 @@ namespace urchin {
         return groupHierarchy;
     }
 
-    void UpdateGroupDialog::done(int r) { //TODO review for validation not duplicate !
+    void UpdateGroupDialog::done(int r) {
         if (Accepted == r) {
             bool hasError = false;
 
             LabelStyleHelper::resetErrorStyle(groupResultText);
 
-            if (getUpdatedGroupHierarchy() != originalGroupHierarchy && isObjectEntityExist()) {
+            if (getUpdatedGroupHierarchy() != originalGroupHierarchy && isObjectEntitiesExist()) {
                 LabelStyleHelper::applyErrorStyle(groupResultText, "Object name/group is duplicated");
                 hasError = true;
             }
@@ -90,6 +90,18 @@ namespace urchin {
         } else {
             QDialog::done(r);
         }
+    }
+
+    bool UpdateGroupDialog::isObjectEntitiesExist() const {
+        std::map<const ObjectEntity*, std::vector<std::string>> objectEntitiesToUpdate = objectController.retrieveObjectEntitiesToUpdate(originalGroupHierarchy, getUpdatedGroupHierarchy());
+        std::list<const ObjectEntity*> objectEntities = objectController.getObjectEntities();
+
+        for (const auto& [objectEntity, newObjectEntityGroupHierarchy] : objectEntitiesToUpdate) {
+            if (std::ranges::any_of(objectEntities, [&](const auto& oe){ return oe->getName() == objectEntity->getName() && oe->getGroupHierarchy() == newObjectEntityGroupHierarchy; })) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

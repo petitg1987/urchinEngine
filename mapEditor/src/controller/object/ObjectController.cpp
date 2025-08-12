@@ -53,18 +53,19 @@ namespace urchin {
         markModified();
     }
 
-    std::vector<const ObjectEntity*> ObjectController::updateObjectEntities(const std::vector<std::string>& oldGroupHierarchy, const std::vector<std::string>& newGroupHierarchy) {
-        std::vector<const ObjectEntity*> updatedObjectEntities;
+    std::map<const ObjectEntity*, std::vector<std::string>> ObjectController::retrieveObjectEntitiesToUpdate(const std::vector<std::string>& oldGroupHierarchy,
+            const std::vector<std::string>& newGroupHierarchy) const {
+        std::map<const ObjectEntity*, std::vector<std::string>> objectEntitiesToUpdate;
 
         const std::list<std::unique_ptr<ObjectEntity>>& objectEntities = getMap().getObjectEntities();
         for (const std::unique_ptr<ObjectEntity>& objectEntity : objectEntities) {
             if (objectEntity->getGroupHierarchy().size() >= oldGroupHierarchy.size()) {
                 bool replaceGroupHierarchy = true;
                 for (std::size_t i = 0; i < oldGroupHierarchy.size(); ++i) {
-                   if (objectEntity->getGroupHierarchy()[i] != oldGroupHierarchy[i]) {
-                       replaceGroupHierarchy = false;
-                       break;
-                   }
+                    if (objectEntity->getGroupHierarchy()[i] != oldGroupHierarchy[i]) {
+                        replaceGroupHierarchy = false;
+                        break;
+                    }
                 }
 
                 if (replaceGroupHierarchy) {
@@ -72,10 +73,24 @@ namespace urchin {
                     auto nextGroupHierarchy = std::vector(objectEntity->getGroupHierarchy().begin() + oldGroupHierarchy.size(), objectEntity->getGroupHierarchy().end());
                     updatedGroupHierarchy.insert(updatedGroupHierarchy.end(), nextGroupHierarchy.begin(), nextGroupHierarchy.end());
 
-                    objectEntity->setGroupHierarchy(updatedGroupHierarchy);
-                    updatedObjectEntities.push_back(objectEntity.get());
+                    objectEntitiesToUpdate.insert({objectEntity.get(), updatedGroupHierarchy});
                 }
             }
+        }
+
+        return objectEntitiesToUpdate;
+    }
+
+    std::vector<const ObjectEntity*> ObjectController::updateObjectEntities(const std::vector<std::string>& oldGroupHierarchy, const std::vector<std::string>& newGroupHierarchy) {
+        std::map<const ObjectEntity*, std::vector<std::string>> objectEntitiesToUpdate = retrieveObjectEntitiesToUpdate(oldGroupHierarchy, newGroupHierarchy);
+
+        std::vector<const ObjectEntity*> updatedObjectEntities;
+        updatedObjectEntities.reserve(objectEntitiesToUpdate.size());
+
+        for (const auto& [constObjectEntity, newObjectEntityGroupHierarchy] : objectEntitiesToUpdate) {
+            ObjectEntity& objectEntity = findObjectEntity(*constObjectEntity);
+            objectEntity.setGroupHierarchy(newObjectEntityGroupHierarchy);
+            updatedObjectEntities.push_back(constObjectEntity);
         }
 
         markModified();
