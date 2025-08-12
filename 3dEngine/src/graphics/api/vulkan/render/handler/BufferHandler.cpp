@@ -102,6 +102,8 @@ namespace urchin {
             usageType = VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
         } else if (bufferType == UNIFORM) {
             usageType = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+        } else if (bufferType == STORAGE_BUFFER) {
+            usageType = VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
         }
 
         if (bufferKind == STATIC) {

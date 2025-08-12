@@ -12,7 +12,8 @@ namespace urchin {
             enum BufferType {
                 VERTEX,
                 INDEX,
-                UNIFORM
+                UNIFORM,
+                STORAGE_BUFFER
             };
             enum BufferKind {
                 STATIC,

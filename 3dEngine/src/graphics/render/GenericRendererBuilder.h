@@ -40,7 +40,7 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> addUniformTextureReaderArray(uint32_t, const std::vector<std::shared_ptr<TextureReader>>&);
             const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
 
-            //TODO create add methods
+            std::shared_ptr<GenericRendererBuilder> addStorageBufferData(uint32_t, std::size_t, const void*);
             const std::map<uint32_t, ShaderDataContainer>& getStorageBufferData() const;
 
             std::shared_ptr<GenericRendererBuilder> enableTransparency(const std::vector<BlendFunction>&);

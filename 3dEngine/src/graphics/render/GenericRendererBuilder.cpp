@@ -98,13 +98,13 @@ namespace urchin {
      *   - N=16 for embedded struct
      *   - N=16 for an array (important: the array elements are rounded up to 16 bytes. Therefore, an array of float (4 bytes) in C++ won't match an array of float in the shader.)
      */
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformData(uint32_t uniformBinding, std::size_t dataSize, const void* dataPtr) {
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformData(uint32_t binding, std::size_t dataSize, const void* dataPtr) {
         #ifdef URCHIN_DEBUG
-            assert(!uniformData.contains(uniformBinding));
-            assert(!uniformTextureReaders.contains(uniformBinding));
+            assert(!uniformData.contains(binding));
+            assert(!uniformTextureReaders.contains(binding));
         #endif
 
-        uniformData.insert({uniformBinding, {dataSize, dataPtr}});
+        uniformData.insert({binding, {dataSize, dataPtr}});
         return shared_from_this();
     }
 
@@ -112,28 +112,34 @@ namespace urchin {
         return uniformData;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformTextureReader(uint32_t uniformBinding, const std::shared_ptr<TextureReader>& textureReader) {
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformTextureReader(uint32_t binding, const std::shared_ptr<TextureReader>& textureReader) {
         #ifdef URCHIN_DEBUG
-            assert(!uniformData.contains(uniformBinding));
-            assert(!uniformTextureReaders.contains(uniformBinding));
+            assert(!uniformData.contains(binding));
+            assert(!uniformTextureReaders.contains(binding));
         #endif
 
-        uniformTextureReaders.insert({uniformBinding, {textureReader}});
+        uniformTextureReaders.insert({binding, {textureReader}});
         return shared_from_this();
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformTextureReaderArray(uint32_t uniformBinding, const std::vector<std::shared_ptr<TextureReader>>& textureReadersArray) {
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformTextureReaderArray(uint32_t binding, const std::vector<std::shared_ptr<TextureReader>>& textureReadersArray) {
         #ifdef URCHIN_DEBUG
-            assert(!uniformData.contains(uniformBinding));
-            assert(!uniformTextureReaders.contains(uniformBinding));
+            assert(!uniformData.contains(binding));
+            assert(!uniformTextureReaders.contains(binding));
         #endif
 
-        uniformTextureReaders.insert({uniformBinding, textureReadersArray});
+        uniformTextureReaders.insert({binding, textureReadersArray});
         return shared_from_this();
     }
 
     const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& GenericRendererBuilder::getUniformTextureReaders() const {
         return uniformTextureReaders;
+    }
+
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addStorageBufferData(uint32_t /*binding*/, std::size_t /*dataSize*/, const void* /*dataPtr*/) {
+        //TODO impl
+
+        return shared_from_this();
     }
 
     const std::map<uint32_t, ShaderDataContainer>& GenericRendererBuilder::getStorageBufferData() const {

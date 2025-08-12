@@ -130,8 +130,8 @@ namespace urchin {
     void PipelineProcessor::createStorageBuffers() {
         for (auto& [binding, shaderDataContainer] : storageBufferData) {
             std::string bufferName = getName() + " - storageBuffer" + std::to_string(binding);
-            storageBuffers.insert({binding, AlterableBufferHandler()}); //TODO review type of buffer ?
-            storageBuffers.at(binding).initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
+            storageBuffers.insert({binding, AlterableBufferHandler()});
+            storageBuffers.at(binding).initialize(bufferName, BufferHandler::STORAGE_BUFFER, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
             shaderDataContainer.markDataAsProcessed();
         }
     }
