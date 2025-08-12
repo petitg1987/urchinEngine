@@ -43,7 +43,7 @@ namespace urchin {
             const std::shared_ptr<TextureReader>& getUniformTextureReader(uint32_t, std::size_t) const;
             void updateUniformTextureReaderArray(uint32_t, std::size_t, const std::shared_ptr<TextureReader>&);
             const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(uint32_t) const;
-            //TODO create methods updateStorageBufferData()
+            void updateStorageBufferData(uint32_t, const void*);
             std::span<OffscreenRender*> getTexturesWriter() const;
 
             virtual void updatePipelineProcessorData(uint32_t);

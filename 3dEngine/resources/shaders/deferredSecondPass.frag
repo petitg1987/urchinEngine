@@ -24,7 +24,7 @@ layout(std140, set = 0, binding = 1) uniform SceneInfo {
 } sceneInfo;
 
 //lighting
-layout(std140, set = 0, binding = 2) uniform LightsData {
+layout(std140, set = 0, binding = 2) readonly buffer LightsData {
     LightInfo lightsInfo[MAX_LIGHTS];
     vec3 globalAmbient;
 } lightsData;

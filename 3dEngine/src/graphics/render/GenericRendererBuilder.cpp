@@ -102,6 +102,7 @@ namespace urchin {
         #ifdef URCHIN_DEBUG
             assert(!uniformData.contains(binding));
             assert(!uniformTextureReaders.contains(binding));
+            assert(!storageBufferData.contains(binding));
         #endif
 
         uniformData.insert({binding, {dataSize, dataPtr}});
@@ -116,6 +117,7 @@ namespace urchin {
         #ifdef URCHIN_DEBUG
             assert(!uniformData.contains(binding));
             assert(!uniformTextureReaders.contains(binding));
+            assert(!storageBufferData.contains(binding));
         #endif
 
         uniformTextureReaders.insert({binding, {textureReader}});
@@ -126,6 +128,7 @@ namespace urchin {
         #ifdef URCHIN_DEBUG
             assert(!uniformData.contains(binding));
             assert(!uniformTextureReaders.contains(binding));
+            assert(!storageBufferData.contains(binding));
         #endif
 
         uniformTextureReaders.insert({binding, textureReadersArray});
@@ -136,9 +139,14 @@ namespace urchin {
         return uniformTextureReaders;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addStorageBufferData(uint32_t /*binding*/, std::size_t /*dataSize*/, const void* /*dataPtr*/) {
-        //TODO impl
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addStorageBufferData(uint32_t binding, std::size_t dataSize, const void* dataPtr) {
+        #ifdef URCHIN_DEBUG
+            assert(!uniformData.contains(binding));
+            assert(!uniformTextureReaders.contains(binding));
+            assert(!storageBufferData.contains(binding));
+        #endif
 
+        storageBufferData.insert({binding, {dataSize, dataPtr}});
         return shared_from_this();
     }
 

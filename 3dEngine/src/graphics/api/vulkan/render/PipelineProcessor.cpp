@@ -312,57 +312,67 @@ namespace urchin {
         vkDestroyDescriptorPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), descriptorPool, nullptr);
     }
 
-    void PipelineProcessor::updateUniformData(uint32_t uniformBinding, const void* dataPtr) {
+    void PipelineProcessor::updateUniformData(uint32_t binding, const void* dataPtr) {
         #ifdef URCHIN_DEBUG
-            assert(uniformData.contains(uniformBinding));
+            assert(uniformData.contains(binding));
         #endif
 
         if (!getRenderTarget().isTestMode()) {
-            uniformData.at(uniformBinding).updateData(dataPtr);
+            uniformData.at(binding).updateData(dataPtr);
         }
     }
 
-    void PipelineProcessor::updateUniformTextureReader(uint32_t uniformBinding, const std::shared_ptr<TextureReader>& textureReader) {
+    void PipelineProcessor::updateUniformTextureReader(uint32_t binding, const std::shared_ptr<TextureReader>& textureReader) {
         if (!getRenderTarget().isTestMode()) {
-            updateUniformTextureReaderArray(uniformBinding, 0, textureReader);
+            updateUniformTextureReaderArray(binding, 0, textureReader);
         }
     }
 
-    const std::shared_ptr<TextureReader>& PipelineProcessor::getUniformTextureReader(uint32_t uniformBinding) const {
+    const std::shared_ptr<TextureReader>& PipelineProcessor::getUniformTextureReader(uint32_t binding) const {
         #ifdef URCHIN_DEBUG
-            assert(uniformTextureReaders.contains(uniformBinding));
-            assert(uniformTextureReaders.at(uniformBinding).size() == 1);
+            assert(uniformTextureReaders.contains(binding));
+            assert(uniformTextureReaders.at(binding).size() == 1);
         #endif
-        return getUniformTextureReaderArray(uniformBinding)[0];
+        return getUniformTextureReaderArray(binding)[0];
     }
 
-    const std::shared_ptr<TextureReader>& PipelineProcessor::getUniformTextureReader(uint32_t uniformBinding, std::size_t textureIndex) const {
+    const std::shared_ptr<TextureReader>& PipelineProcessor::getUniformTextureReader(uint32_t binding, std::size_t textureIndex) const {
         #ifdef URCHIN_DEBUG
-            assert(uniformTextureReaders.contains(uniformBinding));
-            assert(uniformTextureReaders.at(uniformBinding).size() > textureIndex);
+            assert(uniformTextureReaders.contains(binding));
+            assert(uniformTextureReaders.at(binding).size() > textureIndex);
         #endif
-        return getUniformTextureReaderArray(uniformBinding)[textureIndex];
+        return getUniformTextureReaderArray(binding)[textureIndex];
     }
 
-    void PipelineProcessor::updateUniformTextureReaderArray(uint32_t uniformBinding, std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
+    void PipelineProcessor::updateUniformTextureReaderArray(uint32_t binding, std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
         #ifdef URCHIN_DEBUG
-            assert(uniformTextureReaders.contains(uniformBinding));
-            assert(uniformTextureReaders.at(uniformBinding).size() > textureIndex);
+            assert(uniformTextureReaders.contains(binding));
+            assert(uniformTextureReaders.at(binding).size() > textureIndex);
         #endif
 
         if (!getRenderTarget().isTestMode()) {
             textureReader->initialize();
-            uniformTextureReaders.at(uniformBinding)[textureIndex] = textureReader;
+            uniformTextureReaders.at(binding)[textureIndex] = textureReader;
 
             std::fill(descriptorSetsDirty.begin(), descriptorSetsDirty.end(), true);
         }
     }
 
-    const std::vector<std::shared_ptr<TextureReader>>& PipelineProcessor::getUniformTextureReaderArray(uint32_t uniformBinding) const {
+    const std::vector<std::shared_ptr<TextureReader>>& PipelineProcessor::getUniformTextureReaderArray(uint32_t binding) const {
         #ifdef URCHIN_DEBUG
-            assert(uniformTextureReaders.contains(uniformBinding));
+            assert(uniformTextureReaders.contains(binding));
         #endif
-        return uniformTextureReaders.at(uniformBinding);
+        return uniformTextureReaders.at(binding);
+    }
+
+    void PipelineProcessor::updateStorageBufferData(uint32_t binding, const void* dataPtr) {
+        #ifdef URCHIN_DEBUG
+            assert(storageBufferData.contains(binding));
+        #endif
+
+        if (!getRenderTarget().isTestMode()) {
+            storageBufferData.at(binding).updateData(dataPtr);
+        }
     }
 
     std::span<OffscreenRender*> PipelineProcessor::getTexturesWriter() const {

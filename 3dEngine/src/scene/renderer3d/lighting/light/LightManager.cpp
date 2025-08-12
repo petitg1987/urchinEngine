@@ -23,9 +23,14 @@ namespace urchin {
         }
     }
 
-    void LightManager::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t lightsDataUniformBinding) const {
-        deferredSecondPassRendererBuilder
-                ->addUniformData(lightsDataUniformBinding, sizeof(LightsData), &lightsData);
+    void LightManager::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t lightsDataBinding) const {
+        if (lightsDataBinding == 2) { //TODO remove if
+            deferredSecondPassRendererBuilder
+                    ->addStorageBufferData(lightsDataBinding, sizeof(LightsData), &lightsData);
+        } else {
+            deferredSecondPassRendererBuilder
+                    ->addUniformData(lightsDataBinding, sizeof(LightsData), &lightsData);
+        }
     }
 
     OctreeManager<Light>& LightManager::getLightOctreeManager() {
@@ -124,7 +129,7 @@ namespace urchin {
         std::ranges::sort(visibleLights, std::greater());
     }
 
-    void LightManager::loadVisibleLights(GenericRenderer& deferredSecondPassRenderer, uint32_t lightsDataUniformBinding) {
+    void LightManager::loadVisibleLights(GenericRenderer& deferredSecondPassRenderer, uint32_t lightsDataBinding) {
         std::span<Light* const> lights = getVisibleLights();
 
         for (unsigned int i = 0; i < MAX_LIGHTS; ++i) {
@@ -165,7 +170,11 @@ namespace urchin {
             }
         }
 
-        deferredSecondPassRenderer.updateUniformData(lightsDataUniformBinding, &lightsData);
+        if (lightsDataBinding == 2) { //TODO remove if
+            deferredSecondPassRenderer.updateStorageBufferData(lightsDataBinding, &lightsData);
+        } else {
+            deferredSecondPassRenderer.updateUniformData(lightsDataBinding, &lightsData);
+        }
     }
 
     void LightManager::postUpdateVisibleLights() {
