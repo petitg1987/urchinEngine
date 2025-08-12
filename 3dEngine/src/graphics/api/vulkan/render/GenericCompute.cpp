@@ -7,8 +7,8 @@
 namespace urchin {
 
     GenericCompute::GenericCompute(const GenericComputeBuilder& computeBuilder) :
-            PipelineProcessor(computeBuilder.getName(), computeBuilder.getRenderTarget(), computeBuilder.getShader(),
-                              computeBuilder.getUniformData(), computeBuilder.getUniformTextureReaders(), computeBuilder.getUniformTextureOutputs()),
+            PipelineProcessor(computeBuilder.getName(), computeBuilder.getRenderTarget(), computeBuilder.getShader(), computeBuilder.getUniformData(),
+                computeBuilder.getUniformTextureReaders(), computeBuilder.getUniformTextureOutputs(), computeBuilder.getStorageBufferData()),
             isInitialized(false),
             threadLocalSize(computeBuilder.getThreadLocalSize()) {
 
@@ -30,6 +30,7 @@ namespace urchin {
         if (!getRenderTarget().isTestMode()) {
             createPipeline();
             createUniformBuffers();
+            createStorageBuffers();
             createDescriptorPool();
             createDescriptorSets();
         }
@@ -45,6 +46,7 @@ namespace urchin {
                     Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on compute: " + getName());
                 } else {
                     destroyDescriptorSetsAndPool();
+                    destroyStorageBuffers();
                     destroyUniformBuffers();
                     destroyPipeline();
                 }

@@ -87,6 +87,10 @@ namespace urchin {
         return uniformTextureOutputs;
     }
 
+    const std::map<uint32_t, ShaderDataContainer>& GenericComputeBuilder::getStorageBufferData() const {
+        return storageBufferData;
+    }
+
     std::unique_ptr<GenericCompute> GenericComputeBuilder::build() {
         auto renderer = std::make_unique<GenericCompute>(*this);
         renderTarget.addProcessor(renderer.get());

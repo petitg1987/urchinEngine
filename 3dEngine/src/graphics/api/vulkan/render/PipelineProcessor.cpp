@@ -12,7 +12,8 @@ namespace urchin {
     PipelineProcessor::PipelineProcessor(std::string name, RenderTarget& renderTarget, const Shader& shader,
                                          const std::map<uint32_t, ShaderDataContainer>& uniformData,
                                          const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders,
-                                         const std::map<uint32_t, std::shared_ptr<Texture>>& uniformTextureOutputs) :
+                                         const std::map<uint32_t, std::shared_ptr<Texture>>& uniformTextureOutputs,
+                                         const std::map<uint32_t, ShaderDataContainer>& storageBufferData) :
             name(std::move(name)),
             renderTarget(renderTarget),
             shader(shader),
@@ -21,6 +22,7 @@ namespace urchin {
             uniformData(uniformData),
             uniformTextureReaders(uniformTextureReaders),
             uniformTextureOutputs(uniformTextureOutputs),
+            storageBufferData(storageBufferData),
             descriptorPool(nullptr),
             drawCommandsDirty(false) {
 
@@ -87,7 +89,7 @@ namespace urchin {
 
     void PipelineProcessor::createPipeline() {
         assert(pipelineBuilder);
-        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders, uniformTextureOutputs);
+        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders, uniformTextureOutputs, storageBufferData);
         pipeline = pipelineBuilder->buildPipeline();
     }
 
@@ -110,10 +112,10 @@ namespace urchin {
     }
 
     void PipelineProcessor::createUniformBuffers() {
-        for (auto& [uniformBinding, shaderDataContainer] : uniformData) {
-            std::string bufferName = getName() + " - uniform" + std::to_string(uniformBinding);
-            uniformsBuffers.insert({uniformBinding, AlterableBufferHandler()});
-            uniformsBuffers.at(uniformBinding).initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
+        for (auto& [binding, shaderDataContainer] : uniformData) {
+            std::string bufferName = getName() + " - uniform" + std::to_string(binding);
+            uniformsBuffers.insert({binding, AlterableBufferHandler()});
+            uniformsBuffers.at(binding).initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
             shaderDataContainer.markDataAsProcessed();
         }
     }
@@ -125,14 +127,30 @@ namespace urchin {
         uniformsBuffers.clear();
     }
 
+    void PipelineProcessor::createStorageBuffers() {
+        for (auto& [binding, shaderDataContainer] : storageBufferData) {
+            std::string bufferName = getName() + " - storageBuffer" + std::to_string(binding);
+            storageBuffers.insert({binding, AlterableBufferHandler()}); //TODO review type of buffer ?
+            storageBuffers.at(binding).initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
+            shaderDataContainer.markDataAsProcessed();
+        }
+    }
+
+    void PipelineProcessor::destroyStorageBuffers() {
+        for (AlterableBufferHandler& storageBuffer : std::views::values(storageBuffers)) {
+            storageBuffer.cleanup();
+        }
+        storageBuffers.clear();
+    }
+
     void PipelineProcessor::createDescriptorPool() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        std::array<VkDescriptorPoolSize, 3> poolSizes{};
+        std::array<VkDescriptorPoolSize, 4> poolSizes{};
 
-        int uboDescriptorCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * (int)uniformData.size());
+        int uniformCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * (int)uniformData.size());
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        poolSizes[0].descriptorCount = (uint32_t)uboDescriptorCount;
+        poolSizes[0].descriptorCount = (uint32_t)uniformCount;
 
         int uniformTexReadersCount = 0;
         std::ranges::for_each(uniformTextureReaders, [&](auto& r){uniformTexReadersCount += (int)r.second.size();});
@@ -143,6 +161,10 @@ namespace urchin {
         int uniformTexOutputsCount = std::max(1, (int)uniformTextureOutputs.size());
         poolSizes[2].type = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
         poolSizes[2].descriptorCount = (uint32_t)uniformTexOutputsCount;
+
+        int storageBufferCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * (int)storageBufferData.size());
+        poolSizes[3].type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+        poolSizes[3].descriptorCount = (uint32_t)storageBufferCount;
 
         VkDescriptorPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -183,33 +205,33 @@ namespace urchin {
 
     void PipelineProcessor::updateDescriptorSets(std::size_t framebufferIndex) {
         descriptorWrites.clear();
-        descriptorWrites.reserve(uniformData.size() + uniformTextureReaders.size() + uniformTextureOutputs.size());
+        descriptorWrites.reserve(uniformData.size() + uniformTextureReaders.size() + uniformTextureOutputs.size() + storageBufferData.size());
 
         //uniform buffer objects
-        bufferInfos.clear();
-        bufferInfos.reserve(uniformData.size());
-        for (uint32_t uniformBinding : std::views::keys(uniformData)) {
+        uniformBufferInfos.clear();
+        uniformBufferInfos.reserve(uniformData.size());
+        for (uint32_t binding : std::views::keys(uniformData)) {
             VkDescriptorBufferInfo bufferInfo{};
-            bufferInfo.buffer = uniformsBuffers.at(uniformBinding).getBuffer(framebufferIndex);
+            bufferInfo.buffer = uniformsBuffers.at(binding).getBuffer(framebufferIndex);
             bufferInfo.offset = 0;
             bufferInfo.range = VK_WHOLE_SIZE;
-            bufferInfos.emplace_back(bufferInfo);
+            uniformBufferInfos.emplace_back(bufferInfo);
 
             VkWriteDescriptorSet uniformDescriptorWrites{};
             uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             uniformDescriptorWrites.dstSet = descriptorSets[framebufferIndex];
-            uniformDescriptorWrites.dstBinding = uniformBinding;
+            uniformDescriptorWrites.dstBinding = binding;
             uniformDescriptorWrites.dstArrayElement = 0;
             uniformDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
             uniformDescriptorWrites.descriptorCount = 1;
-            uniformDescriptorWrites.pBufferInfo = &bufferInfos.back(); //warning: bufferInfos cannot be destroyed before calling vkUpdateDescriptorSets
+            uniformDescriptorWrites.pBufferInfo = &uniformBufferInfos.back(); //warning: uniformBufferInfos cannot be destroyed before calling vkUpdateDescriptorSets
             descriptorWrites.emplace_back(uniformDescriptorWrites);
         }
 
-        //textures
+        //uniform texture readers
         imageInfosArray.clear();
         imageInfosArray.reserve(std::accumulate(uniformTextureReaders.begin(), uniformTextureReaders.end(), 0uL, [](std::size_t sum, const auto& utr) { return sum + utr.second.size(); }));
-        for (const auto& [uniformBiding, uniformTextureReaderArray] : uniformTextureReaders) {
+        for (const auto& [binding, uniformTextureReaderArray] : uniformTextureReaders) {
             std::size_t startIndex = imageInfosArray.size();
 
             for (const std::shared_ptr<TextureReader>& uniformTextureReader : uniformTextureReaderArray) {
@@ -229,7 +251,7 @@ namespace urchin {
             VkWriteDescriptorSet textureDescriptorWrites{};
             textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             textureDescriptorWrites.dstSet = descriptorSets[framebufferIndex];
-            textureDescriptorWrites.dstBinding = uniformBiding;
+            textureDescriptorWrites.dstBinding = binding;
             textureDescriptorWrites.dstArrayElement = 0;
             textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             textureDescriptorWrites.descriptorCount = (uint32_t)uniformTextureReaderArray.size();
@@ -237,10 +259,10 @@ namespace urchin {
             descriptorWrites.emplace_back(textureDescriptorWrites);
         }
 
-        //texture outputs
+        //uniform texture outputs
         imageOutputInfosArray.clear();
         imageOutputInfosArray.reserve(uniformTextureOutputs.size());
-        for (const auto& [uniformBinding, uniformTextureOutput] : uniformTextureOutputs) {
+        for (const auto& [binding, uniformTextureOutput] : uniformTextureOutputs) {
             std::size_t startIndex = imageOutputInfosArray.size();
 
             VkDescriptorImageInfo imageInfo{};
@@ -252,12 +274,33 @@ namespace urchin {
             VkWriteDescriptorSet textureDescriptorWrites{};
             textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             textureDescriptorWrites.dstSet = descriptorSets[framebufferIndex];
-            textureDescriptorWrites.dstBinding = uniformBinding;
+            textureDescriptorWrites.dstBinding = binding;
             textureDescriptorWrites.dstArrayElement = 0;
             textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
             textureDescriptorWrites.descriptorCount = (uint32_t)1;
             textureDescriptorWrites.pImageInfo = &imageOutputInfosArray[startIndex]; //warning: imageOutputInfosArray cannot be destroyed before calling vkUpdateDescriptorSets
             descriptorWrites.emplace_back(textureDescriptorWrites);
+        }
+
+        //storage buffer objects
+        storageBufferInfos.clear();
+        storageBufferInfos.reserve(storageBufferData.size());
+        for (uint32_t binding : std::views::keys(storageBufferData)) {
+            VkDescriptorBufferInfo bufferInfo{};
+            bufferInfo.buffer = storageBuffers.at(binding).getBuffer(framebufferIndex);
+            bufferInfo.offset = 0;
+            bufferInfo.range = VK_WHOLE_SIZE;
+            storageBufferInfos.emplace_back(bufferInfo);
+
+            VkWriteDescriptorSet uniformDescriptorWrites{};
+            uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            uniformDescriptorWrites.dstSet = descriptorSets[framebufferIndex];
+            uniformDescriptorWrites.dstBinding = binding;
+            uniformDescriptorWrites.dstArrayElement = 0;
+            uniformDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+            uniformDescriptorWrites.descriptorCount = 1;
+            uniformDescriptorWrites.pBufferInfo = &storageBufferInfos.back(); //warning: storageBufferInfos cannot be destroyed before calling vkUpdateDescriptorSets
+            descriptorWrites.emplace_back(uniformDescriptorWrites);
         }
 
         vkUpdateDescriptorSets(GraphicsSetupService::instance().getDevices().getLogicalDevice(), (uint32_t)(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
@@ -339,9 +382,19 @@ namespace urchin {
 
     void PipelineProcessor::updatePipelineProcessorData(uint32_t framebufferIndex) {
         //update shader uniforms
-        for (auto& [uniformBinding, dataContainer] : uniformData) {
+        for (auto& [binding, dataContainer] : uniformData) {
             if (dataContainer.hasNewData(framebufferIndex)) {
-                if (uniformsBuffers.at(uniformBinding).updateData(framebufferIndex, dataContainer.getDataSize(), dataContainer.getData())) {
+                if (uniformsBuffers.at(binding).updateData(framebufferIndex, dataContainer.getDataSize(), dataContainer.getData())) {
+                    markDrawCommandsDirty();
+                }
+                dataContainer.markDataAsProcessed(framebufferIndex);
+            }
+        }
+
+        //update shader storage
+        for (auto& [binding, dataContainer] : storageBufferData) {
+            if (dataContainer.hasNewData(framebufferIndex)) {
+                if (storageBuffers.at(binding).updateData(framebufferIndex, dataContainer.getDataSize(), dataContainer.getData())) {
                     markDrawCommandsDirty();
                 }
                 dataContainer.markDataAsProcessed(framebufferIndex);

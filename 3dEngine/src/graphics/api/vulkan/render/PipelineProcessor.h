@@ -16,7 +16,8 @@ namespace urchin {
             PipelineProcessor(std::string, RenderTarget&, const Shader&,
                               const std::map<uint32_t, ShaderDataContainer>&,
                               const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>&,
-                              const std::map<uint32_t, std::shared_ptr<Texture>>&);
+                              const std::map<uint32_t, std::shared_ptr<Texture>>&,
+                              const std::map<uint32_t, ShaderDataContainer>&);
             virtual ~PipelineProcessor();
 
             const std::string& getName() const;
@@ -42,6 +43,7 @@ namespace urchin {
             const std::shared_ptr<TextureReader>& getUniformTextureReader(uint32_t, std::size_t) const;
             void updateUniformTextureReaderArray(uint32_t, std::size_t, const std::shared_ptr<TextureReader>&);
             const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(uint32_t) const;
+            //TODO create methods updateStorageBufferData()
             std::span<OffscreenRender*> getTexturesWriter() const;
 
             virtual void updatePipelineProcessorData(uint32_t);
@@ -57,6 +59,8 @@ namespace urchin {
 
             void createUniformBuffers();
             void destroyUniformBuffers();
+            void createStorageBuffers();
+            void destroyStorageBuffers();
             void createDescriptorPool();
             void createDescriptorSets();
             void updateDescriptorSets();
@@ -81,15 +85,18 @@ namespace urchin {
             std::map<uint32_t, ShaderDataContainer> uniformData;
             std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             std::map<uint32_t, std::shared_ptr<Texture>> uniformTextureOutputs;
+            std::map<uint32_t, ShaderDataContainer> storageBufferData;
             mutable std::vector<OffscreenRender*> texturesWriter;
 
             VkDescriptorPool descriptorPool;
             std::vector<VkDescriptorSet> descriptorSets;
             std::map<uint32_t, AlterableBufferHandler> uniformsBuffers;
+            std::map<uint32_t, AlterableBufferHandler> storageBuffers;
             std::vector<VkWriteDescriptorSet> descriptorWrites;
-            std::vector<VkDescriptorBufferInfo> bufferInfos;
+            std::vector<VkDescriptorBufferInfo> uniformBufferInfos;
             std::vector<VkDescriptorImageInfo> imageInfosArray;
             std::vector<VkDescriptorImageInfo> imageOutputInfosArray;
+            std::vector<VkDescriptorBufferInfo> storageBufferInfos;
 
             std::vector<bool> descriptorSetsDirty;
             bool drawCommandsDirty;

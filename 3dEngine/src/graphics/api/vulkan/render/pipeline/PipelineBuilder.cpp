@@ -21,6 +21,7 @@ namespace urchin {
             uniformData(nullptr),
             uniformTextureReaders(nullptr),
             uniformTextureOutputs(nullptr),
+            storageBufferData(nullptr),
             depthTestEnabled(false),
             depthWriteEnabled(false),
             cullFaceEnabled(true),
@@ -78,10 +79,11 @@ namespace urchin {
     }
 
     void PipelineBuilder::setupUniform(const std::map<uint32_t, ShaderDataContainer>& uniformData, const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders,
-                                       const std::map<uint32_t, std::shared_ptr<Texture>>& uniformTextureOutputs) {
+                                       const std::map<uint32_t, std::shared_ptr<Texture>>& uniformTextureOutputs, const std::map<uint32_t, ShaderDataContainer>& storageBufferData) {
         this->uniformData = &uniformData;
         this->uniformTextureReaders = &uniformTextureReaders;
         this->uniformTextureOutputs = &uniformTextureOutputs;
+        this->storageBufferData = &storageBufferData;
     }
 
     std::shared_ptr<Pipeline> PipelineBuilder::buildPipeline() {
@@ -116,6 +118,8 @@ namespace urchin {
             throw std::runtime_error("Uniform texture readers not setup on pipeline");
         } else if (!uniformTextureOutputs) {
             throw std::runtime_error("Uniform texture outputs not setup on pipeline");
+        } else if (!storageBufferData) {
+            throw std::runtime_error("Storage buffer data not setup on pipeline");
         }
 
         if (pipelineType == GRAPHICS) {
@@ -170,9 +174,9 @@ namespace urchin {
             stageFlags = VK_SHADER_STAGE_COMPUTE_BIT;
         }
 
-        for (uint32_t uniformBinding : std::views::keys(*uniformData)) {
+        for (uint32_t binding : std::views::keys(*uniformData)) {
             VkDescriptorSetLayoutBinding uboLayoutBinding{};
-            uboLayoutBinding.binding = uniformBinding;
+            uboLayoutBinding.binding = binding;
             uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
             uboLayoutBinding.descriptorCount = 1;
             uboLayoutBinding.stageFlags = stageFlags;
@@ -180,9 +184,9 @@ namespace urchin {
             bindings.emplace_back(uboLayoutBinding);
         }
 
-        for (const auto& [uniformBinding, uniformTextureReader] : *uniformTextureReaders) {
+        for (const auto& [binding, uniformTextureReader] : *uniformTextureReaders) {
             VkDescriptorSetLayoutBinding samplerLayoutBinding{};
-            samplerLayoutBinding.binding = uniformBinding;
+            samplerLayoutBinding.binding = binding;
             samplerLayoutBinding.descriptorCount = (uint32_t)uniformTextureReader.size();
             samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             samplerLayoutBinding.pImmutableSamplers = nullptr;
@@ -190,14 +194,24 @@ namespace urchin {
             bindings.emplace_back(samplerLayoutBinding);
         }
 
-        for (uint32_t uniformBinding : std::views::keys(*uniformTextureOutputs)) {
+        for (uint32_t binding : std::views::keys(*uniformTextureOutputs)) {
             VkDescriptorSetLayoutBinding samplerLayoutBinding{};
-            samplerLayoutBinding.binding = uniformBinding;
+            samplerLayoutBinding.binding = binding;
             samplerLayoutBinding.descriptorCount = (uint32_t)1;
             samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
             samplerLayoutBinding.pImmutableSamplers = nullptr;
             samplerLayoutBinding.stageFlags = stageFlags;
             bindings.emplace_back(samplerLayoutBinding);
+        }
+
+        for (uint32_t binding : std::views::keys(*storageBufferData)) {
+            VkDescriptorSetLayoutBinding uboLayoutBinding{};
+            uboLayoutBinding.binding = binding;
+            uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+            uboLayoutBinding.descriptorCount = 1;
+            uboLayoutBinding.stageFlags = stageFlags;
+            uboLayoutBinding.pImmutableSamplers = nullptr;
+            bindings.emplace_back(uboLayoutBinding);
         }
 
         VkDescriptorSetLayoutCreateInfo layoutInfo{};

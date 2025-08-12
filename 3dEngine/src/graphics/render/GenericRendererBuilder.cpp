@@ -136,6 +136,10 @@ namespace urchin {
         return uniformTextureReaders;
     }
 
+    const std::map<uint32_t, ShaderDataContainer>& GenericRendererBuilder::getStorageBufferData() const {
+        return storageBufferData;
+    }
+
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableTransparency(const std::vector<BlendFunction>& blendFunctions) {
         assert(!blendFunctions.empty());
         this->blendFunctions = blendFunctions;

@@ -11,8 +11,8 @@
 namespace urchin {
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder& rendererBuilder) :
-            PipelineProcessor(rendererBuilder.getName(), rendererBuilder.getRenderTarget(), rendererBuilder.getShader(),
-                              rendererBuilder.getUniformData(), rendererBuilder.getUniformTextureReaders(), {}),
+            PipelineProcessor(rendererBuilder.getName(), rendererBuilder.getRenderTarget(), rendererBuilder.getShader(), rendererBuilder.getUniformData(),
+                rendererBuilder.getUniformTextureReaders(), {}, rendererBuilder.getStorageBufferData()),
             isInitialized(false),
             data(rendererBuilder.getData()),
             instanceData(rendererBuilder.getInstanceData()),
@@ -49,6 +49,7 @@ namespace urchin {
             createDataBuffers();
             createIndexBuffer();
             createUniformBuffers();
+            createStorageBuffers();
             createDescriptorPool();
             createDescriptorSets();
             if (!customScissor) {
@@ -67,6 +68,7 @@ namespace urchin {
                     Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
                 } else {
                     destroyDescriptorSetsAndPool();
+                    destroyStorageBuffers();
                     destroyUniformBuffers();
                     destroyIndexBuffer();
                     destroyDataBuffers();

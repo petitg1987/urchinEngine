@@ -40,6 +40,9 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> addUniformTextureReaderArray(uint32_t, const std::vector<std::shared_ptr<TextureReader>>&);
             const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
 
+            //TODO create add methods
+            const std::map<uint32_t, ShaderDataContainer>& getStorageBufferData() const;
+
             std::shared_ptr<GenericRendererBuilder> enableTransparency(const std::vector<BlendFunction>&);
             const std::vector<BlendFunction>& getBlendFunctions() const;
 
@@ -76,6 +79,7 @@ namespace urchin {
             std::shared_ptr<IndexContainer> mIndices;
             std::map<uint32_t, ShaderDataContainer> uniformData;
             std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
+            std::map<uint32_t, ShaderDataContainer> storageBufferData;
             std::vector<BlendFunction> blendFunctions;
             bool customScissor;
             Vector2<int> scissorOffset;

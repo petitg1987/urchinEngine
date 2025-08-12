@@ -28,7 +28,7 @@ namespace urchin {
             void setupLayerIndexDataInShader(bool);
             void setupData(const std::vector<DataContainer>&, const DataContainer*);
             void setupUniform(const std::map<uint32_t, ShaderDataContainer>&, const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>&,
-                    const std::map<uint32_t, std::shared_ptr<Texture>>&);
+                    const std::map<uint32_t, std::shared_ptr<Texture>>&, const std::map<uint32_t, ShaderDataContainer>&);
 
             std::shared_ptr<Pipeline> buildPipeline();
 
@@ -56,6 +56,7 @@ namespace urchin {
             const std::map<uint32_t, ShaderDataContainer>* uniformData;
             const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>* uniformTextureReaders;
             const std::map<uint32_t, std::shared_ptr<Texture>>* uniformTextureOutputs;
+            const std::map<uint32_t, ShaderDataContainer>* storageBufferData;
 
             std::vector<BlendFunction> blendFunctions;
             bool depthTestEnabled;
