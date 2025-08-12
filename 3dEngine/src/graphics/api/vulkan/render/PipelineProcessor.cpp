@@ -401,7 +401,7 @@ namespace urchin {
             }
         }
 
-        //update shader storage
+        //update shader storage buffers
         for (auto& [binding, dataContainer] : storageBufferData) {
             if (dataContainer.hasNewData(framebufferIndex)) {
                 if (storageBuffers.at(binding).updateData(framebufferIndex, dataContainer.getDataSize(), dataContainer.getData())) {

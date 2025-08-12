@@ -26,7 +26,7 @@ namespace urchin {
             std::shared_ptr<GenericComputeBuilder> addUniformTextureOutput(uint32_t, const std::shared_ptr<Texture>&);
             const std::map<uint32_t, std::shared_ptr<Texture>>& getUniformTextureOutputs() const;
 
-            //TODO create add methods
+            std::shared_ptr<GenericComputeBuilder> addStorageBufferData(uint32_t, std::size_t, const void*);
             const std::map<uint32_t, ShaderDataContainer>& getStorageBufferData() const;
 
             std::unique_ptr<GenericCompute> build();

@@ -42,14 +42,15 @@ namespace urchin {
      *   - N=16 for embedded struct
      *   - N=16 for an array (important: the array elements are rounded up to 16 bytes. Therefore, an array of float (4 bytes) in C++ won't match an array of float in the shader.)
      */
-    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformData(uint32_t uniformBinding, std::size_t dataSize, const void* dataPtr) {
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformData(uint32_t binding, std::size_t dataSize, const void* dataPtr) {
         #ifdef URCHIN_DEBUG
-            assert(!uniformData.contains(uniformBinding));
-            assert(!uniformTextureReaders.contains(uniformBinding));
-            assert(!uniformTextureOutputs.contains(uniformBinding));
+            assert(!uniformData.contains(binding));
+            assert(!uniformTextureReaders.contains(binding));
+            assert(!uniformTextureOutputs.contains(binding));
+            assert(!storageBufferData.contains(binding));
         #endif
 
-        uniformData.insert({uniformBinding, {dataSize, dataPtr}});
+        uniformData.insert({binding, {dataSize, dataPtr}});
         return shared_from_this();
     }
 
@@ -57,14 +58,15 @@ namespace urchin {
         return uniformData;
     }
 
-    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureReader(uint32_t uniformBinding, const std::shared_ptr<TextureReader>& textureReader) {
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureReader(uint32_t binding, const std::shared_ptr<TextureReader>& textureReader) {
         #ifdef URCHIN_DEBUG
-            assert(!uniformData.contains(uniformBinding));
-            assert(!uniformTextureReaders.contains(uniformBinding));
-            assert(!uniformTextureOutputs.contains(uniformBinding));
+            assert(!uniformData.contains(binding));
+            assert(!uniformTextureReaders.contains(binding));
+            assert(!uniformTextureOutputs.contains(binding));
+            assert(!storageBufferData.contains(binding));
         #endif
 
-        uniformTextureReaders.insert({uniformBinding, {textureReader}});
+        uniformTextureReaders.insert({binding, {textureReader}});
         return shared_from_this();
     }
 
@@ -72,19 +74,32 @@ namespace urchin {
         return uniformTextureReaders;
     }
 
-    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureOutput(uint32_t uniformBinding, const std::shared_ptr<Texture>& textureOutput) {
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureOutput(uint32_t binding, const std::shared_ptr<Texture>& textureOutput) {
         #ifdef URCHIN_DEBUG
-            assert(!uniformData.contains(uniformBinding));
-            assert(!uniformTextureReaders.contains(uniformBinding));
-            assert(!uniformTextureOutputs.contains(uniformBinding));
+            assert(!uniformData.contains(binding));
+            assert(!uniformTextureReaders.contains(binding));
+            assert(!uniformTextureOutputs.contains(binding));
+            assert(!storageBufferData.contains(binding));
         #endif
 
-        uniformTextureOutputs.insert({uniformBinding, textureOutput});
+        uniformTextureOutputs.insert({binding, textureOutput});
         return shared_from_this();
     }
 
     const std::map<uint32_t, std::shared_ptr<Texture>>& GenericComputeBuilder::getUniformTextureOutputs() const {
         return uniformTextureOutputs;
+    }
+
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addStorageBufferData(uint32_t binding, std::size_t dataSize, const void* dataPtr) {
+        #ifdef URCHIN_DEBUG
+            assert(!uniformData.contains(binding));
+            assert(!uniformTextureReaders.contains(binding));
+            assert(!uniformTextureOutputs.contains(binding));
+            assert(!storageBufferData.contains(binding));
+        #endif
+
+        storageBufferData.insert({binding, {dataSize, dataPtr}});
+        return shared_from_this();
     }
 
     const std::map<uint32_t, ShaderDataContainer>& GenericComputeBuilder::getStorageBufferData() const {
