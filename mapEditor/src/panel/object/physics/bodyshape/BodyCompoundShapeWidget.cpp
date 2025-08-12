@@ -273,6 +273,7 @@ namespace urchin {
     void BodyCompoundShapeWidget::boxifySelectedLocalizedShape() {
         const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
         auto* convexHullShape = static_cast<const CollisionConvexHullShape*>(localizedShape->shape.get());
+
         Point3 min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point3 max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
         for (const Point3<float>& vertex : convexHullShape->getPoints()) {
@@ -284,12 +285,13 @@ namespace urchin {
             max.Y = std::max(max.Y, vertex.Y);
             max.Z = std::max(max.Z, vertex.Z);
         }
+
         Point3<float> centerPoint = (min + max) / 2.0f;
-        auto newShape = std::make_unique<CollisionBoxShape>(min.vector(centerPoint));
+        auto boxShape = std::make_unique<CollisionBoxShape>(min.vector(centerPoint));
 
         auto newLocalizedShape = std::make_shared<LocalizedCollisionShape>();
         newLocalizedShape->shapeIndex = retrieveNextShapeIndex();
-        newLocalizedShape->shape = std::move(newShape);
+        newLocalizedShape->shape = std::move(boxShape);
         newLocalizedShape->transform = PhysicsTransform(localizedShape->transform.getPosition() + centerPoint, localizedShape->transform.getOrientation());
 
         localizedShapeTableView->removeSelectedLocalizedShape();
