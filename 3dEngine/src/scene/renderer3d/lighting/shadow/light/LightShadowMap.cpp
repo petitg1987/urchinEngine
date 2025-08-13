@@ -27,7 +27,7 @@ namespace urchin {
             lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(i, this));
         }
 
-        if (!isTestMode) { //TODO avoid renderTarget / shadowModelSetDisplayer for each light !
+        if (!isTestMode) {
             renderTarget = std::make_unique<OffscreenRender>("shadow map - " + light.getLightTypeName(), false, RenderTarget::SHARED_DEPTH_ATTACHMENT);
             renderTarget->setOutputSize(shadowMapResolution, shadowMapResolution, nbSplitShadowMaps, true);
             renderTarget->initialize();
