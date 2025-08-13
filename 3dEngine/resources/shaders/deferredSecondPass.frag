@@ -34,15 +34,13 @@ layout(std430, set = 0, binding = 2) readonly buffer LightsData {
 layout(std140, set = 0, binding = 3) uniform ShadowLight {
     mat4 mLightProjectionView[MAX_LIGHTS_WITH_SHADOW * MAX_SPLIT_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
-layout(std140, set = 0, binding = 4) uniform ShadowMapData {
+layout(std140, set = 0, binding = 4) uniform ShadowInfo {
     vec4 splitData[MAX_SPLIT_SHADOW_MAPS];
-} shadowMapData;
-layout(std140, set = 0, binding = 5) uniform ShadowMapInfo {
     int offsetSampleCount;
-} shadowMapInfo;
+} shadowInfo;
 
 //fog
-layout(std140, set = 0, binding = 6) uniform Fog {
+layout(std140, set = 0, binding = 5) uniform Fog {
     bool hasFog;
     float density;
     float gradient;
@@ -51,13 +49,13 @@ layout(std140, set = 0, binding = 6) uniform Fog {
 } fog;
 
 //deferred textures
-layout(binding = 7) uniform sampler2D depthTex; //depth (32 bits)
-layout(binding = 8) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 bits) + emissive factor (8 bits)
-layout(binding = 9) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
-layout(binding = 10) uniform usampler2D materialAndMaskTex; //roughness (8 bits) + metalness (8 bits) + light mask (8 bits)
-layout(binding = 11) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
-layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_LIGHTS_WITH_SHADOW]; //shadow maps for each lights (32 bits * nbSplit * nbLight)
-layout(binding = 13) uniform sampler2DArray shadowMapOffsetTex; //shadow maps offset (32 bits)
+layout(binding = 6) uniform sampler2D depthTex; //depth (32 bits)
+layout(binding = 7) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 bits) + emissive factor (8 bits)
+layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
+layout(binding = 9) uniform usampler2D materialAndMaskTex; //roughness (8 bits) + metalness (8 bits) + light mask (8 bits)
+layout(binding = 10) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
+layout(binding = 11) uniform sampler2DArray shadowMapTex[MAX_LIGHTS_WITH_SHADOW]; //shadow maps for each lights (32 bits * nbSplit * nbLight)
+layout(binding = 12) uniform sampler2DArray shadowMapOffsetTex; //shadow maps offset (32 bits)
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -96,7 +94,7 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
 
     const float SOFT_EDGE_LENGTH = 2.5f;
     float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[shadowLightIndex], 0));
-    int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
+    int testPointsQuantity = min(5, shadowInfo.offsetSampleCount);
     vec2 sceneSize = textureSize(depthTex, 0);
     ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
 
@@ -113,7 +111,7 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
     }
 
     if (testPointsInShadow != 0 && testPointsInShadow != testPointsQuantity) {
-        for (; offsetSampleIndex < shadowMapInfo.offsetSampleCount; ++offsetSampleIndex) {
+        for (; offsetSampleIndex < shadowInfo.offsetSampleCount; ++offsetSampleIndex) {
             vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, offsetSampleIndex), 0).xy * SOFT_EDGE_LENGTH * shadowMapInvSize;
             float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
             float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
@@ -136,8 +134,8 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
 
 float computeSunShadowQuantity(int shadowLightIndex, vec4 worldPosition, float NdotL) {
     for (int splitShadowMapIndex = 0; splitShadowMapIndex < MAX_SPLIT_SHADOW_MAPS; ++splitShadowMapIndex) {
-        float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[splitShadowMapIndex].xyz);
-        float frustumRadius = shadowMapData.splitData[splitShadowMapIndex].w;
+        float frustumCenterDist = distance(vec3(worldPosition), shadowInfo.splitData[splitShadowMapIndex].xyz);
+        float frustumRadius = shadowInfo.splitData[splitShadowMapIndex].w;
         if (frustumCenterDist < frustumRadius) {
             return computeShadowQuantity(shadowLightIndex, splitShadowMapIndex, worldPosition, NdotL, 1.0f);
         }
@@ -245,13 +243,8 @@ void main() {
 
         fragColor.rgb += albedo * emissiveFactor; //add emissive lighting
 
-        for (int lightIndex = 0, shadowLightIndex = -1; lightIndex < lightsData.lightsCount; ++lightIndex) {
+        for (int lightIndex = 0; lightIndex < lightsData.lightsCount; ++lightIndex) {
             LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
-
-            bool hasShadow = sceneInfo.hasShadow && lightInfo.hasShadow;
-            if (hasShadow) {
-                shadowLightIndex++;
-            }
 
             if ((lightInfo.lightMask & meshLightMask) == 0) {
                 continue; //no lighting on this mesh
@@ -279,15 +272,15 @@ void main() {
 
             //shadow
             float shadowAttenuation = 1.0; //1.0 = no shadow
-            if (hasShadow) {
+            if (sceneInfo.hasShadow && lightInfo.hasShadow) {
                 float shadowQuantity = 0.0f;
                 if (lightInfo.lightType == 0) { //sun
-                    shadowQuantity = computeSunShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL);
+                    shadowQuantity = computeSunShadowQuantity(lightInfo.shadowLightIndex, worldPosition, lightValues.NdotL);
                 } else if (lightInfo.lightType == 1) { //omnidirectional
                     vec3 lightPosition = lightInfo.position;
-                    shadowQuantity = computeOmnidirectionalShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL, lightPosition);
+                    shadowQuantity = computeOmnidirectionalShadowQuantity(lightInfo.shadowLightIndex, worldPosition, lightValues.NdotL, lightPosition);
                 } else if (lightInfo.lightType == 2) { //spot
-                    shadowQuantity = computeSpotShadowQuantity(shadowLightIndex, worldPosition, lightValues.NdotL);
+                    shadowQuantity = computeSpotShadowQuantity(lightInfo.shadowLightIndex, worldPosition, lightValues.NdotL);
                 }
                 shadowAttenuation = 1.0 - (shadowQuantity * lightInfo.shadowStrength);
             }
@@ -311,8 +304,8 @@ void main() {
         vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));
     for (int i = 0; i < MAX_SPLIT_SHADOW_MAPS; ++i) {
-        float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
-        float frustumRadius = shadowMapData.splitData[i].w;
+        float frustumCenterDist = distance(vec3(worldPosition), shadowInfo.splitData[i].xyz);
+        float frustumRadius = shadowInfo.splitData[i].w;
         if (frustumCenterDist < frustumRadius) {
             fragColor += splitColors[i % 5];
             break;

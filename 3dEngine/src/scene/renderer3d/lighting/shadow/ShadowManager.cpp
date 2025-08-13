@@ -15,9 +15,8 @@ namespace urchin {
     ShadowManager::ShadowManager(const Config& config, LightManager& lightManager, ModelOcclusionCuller& modelOcclusionCuller) :
             config(config),
             modelOcclusionCuller(modelOcclusionCuller),
-            splitData({}),
-            shadowMapInfo({}) {
-        std::memset(&shadowMapInfo, 0, sizeof(shadowMapInfo));
+            shadowInfo({}) {
+        std::memset((void*)&shadowInfo, 0, sizeof(shadowInfo));
 
         checkConfig();
 
@@ -29,16 +28,16 @@ namespace urchin {
     }
 
     void ShadowManager::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t projViewMatricesUniformBinding,
-                                              uint32_t shadowMapDataUniformBinding, uint32_t shadowMapInfoUniformBinding) {
+            uint32_t shadowMapInfoUniformBinding) {
         std::size_t maxMatricesLightProjectionViewSize = (std::size_t)(getMaxLightsWithShadow()) * getMaxSplitShadowMaps();
         lightProjectionViewMatrices.resize(maxMatricesLightProjectionViewSize, Matrix4<float>{});
 
-        shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
+        shadowInfo.splitData = {};
+        shadowInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
 
         deferredSecondPassRendererBuilder
                 ->addUniformData(projViewMatricesUniformBinding, maxMatricesLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
-                ->addUniformData(shadowMapDataUniformBinding, sizeof(splitData), splitData.data())
-                ->addUniformData(shadowMapInfoUniformBinding, sizeof(shadowMapInfo), &shadowMapInfo);
+                ->addUniformData(shadowMapInfoUniformBinding, sizeof(shadowInfo), &shadowInfo);
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera&) const {
@@ -296,8 +295,8 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(GenericRenderer& deferredSecondPassRenderer, uint32_t viewProjMatricesUniformBinding, uint32_t shadowMapDataUniformBinding,
-                                       uint32_t shadowMapInfoUniformBinding, uint32_t texUniformBinding, uint32_t offsetTexUniformBinding) {
+    void ShadowManager::loadShadowMaps(GenericRenderer& deferredSecondPassRenderer, uint32_t viewProjMatricesUniformBinding, uint32_t shadowMapInfoUniformBinding,
+            uint32_t texUniformBinding, uint32_t offsetTexUniformBinding) {
         //shadow map texture
         std::size_t shadowLightIndex = 0;
         for (const Light* lightWithShadow : visibleLightsWithShadow) {
@@ -336,12 +335,10 @@ namespace urchin {
         deferredSecondPassRenderer.updateUniformData(viewProjMatricesUniformBinding, lightProjectionViewMatrices.data());
 
         for (std::size_t splitShadowMapIndex = 0; splitShadowMapIndex < (std::size_t)config.nbSunSplitShadowMaps; ++splitShadowMapIndex) {
-            splitData[splitShadowMapIndex] = Point4(splitFrustums[splitShadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[splitShadowMapIndex].getBoundingSphere().getRadius());
+            shadowInfo.splitData[splitShadowMapIndex] = Point4(splitFrustums[splitShadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[splitShadowMapIndex].getBoundingSphere().getRadius());
         }
-        deferredSecondPassRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
-
-        shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
-        deferredSecondPassRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);
+        shadowInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
+        deferredSecondPassRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowInfo);
 
         //shadow map offset texture
         if (deferredSecondPassRenderer.getUniformTextureReader(offsetTexUniformBinding)->getTexture() != shadowMapOffsetTexture.get()) {

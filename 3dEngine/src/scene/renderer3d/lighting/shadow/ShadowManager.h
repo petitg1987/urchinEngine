@@ -48,7 +48,7 @@ namespace urchin {
             ShadowManager(const Config&, LightManager&, ModelOcclusionCuller&);
             ~ShadowManager() override = default;
 
-            void setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t, uint32_t);
+            void setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t);
             void onCameraProjectionUpdate(const Camera&) const;
             void notify(Observable*, int) override;
 
@@ -68,7 +68,7 @@ namespace urchin {
             void updateVisibleLightsAndModels(const Frustum<float>&, const Point3<float>&, std::span<Light* const>);
             const std::vector<Light*>& getVisibleLightsWithShadow() const;
             void updateShadowMaps(uint32_t, unsigned int) const;
-            void loadShadowMaps(GenericRenderer&, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t);
+            void loadShadowMaps(GenericRenderer&, uint32_t, uint32_t, uint32_t, uint32_t);
 
         private:
             //global shadow handling
@@ -97,11 +97,11 @@ namespace urchin {
             std::map<const Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
             std::vector<Light*> visibleLightsWithShadow;
-            std::array<Point4<float>, (std::size_t)MAX_SPLIT_SHADOW_MAPS> splitData;
             std::shared_ptr<Texture> shadowMapOffsetTexture;
             struct {
+                alignas(16) std::array<Point4<float>, (std::size_t)MAX_SPLIT_SHADOW_MAPS> splitData;
                 alignas(4) int offsetSampleCount;
-            } shadowMapInfo;
+            } shadowInfo;
 
             //shadow lights information
             std::vector<Matrix4<float>> lightProjectionViewMatrices;

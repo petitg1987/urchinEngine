@@ -3,6 +3,7 @@ struct LightInfo {
     uint lightMask;
     bool isPbrEnabled;
     bool hasShadow;
+    int shadowLightIndex;
     float shadowStrength;
     vec3 lightColor;
     vec3 direction;

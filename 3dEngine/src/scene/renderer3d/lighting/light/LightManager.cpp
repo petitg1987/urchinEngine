@@ -118,11 +118,13 @@ namespace urchin {
         std::size_t lightIndex = 0;
         for (Light* const light : lights) {
             LightInfo& lightInfo = lightsData.lightsInfo[lightIndex++];
+            auto itVisibleLightsWithShadow = std::ranges::find(visibleLightsWithShadow, light);
 
             lightInfo.lightType = (int)light->getLightType();
             lightInfo.lightMask = light->getLightMask();
             lightInfo.isPbrEnabled = light->isPbrEnabled();
-            lightInfo.hasShadow = std::ranges::find(visibleLightsWithShadow, light) != visibleLightsWithShadow.end();
+            lightInfo.hasShadow = itVisibleLightsWithShadow != visibleLightsWithShadow.end();
+            lightInfo.shadowLightIndex = lightInfo.hasShadow ? (int)std::distance(visibleLightsWithShadow.begin(), itVisibleLightsWithShadow) : -1; //TODO rename ?
             lightInfo.shadowStrength = light->getShadowStrength();
             lightInfo.lightColor = light->getLightColor();
 
