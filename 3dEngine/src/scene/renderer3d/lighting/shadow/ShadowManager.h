@@ -89,7 +89,6 @@ namespace urchin {
             Config config;
 
             //scene information
-            LightManager& lightManager;
             ModelOcclusionCuller& modelOcclusionCuller;
 
             //shadow information

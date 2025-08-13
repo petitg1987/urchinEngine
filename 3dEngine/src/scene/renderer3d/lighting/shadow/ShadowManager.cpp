@@ -14,7 +14,6 @@ namespace urchin {
 
     ShadowManager::ShadowManager(const Config& config, LightManager& lightManager, ModelOcclusionCuller& modelOcclusionCuller) :
             config(config),
-            lightManager(lightManager), //TODO can be removed !
             modelOcclusionCuller(modelOcclusionCuller),
             splitData({}),
             shadowMapInfo({}) {
@@ -47,8 +46,8 @@ namespace urchin {
     }
 
     void ShadowManager::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<LightManager*>(observable)) {
-            Light* light = lightManager.getLastUpdatedLight();
+        if (auto *lightManager = dynamic_cast<LightManager*>(observable)) {
+            Light* light = lightManager->getLastUpdatedLight();
             if (notificationType == LightManager::ADD_LIGHT) {
                 light->addObserver(this, Light::PRODUCE_SHADOW);
                 if (light->isProduceShadow()) {
@@ -175,8 +174,12 @@ namespace urchin {
         std::ranges::sort(visibleLightsWithShadow, [cameraPosition](const Light* light1, const Light* light2) {
             const bool light1IsSun = light1->getLightType() == Light::LightType::SUN;
             const bool light2IsSun = light2->getLightType() == Light::LightType::SUN;
-            if (light1IsSun != light2IsSun || (light1IsSun && light2IsSun)) {
+            if (light1IsSun != light2IsSun) {
                 return light1IsSun; //sun sorted first
+            } else if (light1IsSun && light2IsSun) {
+                //Sort lights by their memory address to make sure that the lights producing shadow are often in same order.
+                //Thus, the shadow textures positions/index in shader don't need to be updated at each frame in ShadowManager#loadShadowMaps().
+                return light1 > light2;
             }
             return light1->getPosition().squareDistance(cameraPosition) < light2->getPosition().squareDistance(cameraPosition); //closest omni/spot sorted first
         });
