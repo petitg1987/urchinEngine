@@ -62,9 +62,8 @@ namespace urchin {
             const Config& getConfig() const;
 
             const std::shared_ptr<Texture>& getEmptyShadowMapTexture() const;
-            const LightShadowMap& getLightShadowMap(const Light*) const;
 
-            void updateVisibleModels(const Frustum<float>&);
+            void updateVisibleLightsAndModels(const Frustum<float>&, const Point3<float>&);
             void removeModel(Model*) const;
 
             void updateShadowMaps(uint32_t, unsigned int) const;
@@ -75,6 +74,7 @@ namespace urchin {
             void updateShadowMapOffsets();
 
             //light handling
+            const LightShadowMap& getLightShadowMap(const Light*) const;
             void addOrReplaceShadowLight(Light&);
             unsigned int computeShadowMapResolution(const OmnidirectionalLight&) const;
             unsigned int computeShadowMapResolution(const SpotLight&) const;
@@ -96,6 +96,7 @@ namespace urchin {
             std::vector<SplitFrustum> splitFrustums;
             std::map<const Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
+            std::vector<Light*> visibleLightsWithShadow;
             std::array<Point4<float>, (std::size_t)MAX_SPLIT_SHADOW_MAPS> splitData;
             std::shared_ptr<Texture> shadowMapOffsetTexture;
             struct {

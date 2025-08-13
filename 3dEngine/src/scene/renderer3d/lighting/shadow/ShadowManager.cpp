@@ -163,12 +163,43 @@ namespace urchin {
         return *itFind->second;
     }
 
-    void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
+    void ShadowManager::updateVisibleLightsAndModels(const Frustum<float>& frustum, const Point3<float>& cameraPosition) {
         ScopeProfiler sp(Profiler::graphic(), "smUpVisModel");
 
+        //update split frustum
         updateSplitFrustum(frustum);
-        for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
-            lightShadowMap->updateVisibleModels();
+
+        //determine lights having shadow to compute
+        visibleLightsWithShadow.clear();
+        std::span<Light* const> sceneVisibleLights = lightManager.getVisibleLights();
+        for (Light* sceneVisibleLight : sceneVisibleLights) {
+            if (sceneVisibleLight->isProduceShadow()) {
+                visibleLightsWithShadow.push_back(sceneVisibleLight);
+            }
+        }
+        std::ranges::sort(visibleLightsWithShadow, [cameraPosition](const Light* light1, const Light* light2) {
+            if (light1->getLightType() == Light::LightType::SUN && light2->getLightType() != Light::LightType::SUN) {
+                return true; //light1 sun sorted first
+            } else if (light1->getLightType() != Light::LightType::SUN && light2->getLightType() == Light::LightType::SUN) {
+                return false; //light2 sun sorted first
+            } else if (light1->getLightType() == Light::LightType::SUN && light2->getLightType() == Light::LightType::SUN) {
+                return true; //light1 sun sorted first (arbitrary choice)
+            }
+
+            float light1ToCameraSqDist = light1->getPosition().squareDistance(cameraPosition);
+            float light2ToCameraSqDist = light2->getPosition().squareDistance(cameraPosition);
+            if (light1ToCameraSqDist < light2ToCameraSqDist) {
+                return true; //light1 closest to camera sorted first
+            }
+            return false;
+        });
+        if (visibleLightsWithShadow.size() > config.maxLightsWithShadow) {
+            visibleLightsWithShadow.resize(config.maxLightsWithShadow);
+        }
+
+        //update visible models for lights with shadow
+        for (Light* visibleLightWithShadow : visibleLightsWithShadow) {
+            lightShadowMaps.find(visibleLightWithShadow)->second->updateVisibleModels();
         }
     }
 
@@ -261,12 +292,11 @@ namespace urchin {
         }
     }
 
-    //TODO update the max allowed shadow maps based on distance
     void ShadowManager::updateShadowMaps(uint32_t frameCount, unsigned int numDependenciesToShadowMaps) const {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
 
         unsigned int renderingOrder = 0;
-        for (const Light* visibleLight : lightManager.getVisibleLights()) {
+        for (const Light* visibleLight : visibleLightsWithShadow) {
             if (visibleLight->isProduceShadow()) {
                 const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;
                 lightShadowMap->renderModels(frameCount, numDependenciesToShadowMaps, renderingOrder);
@@ -274,12 +304,11 @@ namespace urchin {
         }
     }
 
-    //TODO load the max allowed shadow maps based on distance
     void ShadowManager::loadShadowMaps(GenericRenderer& deferredSecondPassRenderer, uint32_t viewProjMatricesUniformBinding, uint32_t shadowMapDataUniformBinding,
                                        uint32_t shadowMapInfoUniformBinding, uint32_t texUniformBinding, uint32_t offsetTexUniformBinding) {
         //shadow map texture
         std::size_t shadowLightIndex = 0;
-        for (const Light* visibleLight : lightManager.getVisibleLights()) {
+        for (const Light* visibleLight : visibleLightsWithShadow) {
             if (visibleLight->isProduceShadow()) {
                 assert(shadowLightIndex < getMaxLightsWithShadow());
                 const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;

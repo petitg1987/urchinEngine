@@ -501,9 +501,9 @@ namespace urchin {
             modelAnimated->updateAnimation(dt);
         }
 
-        //determine models producing shadow on scene (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
+        //determine lights and models producing shadow on scene (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
         if (sceneInfo.isShadowActivated) {
-            shadowManager.updateVisibleModels(camera->getFrustum());
+            shadowManager.updateVisibleLightsAndModels(camera->getFrustum(), camera->getPosition());
         }
 
         //update models (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
