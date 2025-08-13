@@ -41,7 +41,6 @@ namespace urchin {
 
         private:
             void onLightEvent(Light*, NotificationType);
-            void logMaxLightsReach() const;
 
             static constexpr unsigned int MAX_LIGHTS = 1000; //must be equals to MAX_LIGHTS in deferredSecondPass/modelTransparent shaders
 
