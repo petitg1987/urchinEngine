@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     void ModelShadowSunShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t, uint32_t) {
-        std::size_t shadowDataSize = lightShadowMap->getNumberShadowMaps() * sizeof(Matrix4<float>);
+        std::size_t shadowDataSize = lightShadowMap->getNumberSplitShadowMaps() * sizeof(Matrix4<float>);
         meshRendererBuilder->addUniformData(uniformBinding1, shadowDataSize, &shadowData);
     }
 

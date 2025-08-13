@@ -24,7 +24,7 @@ namespace urchin {
             Light& getLight() const;
             const ModelOcclusionCuller& getModelOcclusionCuller() const;
             float getShadowViewDistance() const;
-            unsigned int getNumberShadowMaps() const;
+            unsigned int getNumberSplitShadowMaps() const;
             unsigned int getShadowMapSize() const;
             const std::shared_ptr<Texture>& getShadowMapTexture() const;
 

@@ -11,7 +11,6 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
         Point3(1.0f, 2.0f, -10.0f)
     });
     auto light = std::make_unique<SunLight>(Vector3(1.0f, 0.0f, 0.0f));
-    auto shadowMapTexture = Texture::build("sm", 2048, 2048, TextureFormat::DEPTH_32_FLOAT);
     auto lightShadowMap = std::make_unique<LightShadowMap>(true, *light, *modelOcclusionCuller, 300.0f, 2048, 3);
     const auto &lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[0];
 
@@ -29,7 +28,6 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
         Point3(500.0f, 2.0f, -3.0f), //model not visible and in the wrong direction to produce shadow in the frustum split
     });
     auto light = std::make_unique<SunLight>(Vector3(1.0f, 0.0f, 0.0f));
-    auto shadowMapTexture = Texture::build("sm", 2048, 2048, TextureFormat::DEPTH_32_FLOAT);
     auto lightShadowMap = std::make_unique<LightShadowMap>(true, *light, *modelOcclusionCuller, 300.0f, 2048, 3);
     const auto &lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[0];
 
@@ -46,7 +44,6 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
         Point3(1.0f, 2.0f, -150.0f), //model after frustum far plane but still in frustum bounding sphere
     });
     auto light = std::make_unique<SunLight>(Vector3(1.0f, 0.0f, 0.0f));
-    auto shadowMapTexture = Texture::build("sm", 2048, 2048, TextureFormat::DEPTH_32_FLOAT);
     auto lightShadowMap = std::make_unique<LightShadowMap>(true, *light, *modelOcclusionCuller, 300.0f, 2048, 3);
     const auto &lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[0];
 
