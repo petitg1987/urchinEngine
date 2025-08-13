@@ -64,27 +64,22 @@ namespace urchin {
         return bufferKind;
     }
 
-    bool BufferHandler::updateData(std::size_t dataSize, const void *dataPtr) {
+    bool BufferHandler::updateData(std::size_t updatedDataSize, const void *updatedDataPtr) {
         assert(isInitialized);
-        assert(dataPtr != nullptr);
+        assert(updatedDataPtr != nullptr);
 
-        bool dataSizeAltered = this->dataSize != dataSize;
+        bool expandBufferSize = this->dataSize < updatedDataSize;
+        this->dataSize = std::max(dataSize, updatedDataSize);
+
         bool newBufferCreated = false;
-
-        this->dataSize = dataSize;
-
-        if (bufferKind == STATIC) {
+        if (bufferKind == STATIC || expandBufferSize) {
             bufferKind = DYNAMIC;
-            createOrRefreshBuffers(dataPtr);
+            std::vector<char> emptyDataPtr(dataSize, 0);
+            createOrRefreshBuffers(emptyDataPtr.data()); //TODO could access to dataPtr out of bound !
             newBufferCreated = true;
-        } else {
-            if (dataSizeAltered) {
-                createOrRefreshBuffers(dataPtr);
-                newBufferCreated = true;
-            } else {
-                updateBuffer(dataPtr);
-            }
         }
+
+        updateBuffer(updatedDataSize, updatedDataPtr);
 
         return newBufferCreated;
     }
@@ -127,7 +122,7 @@ namespace urchin {
             buffer = BufferHelper::createBuffer(name, bufferSize, usageType, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, bufferMemory);
 
             if (dataPtr) {
-                updateBuffer(dataPtr);
+                updateBuffer(dataSize, dataPtr);
             }
         } else {
             throw std::runtime_error("Unknown buffer kind: " + std::to_string(bufferKind));
@@ -159,11 +154,11 @@ namespace urchin {
         CommandBufferHelper::endSingleTimeCommands(commandBufferData);
     }
 
-    void BufferHandler::updateBuffer(const void *dataPtr) const {
+    void BufferHandler::updateBuffer(std::size_t updatedDataSize, const void *updatedDataPtr) const {
         void *dataDestination;
         vmaMapMemory(GraphicsSetupService::instance().getAllocator(), bufferMemory, &dataDestination);
         {
-            std::memcpy(dataDestination, dataPtr, dataSize);
+            std::memcpy(dataDestination, updatedDataPtr, updatedDataSize); //TODO does it update only few byte to GPU ?
         }
         vmaUnmapMemory(GraphicsSetupService::instance().getAllocator(), bufferMemory);
     }

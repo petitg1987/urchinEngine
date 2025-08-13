@@ -36,7 +36,7 @@ namespace urchin {
             void createOrRefreshBuffers(const void *);
             void deleteBuffer();
             void copyBuffer(VkBuffer, VkBuffer, VkDeviceSize) const;
-            void updateBuffer(const void *) const;
+            void updateBuffer(std::size_t, const void *) const;
 
             bool isInitialized;
             std::string name;

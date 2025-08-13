@@ -67,7 +67,7 @@ namespace urchin {
                 alignas(4) float outerCosAngle;
             };
 
-            struct LightsData {
+            struct LightsData { //Warning: any changes in this struct required to review 'dataUpdateSize' in 'loadVisibleLights' method
                 alignas(16) Point3<float> globalAmbientColor;
                 alignas(4) unsigned int lightsCount;
                 alignas(16) std::array<LightInfo, MAX_LIGHTS> lightsInfo;

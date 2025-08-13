@@ -64,12 +64,11 @@ namespace urchin {
         buffers.clear();
     }
 
-    bool AlterableBufferHandler::updateData(std::size_t framebufferIndex, std::size_t dataSize, const void* dataPtr) {
+    bool AlterableBufferHandler::updateData(std::size_t framebufferIndex, std::size_t updatedDataSize, const void* updatedDataPtr) {
         assert(isInitialized);
-        assert(dataPtr);
+        assert(updatedDataPtr);
 
-        bool newBuffersCreated;
-
+        bool newBuffersCreated = false;
         if (isStaticBuffer) {
             VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (result != VK_SUCCESS) {
@@ -77,12 +76,14 @@ namespace urchin {
             }
 
             assert(buffers.size() == 1);
-            createDynamicBuffers(dataSize, dataPtr);
+            std::size_t dataSize = buffers[0].getDataSize();
+            std::vector<char> emptyDataPtr(dataSize, 0);
+            createDynamicBuffers(dataSize, emptyDataPtr.data());
             newBuffersCreated = true;
-        } else {
-            assert(buffers.size() > framebufferIndex);
-            newBuffersCreated = buffers[framebufferIndex].updateData(dataSize, dataPtr);
         }
+
+        assert(buffers.size() > framebufferIndex);
+        newBuffersCreated = buffers[framebufferIndex].updateData(updatedDataSize, updatedDataPtr) || newBuffersCreated;
 
         return newBuffersCreated;
     }

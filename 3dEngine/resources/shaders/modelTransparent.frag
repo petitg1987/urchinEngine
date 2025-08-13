@@ -3,7 +3,7 @@
 
 #include "_lightingFunctions.frag"
 
-layout(constant_id = 0) const uint MAX_LIGHTS = 1000; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
+layout(constant_id = 0) const uint MAX_LIGHTS = 1000; //must be equals to LightManager::MAX_LIGHTS
 layout(constant_id = 1) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global

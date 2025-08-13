@@ -13,21 +13,24 @@ namespace urchin {
             ~ShaderDataContainer();
 
             void updateData(const void*);
+            void updatePartialData(std::size_t, const void*);
             void* getData() const;
-            std::size_t getDataSize() const;
+            std::size_t getDataSize() const; //TODO remove ?
+            std::size_t getUpdatedDataSize() const;
 
             bool hasNewData(uint32_t) const;
             void markDataAsProcessed(uint32_t);
             void markDataAsProcessed();
 
         private:
-            void markDataAsNew();
+            void markDataAsNew(std::size_t);
 
             std::size_t dataSize;
             void* ptr;
 
             static constexpr uint32_t MAX_DATA = 6;
             std::array<bool, MAX_DATA> bHasNewData;
+            std::size_t updatedDataSize;
     };
 
 }

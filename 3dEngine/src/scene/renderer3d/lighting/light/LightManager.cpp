@@ -160,7 +160,8 @@ namespace urchin {
             }
         }
 
-        deferredSecondPassRenderer.updateStorageBufferData(lightsDataBinding, &lightsData); //TODO specify the size !
+        std::size_t dataUpdatedSize = 16 /* globalAmbientColor + lightsCount */ + lightsData.lightsCount * sizeof(LightInfo);
+        deferredSecondPassRenderer.updateStorageBufferPartialData(lightsDataBinding, dataUpdatedSize, &lightsData);
     }
 
     void LightManager::postUpdateVisibleLights() {

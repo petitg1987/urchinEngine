@@ -375,6 +375,16 @@ namespace urchin {
         }
     }
 
+    void PipelineProcessor::updateStorageBufferPartialData(uint32_t binding, std::size_t dataUpdatedSize, const void* dataPtr) {
+        #ifdef URCHIN_DEBUG
+            assert(storageBufferData.contains(binding));
+        #endif
+
+        if (!getRenderTarget().isTestMode()) {
+            storageBufferData.at(binding).updatePartialData(dataUpdatedSize, dataPtr);
+        }
+    }
+
     std::span<OffscreenRender*> PipelineProcessor::getTexturesWriter() const {
         texturesWriter.clear();
 
@@ -394,7 +404,7 @@ namespace urchin {
         //update shader uniforms
         for (auto& [binding, dataContainer] : uniformData) {
             if (dataContainer.hasNewData(framebufferIndex)) {
-                if (uniformsBuffers.at(binding).updateData(framebufferIndex, dataContainer.getDataSize(), dataContainer.getData())) {
+                if (uniformsBuffers.at(binding).updateData(framebufferIndex, dataContainer.getUpdatedDataSize(), dataContainer.getData())) {
                     markDrawCommandsDirty();
                 }
                 dataContainer.markDataAsProcessed(framebufferIndex);
@@ -404,7 +414,7 @@ namespace urchin {
         //update shader storage buffers
         for (auto& [binding, dataContainer] : storageBufferData) {
             if (dataContainer.hasNewData(framebufferIndex)) {
-                if (storageBuffers.at(binding).updateData(framebufferIndex, dataContainer.getDataSize(), dataContainer.getData())) {
+                if (storageBuffers.at(binding).updateData(framebufferIndex, dataContainer.getUpdatedDataSize(), dataContainer.getData())) {
                     markDrawCommandsDirty();
                 }
                 dataContainer.markDataAsProcessed(framebufferIndex);

@@ -6,16 +6,18 @@ namespace urchin {
 
     ShaderDataContainer::ShaderDataContainer(std::size_t dataSize, const void* ptr) :
             dataSize(dataSize),
-            bHasNewData({}) {
+            bHasNewData({}),
+            updatedDataSize(dataSize) {
         this->ptr = operator new(dataSize);
         std::memcpy(this->ptr, ptr, dataSize);
 
-        markDataAsNew();
+        markDataAsNew(dataSize);
     }
 
     ShaderDataContainer::ShaderDataContainer(const ShaderDataContainer& src) :
             dataSize(src.dataSize),
-            bHasNewData(src.bHasNewData) {
+            bHasNewData(src.bHasNewData),
+            updatedDataSize(src.updatedDataSize) {
         this->ptr = operator new(dataSize);
         std::memcpy(this->ptr, src.ptr, dataSize);
     }
@@ -27,12 +29,24 @@ namespace urchin {
     void ShaderDataContainer::updateData(const void* newDataPtr) {
         if (std::memcmp(this->ptr, newDataPtr, dataSize)) {
             std::memcpy(this->ptr, newDataPtr, dataSize);
-            markDataAsNew();
+            markDataAsNew(dataSize);
+        }
+    }
+
+    void ShaderDataContainer::updatePartialData(std::size_t dataUpdateSize, const void* newDataPtr) {
+        assert(dataUpdateSize <= dataSize);
+        if (std::memcmp(this->ptr, newDataPtr, dataUpdateSize)) {
+            std::memcpy(this->ptr, newDataPtr, dataUpdateSize);
+            markDataAsNew(dataUpdateSize);
         }
     }
 
     std::size_t ShaderDataContainer::getDataSize() const {
         return dataSize;
+    }
+
+    std::size_t ShaderDataContainer::getUpdatedDataSize() const {
+        return updatedDataSize;
     }
 
     void* ShaderDataContainer::getData() const {
@@ -54,8 +68,9 @@ namespace urchin {
         std::ranges::fill(bHasNewData, false);
     }
 
-    void ShaderDataContainer::markDataAsNew() {
+    void ShaderDataContainer::markDataAsNew(std::size_t dataUpdateSize) {
         std::ranges::fill(bHasNewData, true);
+        this->updatedDataSize = dataUpdateSize;
     }
 
 }
