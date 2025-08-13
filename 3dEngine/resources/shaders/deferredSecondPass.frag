@@ -6,8 +6,8 @@
 
 layout(constant_id = 0) const uint MAX_LIGHTS = 1000; //must be equals to LightManager::MAX_LIGHTS
 layout(constant_id = 1) const float AO_STRENGTH = 0.0;
-layout(constant_id = 2) const uint MAX_SHADOW_LIGHTS = 10; //must be equals to ShadowManager::MAX_SHADOW_LIGHTS
-layout(constant_id = 3) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT
+layout(constant_id = 2) const uint MAX_LIGHTS_WITH_SHADOW = 10; //must be equals to ShadowManager::MAX_LIGHTS_WITH_SHADOW
+layout(constant_id = 3) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::MAX_SPLIT_SHADOW_MAPS
 layout(constant_id = 4) const float SHADOW_MAP_CONSTANT_BIAS_FACTOR = 0.0;
 layout(constant_id = 5) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
 layout(constant_id = 6) const int SHADOW_MAP_OFFSET_TEX_SIZE = 0;
@@ -32,7 +32,7 @@ layout(std430, set = 0, binding = 2) readonly buffer LightsData {
 
 //shadow
 layout(std140, set = 0, binding = 3) uniform ShadowLight {
-    mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * MAX_SPLIT_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
+    mat4 mLightProjectionView[MAX_LIGHTS_WITH_SHADOW * MAX_SPLIT_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
 layout(std140, set = 0, binding = 4) uniform ShadowMapData {
     vec4 splitData[MAX_SPLIT_SHADOW_MAPS];
@@ -56,7 +56,7 @@ layout(binding = 8) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 
 layout(binding = 9) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
 layout(binding = 10) uniform usampler2D materialAndMaskTex; //roughness (8 bits) + metalness (8 bits) + light mask (8 bits)
 layout(binding = 11) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
-layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (32 bits * nbSplit * nbLight)
+layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_LIGHTS_WITH_SHADOW]; //shadow maps for each lights (32 bits * nbSplit * nbLight)
 layout(binding = 13) uniform sampler2DArray shadowMapOffsetTex; //shadow maps offset (32 bits)
 
 layout(location = 0) in vec2 texCoordinates;

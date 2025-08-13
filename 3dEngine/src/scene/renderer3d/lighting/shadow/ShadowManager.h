@@ -23,19 +23,22 @@ namespace urchin {
     */
     class ShadowManager final : public Observer, public Observable {
         public:
-            static constexpr unsigned int MAX_SHADOW_LIGHTS = 10; //must be equals to MAX_SHADOW_LIGHTS in deferredSecondPass shader
-            static constexpr unsigned int SPLIT_SHADOW_MAPS_SHADER_LIMIT = 6; //must be equals to 'MAX_SPLIT_SHADOW_MAPS' in deferredSecondPass shader
+            static constexpr unsigned int MAX_LIGHTS_WITH_SHADOW = 10; //must be equals to MAX_LIGHTS_WITH_SHADOW in deferredSecondPass shader
+            static constexpr unsigned int MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to 'MAX_SPLIT_SHADOW_MAPS' in deferredSecondPass shader
             static constexpr unsigned int SHADOW_MAP_OFFSET_TEX_SIZE = 10;
 
             enum NotificationType {
-                NUMBER_SHADOW_MAPS_UPDATE
+                NUMBER_SPLIT_SHADOW_MAPS_UPDATE
             };
 
             struct Config {
                 unsigned int blurFilterBoxSize = 3;
-                unsigned int nbSunShadowMaps = 5;
+                unsigned int maxLightsWithShadow = 5;
+
+                unsigned int nbSunSplitShadowMaps = 5;
                 unsigned int sunShadowMapResolution = 1024;
                 float sunShadowViewDistance = 75.0f;
+
                 float omniShadowMapResolutionFactor = 45.0f;
                 unsigned int omniShadowMapMaxResolution = 1024;
                 float spotShadowMapResolutionFactor = 40.0f;
@@ -49,7 +52,7 @@ namespace urchin {
             void onCameraProjectionUpdate(const Camera&) const;
             void notify(Observable*, int) override;
 
-            unsigned int getMaxShadowLights() const;
+            unsigned int getMaxLightsWithShadow() const;
             unsigned int getMaxSplitShadowMaps() const;
             float getShadowMapConstantBiasFactor() const;
             float getShadowMapSlopeBiasFactor() const;
@@ -93,7 +96,7 @@ namespace urchin {
             std::vector<SplitFrustum> splitFrustums;
             std::map<const Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
-            std::array<Point4<float>, (std::size_t)SPLIT_SHADOW_MAPS_SHADER_LIMIT> splitData;
+            std::array<Point4<float>, (std::size_t)MAX_SPLIT_SHADOW_MAPS> splitData;
             std::shared_ptr<Texture> shadowMapOffsetTexture;
             struct {
                 alignas(4) int offsetSampleCount;

@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    LightShadowMap::LightShadowMap(bool isTestMode, Light& light, const ModelOcclusionCuller& modelOcclusionCuller, float shadowViewDistance, unsigned int shadowMapResolution, unsigned int nbShadowMaps) :
+    LightShadowMap::LightShadowMap(bool isTestMode, Light& light, const ModelOcclusionCuller& modelOcclusionCuller, float shadowViewDistance, unsigned int shadowMapResolution, unsigned int nbSplitShadowMaps) :
             light(light),
             modelOcclusionCuller(modelOcclusionCuller),
             shadowViewDistance(shadowViewDistance),
@@ -19,21 +19,21 @@ namespace urchin {
             defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")),
             modelsToLayersMask(EverGrowHashMap<Model*, std::bitset<8>>()) {
 
-        if (nbShadowMaps > ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) {
-            throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(nbShadowMaps));
+        if (nbSplitShadowMaps > ShadowManager::MAX_SPLIT_SHADOW_MAPS) {
+            throw std::invalid_argument("Number of split shadow maps must be lower than " + std::to_string(ShadowManager::MAX_SPLIT_SHADOW_MAPS) + ". Value: " + std::to_string(nbSplitShadowMaps));
         }
 
-        for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye for sunlight.
+        for (unsigned int i = 0; i < nbSplitShadowMaps; ++i) { //First split is the split nearest to the eye for sunlight.
             lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(i, this));
         }
 
         if (!isTestMode) {
             renderTarget = std::make_unique<OffscreenRender>("shadow map - " + light.getLightTypeName(), false, RenderTarget::SHARED_DEPTH_ATTACHMENT);
-            renderTarget->setOutputSize(shadowMapResolution, shadowMapResolution, nbShadowMaps, true);
+            renderTarget->setOutputSize(shadowMapResolution, shadowMapResolution, nbSplitShadowMaps, true);
             renderTarget->initialize();
 
-            std::vector variablesDescriptions = {sizeof(nbShadowMaps)};
-            auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
+            std::vector variablesDescriptions = {sizeof(nbSplitShadowMaps)};
+            auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbSplitShadowMaps);
             shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
             if (light.getLightType() == Light::LightType::SUN) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapSun.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));

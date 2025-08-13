@@ -73,7 +73,7 @@ namespace urchin {
 
         //deferred passes
         ambientOcclusionManager.addObserver(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);
-        shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
+        shadowManager.addObserver(this, ShadowManager::NUMBER_SPLIT_SHADOW_MAPS_UPDATE);
 
         sceneInfo.isShadowActivated = visualConfig.isShadowActivated();
         sceneInfo.isAmbientOcclusionActivated = visualConfig.isAmbientOcclusionActivated();
@@ -98,7 +98,7 @@ namespace urchin {
                 createOrUpdateDeferredPasses();
             }
         } else if (dynamic_cast<ShadowManager*>(observable)) {
-            if (notificationType == ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
+            if (notificationType == ShadowManager::NUMBER_SPLIT_SHADOW_MAPS_UPDATE) {
                 createOrUpdateDeferredPasses();
             }
         } else if (dynamic_cast<Camera*>(observable)) {
@@ -414,8 +414,8 @@ namespace urchin {
         fogContainer.setupDeferredSecondPassRenderer(deferredSecondPassRendererBuilder, FOG_UNIFORM_BINDING);
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
-        shadowMapTextureReaders.reserve(shadowManager.getMaxShadowLights());
-        for (unsigned int i = 0; i < shadowManager.getMaxShadowLights(); ++i) {
+        shadowMapTextureReaders.reserve(shadowManager.getMaxLightsWithShadow());
+        for (unsigned int i = 0; i < shadowManager.getMaxLightsWithShadow(); ++i) {
             shadowMapTextureReaders.push_back(TextureReader::build(shadowManager.getEmptyShadowMapTexture(), TextureParam::buildNearest()));
         }
         deferredSecondPassRenderer = deferredSecondPassRendererBuilder
@@ -435,7 +435,7 @@ namespace urchin {
         DeferredSecondPassShaderConst deferredSecondPassConstData {
                 .maxLights = lightManager.getMaxLights(),
                 .ambientOcclusionStrength = ambientOcclusionManager.getAmbientOcclusionStrength(), //apply AO strength after AO blur to not lose color precision on 8bit texture
-                .maxShadowLights = shadowManager.getMaxShadowLights(),
+                .maxLightsWithShadow = shadowManager.getMaxLightsWithShadow(),
                 .maxSplitShadowMaps = shadowManager.getMaxSplitShadowMaps(),
                 .shadowMapConstantBiasFactor = shadowManager.getShadowMapConstantBiasFactor(),
                 .shadowMapSlopeBiasFactor = shadowManager.getShadowMapSlopeBiasFactor(),
@@ -445,7 +445,7 @@ namespace urchin {
         std::vector variablesSize = {
                 sizeof(DeferredSecondPassShaderConst::maxLights),
                 sizeof(DeferredSecondPassShaderConst::ambientOcclusionStrength),
-                sizeof(DeferredSecondPassShaderConst::maxShadowLights),
+                sizeof(DeferredSecondPassShaderConst::maxLightsWithShadow),
                 sizeof(DeferredSecondPassShaderConst::maxSplitShadowMaps),
                 sizeof(DeferredSecondPassShaderConst::shadowMapConstantBiasFactor),
                 sizeof(DeferredSecondPassShaderConst::shadowMapSlopeBiasFactor),
