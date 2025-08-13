@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdlib>
-#include <cstdint>
 #include <array>
 
 namespace urchin {

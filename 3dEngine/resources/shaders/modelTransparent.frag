@@ -3,7 +3,7 @@
 
 #include "_lightingFunctions.frag"
 
-layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
+layout(constant_id = 0) const uint MAX_LIGHTS = 1000; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 1) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
@@ -18,9 +18,10 @@ layout(std140, set = 0, binding = 2) uniform CameraPlanes {
 } cameraPlanes;
 
 //lighting
-layout(std140, set = 0, binding = 4) readonly buffer LightsData {
-    LightInfo lightsInfo[MAX_LIGHTS];
+layout(std430, set = 0, binding = 4) readonly buffer LightsData {
     vec3 globalAmbient;
+    uint lightsCount;
+    LightInfo lightsInfo[MAX_LIGHTS];
 } lightsData;
 
 //texture
@@ -52,12 +53,10 @@ void main() {
         vec3 modelAmbient = albedo.rgb * meshData.ambientFactor;
         fragColor = vec4(lightsData.globalAmbient, albedo.a);
 
-        for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
+        for (int lightIndex = 0; lightIndex < lightsData.lightsCount; ++lightIndex) {
             LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
 
-            if (!lightInfo.isExist) {
-                break; //no more light
-            } else if ((lightInfo.lightMask & meshData.lightMask) == 0) {
+            if ((lightInfo.lightMask & meshData.lightMask) == 0) {
                 continue; //no lighting on this mesh
             }
 

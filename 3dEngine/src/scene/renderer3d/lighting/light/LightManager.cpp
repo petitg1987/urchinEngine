@@ -13,7 +13,6 @@ namespace urchin {
             lightOctreeManager(OctreeManager<Light>(ConfigService::instance().getFloatValue("light.octreeMinSize"))),
             lastUpdatedLight(nullptr),
             lightsData({}) {
-        static_assert(MAX_LIGHTS < LIGHTS_SHADER_LIMIT);
         std::memset((void*)&lightsData, 0, sizeof(lightsData));
 
         lightsData.globalAmbientColor = Point3(0.0f, 0.0f, 0.0f);
@@ -116,6 +115,7 @@ namespace urchin {
             visibleLights.resize(MAX_LIGHTS);
         }
 
+        //TODO need to be reviewed ???
         /*
          * Sort visible lights by their memory address.
          * By sorting visible lights, we make sure that the lights producing shadow are often in same order.
@@ -127,45 +127,40 @@ namespace urchin {
     void LightManager::loadVisibleLights(GenericRenderer& deferredSecondPassRenderer, uint32_t lightsDataBinding) {
         std::span<Light* const> lights = getVisibleLights();
 
-        for (unsigned int i = 0; i < MAX_LIGHTS; ++i) {
-            LightInfo& currentLightInfo = lightsData.lightsInfo[i];
+        lightsData.lightsCount = (unsigned int)lights.size();
 
-            if (lights.size() > i) {
-                const Light* light = lights[i];
+        std::size_t lightIndex = 0;
+        for (Light* const light : lights) {
+            LightInfo& lightInfo = lightsData.lightsInfo[lightIndex++];
 
-                currentLightInfo.isExist = true;
-                currentLightInfo.lightType = (int)light->getLightType();
-                currentLightInfo.lightFlags =
-                        (light->isProduceShadow() ? Light::LIGHT_FLAG_PRODUCE_SHADOW : 0) |
-                        (light->isPbrEnabled() ? Light::LIGHT_FLAG_PBR_ENABLED : 0);
-                currentLightInfo.lightMask = light->getLightMask();
-                currentLightInfo.shadowStrength = light->getShadowStrength();
-                currentLightInfo.lightColor = light->getLightColor();
+            lightInfo.lightType = (int)light->getLightType();
+            lightInfo.lightFlags =
+                    (light->isProduceShadow() ? Light::LIGHT_FLAG_PRODUCE_SHADOW : 0) |
+                    (light->isPbrEnabled() ? Light::LIGHT_FLAG_PBR_ENABLED : 0);
+            lightInfo.lightMask = light->getLightMask();
+            lightInfo.shadowStrength = light->getShadowStrength();
+            lightInfo.lightColor = light->getLightColor();
 
-                if (lights[i]->getLightType() == Light::LightType::SUN) {
-                    const auto* sunLight = dynamic_cast<const SunLight*>(light);
-                    currentLightInfo.direction = sunLight->getDirections()[0];
-                } else if (lights[i]->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-                    const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
-                    currentLightInfo.position = omnidirectionalLight->getPosition();
-                    currentLightInfo.exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
-                } else if (lights[i]->getLightType() == Light::LightType::SPOT) {
-                    const auto* spotLight = dynamic_cast<const SpotLight*>(light);
-                    currentLightInfo.position = spotLight->getPosition();
-                    currentLightInfo.direction = spotLight->getDirections()[0];
-                    currentLightInfo.exponentialAttenuation = spotLight->getExponentialAttenuation();
-                    currentLightInfo.innerCosAngle = spotLight->getInnerCosAngle();
-                    currentLightInfo.outerCosAngle = spotLight->getOuterCosAngle();
-                } else {
-                    throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string((int)light->getLightType()));
-                }
+            if (light->getLightType() == Light::LightType::SUN) {
+                const auto* sunLight = dynamic_cast<const SunLight*>(light);
+                lightInfo.direction = sunLight->getDirections()[0];
+            } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+                const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
+                lightInfo.position = omnidirectionalLight->getPosition();
+                lightInfo.exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
+            } else if (light->getLightType() == Light::LightType::SPOT) {
+                const auto* spotLight = dynamic_cast<const SpotLight*>(light);
+                lightInfo.position = spotLight->getPosition();
+                lightInfo.direction = spotLight->getDirections()[0];
+                lightInfo.exponentialAttenuation = spotLight->getExponentialAttenuation();
+                lightInfo.innerCosAngle = spotLight->getInnerCosAngle();
+                lightInfo.outerCosAngle = spotLight->getOuterCosAngle();
             } else {
-                currentLightInfo.isExist = false;
-                break;
+                throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string((int)light->getLightType()));
             }
         }
 
-        deferredSecondPassRenderer.updateStorageBufferData(lightsDataBinding, &lightsData);
+        deferredSecondPassRenderer.updateStorageBufferData(lightsDataBinding, &lightsData); //TODO specify the size !
     }
 
     void LightManager::postUpdateVisibleLights() {

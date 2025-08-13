@@ -4,9 +4,9 @@
 
 #include "_lightingFunctions.frag"
 
-layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
+layout(constant_id = 0) const uint MAX_LIGHTS = 1000; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 1) const float AO_STRENGTH = 0.0;
-layout(constant_id = 2) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
+layout(constant_id = 2) const uint MAX_SHADOW_LIGHTS = 1000; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 3) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT
 layout(constant_id = 4) const float SHADOW_MAP_CONSTANT_BIAS_FACTOR = 0.0;
 layout(constant_id = 5) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
@@ -24,13 +24,14 @@ layout(std140, set = 0, binding = 1) uniform SceneInfo {
 } sceneInfo;
 
 //lighting
-layout(std140, set = 0, binding = 2) readonly buffer LightsData {
-    LightInfo lightsInfo[MAX_LIGHTS];
+layout(std430, set = 0, binding = 2) readonly buffer LightsData {
     vec3 globalAmbient;
+    uint lightsCount;
+    LightInfo lightsInfo[MAX_LIGHTS];
 } lightsData;
 
 //shadow
-layout(std140, set = 0, binding = 3) uniform ShadowLight {
+layout(std140, set = 0, binding = 3) uniform ShadowLight { //TODO use buffer !
     mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * MAX_SPLIT_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
 layout(std140, set = 0, binding = 4) uniform ShadowMapData {
@@ -244,11 +245,8 @@ void main() {
 
         fragColor.rgb += albedo * emissiveFactor; //add emissive lighting
 
-        for (int lightIndex = 0, shadowLightIndex = -1; lightIndex < MAX_LIGHTS; ++lightIndex) {
+        for (int lightIndex = 0, shadowLightIndex = -1; lightIndex < lightsData.lightsCount; ++lightIndex) {
             LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
-            if (!lightInfo.isExist) {
-                break; //no more light
-            }
 
             bool hasShadow = sceneInfo.hasShadow && (lightInfo.lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0;
             if (hasShadow) {

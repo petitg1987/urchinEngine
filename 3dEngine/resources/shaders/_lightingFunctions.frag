@@ -2,7 +2,6 @@ const int LIGHT_FLAG_PRODUCE_SHADOW = 0x01; //must match with Light.h
 const int LIGHT_FLAG_PBR_ENABLED = 0x02; //must match with Light.h
 
 struct LightInfo {
-    bool isExist;
     int lightType;
     int lightFlags;
     uint lightMask;
