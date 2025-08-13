@@ -20,8 +20,7 @@ namespace urchin {
 
             const Matrix4<float>& getLightProjectionViewMatrix() const;
 
-            void updateVisibleModels();
-            std::span<Model* const> getModels() const;
+            std::span<Model* const> retrieveVisibleModels();
 
         private:
             void updateLightViewMatrix();

@@ -169,11 +169,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "smUpVisModel");
 
         updateSplitFrustum(frustum);
-
         for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
-            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                lightSplitShadowMap->updateVisibleModels();
-            }
             lightShadowMap->updateVisibleModels();
         }
     }

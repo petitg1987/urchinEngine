@@ -17,9 +17,9 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
 
     SplitFrustum splitFrustum(Frustum(90.0f, 1.0f, 0.01f, 100.0f));
     lightSplitShadowMap->onSplitFrustumUpdated(splitFrustum);
-    lightSplitShadowMap->updateVisibleModels();
+    std::span<Model* const> visibleModels = lightSplitShadowMap->retrieveVisibleModels();
 
-    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 2);
+    AssertHelper::assertUnsignedIntEquals(visibleModels.size(), 2);
 }
 
 void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
@@ -35,9 +35,9 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
 
     SplitFrustum splitFrustum(Frustum(90.0f, 1.0f, 0.01f, 100.0f));
     lightSplitShadowMap->onSplitFrustumUpdated(splitFrustum);
-    lightSplitShadowMap->updateVisibleModels();
+    std::span<Model* const> visibleModels = lightSplitShadowMap->retrieveVisibleModels();
 
-    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 0);
+    AssertHelper::assertUnsignedIntEquals(visibleModels.size(), 0);
 }
 
 void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
@@ -52,9 +52,9 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
 
     SplitFrustum splitFrustum(Frustum(90.0f, 1.0f, 0.01f, 100.0f));
     lightSplitShadowMap->onSplitFrustumUpdated(splitFrustum);
-    lightSplitShadowMap->updateVisibleModels();
+    std::span<Model* const> visibleModels = lightSplitShadowMap->retrieveVisibleModels();
 
-    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 2);
+    AssertHelper::assertUnsignedIntEquals(visibleModels.size(), 2);
 }
 
 std::unique_ptr<ModelOcclusionCuller> LightSplitShadowMapTest::buildModelOcclusionCuller(const std::vector<Point3<float>> &modelPositions) {

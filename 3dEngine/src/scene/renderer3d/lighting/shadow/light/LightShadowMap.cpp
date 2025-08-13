@@ -99,7 +99,8 @@ namespace urchin {
         modelsToLayersMask.clear();
         std::size_t layerIndex = 0;
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
-            std::span<Model* const> modelsBySplit = lightSplitShadowMap->getModels();
+            std::span<Model* const> modelsBySplit = lightSplitShadowMap->retrieveVisibleModels();
+
             for (Model* const model : modelsBySplit) {
                 std::bitset<8>* foundLayersMask = modelsToLayersMask.find(model);
                 if (foundLayersMask == nullptr) {

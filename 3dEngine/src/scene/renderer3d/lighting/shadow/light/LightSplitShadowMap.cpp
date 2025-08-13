@@ -137,19 +137,13 @@ namespace urchin {
         return lightProjectionViewMatrix;
     }
 
-    void LightSplitShadowMap::updateVisibleModels() {
+    std::span<Model* const> LightSplitShadowMap::retrieveVisibleModels() {
         models.clear();
         lightShadowMap->getModelOcclusionCuller().getModelsInConvexObject(*lightScopeConvexObject, models, true, [this](const Model *const model) {
             return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER
                     && model->getMeshes() != nullptr
                     && (model->getLightMask() & lightShadowMap->getLight().getLightMask()) != 0;
         });
-    }
-
-    /**
-     * @return Models visible from light in frustum split
-     */
-    std::span<Model* const> LightSplitShadowMap::getModels() const {
         return models;
     }
 
