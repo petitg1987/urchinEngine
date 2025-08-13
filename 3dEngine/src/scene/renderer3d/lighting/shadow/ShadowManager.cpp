@@ -296,32 +296,29 @@ namespace urchin {
                                        uint32_t shadowMapInfoUniformBinding, uint32_t texUniformBinding, uint32_t offsetTexUniformBinding) {
         //shadow map texture
         std::size_t shadowLightIndex = 0;
-        for (const Light* visibleLight : visibleLightsWithShadow) {
-            if (visibleLight->isProduceShadow()) {
-                assert(shadowLightIndex < getMaxLightsWithShadow());
-                const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;
+        for (const Light* lightWithShadow : visibleLightsWithShadow) {
+            const auto& lightShadowMap = lightShadowMaps.find(lightWithShadow)->second;
 
-                if (deferredSecondPassRenderer.getUniformTextureReader(texUniformBinding, shadowLightIndex)->getTexture() != lightShadowMap->getShadowMapTexture().get()) {
-                    //Info: anisotropy is disabled because it's causing artifact on AMD GPU
-                    // Artifact: https://computergraphics.stackexchange.com/questions/5146/cascaded-shadow-maps-seams-between-cascades
-                    // Solution: https://learn.microsoft.com/fr-be/windows/win32/dxtecharts/cascaded-shadow-maps?redirectedfrom=MSDN
-                    TextureParam textureParam = TextureParam::build(TextureParam::ReadMode::EDGE_CLAMP, TextureParam::ReadQuality::LINEAR, TextureParam::Anisotropy::NO_ANISOTROPY);
-                    deferredSecondPassRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getShadowMapTexture(), std::move(textureParam)));
-                }
-
-                unsigned int maxSplitShadowMaps = getMaxSplitShadowMaps();
-                for (unsigned int splitShadowMapIndex = 0; splitShadowMapIndex < maxSplitShadowMaps; ++splitShadowMapIndex) {
-                    std::size_t matrixIndex = shadowLightIndex * maxSplitShadowMaps + splitShadowMapIndex;
-                    if (lightShadowMap->getLightSplitShadowMaps().size() > splitShadowMapIndex) {
-                        const std::unique_ptr<LightSplitShadowMap>& lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[splitShadowMapIndex];
-                        lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionViewMatrix();
-                    } else {
-                        lightProjectionViewMatrices[matrixIndex] = Matrix4<float>();
-                    }
-                }
-
-                shadowLightIndex++;
+            if (deferredSecondPassRenderer.getUniformTextureReader(texUniformBinding, shadowLightIndex)->getTexture() != lightShadowMap->getShadowMapTexture().get()) {
+                //Info: anisotropy is disabled because it's causing artifact on AMD GPU
+                // Artifact: https://computergraphics.stackexchange.com/questions/5146/cascaded-shadow-maps-seams-between-cascades
+                // Solution: https://learn.microsoft.com/fr-be/windows/win32/dxtecharts/cascaded-shadow-maps?redirectedfrom=MSDN
+                TextureParam textureParam = TextureParam::build(TextureParam::ReadMode::EDGE_CLAMP, TextureParam::ReadQuality::LINEAR, TextureParam::Anisotropy::NO_ANISOTROPY);
+                deferredSecondPassRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getShadowMapTexture(), std::move(textureParam)));
             }
+
+            unsigned int maxSplitShadowMaps = getMaxSplitShadowMaps();
+            for (unsigned int splitShadowMapIndex = 0; splitShadowMapIndex < maxSplitShadowMaps; ++splitShadowMapIndex) {
+                std::size_t matrixIndex = shadowLightIndex * maxSplitShadowMaps + splitShadowMapIndex;
+                if (lightShadowMap->getLightSplitShadowMaps().size() > splitShadowMapIndex) {
+                    const std::unique_ptr<LightSplitShadowMap>& lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[splitShadowMapIndex];
+                    lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionViewMatrix();
+                } else {
+                    lightProjectionViewMatrices[matrixIndex] = Matrix4<float>();
+                }
+            }
+
+            shadowLightIndex++;
         }
 
         for (auto i = (unsigned int)shadowLightIndex; i < getMaxLightsWithShadow(); ++i) {
