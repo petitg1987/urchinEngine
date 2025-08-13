@@ -15,7 +15,7 @@ namespace urchin {
             void updateData(const void*);
             void updatePartialData(std::size_t, const void*);
             void* getData() const;
-            std::size_t getDataSize() const; //TODO remove ?
+            std::size_t getDataSize() const;
             std::size_t getUpdatedDataSize() const;
 
             bool hasNewData(uint32_t) const;

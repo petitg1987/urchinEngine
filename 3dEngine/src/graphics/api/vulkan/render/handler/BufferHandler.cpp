@@ -75,7 +75,7 @@ namespace urchin {
         if (bufferKind == STATIC || expandBufferSize) {
             bufferKind = DYNAMIC;
             std::vector<char> emptyDataPtr(dataSize, 0);
-            createOrRefreshBuffers(emptyDataPtr.data()); //TODO could access to dataPtr out of bound !
+            createOrRefreshBuffers(emptyDataPtr.data());
             newBufferCreated = true;
         }
 
@@ -158,7 +158,7 @@ namespace urchin {
         void *dataDestination;
         vmaMapMemory(GraphicsSetupService::instance().getAllocator(), bufferMemory, &dataDestination);
         {
-            std::memcpy(dataDestination, updatedDataPtr, updatedDataSize); //TODO does it update only few byte to GPU ?
+            std::memcpy(dataDestination, updatedDataPtr, updatedDataSize);
         }
         vmaUnmapMemory(GraphicsSetupService::instance().getAllocator(), bufferMemory);
     }
