@@ -60,10 +60,10 @@ void main() {
                 continue; //no lighting on this mesh
             }
 
-            LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
+            LightValues lightValues = computeLightValues(lightInfo, normal, vec3(worldPosition));
             float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.007);
 
-            vec3 ambient = lightsData.lightsInfo[lightIndex].lightColor * modelAmbient;
+            vec3 ambient = lightInfo.lightColor * modelAmbient;
 
             fragColor.rgb += lightAttenuation * ((albedo.rgb * lightValues.NdotL) + ambient);
         }

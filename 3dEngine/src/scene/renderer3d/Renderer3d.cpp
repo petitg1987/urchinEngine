@@ -611,7 +611,8 @@ namespace urchin {
         positioningData.viewPosition = camera->getPosition();
         deferredSecondPassRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
 
-        lightManager.loadVisibleLights(*deferredSecondPassRenderer, LIGHTS_DATA_STORAGE_BUFFER_BINDING);
+        const std::vector<Light*>& visibleLightsWithShadow = shadowManager.getVisibleLightsWithShadow();
+        lightManager.loadVisibleLights(*deferredSecondPassRenderer, LIGHTS_DATA_STORAGE_BUFFER_BINDING, visibleLightsWithShadow);
 
         fogContainer.loadFog(*deferredSecondPassRenderer, FOG_UNIFORM_BINDING);
 

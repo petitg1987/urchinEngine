@@ -19,7 +19,7 @@ namespace urchin {
     }
 
     void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t, uint32_t, uint32_t storageBufferBinding1) {
-        lightManager.loadVisibleLights(meshRenderer, storageBufferBinding1);
+        lightManager.loadVisibleLights(meshRenderer, storageBufferBinding1, {});
     }
 
 }

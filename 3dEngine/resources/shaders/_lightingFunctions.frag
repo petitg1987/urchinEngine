@@ -1,10 +1,8 @@
-const int LIGHT_FLAG_PRODUCE_SHADOW = 0x01; //must match with Light.h
-const int LIGHT_FLAG_PBR_ENABLED = 0x02; //must match with Light.h
-
 struct LightInfo {
     int lightType;
-    int lightFlags;
     uint lightMask;
+    bool isPbrEnabled;
+    bool hasShadow;
     float shadowStrength;
     vec3 lightColor;
     vec3 direction;

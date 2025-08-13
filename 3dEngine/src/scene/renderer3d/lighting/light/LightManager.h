@@ -34,7 +34,7 @@ namespace urchin {
             const Point3<float>& getGlobalAmbientColor() const;
 
             void updateVisibleLights(const Frustum<float>&);
-            void loadVisibleLights(GenericRenderer&, uint32_t);
+            void loadVisibleLights(GenericRenderer&, uint32_t, const std::vector<Light*>&);
             void postUpdateVisibleLights();
 
             void drawLightOctree(GeometryContainer&);
@@ -55,8 +55,9 @@ namespace urchin {
 
             struct LightInfo {
                 alignas(4) int lightType;
-                alignas(4) int lightFlags;
                 alignas(4) unsigned int lightMask;
+                alignas(4) bool isPbrEnabled;
+                alignas(4) bool hasShadow;
                 alignas(4) float shadowStrength;
                 alignas(16) Point3<float> lightColor;
                 alignas(16) Vector3<float> direction;

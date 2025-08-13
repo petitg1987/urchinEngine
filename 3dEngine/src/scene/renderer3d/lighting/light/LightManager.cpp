@@ -110,7 +110,7 @@ namespace urchin {
         visibleLights.resize(std::min((std::size_t)MAX_LIGHTS, visibleLights.size()));
     }
 
-    void LightManager::loadVisibleLights(GenericRenderer& deferredSecondPassRenderer, uint32_t lightsDataBinding) {
+    void LightManager::loadVisibleLights(GenericRenderer& deferredSecondPassRenderer, uint32_t lightsDataBinding, const std::vector<Light*>& visibleLightsWithShadow) {
         std::span<Light* const> lights = getVisibleLights();
 
         lightsData.lightsCount = (unsigned int)lights.size();
@@ -120,10 +120,9 @@ namespace urchin {
             LightInfo& lightInfo = lightsData.lightsInfo[lightIndex++];
 
             lightInfo.lightType = (int)light->getLightType();
-            lightInfo.lightFlags =
-                    (light->isProduceShadow() ? Light::LIGHT_FLAG_PRODUCE_SHADOW : 0) |
-                    (light->isPbrEnabled() ? Light::LIGHT_FLAG_PBR_ENABLED : 0);
             lightInfo.lightMask = light->getLightMask();
+            lightInfo.isPbrEnabled = light->isPbrEnabled();
+            lightInfo.hasShadow = std::ranges::find(visibleLightsWithShadow, light) != visibleLightsWithShadow.end();
             lightInfo.shadowStrength = light->getShadowStrength();
             lightInfo.lightColor = light->getLightColor();
 

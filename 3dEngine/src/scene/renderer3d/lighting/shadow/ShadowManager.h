@@ -63,9 +63,10 @@ namespace urchin {
 
             const std::shared_ptr<Texture>& getEmptyShadowMapTexture() const;
 
-            void updateVisibleLightsAndModels(const Frustum<float>&, const Point3<float>&, std::span<Light* const>);
             void removeModel(Model*) const;
 
+            void updateVisibleLightsAndModels(const Frustum<float>&, const Point3<float>&, std::span<Light* const>);
+            const std::vector<Light*>& getVisibleLightsWithShadow() const;
             void updateShadowMaps(uint32_t, unsigned int) const;
             void loadShadowMaps(GenericRenderer&, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t);
 

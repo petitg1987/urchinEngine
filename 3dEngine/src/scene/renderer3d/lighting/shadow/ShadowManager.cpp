@@ -153,6 +153,12 @@ namespace urchin {
         return emptyShadowMapTexture;
     }
 
+    void ShadowManager::removeModel(Model* model) const {
+        for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
+            lightShadowMap->removeModel(model);
+        }
+    }
+
     const LightShadowMap& ShadowManager::getLightShadowMap(const Light* light) const {
         auto itFind = lightShadowMaps.find(light);
         if (itFind == lightShadowMaps.end()) {
@@ -191,10 +197,8 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::removeModel(Model* model) const {
-        for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
-            lightShadowMap->removeModel(model);
-        }
+    const std::vector<Light*>& ShadowManager::getVisibleLightsWithShadow() const {
+        return visibleLightsWithShadow;
     }
 
     void ShadowManager::updateShadowMapOffsets() {

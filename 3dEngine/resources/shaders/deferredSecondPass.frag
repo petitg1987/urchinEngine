@@ -248,7 +248,7 @@ void main() {
         for (int lightIndex = 0, shadowLightIndex = -1; lightIndex < lightsData.lightsCount; ++lightIndex) {
             LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
 
-            bool hasShadow = sceneInfo.hasShadow && (lightInfo.lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0;
+            bool hasShadow = sceneInfo.hasShadow && lightInfo.hasShadow;
             if (hasShadow) {
                 shadowLightIndex++;
             }
@@ -262,7 +262,7 @@ void main() {
 
             vec3 lightRadiance = lightInfo.lightColor * lightAttenuation;
             vec3 bidirectionalReflectanceDist;
-            if ((lightInfo.lightFlags & LIGHT_FLAG_PBR_ENABLED) != 0) {
+            if (lightInfo.isPbrEnabled) {
                 //PBR formulas (see https://www.youtube.com/watch?v=RRE-F57fbXw & https://learnopengl.com/PBR/Theory)
                 vec3 halfWay = normalize(vertexToCameraPos + lightValues.vertexToLight);
                 float normalDistribution = distributionGGX(normal, halfWay, roughness);
