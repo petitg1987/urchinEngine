@@ -18,6 +18,9 @@ namespace urchin {
         public:
             LightShadowMap(bool, Light&, const ModelOcclusionCuller&, float, unsigned int, unsigned int);
 
+            void onLightAffectedZoneUpdated() const;
+            void onSplitFrustumUpdated(const std::vector<SplitFrustum>&) const;
+
             Light& getLight() const;
             const ModelOcclusionCuller& getModelOcclusionCuller() const;
             float getShadowViewDistance() const;

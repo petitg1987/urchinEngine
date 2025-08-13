@@ -63,9 +63,7 @@ namespace urchin {
         } else if (auto* light = dynamic_cast<Light*>(observable)) {
             if (notificationType == Light::AFFECTED_ZONE_UPDATED) {
                 if (lightShadowMaps.contains(light)) {
-                    for (const auto& lightSplitShadowMap : getLightShadowMap(light).getLightSplitShadowMaps()) {
-                        lightSplitShadowMap->onLightAffectedZoneUpdated();
-                    }
+                    getLightShadowMap(light).onLightAffectedZoneUpdated();
                 }
             } else if (notificationType == Light::PRODUCE_SHADOW) {
                 if (light->isProduceShadow()) {
@@ -241,7 +239,6 @@ namespace urchin {
 
     void ShadowManager::updateSplitFrustum(const Frustum<float>& frustum) {
         splitFrustums.clear();
-
         constexpr float ADJUSTMENT_EXPONENT = 1.8f; //1.0 = linear distribution, >1.0 = exponential distribution
         float previousSplitDistance = 0.0f;
         for (unsigned int i = 0; i < config.nbSunSplitShadowMaps; ++i) {
@@ -250,17 +247,18 @@ namespace urchin {
             float splitDistance = config.sunShadowViewDistance * splitPerc;
 
             splitFrustums.emplace_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
-            for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
-                if (lightShadowMap->getLight().getLightType() == Light::LightType::SUN) {
-                    lightShadowMap->getLightSplitShadowMaps()[i]->onSplitFrustumUpdated(splitFrustums[i]);
-                }
-            }
 
             previousSplitDistance = splitDistance;
         }
         #ifdef URCHIN_DEBUG
             assert(MathFunction::isEqual(config.sunShadowViewDistance, previousSplitDistance, 0.01f));
         #endif
+
+        for (const std::unique_ptr<LightShadowMap>& lightShadowMap : std::views::values(lightShadowMaps)) {
+            if (lightShadowMap->getLight().getLightType() == Light::LightType::SUN) {
+                lightShadowMap->onSplitFrustumUpdated(splitFrustums);
+            }
+        }
     }
 
     //TODO update the max allowed shadow maps based on distance

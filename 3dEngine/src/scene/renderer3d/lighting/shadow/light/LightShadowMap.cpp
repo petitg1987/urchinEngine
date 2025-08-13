@@ -56,6 +56,19 @@ namespace urchin {
         }
     }
 
+    void LightShadowMap::onLightAffectedZoneUpdated() const {
+        for (const auto& lightSplitShadowMap : lightSplitShadowMaps) {
+            lightSplitShadowMap->onLightAffectedZoneUpdated();
+        }
+    }
+
+    void LightShadowMap::onSplitFrustumUpdated(const std::vector<SplitFrustum>& splitFrustums) const {
+        assert(splitFrustums.size() == lightSplitShadowMaps.size());
+        for (std::size_t i = 0; i < lightSplitShadowMaps.size(); ++i) {
+            lightSplitShadowMaps[i]->onSplitFrustumUpdated(splitFrustums[i]);
+        }
+    }
+
     Light& LightShadowMap::getLight() const {
         return light;
     }
