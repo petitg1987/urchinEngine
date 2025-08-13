@@ -31,9 +31,9 @@ layout(std430, set = 0, binding = 2) readonly buffer LightsData {
 } lightsData;
 
 //shadow
-layout(std140, set = 0, binding = 3) uniform ShadowLight {
+layout(std140, set = 0, binding = 3) uniform ShadowMatrix {
     mat4 mLightProjectionView[MAX_LIGHTS_WITH_SHADOW * MAX_SPLIT_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
-} shadowLight;
+} shadowMatrix;
 layout(std140, set = 0, binding = 4) uniform ShadowInfo {
     vec4 splitData[MAX_SPLIT_SHADOW_MAPS];
     int offsetSampleCount;
@@ -84,7 +84,7 @@ float maxComponent(vec3 components) {
 float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 worldPosition, float NdotL, float biasReduceFactor) {
     float shadowQuantity = 0.0f;
 
-    vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SPLIT_SHADOW_MAPS + splitShadowMapIndex] * worldPosition;
+    vec4 shadowCoord = shadowMatrix.mLightProjectionView[shadowLightIndex * MAX_SPLIT_SHADOW_MAPS + splitShadowMapIndex] * worldPosition;
     shadowCoord.xyz /= shadowCoord.w;
     shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
     shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
