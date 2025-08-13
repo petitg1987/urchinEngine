@@ -14,7 +14,7 @@ namespace urchin {
 
     ShadowManager::ShadowManager(const Config& config, LightManager& lightManager, ModelOcclusionCuller& modelOcclusionCuller) :
             config(config),
-            lightManager(lightManager),
+            lightManager(lightManager), //TODO can be removed !
             modelOcclusionCuller(modelOcclusionCuller),
             splitData({}),
             shadowMapInfo({}) {
@@ -163,7 +163,7 @@ namespace urchin {
         return *itFind->second;
     }
 
-    void ShadowManager::updateVisibleLightsAndModels(const Frustum<float>& frustum, const Point3<float>& cameraPosition) {
+    void ShadowManager::updateVisibleLightsAndModels(const Frustum<float>& frustum, const Point3<float>& cameraPosition, std::span<Light* const> sceneVisibleLights) {
         ScopeProfiler sp(Profiler::graphic(), "smUpVisModel");
 
         //update split frustum
@@ -171,33 +171,18 @@ namespace urchin {
 
         //determine lights having shadow to compute
         visibleLightsWithShadow.clear();
-        std::span<Light* const> sceneVisibleLights = lightManager.getVisibleLights();
-        for (Light* sceneVisibleLight : sceneVisibleLights) {
-            if (sceneVisibleLight->isProduceShadow()) {
-                visibleLightsWithShadow.push_back(sceneVisibleLight);
-            }
-        }
+        std::ranges::copy_if(sceneVisibleLights, std::back_inserter(visibleLightsWithShadow), [](const Light* l) { return l->isProduceShadow(); });
         std::ranges::sort(visibleLightsWithShadow, [cameraPosition](const Light* light1, const Light* light2) {
-            if (light1->getLightType() == Light::LightType::SUN && light2->getLightType() != Light::LightType::SUN) {
-                return true; //light1 sun sorted first
-            } else if (light1->getLightType() != Light::LightType::SUN && light2->getLightType() == Light::LightType::SUN) {
-                return false; //light2 sun sorted first
-            } else if (light1->getLightType() == Light::LightType::SUN && light2->getLightType() == Light::LightType::SUN) {
-                return true; //light1 sun sorted first (arbitrary choice)
+            const bool light1IsSun = light1->getLightType() == Light::LightType::SUN;
+            const bool light2IsSun = light2->getLightType() == Light::LightType::SUN;
+            if (light1IsSun != light2IsSun || (light1IsSun && light2IsSun)) {
+                return light1IsSun; //sun sorted first
             }
-
-            float light1ToCameraSqDist = light1->getPosition().squareDistance(cameraPosition);
-            float light2ToCameraSqDist = light2->getPosition().squareDistance(cameraPosition);
-            if (light1ToCameraSqDist < light2ToCameraSqDist) {
-                return true; //light1 closest to camera sorted first
-            }
-            return false;
+            return light1->getPosition().squareDistance(cameraPosition) < light2->getPosition().squareDistance(cameraPosition); //closest omni/spot sorted first
         });
-        if (visibleLightsWithShadow.size() > config.maxLightsWithShadow) {
-            visibleLightsWithShadow.resize(config.maxLightsWithShadow);
-        }
+        visibleLightsWithShadow.resize(std::min((std::size_t)config.maxLightsWithShadow, visibleLightsWithShadow.size()));
 
-        //update visible models for lights with shadow
+        //update models for visible lights with shadow
         for (Light* visibleLightWithShadow : visibleLightsWithShadow) {
             lightShadowMaps.find(visibleLightWithShadow)->second->updateVisibleModels();
         }
