@@ -94,7 +94,7 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
     float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
     float bias = (slopeBias + SHADOW_MAP_CONSTANT_BIAS_FACTOR) * biasReduceFactor;
 
-    const float SOFT_EDGE_LENGTH = 1.5f;
+    const float SOFT_EDGE_LENGTH = 2.5f;
     float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[shadowLightIndex], 0));
     int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
     vec2 sceneSize = textureSize(depthTex, 0);
