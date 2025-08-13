@@ -6,7 +6,7 @@
 
 layout(constant_id = 0) const uint MAX_LIGHTS = 1000; //must be equals to LightManager::MAX_LIGHTS
 layout(constant_id = 1) const float AO_STRENGTH = 0.0;
-layout(constant_id = 2) const uint MAX_SHADOW_LIGHTS = 1000; //must be equals to LightManager::MAX_LIGHTS
+layout(constant_id = 2) const uint MAX_SHADOW_LIGHTS = 10; //must be equals to ShadowManager::MAX_SHADOW_LIGHTS
 layout(constant_id = 3) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT
 layout(constant_id = 4) const float SHADOW_MAP_CONSTANT_BIAS_FACTOR = 0.0;
 layout(constant_id = 5) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
@@ -31,7 +31,7 @@ layout(std430, set = 0, binding = 2) readonly buffer LightsData {
 } lightsData;
 
 //shadow
-layout(std140, set = 0, binding = 3) uniform ShadowLight { //TODO reduce number of MAX_SHADOW_LIGHTS to 10 ?!
+layout(std140, set = 0, binding = 3) uniform ShadowLight {
     mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * MAX_SPLIT_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
 layout(std140, set = 0, binding = 4) uniform ShadowMapData {

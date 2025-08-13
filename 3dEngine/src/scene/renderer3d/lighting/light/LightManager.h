@@ -43,7 +43,7 @@ namespace urchin {
             void onLightEvent(Light*, NotificationType);
             void logMaxLightsReach() const;
 
-            static constexpr unsigned int MAX_LIGHTS = 1000; //must be equals to MAX_LIGHTS/MAX_SHADOW_LIGHTS/MAX_LIGHTS in deferredSecondPass/modelTransparent shaders
+            static constexpr unsigned int MAX_LIGHTS = 1000; //must be equals to MAX_LIGHTS in deferredSecondPass/modelTransparent shaders
 
             //lights container
             std::vector<std::shared_ptr<Light>> sunLights;

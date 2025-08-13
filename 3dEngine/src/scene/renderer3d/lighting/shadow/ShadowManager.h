@@ -23,7 +23,8 @@ namespace urchin {
     */
     class ShadowManager final : public Observer, public Observable {
         public:
-            static constexpr unsigned int SPLIT_SHADOW_MAPS_SHADER_LIMIT = 6; //must be equals to 'MAX_SPLIT_SHADOW_MAPS' in lighting shaders
+            static constexpr unsigned int MAX_SHADOW_LIGHTS = 10; //must be equals to MAX_SHADOW_LIGHTS in deferredSecondPass shader
+            static constexpr unsigned int SPLIT_SHADOW_MAPS_SHADER_LIMIT = 6; //must be equals to 'MAX_SPLIT_SHADOW_MAPS' in deferredSecondPass shader
             static constexpr unsigned int SHADOW_MAP_OFFSET_TEX_SIZE = 10;
 
             enum NotificationType {

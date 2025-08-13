@@ -93,7 +93,7 @@ namespace urchin {
     }
 
     unsigned int ShadowManager::getMaxShadowLights() const {
-        return lightManager.getMaxLights();
+        return MAX_SHADOW_LIGHTS;
     }
 
     unsigned int ShadowManager::getMaxSplitShadowMaps() const {
@@ -276,6 +276,7 @@ namespace urchin {
         }
     }
 
+    //TODO load max 10 shadow maps based on distance
     void ShadowManager::loadShadowMaps(GenericRenderer& deferredSecondPassRenderer, uint32_t viewProjMatricesUniformBinding, uint32_t shadowMapDataUniformBinding,
                                        uint32_t shadowMapInfoUniformBinding, uint32_t texUniformBinding, uint32_t offsetTexUniformBinding) {
         //shadow map texture
