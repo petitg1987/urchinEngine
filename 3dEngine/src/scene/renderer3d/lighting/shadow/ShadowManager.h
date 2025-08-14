@@ -35,15 +35,10 @@ namespace urchin {
             struct Config {
                 unsigned int blurFilterBoxSize = 3;
                 unsigned int maxLightsWithShadow = 5;
-
                 unsigned int nbSunSplitShadowMaps = 5;
                 unsigned int sunShadowMapResolution = 1024;
                 float sunShadowViewDistance = 75.0f;
-
-                float omniShadowMapResolutionFactor = 45.0f;
-                unsigned int omniShadowMapMaxResolution = 1024;
-                float spotShadowMapResolutionFactor = 40.0f;
-                unsigned int spotShadowMapMaxResolution = 1024;
+                unsigned int omniOrSpotShadowMapResolution = 1024;
             };
 
             ShadowManager(const Config&, LightManager&, ModelOcclusionCuller&);
@@ -78,8 +73,6 @@ namespace urchin {
             //light handling
             const LightShadowMap& getLightShadowMap(const Light*) const;
             void addOrReplaceShadowLight(Light&);
-            unsigned int computeShadowMapResolution(const OmnidirectionalLight&) const;
-            unsigned int computeShadowMapResolution(const SpotLight&) const;
             void removeShadowLight(Light&);
             void updateShadowLights();
 

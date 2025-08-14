@@ -59,7 +59,6 @@ namespace urchin {
         computeScope();
 
         notifyObservers(this, AFFECTED_ZONE_UPDATED);
-        notifyObservers(this, ILLUMINATED_AREA_SIZE_UPDATED);
     }
 
     float OmnidirectionalLight::getExponentialAttenuation() const {

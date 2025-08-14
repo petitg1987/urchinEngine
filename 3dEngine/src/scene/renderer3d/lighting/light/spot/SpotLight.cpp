@@ -65,7 +65,6 @@ namespace urchin {
         computeScope();
 
         notifyObservers(this, AFFECTED_ZONE_UPDATED);
-        notifyObservers(this, ILLUMINATED_AREA_SIZE_UPDATED);
     }
 
     /**
@@ -112,7 +111,6 @@ namespace urchin {
         computeScope();
 
         notifyObservers(this, AFFECTED_ZONE_UPDATED);
-        notifyObservers(this, ILLUMINATED_AREA_SIZE_UPDATED);
     }
 
     float SpotLight::getExponentialAttenuation() const {

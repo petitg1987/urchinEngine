@@ -21,8 +21,7 @@ namespace urchin {
 
             enum NotificationType {
                 AFFECTED_ZONE_UPDATED, //Light affectation zone is updated (position, direction, spot angle...)
-                PRODUCE_SHADOW, //Produce shadow flag has been updated
-                ILLUMINATED_AREA_SIZE_UPDATED, //Light illuminated area size has been updated
+                PRODUCE_SHADOW //Produce shadow flag has been updated
             };
 
             virtual const std::vector<Vector3<float>>& getDirections() const = 0;
