@@ -79,10 +79,10 @@ namespace urchin {
                 ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projViewMatrix), &projViewMatrix)
                 ->addUniformData(POSITION_UNIFORM_BINDING, sizeof(position), &position)
                 ->addUniformData(ST_UNIFORM_BINDING, sizeof(materialsStRepeat), &materialsStRepeat)
-                ->addUniformTextureReader(MASK_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyRgba("terrain empty mask"), TextureParam::buildNearest())); //mask texture
+                ->addUniformTextureReader(MASK_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyRgba8Bits("terrain empty mask"), TextureParam::buildNearest())); //mask texture
 
         for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
-            terrainRendererBuilder->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING[i], TextureReader::build(Texture::buildEmptyRgba("terrain empty material"), TextureParam::buildNearest()));
+            terrainRendererBuilder->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING[i], TextureReader::build(Texture::buildEmptyRgba8Bits("terrain empty material"), TextureParam::buildNearest()));
         }
         terrainRenderer = terrainRendererBuilder->build();
 
@@ -117,7 +117,7 @@ namespace urchin {
                     TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
                     terrainRenderer->updateUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING[i], TextureReader::build(material->getAlbedoTexture(), std::move(textureParam)));
                 } else {
-                    terrainRenderer->updateUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING[i], TextureReader::build(Texture::buildEmptyRgba("terrain empty material"), TextureParam::buildNearest()));
+                    terrainRenderer->updateUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING[i], TextureReader::build(Texture::buildEmptyRgba8Bits("terrain empty material"), TextureParam::buildNearest()));
                 }
             }
         }

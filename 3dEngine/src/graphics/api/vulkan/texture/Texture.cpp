@@ -72,15 +72,15 @@ namespace urchin {
         return texture;
     }
 
-    std::shared_ptr<Texture> Texture::buildEmptyRgba(std::string name) {
-        std::array<uint8_t, 4> textureArrayData = {255, 20, 147, 255}; //pink
-        std::vector<const void*> allDataPtr(1, textureArrayData.data());
+    std::shared_ptr<Texture> Texture::buildEmptyRgba8Bits(std::string name) {
+        std::array<uint8_t, 4> textureData = {255, 20, 147, 255}; //pink
+        std::vector<const void*> allDataPtr(1, textureData.data());
         auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_UINT_NORM, allDataPtr, TextureDataType::INT_8));
         texture->setName(std::move(name));
         return texture;
     }
 
-    std::shared_ptr<Texture> Texture::buildEmptyGreyscale(std::string name) {
+    std::shared_ptr<Texture> Texture::buildEmptyGreyscale8Bits(std::string name) {
         std::array textureData = {(uint8_t)0};
         std::vector<const void*> allDataPtr(1, textureData.data());
         auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, allDataPtr, TextureDataType::INT_8));
@@ -88,10 +88,18 @@ namespace urchin {
         return texture;
     }
 
-    std::shared_ptr<Texture> Texture::buildEmptyArrayRg(std::string name) {
+    std::shared_ptr<Texture> Texture::buildEmptyArrayGreyscale32Bits(std::string name) {
+        std::array textureArrayData = {0.25f, 0.5f};
+        std::vector<const void*> allDataPtr(1, textureArrayData.data());
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::GRAYSCALE_32_FLOAT, allDataPtr, TextureDataType::FLOAT_32));
+        texture->setName(std::move(name));
+        return texture;
+    }
+
+    std::shared_ptr<Texture> Texture::buildEmptyArrayRg32Bits(std::string name) {
         std::array textureArrayData = {
-                0.0f, 0.25f,
-                0.5f, 1.0f
+            0.0f, 0.25f,
+            0.5f, 1.0f
         };
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
         auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr, TextureDataType::FLOAT_32));

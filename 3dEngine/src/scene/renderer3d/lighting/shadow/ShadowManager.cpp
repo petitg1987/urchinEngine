@@ -23,7 +23,7 @@ namespace urchin {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
 
-        emptyShadowMapTexture = Texture::buildEmptyArrayRg("empty shadow map"); //TODO wrong format ?
+        emptyShadowMapTexture = Texture::buildEmptyArrayGreyscale32Bits("empty shadow map");
         updateShadowMapOffsets();
     }
 

@@ -37,7 +37,7 @@ namespace urchin {
 
     std::shared_ptr<Texture> StaticBitmap::buildTexture(const std::string& filename) {
         if (filename.empty()) {
-            return Texture::buildEmptyRgba("empty texture");
+            return Texture::buildEmptyRgba8Bits("empty texture");
         }
         return ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
     }

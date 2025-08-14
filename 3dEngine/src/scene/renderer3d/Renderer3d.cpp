@@ -424,9 +424,9 @@ namespace urchin {
                 ->addUniformTextureReader(ALBEDO_EMISSIVE_TEX_UNIFORM_BINDING, TextureReader::build(albedoAndEmissiveTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(MATERIAL_MASK_TEX_UNIFORM_BINDING, TextureReader::build(materialAndMaskTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(AO_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest()))
+                ->addUniformTextureReader(AO_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyGreyscale8Bits("empty AO"), TextureParam::buildNearest()))
                 ->addUniformTextureReaderArray(SM_TEX_UNIFORM_BINDING, shadowMapTextureReaders)
-                ->addUniformTextureReader(SM_OFFSET_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyArrayRg("empty SM offset"), TextureParam::buildNearest()))
+                ->addUniformTextureReader(SM_OFFSET_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyArrayRg32Bits("empty SM offset"), TextureParam::buildNearest()))
                 ->build();
 
         refreshDebugFramebuffers = true;
