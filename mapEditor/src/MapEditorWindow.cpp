@@ -231,11 +231,12 @@ namespace urchin {
             if (notificationType == PhysicsWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
                 BodyShapeWidget* bodyShapeWidget = physicsWidget->getBodyShapeWidget();
                 if (const auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget*>(bodyShapeWidget)) {
-                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
+                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::COMPOUND_SHAPE_SELECTION_CHANGED);
+                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::COMPOUND_SHAPE_SELECTION_REFRESHED);
                 }
             }
         } else if (const auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
-            if (notificationType == LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
+            if (notificationType == LocalizedShapeTableView::COMPOUND_SHAPE_SELECTION_CHANGED || notificationType == LocalizedShapeTableView::COMPOUND_SHAPE_SELECTION_REFRESHED) {
                 sceneDisplayerWindow->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }
         }

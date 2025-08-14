@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     void LocalizedShapeTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
-        notifyObservers(this, OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
+        notifyObservers(this, COMPOUND_SHAPE_SELECTION_CHANGED);
     }
 
     bool LocalizedShapeTableView::hasLocalizedShapeSelected() const {
@@ -56,7 +56,7 @@ namespace urchin {
             addLocalizedShapeInMap(newLocalizedShape);
             itemShape->setData(QVariant::fromValue(newLocalizedShape.get()), Qt::UserRole + 1);
 
-            notifyObservers(this, OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
+            notifyObservers(this, COMPOUND_SHAPE_SELECTION_REFRESHED);
         }
     }
 

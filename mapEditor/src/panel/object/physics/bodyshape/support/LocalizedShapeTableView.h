@@ -19,7 +19,8 @@ namespace urchin {
             explicit LocalizedShapeTableView(QWidget* = nullptr);
 
             enum NotificationType {
-                OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED
+                COMPOUND_SHAPE_SELECTION_CHANGED,
+                COMPOUND_SHAPE_SELECTION_REFRESHED
             };
 
             bool hasLocalizedShapeSelected() const;
