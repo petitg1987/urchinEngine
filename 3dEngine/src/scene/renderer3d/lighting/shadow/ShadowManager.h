@@ -23,11 +23,12 @@ namespace urchin {
     */
     class ShadowManager final : public Observer, public Observable {
         public:
-            static constexpr unsigned int MAX_LIGHTS_WITH_SHADOW = 10; //must be equals to MAX_LIGHTS_WITH_SHADOW in deferredSecondPass shader
-            static constexpr unsigned int MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to 'MAX_SPLIT_SHADOW_MAPS' in deferredSecondPass shader
+            static constexpr unsigned int LIGHTS_WITH_SHADOW_SHADER_LIMIT = 10; //must be equals to MAX_LIGHTS_WITH_SHADOW in deferredSecondPass shader
+            static constexpr unsigned int SPLIT_SHADOW_MAPS_SHADER_LIMIT = 6; //must be equals to 'SPLIT_SHADOW_MAPS_SHADER_LIMIT' in deferredSecondPass/model shaders
             static constexpr unsigned int SHADOW_MAP_OFFSET_TEX_SIZE = 10;
 
             enum NotificationType {
+                NUMBER_LIGHTS_WITH_SHADOW_UPDATE,
                 NUMBER_SPLIT_SHADOW_MAPS_UPDATE
             };
 
@@ -99,7 +100,7 @@ namespace urchin {
             std::vector<Light*> visibleLightsWithShadow;
             std::shared_ptr<Texture> shadowMapOffsetTexture;
             struct {
-                alignas(16) std::array<Point4<float>, (std::size_t)MAX_SPLIT_SHADOW_MAPS> splitData;
+                alignas(16) std::array<Point4<float>, (std::size_t)SPLIT_SHADOW_MAPS_SHADER_LIMIT> splitData;
                 alignas(4) int offsetSampleCount;
             } shadowInfo;
 

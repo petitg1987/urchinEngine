@@ -6,8 +6,8 @@
 
 layout(constant_id = 0) const uint MAX_LIGHTS = 1000; //must be equals to LightManager::MAX_LIGHTS
 layout(constant_id = 1) const float AO_STRENGTH = 0.0;
-layout(constant_id = 2) const uint MAX_LIGHTS_WITH_SHADOW = 10; //must be equals to ShadowManager::MAX_LIGHTS_WITH_SHADOW
-layout(constant_id = 3) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::MAX_SPLIT_SHADOW_MAPS
+layout(constant_id = 2) const uint MAX_LIGHTS_WITH_SHADOW = 10; //must be equals to ShadowManager::LIGHTS_WITH_SHADOW_SHADER_LIMIT
+layout(constant_id = 3) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT
 layout(constant_id = 4) const float SHADOW_MAP_CONSTANT_BIAS_FACTOR = 0.0;
 layout(constant_id = 5) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
 layout(constant_id = 6) const int SHADOW_MAP_OFFSET_TEX_SIZE = 0;

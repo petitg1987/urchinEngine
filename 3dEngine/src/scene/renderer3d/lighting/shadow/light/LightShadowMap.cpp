@@ -19,8 +19,8 @@ namespace urchin {
             defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")),
             modelsToLayersMask(EverGrowHashMap<Model*, std::bitset<8>>()) {
 
-        if (nbSplitShadowMaps > ShadowManager::MAX_SPLIT_SHADOW_MAPS) {
-            throw std::invalid_argument("Number of split shadow maps must be lower than " + std::to_string(ShadowManager::MAX_SPLIT_SHADOW_MAPS) + ". Value: " + std::to_string(nbSplitShadowMaps));
+        if (nbSplitShadowMaps > ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) {
+            throw std::invalid_argument("Number of split shadow maps must be <= " + std::to_string(ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(nbSplitShadowMaps));
         }
 
         for (unsigned int i = 0; i < nbSplitShadowMaps; ++i) { //First split is the split nearest to the eye for sunlight.

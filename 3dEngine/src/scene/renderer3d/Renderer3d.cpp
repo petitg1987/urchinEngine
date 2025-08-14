@@ -73,6 +73,7 @@ namespace urchin {
 
         //deferred passes
         ambientOcclusionManager.addObserver(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);
+        shadowManager.addObserver(this, ShadowManager::NUMBER_LIGHTS_WITH_SHADOW_UPDATE);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SPLIT_SHADOW_MAPS_UPDATE);
 
         sceneInfo.isShadowActivated = visualConfig.isShadowActivated();
@@ -98,7 +99,7 @@ namespace urchin {
                 createOrUpdateDeferredPasses();
             }
         } else if (dynamic_cast<ShadowManager*>(observable)) {
-            if (notificationType == ShadowManager::NUMBER_SPLIT_SHADOW_MAPS_UPDATE) {
+            if (notificationType == ShadowManager::NUMBER_LIGHTS_WITH_SHADOW_UPDATE || notificationType == ShadowManager::NUMBER_SPLIT_SHADOW_MAPS_UPDATE) {
                 createOrUpdateDeferredPasses();
             }
         } else if (dynamic_cast<Camera*>(observable)) {

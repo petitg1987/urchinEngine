@@ -23,7 +23,7 @@ namespace urchin {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
 
-        emptyShadowMapTexture = Texture::buildEmptyArrayRg("empty shadow map");
+        emptyShadowMapTexture = Texture::buildEmptyArrayRg("empty shadow map"); //TODO wrong format ?
         updateShadowMapOffsets();
     }
 
@@ -89,7 +89,7 @@ namespace urchin {
     }
 
     unsigned int ShadowManager::getMaxLightsWithShadow() const {
-        return MAX_LIGHTS_WITH_SHADOW;
+        return getConfig().maxLightsWithShadow;
     }
 
     unsigned int ShadowManager::getMaxSplitShadowMaps() const {
@@ -118,6 +118,7 @@ namespace urchin {
                 this->config.omniShadowMapMaxResolution != config.omniShadowMapMaxResolution ||
                 this->config.spotShadowMapResolutionFactor != config.spotShadowMapResolutionFactor ||
                 this->config.spotShadowMapMaxResolution != config.spotShadowMapMaxResolution) {
+            bool nbMaxLightWithShadowUpdated = this->config.maxLightsWithShadow != config.maxLightsWithShadow;
             bool nbSunSplitShadowMapUpdated = this->config.nbSunSplitShadowMaps != config.nbSunSplitShadowMaps;
             bool blurFilterUpdated = this->config.blurFilterBoxSize != config.blurFilterBoxSize;
 
@@ -125,6 +126,9 @@ namespace urchin {
             checkConfig();
 
             updateShadowLights();
+            if (nbMaxLightWithShadowUpdated) {
+                notifyObservers(this, NUMBER_LIGHTS_WITH_SHADOW_UPDATE);
+            }
             if (nbSunSplitShadowMapUpdated) {
                 notifyObservers(this, NUMBER_SPLIT_SHADOW_MAPS_UPDATE);
             }
@@ -139,10 +143,10 @@ namespace urchin {
     }
 
     void ShadowManager::checkConfig() const {
-        if (config.maxLightsWithShadow > MAX_LIGHTS_WITH_SHADOW) {
-            throw std::invalid_argument("Number of lights with shadow maps must be <= " + std::to_string(MAX_LIGHTS_WITH_SHADOW) + ". Value: " + std::to_string(config.maxLightsWithShadow));
-        } else if (config.nbSunSplitShadowMaps > MAX_SPLIT_SHADOW_MAPS) {
-            throw std::invalid_argument("Number of sun shadow maps must be <= " + std::to_string(MAX_SPLIT_SHADOW_MAPS) + ". Value: " + std::to_string(config.nbSunSplitShadowMaps));
+        if (config.maxLightsWithShadow > LIGHTS_WITH_SHADOW_SHADER_LIMIT) {
+            throw std::invalid_argument("Number of lights with shadow maps must be <= " + std::to_string(LIGHTS_WITH_SHADOW_SHADER_LIMIT) + ". Value: " + std::to_string(config.maxLightsWithShadow));
+        } else if (config.nbSunSplitShadowMaps > SPLIT_SHADOW_MAPS_SHADER_LIMIT) {
+            throw std::invalid_argument("Number of sun shadow maps must be <= " + std::to_string(SPLIT_SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbSunSplitShadowMaps));
         } else if (config.blurFilterBoxSize == 0) {
             throw std::invalid_argument("Size of the blur filter box must be greater or equal to 1. Value: " + std::to_string(config.blurFilterBoxSize));
         }

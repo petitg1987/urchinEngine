@@ -22,7 +22,7 @@ namespace urchin {
             const LightShadowMap* lightShadowMap;
 
             struct ShadowData {
-                alignas(16) std::array<Matrix4<float>, ShadowManager::MAX_SPLIT_SHADOW_MAPS> lightProjectionViewMatrices;
+                alignas(16) std::array<Matrix4<float>, ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT> lightProjectionViewMatrices;
             } shadowData;
     };
 
