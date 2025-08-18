@@ -59,7 +59,8 @@ namespace urchin {
             QDoubleSpinBox* omniPositionX;
             QDoubleSpinBox* omniPositionY;
             QDoubleSpinBox* omniPositionZ;
-            QDoubleSpinBox* omniAttenuation;
+            QDoubleSpinBox* omniScopeRadius;
+            QDoubleSpinBox* omniFalloffExponent;
             QLabel* spotDirectionLabel;
             QDoubleSpinBox* spotDirectionX;
             QDoubleSpinBox* spotDirectionY;
@@ -67,7 +68,8 @@ namespace urchin {
             QDoubleSpinBox* spotPositionX;
             QDoubleSpinBox* spotPositionY;
             QDoubleSpinBox* spotPositionZ;
-            QDoubleSpinBox* spotAttenuation;
+            QDoubleSpinBox* spotScopeRadius;
+            QDoubleSpinBox* spotFalloffExponent;
             QDoubleSpinBox* spotInnerAngle;
             QDoubleSpinBox* spotOuterAngle;
 

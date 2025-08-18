@@ -25,8 +25,10 @@ namespace urchin {
             auto positionChunk = udaParser.getFirstChunk(true, POSITION_TAG, UdaAttribute(), lightChunk);
             auto omnidirectional = std::make_unique<OmnidirectionalLight>(positionChunk->getPoint3Value());
 
-            auto exponentialAttenuationChunk = udaParser.getFirstChunk(true, EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), lightChunk);
-            omnidirectional->setAttenuation(exponentialAttenuationChunk->getFloatValue());
+            auto scopeRadiusChunk = udaParser.getFirstChunk(true, SCOPE_RADIUS_TAG, UdaAttribute(), lightChunk);
+            auto falloffExponentChunk = udaParser.getFirstChunk(true, FALLOFF_EXPONENT_TAG, UdaAttribute(), lightChunk);
+            omnidirectional->setScopeRadius(scopeRadiusChunk->getFloatValue());
+            omnidirectional->setFalloffExponent(falloffExponentChunk->getFloatValue());
 
             return omnidirectional;
         } else if (lightType == SPOT_VALUE) {
@@ -36,8 +38,10 @@ namespace urchin {
             auto outerAngleChunk = udaParser.getFirstChunk(true, OUTER_ANGLE_TAG, UdaAttribute(), lightChunk);
             auto spot = std::make_unique<SpotLight>(positionChunk->getPoint3Value(), directionChunk->getVector3Value(), innerAngleChunk->getFloatValue(), outerAngleChunk->getFloatValue());
 
-            auto exponentialAttenuationChunk = udaParser.getFirstChunk(true, EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), lightChunk);
-            spot->setAttenuation(exponentialAttenuationChunk->getFloatValue());
+            auto scopeRadiusChunk = udaParser.getFirstChunk(true, SCOPE_RADIUS_TAG, UdaAttribute(), lightChunk);
+            auto falloffExponentChunk = udaParser.getFirstChunk(true, FALLOFF_EXPONENT_TAG, UdaAttribute(), lightChunk);
+            spot->setScopeRadius(scopeRadiusChunk->getFloatValue());
+            spot->setFalloffExponent(falloffExponentChunk->getFloatValue());
 
             return spot;
         }
@@ -59,8 +63,11 @@ namespace urchin {
             auto& positionChunk = udaParser.createChunk(POSITION_TAG, UdaAttribute(), &lightChunk);
             positionChunk.setPoint3Value(omnidirectionalLight.getPosition());
 
-            auto& exponentialAttenuationChunk = udaParser.createChunk(EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), &lightChunk);
-            exponentialAttenuationChunk.setFloatValue(omnidirectionalLight.getExponentialAttenuation());
+            auto& scopeRadiusChunk = udaParser.createChunk(SCOPE_RADIUS_TAG, UdaAttribute(), &lightChunk);
+            scopeRadiusChunk.setFloatValue(omnidirectionalLight.getScopeRadius());
+
+            auto& falloffExponentChunk = udaParser.createChunk(FALLOFF_EXPONENT_TAG, UdaAttribute(), &lightChunk);
+            falloffExponentChunk.setFloatValue(omnidirectionalLight.getFalloffExponent());
         } else if (light.getLightType() == Light::LightType::SPOT) {
             const auto& spotLight = static_cast<const SpotLight&>(light);
             lightChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPOT_VALUE));
@@ -77,8 +84,11 @@ namespace urchin {
             auto& outerAngleChunk = udaParser.createChunk(OUTER_ANGLE_TAG, UdaAttribute(), &lightChunk);
             outerAngleChunk.setFloatValue(spotLight.getOuterAngle());
 
-            auto& exponentialAttenuationChunk = udaParser.createChunk(EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), &lightChunk);
-            exponentialAttenuationChunk.setFloatValue(spotLight.getExponentialAttenuation());
+            auto& scopeRadiusChunk = udaParser.createChunk(SCOPE_RADIUS_TAG, UdaAttribute(), &lightChunk);
+            scopeRadiusChunk.setFloatValue(spotLight.getScopeRadius());
+
+            auto& falloffExponentChunk = udaParser.createChunk(FALLOFF_EXPONENT_TAG, UdaAttribute(), &lightChunk);
+            falloffExponentChunk.setFloatValue(spotLight.getFalloffExponent());
         } else  {
             throw std::invalid_argument("Unknown light type to write in map: " + std::to_string((int)light.getLightType()));
         }

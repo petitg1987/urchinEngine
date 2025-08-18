@@ -134,12 +134,14 @@ namespace urchin {
             } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                 const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
                 lightInfo.position = omnidirectionalLight->getPosition();
-                lightInfo.exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
+                lightInfo.scopeRadius = omnidirectionalLight->getScopeRadius();
+                lightInfo.falloffExponent = omnidirectionalLight->getFalloffExponent();
             } else if (light->getLightType() == Light::LightType::SPOT) {
                 const auto* spotLight = dynamic_cast<const SpotLight*>(light);
                 lightInfo.position = spotLight->getPosition();
                 lightInfo.direction = spotLight->getDirections()[0];
-                lightInfo.exponentialAttenuation = spotLight->getExponentialAttenuation();
+                lightInfo.scopeRadius = spotLight->getScopeRadius();
+                lightInfo.falloffExponent = spotLight->getFalloffExponent();
                 lightInfo.innerCosAngle = spotLight->getInnerCosAngle();
                 lightInfo.outerCosAngle = spotLight->getOuterCosAngle();
             } else {
@@ -148,6 +150,7 @@ namespace urchin {
         }
 
         std::size_t dataUpdatedSize = 16 /* globalAmbientColor + lightsCount */ + lightsData.lightsCount * sizeof(LightInfo);
+
         deferredSecondPassRenderer.updateStorageBufferPartialData(lightsDataBinding, dataUpdatedSize, &lightsData);
     }
 

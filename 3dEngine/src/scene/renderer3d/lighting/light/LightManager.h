@@ -63,7 +63,8 @@ namespace urchin {
                 alignas(16) Point3<float> lightColor;
                 alignas(16) Vector3<float> direction;
                 alignas(16) Point3<float> position;
-                alignas(4) float exponentialAttenuation;
+                alignas(4) float scopeRadius;
+                alignas(4) float falloffExponent;
                 alignas(4) float innerCosAngle;
                 alignas(4) float outerCosAngle;
             };

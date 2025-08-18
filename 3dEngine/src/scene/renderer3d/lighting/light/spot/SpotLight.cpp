@@ -9,7 +9,8 @@ namespace urchin {
             outerAngleInDegrees(0.0f),
             outerCosAngle(0.0f),
             aabboxScope(std::nullopt),
-            exponentialAttenuation(0.1f),
+            scopeRadius(5.0f),
+            falloffExponent(3.0f),
             coneScope(std::nullopt),
             frustumScope(std::nullopt) {
         directions.emplace_back(direction.normalize());
@@ -102,27 +103,27 @@ namespace urchin {
         return *aabboxScope;
     }
 
-    void SpotLight::setAttenuation(float exponentialAttenuation) {
-        if (exponentialAttenuation < std::numeric_limits<float>::epsilon()) {
-            throw std::domain_error("Exponential attenuation must be greater than zero.");
-        }
-        this->exponentialAttenuation = exponentialAttenuation;
+    void SpotLight::setScopeRadius(float scopeRadius) {
+        this->scopeRadius = scopeRadius;
 
         computeScope();
-
         notifyObservers(this, AFFECTED_ZONE_UPDATED);
     }
 
-    float SpotLight::getExponentialAttenuation() const {
-        return exponentialAttenuation;
+    float SpotLight::getScopeRadius() const {
+        return scopeRadius;
     }
 
-    float SpotLight::computeIlluminationRange() const {
-        return -std::log(ATTENUATION_NO_EFFECT) / exponentialAttenuation;
+    void SpotLight::setFalloffExponent(float falloffExponent) {
+        this->falloffExponent = falloffExponent;
+    }
+
+    float SpotLight::getFalloffExponent() const {
+        return falloffExponent;
     }
 
     float SpotLight::computeEndRadius() const {
-        return computeIlluminationRange() * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
+        return scopeRadius * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
     }
 
     const Cone<float>& SpotLight::getConeScope() const {
@@ -139,7 +140,7 @@ namespace urchin {
      * Computes the cone scope representing light affectation zone
      */
     void SpotLight::computeScope() {
-        float coneHeight = computeIlluminationRange();
+        float coneHeight = scopeRadius;
         Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, 0.0f, -1.0f), directions[0]).normalize();
 
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));

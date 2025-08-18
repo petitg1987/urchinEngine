@@ -8,7 +8,8 @@ struct LightInfo {
     vec3 lightColor;
     vec3 direction;
     vec3 position;
-    float exponentialAttenuation;
+    float scopeRadius;
+    float falloffExponent;
     float innerCosAngle;
     float outerCosAngle;
 };
@@ -29,7 +30,7 @@ LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosit
         vec3 vertexToLight = lightInfo.position - worldPosition;
         float dist = length(vertexToLight);
         lightValues.vertexToLight = vertexToLight / dist;
-        lightValues.lightAttenuation = exp(-dist * lightInfo.exponentialAttenuation);
+        lightValues.lightAttenuation = pow(max(0.0, (1.0 - (dist / lightInfo.scopeRadius))), lightInfo.falloffExponent);
     } else if (lightInfo.lightType == 2) { //spot light
         vec3 vertexToLight = lightInfo.position - worldPosition;
         float dist = length(vertexToLight);
@@ -37,7 +38,7 @@ LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosit
         float epsilon = lightInfo.innerCosAngle - lightInfo.outerCosAngle;
         float intensity = clamp((theta - lightInfo.outerCosAngle) / epsilon, 0.0, 1.0);
         lightValues.vertexToLight = vertexToLight / dist;
-        lightValues.lightAttenuation = exp(-dist * lightInfo.exponentialAttenuation) * intensity;
+        lightValues.lightAttenuation = pow(max(0.0, (1.0 - (dist / lightInfo.scopeRadius))), lightInfo.falloffExponent) * intensity;
     }
 
     lightValues.NdotL = max(dot(normal, lightValues.vertexToLight), 0.0);

@@ -7,8 +7,6 @@ namespace urchin {
 
     class Light : public Octreeable<Light> {
         public:
-            static constexpr float ATTENUATION_NO_EFFECT = 0.015f; //defines when the attenuation of a light has no light effect on objects
-
             Light();
             Light(const Light&) = default;
             ~Light() override = default;

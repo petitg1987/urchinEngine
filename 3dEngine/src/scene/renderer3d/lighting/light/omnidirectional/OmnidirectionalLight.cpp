@@ -1,14 +1,11 @@
-#include <stdexcept>
-#include <cmath>
-#include <limits>
-
 #include "scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h"
 
 namespace urchin {
 
     OmnidirectionalLight::OmnidirectionalLight(const Point3<float>& position) :
             position(position),
-            exponentialAttenuation(0.1f),
+            scopeRadius(5.0f),
+            falloffExponent(3.0f),
             sphereScope(std::nullopt),
             bboxScope(std::nullopt),
             frustumScopes(std::nullopt) {
@@ -50,23 +47,23 @@ namespace urchin {
         return *bboxScope;
     }
 
-    void OmnidirectionalLight::setAttenuation(float exponentialAttenuation) {
-        if (exponentialAttenuation < std::numeric_limits<float>::epsilon()) {
-            throw std::domain_error("Exponential attenuation must be greater than zero.");
-        }
-        this->exponentialAttenuation = exponentialAttenuation;
+    void OmnidirectionalLight::setScopeRadius(float scopeRadius) {
+        this->scopeRadius = scopeRadius;
 
         computeScope();
-
         notifyObservers(this, AFFECTED_ZONE_UPDATED);
     }
 
-    float OmnidirectionalLight::getExponentialAttenuation() const {
-        return exponentialAttenuation;
+    float OmnidirectionalLight::getScopeRadius() const {
+        return scopeRadius;
     }
 
-    float OmnidirectionalLight::computeRadius() const {
-        return -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
+    void OmnidirectionalLight::setFalloffExponent(float falloffExponent) {
+        this->falloffExponent = falloffExponent;
+    }
+
+    float OmnidirectionalLight::getFalloffExponent() const {
+        return falloffExponent;
     }
 
     const AABBox<float>& OmnidirectionalLight::getAABBoxScope() const {
@@ -85,14 +82,13 @@ namespace urchin {
     }
 
     void OmnidirectionalLight::computeScope() {
-        float radius = computeRadius();
-        sphereScope = std::make_optional<Sphere<float>>(radius, getPosition());
-        bboxScope = std::make_optional<AABBox<float>>(getPosition() - radius, getPosition() + radius);
+        sphereScope = std::make_optional<Sphere<float>>(scopeRadius, getPosition());
+        bboxScope = std::make_optional<AABBox<float>>(getPosition() - scopeRadius, getPosition() + scopeRadius);
 
         frustumScopes = std::make_optional<std::array<Frustum<float>, 6>>();
         for (unsigned int i = 0; i < directions.size(); ++i) {
             float nearPlane = FRUSTUM_NEAR_PLANE;
-            float farPlane = computeRadius() + nearPlane;
+            float farPlane = scopeRadius + nearPlane;
             Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, 0.0f, -1.0f), directions[i]).normalize();
             Matrix4<float> transformMatrix = Matrix4<float>::buildTranslation(getPosition().X, getPosition().Y, getPosition().Z) * orientation.toMatrix4();
             Frustum frustum(90.0f, 1.0f, nearPlane, farPlane);

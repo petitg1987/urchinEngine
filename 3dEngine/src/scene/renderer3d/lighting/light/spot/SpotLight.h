@@ -30,9 +30,10 @@ namespace urchin {
             const AABBox<float>& getAABBox() const override;
 
             //attenuation methods
-            void setAttenuation(float);
-            float getExponentialAttenuation() const;
-            float computeIlluminationRange() const;
+            void setScopeRadius(float);
+            float getScopeRadius() const;
+            void setFalloffExponent(float);
+            float getFalloffExponent() const;
             float computeEndRadius() const;
             const Cone<float>& getConeScope() const;
             const Frustum<float>& getFrustumScope() const;
@@ -52,7 +53,8 @@ namespace urchin {
             std::optional<AABBox<float>> aabboxScope;
 
             //attenuation properties
-            float exponentialAttenuation;
+            float scopeRadius;
+            float falloffExponent;
             std::optional<Cone<float>> coneScope;
             std::optional<Frustum<float>> frustumScope;
     };

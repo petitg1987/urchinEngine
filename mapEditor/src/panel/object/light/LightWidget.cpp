@@ -27,7 +27,8 @@ namespace urchin {
             omniPositionX(nullptr),
             omniPositionY(nullptr),
             omniPositionZ(nullptr),
-            omniAttenuation(nullptr),
+            omniScopeRadius(nullptr),
+            omniFalloffExponent(nullptr),
             spotDirectionLabel(nullptr),
             spotDirectionX(nullptr),
             spotDirectionY(nullptr),
@@ -35,7 +36,8 @@ namespace urchin {
             spotPositionX(nullptr),
             spotPositionY(nullptr),
             spotPositionZ(nullptr),
-            spotAttenuation(nullptr),
+            spotScopeRadius(nullptr),
+            spotFalloffExponent(nullptr),
             spotInnerAngle(nullptr),
             spotOuterAngle(nullptr) {
         setContentsMargins(0, 0, 0, 0);
@@ -169,13 +171,21 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyle(omniPositionZ);
         connect(omniPositionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-        auto* attenuationLabel = new QLabel("Expo. Att.:");
-        omniLightLayout->addWidget(attenuationLabel, 1, 0);
+        auto* scopeRadiusLabel = new QLabel("Radius:");
+        omniLightLayout->addWidget(scopeRadiusLabel, 1, 0);
 
-        omniAttenuation = new QDoubleSpinBox();
-        omniLightLayout->addWidget(omniAttenuation, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyle(omniAttenuation, 0.01, std::numeric_limits<float>::max(), 0.05);
-        connect(omniAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        omniScopeRadius = new QDoubleSpinBox();
+        omniLightLayout->addWidget(omniScopeRadius, 1, 1);
+        SpinBoxStyleHelper::applyDefaultStyle(omniScopeRadius, 0.01, std::numeric_limits<float>::max(), 0.05);
+        connect(omniScopeRadius, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+
+        auto* falloffExponentLabel = new QLabel("Falloff Expo.:");
+        omniLightLayout->addWidget(falloffExponentLabel, 2, 0);
+
+        omniFalloffExponent = new QDoubleSpinBox();
+        omniLightLayout->addWidget(omniFalloffExponent, 2, 1);
+        SpinBoxStyleHelper::applyDefaultStyle(omniFalloffExponent, 0.01, std::numeric_limits<float>::max(), 0.05);
+        connect(omniFalloffExponent, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
     void LightWidget::setupSpecificSpotLightBox(QVBoxLayout* mainLayout) {
@@ -238,13 +248,21 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyle(spotOuterAngle, 1.0, SpotLight::MAX_ANGLE_DEGREE, 1.0);
         connect(spotOuterAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-        auto* attenuationLabel = new QLabel("Expo. Att.:");
-        spotLightLayout->addWidget(attenuationLabel, 4, 0);
+        auto* scopeRadiusLabel = new QLabel("Radius:");
+        spotLightLayout->addWidget(scopeRadiusLabel, 4, 0);
 
-        spotAttenuation = new QDoubleSpinBox();
-        spotLightLayout->addWidget(spotAttenuation, 4, 1);
-        SpinBoxStyleHelper::applyDefaultStyle(spotAttenuation, 0.01, std::numeric_limits<float>::max(), 0.05);
-        connect(spotAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotScopeRadius = new QDoubleSpinBox();
+        spotLightLayout->addWidget(spotScopeRadius, 4, 1);
+        SpinBoxStyleHelper::applyDefaultStyle(spotScopeRadius, 0.01, std::numeric_limits<float>::max(), 0.05);
+        connect(spotScopeRadius, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+
+        auto* falloffExponentLabel = new QLabel("Falloff Expo.:");
+        spotLightLayout->addWidget(falloffExponentLabel, 5, 0);
+
+        spotFalloffExponent = new QDoubleSpinBox();
+        spotLightLayout->addWidget(spotFalloffExponent, 5, 1);
+        SpinBoxStyleHelper::applyDefaultStyle(spotFalloffExponent, 0.01, std::numeric_limits<float>::max(), 0.05);
+        connect(spotFalloffExponent, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
     void LightWidget::setupLightDataFrom() {
@@ -296,7 +314,8 @@ namespace urchin {
         this->omniPositionY->setValue(relativeLightPosition.Y);
         this->omniPositionZ->setValue(relativeLightPosition.Z);
 
-        this->omniAttenuation->setValue(light->getExponentialAttenuation());
+        this->omniScopeRadius->setValue(light->getScopeRadius());
+        this->omniFalloffExponent->setValue(light->getFalloffExponent());
     }
 
     void LightWidget::setupSpotLightDataFrom(const SpotLight* light) const {
@@ -318,7 +337,8 @@ namespace urchin {
         this->spotInnerAngle->setValue(light->getInnerAngle());
         this->spotOuterAngle->setValue(light->getOuterAngle());
 
-        this->spotAttenuation->setValue(light->getExponentialAttenuation());
+        this->spotScopeRadius->setValue(light->getScopeRadius());
+        this->spotFalloffExponent->setValue(light->getFalloffExponent());
     }
 
     void LightWidget::updateLightGeneralProperties() const {
@@ -347,13 +367,13 @@ namespace urchin {
             } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                 Point3 relativeLightPosition((float)omniPositionX->value(), (float)omniPositionY->value(), (float)omniPositionZ->value());
                 Point3 absoluteLightPosition = objectEntity->getModel()->getTransform().getPosition() + relativeLightPosition;
-                objectController->updateOmnidirectionalLightProperties(*objectEntity, (float)omniAttenuation->value(), absoluteLightPosition);
+                objectController->updateOmnidirectionalLightProperties(*objectEntity, (float)omniScopeRadius->value(), (float)omniFalloffExponent->value(), absoluteLightPosition);
             } else if (light->getLightType() == Light::LightType::SPOT) {
                 Point3 relativeLightPosition((float)spotPositionX->value(), (float)spotPositionY->value(), (float)spotPositionZ->value());
                 Point3 absoluteLightPosition = objectEntity->getModel()->getTransform().getPosition() + relativeLightPosition;
                 Vector3 direction((float)spotDirectionX->value(), (float)spotDirectionY->value(), (float)spotDirectionZ->value());
                 try {
-                    objectController->updateSpotLightProperties(*objectEntity, (float)spotAttenuation->value(), absoluteLightPosition, direction, (float)spotInnerAngle->value(), (float)spotOuterAngle->value());
+                    objectController->updateSpotLightProperties(*objectEntity, (float)spotScopeRadius->value(), (float)spotFalloffExponent->value(), absoluteLightPosition, direction, (float)spotInnerAngle->value(), (float)spotOuterAngle->value());
                 } catch (const std::invalid_argument& e) {
                     LabelStyleHelper::applyErrorStyle(spotDirectionLabel, std::string(e.what()));
                 }

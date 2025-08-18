@@ -242,23 +242,25 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ObjectController::updateOmnidirectionalLightProperties(const ObjectEntity& constObjectEntity, float attenuation, const Point3<float>& position) {
+    const ObjectEntity& ObjectController::updateOmnidirectionalLightProperties(const ObjectEntity& constObjectEntity, float scopeRadius, float falloffExponent, const Point3<float>& position) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         auto* omnidirectionalLight = static_cast<OmnidirectionalLight*>(objectEntity.getLight());
 
-        omnidirectionalLight->setAttenuation(attenuation);
+        omnidirectionalLight->setScopeRadius(scopeRadius);
+        omnidirectionalLight->setFalloffExponent(falloffExponent);
         omnidirectionalLight->setPosition(position);
 
         markModified();
         return objectEntity;
     }
 
-    const ObjectEntity& ObjectController::updateSpotLightProperties(const ObjectEntity& constObjectEntity, float attenuation, const Point3<float>& position,
+    const ObjectEntity& ObjectController::updateSpotLightProperties(const ObjectEntity& constObjectEntity, float scopeRadius, float falloffExponent, const Point3<float>& position,
             const Vector3<float>& direction, float innerAngleInDegrees, float outerAngleInDegrees) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         auto* spotLight = static_cast<SpotLight*>(objectEntity.getLight());
 
-        spotLight->setAttenuation(attenuation);
+        spotLight->setScopeRadius(scopeRadius);
+        spotLight->setFalloffExponent(falloffExponent);
         spotLight->setPosition(position);
         spotLight->setDirection(direction);
         spotLight->setAngles(innerAngleInDegrees, outerAngleInDegrees);

@@ -29,7 +29,8 @@ namespace urchin {
             static constexpr char INNER_ANGLE_TAG[] = "innerAngle";
             static constexpr char OUTER_ANGLE_TAG[] = "outerAngle";
             static constexpr char LIGHT_COLOR_TAG[] = "lightColor";
-            static constexpr char EXPONENTIAL_ATTENUATION_TAG[] = "exponentialAttenuation";
+            static constexpr char SCOPE_RADIUS_TAG[] = "scopeRadius";
+            static constexpr char FALLOFF_EXPONENT_TAG[] = "falloffExponent";
             static constexpr char PBR_ENABLED_TAG[] = "pbrEnabled";
             static constexpr char LIGHT_MASK_TAG[] = "lightMask";
             static constexpr char PRODUCE_SHADOW_TAG[] = "produceShadow";

@@ -38,8 +38,8 @@ namespace urchin {
             void changeLightType(const ObjectEntity&, std::optional<Light::LightType>);
             const ObjectEntity& updateLightGeneralProperties(const ObjectEntity&, const Point3<float>&, bool, uint8_t, bool, float);
             const ObjectEntity& updateSunLightProperties(const ObjectEntity&, const Vector3<float>&);
-            const ObjectEntity& updateOmnidirectionalLightProperties(const ObjectEntity&, float, const Point3<float>&);
-            const ObjectEntity& updateSpotLightProperties(const ObjectEntity&, float, const Point3<float>&, const Vector3<float>&, float, float);
+            const ObjectEntity& updateOmnidirectionalLightProperties(const ObjectEntity&, float, float, const Point3<float>&);
+            const ObjectEntity& updateSpotLightProperties(const ObjectEntity&, float, float, const Point3<float>&, const Vector3<float>&, float, float);
 
             void changeSound(const ObjectEntity&, std::optional<Sound::SoundType>, std::string);
             void updateSoundComponent(const ObjectEntity&, std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
