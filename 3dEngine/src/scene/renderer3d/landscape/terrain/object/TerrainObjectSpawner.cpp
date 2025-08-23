@@ -39,29 +39,23 @@ namespace urchin {
 
             auto meshRendererBuilder = GenericRendererBuilder::create("terrain obj - " + meshName, renderTarget, *shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
-                    ->indices(std::span(reinterpret_cast<const unsigned int*>(constMesh.getTrianglesIndices().data()), constMesh.getTrianglesIndices().size() * 3))
-                    ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projectionViewMatrix), &projectionViewMatrix)
-                    ->addUniformData(MESH_DATA_UNIFORM_BINDING, sizeof(meshData), &meshData)
-                    ->addUniformData(CAMERA_INFO_UNIFORM_BINDING, sizeof(cameraInfo), &cameraInfo);
-
-            instanceMatrices.emplace_back(InstanceMatrix{.modelMatrix = Matrix4<float>(), .normalMatrix = Matrix4<float>()});
-            meshRendererBuilder->instanceData(instanceMatrices.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT}, (const float*)instanceMatrices.data());
-
-            // if (!enableFaceCull) {
-            //     meshRendererBuilder->disableCullFace();
-            // }
-            // if (!blendFunctions.empty()) {
-            //     meshRendererBuilder->enableTransparency(blendFunctions);
-            // }
-
-            meshRendererBuilder
                     ->addData(mesh.getUv())
                     ->addData(mesh.getNormals())
                     ->addData(mesh.getTangents())
+                    ->indices(std::span(reinterpret_cast<const unsigned int*>(constMesh.getTrianglesIndices().data()), constMesh.getTrianglesIndices().size() * 3))
+                    ->instanceData(instanceMatrices.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT}, (const float*)instanceMatrices.data())
+                    ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projectionViewMatrix), &projectionViewMatrix)
+                    ->addUniformData(MESH_DATA_UNIFORM_BINDING, sizeof(meshData), &meshData)
+                    ->addUniformData(CAMERA_INFO_UNIFORM_BINDING, sizeof(cameraInfo), &cameraInfo)
                     ->addUniformTextureReader(MAT_ALBEDO_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)))
                     ->addUniformTextureReader(MAT_NORMAL_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)))
                     ->addUniformTextureReader(MAT_ROUGHNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)))
                     ->addUniformTextureReader(MAT_METALNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
+
+            if (mesh.getMaterial().getAlbedoTexture()->hasTransparency()) {
+                meshRendererBuilder->disableCullFace();
+                meshRendererBuilder->enableTransparency({BlendFunction::buildDefault()});
+            }
 
             meshRenderers.push_back(meshRendererBuilder->build());
         }
