@@ -16,7 +16,7 @@ namespace urchin {
 
         private:
             void initialize(RenderTarget&);
-            void fillMeshData(const Mesh&) const;
+            void fillMeshData(const Mesh&);
             TextureParam buildTextureParam(const Mesh&) const;
 
             static constexpr uint32_t PROJ_VIEW_MATRIX_UNIFORM_BINDING = 0;
@@ -33,7 +33,12 @@ namespace urchin {
             bool isInitialized;
             RenderTarget* renderTarget;
 
-            mutable struct {
+            struct InstanceMatrix {
+                Matrix4<float> modelMatrix;
+                Matrix4<float> normalMatrix;
+            };
+            std::vector<InstanceMatrix> instanceMatrices;
+            struct {
                 alignas(4) unsigned int lightMask;
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;

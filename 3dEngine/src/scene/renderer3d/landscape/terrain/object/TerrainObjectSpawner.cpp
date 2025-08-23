@@ -16,6 +16,11 @@ namespace urchin {
         std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
 
         cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
+
+        InstanceMatrix instanceMatrix;
+        instanceMatrix.modelMatrix = this->model->getTransform().getTransformMatrix();
+        instanceMatrix.normalMatrix = instanceMatrix.modelMatrix.inverse().transpose();
+        instanceMatrices.push_back(instanceMatrix);
     }
 
     void TerrainObjectSpawner::initialize(RenderTarget& renderTarget) {
@@ -39,8 +44,8 @@ namespace urchin {
                     ->addUniformData(MESH_DATA_UNIFORM_BINDING, sizeof(meshData), &meshData)
                     ->addUniformData(CAMERA_INFO_UNIFORM_BINDING, sizeof(cameraInfo), &cameraInfo);
 
-           // instanceMatrices.emplace_back(InstanceMatrix{.modelMatrix = Matrix4<float>(), .normalMatrix = Matrix4<float>()});
-           // meshRendererBuilder->instanceData(instanceMatrices.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT}, (const float*)instanceMatrices.data());
+            instanceMatrices.emplace_back(InstanceMatrix{.modelMatrix = Matrix4<float>(), .normalMatrix = Matrix4<float>()});
+            meshRendererBuilder->instanceData(instanceMatrices.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT}, (const float*)instanceMatrices.data());
 
             // if (!enableFaceCull) {
             //     meshRendererBuilder->disableCullFace();
@@ -64,7 +69,7 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void TerrainObjectSpawner::fillMeshData(const Mesh& mesh) const {
+    void TerrainObjectSpawner::fillMeshData(const Mesh& mesh) {
         //model properties
         meshData.lightMask = model->getLightMask();
 
@@ -80,7 +85,7 @@ namespace urchin {
 
     void TerrainObjectSpawner::prepareRendering(unsigned int renderingOrder, const Camera& camera, float /*dt*/) {
         for (auto& meshRenderer : meshRenderers) {
-           // meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*) instanceMatrices.data());
+            meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*) instanceMatrices.data());
             meshRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &camera.getProjectionViewMatrix());
 
             constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;

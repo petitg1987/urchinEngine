@@ -14,7 +14,7 @@
 namespace urchin {
 
     /**
-    * Allow to display models given in parameter depending of a configuration (view matrix, projection matrix, display mode...)
+    * Allow to display models given in parameter depending on a configuration (view matrix, projection matrix, display mode...)
     */
     class ModelSetDisplayer final : public Observer {
         public:

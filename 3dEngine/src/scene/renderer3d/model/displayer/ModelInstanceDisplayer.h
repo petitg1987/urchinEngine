@@ -31,9 +31,9 @@ namespace urchin {
 
             void updateMeshVertices(const Model*) const;
             void updateMeshUv(const Model*) const;
-            void updateMaterial(const Model*) const;
+            void updateMaterial(const Model*);
             void updateScale() const;
-            void updateModelProperties(const Model*) const;
+            void updateModelProperties(const Model*);
 
             const ModelSetDisplayer& getModelSetDisplayer() const;
             std::size_t getInstanceId() const;
@@ -45,8 +45,8 @@ namespace urchin {
             unsigned int getInstanceCount() const;
             std::chrono::steady_clock::time_point getLastRenderingTime() const;
 
-            void resetRenderingModels() const;
-            void registerRenderingModel(const Model&) const;
+            void resetRenderingModels();
+            void registerRenderingModel(const Model&);
             void prepareRendering(unsigned int, const Matrix4<float>&, const MeshFilter*);
 
             void drawBBox(GeometryContainer&);
@@ -55,7 +55,7 @@ namespace urchin {
         private:
             Model& getReferenceModel() const;
 
-            void fillMeshData(const Model&, const Mesh&) const;
+            void fillMeshData(const Model&, const Mesh&);
             std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const std::vector<Vector3<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
@@ -78,14 +78,14 @@ namespace urchin {
             RenderTarget& renderTarget;
             const Shader& shader;
 
-            mutable Matrix4<float> projectionViewMatrix;
+            Matrix4<float> projectionViewMatrix;
             struct InstanceMatrix {
                 Matrix4<float> modelMatrix;
                 Matrix4<float> normalMatrix;
             };
-            mutable std::vector<InstanceMatrix> instanceMatrices; //for DEFAULT_MODE only
-            mutable std::vector<Matrix4<float>> instanceModelMatrices; //for DEPTH_ONLY_MODE only
-            mutable struct {
+            std::vector<InstanceMatrix> instanceMatrices; //for DEFAULT_MODE only
+            std::vector<Matrix4<float>> instanceModelMatrices; //for DEPTH_ONLY_MODE only
+            struct {
                 alignas(4) unsigned int lightMask;
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;

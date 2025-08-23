@@ -191,7 +191,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateMaterial(const Model* model) const {
+    void ModelInstanceDisplayer::updateMaterial(const Model* model) {
         if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
@@ -231,7 +231,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateModelProperties(const Model* model) const {
+    void ModelInstanceDisplayer::updateModelProperties(const Model* model) {
         if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
@@ -253,7 +253,7 @@ namespace urchin {
         return *instanceModels[0];
     }
 
-    void ModelInstanceDisplayer::fillMeshData(const Model& model, const Mesh& mesh) const {
+    void ModelInstanceDisplayer::fillMeshData(const Model& model, const Mesh& mesh) {
         //model properties
         meshData.lightMask = model.getLightMask();
 
@@ -325,12 +325,12 @@ namespace urchin {
         return lastRenderingTime;
     }
 
-    void ModelInstanceDisplayer::resetRenderingModels() const {
+    void ModelInstanceDisplayer::resetRenderingModels() {
         instanceMatrices.clear();
         instanceModelMatrices.clear();
     }
 
-    void ModelInstanceDisplayer::registerRenderingModel(const Model& model) const {
+    void ModelInstanceDisplayer::registerRenderingModel(const Model& model) {
         #ifdef URCHIN_DEBUG
             assert(model.computeInstanceId(displayMode) == instanceId);
         #endif
