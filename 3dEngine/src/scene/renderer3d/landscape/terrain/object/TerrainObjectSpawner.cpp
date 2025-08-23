@@ -27,6 +27,9 @@ namespace urchin {
         assert(!isInitialized);
         this->renderTarget = &renderTarget;
 
+        constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;
+        jitterScale = Vector2((float)renderTarget.getWidth() * NDC_SPACE_TO_UV_COORDS_SCALE, (float)renderTarget.getHeight() * NDC_SPACE_TO_UV_COORDS_SCALE);
+
         shader = ShaderBuilder::createShader("terrainObject.vert.spv", "terrainObject.frag.spv", false);
 
         for (unsigned int i = 0; i < model->getMeshes()->getNumMeshes(); ++i) {
@@ -82,10 +85,7 @@ namespace urchin {
             meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*) instanceMatrices.data());
             meshRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &camera.getProjectionViewMatrix());
 
-            constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;
-            float renderingSceneWidth = (float)renderTarget->getWidth();
-            float renderingSceneHeight = (float)renderTarget->getHeight();
-            cameraInfo.jitterInPixel = camera.getAppliedJitter() * Vector2(renderingSceneWidth * NDC_SPACE_TO_UV_COORDS_SCALE, renderingSceneHeight * NDC_SPACE_TO_UV_COORDS_SCALE);
+            cameraInfo.jitterInPixel = camera.getAppliedJitter() * jitterScale;
             meshRenderer->updateUniformData(CAMERA_INFO_UNIFORM_BINDING, &cameraInfo);
 
             meshRenderer->enableRenderer(renderingOrder);

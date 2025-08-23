@@ -19,8 +19,7 @@ namespace urchin {
             } cameraInfo;
 
             const Camera& camera;
-            float renderingSceneWidth;
-            float renderingSceneHeight;
+            Vector2<float> jitterScale;
     };
 
 }

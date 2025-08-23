@@ -43,6 +43,7 @@ namespace urchin {
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;
             } meshData;
+            Vector2<float> jitterScale;
             struct CameraInfo {
                 alignas(8) Vector2<float> jitterInPixel;
             } cameraInfo;
