@@ -220,7 +220,7 @@ namespace urchin {
 
         grass.prepareRendering(renderingOrder, camera, dt);
         for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
-            objectSpawner->prepareRendering(renderingOrder, camera, dt);
+            objectSpawner->prepareRendering(renderingOrder + 1, camera, dt); //TODO review rendering order !
         }
     }
 }

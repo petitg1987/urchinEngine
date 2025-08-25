@@ -34,7 +34,11 @@ void main() {
     vec2 unjitterUv = unjitterTextureUv(texCoordinates);
 
     //albedo and emissive
-    fragAlbedoAndEmissive = vec4(texture(albedoTex, unjitterUv).rgb, meshData.encodedEmissiveFactor);
+    vec4 albedo = texture(albedoTex, unjitterUv).rgba;
+    if (albedo.a < 0.5) {
+        discard;
+    }
+    fragAlbedoAndEmissive = vec4(albedo.rgb, meshData.encodedEmissiveFactor);
 
     //normal and ambient factor
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));

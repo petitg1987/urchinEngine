@@ -65,7 +65,6 @@ namespace urchin {
 
             if (mesh.getMaterial().getAlbedoTexture()->hasTransparency()) {
                 meshRendererBuilder->disableCullFace();
-                meshRendererBuilder->enableTransparency({BlendFunction::buildDefault()});
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());
