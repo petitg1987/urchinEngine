@@ -56,6 +56,12 @@ namespace urchin {
                     ->addUniformTextureReader(MAT_ROUGHNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)))
                     ->addUniformTextureReader(MAT_METALNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
 
+            if (mesh.getMaterial().isDepthTestEnabled()) {
+                meshRendererBuilder->enableDepthTest();
+            }
+            if (mesh.getMaterial().isDepthWriteEnabled()) {
+                meshRendererBuilder->enableDepthWrite();
+            }
             if (mesh.getMaterial().getAlbedoTexture()->hasTransparency()) {
                 meshRendererBuilder->disableCullFace();
                 meshRendererBuilder->enableTransparency({BlendFunction::buildDefault()});
