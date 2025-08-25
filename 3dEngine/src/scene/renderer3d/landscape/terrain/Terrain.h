@@ -8,6 +8,7 @@
 #include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
 #include "scene/renderer3d/landscape/terrain/grass/TerrainGrass.h"
 #include "scene/renderer3d/camera/Camera.h"
+#include "scene/renderer3d/landscape/terrain/object/TerrainObjectSpawner.h"
 
 namespace urchin {
 
@@ -23,6 +24,7 @@ namespace urchin {
             const TerrainMaterials* getMaterials() const;
             TerrainGrass& getGrass();
             const TerrainGrass& getGrass() const;
+            void addObjectSpawner(std::unique_ptr<TerrainObjectSpawner>);
 
             void setPosition(const Point3<float>&);
             const Point3<float>& getPosition() const;
@@ -65,6 +67,7 @@ namespace urchin {
             std::unique_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterials> materials;
             TerrainGrass grass;
+            std::vector<std::unique_ptr<TerrainObjectSpawner>> objectsSpawner;
 
             float ambient;
             uint8_t lightMask;

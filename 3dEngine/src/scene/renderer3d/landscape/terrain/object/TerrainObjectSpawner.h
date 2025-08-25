@@ -10,12 +10,13 @@ namespace urchin {
 
     class TerrainObjectSpawner {
         public:
-            TerrainObjectSpawner(TerrainMesh&, std::unique_ptr<Model>);
+            explicit TerrainObjectSpawner(std::unique_ptr<Model>);
+
+            void initialize(RenderTarget&, TerrainMesh&);
 
             void prepareRendering(unsigned int, const Camera&, float);
 
         private:
-            void initialize(RenderTarget&);
             void fillMeshData(const Mesh&);
             TextureParam buildTextureParam(const Mesh&) const;
 
@@ -27,22 +28,23 @@ namespace urchin {
             static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING = 5;
             static constexpr uint32_t MAT_METALNESS_UNIFORM_BINDING = 6;
 
-            TerrainMesh& terrainMesh;
-            std::unique_ptr<Model> model;
-
             bool isInitialized;
+            std::unique_ptr<Model> model;
             RenderTarget* renderTarget;
+            TerrainMesh* terrainMesh;
 
             struct InstanceMatrix {
                 Matrix4<float> modelMatrix;
                 Matrix4<float> normalMatrix;
             };
             std::vector<InstanceMatrix> instanceMatrices;
+
             struct {
                 alignas(4) unsigned int lightMask;
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;
             } meshData;
+
             Vector2<float> jitterScale;
             struct CameraInfo {
                 alignas(8) Vector2<float> jitterInPixel;

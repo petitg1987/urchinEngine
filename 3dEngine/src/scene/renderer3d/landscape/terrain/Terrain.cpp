@@ -147,6 +147,12 @@ namespace urchin {
         return grass;
     }
 
+    void Terrain::addObjectSpawner(std::unique_ptr<TerrainObjectSpawner> objectSpawner) {
+        assert(isInitialized);
+        objectSpawner->initialize(*renderTarget, *mesh);
+        objectsSpawner.push_back(std::move(objectSpawner));
+    }
+
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
@@ -213,5 +219,8 @@ namespace urchin {
         terrainRenderer->enableRenderer(renderingOrder);
 
         grass.prepareRendering(renderingOrder, camera, dt);
+        for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
+            objectSpawner->prepareRendering(renderingOrder, camera, dt);
+        }
     }
 }

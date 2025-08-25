@@ -23,6 +23,7 @@
 #include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMaterial.h"
 #include "scene/renderer3d/landscape/terrain/grass/TerrainGrass.h"
+#include "scene/renderer3d/landscape/terrain/object/TerrainObjectSpawner.h"
 #include "scene/renderer3d/landscape/water/Water.h"
 
 #include "scene/ui/EventListener.h"

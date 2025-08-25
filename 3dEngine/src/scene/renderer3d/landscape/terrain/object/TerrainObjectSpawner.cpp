@@ -6,11 +6,11 @@
 
 namespace urchin {
 
-    TerrainObjectSpawner::TerrainObjectSpawner(TerrainMesh& terrainMesh, std::unique_ptr<Model> model) :
-            terrainMesh(terrainMesh),
-            model(std::move(model)),
+    TerrainObjectSpawner::TerrainObjectSpawner(std::unique_ptr<Model> model) :
             isInitialized(false),
+            model(std::move(model)),
             renderTarget(nullptr),
+            terrainMesh(nullptr),
             meshData({}) {
         std::memset((void*)&meshData, 0, sizeof(meshData));
         std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
@@ -23,9 +23,10 @@ namespace urchin {
         instanceMatrices.push_back(instanceMatrix);
     }
 
-    void TerrainObjectSpawner::initialize(RenderTarget& renderTarget) {
+    void TerrainObjectSpawner::initialize(RenderTarget& renderTarget, TerrainMesh& terrainMesh) {
         assert(!isInitialized);
         this->renderTarget = &renderTarget;
+        this->terrainMesh = &terrainMesh;
 
         constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;
         jitterScale = Vector2((float)renderTarget.getWidth() * NDC_SPACE_TO_UV_COORDS_SCALE, (float)renderTarget.getHeight() * NDC_SPACE_TO_UV_COORDS_SCALE);
