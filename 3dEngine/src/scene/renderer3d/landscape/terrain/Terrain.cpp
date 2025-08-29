@@ -149,7 +149,7 @@ namespace urchin {
 
     void Terrain::addObjectSpawner(std::unique_ptr<TerrainObjectSpawner> objectSpawner) {
         assert(isInitialized);
-        objectSpawner->initialize(*renderTarget, *mesh);
+        objectSpawner->initialize(*renderTarget, *mesh, position);
         objectsSpawner.push_back(std::move(objectSpawner));
     }
 

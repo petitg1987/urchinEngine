@@ -12,7 +12,7 @@ namespace urchin {
         public:
             explicit TerrainObjectSpawner(std::unique_ptr<Model>);
 
-            void initialize(RenderTarget&, TerrainMesh&);
+            void initialize(RenderTarget&, TerrainMesh&, const Point3<float>&);
 
             void prepareRendering(unsigned int, const Camera&, float);
 
@@ -33,6 +33,7 @@ namespace urchin {
             std::unique_ptr<Model> model;
             RenderTarget* renderTarget;
             TerrainMesh* terrainMesh;
+            Point3<float> terrainPosition;
 
             struct InstanceData {
                 Matrix4<float> modelMatrix;

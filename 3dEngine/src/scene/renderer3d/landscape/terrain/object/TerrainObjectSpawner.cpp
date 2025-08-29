@@ -18,10 +18,11 @@ namespace urchin {
         cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
     }
 
-    void TerrainObjectSpawner::initialize(RenderTarget& renderTarget, TerrainMesh& terrainMesh) {
+    void TerrainObjectSpawner::initialize(RenderTarget& renderTarget, TerrainMesh& terrainMesh, const Point3<float>& terrainPosition) {
         assert(!isInitialized);
         this->renderTarget = &renderTarget;
         this->terrainMesh = &terrainMesh;
+        this->terrainPosition = terrainPosition;
 
         generateObjectPositions();
         
@@ -72,7 +73,7 @@ namespace urchin {
 
     void TerrainObjectSpawner::generateObjectPositions() {
         constexpr float objectsPerUnit = 0.5f;
-        constexpr float heightDelta = 1.0f;
+        constexpr float heightDelta = 0.5f;
 
         float startX = terrainMesh->getVertices()[0].X;
         float endX = terrainMesh->getVertices()[terrainMesh->getVertices().size() - 1].X;
@@ -83,13 +84,17 @@ namespace urchin {
 
         const Transform<float>& baseTransform = this->model->getTransform();
         //TODO reserve shaderInstanceData
-        for (float x = startX; x < endX; x += sizeX / (sizeX * objectsPerUnit)) {
-            for (float z = startZ; z < endZ; z += sizeZ / (sizeZ * objectsPerUnit)) {
+        float stepX = sizeX / (sizeX * objectsPerUnit);
+        float stepZ = sizeZ / (sizeZ * objectsPerUnit);
+        shaderInstanceData.clear();
+        shaderInstanceData.reserve(MathFunction::ceilToUInt(sizeX / stepX) * MathFunction::ceilToUInt((sizeZ / stepZ)));
+        for (float x = startX; x < endX; x += stepX) {
+            for (float z = startZ; z < endZ; z += stepZ) {
                 float y = terrainMesh->findHeightAt(Point2(x, z)) + heightDelta;
-                Point3 position(x, y -10.33000f, z -8.40000f); //TODO add terrain position
+                Point3 position(x, y, z);
 
                 InstanceData instanceData {
-                    .modelMatrix = Transform(position, baseTransform.getOrientation(), baseTransform.getScale()).getTransformMatrix(),
+                    .modelMatrix = Transform(terrainPosition + position, baseTransform.getOrientation(), baseTransform.getScale()).getTransformMatrix(),
                     .normalMatrix = instanceData.modelMatrix.inverse().transpose() //TODO always the same: not instance !
                 };
                 shaderInstanceData.push_back(instanceData);
