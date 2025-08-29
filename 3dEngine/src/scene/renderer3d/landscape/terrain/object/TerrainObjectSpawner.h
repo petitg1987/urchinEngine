@@ -17,6 +17,7 @@ namespace urchin {
             void prepareRendering(unsigned int, const Camera&, float);
 
         private:
+            void generateObjectPositions();
             void fillMeshData(const Mesh&);
             TextureParam buildTextureParam(const Mesh&) const;
 
@@ -33,11 +34,11 @@ namespace urchin {
             RenderTarget* renderTarget;
             TerrainMesh* terrainMesh;
 
-            struct InstanceMatrix {
+            struct InstanceData {
                 Matrix4<float> modelMatrix;
                 Matrix4<float> normalMatrix;
             };
-            std::vector<InstanceMatrix> instanceMatrices;
+            std::vector<InstanceData> shaderInstanceData;
 
             struct {
                 alignas(4) unsigned int lightMask;

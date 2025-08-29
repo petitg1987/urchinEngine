@@ -16,11 +16,6 @@ namespace urchin {
         std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
 
         cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
-
-        InstanceMatrix instanceMatrix;
-        instanceMatrix.modelMatrix = this->model->getTransform().getTransformMatrix();
-        instanceMatrix.normalMatrix = instanceMatrix.modelMatrix.inverse().transpose();
-        instanceMatrices.push_back(instanceMatrix);
     }
 
     void TerrainObjectSpawner::initialize(RenderTarget& renderTarget, TerrainMesh& terrainMesh) {
@@ -28,6 +23,8 @@ namespace urchin {
         this->renderTarget = &renderTarget;
         this->terrainMesh = &terrainMesh;
 
+        generateObjectPositions();
+        
         constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;
         jitterScale = Vector2((float)renderTarget.getWidth() * NDC_SPACE_TO_UV_COORDS_SCALE, (float)renderTarget.getHeight() * NDC_SPACE_TO_UV_COORDS_SCALE);
 
@@ -47,7 +44,7 @@ namespace urchin {
                     ->addData(mesh.getNormals())
                     ->addData(mesh.getTangents())
                     ->indices(std::span(reinterpret_cast<const unsigned int*>(constMesh.getTrianglesIndices().data()), constMesh.getTrianglesIndices().size() * 3))
-                    ->instanceData(instanceMatrices.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT}, (const float*)instanceMatrices.data())
+                    ->instanceData(shaderInstanceData.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT}, (const float*)shaderInstanceData.data())
                     ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projectionViewMatrix), &projectionViewMatrix)
                     ->addUniformData(MESH_DATA_UNIFORM_BINDING, sizeof(meshData), &meshData)
                     ->addUniformData(CAMERA_INFO_UNIFORM_BINDING, sizeof(cameraInfo), &cameraInfo)
@@ -73,6 +70,33 @@ namespace urchin {
         isInitialized = true;
     }
 
+    void TerrainObjectSpawner::generateObjectPositions() {
+        constexpr float objectsPerUnit = 0.5f;
+        constexpr float heightDelta = 1.0f;
+
+        float startX = terrainMesh->getVertices()[0].X;
+        float endX = terrainMesh->getVertices()[terrainMesh->getVertices().size() - 1].X;
+        float startZ = terrainMesh->getVertices()[0].Z;
+        float endZ = terrainMesh->getVertices()[terrainMesh->getVertices().size() - 1].Z;
+        float sizeX = endX - startX;
+        float sizeZ = endZ - startZ;
+
+        const Transform<float>& baseTransform = this->model->getTransform();
+        //TODO reserve shaderInstanceData
+        for (float x = startX; x < endX; x += sizeX / (sizeX * objectsPerUnit)) {
+            for (float z = startZ; z < endZ; z += sizeZ / (sizeZ * objectsPerUnit)) {
+                float y = terrainMesh->findHeightAt(Point2(x, z)) + heightDelta;
+                Point3 position(x, y -10.33000f, z -8.40000f); //TODO add terrain position
+
+                InstanceData instanceData {
+                    .modelMatrix = Transform(position, baseTransform.getOrientation(), baseTransform.getScale()).getTransformMatrix(),
+                    .normalMatrix = instanceData.modelMatrix.inverse().transpose() //TODO always the same: not instance !
+                };
+                shaderInstanceData.push_back(instanceData);
+            }
+        }
+    }
+
     void TerrainObjectSpawner::fillMeshData(const Mesh& mesh) {
         //model properties
         meshData.lightMask = model->getLightMask();
@@ -89,7 +113,7 @@ namespace urchin {
 
     void TerrainObjectSpawner::prepareRendering(unsigned int renderingOrder, const Camera& camera, float /*dt*/) {
         for (auto& meshRenderer : meshRenderers) {
-            meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*) instanceMatrices.data());
+          //  meshRenderer->updateInstanceData(shaderInstanceData.size(), (const float*) shaderInstanceData.data()); //TODO useless ?
             meshRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &camera.getProjectionViewMatrix());
 
             cameraInfo.jitterInPixel = camera.getAppliedJitter() * jitterScale;
