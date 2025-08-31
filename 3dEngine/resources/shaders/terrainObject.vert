@@ -3,10 +3,13 @@
 
 layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mProjectionView;
-} postioningData;
+    float sumTimeStep;
+} positioningData;
 
 layout(std140, set = 0, binding = 3) uniform Properties {
     bool useTerrainLighting;
+    float windStrength;
+    vec3 windDirection;
 } properties;
 
 layout(location = 0) in vec3 vertexPosition;
@@ -38,5 +41,20 @@ void main() {
         b = normalize(cross(n, t));
     }
 
-    gl_Position = postioningData.mProjectionView * mModel * vec4(vertexPosition, 1.0);
+    vec4 position = mModel * vec4(vertexPosition, 1.0);
+    if (texCoordinates.y < 0.5) { //top of the object
+        //wind: rotation //TODO disable if no wind !
+        float rotationSpeed = 1.0f;
+        float rotationStrength = 0.1f;
+        position.x += sin(positioningData.sumTimeStep * rotationSpeed) * rotationStrength;
+        position.z += cos(positioningData.sumTimeStep * rotationSpeed) * rotationStrength;
+
+        //wind: side
+        float windPower = 0.5 + sin(position.x / 30.0 + position.z / 30.0 + positioningData.sumTimeStep * (1.2 + properties.windStrength / 20.0));
+        windPower *= (windPower > 0.0) ? 0.3 : 0.2;
+        windPower *= properties.windStrength;
+        position += vec4(properties.windDirection, 0.0) * windPower;
+    }
+
+    gl_Position = positioningData.mProjectionView * position;
 }

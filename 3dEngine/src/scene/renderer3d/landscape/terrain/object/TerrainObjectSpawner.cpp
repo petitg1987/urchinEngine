@@ -16,12 +16,19 @@ namespace urchin {
             objectsPerUnit(1.5f),
             objectsHeightShift(0.35f),
             properties({}),
+            positioningData({}),
             meshData({}) {
         std::memset((void*)&properties, 0, sizeof(properties));
+        std::memset((void*)&positioningData, 0, sizeof(positioningData));
         std::memset((void*)&meshData, 0, sizeof(meshData));
         std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
 
         properties.useTerrainLighting = true;
+        properties.windDirection = Vector3(1.0f, 0.0f, 0.0f);
+        properties.windStrength = 0.5f;
+
+        positioningData.sumTimeStep = 0.0f;
+
         cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
     }
 
@@ -45,7 +52,6 @@ namespace urchin {
 
             fillMeshData(mesh);
 
-            Matrix4<float> projectionViewMatrix;
             auto meshRendererBuilder = GenericRendererBuilder::create("terrain obj - " + meshName, renderTarget, *shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
                     ->addData(mesh.getUv())
@@ -53,7 +59,7 @@ namespace urchin {
                     ->addData(mesh.getTangents())
                     ->indices(std::span(reinterpret_cast<const unsigned int*>(constMesh.getTrianglesIndices().data()), constMesh.getTrianglesIndices().size() * 3))
                     ->instanceData(shaderInstanceData.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT, VariableType::VEC3_FLOAT}, (const float*)shaderInstanceData.data())
-                    ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projectionViewMatrix), &projectionViewMatrix)
+                    ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                     ->addUniformData(MESH_DATA_UNIFORM_BINDING, sizeof(meshData), &meshData)
                     ->addUniformData(CAMERA_INFO_UNIFORM_BINDING, sizeof(cameraInfo), &cameraInfo)
                     ->addUniformData(PROPERTIES_UNIFORM_BINDING, sizeof(properties), &properties)
@@ -140,11 +146,14 @@ namespace urchin {
         return TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
     }
 
-    void TerrainObjectSpawner::prepareRendering(unsigned int renderingOrder, const Camera& camera, float /*dt*/) {
-        for (auto& meshRenderer : meshRenderers) {
-            meshRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &camera.getProjectionViewMatrix());
+    void TerrainObjectSpawner::prepareRendering(unsigned int renderingOrder, const Camera& camera, float dt) {
+        positioningData.projectionView = camera.getProjectionViewMatrix();
+        positioningData.sumTimeStep += dt;
 
-            cameraInfo.jitterInPixel = camera.getAppliedJitter() * jitterScale;
+        cameraInfo.jitterInPixel = camera.getAppliedJitter() * jitterScale;
+
+        for (auto& meshRenderer : meshRenderers) {
+            meshRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
             meshRenderer->updateUniformData(CAMERA_INFO_UNIFORM_BINDING, &cameraInfo);
 
             meshRenderer->enableRenderer(renderingOrder);

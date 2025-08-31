@@ -22,7 +22,7 @@ namespace urchin {
             void fillMeshData(const Mesh&);
             TextureParam buildTextureParam(const Mesh&) const;
 
-            static constexpr uint32_t PROJ_VIEW_MATRIX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
             static constexpr uint32_t MESH_DATA_UNIFORM_BINDING = 1;
             static constexpr uint32_t CAMERA_INFO_UNIFORM_BINDING = 2;
             static constexpr uint32_t PROPERTIES_UNIFORM_BINDING = 3;
@@ -40,6 +40,8 @@ namespace urchin {
             float objectsHeightShift;
             struct {
                 alignas(4) bool useTerrainLighting;
+                alignas(4) float windStrength;
+                alignas(16) Vector3<float> windDirection;
             } properties;
 
             struct InstanceData {
@@ -48,6 +50,11 @@ namespace urchin {
                 Vector3<float> terrainNormal;
             };
             std::vector<InstanceData> shaderInstanceData;
+
+            struct {
+                alignas(16) Matrix4<float> projectionView;
+                alignas(4) float sumTimeStep;
+            } positioningData;
 
             struct {
                 alignas(4) unsigned int lightMask;
