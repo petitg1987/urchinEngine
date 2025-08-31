@@ -26,7 +26,7 @@ namespace urchin {
     }
 
     void TerrainContainer::updateConfig(const Config& config) {
-        if (this->config.grassDisplayDistance != config.grassDisplayDistance) {
+        if (this->config.objectsViewDistancePercentage != config.objectsViewDistancePercentage) {
             this->config = config;
 
             updateAllTerrainConfig();
@@ -43,8 +43,8 @@ namespace urchin {
         }
     }
 
-    void TerrainContainer::updateTerrainConfig(Terrain& /*terrain*/) const {
-        //TODO terrain.getGrass().setGrassDisplayDistance(config.grassDisplayDistance);
+    void TerrainContainer::updateTerrainConfig(Terrain& terrain) const {
+        terrain.setObjectsViewDistancePercentage(config.objectsViewDistancePercentage);
     }
 
     void TerrainContainer::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) const {

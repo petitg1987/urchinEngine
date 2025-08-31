@@ -14,14 +14,36 @@ namespace urchin {
             explicit TerrainObjectSpawner(std::unique_ptr<Model>);
 
             void initialize(RenderTarget&, Terrain&);
+
             void onTerrainPositionUpdate();
             void onTerrainMeshUpdate();
             void onTerrainMaterialUpdate();
             void onTerrainLightingUpdate();
+            void onTerrainViewDistanceUpdate();
+
+            float getObjectsPerUnit() const;
+            void setObjectsPerUnit(float);
+
+            float getObjectsHeightShift() const;
+            void setObjectsHeightShift(float);
+
+            float getBaseDisplayDistance() const;
+            void setBaseDisplayDistance(float);
+
+            bool useTerrainLighting() const;
+            void setUseTerrainLighting(bool);
+
+            float getWindStrength() const;
+            void setWindStrength(float);
+
+            const Vector3<float>& getWindDirection() const;
+            void setWindDirection(const Vector3<float>&);
 
             void prepareRendering(unsigned int, const Camera&, float);
 
         private:
+            void updateProperties();
+
             void createOrRefreshObjectPositions();
             void createOrRefreshRenderers();
             void fillMeshData(const Mesh&);
@@ -43,7 +65,9 @@ namespace urchin {
 
             float objectsPerUnit;
             float objectsHeightShift;
+            float baseDisplayDistance;
             struct {
+                alignas(4) float displayDistance;
                 alignas(4) bool useTerrainLighting;
                 alignas(4) float windStrength;
                 alignas(16) Vector3<float> windDirection;
@@ -58,6 +82,7 @@ namespace urchin {
 
             struct {
                 alignas(16) Matrix4<float> projectionView;
+                alignas(16) Point3<float> cameraPosition;
                 alignas(4) float sumTimeStep;
             } positioningData;
 

@@ -134,6 +134,18 @@ namespace urchin {
         objectsSpawner.push_back(std::move(objectSpawner));
     }
 
+    void Terrain::setObjectsViewDistancePercentage(float objectsViewDistancePercentage) {
+        this->objectsViewDistancePercentage = objectsViewDistancePercentage;
+
+        for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
+            objectSpawner->onTerrainViewDistanceUpdate();
+        }
+    }
+
+    float Terrain::getObjectsViewDistancePercentage() const {
+        return objectsViewDistancePercentage;
+    }
+
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */

@@ -12,7 +12,10 @@ layout(std140, set = 0, binding = 2) uniform CameraInfo {
 } cameraInfo;
 
 layout(std140, set = 0, binding = 3) uniform Properties {
+    float displayDistance;
     bool useTerrainLighting;
+    float windStrength;
+    vec3 windDirection;
 } properties;
 
 layout(binding = 4) uniform sampler2D albedoTex;

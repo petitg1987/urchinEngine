@@ -9,7 +9,7 @@ namespace urchin {
     class TerrainContainer {
         public:
             struct Config {
-                float grassDisplayDistance = 100.0f;
+                float objectsViewDistancePercentage = 1.0f;
             };
 
             TerrainContainer(const Config&, RenderTarget&);

@@ -13,8 +13,9 @@ namespace urchin {
             model(std::move(model)),
             renderTarget(nullptr),
             terrain(nullptr),
-            objectsPerUnit(1.5f),
-            objectsHeightShift(0.35f),
+            objectsPerUnit(1.0f),
+            objectsHeightShift(0.0f),
+            baseDisplayDistance(100.0f),
             properties({}),
             positioningData({}),
             meshData({}) {
@@ -23,6 +24,7 @@ namespace urchin {
         std::memset((void*)&meshData, 0, sizeof(meshData));
         std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
 
+        properties.displayDistance = baseDisplayDistance;
         properties.useTerrainLighting = true;
         properties.windDirection = Vector3(1.0f, 0.0f, 0.0f);
         properties.windStrength = 0.5f;
@@ -56,6 +58,75 @@ namespace urchin {
 
     void TerrainObjectSpawner::onTerrainLightingUpdate() {
         createOrRefreshRenderers();
+    }
+
+    void TerrainObjectSpawner::onTerrainViewDistanceUpdate() {
+        updateProperties();
+    }
+
+    float TerrainObjectSpawner::getObjectsPerUnit() const {
+        return objectsPerUnit;
+    }
+
+    void TerrainObjectSpawner::setObjectsPerUnit(float objectsPerUnit) {
+        this->objectsPerUnit = objectsPerUnit;
+        createOrRefreshObjectPositions();
+    }
+
+    float TerrainObjectSpawner::getObjectsHeightShift() const {
+        return objectsHeightShift;
+    }
+
+    void TerrainObjectSpawner::setObjectsHeightShift(float objectsHeightShift) {
+        this->objectsHeightShift = objectsHeightShift;
+        createOrRefreshObjectPositions();
+    }
+
+    float TerrainObjectSpawner::getBaseDisplayDistance() const {
+        return baseDisplayDistance;
+    }
+
+    void TerrainObjectSpawner::setBaseDisplayDistance(float baseDisplayDistance) {
+        this->baseDisplayDistance = baseDisplayDistance;
+        updateProperties();
+    }
+
+    bool TerrainObjectSpawner::useTerrainLighting() const {
+        return properties.useTerrainLighting;
+    }
+
+    void TerrainObjectSpawner::setUseTerrainLighting(bool useTerrainLighting) {
+        this->properties.useTerrainLighting = useTerrainLighting;
+        updateProperties();
+    }
+
+    float TerrainObjectSpawner::getWindStrength() const {
+        return properties.windStrength;
+    }
+
+    void TerrainObjectSpawner::setWindStrength(float windStrength) {
+        this->properties.windStrength = windStrength;
+        updateProperties();
+    }
+
+    const Vector3<float>& TerrainObjectSpawner::getWindDirection() const {
+        return properties.windDirection;
+    }
+
+    void TerrainObjectSpawner::setWindDirection(const Vector3<float>& windDirection) {
+        this->properties.windDirection = windDirection;
+        updateProperties();
+    }
+
+    void TerrainObjectSpawner::updateProperties() {
+        if (!terrain) {
+            return;
+        }
+
+        properties.displayDistance = baseDisplayDistance * terrain->getObjectsViewDistancePercentage();
+        for (auto& meshRenderer : meshRenderers) {
+            meshRenderer->updateUniformData(PROPERTIES_UNIFORM_BINDING, &properties);
+        }
     }
 
     void TerrainObjectSpawner::createOrRefreshRenderers() {
@@ -101,9 +172,15 @@ namespace urchin {
 
             meshRenderers.push_back(meshRendererBuilder->build());
         }
+
+        updateProperties();
     }
 
     void TerrainObjectSpawner::createOrRefreshObjectPositions() {
+        if (!terrain) {
+            return;
+        }
+
         float startX = terrain->getMesh()->getVertices()[0].X;
         float endX = terrain->getMesh()->getVertices()[terrain->getMesh()->getVertices().size() - 1].X;
         float startZ = terrain->getMesh()->getVertices()[0].Z;
@@ -170,6 +247,7 @@ namespace urchin {
 
     void TerrainObjectSpawner::prepareRendering(unsigned int renderingOrder, const Camera& camera, float dt) {
         positioningData.projectionView = camera.getProjectionViewMatrix();
+        positioningData.cameraPosition = camera.getPosition();
         positioningData.sumTimeStep += dt;
 
         cameraInfo.jitterInPixel = camera.getAppliedJitter() * jitterScale;

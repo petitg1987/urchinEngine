@@ -23,6 +23,9 @@ namespace urchin {
             const TerrainMaterials* getMaterials() const;
             void addObjectSpawner(std::unique_ptr<TerrainObjectSpawner>);
 
+            void setObjectsViewDistancePercentage(float);
+            float getObjectsViewDistancePercentage() const;
+
             void setPosition(const Point3<float>&);
             const Point3<float>& getPosition() const;
 
@@ -57,12 +60,13 @@ namespace urchin {
 
             std::unique_ptr<GenericRenderer> terrainRenderer;
             std::unique_ptr<Shader> terrainShader;
-            Point3<float> position;
 
             std::unique_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterials> materials;
             std::vector<std::unique_ptr<TerrainObjectSpawner>> objectsSpawner;
 
+            float objectsViewDistancePercentage;
+            Point3<float> position;
             float ambient;
             uint8_t lightMask;
     };

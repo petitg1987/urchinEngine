@@ -3,10 +3,12 @@
 
 layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mProjectionView;
+    vec3 cameraPosition;
     float sumTimeStep;
 } positioningData;
 
 layout(std140, set = 0, binding = 3) uniform Properties {
+    float displayDistance;
     bool useTerrainLighting;
     float windStrength;
     vec3 windDirection;
@@ -54,6 +56,19 @@ void main() {
         windPower *= (windPower > 0.0) ? 0.3 : 0.2;
         windPower *= properties.windStrength;
         position += vec4(properties.windDirection, 0.0) * windPower;
+    }
+
+    //TODO review
+    //reduce height based on its distance from the camera
+    vec3 positionVec3 = vertexPosition; //position.xyz / position.x;
+    float distanceToCamera = distance(positionVec3, positioningData.cameraPosition);
+    float startReduceHeightDistance = properties.displayDistance * 0.9;
+    if (distanceToCamera > startReduceHeightDistance) {
+        float heightReducePercentage = 1.0f;
+        if (distanceToCamera < properties.displayDistance) {
+            heightReducePercentage = (distanceToCamera - startReduceHeightDistance) / (properties.displayDistance - startReduceHeightDistance);
+        }
+        position.y -= heightReducePercentage * 10.0f; //TODO review !
     }
 
     gl_Position = positioningData.mProjectionView * position;
