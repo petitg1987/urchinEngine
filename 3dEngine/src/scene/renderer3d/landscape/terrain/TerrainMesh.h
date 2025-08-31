@@ -24,6 +24,7 @@ namespace urchin {
             const std::vector<Vector3<float>>& getNormals() const;
 
             Point3<float> findNearestPoint(const Point2<float>&) const;
+            Vector3<float> findNearestNormal(const Point2<float>&) const;
             float findHeight(const Point2<float>&) const;
 
         private:

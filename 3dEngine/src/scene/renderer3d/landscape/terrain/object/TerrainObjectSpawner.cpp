@@ -2,6 +2,7 @@
 #include <random>
 
 #include "scene/renderer3d/landscape/terrain/object/TerrainObjectSpawner.h"
+#include "scene/renderer3d/landscape/terrain/Terrain.h"
 #include "graphics/render/shader/ShaderBuilder.h"
 #include "graphics/render/GenericRendererBuilder.h"
 
@@ -11,19 +12,24 @@ namespace urchin {
             isInitialized(false),
             model(std::move(model)),
             renderTarget(nullptr),
-            terrainMesh(nullptr),
+            terrain(nullptr),
+            objectsPerUnit(1.5f),
+            objectsHeightShift(0.5f),
+            properties({}),
             meshData({}) {
+        std::memset((void*)&properties, 0, sizeof(properties));
         std::memset((void*)&meshData, 0, sizeof(meshData));
         std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
 
+        properties.useTerrainLighting = true;
         cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
     }
 
-    void TerrainObjectSpawner::initialize(RenderTarget& renderTarget, TerrainMesh& terrainMesh, const Point3<float>& terrainPosition) {
+    //TODO add trigger when terrain prop change !
+    void TerrainObjectSpawner::initialize(RenderTarget& renderTarget, Terrain& terrain) {
         assert(!isInitialized);
         this->renderTarget = &renderTarget;
-        this->terrainMesh = &terrainMesh;
-        this->terrainPosition = terrainPosition;
+        this->terrain = &terrain;
 
         generateObjectPositions();
         
@@ -37,19 +43,20 @@ namespace urchin {
             const Mesh& mesh = model->getMeshes()->getMesh(i);
             auto meshName =model->getMeshes()->getConstMeshes().getMeshesName();
 
-            Matrix4<float> projectionViewMatrix;
             fillMeshData(mesh);
 
+            Matrix4<float> projectionViewMatrix;
             auto meshRendererBuilder = GenericRendererBuilder::create("terrain obj - " + meshName, renderTarget, *shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
                     ->addData(mesh.getUv())
                     ->addData(mesh.getNormals())
                     ->addData(mesh.getTangents())
                     ->indices(std::span(reinterpret_cast<const unsigned int*>(constMesh.getTrianglesIndices().data()), constMesh.getTrianglesIndices().size() * 3))
-                    ->instanceData(shaderInstanceData.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT}, (const float*)shaderInstanceData.data())
+                    ->instanceData(shaderInstanceData.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT, VariableType::VEC3_FLOAT}, (const float*)shaderInstanceData.data())
                     ->addUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, sizeof(projectionViewMatrix), &projectionViewMatrix)
                     ->addUniformData(MESH_DATA_UNIFORM_BINDING, sizeof(meshData), &meshData)
                     ->addUniformData(CAMERA_INFO_UNIFORM_BINDING, sizeof(cameraInfo), &cameraInfo)
+                    ->addUniformData(PROPERTIES_UNIFORM_BINDING, sizeof(properties), &properties)
                     ->addUniformTextureReader(MAT_ALBEDO_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)))
                     ->addUniformTextureReader(MAT_NORMAL_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)))
                     ->addUniformTextureReader(MAT_ROUGHNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)))
@@ -73,13 +80,10 @@ namespace urchin {
     }
 
     void TerrainObjectSpawner::generateObjectPositions() {
-        constexpr float objectsPerUnit = 1.5f;
-        constexpr float heightShift = 0.35f;
-
-        float startX = terrainMesh->getVertices()[0].X;
-        float endX = terrainMesh->getVertices()[terrainMesh->getVertices().size() - 1].X;
-        float startZ = terrainMesh->getVertices()[0].Z;
-        float endZ = terrainMesh->getVertices()[terrainMesh->getVertices().size() - 1].Z;
+        float startX = terrain->getMesh()->getVertices()[0].X;
+        float endX = terrain->getMesh()->getVertices()[terrain->getMesh()->getVertices().size() - 1].X;
+        float startZ = terrain->getMesh()->getVertices()[0].Z;
+        float endZ = terrain->getMesh()->getVertices()[terrain->getMesh()->getVertices().size() - 1].Z;
         float sizeX = endX - startX;
         float sizeZ = endZ - startZ;
         float stepX = sizeX / (sizeX * objectsPerUnit);
@@ -98,15 +102,16 @@ namespace urchin {
             for (float z = startZ; z < endZ; z += stepZ) {
                 float xValue = x + distributionX(generator);
                 float zValue = z + distributionZ(generator);
-                float yValue = terrainMesh->findHeight(Point2(xValue, zValue)) + heightShift;
+                float yValue = terrain->getMesh()->findHeight(Point2(xValue, zValue)) + objectsHeightShift;
+
+                Vector3<float> normal = terrain->getMesh()->findNearestNormal(Point2(xValue, zValue));
+                normal = (normal / 2.0f) + Vector3(0.5f, 0.5f, 0.5f);
+
                 Point3 position(xValue, yValue, zValue);
-
-
-
                 InstanceData instanceData {
-                    //TODO allow normal = terrain normal for lighting
-                    .modelMatrix = Transform(terrainPosition + position, baseTransform.getOrientation(), baseTransform.getScale()).getTransformMatrix(),
-                    .normalMatrix = instanceData.modelMatrix.inverse().transpose()
+                    .modelMatrix = Transform(terrain->getPosition() + position, baseTransform.getOrientation(), baseTransform.getScale()).getTransformMatrix(),
+                    .normalMatrix = instanceData.modelMatrix.inverse().transpose(),
+                    .terrainNormal = normal
                 };
                 shaderInstanceData.push_back(instanceData);
             }
@@ -118,8 +123,13 @@ namespace urchin {
         meshData.lightMask = model->getLightMask();
 
         //material
-        meshData.encodedEmissiveFactor = std::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
-        meshData.ambientFactor = mesh.getMaterial().getAmbientFactor();
+        if (properties.useTerrainLighting) {
+            meshData.encodedEmissiveFactor = std::clamp(terrain->getMaterials()->getMaterials()[0]->getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
+            meshData.ambientFactor = terrain->getAmbient();
+        } else {
+            meshData.encodedEmissiveFactor = std::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
+            meshData.ambientFactor = mesh.getMaterial().getAmbientFactor();
+        }
     }
 
     TextureParam TerrainObjectSpawner::buildTextureParam(const Mesh& mesh) const {
@@ -129,7 +139,6 @@ namespace urchin {
 
     void TerrainObjectSpawner::prepareRendering(unsigned int renderingOrder, const Camera& camera, float /*dt*/) {
         for (auto& meshRenderer : meshRenderers) {
-          //  meshRenderer->updateInstanceData(shaderInstanceData.size(), (const float*) shaderInstanceData.data()); //TODO useless ?
             meshRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &camera.getProjectionViewMatrix());
 
             cameraInfo.jitterInPixel = camera.getAppliedJitter() * jitterScale;

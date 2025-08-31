@@ -3,16 +3,17 @@
 #include <memory>
 
 #include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
 #include "scene/renderer3d/camera/Camera.h"
 
 namespace urchin {
+
+    class Terrain;
 
     class TerrainObjectSpawner {
         public:
             explicit TerrainObjectSpawner(std::unique_ptr<Model>);
 
-            void initialize(RenderTarget&, TerrainMesh&, const Point3<float>&);
+            void initialize(RenderTarget&, Terrain&);
 
             void prepareRendering(unsigned int, const Camera&, float);
 
@@ -24,20 +25,27 @@ namespace urchin {
             static constexpr uint32_t PROJ_VIEW_MATRIX_UNIFORM_BINDING = 0;
             static constexpr uint32_t MESH_DATA_UNIFORM_BINDING = 1;
             static constexpr uint32_t CAMERA_INFO_UNIFORM_BINDING = 2;
-            static constexpr uint32_t MAT_ALBEDO_UNIFORM_BINDING = 3;
-            static constexpr uint32_t MAT_NORMAL_UNIFORM_BINDING = 4;
-            static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING = 5;
-            static constexpr uint32_t MAT_METALNESS_UNIFORM_BINDING = 6;
+            static constexpr uint32_t PROPERTIES_UNIFORM_BINDING = 3;
+            static constexpr uint32_t MAT_ALBEDO_UNIFORM_BINDING = 4;
+            static constexpr uint32_t MAT_NORMAL_UNIFORM_BINDING = 5;
+            static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING =6;
+            static constexpr uint32_t MAT_METALNESS_UNIFORM_BINDING = 7;
 
             bool isInitialized;
             std::unique_ptr<Model> model;
             RenderTarget* renderTarget;
-            TerrainMesh* terrainMesh;
-            Point3<float> terrainPosition;
+            Terrain* terrain;
+
+            float objectsPerUnit;
+            float objectsHeightShift;
+            struct {
+                alignas(4) bool useTerrainLighting;
+            } properties;
 
             struct InstanceData {
                 Matrix4<float> modelMatrix;
                 Matrix4<float> normalMatrix;
+                Vector3<float> terrainNormal;
             };
             std::vector<InstanceData> shaderInstanceData;
 

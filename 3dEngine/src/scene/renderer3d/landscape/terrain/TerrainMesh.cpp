@@ -70,6 +70,15 @@ namespace urchin {
         return heightfieldPointHelper->findNearestPoint(xzCoordinate);
     }
 
+    Vector3<float> TerrainMesh::findNearestNormal(const Point2<float>& xzCoordinate) const {
+        Vector2<float> farLeftToPoint = Point2(vertices[0].X, vertices[0].Z).vector(xzCoordinate);
+        float xInterval = vertices[1].X - vertices[0].X;
+        float zInterval = vertices[xSize].Z - vertices[0].Z;
+        unsigned int xIndex = std::clamp(MathFunction::roundToUInt(farLeftToPoint.X / xInterval), 0u, xSize - 1);
+        unsigned int zIndex = std::clamp(MathFunction::roundToUInt(farLeftToPoint.Y / zInterval), 0u, zSize - 1);
+        return normals[xIndex + zIndex * xSize];
+    }
+
     float TerrainMesh::findHeight(const Point2<float>& xzCoordinate) const {
         return heightfieldPointHelper->findHeight(xzCoordinate);
     }

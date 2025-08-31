@@ -11,10 +11,14 @@ layout(std140, set = 0, binding = 2) uniform CameraInfo {
     vec2 jitterInPixel;
 } cameraInfo;
 
-layout(binding = 3) uniform sampler2D albedoTex;
-layout(binding = 4) uniform sampler2D normalTex;
-layout(binding = 5) uniform sampler2D roughnessTex;
-layout(binding = 6) uniform sampler2D metalnessTex;
+layout(std140, set = 0, binding = 3) uniform Properties {
+    bool useTerrainLighting;
+} properties;
+
+layout(binding = 4) uniform sampler2D albedoTex;
+layout(binding = 5) uniform sampler2D normalTex;
+layout(binding = 6) uniform sampler2D roughnessTex;
+layout(binding = 7) uniform sampler2D metalnessTex;
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;
@@ -41,9 +45,12 @@ void main() {
     fragAlbedoAndEmissive = vec4(albedo.rgb, meshData.encodedEmissiveFactor);
 
     //normal and ambient factor
-    mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
-    vec3 texNormal = normalize(texture(normalTex, unjitterUv).rgb * 2.0 - 1.0);
-    vec3 normal = ((tbnMatrix * texNormal) + 1.0) / 2.0;
+    vec3 normal = n;
+    if (!properties.useTerrainLighting) {
+        mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
+        vec3 texNormal = normalize(texture(normalTex, unjitterUv).rgb * 2.0 - 1.0);
+        normal = ((tbnMatrix * texNormal) + 1.0) / 2.0;
+    }
     fragNormalAndAmbient = vec4(normal, meshData.ambientFactor);
 
     //pbr & mask
