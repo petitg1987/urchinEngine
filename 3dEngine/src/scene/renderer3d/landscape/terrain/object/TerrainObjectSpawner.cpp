@@ -105,8 +105,7 @@ namespace urchin {
                 float zValue = z + zDistribution(generator);
                 float yValue = terrain->getMesh()->findHeight(Point2(xValue, zValue)) + objectsHeightShift;
 
-                Quaternion<float> yRotation = Quaternion<float>::fromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rotationDistribution(generator));
-                Quaternion<float> orientation = yRotation * baseTransform.getOrientation(); //TODO check order
+                Quaternion<float> orientation = baseTransform.getOrientation() * Quaternion<float>::rotationY(rotationDistribution(generator));
 
                 Vector3<float> normal = terrain->getMesh()->findNearestNormal(Point2(xValue, zValue));
                 normal = (normal / 2.0f) + Vector3(0.5f, 0.5f, 0.5f);
