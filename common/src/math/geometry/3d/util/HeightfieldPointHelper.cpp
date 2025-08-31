@@ -27,7 +27,7 @@ namespace urchin {
     /**
      * @return Nearest heightfield point (3D) of the provided coordinate point (2D)
      */
-    template<class T> Point3<T> HeightfieldPointHelper<T>::findPointAt(const Point2<T>& point) const {
+    template<class T> Point3<T> HeightfieldPointHelper<T>::findNearestPoint(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
         unsigned int xIndex = std::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.X / xInterval)), 0u, heightfieldXSize - 1);
         unsigned int zIndex = std::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.Y / zInterval)), 0u, heightfieldZSize - 1);
@@ -38,7 +38,7 @@ namespace urchin {
     /**
      * @return Heightfield height of the provided coordinate point (2D)
      */
-    template<class T> T HeightfieldPointHelper<T>::findHeightAt(const Point2<T>& point) const {
+    template<class T> T HeightfieldPointHelper<T>::findHeight(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
         unsigned int xIndex = std::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.X / xInterval)), 0u, heightfieldXSize - 1);
         unsigned int zIndex = std::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.Y / zInterval)), 0u, heightfieldZSize - 1);
@@ -67,8 +67,8 @@ namespace urchin {
      * @return Path points which follow the topography of the terrain between start and end point
      */
     template<class T> std::vector<Point3<T>> HeightfieldPointHelper<T>::followTopography(const Point3<T>& startPoint, const Point3<T>& endPoint) const {
-        Point3<T> adjustedStartPoint = Point3<T>(startPoint.X, findHeightAt(Point2<T>(startPoint.X, startPoint.Z)), startPoint.Z);
-        Point3<T> adjustedEndPoint = Point3<T>(endPoint.X, findHeightAt(Point2<T>(endPoint.X, endPoint.Z)), endPoint.Z);
+        Point3<T> adjustedStartPoint = Point3<T>(startPoint.X, findHeight(Point2<T>(startPoint.X, startPoint.Z)), startPoint.Z);
+        Point3<T> adjustedEndPoint = Point3<T>(endPoint.X, findHeight(Point2<T>(endPoint.X, endPoint.Z)), endPoint.Z);
 
         LineSegment2D<T> pathLine(Point2<T>(adjustedStartPoint.X, adjustedStartPoint.Z), Point2<T>(adjustedEndPoint.X, adjustedEndPoint.Z));
         DistanceToStartPointComp<T> distanceToStartPointComp(adjustedStartPoint);
@@ -126,7 +126,7 @@ namespace urchin {
         bool hasIntersection;
         Point2<T> intersectionPoint = line.intersectPoint(pathLine, hasIntersection);
         if (hasIntersection) {
-            T intersectionHeight = findHeightAt(intersectionPoint);
+            T intersectionHeight = findHeight(intersectionPoint);
             pathPoints.push_back(Point3<T>(intersectionPoint.X, intersectionHeight, intersectionPoint.Y));
         }
     }

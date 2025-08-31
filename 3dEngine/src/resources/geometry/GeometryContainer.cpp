@@ -24,8 +24,8 @@ namespace urchin {
 
     void GeometryContainer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
         for (auto& geometryModel : geometryModels) {
-            renderingOrder++;
             geometryModel->prepareRendering(renderingOrder, projectionViewMatrix);
+            renderingOrder++;
         }
     }
 

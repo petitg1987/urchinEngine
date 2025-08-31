@@ -23,8 +23,8 @@ namespace urchin {
             const std::vector<unsigned int>& getIndices() const;
             const std::vector<Vector3<float>>& getNormals() const;
 
-            Point3<float> findPointAt(const Point2<float>&) const;
-            float findHeightAt(const Point2<float>&) const;
+            Point3<float> findNearestPoint(const Point2<float>&) const;
+            float findHeight(const Point2<float>&) const;
 
         private:
             unsigned int computeNumberVertices() const;

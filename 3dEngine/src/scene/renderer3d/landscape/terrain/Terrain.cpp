@@ -202,25 +202,26 @@ namespace urchin {
         return lightMask;
     }
 
-    Point3<float> Terrain::findPointAt(const Point2<float>& globalXzCoordinate) const {
+    Point3<float> Terrain::findNearestPoint(const Point2<float>& globalXzCoordinate) const {
         Point2 localCoordinate(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
-        return mesh->findPointAt(localCoordinate) + position;
+        return mesh->findNearestPoint(localCoordinate) + position;
     }
 
-    float Terrain::findHeightAt(const Point2<float>& globalXzCoordinate) const {
+    float Terrain::findHeight(const Point2<float>& globalXzCoordinate) const {
         Point2 localCoordinate(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
-        return mesh->findHeightAt(localCoordinate) + position.Y;
+        return mesh->findHeight(localCoordinate) + position.Y;
     }
 
-    void Terrain::prepareRendering(unsigned int renderingOrder, const Camera& camera, float dt) {
+    void Terrain::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) {
         assert(isInitialized);
 
         terrainRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &camera.getProjectionViewMatrix());
         terrainRenderer->enableRenderer(renderingOrder);
 
-        grass.prepareRendering(renderingOrder, camera, dt);
+        //TODO grass.prepareRendering(renderingOrder, camera, dt);
         for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
-            objectSpawner->prepareRendering(renderingOrder + 1, camera, dt); //TODO review rendering order !
+            renderingOrder++;
+            objectSpawner->prepareRendering(renderingOrder, camera, dt);
         }
     }
 }

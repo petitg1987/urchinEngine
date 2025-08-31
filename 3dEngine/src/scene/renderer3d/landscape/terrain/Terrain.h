@@ -35,10 +35,10 @@ namespace urchin {
             void setLightMask(uint8_t);
             uint8_t getLightMask() const;
 
-            Point3<float> findPointAt(const Point2<float>&) const;
-            float findHeightAt(const Point2<float>&) const;
+            Point3<float> findNearestPoint(const Point2<float>&) const;
+            float findHeight(const Point2<float>&) const;
 
-            void prepareRendering(unsigned int, const Camera&, float);
+            void prepareRendering(unsigned int&, const Camera&, float);
 
         private:
             struct TerrainShaderConst {

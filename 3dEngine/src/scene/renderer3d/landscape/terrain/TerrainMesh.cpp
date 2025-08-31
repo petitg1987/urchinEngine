@@ -66,12 +66,12 @@ namespace urchin {
         return normals;
     }
 
-    Point3<float> TerrainMesh::findPointAt(const Point2<float>& xzCoordinate) const {
-        return heightfieldPointHelper->findPointAt(xzCoordinate);
+    Point3<float> TerrainMesh::findNearestPoint(const Point2<float>& xzCoordinate) const {
+        return heightfieldPointHelper->findNearestPoint(xzCoordinate);
     }
 
-    float TerrainMesh::findHeightAt(const Point2<float>& xzCoordinate) const {
-        return heightfieldPointHelper->findHeightAt(xzCoordinate);
+    float TerrainMesh::findHeight(const Point2<float>& xzCoordinate) const {
+        return heightfieldPointHelper->findHeight(xzCoordinate);
     }
 
     unsigned int TerrainMesh::computeNumberVertices() const {

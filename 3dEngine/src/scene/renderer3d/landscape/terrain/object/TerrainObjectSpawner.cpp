@@ -1,4 +1,5 @@
 #include <cstring>
+#include <random>
 
 #include "scene/renderer3d/landscape/terrain/object/TerrainObjectSpawner.h"
 #include "graphics/render/shader/ShaderBuilder.h"
@@ -72,8 +73,8 @@ namespace urchin {
     }
 
     void TerrainObjectSpawner::generateObjectPositions() {
-        constexpr float objectsPerUnit = 0.5f;
-        constexpr float heightDelta = 0.5f;
+        constexpr float objectsPerUnit = 1.5f;
+        constexpr float heightShift = 0.35f;
 
         float startX = terrainMesh->getVertices()[0].X;
         float endX = terrainMesh->getVertices()[terrainMesh->getVertices().size() - 1].X;
@@ -81,21 +82,31 @@ namespace urchin {
         float endZ = terrainMesh->getVertices()[terrainMesh->getVertices().size() - 1].Z;
         float sizeX = endX - startX;
         float sizeZ = endZ - startZ;
-
-        const Transform<float>& baseTransform = this->model->getTransform();
-        //TODO reserve shaderInstanceData
         float stepX = sizeX / (sizeX * objectsPerUnit);
         float stepZ = sizeZ / (sizeZ * objectsPerUnit);
+
+        unsigned int seed = 0; //no need to generate different random numbers at each start
+        float arbitraryDistribution = 1.0f / 3.0f;
+        std::default_random_engine generator(seed);
+        std::uniform_real_distribution distributionX(-stepX * arbitraryDistribution, stepX * arbitraryDistribution);
+        std::uniform_real_distribution distributionZ(-stepZ * arbitraryDistribution, stepZ * arbitraryDistribution);
+
+        const Transform<float>& baseTransform = this->model->getTransform();
         shaderInstanceData.clear();
         shaderInstanceData.reserve(MathFunction::ceilToUInt(sizeX / stepX) * MathFunction::ceilToUInt((sizeZ / stepZ)));
         for (float x = startX; x < endX; x += stepX) {
             for (float z = startZ; z < endZ; z += stepZ) {
-                float y = terrainMesh->findHeightAt(Point2(x, z)) + heightDelta;
-                Point3 position(x, y, z);
+                float xValue = x + distributionX(generator);
+                float zValue = z + distributionZ(generator);
+                float yValue = terrainMesh->findHeight(Point2(xValue, zValue)) + heightShift;
+                Point3 position(xValue, yValue, zValue);
+
+
 
                 InstanceData instanceData {
+                    //TODO allow normal = terrain normal for lighting
                     .modelMatrix = Transform(terrainPosition + position, baseTransform.getOrientation(), baseTransform.getScale()).getTransformMatrix(),
-                    .normalMatrix = instanceData.modelMatrix.inverse().transpose() //TODO always the same: not instance !
+                    .normalMatrix = instanceData.modelMatrix.inverse().transpose()
                 };
                 shaderInstanceData.push_back(instanceData);
             }

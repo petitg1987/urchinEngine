@@ -23,8 +23,8 @@ namespace urchin {
 
             HeightfieldPointHelper(const std::vector<Point3<T>>&, unsigned int);
 
-            Point3<T> findPointAt(const Point2<T>&) const;
-            T findHeightAt(const Point2<T>&) const;
+            Point3<T> findNearestPoint(const Point2<T>&) const;
+            T findHeight(const Point2<T>&) const;
             std::vector<Point3<T>> followTopography(const Point3<T>&, const Point3<T>&) const;
 
         private:
