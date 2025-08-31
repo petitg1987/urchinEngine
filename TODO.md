@@ -32,8 +32,9 @@
     * See: <https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/>
   * ▼ **OPTIMIZATION**: Use computer shaders
 * Landscape
-  * ▲ **IMPROVEMENT**: Review grass to be more generic (rocks, flowers) and use instancing of different models
   * ► **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)
+  * ▼ **OPTIMIZATION**: Use quadtree for objects spawner and cull the ones not visible or too far
+  * ▼ **NEW FEATURE**: Use texture mask to display or not the objects from the objects spawner
   * ▼ **NEW FEATURE**: Use material textures (normal map...) for terrain
   * ▼ **NEW FEATURE**: Add auto shadow on terrain
   * ▼ **NEW FEATURE**: Water transparency
@@ -91,5 +92,7 @@
 # Map editor
 * Objects
   * ► **NEW FEATURE**: Make objects without physics selectable with left click
+* Terrain
+  * ► **NEW FEATURE**: Handle objects spawner
 * UI
   * ▼ **NEW FEATURE**: Allow undoing the actions

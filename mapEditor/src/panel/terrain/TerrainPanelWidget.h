@@ -43,7 +43,6 @@ namespace urchin {
             QGroupBox* generalPropertiesGroupBox;
             QGroupBox* meshGroupBox;
             QGroupBox* materialGroupBox;
-            QGroupBox* grassGroupBox;
 
             bool disableTerrainEvent;
 

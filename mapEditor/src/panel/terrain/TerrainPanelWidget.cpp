@@ -21,7 +21,6 @@ namespace urchin {
             generalPropertiesGroupBox(nullptr),
             meshGroupBox(nullptr),
             materialGroupBox(nullptr),
-            grassGroupBox(nullptr),
             disableTerrainEvent(false),
             positionX(nullptr),
             positionY(nullptr),
@@ -240,13 +239,11 @@ namespace urchin {
                     generalPropertiesGroupBox->show();
                     meshGroupBox->show();
                     materialGroupBox->show();
-                    grassGroupBox->show();
                 } else {
                     removeTerrainButton->setEnabled(false);
                     generalPropertiesGroupBox->hide();
                     meshGroupBox->hide();
                     materialGroupBox->hide();
-                    grassGroupBox->hide();
                 }
             }
         }
