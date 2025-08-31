@@ -14,7 +14,7 @@ namespace urchin {
             renderTarget(nullptr),
             terrain(nullptr),
             objectsPerUnit(1.5f),
-            objectsHeightShift(0.5f),
+            objectsHeightShift(0.35f),
             properties({}),
             meshData({}) {
         std::memset((void*)&properties, 0, sizeof(properties));
@@ -92,24 +92,28 @@ namespace urchin {
         unsigned int seed = 0; //no need to generate different random numbers at each start
         float arbitraryDistribution = 1.0f / 3.0f;
         std::default_random_engine generator(seed);
-        std::uniform_real_distribution distributionX(-stepX * arbitraryDistribution, stepX * arbitraryDistribution);
-        std::uniform_real_distribution distributionZ(-stepZ * arbitraryDistribution, stepZ * arbitraryDistribution);
+        std::uniform_real_distribution xDistribution(-stepX * arbitraryDistribution, stepX * arbitraryDistribution);
+        std::uniform_real_distribution zDistribution(-stepZ * arbitraryDistribution, stepZ * arbitraryDistribution);
+        std::uniform_real_distribution rotationDistribution(0.0f, MathValue::PI_FLOAT * 2.0f);
 
         const Transform<float>& baseTransform = this->model->getTransform();
         shaderInstanceData.clear();
         shaderInstanceData.reserve(MathFunction::ceilToUInt(sizeX / stepX) * MathFunction::ceilToUInt((sizeZ / stepZ)));
         for (float x = startX; x < endX; x += stepX) {
             for (float z = startZ; z < endZ; z += stepZ) {
-                float xValue = x + distributionX(generator);
-                float zValue = z + distributionZ(generator);
+                float xValue = x + xDistribution(generator);
+                float zValue = z + zDistribution(generator);
                 float yValue = terrain->getMesh()->findHeight(Point2(xValue, zValue)) + objectsHeightShift;
+
+                Quaternion<float> yRotation = Quaternion<float>::fromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rotationDistribution(generator));
+                Quaternion<float> orientation = yRotation * baseTransform.getOrientation(); //TODO check order
 
                 Vector3<float> normal = terrain->getMesh()->findNearestNormal(Point2(xValue, zValue));
                 normal = (normal / 2.0f) + Vector3(0.5f, 0.5f, 0.5f);
 
-                Point3 position(xValue, yValue, zValue);
+                Point3 position = terrain->getPosition() + Point3(xValue, yValue, zValue);
                 InstanceData instanceData {
-                    .modelMatrix = Transform(terrain->getPosition() + position, baseTransform.getOrientation(), baseTransform.getScale()).getTransformMatrix(),
+                    .modelMatrix = Transform(position, orientation, baseTransform.getScale()).getTransformMatrix(),
                     .normalMatrix = instanceData.modelMatrix.inverse().transpose(),
                     .terrainNormal = normal
                 };
