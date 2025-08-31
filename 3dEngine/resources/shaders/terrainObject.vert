@@ -58,9 +58,8 @@ void main() {
         position += vec4(properties.windDirection, 0.0) * windPower;
     }
 
-    //TODO review
     //reduce height based on its distance from the camera
-    vec3 positionVec3 = vertexPosition; //position.xyz / position.x;
+    vec3 positionVec3 = position.xyz / position.w;
     float distanceToCamera = distance(positionVec3, positioningData.cameraPosition);
     float startReduceHeightDistance = properties.displayDistance * 0.9;
     if (distanceToCamera > startReduceHeightDistance) {
