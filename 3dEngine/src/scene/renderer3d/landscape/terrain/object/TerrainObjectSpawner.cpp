@@ -32,16 +32,37 @@ namespace urchin {
         cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
     }
 
-    //TODO add trigger when terrain prop change !
     void TerrainObjectSpawner::initialize(RenderTarget& renderTarget, Terrain& terrain) {
         assert(!isInitialized);
         this->renderTarget = &renderTarget;
         this->terrain = &terrain;
 
-        generateObjectPositions();
-        
+        createOrRefreshRenderers();
+
+        isInitialized = true;
+    }
+
+    void TerrainObjectSpawner::onTerrainPositionUpdate() {
+        createOrRefreshObjectPositions();
+    }
+
+    void TerrainObjectSpawner::onTerrainMeshUpdate() {
+        createOrRefreshRenderers();
+    }
+
+    void TerrainObjectSpawner::onTerrainMaterialUpdate() {
+        createOrRefreshRenderers();
+    }
+
+    void TerrainObjectSpawner::onTerrainLightingUpdate() {
+        createOrRefreshRenderers();
+    }
+
+    void TerrainObjectSpawner::createOrRefreshRenderers() {
+        createOrRefreshObjectPositions();
+
         constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;
-        jitterScale = Vector2((float)renderTarget.getWidth() * NDC_SPACE_TO_UV_COORDS_SCALE, (float)renderTarget.getHeight() * NDC_SPACE_TO_UV_COORDS_SCALE);
+        jitterScale = Vector2((float)renderTarget->getWidth() * NDC_SPACE_TO_UV_COORDS_SCALE, (float)renderTarget->getHeight() * NDC_SPACE_TO_UV_COORDS_SCALE);
 
         shader = ShaderBuilder::createShader("terrainObject.vert.spv", "terrainObject.frag.spv", false);
 
@@ -52,7 +73,7 @@ namespace urchin {
 
             fillMeshData(mesh);
 
-            auto meshRendererBuilder = GenericRendererBuilder::create("terrain obj - " + meshName, renderTarget, *shader, ShapeType::TRIANGLE)
+            auto meshRendererBuilder = GenericRendererBuilder::create("terrain obj - " + meshName, *renderTarget, *shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
                     ->addData(mesh.getUv())
                     ->addData(mesh.getNormals())
@@ -74,18 +95,15 @@ namespace urchin {
             if (mesh.getMaterial().isDepthWriteEnabled()) {
                 meshRendererBuilder->enableDepthWrite();
             }
-
             if (mesh.getMaterial().getAlbedoTexture()->hasTransparency()) {
                 meshRendererBuilder->disableCullFace();
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());
         }
-
-        isInitialized = true;
     }
 
-    void TerrainObjectSpawner::generateObjectPositions() {
+    void TerrainObjectSpawner::createOrRefreshObjectPositions() {
         float startX = terrain->getMesh()->getVertices()[0].X;
         float endX = terrain->getMesh()->getVertices()[terrain->getMesh()->getVertices().size() - 1].X;
         float startZ = terrain->getMesh()->getVertices()[0].Z;
@@ -125,11 +143,15 @@ namespace urchin {
                 shaderInstanceData.push_back(instanceData);
             }
         }
+
+        for (auto& meshRenderer : meshRenderers) {
+            meshRenderer->updateInstanceData(POSITIONING_DATA_UNIFORM_BINDING, (const float*)shaderInstanceData.data());
+        }
     }
 
     void TerrainObjectSpawner::fillMeshData(const Mesh& mesh) {
         //model properties
-        meshData.lightMask = model->getLightMask();
+        meshData.lightMask = terrain->getLightMask();
 
         //material
         if (properties.useTerrainLighting) {

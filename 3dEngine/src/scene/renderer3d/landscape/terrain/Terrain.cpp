@@ -12,7 +12,6 @@ namespace urchin {
             renderTarget(nullptr),
             mesh(std::move(mesh)),
             materials(std::move(materials)),
-            grass(TerrainGrass("")),
             ambient(0.0f),
             lightMask(std::numeric_limits<uint8_t>::max()) {
         setPosition(position);
@@ -23,13 +22,8 @@ namespace urchin {
         assert(!isInitialized);
         this->renderTarget = &renderTarget;
 
-        grass.initialize(renderTarget);
-
         setMesh(std::move(mesh));
         setMaterials(std::move(materials));
-
-        refreshGrassMesh();
-        refreshGrassLightingProperties();
 
         isInitialized = true;
     }
@@ -39,6 +33,10 @@ namespace urchin {
         this->mesh = std::move(mesh);
 
         createOrUpdateRenderer();
+
+        for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
+            objectSpawner->onTerrainMeshUpdate();
+        }
     }
 
     void Terrain::createOrUpdateRenderer() {
@@ -87,7 +85,6 @@ namespace urchin {
         terrainRenderer = terrainRendererBuilder->build();
 
         refreshMaterials(); //material uses mesh info: refresh is required
-        refreshGrassMesh(); //grass uses mesh info: refresh is required
     }
 
     const TerrainMesh* Terrain::getMesh() const {
@@ -100,6 +97,10 @@ namespace urchin {
         }
 
         refreshMaterials();
+
+        for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
+            objectSpawner->onTerrainMaterialUpdate();
+        }
     }
 
     void Terrain::refreshMaterials() const {
@@ -127,26 +128,6 @@ namespace urchin {
         return materials.get();
     }
 
-    void Terrain::refreshGrassMesh() {
-        if (grass.isInitialized()) {
-            grass.refreshWith(mesh.get(), position);
-        }
-    }
-
-    void Terrain::refreshGrassLightingProperties() {
-        if (grass.isInitialized()) {
-            grass.refreshWith(ambient, lightMask);
-        }
-    }
-
-    TerrainGrass& Terrain::getGrass() {
-        return grass;
-    }
-
-    const TerrainGrass& Terrain::getGrass() const {
-        return grass;
-    }
-
     void Terrain::addObjectSpawner(std::unique_ptr<TerrainObjectSpawner> objectSpawner) {
         assert(isInitialized);
         objectSpawner->initialize(*renderTarget, *this);
@@ -162,7 +143,10 @@ namespace urchin {
         if (terrainRenderer) {
             terrainRenderer->updateUniformData(POSITION_UNIFORM_BINDING, &position);
         }
-        refreshGrassMesh(); //grass uses terrain position: refresh is required
+
+        for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
+            objectSpawner->onTerrainPositionUpdate();
+        }
     }
 
     /**
@@ -182,7 +166,10 @@ namespace urchin {
 
             if (isInitialized) {
                 createOrUpdateRenderer();
-                refreshGrassLightingProperties();
+
+                for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
+                    objectSpawner->onTerrainLightingUpdate();
+                }
             }
         }
     }
@@ -193,7 +180,10 @@ namespace urchin {
 
             if (isInitialized) {
                 createOrUpdateRenderer();
-                refreshGrassLightingProperties();
+
+                for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
+                    objectSpawner->onTerrainLightingUpdate();
+                }
             }
         }
     }
@@ -212,13 +202,10 @@ namespace urchin {
         return mesh->findHeight(localCoordinate) + position.Y;
     }
 
-    void Terrain::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) {
-        assert(isInitialized);
-
+    void Terrain::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) const {
         terrainRenderer->updateUniformData(PROJ_VIEW_MATRIX_UNIFORM_BINDING, &camera.getProjectionViewMatrix());
         terrainRenderer->enableRenderer(renderingOrder);
 
-        //TODO grass.prepareRendering(renderingOrder, camera, dt);
         for (const std::unique_ptr<TerrainObjectSpawner>& objectSpawner : objectsSpawner) {
             renderingOrder++;
             objectSpawner->prepareRendering(renderingOrder, camera, dt);

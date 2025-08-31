@@ -30,7 +30,6 @@ namespace urchin {
             void setupGeneralPropertiesBox(QVBoxLayout*);
             void setupMeshBox(QVBoxLayout*);
             void setupMaterialBox(QVBoxLayout*);
-            void setupGrassBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
             void setupTerrainDataFrom(const TerrainEntity*);
@@ -68,20 +67,6 @@ namespace urchin {
             std::vector<QLineEdit*> materialFilenameTexts;
             static QString preferredMaterialPath;
 
-            //grass properties
-            QLineEdit* grassTextureFilenameText;
-            static QString preferredGrassTexturePath;
-            QLineEdit* grassMaskFilenameText;
-            static QString preferredGrassMaskPath;
-            QSpinBox* numGrassInTex;
-            QDoubleSpinBox* grassQuantity;
-            QDoubleSpinBox* grassHeight;
-            QDoubleSpinBox* grassWidth;
-            QDoubleSpinBox* windDirectionX;
-            QDoubleSpinBox* windDirectionY;
-            QDoubleSpinBox* windDirectionZ;
-            QDoubleSpinBox* windStrength;
-
         private slots:
             void showAddTerrainDialog();
             void removeSelectedTerrain() const;
@@ -89,17 +74,11 @@ namespace urchin {
             void updateTerrainGeneralProperties() const;
             void updateTerrainMesh() const;
             void updateTerrainMaterial() const;
-            void updateTerrainGrass() const;
 
             void showMaskFilenameDialog();
             void clearMaskFilename() const;
             void showMaterialFilenameDialog(const QString&);
             void clearMaterialFilename(const QString&) const;
-
-            void showGrassTextureFilenameDialog();
-            void clearGrassTextureFilename() const;
-            void showGrassMaskFilenameDialog();
-            void clearGrassMaskFilename() const;
     };
 
 }

@@ -20,9 +20,6 @@ namespace urchin {
             static void loadProperties(Terrain&, const UdaChunk*, const UdaParser&);
             static void writeProperties(UdaChunk&, const Terrain&, UdaParser&);
 
-            static void loadGrass(Terrain&, const UdaChunk*, const UdaParser&);
-            static void writeGrass(UdaChunk&, const Terrain&, UdaParser&);
-
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char INDEX_ATTR[] = "index";
 
@@ -40,15 +37,6 @@ namespace urchin {
             static constexpr char POSITION_TAG[] = "position";
             static constexpr char AMBIENT_TAG[] = "ambient";
             static constexpr char LIGHT_MASK_TAG[] = "lightMask";
-            static constexpr char GRASS_TAG[] = "grass";
-            static constexpr char GRASS_TEXTURE_FILENAME_TAG[] = "grassTextureFilename";
-            static constexpr char GRASS_MASK_FILENAME_TAG[] = "grassMaskFilename";
-            static constexpr char NUM_GRASS_IN_TEX_TAG[] = "numGrassInTex";
-            static constexpr char GRASS_HEIGHT_TAG[] = "grassHeight";
-            static constexpr char GRASS_WIDTH_TAG[] = "grassWidth";
-            static constexpr char GRASS_QUANTITY_TAG[] = "grassQuantity";
-            static constexpr char WIND_DIRECTION_TAG[] = "windDirection";
-            static constexpr char WIND_STRENGTH_TAG[] = "windStrength";
     };
 
 }

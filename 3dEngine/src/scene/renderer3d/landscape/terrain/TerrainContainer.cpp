@@ -43,8 +43,8 @@ namespace urchin {
         }
     }
 
-    void TerrainContainer::updateTerrainConfig(Terrain& terrain) const {
-        terrain.getGrass().setGrassDisplayDistance(config.grassDisplayDistance);
+    void TerrainContainer::updateTerrainConfig(Terrain& /*terrain*/) const {
+        //TODO terrain.getGrass().setGrassDisplayDistance(config.grassDisplayDistance);
     }
 
     void TerrainContainer::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) const {

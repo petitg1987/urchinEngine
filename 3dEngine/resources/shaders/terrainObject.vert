@@ -42,8 +42,8 @@ void main() {
     }
 
     vec4 position = mModel * vec4(vertexPosition, 1.0);
-    if (texCoordinates.y < 0.5) { //top of the object
-        //wind: rotation //TODO disable if no wind !
+    if (texCoordinates.y < 0.5 && properties.windStrength > 0.00001f) { //top of the object
+        //wind: rotation
         float rotationSpeed = 1.0f;
         float rotationStrength = 0.1f;
         position.x += sin(positioningData.sumTimeStep * rotationSpeed) * rotationStrength;

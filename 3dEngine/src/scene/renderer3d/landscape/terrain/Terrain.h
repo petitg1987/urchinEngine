@@ -6,7 +6,6 @@
 #include "graphics/api/GraphicsApi.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMaterial.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
-#include "scene/renderer3d/landscape/terrain/grass/TerrainGrass.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/landscape/terrain/object/TerrainObjectSpawner.h"
 
@@ -22,8 +21,6 @@ namespace urchin {
             const TerrainMesh* getMesh() const;
             void setMaterials(std::unique_ptr<TerrainMaterials>);
             const TerrainMaterials* getMaterials() const;
-            TerrainGrass& getGrass();
-            const TerrainGrass& getGrass() const;
             void addObjectSpawner(std::unique_ptr<TerrainObjectSpawner>);
 
             void setPosition(const Point3<float>&);
@@ -38,7 +35,7 @@ namespace urchin {
             Point3<float> findNearestPoint(const Point2<float>&) const;
             float findHeight(const Point2<float>&) const;
 
-            void prepareRendering(unsigned int&, const Camera&, float);
+            void prepareRendering(unsigned int&, const Camera&, float) const;
 
         private:
             struct TerrainShaderConst {
@@ -48,8 +45,6 @@ namespace urchin {
 
             void createOrUpdateRenderer();
             void refreshMaterials() const;
-            void refreshGrassMesh();
-            void refreshGrassLightingProperties();
 
             static constexpr uint32_t PROJ_VIEW_MATRIX_UNIFORM_BINDING = 0;
             static constexpr uint32_t POSITION_UNIFORM_BINDING = 1;
@@ -66,7 +61,6 @@ namespace urchin {
 
             std::unique_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterials> materials;
-            TerrainGrass grass;
             std::vector<std::unique_ptr<TerrainObjectSpawner>> objectsSpawner;
 
             float ambient;

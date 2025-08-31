@@ -14,11 +14,16 @@ namespace urchin {
             explicit TerrainObjectSpawner(std::unique_ptr<Model>);
 
             void initialize(RenderTarget&, Terrain&);
+            void onTerrainPositionUpdate();
+            void onTerrainMeshUpdate();
+            void onTerrainMaterialUpdate();
+            void onTerrainLightingUpdate();
 
             void prepareRendering(unsigned int, const Camera&, float);
 
         private:
-            void generateObjectPositions();
+            void createOrRefreshObjectPositions();
+            void createOrRefreshRenderers();
             void fillMeshData(const Mesh&);
             TextureParam buildTextureParam(const Mesh&) const;
 

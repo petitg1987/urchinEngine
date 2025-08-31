@@ -67,28 +67,6 @@ namespace urchin {
         return terrainEntity;
     }
 
-    const TerrainEntity& TerrainController::updateTerrainGrass(const TerrainEntity& constTerrainEntity, std::string grassTextureFilename, std::string grassMaskFilename,
-                                                               unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassWidth,
-                                                               const Vector3<float>& windDirection, float windStrength) {
-        const TerrainEntity& terrainEntity = findTerrainEntity(constTerrainEntity);
-        Terrain* terrain = terrainEntity.getTerrain();
-        TerrainGrass& terrainGrass = terrain->getGrass();
-
-        terrainGrass.setGrassTexture(std::move(grassTextureFilename));
-        terrainGrass.setMaskTexture(std::move(grassMaskFilename));
-        terrainGrass.setNumGrassInTexture(numGrassInTex);
-        if (terrainGrass.getGrassQuantity() != grassQuantity) {
-            terrainGrass.setGrassQuantity(grassQuantity);
-        }
-        terrainGrass.setGrassHeight(grassHeight);
-        terrainGrass.setGrassWidth(grassWidth);
-        terrainGrass.setWindDirection(windDirection);
-        terrainGrass.setWindStrength(windStrength);
-
-        markModified();
-        return terrainEntity;
-    }
-
     TerrainEntity& TerrainController::findTerrainEntity(const TerrainEntity& constTerrainEntity) const {
         const auto& terrainsEntities = getMap().getTerrainEntities();
         auto it = std::ranges::find_if(terrainsEntities, [&constTerrainEntity](const auto& o){return o.get() == &constTerrainEntity;});
