@@ -5,6 +5,8 @@ layout(std140, set = 0, binding = 1) uniform MeshData {
     uint lightMask;
     float encodedEmissiveFactor; //encoded between 0.0 (no emissive) and 1.0 (max emissive)
     float ambientFactor;
+    float modelHeight;
+    float modelMinY;
 } meshData;
 
 layout(std140, set = 0, binding = 2) uniform CameraInfo {

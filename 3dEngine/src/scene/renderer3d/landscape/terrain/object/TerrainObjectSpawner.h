@@ -46,7 +46,7 @@ namespace urchin {
 
             void createOrRefreshObjectPositions();
             void createOrRefreshRenderers();
-            void fillMeshData(const Mesh&);
+            void fillMeshData(const Model&, const Mesh&);
             TextureParam buildTextureParam(const Mesh&) const;
 
             static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
@@ -55,7 +55,7 @@ namespace urchin {
             static constexpr uint32_t PROPERTIES_UNIFORM_BINDING = 3;
             static constexpr uint32_t MAT_ALBEDO_UNIFORM_BINDING = 4;
             static constexpr uint32_t MAT_NORMAL_UNIFORM_BINDING = 5;
-            static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING =6;
+            static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING = 6;
             static constexpr uint32_t MAT_METALNESS_UNIFORM_BINDING = 7;
 
             bool isInitialized;
@@ -90,6 +90,8 @@ namespace urchin {
                 alignas(4) unsigned int lightMask;
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;
+                alignas(4) float modelHeight;
+                alignas(4) float modelMinY;
             } meshData;
 
             Vector2<float> jitterScale;

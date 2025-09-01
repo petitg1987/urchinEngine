@@ -24,6 +24,8 @@ namespace urchin {
         std::memset((void*)&meshData, 0, sizeof(meshData));
         std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
 
+        //TODO check no orientation on model matrix
+
         properties.displayDistance = baseDisplayDistance;
         properties.useTerrainLighting = true;
         properties.windDirection = Vector3(1.0f, 0.0f, 0.0f);
@@ -142,7 +144,7 @@ namespace urchin {
             const Mesh& mesh = model->getMeshes()->getMesh(i);
             auto meshName =model->getMeshes()->getConstMeshes().getMeshesName();
 
-            fillMeshData(mesh);
+            fillMeshData(*model, mesh);
 
             auto meshRendererBuilder = GenericRendererBuilder::create("terrain obj - " + meshName, *renderTarget, *shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
@@ -226,7 +228,7 @@ namespace urchin {
         }
     }
 
-    void TerrainObjectSpawner::fillMeshData(const Mesh& mesh) {
+    void TerrainObjectSpawner::fillMeshData(const Model& model, const Mesh& mesh) {
         //model properties
         meshData.lightMask = terrain->getLightMask();
 
@@ -238,6 +240,10 @@ namespace urchin {
             meshData.encodedEmissiveFactor = std::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
             meshData.ambientFactor = mesh.getMaterial().getAmbientFactor();
         }
+
+        //model data
+        meshData.modelHeight = model.getLocalAABBox().getMax().Y - model.getLocalAABBox().getMin().Y;
+        meshData.modelMinY = model.getLocalAABBox().getMin().Y;
     }
 
     TextureParam TerrainObjectSpawner::buildTextureParam(const Mesh& mesh) const {

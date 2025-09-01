@@ -7,6 +7,14 @@ layout(std140, set = 0, binding = 0) uniform PositioningData {
     float sumTimeStep;
 } positioningData;
 
+layout(std140, set = 0, binding = 1) uniform MeshData {
+    uint lightMask;
+    float encodedEmissiveFactor; //encoded between 0.0 (no emissive) and 1.0 (max emissive)
+    float ambientFactor;
+    float modelHeight;
+    float modelMinY;
+} meshData;
+
 layout(std140, set = 0, binding = 3) uniform Properties {
     float displayDistance;
     bool useTerrainLighting;
@@ -44,30 +52,38 @@ void main() {
     }
 
     vec4 position = mModel * vec4(vertexPosition, 1.0);
-    if (texCoordinates.y < 0.5 && properties.windStrength > 0.00001f) { //top of the object
-        //wind: rotation
+    float localVertexHeight = vertexPosition.y - meshData.modelMinY;
+
+    //wind
+    if (properties.windStrength > 0.00001f) {
+        //the higher the vertex is on the model, the stronger the wind becomes
+        float globalWindStrength = localVertexHeight / meshData.modelHeight;
+
+        //rotation
         float rotationSpeed = 1.0f;
-        float rotationStrength = 0.1f;
+        float rotationStrength = 0.05f * globalWindStrength;
         position.x += sin(positioningData.sumTimeStep * rotationSpeed) * rotationStrength;
         position.z += cos(positioningData.sumTimeStep * rotationSpeed) * rotationStrength;
 
-        //wind: side
+        //side
         float windPower = 0.5 + sin(position.x / 30.0 + position.z / 30.0 + positioningData.sumTimeStep * (1.2 + properties.windStrength / 20.0));
         windPower *= (windPower > 0.0) ? 0.3 : 0.2;
         windPower *= properties.windStrength;
-        position += vec4(properties.windDirection, 0.0) * windPower;
+        windPower *= globalWindStrength;
+        position.xyz += properties.windDirection * windPower;
     }
 
     //reduce height based on its distance from the camera
     vec3 positionVec3 = position.xyz / position.w;
     float distanceToCamera = distance(positionVec3, positioningData.cameraPosition);
-    float startReduceHeightDistance = properties.displayDistance * 0.9;
+    float startReduceHeightDistance = properties.displayDistance * 0.8;
     if (distanceToCamera > startReduceHeightDistance) {
-        float heightReducePercentage = 1.0f;
+        float heightReducePercentage = 1.0;
         if (distanceToCamera < properties.displayDistance) {
             heightReducePercentage = (distanceToCamera - startReduceHeightDistance) / (properties.displayDistance - startReduceHeightDistance);
         }
-        position.y -= heightReducePercentage * 10.0f; //TODO review !
+        float scaleY = mModel[1][1];
+        position.y -= heightReducePercentage * localVertexHeight * scaleY;
     }
 
     gl_Position = positioningData.mProjectionView * position;
