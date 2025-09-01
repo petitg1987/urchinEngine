@@ -33,8 +33,8 @@
   * ▼ **OPTIMIZATION**: Use computer shaders
 * Landscape
   * ► **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)
-  * ▼ **OPTIMIZATION**: Use quadtree for objects spawner and cull the ones not visible or too far
-  * ▼ **NEW FEATURE**: Use texture mask to display or not the objects from the objects spawner
+  * ► **OPTIMIZATION**: Use quadtree for objects spawner and cull the ones not visible or too far
+  * ► **NEW FEATURE**: Use texture mask to display or not the objects from the objects spawner
   * ▼ **NEW FEATURE**: Use material textures (normal map...) for terrain
   * ▼ **NEW FEATURE**: Add auto shadow on terrain
   * ▼ **NEW FEATURE**: Water transparency
