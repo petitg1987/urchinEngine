@@ -24,7 +24,13 @@ namespace urchin {
         std::memset((void*)&meshData, 0, sizeof(meshData));
         std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
 
-        //TODO check no orientation on model matrix
+        Vector3<float> axis; float angle;
+        this->model->getTransform().getOrientation().toAxisAngle(axis, angle);
+        if (!MathFunction::isZero(angle, 0.001f)) {
+            throw std::runtime_error("Rotation on terrain object model is not supported yet");
+        } else if (!MathFunction::isZero(this->model->getTransform().getPosition().toVector().length(), 0.001f)) {
+            throw std::runtime_error("Translation on terrain object model is not supported yet");
+        }
 
         properties.displayDistance = baseDisplayDistance;
         properties.useTerrainLighting = true;
@@ -144,7 +150,7 @@ namespace urchin {
             const Mesh& mesh = model->getMeshes()->getMesh(i);
             auto meshName =model->getMeshes()->getConstMeshes().getMeshesName();
 
-            fillMeshData(*model, mesh);
+            fillMeshData(mesh);
 
             auto meshRendererBuilder = GenericRendererBuilder::create("terrain obj - " + meshName, *renderTarget, *shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
@@ -199,7 +205,6 @@ namespace urchin {
         std::uniform_real_distribution zDistribution(-stepZ * arbitraryDistribution, stepZ * arbitraryDistribution);
         std::uniform_real_distribution rotationDistribution(0.0f, MathValue::PI_FLOAT * 2.0f);
 
-        const Transform<float>& baseTransform = this->model->getTransform();
         shaderInstanceData.clear();
         shaderInstanceData.reserve(MathFunction::ceilToUInt(sizeX / stepX) * MathFunction::ceilToUInt((sizeZ / stepZ)));
         for (float x = startX; x < endX; x += stepX) {
@@ -208,14 +213,14 @@ namespace urchin {
                 float zValue = z + zDistribution(generator);
                 float yValue = terrain->getMesh()->findHeight(Point2(xValue, zValue)) + objectsHeightShift;
 
-                Quaternion<float> orientation = baseTransform.getOrientation() * Quaternion<float>::rotationY(rotationDistribution(generator));
+                Quaternion<float> orientation = Quaternion<float>::rotationY(rotationDistribution(generator));
 
                 Vector3<float> normal = terrain->getMesh()->findNearestNormal(Point2(xValue, zValue));
                 normal = (normal / 2.0f) + Vector3(0.5f, 0.5f, 0.5f);
 
                 Point3 position = terrain->getPosition() + Point3(xValue, yValue, zValue);
                 InstanceData instanceData {
-                    .modelMatrix = Transform(position, orientation, baseTransform.getScale()).getTransformMatrix(),
+                    .modelMatrix = Transform(position, orientation, this->model->getTransform().getScale()).getTransformMatrix(),
                     .normalMatrix = instanceData.modelMatrix.inverse().transpose(),
                     .terrainNormal = normal
                 };
@@ -228,7 +233,7 @@ namespace urchin {
         }
     }
 
-    void TerrainObjectSpawner::fillMeshData(const Model& model, const Mesh& mesh) {
+    void TerrainObjectSpawner::fillMeshData(const Mesh& mesh) {
         //model properties
         meshData.lightMask = terrain->getLightMask();
 
@@ -242,8 +247,8 @@ namespace urchin {
         }
 
         //model data
-        meshData.modelHeight = model.getLocalAABBox().getMax().Y - model.getLocalAABBox().getMin().Y;
-        meshData.modelMinY = model.getLocalAABBox().getMin().Y;
+        meshData.modelHeight = model->getLocalAABBox().getMax().Y - model->getLocalAABBox().getMin().Y;
+        meshData.modelMinY = model->getLocalAABBox().getMin().Y;
     }
 
     TextureParam TerrainObjectSpawner::buildTextureParam(const Mesh& mesh) const {

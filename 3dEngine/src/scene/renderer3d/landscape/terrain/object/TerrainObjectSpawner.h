@@ -46,7 +46,7 @@ namespace urchin {
 
             void createOrRefreshObjectPositions();
             void createOrRefreshRenderers();
-            void fillMeshData(const Model&, const Mesh&);
+            void fillMeshData(const Mesh&);
             TextureParam buildTextureParam(const Mesh&) const;
 
             static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
