@@ -27,9 +27,9 @@ namespace urchin {
         Vector3<float> axis; float angle;
         this->model->getTransform().getOrientation().toAxisAngle(axis, angle);
         if (!MathFunction::isZero(angle, 0.001f)) {
-            throw std::runtime_error("Rotation on terrain object model is not supported yet");
+            throw std::runtime_error("Rotation on terrain objects is not supported yet");
         } else if (!MathFunction::isZero(this->model->getTransform().getPosition().toVector().length(), 0.001f)) {
-            throw std::runtime_error("Translation on terrain object model is not supported yet");
+            throw std::runtime_error("Translation on terrain objects is not supported yet");
         }
 
         properties.displayDistance = baseDisplayDistance;
