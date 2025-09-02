@@ -51,12 +51,11 @@ namespace urchin {
 
             static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
             static constexpr uint32_t MESH_DATA_UNIFORM_BINDING = 1;
-            static constexpr uint32_t CAMERA_INFO_UNIFORM_BINDING = 2;
-            static constexpr uint32_t PROPERTIES_UNIFORM_BINDING = 3;
-            static constexpr uint32_t MAT_ALBEDO_UNIFORM_BINDING = 4;
-            static constexpr uint32_t MAT_NORMAL_UNIFORM_BINDING = 5;
-            static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING = 6;
-            static constexpr uint32_t MAT_METALNESS_UNIFORM_BINDING = 7;
+            static constexpr uint32_t PROPERTIES_UNIFORM_BINDING = 2;
+            static constexpr uint32_t MAT_ALBEDO_UNIFORM_BINDING = 3;
+            static constexpr uint32_t MAT_NORMAL_UNIFORM_BINDING = 4;
+            static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING = 5;
+            static constexpr uint32_t MAT_METALNESS_UNIFORM_BINDING = 6;
 
             bool isInitialized;
             std::unique_ptr<Model> model;
@@ -80,9 +79,11 @@ namespace urchin {
             };
             std::vector<InstanceData> shaderInstanceData;
 
+            Vector2<float> jitterScale;
             struct {
                 alignas(16) Matrix4<float> projectionView;
                 alignas(16) Point3<float> cameraPosition;
+                alignas(8) Vector2<float> jitterInPixel;
                 alignas(4) float sumTimeStep;
             } positioningData;
 
@@ -93,11 +94,6 @@ namespace urchin {
                 alignas(4) float modelHeight;
                 alignas(4) float modelMinY;
             } meshData;
-
-            Vector2<float> jitterScale;
-            struct CameraInfo {
-                alignas(8) Vector2<float> jitterInPixel;
-            } cameraInfo;
 
             std::unique_ptr<Shader> shader;
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;

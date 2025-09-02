@@ -1,6 +1,13 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
+layout(std140, set = 0, binding = 0) uniform PositioningData {
+    mat4 mProjectionView;
+    vec3 cameraPosition;
+    vec2 jitterInPixel;
+    float sumTimeStep;
+} positioningData;
+
 layout(std140, set = 0, binding = 1) uniform MeshData {
     uint lightMask;
     float encodedEmissiveFactor; //encoded between 0.0 (no emissive) and 1.0 (max emissive)
@@ -9,21 +16,17 @@ layout(std140, set = 0, binding = 1) uniform MeshData {
     float modelMinY;
 } meshData;
 
-layout(std140, set = 0, binding = 2) uniform CameraInfo {
-    vec2 jitterInPixel;
-} cameraInfo;
-
-layout(std140, set = 0, binding = 3) uniform Properties {
+layout(std140, set = 0, binding = 2) uniform Properties {
     float displayDistance;
     bool useTerrainLighting;
     float windStrength;
     vec3 windDirection;
 } properties;
 
-layout(binding = 4) uniform sampler2D albedoTex;
-layout(binding = 5) uniform sampler2D normalTex;
-layout(binding = 6) uniform sampler2D roughnessTex;
-layout(binding = 7) uniform sampler2D metalnessTex;
+layout(binding = 3) uniform sampler2D albedoTex;
+layout(binding = 4) uniform sampler2D normalTex;
+layout(binding = 5) uniform sampler2D roughnessTex;
+layout(binding = 6) uniform sampler2D metalnessTex;
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;
@@ -36,7 +39,7 @@ layout(location = 2) out uvec4 fragPbrAndMask;
 
 vec2 unjitterTextureUv(vec2 uv) {
     //Tips to debug the following code: increase the camera jittering of 50.0f and check that textures don't jitter despite the camera jittering
-    return uv - (dFdxFine(uv) * cameraInfo.jitterInPixel.x) - (dFdyFine(uv) * cameraInfo.jitterInPixel.y);
+    return uv - (dFdxFine(uv) * positioningData.jitterInPixel.x) - (dFdyFine(uv) * positioningData.jitterInPixel.y);
 }
 
 void main() {

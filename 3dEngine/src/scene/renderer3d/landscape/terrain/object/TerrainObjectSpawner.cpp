@@ -22,7 +22,6 @@ namespace urchin {
         std::memset((void*)&properties, 0, sizeof(properties));
         std::memset((void*)&positioningData, 0, sizeof(positioningData));
         std::memset((void*)&meshData, 0, sizeof(meshData));
-        std::memset((void*)&cameraInfo, 0, sizeof(cameraInfo));
 
         Vector3<float> axis; float angle;
         this->model->getTransform().getOrientation().toAxisAngle(axis, angle);
@@ -37,9 +36,8 @@ namespace urchin {
         properties.windDirection = Vector3(1.0f, 0.0f, 0.0f);
         properties.windStrength = 0.5f;
 
+        positioningData.jitterInPixel = Vector2(0.0f, 0.0f);
         positioningData.sumTimeStep = 0.0f;
-
-        cameraInfo.jitterInPixel = Vector2(0.0f, 0.0f);
     }
 
     void TerrainObjectSpawner::initialize(RenderTarget& renderTarget, Terrain& terrain) {
@@ -161,7 +159,6 @@ namespace urchin {
                     ->instanceData(shaderInstanceData.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT, VariableType::VEC3_FLOAT}, (const float*)shaderInstanceData.data())
                     ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                     ->addUniformData(MESH_DATA_UNIFORM_BINDING, sizeof(meshData), &meshData)
-                    ->addUniformData(CAMERA_INFO_UNIFORM_BINDING, sizeof(cameraInfo), &cameraInfo)
                     ->addUniformData(PROPERTIES_UNIFORM_BINDING, sizeof(properties), &properties)
                     ->addUniformTextureReader(MAT_ALBEDO_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)))
                     ->addUniformTextureReader(MAT_NORMAL_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)))
@@ -259,13 +256,11 @@ namespace urchin {
     void TerrainObjectSpawner::prepareRendering(unsigned int renderingOrder, const Camera& camera, float dt) {
         positioningData.projectionView = camera.getProjectionViewMatrix();
         positioningData.cameraPosition = camera.getPosition();
+        positioningData.jitterInPixel = camera.getAppliedJitter() * jitterScale;
         positioningData.sumTimeStep += dt;
-
-        cameraInfo.jitterInPixel = camera.getAppliedJitter() * jitterScale;
 
         for (auto& meshRenderer : meshRenderers) {
             meshRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
-            meshRenderer->updateUniformData(CAMERA_INFO_UNIFORM_BINDING, &cameraInfo);
 
             meshRenderer->enableRenderer(renderingOrder);
         }

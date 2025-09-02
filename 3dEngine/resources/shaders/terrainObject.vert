@@ -4,6 +4,7 @@
 layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mProjectionView;
     vec3 cameraPosition;
+    vec2 jitterInPixel;
     float sumTimeStep;
 } positioningData;
 
@@ -15,7 +16,7 @@ layout(std140, set = 0, binding = 1) uniform MeshData {
     float modelMinY;
 } meshData;
 
-layout(std140, set = 0, binding = 3) uniform Properties {
+layout(std140, set = 0, binding = 2) uniform Properties {
     float displayDistance;
     bool useTerrainLighting;
     float windStrength;
