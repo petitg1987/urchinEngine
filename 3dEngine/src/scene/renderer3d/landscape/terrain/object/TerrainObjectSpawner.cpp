@@ -15,7 +15,7 @@ namespace urchin {
             terrain(nullptr),
             objectsPerUnit(1.0f),
             objectsHeightShift(0.0f),
-            baseDisplayDistance(100.0f),
+            baseDisplayDistance(100.0f), //TODO add max in name
             properties({}),
             positioningData({}),
             meshData({}) {
@@ -44,6 +44,11 @@ namespace urchin {
         assert(!isInitialized);
         this->renderTarget = &renderTarget;
         this->terrain = &terrain;
+
+        constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;
+        jitterScale = Vector2((float)renderTarget.getWidth() * NDC_SPACE_TO_UV_COORDS_SCALE, (float)renderTarget.getHeight() * NDC_SPACE_TO_UV_COORDS_SCALE);
+
+        shader = ShaderBuilder::createShader("terrainObject.vert.spv", "terrainObject.frag.spv", false);
 
         createOrRefreshRenderers();
 
@@ -92,6 +97,10 @@ namespace urchin {
         return baseDisplayDistance;
     }
 
+    /**
+     * @param baseDisplayDistance Maximum display distance of the objects which is adjusted based on game quality configured.
+     * Value can be negative to always display all models.
+     */
     void TerrainObjectSpawner::setBaseDisplayDistance(float baseDisplayDistance) {
         this->baseDisplayDistance = baseDisplayDistance;
         updateProperties();
@@ -136,17 +145,15 @@ namespace urchin {
     }
 
     void TerrainObjectSpawner::createOrRefreshRenderers() {
+        meshRenderers.clear();
+
         createOrRefreshObjectPositions();
-
-        constexpr float NDC_SPACE_TO_UV_COORDS_SCALE = 0.5f;
-        jitterScale = Vector2((float)renderTarget->getWidth() * NDC_SPACE_TO_UV_COORDS_SCALE, (float)renderTarget->getHeight() * NDC_SPACE_TO_UV_COORDS_SCALE);
-
-        shader = ShaderBuilder::createShader("terrainObject.vert.spv", "terrainObject.frag.spv", false);
+        updateProperties();
 
         for (unsigned int i = 0; i < model->getMeshes()->getNumMeshes(); ++i) {
             const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(i);
             const Mesh& mesh = model->getMeshes()->getMesh(i);
-            auto meshName =model->getMeshes()->getConstMeshes().getMeshesName();
+            std::string meshName = model->getMeshes()->getConstMeshes().getMeshesName();
 
             fillMeshData(mesh);
 
@@ -177,8 +184,6 @@ namespace urchin {
 
             meshRenderers.push_back(meshRendererBuilder->build());
         }
-
-        updateProperties();
     }
 
     void TerrainObjectSpawner::createOrRefreshObjectPositions() {

@@ -75,16 +75,18 @@ void main() {
     }
 
     //reduce height based on its distance from the camera
-    vec3 positionVec3 = position.xyz / position.w;
-    float distanceToCamera = distance(positionVec3, positioningData.cameraPosition);
-    float startReduceHeightDistance = properties.displayDistance * 0.75;
-    if (distanceToCamera > startReduceHeightDistance) {
-        float heightReducePercentage = 1.0;
-        if (distanceToCamera < properties.displayDistance) {
-            heightReducePercentage = (distanceToCamera - startReduceHeightDistance) / (properties.displayDistance - startReduceHeightDistance);
+    if (properties.displayDistance > 0.0) {
+        vec3 positionVec3 = position.xyz / position.w;
+        float distanceToCamera = distance(positionVec3, positioningData.cameraPosition);
+        float startReduceHeightDistance = properties.displayDistance * 0.75;
+        if (distanceToCamera > startReduceHeightDistance) {
+            float heightReducePercentage = 1.0;
+            if (distanceToCamera < properties.displayDistance) {
+                heightReducePercentage = (distanceToCamera - startReduceHeightDistance) / (properties.displayDistance - startReduceHeightDistance);
+            }
+            float scaleY = mModel[1][1];
+            position.y -= heightReducePercentage * localVertexHeight * scaleY;
         }
-        float scaleY = mModel[1][1];
-        position.y -= heightReducePercentage * localVertexHeight * scaleY;
     }
 
     gl_Position = positioningData.mProjectionView * position;

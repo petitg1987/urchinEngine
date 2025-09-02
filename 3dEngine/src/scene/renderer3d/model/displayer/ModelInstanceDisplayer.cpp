@@ -85,7 +85,7 @@ namespace urchin {
         for (unsigned int i = 0; i < getReferenceModel().getMeshes()->getNumMeshes(); ++i) {
             const ConstMesh& constMesh = getReferenceModel().getConstMeshes()->getConstMesh(i);
             const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(i);
-            auto meshName = getReferenceModel().getMeshes()->getConstMeshes().getMeshesName();
+            std::string meshName = getReferenceModel().getMeshes()->getConstMeshes().getMeshesName();
 
             Matrix4<float> projectionViewMatrix;
             fillMeshData(getReferenceModel(), mesh);
