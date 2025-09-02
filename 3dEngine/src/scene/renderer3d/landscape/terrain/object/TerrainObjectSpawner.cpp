@@ -15,7 +15,7 @@ namespace urchin {
             terrain(nullptr),
             objectsPerUnit(1.0f),
             objectsHeightShift(0.0f),
-            baseDisplayDistance(100.0f), //TODO add max in name
+            baseMaxDisplayDistance(-1.0f),
             properties({}),
             positioningData({}),
             meshData({}) {
@@ -31,7 +31,7 @@ namespace urchin {
             throw std::runtime_error("Translation on terrain objects is not supported yet");
         }
 
-        properties.displayDistance = baseDisplayDistance;
+        properties.maxDisplayDistance = baseMaxDisplayDistance;
         properties.useTerrainLighting = true;
         properties.windDirection = Vector3(1.0f, 0.0f, 0.0f);
         properties.windStrength = 0.5f;
@@ -93,16 +93,16 @@ namespace urchin {
         createOrRefreshObjectPositions();
     }
 
-    float TerrainObjectSpawner::getBaseDisplayDistance() const {
-        return baseDisplayDistance;
+    float TerrainObjectSpawner::getBaseMaxDisplayDistance() const {
+        return baseMaxDisplayDistance;
     }
 
     /**
-     * @param baseDisplayDistance Maximum display distance of the objects which is adjusted based on game quality configured.
-     * Value can be negative to always display all models.
+     * @param baseMaxDisplayDistance Maximum display distance of the objects which is adjusted based on game quality configured.
+     * Value can be negative to always display all the objects.
      */
-    void TerrainObjectSpawner::setBaseDisplayDistance(float baseDisplayDistance) {
-        this->baseDisplayDistance = baseDisplayDistance;
+    void TerrainObjectSpawner::setBaseMaxDisplayDistance(float baseMaxDisplayDistance) {
+        this->baseMaxDisplayDistance = baseMaxDisplayDistance;
         updateProperties();
     }
 
@@ -138,7 +138,7 @@ namespace urchin {
             return;
         }
 
-        properties.displayDistance = baseDisplayDistance * terrain->getObjectsViewDistancePercentage();
+        properties.maxDisplayDistance = baseMaxDisplayDistance * terrain->getObjectsViewDistancePercentage();
         for (auto& meshRenderer : meshRenderers) {
             meshRenderer->updateUniformData(PROPERTIES_UNIFORM_BINDING, &properties);
         }

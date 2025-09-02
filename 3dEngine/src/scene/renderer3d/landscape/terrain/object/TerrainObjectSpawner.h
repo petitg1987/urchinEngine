@@ -27,8 +27,8 @@ namespace urchin {
             float getObjectsHeightShift() const;
             void setObjectsHeightShift(float);
 
-            float getBaseDisplayDistance() const;
-            void setBaseDisplayDistance(float);
+            float getBaseMaxDisplayDistance() const;
+            void setBaseMaxDisplayDistance(float);
 
             bool useTerrainLighting() const;
             void setUseTerrainLighting(bool);
@@ -64,9 +64,9 @@ namespace urchin {
 
             float objectsPerUnit;
             float objectsHeightShift;
-            float baseDisplayDistance;
+            float baseMaxDisplayDistance;
             struct {
-                alignas(4) float displayDistance;
+                alignas(4) float maxDisplayDistance;
                 alignas(4) bool useTerrainLighting;
                 alignas(4) float windStrength;
                 alignas(16) Vector3<float> windDirection;

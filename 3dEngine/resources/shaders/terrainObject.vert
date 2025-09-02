@@ -17,7 +17,7 @@ layout(std140, set = 0, binding = 1) uniform MeshData {
 } meshData;
 
 layout(std140, set = 0, binding = 2) uniform Properties {
-    float displayDistance;
+    float maxDisplayDistance;
     bool useTerrainLighting;
     float windStrength;
     vec3 windDirection;
@@ -75,14 +75,14 @@ void main() {
     }
 
     //reduce height based on its distance from the camera
-    if (properties.displayDistance > 0.0) {
+    if (properties.maxDisplayDistance > 0.0) {
         vec3 positionVec3 = position.xyz / position.w;
         float distanceToCamera = distance(positionVec3, positioningData.cameraPosition);
-        float startReduceHeightDistance = properties.displayDistance * 0.75;
+        float startReduceHeightDistance = properties.maxDisplayDistance * 0.75;
         if (distanceToCamera > startReduceHeightDistance) {
             float heightReducePercentage = 1.0;
-            if (distanceToCamera < properties.displayDistance) {
-                heightReducePercentage = (distanceToCamera - startReduceHeightDistance) / (properties.displayDistance - startReduceHeightDistance);
+            if (distanceToCamera < properties.maxDisplayDistance) {
+                heightReducePercentage = (distanceToCamera - startReduceHeightDistance) / (properties.maxDisplayDistance - startReduceHeightDistance);
             }
             float scaleY = mModel[1][1];
             position.y -= heightReducePercentage * localVertexHeight * scaleY;
