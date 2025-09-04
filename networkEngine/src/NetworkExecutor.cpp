@@ -1,3 +1,5 @@
+#include <UrchinCommon.h>
+
 #include "NetworkExecutor.h"
 
 namespace urchin {
@@ -14,10 +16,7 @@ namespace urchin {
     }
 
     NetworkExecutor::~NetworkExecutor() {
-        if (networkThread) {
-            interruptThread();
-            networkThread->join();
-        }
+        interruptThread(true);
     }
 
     void NetworkExecutor::asyncExecute(HttpRequest httpRequest) {
@@ -34,15 +33,20 @@ namespace urchin {
         return syncRequestExecutor.executeRequest(httpRequest, timoutSec);
     }
 
-    void NetworkExecutor::interruptThread() {
+    void NetworkExecutor::interruptThread(bool waitThreadCompletion) {
         networkThreadStopper.store(true, std::memory_order_release);
+        if (waitThreadCompletion && networkThread) {
+            networkThread->join();
+            networkThread.reset(nullptr);
+        }
     }
 
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void NetworkExecutor::checkNoExceptionRaised() const {
+    void NetworkExecutor::checkNoExceptionRaised() {
         if (networkThreadExceptionPtr) {
+            networkThread.reset(nullptr);
             std::rethrow_exception(networkThreadExceptionPtr);
         }
     }

@@ -16,8 +16,8 @@ namespace urchin {
             void asyncExecute(HttpRequest);
             RequestResult syncExecute(const HttpRequest&, unsigned int = 0) const;
 
-            void interruptThread();
-            void checkNoExceptionRaised() const;
+            void interruptThread(bool);
+            void checkNoExceptionRaised();
 
         private:
             void start();

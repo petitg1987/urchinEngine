@@ -35,9 +35,9 @@ namespace urchin {
             void pause();
             void unpause();
             bool isPaused() const;
-            void interruptThread();
-            void checkNoExceptionRaised() const;
-            const FpsStats& getFpsStats() const;
+            void interruptThread(bool);
+            void checkNoExceptionRaised();
+            const PerfMetrics& getPerfMetrics() const;
 
             void createCollisionVisualizer();
             const CollisionVisualizer& getCollisionVisualizer() const;
@@ -57,7 +57,7 @@ namespace urchin {
             Vector3<float> gravity;
             float timeStep;
             bool paused;
-            FpsStats fpsStats;
+            PerfMetrics perfMetrics;
 
             BodyContainer bodyContainer;
             CollisionWorld collisionWorld;

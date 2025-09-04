@@ -21,10 +21,7 @@ namespace urchin {
     }
 
     PhysicsWorld::~PhysicsWorld() {
-        if (physicsSimulationThread) {
-            interruptThread();
-            physicsSimulationThread->join();
-        }
+        interruptThread(true);
 
         threadLocalRayTesters.clear();
         rayTesters.clear();
@@ -100,21 +97,29 @@ namespace urchin {
         return paused;
     }
 
-    void PhysicsWorld::interruptThread() {
+    void PhysicsWorld::interruptThread(bool waitThreadCompletion) {
         physicsSimulationStopper.store(true, std::memory_order_release);
+        if (waitThreadCompletion && physicsSimulationThread) {
+            physicsSimulationThread->join();
+            physicsSimulationThread.reset(nullptr);
+        }
     }
 
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void PhysicsWorld::checkNoExceptionRaised() const {
+    void PhysicsWorld::checkNoExceptionRaised() {
         if (physicsThreadExceptionPtr) {
+            physicsSimulationThread.reset(nullptr);
             std::rethrow_exception(physicsThreadExceptionPtr);
         }
     }
 
-    const FpsStats& PhysicsWorld::getFpsStats() const {
-        return fpsStats;
+    const PerfMetrics& PhysicsWorld::getPerfMetrics() const {
+        if (physicsSimulationThread) {
+            throw std::runtime_error("Physics thread must be stopped to access to the performance metrics");
+        }
+        return perfMetrics;
     }
 
     void PhysicsWorld::startPhysicsUpdate() {
@@ -146,7 +151,7 @@ namespace urchin {
                 }
 
                 float frameTimeInSec = (float)((double)deltaTimeInUs / 1000000.0);
-                fpsStats.registerDt(frameTimeInSec);
+                perfMetrics.registerDt(frameTimeInSec);
 
                 remainingTime = dt - frameTimeInSec;
                 if (remainingTime >= 0.0f) {

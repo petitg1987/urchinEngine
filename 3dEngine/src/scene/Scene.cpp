@@ -110,8 +110,8 @@ namespace urchin {
         resetFps();
     }
 
-    const FpsStats& Scene::getFpsStatsIncluding3d() const {
-        return fpsStatsIncluding3d;
+    const PerfMetrics& Scene::getPerfMetrics() const {
+        return perfMetrics;
     }
 
     void Scene::handleFpsLimiter() {
@@ -149,8 +149,8 @@ namespace urchin {
                 frameCount = 0;
 
                 if (getActiveRenderer3d()) {
-                    //Can contain bad statistics: first call on WidgetSetDisplayer::updateWidgets, camera rotation loading new 3d models, etc
-                    fpsStatsIncluding3d.registerFps((unsigned int)fps);
+                    float frameTimeInSec = (float)(deltaTimeInUs / 1000000.0);
+                    perfMetrics.registerDt(frameTimeInSec); //Can contain bad metrics: first call on WidgetSetDisplayer::updateWidgets, camera rotation loading new 3d models, etc
                 }
             }
         }

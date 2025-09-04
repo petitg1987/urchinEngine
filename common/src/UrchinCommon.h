@@ -105,7 +105,7 @@
 
 #include "profiler/Profiler.h"
 #include "profiler/ScopeProfiler.h"
-#include "profiler/FpsStats.h"
+#include "profiler/PerfMetrics.h"
 
 #include "system/SignalHandler.h"
 #include "system/SystemInfo.h"

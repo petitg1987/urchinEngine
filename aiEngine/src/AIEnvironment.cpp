@@ -18,10 +18,7 @@ namespace urchin {
     }
 
     AIEnvironment::~AIEnvironment() {
-        if (aiSimulationThread) {
-            interruptThread();
-            aiSimulationThread->join();
-        }
+        interruptThread(true);
 
         copiedPathRequests.clear();
         pathRequests.clear();
@@ -81,15 +78,20 @@ namespace urchin {
         return paused;
     }
 
-    void AIEnvironment::interruptThread() {
+    void AIEnvironment::interruptThread(bool waitThreadCompletion) {
         aiSimulationStopper.store(true, std::memory_order_release);
+        if (waitThreadCompletion && aiSimulationThread) {
+            aiSimulationThread->join();
+            aiSimulationThread.reset(nullptr);
+        }
     }
 
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void AIEnvironment::checkNoExceptionRaised() const {
+    void AIEnvironment::checkNoExceptionRaised() {
         if (aiThreadExceptionPtr) {
+            aiSimulationThread.reset(nullptr);
             std::rethrow_exception(aiThreadExceptionPtr);
         }
     }
