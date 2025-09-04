@@ -1,6 +1,9 @@
 #pragma once
 
 #include <vulkan/vulkan.h>
+#include <string>
+
+struct VmaBudget;
 
 namespace urchin {
 

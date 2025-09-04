@@ -115,6 +115,10 @@ namespace urchin {
         }
     }
 
+    float PhysicsWorld::getExecutionTimeInSec() const {
+        return executionTimeInSec.load(std::memory_order_relaxed);
+    }
+
     const PerfMetrics& PhysicsWorld::getPerfMetrics() const {
         if (physicsSimulationThread) {
             throw std::runtime_error("Physics thread must be stopped to access to the performance metrics");
@@ -128,7 +132,7 @@ namespace urchin {
 
             float remainingTime = 0.0f;
             float maxAdditionalTimeStep = timeStep * 0.5f;
-            auto frameStartTime = std::chrono::steady_clock::now();
+            auto executionStartTime = std::chrono::steady_clock::now();
 
             while (continueExecution()) {
                 float additionalTimeStep = std::abs(remainingTime);
@@ -142,24 +146,25 @@ namespace urchin {
 
                 processPhysicsUpdate(dt);
 
-                auto frameEndTime = std::chrono::steady_clock::now();
-                auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
+                auto executionEndTime = std::chrono::steady_clock::now();
+                auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(executionEndTime - executionStartTime).count();
                 if (deltaTimeInUs < 250) { //small delta time on Windows is imprecise: wait two milliseconds more to get a more precise value
                     std::this_thread::sleep_for(std::chrono::milliseconds(2));
-                    frameEndTime = std::chrono::steady_clock::now();
-                    deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
+                    executionEndTime = std::chrono::steady_clock::now();
+                    deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(executionEndTime - executionStartTime).count();
                 }
 
-                float frameTimeInSec = (float)((double)deltaTimeInUs / 1000000.0);
-                perfMetrics.registerDt(frameTimeInSec);
+                float execTimeInSec = (float)((double)deltaTimeInUs / 1000000.0);
+                executionTimeInSec.store(execTimeInSec, std::memory_order_relaxed);
+                perfMetrics.registerDt(execTimeInSec);
 
-                remainingTime = dt - frameTimeInSec;
+                remainingTime = dt - execTimeInSec;
                 if (remainingTime >= 0.0f) {
                     std::this_thread::sleep_for(std::chrono::milliseconds((int)(remainingTime * 1000.0f)));
                     remainingTime = 0.0f;
-                    frameStartTime = std::chrono::steady_clock::now();
+                    executionStartTime = std::chrono::steady_clock::now();
                 } else {
-                    frameStartTime = frameEndTime;
+                    executionStartTime = executionEndTime;
                 }
             }
 
