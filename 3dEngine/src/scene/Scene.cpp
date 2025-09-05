@@ -91,11 +91,13 @@ namespace urchin {
 
     unsigned int Scene::getFpsForDisplay() {
         static float timeElapseInSec = 0.0f;
+        static unsigned int count = 0;
         timeElapseInSec += getDeltaTime();
-
-        if (timeElapseInSec * 1000.0f > DISPLAY_FPS_REFRESH_TIME_IN_MS) {
-            fpsForDisplay = MathFunction::roundToUInt(fps);
+        count++;
+        if (timeElapseInSec > 0.5f) {
+            fpsForDisplay = MathFunction::roundToUInt(1.0f / (timeElapseInSec / (float)count));
             timeElapseInSec = 0.0f;
+            count = 0;
         }
 
         return fpsForDisplay;

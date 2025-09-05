@@ -60,7 +60,6 @@ namespace urchin {
 
             static constexpr float STARTUP_FPS = 1000.0f; //high number of FPS to avoid pass through the ground at startup
             static constexpr float FPS_REFRESH_TIME_IN_MS = 3.0f;
-            static constexpr float DISPLAY_FPS_REFRESH_TIME_IN_MS = 400.0f;
             static constexpr std::chrono::steady_clock::time_point MIN_TIME_POINT = std::chrono::steady_clock::time_point::min();
 
             //scene properties
