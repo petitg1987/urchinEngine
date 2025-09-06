@@ -13,8 +13,7 @@ namespace urchin {
             i18nService(I18nService()),
             sceneWidth(0),
             sceneHeight(0),
-            fps(0),
-            fpsForDisplay(0),
+            deltaTimeInSec(0),
             fpsLimit(-1),
             frameCount(0),
             screenRenderTarget(ScreenRender("screen", false, RenderTarget::NO_DEPTH_ATTACHMENT)),
@@ -85,31 +84,13 @@ namespace urchin {
         return i18nService;
     }
 
-    float Scene::getFps() const {
-        return fps;
-    }
-
-    unsigned int Scene::getFpsForDisplay() {
-        static float timeElapseInSec = 0.0f;
-        static unsigned int count = 0;
-        timeElapseInSec += getDeltaTime();
-        count++;
-        if (timeElapseInSec > 0.5f) {
-            fpsForDisplay = MathFunction::roundToUInt(1.0f / (timeElapseInSec / (float)count));
-            timeElapseInSec = 0.0f;
-            count = 0;
-        }
-
-        return fpsForDisplay;
-    }
-
-    float Scene::getDeltaTime() const {
-        return 1.0f / fps;
-    }
-
     void Scene::setFpsLimit(int fpsLimit) {
         this->fpsLimit = fpsLimit;
         resetFps();
+    }
+
+    float Scene::getDeltaTimeInSec() const {
+        return deltaTimeInSec;
     }
 
     const PerfMetrics& Scene::getPerfMetrics() const {
@@ -146,7 +127,7 @@ namespace urchin {
             static int frameCount = 0;
             frameCount++;
             if (deltaTimeInUs / 1000.0 > FPS_REFRESH_TIME_IN_MS) {
-                fps = (float) (1000000.0 / deltaTimeInUs) * (float) frameCount;
+                deltaTimeInSec = (float)(deltaTimeInUs / (1000000.0 * frameCount));
                 fpsPreviousTime = currentTime;
                 frameCount = 0;
 
@@ -158,11 +139,10 @@ namespace urchin {
         }
     }
 
-    void Scene::resetFps() {
+    void Scene::resetFps() { //TODO rename
         fpsLimitPreviousTime = MIN_TIME_POINT;
         fpsPreviousTime = MIN_TIME_POINT;
-        fps = STARTUP_FPS;
-        fpsForDisplay = (unsigned int)STARTUP_FPS;
+        deltaTimeInSec = STARTUP_TIME_STEP;
     }
 
     Renderer3d& Scene::newRenderer3d(std::shared_ptr<Camera> camera, const VisualConfig& visualConfig, bool enable) {
@@ -289,7 +269,7 @@ namespace urchin {
             graphicsApiService->frameStart(frameCount);
             handleFpsLimiter();
             computeFps();
-            float dt = getDeltaTime();
+            float dt = getDeltaTimeInSec();
 
             unsigned int screenRenderingOrder = 0;
             screenRenderTarget.disableAllProcessors();

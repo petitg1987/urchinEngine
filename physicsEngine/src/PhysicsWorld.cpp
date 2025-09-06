@@ -13,7 +13,7 @@ namespace urchin {
             physicsSimulationThread(std::unique_ptr<std::jthread>(nullptr)),
             physicsSimulationStopper(false),
             gravity(Vector3(0.0f, -9.81f, 0.0f)),
-            timeStep(0.0f),
+            expectedTimeStepInSec(0.0f),
             paused(true),
             bodyContainer(BodyContainer()),
             collisionWorld(CollisionWorld(getBodyContainer())) {
@@ -71,14 +71,14 @@ namespace urchin {
 
     /**
      * Set up the physics simulation in new thread
-     * @param timeStep Frequency updates expressed in second
+     * @param expectedTimeStepInSec Frequency updates expressed in second
      */
-    void PhysicsWorld::setUp(float timeStep) {
+    void PhysicsWorld::setUp(float expectedTimeStepInSec) {
         if (physicsSimulationThread) {
             throw std::runtime_error("Physics thread is already started");
         }
 
-        this->timeStep = timeStep;
+        this->expectedTimeStepInSec = expectedTimeStepInSec;
         physicsSimulationThread = std::make_unique<std::jthread>(&PhysicsWorld::startPhysicsUpdate, this);
     }
 
@@ -115,23 +115,26 @@ namespace urchin {
         }
     }
 
-    float PhysicsWorld::getExecutionTimeInSec() const {
-        return executionTimeInSec.load(std::memory_order_relaxed);
+    /**
+     * Execution time of a physical step, excluding the waiting time
+     */
+    float PhysicsWorld::getStepExecutionTimeInSec() const {
+        return stepExecutionTimeInSec.load(std::memory_order_relaxed);
     }
 
     const PerfMetrics& PhysicsWorld::getPerfMetrics() const {
         if (physicsSimulationThread) {
-            throw std::runtime_error("Physics thread must be stopped to access to the performance metrics");
+            throw std::runtime_error("Physics thread must be stopped to access to the performance metrics (thread safety)");
         }
         return perfMetrics;
     }
 
     void PhysicsWorld::startPhysicsUpdate() {
         try {
-            Logger::instance().logInfo("Physics thread started with time step of " + std::to_string(timeStep) + " sec");
+            Logger::instance().logInfo("Physics thread started with time step of " + std::to_string(expectedTimeStepInSec) + " sec");
 
             float remainingTime = 0.0f;
-            float maxAdditionalTimeStep = timeStep * 0.5f;
+            float maxAdditionalTimeStep = expectedTimeStepInSec * 0.5f;
             auto executionStartTime = std::chrono::steady_clock::now();
 
             while (continueExecution()) {
@@ -142,7 +145,7 @@ namespace urchin {
                     additionalTimeStep = maxAdditionalTimeStep;
                 }
 
-                float dt = timeStep + additionalTimeStep;
+                float dt = expectedTimeStepInSec + additionalTimeStep;
 
                 processPhysicsUpdate(dt);
 
@@ -155,7 +158,7 @@ namespace urchin {
                 }
 
                 float execTimeInSec = (float)((double)deltaTimeInUs / 1000000.0);
-                executionTimeInSec.store(execTimeInSec, std::memory_order_relaxed);
+                stepExecutionTimeInSec.store(execTimeInSec, std::memory_order_relaxed);
                 perfMetrics.registerDt(execTimeInSec);
 
                 remainingTime = dt - execTimeInSec;

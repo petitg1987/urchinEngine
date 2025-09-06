@@ -22,11 +22,10 @@ namespace urchin {
             unsigned int getSceneHeight() const;
             I18nService& getI18nService();
 
-            //fps
-            float getFps() const;
-            unsigned int getFpsForDisplay();
-            float getDeltaTime() const;
+            //time
             void setFpsLimit(int);
+            float getDeltaTimeInSec() const;
+            //TODO add getStepExecutionTimeInSec ?
             const PerfMetrics& getPerfMetrics() const;
 
             //renderer
@@ -58,8 +57,8 @@ namespace urchin {
             void computeFps();
             void resetFps();
 
-            static constexpr float STARTUP_FPS = 1000.0f; //high number of FPS to avoid pass through the ground at startup
-            static constexpr float FPS_REFRESH_TIME_IN_MS = 3.0f;
+            static constexpr float STARTUP_TIME_STEP = 0.001f; //low time step to avoid pass through the ground at startup
+            static constexpr float FPS_REFRESH_TIME_IN_MS = 2.0f;
             static constexpr std::chrono::steady_clock::time_point MIN_TIME_POINT = std::chrono::steady_clock::time_point::min();
 
             //scene properties
@@ -68,11 +67,10 @@ namespace urchin {
             unsigned int sceneWidth;
             unsigned int sceneHeight;
 
-            //fps
-            std::chrono::steady_clock::time_point fpsLimitPreviousTime;
-            std::chrono::steady_clock::time_point fpsPreviousTime;
-            float fps;
-            unsigned int fpsForDisplay;
+            //time
+            std::chrono::steady_clock::time_point fpsLimitPreviousTime; //TODO rename
+            std::chrono::steady_clock::time_point fpsPreviousTime; //TODO rename
+            float deltaTimeInSec;
             int fpsLimit;
             PerfMetrics perfMetrics;
 

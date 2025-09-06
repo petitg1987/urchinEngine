@@ -37,7 +37,7 @@ namespace urchin {
             bool isPaused() const;
             void interruptThread(bool);
             void checkNoExceptionRaised();
-            float getExecutionTimeInSec() const;
+            float getStepExecutionTimeInSec() const;
             const PerfMetrics& getPerfMetrics() const;
 
             void createCollisionVisualizer();
@@ -56,8 +56,8 @@ namespace urchin {
 
             mutable std::mutex mutex;
             Vector3<float> gravity;
-            float timeStep;
-            std::atomic<float> executionTimeInSec;
+            float expectedTimeStepInSec;
+            std::atomic<float> stepExecutionTimeInSec;
             bool paused;
             PerfMetrics perfMetrics;
 
