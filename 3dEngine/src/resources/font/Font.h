@@ -11,7 +11,7 @@ namespace urchin {
     struct Glyph { //glyph is a letter
         unsigned int width;
         unsigned int height;
-        int shift;
+        int shiftY;
         std::vector<unsigned char> buf;
     };
 

@@ -65,7 +65,7 @@ namespace urchin {
                 throw std::runtime_error("Error of render with the glyph, filename: " + ttfFilename + ".");
             }
 
-            glyph[i].shift = face->glyph->bitmap_top - bitmapTopA;
+            glyph[i].shiftY = face->glyph->bitmap_top - bitmapTopA;
             glyph[i].width = face->glyph->bitmap.width;
             glyph[i].height = face->glyph->bitmap.rows;
             glyph[i].buf.clear();
