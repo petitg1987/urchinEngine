@@ -268,13 +268,16 @@ namespace urchin {
         refreshCursorPosition(cursorIndex);
 
         if (cursorPosition.X > (int)maxWidthText) {
-            std::size_t endTextIndex = std::min(cursorIndex + 1, originalText.length());
+            std::size_t endTextIndex = std::min(cursorIndex - 1, originalText.length() - 1);
 
             unsigned int widthText = 0;
             for (startTextIndex = endTextIndex; true; --startTextIndex) {
                 char32_t textLetter = originalText[startTextIndex];
                 widthText += text->getFont().getGlyph(textLetter).letterWidth;
-                if (widthText > maxWidthText || startTextIndex == 0) {
+                if (widthText > maxWidthText) {
+                    startTextIndex++;
+                    break;
+                } else if (startTextIndex == 0) {
                     break;
                 }
             }
