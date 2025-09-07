@@ -9,9 +9,11 @@
 namespace urchin {
 
     struct Glyph { //glyph is a letter
-        unsigned int width;
-        unsigned int height;
+        unsigned int bitmapWidth;
+        unsigned int bitmapHeight;
+        int shiftX;
         int shiftY;
+        int letterWidth;
         std::vector<unsigned char> buf;
     };
 

@@ -39,7 +39,7 @@ namespace urchin {
         return alphabetTexture->getWidth();
     }
 
-    unsigned int Font::getSpaceBetweenCharacters() const {
+    unsigned int Font::getSpaceBetweenCharacters() const { //TODO remove !
         return spaceBetweenCharacters;
     }
 

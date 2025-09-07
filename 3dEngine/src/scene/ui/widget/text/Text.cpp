@@ -201,26 +201,27 @@ namespace urchin {
         vertexCoord.reserve(baseText.size() * 4);
 
         float offsetY = 0.0f;
-        auto spaceBetweenCharacters = (float)font->getSpaceBetweenCharacters();
         auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
 
         for (const TextLine& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
             for (char32_t textLetter : textLine.text) { //each letter
+                auto letterShiftX = (float)font->getGlyph(textLetter).shiftX;
                 auto letterShiftY = (float)font->getGlyph(textLetter).shiftY;
-                auto letterWidth = (float)font->getGlyph(textLetter).width;
-                auto letterHeight = (float)font->getGlyph(textLetter).height;
+                auto letterWidth = (float)font->getGlyph(textLetter).bitmapWidth;
+                auto letterHeight = (float)font->getGlyph(textLetter).bitmapHeight;
+                auto letterOffsetX = offsetX + letterShiftX;
                 auto letterOffsetY = offsetY - letterShiftY;
 
-                vertexCoord.emplace_back(offsetX, letterOffsetY);
-                vertexCoord.emplace_back(letterWidth + offsetX, letterOffsetY);
-                vertexCoord.emplace_back(letterWidth + offsetX, letterHeight + letterOffsetY);
+                vertexCoord.emplace_back(letterOffsetX, letterOffsetY);
+                vertexCoord.emplace_back(letterWidth + letterOffsetX, letterOffsetY);
+                vertexCoord.emplace_back(letterWidth + letterOffsetX, letterHeight + letterOffsetY);
 
-                vertexCoord.emplace_back(offsetX, letterOffsetY);
-                vertexCoord.emplace_back(letterWidth + offsetX, letterHeight + letterOffsetY);
-                vertexCoord.emplace_back(offsetX, letterHeight + letterOffsetY);
+                vertexCoord.emplace_back(letterOffsetX, letterOffsetY);
+                vertexCoord.emplace_back(letterWidth + letterOffsetX, letterHeight + letterOffsetY);
+                vertexCoord.emplace_back(letterOffsetX, letterHeight + letterOffsetY);
 
-                offsetX += letterWidth + spaceBetweenCharacters;
+                offsetX += (float)font->getGlyph(textLetter).letterWidth;
             }
             offsetY += spaceBetweenLines;
         }
@@ -238,8 +239,8 @@ namespace urchin {
 
         for (const TextLine& textLine : cutTextLines) { //each line
             for (char32_t textLetter : textLine.text) { //each letter
-                auto letterWidth = (float)font->getGlyph(textLetter).width;
-                auto letterHeight = (float)font->getGlyph(textLetter).height;
+                auto letterWidth = (float)font->getGlyph(textLetter).bitmapWidth;
+                auto letterHeight = (float)font->getGlyph(textLetter).bitmapHeight;
 
                 float sMin = (float)(textLetter % 16) / 16.0f;
                 float tMin = (float)(textLetter >> 4u) / 16.0f;
@@ -273,7 +274,7 @@ namespace urchin {
         for (const auto& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
             for (char32_t textLetter : textLine.text) { //each letter
-                auto letterWidth = (float)font->getGlyph(textLetter).width;
+                auto letterWidth = (float)font->getGlyph(textLetter).bitmapWidth;
                 offsetX += letterWidth + spaceBetweenLetters;
             }
             width = std::max(width, offsetX - spaceBetweenLetters);
@@ -309,7 +310,7 @@ namespace urchin {
                     lengthFromLastSpace = 0;
                 }
 
-                unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenCharacters();
+                unsigned int letterLength = font->getGlyph(textLetter).bitmapWidth + font->getSpaceBetweenCharacters();
 
                 if (lineLength + letterLength >= (unsigned int)maxWidthPixel) { //cut too long line
                     if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found

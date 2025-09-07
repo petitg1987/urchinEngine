@@ -65,14 +65,16 @@ namespace urchin {
                 throw std::runtime_error("Error of render with the glyph, filename: " + ttfFilename + ".");
             }
 
+            glyph[i].shiftX = face->glyph->bitmap_left;
             glyph[i].shiftY = face->glyph->bitmap_top - bitmapTopA;
-            glyph[i].width = face->glyph->bitmap.width;
-            glyph[i].height = face->glyph->bitmap.rows;
+            glyph[i].letterWidth = (int)(face->glyph->advance.x >> 6);
+            glyph[i].bitmapWidth = face->glyph->bitmap.width;
+            glyph[i].bitmapHeight = face->glyph->bitmap.rows;
             glyph[i].buf.clear();
 
-            if (glyph[i].width > 0 && glyph[i].height > 0) {
-                glyph[i].buf.resize(glyph[i].width * glyph[i].height);
-                for (unsigned int j = 0; j < (glyph[i].width * glyph[i].height); j++) {
+            if (glyph[i].bitmapWidth > 0 && glyph[i].bitmapWidth > 0) {
+                glyph[i].buf.resize(glyph[i].bitmapWidth * glyph[i].bitmapHeight);
+                for (unsigned int j = 0; j < (glyph[i].bitmapWidth * glyph[i].bitmapHeight); j++) {
                     glyph[i].buf[j] = face->glyph->bitmap.buffer[j];
                 }
             }
@@ -84,20 +86,20 @@ namespace urchin {
         //compute space between lines, space between characters and height of characters
         unsigned int height = 0;
         for (int i = 'A'; i < 'Z'; i++) {
-            height = std::max(height, glyph[(std::size_t)i].height);
+            height = std::max(height, glyph[(std::size_t)i].bitmapHeight);
         }
         unsigned int spaceBetweenLines = MathFunction::roundToUInt((float)height * 1.9f);
         unsigned int spaceBetweenCharacters = 2u;
-        glyph[(int)' '].width = MathFunction::roundToUInt((float)glyph[(int)'A'].width * 0.4f);
+        glyph[(int)' '].bitmapWidth = MathFunction::roundToUInt((float)glyph[(int)'A'].bitmapWidth * 0.4f);
 
         //size of characters and texture
         unsigned int maxCharactersSize = 0;
         for (unsigned int i = 0; i < UnicodeUtil::NUM_CHARACTERS; ++i) { //seek the largest character
-            if (glyph[i].width > maxCharactersSize) {
-                maxCharactersSize = glyph[i].width;
+            if (glyph[i].bitmapWidth > maxCharactersSize) {
+                maxCharactersSize = glyph[i].bitmapWidth;
             }
-            if (glyph[i].height > maxCharactersSize) {
-                maxCharactersSize = glyph[i].height;
+            if (glyph[i].bitmapHeight > maxCharactersSize) {
+                maxCharactersSize = glyph[i].bitmapHeight;
             }
         }
         unsigned int textureSize = maxCharactersSize * UnicodeUtil::NUM_CHARACTERS_BY_LINE;
@@ -109,9 +111,9 @@ namespace urchin {
             for (unsigned int j = 0; j < textureSize; j += maxCharactersSize, c++) {
 
                 const Glyph& currentGlyph = glyph[c];
-                for (unsigned int yy = 0, m = 0; yy < currentGlyph.height; yy++) {
+                for (unsigned int yy = 0, m = 0; yy < currentGlyph.bitmapHeight; yy++) {
                     std::size_t baseYIndex = (i + yy) * textureSize * NUM_COLORS;
-                    for (unsigned int xx = 0; xx < currentGlyph.width; xx++, m++) {
+                    for (unsigned int xx = 0; xx < currentGlyph.bitmapWidth; xx++, m++) {
                         std::size_t baseIndex = baseYIndex + ((j + xx) * NUM_COLORS);
 
                         if (currentGlyph.buf[m] > 0) {

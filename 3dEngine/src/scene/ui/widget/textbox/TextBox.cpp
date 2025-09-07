@@ -274,7 +274,7 @@ namespace urchin {
             unsigned int widthText = 0;
             for (startTextIndex = endTextIndex; true; --startTextIndex) {
                 char32_t textLetter = originalText[startTextIndex];
-                widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenCharacters();
+                widthText += text->getFont().getGlyph(textLetter).bitmapWidth + text->getFont().getSpaceBetweenCharacters();
                 if (widthText > maxWidthText || startTextIndex == 0) {
                     break;
                 }
@@ -288,7 +288,7 @@ namespace urchin {
         std::size_t endTextIndex;
         for (endTextIndex = startTextIndex; endTextIndex < originalText.length(); ++endTextIndex) {
             char32_t textLetter = originalText[endTextIndex];
-            widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenCharacters();
+            widthText += text->getFont().getGlyph(textLetter).bitmapWidth + text->getFont().getSpaceBetweenCharacters();
             if (widthText > maxWidthText) {
                 break;
             }
@@ -312,7 +312,7 @@ namespace urchin {
 
         for (std::size_t i = startTextIndex; i < cursorIdx; ++i) {
             char32_t textLetter = originalText[i];
-            computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenCharacters());
+            computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).bitmapWidth + text->getFont().getSpaceBetweenCharacters());
         }
 
         if (computedCursorPosition.X > 0) {
@@ -337,12 +337,12 @@ namespace urchin {
         std::size_t computedCursorIndex = startTextIndex;
         for (; computedCursorIndex < originalText.length(); ++computedCursorIndex) {
             char32_t textLetter = originalText[computedCursorIndex];
-            widthText += (float)font.getGlyph(textLetter).width / 2.0f;
+            widthText += (float)font.getGlyph(textLetter).bitmapWidth / 2.0f;
             if (widthText > (float)approximatePositionX) {
                 break;
             }
 
-            widthText += (float)font.getGlyph(textLetter).width / 2.0f + (float)font.getSpaceBetweenCharacters();
+            widthText += (float)font.getGlyph(textLetter).bitmapWidth / 2.0f + (float)font.getSpaceBetweenCharacters();
         }
         return computedCursorIndex;
     }

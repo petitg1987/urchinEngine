@@ -325,7 +325,7 @@ namespace urchin {
                     return computedCursorPosition;
                 } else {
                     char32_t textLetter = textLine.text[columnIndex];
-                    computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenCharacters());
+                    computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).bitmapWidth + text->getFont().getSpaceBetweenCharacters());
 
                     currentIndex++;
                 }
@@ -376,11 +376,11 @@ namespace urchin {
                     }
 
                     char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
-                    currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f;
+                    currentWidth += (float)text->getFont().getGlyph(textLetter).bitmapWidth / 2.0f;
                     if ((float)approximatePositionX < currentWidth) {
                         break;
                     }
-                    currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f + (float) text->getFont().getSpaceBetweenCharacters();
+                    currentWidth += (float)text->getFont().getGlyph(textLetter).bitmapWidth / 2.0f + (float) text->getFont().getSpaceBetweenCharacters();
                 }
                 break;
             } else {
