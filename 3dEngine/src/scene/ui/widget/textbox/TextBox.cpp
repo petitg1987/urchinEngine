@@ -268,7 +268,7 @@ namespace urchin {
         refreshCursorPosition(cursorIndex);
 
         if (cursorPosition.X > (int)maxWidthText) {
-            std::size_t endTextIndex = std::min(cursorIndex - 1, originalText.length() - 1);
+            std::size_t endTextIndex = (std::size_t)std::max((int)cursorIndex - 1, 0);
 
             unsigned int widthText = 0;
             for (startTextIndex = endTextIndex; true; --startTextIndex) {
@@ -282,8 +282,7 @@ namespace urchin {
                 }
             }
         } else if (cursorIndex <= startTextIndex) {
-            startTextIndex = (std::size_t) std::max((int) cursorIndex - 1, 0);
-            startTextIndex = std::min(startTextIndex, originalText.length() - 1);
+            startTextIndex = (std::size_t)std::max((int)cursorIndex - 1, 0);
         }
 
         unsigned int widthText = 0;
