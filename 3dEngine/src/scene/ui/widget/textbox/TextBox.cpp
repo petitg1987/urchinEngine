@@ -283,7 +283,7 @@ namespace urchin {
             }
         } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (std::size_t) std::max((int) cursorIndex - 1, 0);
-            startTextIndex = std::min(startTextIndex, originalText.length());
+            startTextIndex = std::min(startTextIndex, originalText.length() - 1);
         }
 
         unsigned int widthText = 0;
