@@ -16,3 +16,4 @@
 #include "debug/CollisionPointDisplayer.h"
 
 #include "util/PathUtil.h"
+#include "util/MetricsDisplayUtil.h"
