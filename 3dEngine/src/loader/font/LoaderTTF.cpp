@@ -90,27 +90,27 @@ namespace urchin {
         unsigned int spaceBetweenCharacters = 2u;
         glyph[(int)' '].width = MathFunction::roundToUInt((float)glyph[(int)'A'].width * 0.4f);
 
-        //dimension of characters and texture
-        unsigned int dimensionCharacters = 0;
+        //size of characters and texture
+        unsigned int maxCharactersSize = 0;
         for (unsigned int i = 0; i < UnicodeUtil::NUM_CHARACTERS; ++i) { //seek the largest character
-            if (glyph[i].width > dimensionCharacters) {
-                dimensionCharacters = glyph[i].width;
+            if (glyph[i].width > maxCharactersSize) {
+                maxCharactersSize = glyph[i].width;
             }
-            if (glyph[i].height > dimensionCharacters) {
-                dimensionCharacters = glyph[i].height;
+            if (glyph[i].height > maxCharactersSize) {
+                maxCharactersSize = glyph[i].height;
             }
         }
-        unsigned int dimensionTexture = dimensionCharacters * UnicodeUtil::NUM_CHARACTERS_BY_LINE;
+        unsigned int textureSize = maxCharactersSize * UnicodeUtil::NUM_CHARACTERS_BY_LINE;
 
         //texture creation
         constexpr unsigned int NUM_COLORS = 4u;
-        std::vector<unsigned char> texels(dimensionTexture * dimensionTexture * NUM_COLORS, 0);
-        for (unsigned int i = 0, c = 0; i < dimensionTexture; i += dimensionCharacters) {
-            for (unsigned int j = 0; j < dimensionTexture; j += dimensionCharacters, c++) {
+        std::vector<unsigned char> texels(textureSize * textureSize * NUM_COLORS, 0);
+        for (unsigned int i = 0, c = 0; i < textureSize; i += maxCharactersSize) {
+            for (unsigned int j = 0; j < textureSize; j += maxCharactersSize, c++) {
 
                 const Glyph& currentGlyph = glyph[c];
                 for (unsigned int yy = 0, m = 0; yy < currentGlyph.height; yy++) {
-                    std::size_t baseYIndex = (i + yy) * dimensionTexture * NUM_COLORS;
+                    std::size_t baseYIndex = (i + yy) * textureSize * NUM_COLORS;
                     for (unsigned int xx = 0; xx < currentGlyph.width; xx++, m++) {
                         std::size_t baseIndex = baseYIndex + ((j + xx) * NUM_COLORS);
 
@@ -123,7 +123,7 @@ namespace urchin {
             }
         }
 
-        auto alphabetTexture = Texture::build(ttfFilename, dimensionTexture, dimensionTexture, TextureFormat::RGBA_8_UINT_NORM, texels.data(), TextureDataType::INT_8);
+        auto alphabetTexture = Texture::build(ttfFilename, textureSize, textureSize, TextureFormat::RGBA_8_UINT_NORM, texels.data(), TextureDataType::INT_8);
 
         //clear buffers of characters
         for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS; i++) {
