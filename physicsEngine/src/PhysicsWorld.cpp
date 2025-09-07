@@ -116,7 +116,7 @@ namespace urchin {
     }
 
     /**
-     * Execution time of a physical step, excluding the waiting time
+     * @return Execution time of a physical step, excluding the waiting time
      */
     float PhysicsWorld::getStepExecutionTimeInSec() const {
         return stepExecutionTimeInSec.load(std::memory_order_relaxed);

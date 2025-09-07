@@ -23,8 +23,8 @@ namespace urchin {
         //scene properties
         this->framebufferSizeRetriever->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
 
-        //fps
-        resetFps();
+        //time
+        resetDeltaTime();
 
         //initialize
         SignalHandler::instance().initialize();
@@ -86,9 +86,12 @@ namespace urchin {
 
     void Scene::setFpsLimit(int fpsLimit) {
         this->fpsLimit = fpsLimit;
-        resetFps();
+        resetDeltaTime();
     }
 
+    /**
+     * @return Ttime between two graphics step, including the waiting time in case of vertical synchro or FPS limiter
+     */
     float Scene::getDeltaTimeInSec() const {
         return deltaTimeInSec;
     }
@@ -117,18 +120,18 @@ namespace urchin {
         }
     }
 
-    void Scene::computeFps() {
-        if (fpsPreviousTime == MIN_TIME_POINT) [[unlikely]] {
-            fpsPreviousTime = std::chrono::steady_clock::now();
+    void Scene::computeDeltaTime() {
+        if (previousCurrentTime == MIN_TIME_POINT) [[unlikely]] {
+            previousCurrentTime = std::chrono::steady_clock::now();
         } else {
             auto currentTime = std::chrono::steady_clock::now();
-            auto deltaTimeInUs = (double) std::chrono::duration_cast<std::chrono::microseconds>(currentTime - fpsPreviousTime).count();
+            auto deltaTimeInUs = (double) std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousCurrentTime).count();
 
             static int frameCount = 0;
             frameCount++;
-            if (deltaTimeInUs / 1000.0 > FPS_REFRESH_TIME_IN_MS) {
+            if (deltaTimeInUs / 1000.0 > REFRESH_TIME_IN_MS) {
                 deltaTimeInSec = (float)(deltaTimeInUs / (1000000.0 * frameCount));
-                fpsPreviousTime = currentTime;
+                previousCurrentTime = currentTime;
                 frameCount = 0;
 
                 if (getActiveRenderer3d()) {
@@ -139,9 +142,9 @@ namespace urchin {
         }
     }
 
-    void Scene::resetFps() { //TODO rename
+    void Scene::resetDeltaTime() {
         fpsLimitPreviousTime = MIN_TIME_POINT;
-        fpsPreviousTime = MIN_TIME_POINT;
+        previousCurrentTime = MIN_TIME_POINT;
         deltaTimeInSec = STARTUP_TIME_STEP;
     }
 
@@ -159,7 +162,7 @@ namespace urchin {
         if (activeRenderer3d && activeRenderer3d != renderer3d) {
             activeRenderer3d->onDisable();
         }
-        resetFps();
+        resetDeltaTime();
         activeRenderer3d = renderer3d;
     }
 
@@ -268,7 +271,7 @@ namespace urchin {
 
             graphicsApiService->frameStart(frameCount);
             handleFpsLimiter();
-            computeFps();
+            computeDeltaTime();
             float dt = getDeltaTimeInSec();
 
             unsigned int screenRenderingOrder = 0;
