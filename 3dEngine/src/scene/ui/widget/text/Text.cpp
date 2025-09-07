@@ -207,10 +207,10 @@ namespace urchin {
         for (const TextLine& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
             for (char32_t textLetter : textLine.text) { //each letter
-                auto letterShift = (float)font->getGlyph(textLetter).shiftY;
+                auto letterShiftY = (float)font->getGlyph(textLetter).shiftY;
                 auto letterWidth = (float)font->getGlyph(textLetter).width;
                 auto letterHeight = (float)font->getGlyph(textLetter).height;
-                auto letterOffsetY = offsetY - letterShift;
+                auto letterOffsetY = offsetY - letterShiftY;
 
                 vertexCoord.emplace_back(offsetX, letterOffsetY);
                 vertexCoord.emplace_back(letterWidth + offsetX, letterOffsetY);
