@@ -318,14 +318,10 @@ namespace urchin {
             computedCursorPosition.X = 0.0f;
             for (std::size_t columnIndex = 0; columnIndex <= textLine.text.length(); ++columnIndex) {
                 if (currentIndex == textCursorIndex) {
-                    if (computedCursorPosition.X > 0) {
-                        computedCursorPosition.X -= (int)text->getFont().getSpaceBetweenCharacters(); //remove last space
-                        computedCursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
-                    }
                     return computedCursorPosition;
                 } else {
                     char32_t textLetter = textLine.text[columnIndex];
-                    computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).bitmapWidth + text->getFont().getSpaceBetweenCharacters());
+                    computedCursorPosition.X += text->getFont().getGlyph(textLetter).letterWidth;
 
                     currentIndex++;
                 }
@@ -376,11 +372,11 @@ namespace urchin {
                     }
 
                     char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
-                    currentWidth += (float)text->getFont().getGlyph(textLetter).bitmapWidth / 2.0f;
+                    currentWidth += (float)text->getFont().getGlyph(textLetter).letterWidth / 2.0f;
                     if ((float)approximatePositionX < currentWidth) {
                         break;
                     }
-                    currentWidth += (float)text->getFont().getGlyph(textLetter).bitmapWidth / 2.0f + (float) text->getFont().getSpaceBetweenCharacters();
+                    currentWidth += (float)text->getFont().getGlyph(textLetter).letterWidth / 2.0f;
                 }
                 break;
             } else {

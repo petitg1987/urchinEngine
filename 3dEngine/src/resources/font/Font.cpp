@@ -5,12 +5,11 @@
 namespace urchin {
 
     Font::Font(unsigned int fontSize, const Vector3<float>& fontColor, std::shared_ptr<Texture> alphabetTexture, std::array<Glyph, UnicodeUtil::NUM_CHARACTERS> glyph,
-               unsigned int spaceBetweenCharacters, unsigned int spaceBetweenLines, unsigned int height) :
+               unsigned int spaceBetweenLines, unsigned int height) :
             fontSize(fontSize),
             fontColor(fontColor),
             alphabetTexture(std::move(alphabetTexture)),
             glyph(std::move(glyph)),
-            spaceBetweenCharacters(spaceBetweenCharacters),
             spaceBetweenLines(spaceBetweenLines),
             height(height) {
 
@@ -37,10 +36,6 @@ namespace urchin {
 
     unsigned int Font::getDimensionTexture() const {
         return alphabetTexture->getWidth();
-    }
-
-    unsigned int Font::getSpaceBetweenCharacters() const { //TODO remove !
-        return spaceBetweenCharacters;
     }
 
     unsigned int Font::getSpaceBetweenLines() const {

@@ -270,14 +270,13 @@ namespace urchin {
 
         //compute widget size
         float width = 0.0f;
-        auto spaceBetweenLetters = (float)font->getSpaceBetweenCharacters();
         for (const auto& textLine : cutTextLines) { //each line
-            float offsetX = 0.0f;
+            float lineWidth = 0.0f;
             for (char32_t textLetter : textLine.text) { //each letter
-                auto letterWidth = (float)font->getGlyph(textLetter).bitmapWidth;
-                offsetX += letterWidth + spaceBetweenLetters;
+                auto letterWidth = (float)font->getGlyph(textLetter).letterWidth;
+                lineWidth += letterWidth;
             }
-            width = std::max(width, offsetX - spaceBetweenLetters);
+            width = std::max(width, lineWidth);
         }
         std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
         auto textHeight = (float)(font->getHeight() + (numberOfInterLines * font->getSpaceBetweenLines()));
@@ -310,7 +309,7 @@ namespace urchin {
                     lengthFromLastSpace = 0;
                 }
 
-                unsigned int letterLength = font->getGlyph(textLetter).bitmapWidth + font->getSpaceBetweenCharacters();
+                unsigned int letterLength = font->getGlyph(textLetter).letterWidth;
 
                 if (lineLength + letterLength >= (unsigned int)maxWidthPixel) { //cut too long line
                     if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found

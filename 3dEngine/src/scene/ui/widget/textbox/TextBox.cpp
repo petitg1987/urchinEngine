@@ -3,7 +3,6 @@
 
 #include "scene/ui/widget/textbox/TextBox.h"
 #include "scene/ui/widget/TextFieldConst.h"
-#include "scene/ui/displayer/WidgetInstanceDisplayer.h"
 #include "scene/InputDeviceKey.h"
 
 namespace urchin {
@@ -49,7 +48,7 @@ namespace urchin {
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, PIXEL, PARENT_LEFT_CENTERY, LEFT_CENTERY), textSkinChunk->getStringValue(), "");
-        maxWidthText = (unsigned int)((int)getWidth() - (getOutline().leftWidth + getOutline().rightWidth + (int)TextFieldConst::LETTER_AND_CURSOR_SHIFT + (int)TextFieldConst::CURSOR_WIDTH_PIXEL));
+        maxWidthText = (unsigned int)((int)getWidth() - (getOutline().leftWidth + getOutline().rightWidth + (int)TextFieldConst::CURSOR_WIDTH_PIXEL));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
@@ -274,7 +273,7 @@ namespace urchin {
             unsigned int widthText = 0;
             for (startTextIndex = endTextIndex; true; --startTextIndex) {
                 char32_t textLetter = originalText[startTextIndex];
-                widthText += text->getFont().getGlyph(textLetter).bitmapWidth + text->getFont().getSpaceBetweenCharacters();
+                widthText += text->getFont().getGlyph(textLetter).letterWidth;
                 if (widthText > maxWidthText || startTextIndex == 0) {
                     break;
                 }
@@ -288,7 +287,7 @@ namespace urchin {
         std::size_t endTextIndex;
         for (endTextIndex = startTextIndex; endTextIndex < originalText.length(); ++endTextIndex) {
             char32_t textLetter = originalText[endTextIndex];
-            widthText += text->getFont().getGlyph(textLetter).bitmapWidth + text->getFont().getSpaceBetweenCharacters();
+            widthText += text->getFont().getGlyph(textLetter).letterWidth;
             if (widthText > maxWidthText) {
                 break;
             }
@@ -309,17 +308,10 @@ namespace urchin {
 
     Point2<int> TextBox::computeCursorPosition(std::size_t cursorIdx) const {
         Point2<int> computedCursorPosition(0.0f, 0.0f);
-
         for (std::size_t i = startTextIndex; i < cursorIdx; ++i) {
             char32_t textLetter = originalText[i];
-            computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).bitmapWidth + text->getFont().getSpaceBetweenCharacters());
+            computedCursorPosition.X += text->getFont().getGlyph(textLetter).letterWidth;
         }
-
-        if (computedCursorPosition.X > 0) {
-            computedCursorPosition.X -= (int)text->getFont().getSpaceBetweenCharacters(); //remove last space
-            computedCursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
-        }
-
         return computedCursorPosition;
     }
 
@@ -337,12 +329,11 @@ namespace urchin {
         std::size_t computedCursorIndex = startTextIndex;
         for (; computedCursorIndex < originalText.length(); ++computedCursorIndex) {
             char32_t textLetter = originalText[computedCursorIndex];
-            widthText += (float)font.getGlyph(textLetter).bitmapWidth / 2.0f;
+            widthText += (float)font.getGlyph(textLetter).letterWidth / 2.0f;
             if (widthText > (float)approximatePositionX) {
                 break;
             }
-
-            widthText += (float)font.getGlyph(textLetter).bitmapWidth / 2.0f + (float)font.getSpaceBetweenCharacters();
+            widthText += (float)font.getGlyph(textLetter).letterWidth / 2.0f;
         }
         return computedCursorIndex;
     }
