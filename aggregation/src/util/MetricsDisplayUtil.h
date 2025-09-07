@@ -19,7 +19,7 @@ namespace urchin {
             bool refresh();
 
         private:
-            static constexpr unsigned int REFRESH_RATE_MS = 200;
+            static constexpr unsigned int REFRESH_RATE_MS = 250;
 
             const Scene& scene;
             const PhysicsWorld* physicsWorld;
