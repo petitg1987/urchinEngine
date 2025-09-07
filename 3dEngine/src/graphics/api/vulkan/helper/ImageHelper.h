@@ -12,6 +12,7 @@ namespace urchin {
             static std::vector<VkImageView> createImageViews(VkImage, VkImageViewType, VkFormat, VkImageAspectFlags, uint32_t, uint32_t, bool);
 
         private:
+            static uint32_t findMemoryType(uint32_t);
             static void checkFormatSupport(VkFormat, VkImageTiling, VkFormatFeatureFlags);
             static VkFormatFeatureFlags usageFlagToFeatureFlag(VkImageUsageFlags);
     };

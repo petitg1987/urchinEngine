@@ -1,7 +1,6 @@
 #include "graphics/api/vulkan/GraphicsApiService.h"
 #define VMA_IMPLEMENTATION
 #include "libs/vma/vk_mem_alloc.h"
-#include "graphics/api/vulkan/helper/MemoryHelper.h"
 #include "graphics/api/vulkan/render/pipeline/PipelineContainer.h"
 #include "graphics/api/vulkan/setup/GraphicsSetupService.h"
 
@@ -16,14 +15,25 @@ namespace urchin {
         GraphicsSetupService::instance().cleanup();
     }
 
-    void GraphicsApiService::frameStart(uint32_t frameCount) const {
+    void GraphicsApiService::frameStart(uint32_t frameCount) {
         //required for memory budget: https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/staying_within_budget.html
         vmaSetCurrentFrameIndex(GraphicsSetupService::instance().getAllocator(), frameCount);
+
+        memoryUsage.onFrameStart();
     }
 
     void GraphicsApiService::frameEnd() const {
-        MemoryHelper::checkMemoryUsage();
+        memoryUsage.checkMemoryUsage();
+
         PipelineContainer::instance().cleanPipelines();
+    }
+
+    uint64_t GraphicsApiService::getUsedMemory() const {
+        return memoryUsage.getUsedMemory();
+    }
+
+    uint64_t GraphicsApiService::getTotalMemory() const {
+        return memoryUsage.getTotalMemory();
     }
 
 }

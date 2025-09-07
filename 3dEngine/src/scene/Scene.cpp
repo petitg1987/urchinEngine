@@ -205,6 +205,14 @@ namespace urchin {
         return activeUiRenderer;
     }
 
+    uint64_t Scene::getUsedVideoMemory() const {
+        return graphicsApiService->getUsedMemory();
+    }
+
+    uint64_t Scene::getTotalVideoMemory() const {
+        return graphicsApiService->getTotalMemory();
+    }
+
     void Scene::updateGammaFactor(float gammaFactor) {
         this->gammaFactor = gammaFactor;
 

@@ -3,7 +3,6 @@
 
 #include "graphics/api/vulkan/helper/ImageHelper.h"
 #include "graphics/api/vulkan/setup/GraphicsSetupService.h"
-#include "graphics/api/vulkan/helper/MemoryHelper.h"
 #include "graphics/api/vulkan/helper/DebugLabelHelper.h"
 
 namespace urchin {
@@ -50,7 +49,7 @@ namespace urchin {
 
         VmaAllocationInfo allocInfo{};
         allocInfo.size = memRequirements.size;
-        allocInfo.memoryType = MemoryHelper::findMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+        allocInfo.memoryType = findMemoryType(memRequirements.memoryTypeBits);
 
         result = vmaAllocateMemoryForImage(GraphicsSetupService::instance().getAllocator(), image, &allocCreateInfo, &imageMemory, &allocInfo);
         if (result != VK_SUCCESS) {
@@ -63,6 +62,18 @@ namespace urchin {
         }
 
         return image;
+    }
+
+    uint32_t ImageHelper::findMemoryType(uint32_t typeFilter) {
+        VkPhysicalDeviceMemoryProperties memProperties{};
+        vkGetPhysicalDeviceMemoryProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &memProperties);
+
+        for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
+            if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) == VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
+                return i;
+            }
+        }
+        throw std::runtime_error("Failed to find suitable memory type with type filter: " + std::to_string(typeFilter));
     }
 
     std::vector<VkImageView> ImageHelper::createImageViews(VkImage image, VkImageViewType type, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t layerCount,

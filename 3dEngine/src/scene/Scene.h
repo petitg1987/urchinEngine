@@ -38,6 +38,8 @@ namespace urchin {
             void removeUIRenderer(const UIRenderer*);
             UIRenderer* getActiveUIRenderer() const;
 
+            uint64_t getUsedVideoMemory() const;
+            uint64_t getTotalVideoMemory() const;
             void updateGammaFactor(float);
             void takeScreenShot(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
