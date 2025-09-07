@@ -11,7 +11,7 @@ namespace urchin {
             std::lock_guard lock(mutex);
             this->rayTestResults = rayTestResults;
         }
-        this->rayTestVersion.store(rayTestVersion, std::memory_order_relaxed);
+        this->rayTestVersion.store(rayTestVersion, std::memory_order_release);
     }
     
     bool RayTestResult::isResultReady(unsigned int minRayTestResultVersion) const {
