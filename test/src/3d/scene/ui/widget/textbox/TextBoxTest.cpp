@@ -7,10 +7,10 @@ using namespace urchin;
 
 void TextBoxTest::textShift() {
     auto uiRenderer = setupUiRenderer();
-    auto textBox = TextBox::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(50.0f, 20.0f, PIXEL), "test");
+    auto textBox = TextBox::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(32.0f, 20.0f, PIXEL), "test"); //max width text: 32px - margin 2px - cursor 2px = 28px
     uiRenderer->addWidget(textBox);
 
-    std::string textValue = "abcdefg"; //text box can only display 'abcdef'
+    std::string textValue = "abcdefg"; //text box can only display 'abcde' (a: 5px, b: 6px, c: 5px, d: 6px, e: 5px, f: 3px, g: 6px)
     uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over text box
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate text box
     for (char textLetter : textValue) {
@@ -21,15 +21,15 @@ void TextBoxTest::textShift() {
     for (std::size_t i = 0; i < textValue.size(); ++i) {
         uiRenderer->onKeyPress(InputDeviceKey::LEFT_ARROW);
     }
-    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "abcdef");
+    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "abcde");
 }
 
 void TextBoxTest::textSelection() {
     auto uiRenderer = setupUiRenderer();
-    auto textBox = TextBox::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(50.0f, 20.0f, PIXEL), "test");
+    auto textBox = TextBox::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(40.0f, 20.0f, PIXEL), "test"); //max width text: 40px - margin 2px - cursor 2px = 36px
     uiRenderer->addWidget(textBox);
 
-    std::string textValue = "0123456789"; //text box can only display the text partially
+    std::string textValue = "0123456789"; //text box can only display the text partially (each number: 5px)
     uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over text box
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate text box
     for (char textLetter : textValue) {
@@ -39,12 +39,12 @@ void TextBoxTest::textSelection() {
     for (std::size_t i = 0; i < textValue.size(); ++i) {
         uiRenderer->onKeyPress(InputDeviceKey::LEFT_ARROW);
     }
-    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "012345");
+    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "0123456");
 
     uiRenderer->onKeyPress(InputDeviceKey::CTRL);
     uiRenderer->onKeyPress(InputDeviceKey::A); //select all
     uiRenderer->onKeyRelease(InputDeviceKey::CTRL);
-    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "56789");
+    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "3456789");
 
     uiRenderer->onKeyPress(InputDeviceKey::DELETE_KEY); //delete selection
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "");
