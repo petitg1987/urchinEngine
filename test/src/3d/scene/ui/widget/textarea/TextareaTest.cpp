@@ -7,7 +7,7 @@ using namespace urchin;
 
 void TextareaTest::textCut() {
     auto uiRenderer = setupUiRenderer();
-    auto textarea = Textarea::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(50.0f, 100.0f, PIXEL), "test");
+    auto textarea = Textarea::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(40.0f, 100.0f, PIXEL), "test");
     uiRenderer->addWidget(textarea);
 
     std::string textValue = "mmmmmm"; //textarea can only display 'mmm' on one line

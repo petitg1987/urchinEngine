@@ -311,7 +311,7 @@ namespace urchin {
 
                 unsigned int letterLength = font->getGlyph(textLetter).letterWidth;
 
-                if (lineLength + letterLength >= (unsigned int)maxWidthPixel) { //cut too long line
+                if (lineLength + letterLength > (unsigned int)maxWidthPixel) { //cut too long line
                     if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
                         cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex), .cutType = TextCutType::WORD});
                         startLineIndex = lastSpaceIndex + 1;

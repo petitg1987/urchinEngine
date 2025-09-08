@@ -149,16 +149,16 @@ namespace urchin {
         }
 
         if (forwardKeyPressed) {
-            sceneDisplayer->getCamera()->moveForward(sceneDisplayer->getScene().getDeltaTime());
+            sceneDisplayer->getCamera()->moveForward(sceneDisplayer->getScene().getDeltaTimeInSec());
         }
         if (backwardKeyPressed) {
-            sceneDisplayer->getCamera()->moveBackward(sceneDisplayer->getScene().getDeltaTime());
+            sceneDisplayer->getCamera()->moveBackward(sceneDisplayer->getScene().getDeltaTimeInSec());
         }
         if (leftKeyPressed) {
-            sceneDisplayer->getCamera()->moveLeft(sceneDisplayer->getScene().getDeltaTime());
+            sceneDisplayer->getCamera()->moveLeft(sceneDisplayer->getScene().getDeltaTimeInSec());
         }
         if (rightKeyPressed) {
-            sceneDisplayer->getCamera()->moveRight(sceneDisplayer->getScene().getDeltaTime());
+            sceneDisplayer->getCamera()->moveRight(sceneDisplayer->getScene().getDeltaTimeInSec());
         }
 
         sceneDisplayer->paint();

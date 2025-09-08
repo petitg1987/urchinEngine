@@ -61,7 +61,7 @@ void TextTest::cutWord() {
 void TextTest::cutMiddleWord() {
     auto uiRenderer = setupUiRenderer();
     auto text = Text::create(nullptr, Position(0.0f, 0.0f, PIXEL), "test", "aaabbb");
-    text->setMaxWidth(28.0f, PIXEL); //cut after 'aaa'
+    text->setMaxWidth(20.0f, PIXEL); //cut after 'aaa' (letter 'a' width: 5 pixel, letter 'b' width: 6 pixel)
     uiRenderer->addWidget(text);
 
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines().size(), 2);
@@ -92,7 +92,7 @@ void TextTest::cutMiddleWord() {
 void TextTest::emptyLineAndCut() {
     auto uiRenderer = setupUiRenderer();
     auto text = Text::create(nullptr, Position(0.0f, 0.0f, PIXEL), "test", "\naaabbb");
-    text->setMaxWidth(28.0f, PIXEL); //cut after 'aaa'
+    text->setMaxWidth(20.0f, PIXEL); //cut after 'aaa' (letter 'a' width: 5 pixel, letter 'b' width: 6 pixel)
     uiRenderer->addWidget(text);
 
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines().size(), 3);
