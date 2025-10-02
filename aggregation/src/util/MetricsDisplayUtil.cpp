@@ -42,7 +42,7 @@ namespace urchin {
         physicsTotalDtMs += physicsWorld != nullptr ? physicsWorld->getStepExecutionTimeInSec() * 1000.0f : 0.0f;
         metricsEventCount++;
 
-        long deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - metricsTextLastRefreshTime).count();
+        auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - metricsTextLastRefreshTime).count();
         if (deltaTimeInUs > REFRESH_RATE_MS * 1000) {
             graphicsDtMs = graphicsTotalDtMs / (float)metricsEventCount;
             physicsDtMs = physicsTotalDtMs / (float)metricsEventCount;

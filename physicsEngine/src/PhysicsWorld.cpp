@@ -150,8 +150,8 @@ namespace urchin {
                 processPhysicsUpdate(dt);
 
                 auto executionEndTime = std::chrono::steady_clock::now();
-                long deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(executionEndTime - executionStartTime).count();
-                long realDeltaTimeInUs = deltaTimeInUs;
+                auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(executionEndTime - executionStartTime).count();
+                auto realDeltaTimeInUs = deltaTimeInUs;
                 if (deltaTimeInUs < 250) { //small delta time on Windows is imprecise: wait two milliseconds more to get a more precise value
                     std::this_thread::sleep_for(std::chrono::milliseconds(2));
                     executionEndTime = std::chrono::steady_clock::now();
