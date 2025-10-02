@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <ranges>
+#include <span>
 
 namespace urchin {
 
