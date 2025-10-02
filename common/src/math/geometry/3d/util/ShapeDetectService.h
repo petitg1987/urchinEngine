@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <optional>
 
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/Quaternion.h"
