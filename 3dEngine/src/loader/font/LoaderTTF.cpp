@@ -80,16 +80,16 @@ namespace urchin {
             }
         }
 
-        FT_Done_Face(face);
-        FT_Done_FreeType(library);
-
         //compute space between lines and height of characters
         unsigned int height = 0;
         for (int i = 'A'; i < 'Z'; i++) {
             height = std::max(height, glyph[(std::size_t)i].bitmapHeight);
         }
-        unsigned int spaceBetweenLines = MathFunction::roundToUInt((float)height * 1.9f);
+        unsigned int spaceBetweenLines = MathFunction::roundToUInt((float)face->size->metrics.height / 64.0f);
         glyph[(int)' '].bitmapWidth = MathFunction::roundToUInt((float)glyph[(int)'A'].bitmapWidth * 0.4f);
+
+        FT_Done_Face(face);
+        FT_Done_FreeType(library);
 
         //size of characters and texture
         unsigned int maxCharactersSize = 0;
