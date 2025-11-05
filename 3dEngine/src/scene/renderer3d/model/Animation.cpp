@@ -142,6 +142,7 @@ namespace urchin {
             skeleton[i].parent = frameBone.parent;
             skeleton[i].pos = frameBone.pos;
             skeleton[i].orient = frameBone.orient;
+            skeleton[i].sameAsBasePose = frameBone.sameAsBasePose;
         }
 
         //update the mesh (vertex, normals...)

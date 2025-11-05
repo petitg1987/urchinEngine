@@ -120,7 +120,7 @@ namespace urchin {
                     displayer->updateModelProperties(model);
                 }
             } else {
-                //The displayer will be replaced in the 'updateModels' method, but it is already detached here.
+                //The displayer will be replaced in the 'replaceAllModels' method, but it is already detached here.
                 //Indeed, the updated value in the model could be wrongly used by another update of model in the displayer via ModelInstanceDisplayer#getReferenceModel().
                 removeModelFromDisplayer(*model, *displayer);
             }
@@ -233,7 +233,7 @@ namespace urchin {
         modelInstanceDisplayer->setupFaceCull(enableFaceCull);
         modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
         modelInstanceDisplayer->setupLayersMask(layersMask);
-        addModelToDisplayer(*model, *modelInstanceDisplayer);
+        addModelToDisplayer(*model, *modelInstanceDisplayer); //TODO mesh updated not taken into account ?
         modelInstanceDisplayer->initialize();
         if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
             exclusiveInstanceDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
