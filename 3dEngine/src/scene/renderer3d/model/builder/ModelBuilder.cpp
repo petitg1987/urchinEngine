@@ -30,7 +30,7 @@ namespace urchin {
         return newModel(meshesName, vertices, triangleIndices, uvTexture);
     }
 
-    std::unique_ptr<Model> ModelBuilder::newModel(const std::string& meshesName, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,
+    std::unique_ptr<Model> ModelBuilder::newModel(const std::string& meshesName, std::span<Point3<float> const> vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,
             const std::vector<Point2<float>>& uvTexture) const {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector;
         constMeshesVector.push_back(buildConstMesh(meshesName, vertices, trianglesIndices, uvTexture));
@@ -41,14 +41,13 @@ namespace urchin {
         return Model::fromMemory(std::move(meshes));
     }
 
-    std::unique_ptr<Model> ModelBuilder::newSpriteModel(const std::string& meshesName, const std::vector<Point3<float>>& cwVertices) const { //TODO any CW vertices works ?
-        //TODO assure 4 vertices
+    std::unique_ptr<Model> ModelBuilder::newSpriteModel(const std::string& meshesName, const std::array<Point3<float>, 4>& cwVertices) const { //TODO any CW vertices works ?
         std::vector<std::array<uint32_t, 3>> trianglesIndices({{0, 1, 3}, {3, 1, 2}}); //TODO document default visible face are CW oriented
         std::vector<Point2<float>> uvTexture({{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}}); //TODO document (0.0, 0.0) is top left in uv coord
         return newModel(meshesName, cwVertices, trianglesIndices, uvTexture);
     }
 
-    std::unique_ptr<const ConstMesh> ModelBuilder::buildConstMesh(const std::string& meshName, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,
+    std::unique_ptr<const ConstMesh> ModelBuilder::buildConstMesh(const std::string& meshName, std::span<Point3<float> const> vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,
             const std::vector<Point2<float>>& uvTexture) const {
         if (vertices.size() != uvTexture.size()) {
             throw std::runtime_error("Vertices (" + std::to_string(vertices.size()) + ") must have exactly one UV coordinate (" + std::to_string(uvTexture.size()) + ")");
