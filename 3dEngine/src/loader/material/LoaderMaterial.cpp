@@ -9,6 +9,7 @@ namespace urchin {
 
     std::shared_ptr<Material> LoaderMaterial::loadFromFile(const std::string& filename, const std::map<std::string, std::string, std::less<>>&) {
         UdaParser udaParser(filename, UdaLoadType::LOAD_FILE);
+        std::shared_ptr<MaterialBuilder> materialBuilder;
 
         //albedo texture/color
         std::shared_ptr<Texture> albedoTexture;
@@ -16,6 +17,7 @@ namespace urchin {
         auto albedoTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), albedoChunk);
         if (albedoTextureChunk) {
             albedoTexture = ResourceRetriever::instance().getResource<Texture>(albedoTextureChunk->getStringValue(), {{"mipMap", "1"}});
+            materialBuilder = MaterialBuilder::create(filename, albedoTexture);
         }
 
         auto albedoColorChunk = udaParser.getFirstChunk(false, "color", UdaAttribute(), albedoChunk);
@@ -30,11 +32,9 @@ namespace urchin {
                 throw std::runtime_error("Material albedo must be in range 0.0 - 1.0: " + filename);
             }
 
-            std::vector rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y), (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
-            bool hasTransparency = !MathFunction::isOne(color.W);
-            albedoTexture = Texture::build(filename + " - albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, rgbaColor.data(), hasTransparency, TextureDataType::INT_8);
+            std::array<unsigned char, 4> rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y), (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
+            materialBuilder = MaterialBuilder::create(filename, rgbaColor);
         }
-        std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, albedoTexture);
 
         //repeat textures
         auto repeatTexturesChunk = udaParser.getFirstChunk(false, "repeatTextures");

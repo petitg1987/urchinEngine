@@ -2,6 +2,7 @@
 
 #include "resources/material/Material.h"
 #include "resources/material/MaterialBuilder.h"
+#include "resources/ResourceRetriever.h"
 
 namespace urchin {
 
@@ -24,8 +25,18 @@ namespace urchin {
         if (!albedoTexture) {
             throw std::runtime_error("Albedo texture is mandatory to build a material");
         }
-
         return std::shared_ptr<MaterialBuilder>(new MaterialBuilder(std::move(materialName), std::move(albedoTexture)));
+    }
+
+    std::shared_ptr<MaterialBuilder> MaterialBuilder::create(const std::string& materialName, const std::array<unsigned char, 4>& albedoColor) {
+        bool hasTransparency = albedoColor[3] != 255;
+        std::shared_ptr<Texture> albedoTexture = Texture::build(materialName + "-albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, albedoColor.data(), hasTransparency, TextureDataType::INT_8);
+        return create(materialName, std::move(albedoTexture));
+    }
+
+    std::shared_ptr<MaterialBuilder> MaterialBuilder::create(const std::string& materialName, const std::string& textureFilename) {
+        auto albedoTexture = ResourceRetriever::instance().getResource<Texture>(textureFilename, {{"mipMap", "1"}});
+        return create(materialName, std::move(albedoTexture));
     }
 
     const std::string& MaterialBuilder::getMaterialName() const {

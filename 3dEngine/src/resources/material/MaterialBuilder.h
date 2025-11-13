@@ -11,6 +11,8 @@ namespace urchin {
     class MaterialBuilder : public std::enable_shared_from_this<MaterialBuilder> {
         public:
             static std::shared_ptr<MaterialBuilder> create(std::string, std::shared_ptr<Texture>);
+            static std::shared_ptr<MaterialBuilder> create(const std::string&, const std::array<unsigned char, 4>&);
+            static std::shared_ptr<MaterialBuilder> create(const std::string&, const std::string&);
 
             const std::string& getMaterialName() const;
 

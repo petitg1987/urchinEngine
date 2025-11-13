@@ -8,9 +8,8 @@ namespace urchin {
     unsigned long ModelBuilder::nextId = 0;
 
     ModelBuilder::ModelBuilder() {
-        std::vector<unsigned char> defaultAlbedoColor({0, 0, 0, 255});
-        std::shared_ptr<Texture> albedoTexture = Texture::build("defaultAlbedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, defaultAlbedoColor.data(), false, TextureDataType::INT_8);
-        material = MaterialBuilder::create("defaultMaterial", std::move(albedoTexture))->build();
+        std::array<unsigned char, 4> defaultAlbedoColor({0, 0, 0, 255});
+        material = MaterialBuilder::create("defaultMaterial", defaultAlbedoColor)->build();
     }
 
     ModelBuilder::ModelBuilder(std::shared_ptr<Material> material) :
