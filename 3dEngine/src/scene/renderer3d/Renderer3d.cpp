@@ -374,9 +374,9 @@ namespace urchin {
         modelSetDisplayer->setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer->initialize(*deferredFirstPassRenderTarget);
 
-        albedoAndEmissiveTexture = Texture::build("albedo and emissive", renderingSceneWidth, renderingSceneHeight, VisualConfig::ALBEDO_AND_EMISSIVE_TEXTURE_FORMAT);
-        normalAndAmbientTexture = Texture::build("normal and ambient", renderingSceneWidth, renderingSceneHeight, VisualConfig::NORMAL_AND_AMBIENT_TEXTURE_FORMAT);
-        materialAndMaskTexture = Texture::build("material and mask", renderingSceneWidth, renderingSceneHeight, VisualConfig::MATERIAL_AND_MASK_TEXTURE_FORMAT);
+        albedoAndEmissiveTexture = Texture::buildNoData("albedo and emissive", renderingSceneWidth, renderingSceneHeight, VisualConfig::ALBEDO_AND_EMISSIVE_TEXTURE_FORMAT);
+        normalAndAmbientTexture = Texture::buildNoData("normal and ambient", renderingSceneWidth, renderingSceneHeight, VisualConfig::NORMAL_AND_AMBIENT_TEXTURE_FORMAT);
+        materialAndMaskTexture = Texture::buildNoData("material and mask", renderingSceneWidth, renderingSceneHeight, VisualConfig::MATERIAL_AND_MASK_TEXTURE_FORMAT);
 
         auto* deferredFirstPassOffscreenRender = static_cast<OffscreenRender*>(deferredFirstPassRenderTarget.get());
         deferredFirstPassOffscreenRender->resetOutput();
@@ -386,7 +386,7 @@ namespace urchin {
         deferredFirstPassOffscreenRender->initialize();
 
         //deferred second pass
-        illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        illuminatedTexture = Texture::buildNoData("illuminated scene", renderingSceneWidth, renderingSceneHeight, VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         if (deferredSecondPassRenderTarget) {
             auto* deferredSecondPassOffscreenRender = static_cast<OffscreenRender*>(deferredSecondPassRenderTarget.get());
             deferredSecondPassOffscreenRender->resetOutput();

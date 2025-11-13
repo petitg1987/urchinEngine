@@ -11,13 +11,11 @@ namespace urchin {
         UdaParser udaParser(filename, UdaLoadType::LOAD_FILE);
 
         //albedo texture/color
-        bool hasTransparency = false;
         std::shared_ptr<Texture> albedoTexture;
         auto albedoChunk = udaParser.getFirstChunk(true, "albedo");
         auto albedoTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), albedoChunk);
         if (albedoTextureChunk) {
             albedoTexture = ResourceRetriever::instance().getResource<Texture>(albedoTextureChunk->getStringValue(), {{"mipMap", "1"}});
-            hasTransparency = albedoTexture->hasTransparency();
         }
 
         auto albedoColorChunk = udaParser.getFirstChunk(false, "color", UdaAttribute(), albedoChunk);
@@ -32,12 +30,11 @@ namespace urchin {
                 throw std::runtime_error("Material albedo must be in range 0.0 - 1.0: " + filename);
             }
 
-            std::vector rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
-                                                  (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
-            albedoTexture = Texture::build(filename + " - albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, rgbaColor.data(), TextureDataType::INT_8);
-            hasTransparency = !MathFunction::isOne(color.W);
+            std::vector rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y), (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
+            bool hasTransparency = !MathFunction::isOne(color.W);
+            albedoTexture = Texture::build(filename + " - albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, rgbaColor.data(), hasTransparency, TextureDataType::INT_8);
         }
-        std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, albedoTexture, hasTransparency);
+        std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, albedoTexture);
 
         //repeat textures
         auto repeatTexturesChunk = udaParser.getFirstChunk(false, "repeatTextures");
@@ -78,7 +75,7 @@ namespace urchin {
                 }
 
                 std::vector roughnessTextureData({(unsigned char) (255.0f * roughness)});
-                roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, roughnessTextureData.data(), TextureDataType::INT_8);
+                roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, roughnessTextureData.data(), false, TextureDataType::INT_8);
             }
 
             if (roughnessTexture) {
@@ -111,7 +108,7 @@ namespace urchin {
                 }
 
                 std::vector metalnessTextureData({(unsigned char) (255.0f * metalness)});
-                metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, metalnessTextureData.data(), TextureDataType::INT_8);
+                metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, metalnessTextureData.data(), false, TextureDataType::INT_8);
             }
 
             if (metalnessTexture) {

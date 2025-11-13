@@ -58,7 +58,7 @@ namespace urchin {
         bloomStepTextures.clear();
         for (unsigned int i = 0; i < config.maxIterations; ++i) {
             std::string bloomTextureName = "bloom " + std::to_string(textureWidth) + "x" + std::to_string(textureHeight);
-            bloomStepTextures.push_back(Texture::build(bloomTextureName, textureWidth, textureHeight, TextureFormat::B10G11R11_FLOAT));
+            bloomStepTextures.push_back(Texture::buildNoData(bloomTextureName, textureWidth, textureHeight, TextureFormat::B10G11R11_FLOAT));
 
             textureWidth = textureWidth / 2;
             textureHeight = textureHeight / 2;
@@ -137,7 +137,7 @@ namespace urchin {
         }
 
         //combine
-        bloomCombineTexture = Texture::build("bloom - combine", inputHdrTexture->getWidth(), inputHdrTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
+        bloomCombineTexture = Texture::buildNoData("bloom - combine", inputHdrTexture->getWidth(), inputHdrTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
         combineRenderTarget = std::make_unique<OffscreenRender>("bloom - combine", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         combineRenderTarget->addOutputTexture(bloomCombineTexture);
         combineRenderTarget->initialize();

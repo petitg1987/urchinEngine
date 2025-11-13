@@ -14,13 +14,13 @@ namespace urchin {
             std::string defaultTextureType = params.at("textureType");
             if (defaultTextureType == "normal") {
                 std::vector<unsigned char> defaultNormalColor({127, 127, 255, 255});
-                return Texture::build("defaultNormal", 1, 1, TextureFormat::RGBA_8_UINT_NORM, defaultNormalColor.data(), TextureDataType::INT_8);
+                return Texture::build("defaultNormal", 1, 1, TextureFormat::RGBA_8_UINT_NORM, defaultNormalColor.data(), false, TextureDataType::INT_8);
             } else if (defaultTextureType == "roughness") {
                 std::vector<unsigned char> defaultRoughnessValue({255});
-                return Texture::build("defaultRoughness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, defaultRoughnessValue.data(), TextureDataType::INT_8);
+                return Texture::build("defaultRoughness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, defaultRoughnessValue.data(), false, TextureDataType::INT_8);
             } else if (defaultTextureType == "metalness") {
                 std::vector<unsigned char> defaultMetalnessValue({0});
-                return Texture::build("defaultMetalness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, defaultMetalnessValue.data(), TextureDataType::INT_8);
+                return Texture::build("defaultMetalness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, defaultMetalnessValue.data(), false, TextureDataType::INT_8);
             } else {
                  throw std::runtime_error("Unknown default texture type: " + defaultTextureType);
             }
@@ -30,14 +30,13 @@ namespace urchin {
 
         std::shared_ptr<Texture> texture;
         if (image->getChannelPrecision() == Image::CHANNEL_8_INT) {
-            texture = Texture::build(image->getName(), image->getWidth(), image->getHeight(), image->retrieveTextureFormat(), image->getTexels().data(), TextureDataType::INT_8);
+            texture = Texture::build(image->getName(), image->getWidth(), image->getHeight(), image->retrieveTextureFormat(), image->getTexels().data(), image->hasTransparency(), TextureDataType::INT_8);
         }else if (image->getChannelPrecision() == Image::CHANNEL_16_INT) {
-            texture = Texture::build(image->getName(), image->getWidth(), image->getHeight(), image->retrieveTextureFormat(), image->getTexels16Bits().data(), TextureDataType::INT_16);
+            texture = Texture::build(image->getName(), image->getWidth(), image->getHeight(), image->retrieveTextureFormat(), image->getTexels16Bits().data(), image->hasTransparency(), TextureDataType::INT_16);
         } else {
             throw std::runtime_error("Unknown channel precision: " + std::to_string(image->getChannelPrecision()));
         }
 
-        texture->setHasTransparency(image->hasTransparency());
         unsigned int generateMipMap = TypeConverter::toBool(params.at("mipMap"));
         if (generateMipMap) {
             texture->enableMipmap();

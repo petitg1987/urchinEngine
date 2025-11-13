@@ -18,7 +18,7 @@ namespace urchin {
 
         if (filterBoxSize == 1) {
             std::vector textureData = {Vector2(0.0f, 0.0f)};
-            offsetTexture = Texture::buildArray("SM offset", 1, 1, 1, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
+            offsetTexture = Texture::buildArray("SM offset", 1, 1, 1, TextureFormat::RG_32_FLOAT, textureData.data(), false, TextureDataType::FLOAT_32);
         } else {
             std::vector<Vector2<float>> textureData = generateTextureData();
             if (DEBUG_EXPORT_TEXTURE_DATA) {
@@ -26,7 +26,7 @@ namespace urchin {
             }
 
             unsigned int filterSize = filterBoxSize * filterBoxSize;
-            offsetTexture = Texture::buildArray("SM offset", textureXYSize, textureXYSize, filterSize, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
+            offsetTexture = Texture::buildArray("SM offset", textureXYSize, textureXYSize, filterSize, TextureFormat::RG_32_FLOAT, textureData.data(), false, TextureDataType::FLOAT_32);
         }
     }
 

@@ -10,7 +10,7 @@ namespace urchin {
 
     class MaterialBuilder : public std::enable_shared_from_this<MaterialBuilder> {
         public:
-            static std::shared_ptr<MaterialBuilder> create(std::string, std::shared_ptr<Texture>, bool);
+            static std::shared_ptr<MaterialBuilder> create(std::string, std::shared_ptr<Texture>);
 
             const std::string& getMaterialName() const;
 
@@ -46,13 +46,12 @@ namespace urchin {
             std::unique_ptr<Material> build();
 
         private:
-            MaterialBuilder(std::string, std::shared_ptr<Texture>, bool);
+            MaterialBuilder(std::string, std::shared_ptr<Texture>);
 
             static unsigned long nextId;
 
             std::string materialName;
             std::shared_ptr<Texture> mAlbedoTexture;
-            bool mHasTransparency;
 
             bool mRepeatTextures;
             UvScale mUvScale;

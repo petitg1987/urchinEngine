@@ -9,8 +9,8 @@ namespace urchin {
 
     ModelBuilder::ModelBuilder() {
         std::vector<unsigned char> defaultAlbedoColor({0, 0, 0, 255});
-        std::shared_ptr<Texture> albedoTexture = Texture::build("defaultAlbedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, defaultAlbedoColor.data(), TextureDataType::INT_8);
-        material = MaterialBuilder::create("defaultMaterial", std::move(albedoTexture), false)->build();
+        std::shared_ptr<Texture> albedoTexture = Texture::build("defaultAlbedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, defaultAlbedoColor.data(), false, TextureDataType::INT_8);
+        material = MaterialBuilder::create("defaultMaterial", std::move(albedoTexture))->build();
     }
 
     ModelBuilder::ModelBuilder(std::shared_ptr<Material> material) :
@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     std::unique_ptr<Model> ModelBuilder::newSpriteModel(const std::string& meshesName, const std::vector<Point3<float>>& cwVertices) const { //TODO any CW vertices works ?
-        //TODO assure 2 vertices
+        //TODO assure 4 vertices
         std::vector<std::array<uint32_t, 3>> trianglesIndices({{0, 1, 3}, {3, 1, 2}}); //TODO document default visible face are CW oriented
         std::vector<Point2<float>> uvTexture({{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}}); //TODO document (0.0, 0.0) is top left in uv coord
         return newModel(meshesName, cwVertices, trianglesIndices, uvTexture);

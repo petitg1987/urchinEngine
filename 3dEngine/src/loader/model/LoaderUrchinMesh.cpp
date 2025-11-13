@@ -65,8 +65,8 @@ namespace urchin {
             materialFilename = materialFilename.substr(1, materialFilename.length() - 2); //remove quote
             if (materialFilename.empty() || materialFilename == "default") {
                 std::vector<unsigned char> defaultAlbedoColor({177, 106, 168, 255});
-                auto defaultAlbedoTexture = Texture::build(filename + " - default albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, defaultAlbedoColor.data(), TextureDataType::INT_8);
-                material = MaterialBuilder::create("defaultMaterial", defaultAlbedoTexture, false)->build();
+                auto defaultAlbedoTexture = Texture::build(filename + " - default albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, defaultAlbedoColor.data(), false, TextureDataType::INT_8);
+                material = MaterialBuilder::create("defaultMaterial", defaultAlbedoTexture)->build();
             } else {
                 material = ResourceRetriever::instance().getResource<Material>(materialFilename);
             }

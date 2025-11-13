@@ -137,7 +137,7 @@ namespace urchin {
 
         if (this->normalFilename.empty()) {
             std::vector<unsigned char> waterNormalColor({0, 255, 0, 255});
-            normalTexture = Texture::build("default water normal", 1, 1, TextureFormat::RGBA_8_UINT_NORM, waterNormalColor.data(), TextureDataType::INT_8);
+            normalTexture = Texture::build("default water normal", 1, 1, TextureFormat::RGBA_8_UINT_NORM, waterNormalColor.data(), false, TextureDataType::INT_8);
         } else {
             normalTexture = ResourceRetriever::instance().getResource<Texture>(this->normalFilename, {{"mipMap", "1"}});
             if (normalTexture->getFormat() != TextureFormat::RGBA_8_UINT_NORM) {
@@ -161,7 +161,7 @@ namespace urchin {
 
         if (this->dudvFilename.empty()) {
             std::vector<unsigned char> waterDudvColor({255, 0, 255, 255});
-            dudvMap = Texture::build("default water dudv", 1, 1, TextureFormat::RGBA_8_UINT_NORM, waterDudvColor.data(), TextureDataType::INT_8);
+            dudvMap = Texture::build("default water dudv", 1, 1, TextureFormat::RGBA_8_UINT_NORM, waterDudvColor.data(), false, TextureDataType::INT_8);
         } else {
             dudvMap = ResourceRetriever::instance().getResource<Texture>(this->dudvFilename, {{"mipMap", "1"}});
             if (dudvMap->getFormat() != TextureFormat::RGBA_8_UINT_NORM) {

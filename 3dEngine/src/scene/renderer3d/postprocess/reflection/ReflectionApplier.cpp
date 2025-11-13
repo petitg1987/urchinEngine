@@ -71,7 +71,7 @@ namespace urchin {
         auto reflectionColorTextureFormat = TextureFormat::RGBA_8_UINT_NORM;
         auto reflectionColorTextureSizeX = (unsigned int)((float)depthTexture->getWidth() / (float)retrieveTextureSizeFactor());
         auto reflectionColorTextureSizeY = (unsigned int)((float)depthTexture->getHeight() / (float)retrieveTextureSizeFactor());
-        reflectionColorTexture = Texture::build("reflection color", reflectionColorTextureSizeX, reflectionColorTextureSizeY, reflectionColorTextureFormat);
+        reflectionColorTexture = Texture::buildNoData("reflection color", reflectionColorTextureSizeX, reflectionColorTextureSizeY, reflectionColorTextureFormat);
         reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflection color", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         reflectionColorRenderTarget->addOutputTexture(reflectionColorTexture);
         reflectionColorRenderTarget->initialize();
@@ -99,7 +99,7 @@ namespace urchin {
         verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
         horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
 
-        reflectionCombineTexture = Texture::build("reflection combine", depthTexture->getWidth(), depthTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
+        reflectionCombineTexture = Texture::buildNoData("reflection combine", depthTexture->getWidth(), depthTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
         reflectionCombineRenderTarget = std::make_unique<OffscreenRender>("reflection combine", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         reflectionCombineRenderTarget->addOutputTexture(reflectionCombineTexture);
         reflectionCombineRenderTarget->initialize();

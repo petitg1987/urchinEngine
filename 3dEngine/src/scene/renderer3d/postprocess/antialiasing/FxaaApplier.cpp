@@ -43,7 +43,7 @@ namespace urchin {
     void FxaaApplier::createOrUpdateRenderData() {
         freeRenderData();
 
-        outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
+        outputTexture = Texture::buildNoData("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_HDR_TEXTURE_FORMAT);
         renderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         renderTarget->addOutputTexture(outputTexture);
         renderTarget->initialize();

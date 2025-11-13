@@ -233,7 +233,7 @@ namespace urchin {
         modelInstanceDisplayer->setupFaceCull(enableFaceCull);
         modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
         modelInstanceDisplayer->setupLayersMask(layersMask);
-        addModelToDisplayer(*model, *modelInstanceDisplayer); //TODO mesh updated not taken into account ?
+        addModelToDisplayer(*model, *modelInstanceDisplayer);
         modelInstanceDisplayer->initialize();
         if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
             exclusiveInstanceDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));

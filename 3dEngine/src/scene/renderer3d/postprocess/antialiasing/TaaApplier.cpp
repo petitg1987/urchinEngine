@@ -73,7 +73,7 @@ namespace urchin {
 
         //A pixel with a coordinates of (x, y) and a value of (0.012, 0) means this pixel has moved of the distance (0.0010416, 0) between previous frame and current frame.
         //A velocity of x=1.0 represents a full move from the left of the screen to the right of the screen.
-        velocityTexture = Texture::build("aa: velocity", sceneTexture->getWidth(), sceneTexture->getHeight(), TextureFormat::RG_16_FLOAT);
+        velocityTexture = Texture::buildNoData("aa: velocity", sceneTexture->getWidth(), sceneTexture->getHeight(), TextureFormat::RG_16_FLOAT);
 
         velocityRenderTarget = std::make_unique<OffscreenRender>("anti aliasing - velocity", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         velocityRenderTarget->addOutputTexture(velocityTexture);
@@ -85,9 +85,9 @@ namespace urchin {
     void TaaApplier::createOrUpdateResolveRenderData() {
         freeResolveRenderData();
 
-        outputOrHistoryTextures[0] = Texture::build("aa: output or history 1", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
+        outputOrHistoryTextures[0] = Texture::buildNoData("aa: output or history 1", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
         outputOrHistoryTextures[0]->enableTextureWriting(OutputUsage::GRAPHICS);
-        outputOrHistoryTextures[1] = Texture::build("aa: output or history 2", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
+        outputOrHistoryTextures[1] = Texture::buildNoData("aa: output or history 2", sceneTexture->getWidth(), sceneTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
         outputOrHistoryTextures[1]->enableTextureWriting(OutputUsage::GRAPHICS);
 
         resolveRenderTarget = std::make_unique<OffscreenRender>("anti aliasing - resolve", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);

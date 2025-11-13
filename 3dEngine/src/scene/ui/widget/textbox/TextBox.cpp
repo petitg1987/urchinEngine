@@ -52,13 +52,14 @@ namespace urchin {
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
-        texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, cursorColor.data());
+        texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, cursorColor.data(), false, TextureDataType::INT_8);
         Size cursorSize(TextFieldConst::CURSOR_WIDTH_PIXEL, (float)text->getFont().getHeight() + ((float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2.0f), PIXEL);
         cursor = StaticBitmap::create(this, Position(0.0f, 0.0f, PIXEL), cursorSize, texCursorAlbedo);
         cursor->setIsVisible(false);
 
         Vector4<float> selectionColor = UISkinService::instance().getSkinReader().getFirstChunk(true, "selectionColor", UdaAttribute(), textBoxChunk)->getVector4Value();
-        std::shared_ptr<Texture> selectionTexture = Texture::build("textSelection", 1, 1, TextureFormat::RGBA_32_FLOAT, &selectionColor);
+        bool hasTransparency = !MathFunction::isOne(selectionColor.W);
+        std::shared_ptr<Texture> selectionTexture = Texture::build("textSelection", 1, 1, TextureFormat::RGBA_32_FLOAT, &selectionColor, hasTransparency, TextureDataType::FLOAT_32);
         selectionImage = StaticBitmap::create(this, Position(0.0f, 0.0f, PIXEL), Size(0.0f, 0.0f, PIXEL), selectionTexture);
         selectionImage->setIsVisible(false);
 
