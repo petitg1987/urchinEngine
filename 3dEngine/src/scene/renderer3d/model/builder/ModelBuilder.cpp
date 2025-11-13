@@ -30,8 +30,8 @@ namespace urchin {
         return newModel(meshesName, vertices, triangleIndices, uvTexture);
     }
 
-    std::unique_ptr<Model> ModelBuilder::newModel(const std::string& meshesName, const std::vector<Point3<float>>& vertices,
-                                                  const std::vector<std::array<uint32_t, 3>>& trianglesIndices, const std::vector<Point2<float>>& uvTexture) const {
+    std::unique_ptr<Model> ModelBuilder::newModel(const std::string& meshesName, const std::vector<Point3<float>>& vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,
+            const std::vector<Point2<float>>& uvTexture) const {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector;
         constMeshesVector.push_back(buildConstMesh(meshesName, vertices, trianglesIndices, uvTexture));
         auto constMeshes = ConstMeshes::fromMemory(meshesName, std::move(constMeshesVector));
