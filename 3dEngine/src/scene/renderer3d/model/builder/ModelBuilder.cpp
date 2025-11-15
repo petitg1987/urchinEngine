@@ -42,8 +42,8 @@ namespace urchin {
     }
 
     std::unique_ptr<Model> ModelBuilder::newSpriteModel(const std::string& meshesName, const std::array<Point3<float>, 4>& verticesTlTrBrBl) const {
-        std::vector<std::array<uint32_t, 3>> trianglesIndices({{0, 1, 3}, {3, 1, 2}}); //TODO document default visible face are CW oriented
-        std::vector<Point2<float>> uvTexture({{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}}); //TODO document (0.0, 0.0) is top left in uv coord
+        std::vector<std::array<uint32_t, 3>> trianglesIndices({{0, 1, 3}, {3, 1, 2}});
+        std::vector<Point2<float>> uvTexture({{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}});
         return newModel(meshesName, verticesTlTrBrBl, trianglesIndices, uvTexture);
     }
 

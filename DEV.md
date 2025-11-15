@@ -142,16 +142,3 @@
     ```
     massif-visualizer
     ```
-
-# Memo
-## Coordinates used
-* 3D (e.g.: *3D models, physics rigid bodies, 3D nav mesh*):
-  - X+ (left), X- (right)
-  - Y+ (top), Y- (bottom)
-  - Z+ (near), Z- (far)
-* NDC / Vulkan:
-  - X = -1 (left), X = 1 (right)
-  - Y = -1 (top), Y = 1 (bottom)
-* 2D top view (e.g.: *2D nav mesh*):
-  - X+ (left), X- (right)
-  - Y+ (far), Y- (near)
