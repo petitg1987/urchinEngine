@@ -22,14 +22,6 @@ namespace urchin {
 
     }
 
-    std::unique_ptr<Model> ModelBuilder::newEmptyModel(const std::string& meshesName) const {
-        std::vector vertices = {Point3(0.1f, 0.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)};
-        std::vector<std::array<uint32_t, 3>> triangleIndices = {{0u, 1u, 2u}};
-        std::vector uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
-
-        return newModel(meshesName, vertices, triangleIndices, uvTexture);
-    }
-
     std::unique_ptr<Model> ModelBuilder::newModel(const std::string& meshesName, std::span<Point3<float> const> vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,
             const std::vector<Point2<float>>& uvTexture) const {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector;
@@ -39,6 +31,14 @@ namespace urchin {
 
         auto meshes = std::make_unique<Meshes>(std::move(constMeshes));
         return Model::fromMemory(std::move(meshes));
+    }
+
+    std::unique_ptr<Model> ModelBuilder::newEmptyModel(const std::string& meshesName) const {
+        std::vector vertices = {Point3(0.1f, 0.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(0.0f, 0.0f, 0.0f)};
+        std::vector<std::array<uint32_t, 3>> triangleIndices = {{0u, 1u, 2u}};
+        std::vector uvTexture = {Point2(0.0f, 0.0f), Point2(0.0f, 0.0f), Point2(0.0f, 0.0f)};
+
+        return newModel(meshesName, vertices, triangleIndices, uvTexture);
     }
 
     std::unique_ptr<Model> ModelBuilder::newSpriteModel(const std::string& meshesName, const std::array<Point3<float>, 4>& verticesTlTrBrBl) const {
