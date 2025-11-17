@@ -12,6 +12,7 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
+            billboardingEnabled(false),
             shadowBehavior(ShadowBehavior::RECEIVER_AND_CASTER),
             lightMask(std::numeric_limits<uint8_t>::max()),
             cullBehavior(CullBehavior::CULL),
@@ -180,6 +181,20 @@ namespace urchin {
 
     bool Model::isAnimated() const {
         return hasActiveAnimation() && isModelAnimated;
+    }
+
+    void Model::enableBillboarding(bool billboardingEnabled, const Vector3<float>& initialSpriteDirection) {
+        this->billboardingEnabled = billboardingEnabled;
+        if (billboardingEnabled) {
+            this->initialSpriteDirection = initialSpriteDirection.normalize();
+            this->transform.setOrientation(Quaternion<float>()); //no orientation direction expected to start billboarding
+            onMoving(transform);
+            notifyObservers(this, BILLBOARDING_STARTED);
+        }
+    }
+
+    bool Model::isBillboardingEnabled() const {
+        return billboardingEnabled;
     }
 
     void Model::onMoving(const Transform<float>& newTransform) {
@@ -379,12 +394,17 @@ namespace urchin {
             if (stopAnimationAtLastFrame && activeAnimation->getCurrentFrame() + 1 >= activeAnimation->getConstAnimation().getNumberFrames()) {
                 stopAnimation(true);
                 stopAnimationAtLastFrame = false;
-                notifyObservers(this, ANIMATION_ENDED);
             } else {
                 activeAnimation->animate(dt);
                 notifyMeshVerticesUpdatedByAnimation();
             }
         }
+    }
+
+    void Model::updateBillboard(const Vector3<float>& cameraViewVector) {
+        //TODO check impl...
+        transform.setOrientation(Quaternion<float>::rotationFromTo(cameraViewVector, -initialSpriteDirection));
+        onMoving(transform);
     }
 
     void Model::updateVertices(unsigned int meshIndex, const std::vector<Point3<float>>& vertices) {

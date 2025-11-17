@@ -22,7 +22,7 @@ namespace urchin {
                 MATERIAL_UPDATED,
                 SCALE_UPDATED,
                 ANIMATION_STARTED,
-                ANIMATION_ENDED,
+                BILLBOARDING_STARTED,
                 MODEL_PROPERTIES_UPDATED,
                 CULL_BEHAVIOR_UPDATED
             };
@@ -52,6 +52,9 @@ namespace urchin {
             bool hasActiveAnimation() const;
             bool isAnimated() const;
 
+            void enableBillboarding(bool, const Vector3<float>&);
+            bool isBillboardingEnabled() const;
+
             std::string getName() const override;
             const Meshes* getMeshes() const;
             const ConstMeshes* getConstMeshes() const;
@@ -77,6 +80,7 @@ namespace urchin {
             bool isMeshUpdated(unsigned int) const;
 
             void updateAnimation(float);
+            void updateBillboard(const Vector3<float>&);
             void updateVertices(unsigned int, const std::vector<Point3<float>>&);
             void updateUv(unsigned int, const std::vector<Point2<float>>&);
             void updateMaterial(unsigned int, std::shared_ptr<Material>);
@@ -104,6 +108,10 @@ namespace urchin {
             Animation* activeAnimation;
             bool isModelAnimated;
             bool stopAnimationAtLastFrame;
+
+            //billboarding
+            bool billboardingEnabled;
+            Vector3<float> initialSpriteDirection;
 
             //transform
             Transform<float> transform;

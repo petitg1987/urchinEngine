@@ -109,6 +109,8 @@ namespace urchin {
         } else if (auto* model = dynamic_cast<Model*>(observable)) {
             if (notificationType == Model::ANIMATION_STARTED) {
                 modelsAnimated.insert(model);
+            } else if (notificationType == Model::BILLBOARDING_STARTED) {
+                modelsBillboarding.insert(model);
             }
         }
     }
@@ -234,6 +236,7 @@ namespace urchin {
             ScopeProfiler sp(Profiler::graphic(), "addModel");
 
             registerModelForAnimation(*model);
+            registerModelForBillboarding(*model);
             modelOcclusionCuller.addModel(std::move(model));
         }
     }
@@ -244,6 +247,7 @@ namespace urchin {
             transparentManager.removeModel(model);
             modelSetDisplayer->removeModel(model);
             unregisterModelForAnimation(*model);
+            unregisterModelForBillboarding(*model);
             return modelOcclusionCuller.removeModel(model);
         }
         return {nullptr};
@@ -361,6 +365,18 @@ namespace urchin {
     void Renderer3d::unregisterModelForAnimation(Model& model) {
         modelsAnimated.erase(&model);
         model.removeObserver(this, Model::ANIMATION_STARTED);
+    }
+
+    void Renderer3d::registerModelForBillboarding(Model& model) {
+        model.addObserver(this, Model::BILLBOARDING_STARTED);
+        if (model.isBillboardingEnabled()) {
+            modelsBillboarding.insert(&model);
+        }
+    }
+
+    void Renderer3d::unregisterModelForBillboarding(Model& model) {
+        modelsBillboarding.erase(&model);
+        model.removeObserver(this, Model::BILLBOARDING_STARTED);
     }
 
     void Renderer3d::createOrUpdateDeferredPasses() {
@@ -497,9 +513,15 @@ namespace urchin {
         lightManager.updateVisibleLights(camera->getFrustum());
 
         //animate models
-        std::erase_if(modelsAnimated, [](const Model* modelAnimated){ return !modelAnimated->isAnimated(); });
+        std::erase_if(modelsAnimated, [](const Model* model){ return !model->isAnimated(); });
         for (Model* modelAnimated : modelsAnimated) {
             modelAnimated->updateAnimation(dt);
+        }
+
+        //billboarding models
+        std::erase_if(modelsBillboarding, [](const Model* model){ return !model->isBillboardingEnabled(); });
+        for (Model* modelBillboard : modelsBillboarding) {
+            modelBillboard->updateBillboard(camera->getView());
         }
 
         //determine lights and models producing shadow on scene (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)

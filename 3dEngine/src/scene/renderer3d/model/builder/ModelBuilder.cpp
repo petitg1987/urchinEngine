@@ -41,10 +41,19 @@ namespace urchin {
         return newModel(meshesName, vertices, triangleIndices, uvTexture);
     }
 
-    std::unique_ptr<Model> ModelBuilder::newSpriteModel(const std::string& meshesName, const std::array<Point3<float>, 4>& verticesTlTrBrBl) const {
+    std::unique_ptr<Model> ModelBuilder::newSpriteModel(const std::string& meshesName, const Point3<float>& position, float width, float height) const {
+        std::array vertices = {
+            Point3(-width / 2.0f, height / 2.0f, 0.0f),
+            Point3(width / 2.0f, height / 2.0f, 0.0f),
+            Point3(width / 2.0f, -height / 2.0f, 0.0f),
+            Point3(-width / 2.0f, -height / 2.0f, 0.0f)
+        };
         std::vector<std::array<uint32_t, 3>> trianglesIndices({{0, 1, 3}, {3, 1, 2}});
         std::vector<Point2<float>> uvTexture({{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}});
-        return newModel(meshesName, verticesTlTrBrBl, trianglesIndices, uvTexture);
+        std::unique_ptr<Model> model = newModel(meshesName, vertices, trianglesIndices, uvTexture);
+        model->setPosition(position);
+        model->setShadowBehavior(Model::ShadowBehavior::NONE);
+        return model;
     }
 
     std::unique_ptr<const ConstMesh> ModelBuilder::buildConstMesh(const std::string& meshName, std::span<Point3<float> const> vertices, const std::vector<std::array<uint32_t, 3>>& trianglesIndices,

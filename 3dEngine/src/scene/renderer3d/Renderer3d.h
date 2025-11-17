@@ -101,6 +101,8 @@ namespace urchin {
             //model
             void registerModelForAnimation(Model&);
             void unregisterModelForAnimation(Model&);
+            void registerModelForBillboarding(Model&);
+            void unregisterModelForBillboarding(Model&);
 
             //scene
             void createOrUpdateDeferredPasses();
@@ -140,6 +142,7 @@ namespace urchin {
             ModelOcclusionCuller modelOcclusionCuller;
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
             std::unordered_set<Model*> modelsAnimated;
+            std::unordered_set<Model*> modelsBillboarding;
             std::shared_ptr<AABBoxModel> debugOcclusionCullerGeometries;
             std::vector<Model*> modelsInFrustum;
 
