@@ -521,7 +521,7 @@ namespace urchin {
         //billboarding models
         std::erase_if(modelsBillboarding, [](const Model* model){ return !model->isBillboardingEnabled(); });
         for (Model* modelBillboard : modelsBillboarding) {
-            modelBillboard->updateBillboard(camera->getView());
+            modelBillboard->updateBillboard(*camera);
         }
 
         //determine lights and models producing shadow on scene (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)

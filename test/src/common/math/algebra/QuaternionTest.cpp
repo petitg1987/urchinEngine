@@ -19,8 +19,8 @@ void QuaternionTest::multiplyAxisAngleQuaternions9And45() {
 }
 
 void QuaternionTest::multiplyLookAtQuaternions9And45() {
-    Quaternion<float> lookAt09DegreeQuaternion = Quaternion<float>::lookUp(Vector3(std::asin(MathValue::PI_FLOAT / 20.0f), 0.0f, 1.0f).normalize(), Vector3(0.0f, 1.0f, 0.0f));
-    Quaternion<float> lookAt45DegreeQuaternion = Quaternion<float>::lookUp(Vector3(0.70710678118f, 0.0f, 0.70710678118f), Vector3(0.0f, 1.0f, 0.0f));
+    Quaternion<float> lookAt09DegreeQuaternion = Quaternion<float>::lookAt(Vector3(std::asin(MathValue::PI_FLOAT / 20.0f), 0.0f, 1.0f).normalize(), Vector3(0.0f, 1.0f, 0.0f));
+    Quaternion<float> lookAt45DegreeQuaternion = Quaternion<float>::lookAt(Vector3(0.70710678118f, 0.0f, 0.70710678118f), Vector3(0.0f, 1.0f, 0.0f));
 
     Quaternion<float> totalRotation = lookAt09DegreeQuaternion * lookAt45DegreeQuaternion;
     Vector3<float> axis;
@@ -31,8 +31,8 @@ void QuaternionTest::multiplyLookAtQuaternions9And45() {
 }
 
 void QuaternionTest::multiplyLookAtQuaternions180And45() {
-    Quaternion<float> lookAt180DegreeQuaternion = Quaternion<float>::lookUp(Vector3(0.0f, 0.0f, -1.0f).normalize(), Vector3(0.0f, 1.0f, 0.0f));
-    Quaternion<float> lookAt45DegreeQuaternion = Quaternion<float>::lookUp(Vector3(0.70710678118f, 0.0f, 0.70710678118f), Vector3(0.0f, 1.0f, 0.0f));
+    Quaternion<float> lookAt180DegreeQuaternion = Quaternion<float>::lookAt(Vector3(0.0f, 0.0f, -1.0f).normalize(), Vector3(0.0f, 1.0f, 0.0f));
+    Quaternion<float> lookAt45DegreeQuaternion = Quaternion<float>::lookAt(Vector3(0.70710678118f, 0.0f, 0.70710678118f), Vector3(0.0f, 1.0f, 0.0f));
 
     Quaternion<float> totalRotation = lookAt180DegreeQuaternion * lookAt45DegreeQuaternion;
     Vector3<float> axis;
@@ -43,8 +43,8 @@ void QuaternionTest::multiplyLookAtQuaternions180And45() {
 }
 
 void QuaternionTest::multiplyLookAtQuaternions180And45UpDown() {
-    Quaternion<float> lookAt0DegreeQuaternion = Quaternion<float>::lookUp(Vector3(0.0f, 0.0f, -1.0f).normalize(), Vector3(0.0f, -1.0f, 0.0f));
-    Quaternion<float> lookAt45DegreeQuaternion = Quaternion<float>::lookUp(Vector3(0.70710678118f, 0.0f, 0.70710678118f), Vector3(0.0f, -1.0f, 0.0f));
+    Quaternion<float> lookAt0DegreeQuaternion = Quaternion<float>::lookAt(Vector3(0.0f, 0.0f, -1.0f).normalize(), Vector3(0.0f, -1.0f, 0.0f));
+    Quaternion<float> lookAt45DegreeQuaternion = Quaternion<float>::lookAt(Vector3(0.70710678118f, 0.0f, 0.70710678118f), Vector3(0.0f, -1.0f, 0.0f));
 
     Quaternion<float> totalRotation = lookAt0DegreeQuaternion * lookAt45DegreeQuaternion;
     Vector3<float> axis;

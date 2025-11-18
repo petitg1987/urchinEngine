@@ -2,6 +2,7 @@
 #include <iomanip>
 
 #include "math/algebra/matrix/Matrix4.h"
+#include "math/algebra/vector/Vector3.h"
 
 namespace urchin {
 
@@ -79,6 +80,17 @@ namespace urchin {
                 cos, -sin, 0.0, 0.0,
                 sin, cos, 0.0, 0.0,
                 0.0, 0.0, 1.0, 0.0,
+                0.0, 0.0, 0.0, 1.0);
+    }
+
+    /**
+     * Build a rotation matrix which rotate default vectors (1,0,0), (0,1,0), (0,0,1) into (right, up, forward)
+     */
+    template<class T> Matrix4<T> Matrix4<T>::buildRotation(const Vector3<T>& right, const Vector3<T>& up, const Vector3<T>& forward) {
+        return Matrix4<T>(
+                right[0], up[0], forward[0], 0.0,
+                right[1], up[1], forward[1], 0.0,
+                right[2], up[2], forward[2], 0.0,
                 0.0, 0.0, 0.0, 1.0);
     }
 

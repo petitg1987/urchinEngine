@@ -10,6 +10,7 @@
 #include "scene/renderer3d/model/AnimRepeat.h"
 #include "scene/renderer3d/model/AnimStart.h"
 #include "scene/renderer3d/model/displayer/ModelDisplayable.h"
+#include "scene/renderer3d/camera/Camera.h"
 #include "resources/model/ConstMeshes.h"
 
 namespace urchin {
@@ -80,7 +81,7 @@ namespace urchin {
             bool isMeshUpdated(unsigned int) const;
 
             void updateAnimation(float);
-            void updateBillboard(const Vector3<float>&);
+            void updateBillboard(const Camera&);
             void updateVertices(unsigned int, const std::vector<Point3<float>>&);
             void updateUv(unsigned int, const std::vector<Point2<float>>&);
             void updateMaterial(unsigned int, std::shared_ptr<Material>);

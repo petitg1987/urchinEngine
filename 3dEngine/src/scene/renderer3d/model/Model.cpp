@@ -401,9 +401,13 @@ namespace urchin {
         }
     }
 
-    void Model::updateBillboard(const Vector3<float>& cameraViewVector) {
-        //TODO check impl...
-        transform.setOrientation(Quaternion<float>::rotationFromTo(cameraViewVector, -initialSpriteDirection));
+    void Model::updateBillboard(const Camera& camera) {
+        Vector3 forward = getTransform().getPosition().vector(camera.getPosition()).normalize();
+        Vector3 right = camera.getUp().crossProduct(forward).normalize();
+        Vector3 up = forward.crossProduct(right).normalize();
+        Matrix3 rotationMatrix = Matrix3<float>::buildRotation(right, up, forward);
+
+        transform.setOrientation(Quaternion<float>::fromRotationMatrix(rotationMatrix));
         onMoving(transform);
     }
 

@@ -3,6 +3,9 @@
 #include <ostream>
 
 namespace urchin {
+
+    template<class T> class Vector3;
+
     /**
     * Represents a matrix 3x3 in column major
     */
@@ -19,6 +22,7 @@ namespace urchin {
             [[nodiscard]] static Matrix3<T> buildRotationX(T);
             [[nodiscard]] static Matrix3<T> buildRotationY(T);
             [[nodiscard]] static Matrix3<T> buildRotationZ(T);
+            [[nodiscard]] static Matrix3<T> buildRotation(const Vector3<T>&, const Vector3<T>&, const Vector3<T>&);
 
             void setValues(
                     T m11, T m12, T m13,

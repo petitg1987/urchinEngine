@@ -85,46 +85,46 @@ namespace urchin {
         }
     }
 
-    template<class T> Quaternion<T> Quaternion<T>::lookUp(const Vector3<T>& normalizedLookAt, const Vector3<T>& normalizedUp) {
+    template<class T> Quaternion<T> Quaternion<T>::lookAt(const Vector3<T>& normalizedForward, const Vector3<T>& normalizedUp) {
         #ifdef URCHIN_DEBUG
-            assert(MathFunction::isOne((float)normalizedLookAt.length(), 0.001f));
+            assert(MathFunction::isOne((float)normalizedForward.length(), 0.001f));
             assert(MathFunction::isOne((float)normalizedUp.length(), 0.001f));
         #endif
 
-        Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
-        T det = right.X + normalizedUp.Y + normalizedLookAt.Z;
+        Vector3<T> right = normalizedUp.crossProduct(normalizedForward);
+        T det = right.X + normalizedUp.Y + normalizedForward.Z;
 
         if (det > 0.0) {
             T sqrtValue = std::sqrt((T)1.0 + det);
             T halfOverSqrt = (T)0.5 / sqrtValue;
             return Quaternion<T>(
-                    (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt,
-                    (normalizedLookAt.X - right.Z) * halfOverSqrt,
+                    (normalizedUp.Z - normalizedForward.Y) * halfOverSqrt,
+                    (normalizedForward.X - right.Z) * halfOverSqrt,
                     (right.Y - normalizedUp.X) * halfOverSqrt,
                     sqrtValue * (T)0.5);
-        } else if ((right.X >= normalizedUp.Y) && (right.X >= normalizedLookAt.Z)) {
-            T sqrtValue = std::sqrt((((T)1.0 + right.X) - normalizedUp.Y) - normalizedLookAt.Z);
+        } else if ((right.X >= normalizedUp.Y) && (right.X >= normalizedForward.Z)) {
+            T sqrtValue = std::sqrt((((T)1.0 + right.X) - normalizedUp.Y) - normalizedForward.Z);
             T halfOverSqrt = (T)0.5 / sqrtValue;
             return Quaternion<T>(
                     (T)0.5 * sqrtValue,
                     (right.Y + normalizedUp.X) * halfOverSqrt,
-                    (right.Z + normalizedLookAt.X) * halfOverSqrt,
-                    (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt);
-        } else if (normalizedUp.Y > normalizedLookAt.Z) {
-            T sqrtValue = std::sqrt((((T)1.0 + normalizedUp.Y) - right.X) - normalizedLookAt.Z);
+                    (right.Z + normalizedForward.X) * halfOverSqrt,
+                    (normalizedUp.Z - normalizedForward.Y) * halfOverSqrt);
+        } else if (normalizedUp.Y > normalizedForward.Z) {
+            T sqrtValue = std::sqrt((((T)1.0 + normalizedUp.Y) - right.X) - normalizedForward.Z);
             T halfOverSqrt = (T)0.5 / sqrtValue;
             return Quaternion<T>(
                     (normalizedUp.X + right.Y) * halfOverSqrt,
                     (T)0.5 * sqrtValue,
-                    (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt,
-                    (normalizedLookAt.X - right.Z) * halfOverSqrt);
+                    (normalizedForward.Y + normalizedUp.Z) * halfOverSqrt,
+                    (normalizedForward.X - right.Z) * halfOverSqrt);
         }
 
-        T sqrtValue = std::sqrt((((T)1.0 + normalizedLookAt.Z) - right.X) - normalizedUp.Y);
+        T sqrtValue = std::sqrt((((T)1.0 + normalizedForward.Z) - right.X) - normalizedUp.Y);
         T halfOverSqrt = (T)0.5 / sqrtValue;
         return Quaternion<T>(
-                (normalizedLookAt.X + right.Z) * halfOverSqrt,
-                (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt,
+                (normalizedForward.X + right.Z) * halfOverSqrt,
+                (normalizedForward.Y + normalizedUp.Z) * halfOverSqrt,
                 (T)0.5 * sqrtValue,
                 (right.Y - normalizedUp.X) * halfOverSqrt);
     }
