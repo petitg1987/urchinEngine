@@ -1,3 +1,4 @@
+#include <bitset>
 #include <QStylePainter>
 
 #include "widget/BitsetComboBox.h"
