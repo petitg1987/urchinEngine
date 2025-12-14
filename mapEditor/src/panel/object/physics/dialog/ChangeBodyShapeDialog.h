@@ -3,7 +3,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QComboBox>
-
+#include <UrchinAggregation.h>
 #include <UrchinPhysicsEngine.h>
 
 namespace urchin {
