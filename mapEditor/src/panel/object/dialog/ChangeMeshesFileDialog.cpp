@@ -2,6 +2,7 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
+#include <UrchinAggregation.h>
 
 #include "panel/object/dialog/ChangeMeshesFileDialog.h"
 #include "widget/style/ButtonStyleHelper.h"
