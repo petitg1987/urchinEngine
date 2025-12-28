@@ -5,8 +5,7 @@ namespace urchin {
     DefaultBodyShapeGenerator::DefaultBodyShapeGenerator(const ObjectEntity& objectEntity, const DefaultShapeQuality& defaultShapeQuality) :
             objectEntity(objectEntity) {
 
-        MeshSimplificationService::Config meshSimplificationConfig = {};
-        meshSimplificationService = std::make_unique<MeshSimplificationService>(meshSimplificationConfig);
+        meshSimplificationService = std::make_unique<MeshSimplificationService>();
 
         ShapeDetectService::Config shapeDetectConfig = {
             .voxelizationSize = defaultShapeQuality.getVoxelizationSize(),

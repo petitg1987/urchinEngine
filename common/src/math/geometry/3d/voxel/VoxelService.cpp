@@ -98,7 +98,7 @@ namespace urchin {
             VoxelContainer voxelBox;
             voxelBox.insert(voxelIndexPosition);
             usedVoxels.insert(voxelIndexPosition);
-            for (int axis = 0; axis < 3; ++axis) {
+            for (std::size_t axis = 0; axis < 3; ++axis) {
                 expandOnAxis(axis, voxelGrid, voxelBox, usedVoxels);
             }
 
@@ -108,7 +108,7 @@ namespace urchin {
         return result;
     }
 
-    void VoxelService::expandOnAxis(int axis, const VoxelGrid& voxelGrid, VoxelContainer& voxelBox, VoxelContainer& usedVoxels) const {
+    void VoxelService::expandOnAxis(std::size_t axis, const VoxelGrid& voxelGrid, VoxelContainer& voxelBox, VoxelContainer& usedVoxels) const {
         int otherAxisMin1 = getMaxInDirection((axis + 1) % 3, false, voxelBox);
         int otherAxisMax1 = getMaxInDirection((axis + 1) % 3, true, voxelBox);
         int otherAxisMin2 = getMaxInDirection((axis + 2) % 3, false, voxelBox);
@@ -116,10 +116,10 @@ namespace urchin {
 
         int totalVoxelsToAdd = (otherAxisMax1 - otherAxisMin1 + 1) * (otherAxisMax2 - otherAxisMin2);
         std::vector<Point3<int>> voxelsToAdd;
-        voxelsToAdd.reserve(totalVoxelsToAdd);
+        voxelsToAdd.reserve((std::size_t)totalVoxelsToAdd);
 
         for (bool isPositive : {true, false}) { //expand on 'axis' in both direction: positive and negative
-            bool allVoxelsCanBeAdded = true;
+            bool allVoxelsCanBeAdded;
             do { //expand in the current direction until it cannot expand anymore
                 voxelsToAdd.clear();
                 allVoxelsCanBeAdded = true;
@@ -149,7 +149,7 @@ namespace urchin {
         }
     }
 
-    int VoxelService::getMaxInDirection(int axis, bool isPositive, const VoxelContainer& voxelBox) const {
+    int VoxelService::getMaxInDirection(std::size_t axis, bool isPositive, const VoxelContainer& voxelBox) const {
         Point3<int> startVoxel = *voxelBox.begin();
         int currPosition = startVoxel[axis];
         while (true) {
@@ -166,7 +166,7 @@ namespace urchin {
     AABBox<float> VoxelService::voxelBoxToAABBox(const VoxelContainer& voxelBox, const VoxelGrid& voxelGrid) const {
         Point3 minVoxel(0, 0, 0);
         Point3 maxVoxel(0, 0, 0);
-        for (int axis = 0; axis < 3; ++axis) {
+        for (std::size_t axis = 0; axis < 3; ++axis) {
             minVoxel[axis] = getMaxInDirection(axis, false, voxelBox);
             maxVoxel[axis] = getMaxInDirection(axis, true, voxelBox);
         }

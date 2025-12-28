@@ -67,7 +67,7 @@ namespace urchin {
 
 		std::map<uint32_t, std::vector<std::size_t>> vertexToTriangles;
 		for (std::size_t triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
-		    for (int i = 0; i < 3; ++i) {
+		    for (std::size_t i = 0; i < 3; ++i) {
 		        uint32_t vertexIndex = mesh.getTrianglesIndices()[triangleIndex][i];
 		        vertexToTriangles[vertexIndex].push_back(triangleIndex);
 		    }
@@ -92,7 +92,7 @@ namespace urchin {
 				trianglesQueue.pop();
 
 				subMeshTrianglesIndices.push_back({0u, 0u, 0u});
-				for (int i = 0; i < 3; ++i) {
+				for (std::size_t i = 0; i < 3; ++i) {
 					uint32_t originalVertexIndex = mesh.getTrianglesIndices()[currentTriangleIndex][i];
 					if (!originalToSubMeshVertexMap.contains(originalVertexIndex)) {
 						uint32_t subMeshVertexIndex = (uint32_t)subMeshVertices.size();
@@ -103,7 +103,7 @@ namespace urchin {
 				}
 
 				std::set<std::size_t> neighborTrianglesIndices;
-				for (int i = 0; i < 3; ++i) {
+				for (std::size_t i = 0; i < 3; ++i) {
 				    uint32_t vertexIndex = mesh.getTrianglesIndices()[currentTriangleIndex][i];
 				    for (std::size_t neighborTriangleIndex : vertexToTriangles[vertexIndex]) {
 				        if (!visitedTriangles[neighborTriangleIndex]) {
@@ -299,7 +299,7 @@ namespace urchin {
 			edgesCount[edgeIdProducer(triangleIndices[2], triangleIndices[0])]++;
 		}
 
-		for (uint64_t count : std::views::values(edgesCount)) {
+		for (int count : std::views::values(edgesCount)) {
 			if (count != 2) {
 				return false;
 			}

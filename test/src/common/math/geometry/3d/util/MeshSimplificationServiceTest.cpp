@@ -20,7 +20,7 @@ void MeshSimplificationServiceTest::simplify() {
     };
     MeshData mesh(vertices, trianglesIndices);
 
-    MeshData simplifiedMesh = MeshSimplificationService({}).simplify(mesh);
+    MeshData simplifiedMesh = MeshSimplificationService().simplify(mesh);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getVertices().size(), 4);
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 2);

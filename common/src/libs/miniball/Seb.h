@@ -20,7 +20,7 @@ namespace SEB_NAMESPACE {
   // PointAccessor[j] must return the j-th point in the data set as Pt and
   // size_t size() returns the size of the data set
 
-  template<typename Float, class Pt = Point<Float>, class PointAccessor = std::span<Pt> >
+  template<typename Float, class Pt = Point<Float>, class PointAccessor = std::span<Pt const> >
   class Smallest_enclosing_ball
   // An instance of class Smallest_enclosing_ball<Float> represents
   // the smallest enclosing ball of a set S of points.  Initially, the
@@ -32,11 +32,11 @@ namespace SEB_NAMESPACE {
 
   public: // construction and destruction:
 
-    Smallest_enclosing_ball(PointAccessor P)
+    Smallest_enclosing_ball(const PointAccessor& P)
     // Constructs an instance representing the miniball of points from
     // set S.  The dimension of the ambient space is fixed to d for
     // lifetime of the instance.
-    : S(std::move(P)), up_to_date(true), support(S)
+    : S(P), up_to_date(true), support(S)
     {
       SEB_ASSERT(!is_empty());
       update();

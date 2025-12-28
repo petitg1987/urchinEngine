@@ -222,8 +222,8 @@ namespace SEB_NAMESPACE {
     Float origin_lambda = 1;
     for (int j = (int)r-1; j>=0; --j) {
       for (unsigned int k=(unsigned int)j+1; k<r; ++k)
-        w[j] -= *(lambdas+k) * R[k][j];
-      origin_lambda -= *(lambdas+j) = w[j] / R[j][j];
+        w[(std::size_t)j] -= *(lambdas+k) * R[(std::size_t)k][(std::size_t)j];
+      origin_lambda -= *(lambdas+j) = w[(std::size_t)j] / R[(std::size_t)j][(std::size_t)j];
     }
     // The r-th coefficient corresponds to the origin (cf. remove_point()):
     *(lambdas+r) = origin_lambda;

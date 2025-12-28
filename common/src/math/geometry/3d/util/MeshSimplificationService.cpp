@@ -6,11 +6,6 @@
 
 namespace urchin {
 
-    MeshSimplificationService::MeshSimplificationService(Config config) :
-            config(std::move(config)) {
-
-    }
-
     MeshData MeshSimplificationService::simplify(const MeshData& meshData) const {
         return mergeDuplicateVertices(meshData);
     }
