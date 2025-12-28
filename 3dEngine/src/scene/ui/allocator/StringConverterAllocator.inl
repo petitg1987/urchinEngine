@@ -15,7 +15,7 @@ template<class T> StringConverterAllocator<T>::StringConverterAllocator(const St
 template<class T> StringConverterAllocator<T>::~StringConverterAllocator() {
     if (--(*usageCount) == 0) {
         for (auto& memorySlot : memorySlots) {
-            ::operator delete(memorySlot.ptr, ALLOCATED_SIZE * sizeof(T));
+            ::operator delete(memorySlot.ptr);
         }
         delete usageCount;
     }
@@ -40,14 +40,14 @@ template<class T> T* StringConverterAllocator<T>::allocate(std::size_t n) {
     return static_cast<T*>(operator new(n * sizeof(T)));
 }
 
-template<class T> void StringConverterAllocator<T>::deallocate(T* p, std::size_t n) {
+template<class T> void StringConverterAllocator<T>::deallocate(T* p, std::size_t) {
     for (auto& memorySlot : memorySlots) {
         if (memorySlot.ptr == p) {
             memorySlot.used = false;
             return;
         }
     }
-    return ::operator delete(p, n * sizeof(T));
+    return ::operator delete(p);
 }
 
 template<class T> bool operator== (const StringConverterAllocator<T>& a, const StringConverterAllocator<T>& b) {

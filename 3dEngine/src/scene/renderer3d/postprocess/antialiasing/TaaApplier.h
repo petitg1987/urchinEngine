@@ -35,8 +35,8 @@ namespace urchin {
                 uint32_t highQuality;
             };
 
-            int getOutputTextureIndex() const;
-            int getHistoryTextureIndex() const;
+            std::size_t getOutputTextureIndex() const;
+            std::size_t getHistoryTextureIndex() const;
 
             void createOrUpdateRenderData();
             void createOrUpdateVelocityRenderData();

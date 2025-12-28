@@ -223,9 +223,10 @@ namespace urchin {
                 Point3 position = terrain->getPosition() + Point3(xValue, yValue, zValue);
                 InstanceData instanceData {
                     .modelMatrix = Transform(position, orientation, this->model->getTransform().getScale()).getTransformMatrix(),
-                    .normalMatrix = instanceData.modelMatrix.inverse().transpose(),
+                    .normalMatrix = Matrix4<float>(),
                     .terrainNormal = normal
                 };
+                instanceData.normalMatrix = instanceData.modelMatrix.inverse().transpose();
                 shaderInstanceData.push_back(instanceData);
             }
         }

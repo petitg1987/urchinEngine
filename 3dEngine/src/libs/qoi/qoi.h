@@ -1,6 +1,7 @@
 #pragma once
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wreturn-type-c-linkage"
 
 /*
  * Update done for Urchin (23/12/2021):

@@ -274,7 +274,7 @@ namespace urchin {
             unsigned int widthText = 0;
             for (startTextIndex = endTextIndex; true; --startTextIndex) {
                 char32_t textLetter = originalText[startTextIndex];
-                widthText += text->getFont().getGlyph(textLetter).letterWidth;
+                widthText += (unsigned int)std::max(text->getFont().getGlyph(textLetter).letterWidth, 0);
                 if (widthText > maxWidthText) {
                     startTextIndex++;
                     break;
@@ -290,7 +290,7 @@ namespace urchin {
         std::size_t endTextIndex;
         for (endTextIndex = startTextIndex; endTextIndex < originalText.length(); ++endTextIndex) {
             char32_t textLetter = originalText[endTextIndex];
-            widthText += text->getFont().getGlyph(textLetter).letterWidth;
+            widthText += (unsigned int)std::max(text->getFont().getGlyph(textLetter).letterWidth, 0);
             if (widthText > maxWidthText) {
                 break;
             }

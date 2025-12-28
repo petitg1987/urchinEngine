@@ -309,7 +309,7 @@ namespace urchin {
                     lengthFromLastSpace = 0;
                 }
 
-                unsigned int letterLength = font->getGlyph(textLetter).letterWidth;
+                unsigned int letterLength = (unsigned int)std::max(font->getGlyph(textLetter).letterWidth, 0);
 
                 if (lineLength + letterLength > (unsigned int)maxWidthPixel) { //cut too long line
                     if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found

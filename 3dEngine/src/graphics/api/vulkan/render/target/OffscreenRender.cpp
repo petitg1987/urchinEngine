@@ -185,7 +185,7 @@ namespace urchin {
     }
 
     std::size_t OffscreenRender::getNumColorAttachment() const {
-        return std::ranges::count_if(outputTextures, [](const OutputTexture& outputTexture){ return outputTexture.enabled; });
+        return (std::size_t)std::ranges::count_if(outputTextures, [](const OutputTexture& outputTexture){ return outputTexture.enabled; });
     }
 
     std::size_t OffscreenRender::getNumFramebuffer() const {
