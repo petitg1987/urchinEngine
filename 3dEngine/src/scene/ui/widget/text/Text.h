@@ -78,7 +78,7 @@ namespace urchin {
             LengthType maxWidthType;
 
             //data
-            WStringConvertA stringConvert;
+            WStringConvertA stringConvert; //TODO remove me
             std::vector<TextLine> cutTextLines;
             std::shared_ptr<Font> font;
     };
