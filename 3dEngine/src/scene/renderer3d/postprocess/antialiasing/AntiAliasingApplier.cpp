@@ -4,7 +4,6 @@
 namespace urchin {
 
     AntiAliasingApplier::AntiAliasingApplier(const Config& config, bool isTestMode) :
-            isTestMode(isTestMode),
             config(config),
             fxaaApplier(FxaaApplier(isTestMode, !config.useTaa, config.quality)),
             taaApplier(TaaApplier(isTestMode, config.useTaa, config.quality)) {

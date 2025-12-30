@@ -32,7 +32,6 @@ namespace urchin {
 
         private:
             //properties
-            bool isTestMode;
             Config config;
 
             //applier

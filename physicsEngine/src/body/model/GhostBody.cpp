@@ -10,6 +10,10 @@ namespace urchin {
         setIsActive(false); //default value: body is not active
     }
 
+    GhostBody::~GhostBody() {
+
+    }
+
     GhostBody* GhostBody::upCast(AbstractBody* abstractBody) {
         if (abstractBody->getBodyType() == BodyType::GHOST) {
             return static_cast<GhostBody*>(abstractBody);

@@ -299,7 +299,7 @@ namespace urchin {
 			edgesCount[edgeIdProducer(triangleIndices[2], triangleIndices[0])]++;
 		}
 
-		for (int count : std::views::values(edgesCount)) {
+		for (const auto& [edgeId, count] : edgesCount) {
 			if (count != 2) {
 				return false;
 			}

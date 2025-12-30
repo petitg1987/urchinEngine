@@ -13,6 +13,7 @@ namespace urchin {
     class GhostBody final : public AbstractBody {
         public:
             GhostBody(std::string, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
+            ~GhostBody() override;
 
             static GhostBody* upCast(AbstractBody*);
 
