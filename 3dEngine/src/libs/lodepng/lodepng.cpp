@@ -1,5 +1,10 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
+#if defined(__clang__)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wconversion"
+#elif defined(__GNUC__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wconversion"
+#endif
 
 /*
 LodePNG version 20170917
@@ -6234,4 +6239,8 @@ namespace lodepng
 } /* namespace lodepng */
 #endif /*LODEPNG_COMPILE_CPP*/
 
-#pragma GCC diagnostic pop
+#if defined(__clang__)
+    #pragma clang diagnostic pop
+#elif defined(__GNUC__)
+    #pragma GCC diagnostic pop
+#endif

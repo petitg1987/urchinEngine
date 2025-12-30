@@ -1,14 +1,24 @@
 #pragma once
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#pragma GCC diagnostic ignored "-Wunused-function"
-//#pragma GCC diagnostic ignored "-Wnullability-completeness" //for clang++
-//#pragma GCC diagnostic ignored "-Wunused-private-field" //for clang++
-#pragma GCC diagnostic ignored "-Wpedantic" //only for release
+#if defined(__clang__)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+    #pragma clang diagnostic ignored "-Wunused-variable"
+    #pragma clang diagnostic ignored "-Wconversion"
+    #pragma clang diagnostic ignored "-Wmissing-field-initializers"
+    #pragma clang diagnostic ignored "-Wunused-function"
+    #pragma clang diagnostic ignored "-Wpedantic" //only for release
+    #pragma clang diagnostic ignored "-Wnullability-extension"
+    #pragma clang diagnostic ignored "-Wnullability-completeness"
+    #pragma clang diagnostic ignored "-Wunused-private-field"
+#elif defined(__GNUC__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunused-parameter"
+    #pragma GCC diagnostic ignored "-Wunused-variable"
+    #pragma GCC diagnostic ignored "-Wconversion"
+    #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+    #pragma GCC diagnostic ignored "-Wunused-function"
+    #pragma GCC diagnostic ignored "-Wpedantic" //only for release
+#endif
 
 //
 // Copyright (c) 2017-2025 Advanced Micro Devices, Inc. All rights reserved.
@@ -19541,4 +19551,8 @@ Features deliberately excluded from the scope of this library:
    are not going to be included into this repository.
 */
 
-#pragma GCC diagnostic pop
+#if defined(__clang__)
+    #pragma clang diagnostic pop
+#elif defined(__GNUC__)
+    #pragma GCC diagnostic pop
+#endif

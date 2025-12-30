@@ -359,7 +359,7 @@ namespace urchin {
     void SceneDisplayerWindow::onCtrlXYZPressed(int axisIndex) {
         requestActivate(); //requested to ensure next keys pressed (e.g.: escape) works correctly
         if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
-            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(axisIndex);
+            sceneDisplayer->getObjectMoveController()->onCtrlXYZ((unsigned int)axisIndex);
         }
     }
 

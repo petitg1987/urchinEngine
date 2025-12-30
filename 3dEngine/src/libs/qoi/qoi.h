@@ -1,7 +1,12 @@
 #pragma once
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-//#pragma GCC diagnostic ignored "-Wreturn-type-c-linkage" //for clang++
+#if defined(__clang__)
+	#pragma clang diagnostic push
+	#pragma clang diagnostic ignored "-Wconversion"
+	#pragma clang diagnostic ignored "-Wreturn-type-c-linkage"
+#elif defined(__GNUC__)
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wconversion"
+#endif
 
 /*
  * Update done for Urchin (23/12/2021):
@@ -613,4 +618,8 @@ inline std::vector<unsigned char> qoi_read(const char *filename, qoi_desc *desc,
 
 #endif /* QOI_NO_STDIO */
 
-#pragma GCC diagnostic pop
+#if defined(__clang__)
+	#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+	#pragma GCC diagnostic pop
+#endif

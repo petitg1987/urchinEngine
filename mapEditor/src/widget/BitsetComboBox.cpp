@@ -38,7 +38,7 @@ namespace urchin {
             if (!labels[i].empty()) {
                 text += " (" + labels[i] + ")";
             }
-            model->item(i)->setText(QString::fromStdString(text));
+            model->item((int)i)->setText(QString::fromStdString(text));
         }
 
         model->blockSignals(false);
@@ -49,7 +49,7 @@ namespace urchin {
 
         std::bitset<32> bits(bitValues);
         for (unsigned int i = 0; i < totalBits; ++i) {
-            model->item(i)->setCheckState(bits.test(i) ? Qt::Checked : Qt::Unchecked);
+            model->item((int)i)->setCheckState(bits.test(i) ? Qt::Checked : Qt::Unchecked);
         }
 
         model->blockSignals(false);
@@ -58,7 +58,7 @@ namespace urchin {
     unsigned long BitsetComboBox::getBitValues() const {
         std::bitset<32> bits;
         for (unsigned int i = 0; i < totalBits; ++i) {
-            if (model->item(i)->checkState() == Qt::Checked) {
+            if (model->item((int)i)->checkState() == Qt::Checked) {
                 bits.set(i);
             }
         }
