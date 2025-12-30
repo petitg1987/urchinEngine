@@ -152,9 +152,11 @@ namespace urchin {
             } else if (key == InputDeviceKey::V) {
                 if (ctrlKeyPressed && !getClipboard().getText().empty()) {
                     deleteSelectedText();
-                    U32StringA clipboardString = stringConvert.from_bytes(getClipboard().getText().c_str());
-                    for (char32_t charLetter : clipboardString) {
-                        onCharEvent(charLetter);
+                    std::string textToPaste = getClipboard().getText();
+                    const char* textIt = &textToPaste[0];
+                    const char* textEndIt = textIt + textToPaste.size();
+                    while (textIt != textEndIt) {
+                        onCharEvent(StringUtil::readNextCodepoint(textIt, textEndIt));
                     }
                 }
             } else if (key == InputDeviceKey::LEFT_ARROW) {

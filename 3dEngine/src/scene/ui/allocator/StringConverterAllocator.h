@@ -7,7 +7,7 @@ namespace urchin {
         bool used;
     };
 
-    template<class T> class StringConverterAllocator {
+    template<class T> class StringConverterAllocator { //TODO remove me
         public:
             using value_type = T;
 

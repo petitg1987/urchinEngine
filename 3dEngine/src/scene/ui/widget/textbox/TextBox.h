@@ -54,7 +54,6 @@ namespace urchin {
             void deleteSelectedText();
 
             //properties
-            WStringConvertA stringConvert; //TODO remove me
             const std::string skinName;
             std::vector<char32_t> allowedCharacters;
             int maxCharacter;
