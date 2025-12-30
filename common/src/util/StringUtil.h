@@ -33,7 +33,8 @@ namespace urchin {
             [[nodiscard]] static std::string camelToKebabCase(const std::string&);
             [[nodiscard]] static std::string kebabToCamelCase(const std::string&);
 
-            [[nodiscard]] static char32_t readNextUtf8(const char*&, const char*);
+            [[nodiscard]] static char32_t readNextCodepoint(const char*&, const char*);
+            static void readCodepoints(std::vector<char32_t>&, const std::string&);
 
             template<class T> static std::string toString(const T&);
 

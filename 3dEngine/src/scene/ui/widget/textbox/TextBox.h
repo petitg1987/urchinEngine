@@ -56,7 +56,7 @@ namespace urchin {
             //properties
             WStringConvertA stringConvert;
             const std::string skinName;
-            U32StringA allowedCharacters;
+            std::vector<char32_t> allowedCharacters;
             int maxCharacter;
 
             //display information

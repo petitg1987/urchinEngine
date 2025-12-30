@@ -44,7 +44,7 @@ namespace urchin {
     }
 
     void Textarea::setAllowedCharacters(const std::string& allowedCharacters) {
-        this->allowedCharacters = stringConvert.from_bytes(allowedCharacters.c_str());
+        StringUtil::readCodepoints(this->allowedCharacters, allowedCharacters);
     }
 
     void Textarea::setMaxCharacter(unsigned int maxCharacter) {

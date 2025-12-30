@@ -176,12 +176,12 @@ namespace urchin {
         return camelCaseStr;
     }
 
-    char32_t StringUtil::readNextUtf8(const char*& it, const char* endIt) {
-        if (it == endIt) {
-            throw std::runtime_error("utf8::next: unexpected end");
+    char32_t StringUtil::readNextCodepoint(const char*& beginIt, const char* endIt) {
+        if (beginIt == endIt) {
+            throw std::runtime_error("Nothing to read");
         }
 
-        unsigned char firstByte = static_cast<unsigned char>(*it++);
+        unsigned char firstByte = static_cast<unsigned char>(*beginIt++);
         if (firstByte < 0x80) { //1 byte UTF-8 (ASCII)
             return firstByte;
         }
@@ -201,12 +201,12 @@ namespace urchin {
             throw std::runtime_error("Invalid UTF-8 first byte");
         }
 
-        if (it + extraBytes > endIt) {
+        if (beginIt + extraBytes > endIt) {
             throw std::runtime_error("Invalid UTF-8 sequence");
         }
 
         for (int i = 0; i < extraBytes; ++i) {
-            unsigned char ch = static_cast<unsigned char>(*it++);
+            unsigned char ch = static_cast<unsigned char>(*beginIt++);
             if ((ch >> 6) != 0b10) {
                 throw std::runtime_error("UTF-8 continuation bytes must match with 0b10xxxxxx");
             }
@@ -215,5 +215,24 @@ namespace urchin {
 
         return codepoint;
     }
+
+    /**
+     * @param codepointsVector [out] Output vector of codepoint
+     * @param inputString Input string in UTF-8
+     */
+    void StringUtil::readCodepoints(std::vector<char32_t>& codepointsVector, const std::string& inputString) {
+        codepointsVector.clear();
+
+        if (!inputString.empty()) {
+            codepointsVector.reserve(inputString.size() * 2); //estimated memory size
+            const char* textIt = &inputString[0];
+            const char* textEndIt = textIt + inputString.length();
+            while (textIt != textEndIt) {
+                codepointsVector.push_back(readNextCodepoint(textIt, textEndIt));
+            }
+        }
+    }
+
+
 
 }

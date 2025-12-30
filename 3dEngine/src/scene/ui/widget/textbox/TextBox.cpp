@@ -90,7 +90,7 @@ namespace urchin {
     }
 
     void TextBox::setAllowedCharacters(const std::string& allowedCharacters) {
-        this->allowedCharacters = stringConvert.from_bytes(allowedCharacters.c_str());
+        StringUtil::readCodepoints(this->allowedCharacters, allowedCharacters);
     }
 
     void TextBox::setMaxCharacter(unsigned int maxCharacter) {
