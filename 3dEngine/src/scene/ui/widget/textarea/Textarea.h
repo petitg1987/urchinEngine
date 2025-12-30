@@ -53,7 +53,6 @@ namespace urchin {
             void deleteSelectedText();
 
             //properties
-            mutable WStringConvertA stringConvert;
             std::string skinName;
             std::vector<char32_t> allowedCharacters;
             int maxCharacter;
@@ -62,7 +61,7 @@ namespace urchin {
             std::shared_ptr<Container> textContainer;
             float scrollbarWidthInPixel;
             std::shared_ptr<Text> text;
-            U32StringA originalText; //original text of the textarea
+            std::vector<char32_t> originalText; //original text of the textarea
             std::shared_ptr<StaticBitmap> cursor;
             std::size_t cursorIndex; //index of the cursor in 'originalText'
             Point2<int> cursorPosition; //position (in pixel) of the cursor in 'text'
