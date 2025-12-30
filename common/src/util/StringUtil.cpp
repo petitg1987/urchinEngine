@@ -217,22 +217,47 @@ namespace urchin {
     }
 
     /**
-     * @param codepointsVector [out] Output vector of codepoint
-     * @param inputString Input string in UTF-8
+     * @param codepoints [out] Output vector of codepoints
      */
-    void StringUtil::readCodepoints(std::vector<char32_t>& codepointsVector, const std::string& inputString) {
-        codepointsVector.clear();
+    void StringUtil::readCodepoints(const std::string& utf8String, std::vector<char32_t>& codepoints) {
+        codepoints.clear();
 
-        if (!inputString.empty()) {
-            codepointsVector.reserve(inputString.size() * 2); //estimated memory size
-            const char* textIt = &inputString[0];
-            const char* textEndIt = textIt + inputString.length();
+        if (!utf8String.empty()) {
+            codepoints.reserve(utf8String.size()); //estimated memory size
+            const char* textIt = &utf8String[0];
+            const char* textEndIt = textIt + utf8String.length();
             while (textIt != textEndIt) {
-                codepointsVector.push_back(readNextCodepoint(textIt, textEndIt));
+                codepoints.push_back(readNextCodepoint(textIt, textEndIt));
             }
         }
     }
 
+    /**
+     * @param utf8String [out] Output UTF-8 string
+     */
+    void StringUtil::readUtf8String(const std::vector<char32_t>& codepoints, std::string& utf8String) {
+        utf8String.clear();
 
+        if (!codepoints.empty()) {
+            utf8String.reserve(codepoints.size() * 2); //estimated memory size
+            for (char32_t codepoint : codepoints) {
+                if (codepoint <= 0x7F) {
+                    utf8String += static_cast<char>(codepoint);
+                } else if (codepoint <= 0x7FF) {
+                    utf8String += static_cast<char>(0xC0 | (codepoint >> 6));
+                    utf8String += static_cast<char>(0x80 | (codepoint & 0x3F));
+                } else if (codepoint <= 0xFFFF) {
+                    utf8String += static_cast<char>(0xE0 | (codepoint >> 12));
+                    utf8String += static_cast<char>(0x80 | ((codepoint >> 6) & 0x3F));
+                    utf8String += static_cast<char>(0x80 | (codepoint & 0x3F));
+                } else {
+                    utf8String += static_cast<char>(0xF0 | (codepoint >> 18));
+                    utf8String += static_cast<char>(0x80 | ((codepoint >> 12) & 0x3F));
+                    utf8String += static_cast<char>(0x80 | ((codepoint >> 6) & 0x3F));
+                    utf8String += static_cast<char>(0x80 | (codepoint & 0x3F));
+                }
+            }
+        }
+    }
 
 }

@@ -80,24 +80,46 @@ void StringUtilTest::kebabToCamelCase() {
     AssertHelper::assertStringEquals(camelCaseStr, "-myKebabCase-");
 }
 
-void StringUtilTest::readNextUtf8() {
+void StringUtilTest::readNextCodepoint() {
     const char* testStr = "A©€\xF0\x9F\x98\x80"; //characters encoded respectively on 1 byte, 2 bytes, 3 bytes and 4 bytes
     const char* textIt = testStr;
     const char* textEndIt = textIt + std::strlen(testStr);
 
-    char32_t firstChar = StringUtil::readNextUtf8(textIt, textEndIt);
+    char32_t firstChar = StringUtil::readNextCodepoint(textIt, textEndIt);
     AssertHelper::assertTrue(firstChar == 0x0041);
 
-    char32_t secondChar = StringUtil::readNextUtf8(textIt, textEndIt);
+    char32_t secondChar = StringUtil::readNextCodepoint(textIt, textEndIt);
     AssertHelper::assertTrue(secondChar == 0x00A9);
 
-    char32_t thirdChar = StringUtil::readNextUtf8(textIt, textEndIt);
+    char32_t thirdChar = StringUtil::readNextCodepoint(textIt, textEndIt);
     AssertHelper::assertTrue(thirdChar == 0x20AC);
 
-    char32_t fourthChar = StringUtil::readNextUtf8(textIt, textEndIt);
+    char32_t fourthChar = StringUtil::readNextCodepoint(textIt, textEndIt);
     AssertHelper::assertTrue(fourthChar == 0x1F600);
 
     AssertHelper::assertTrue(*textIt == '\0');
+}
+
+void StringUtilTest::readCodepoints() {
+    const std::string utf8String = "A©€\xF0\x9F\x98\x80"; //characters encoded respectively on 1 byte, 2 bytes, 3 bytes and 4 bytes
+    std::vector<char32_t> codepoints;
+
+    StringUtil::readCodepoints(utf8String, codepoints);
+
+    AssertHelper::assertUnsignedIntEquals(codepoints.size(), 4);
+    AssertHelper::assertTrue(codepoints[0] == 0x0041);
+    AssertHelper::assertTrue(codepoints[1] == 0x00A9);
+    AssertHelper::assertTrue(codepoints[2] == 0x20AC);
+    AssertHelper::assertTrue(codepoints[3] == 0x1F600);
+}
+
+void StringUtilTest::readUtf8String() {
+    std::vector<char32_t> codepoints = {0x0041, 0x00A9, 0x20AC, 0x1F600};
+    std::string utf8String;
+
+    StringUtil::readUtf8String(codepoints, utf8String);
+
+    AssertHelper::assertStringEquals(utf8String, "A©€\xF0\x9F\x98\x80");
 }
 
 CppUnit::Test* StringUtilTest::suite() {
@@ -113,7 +135,9 @@ CppUnit::Test* StringUtilTest::suite() {
     suite->addTest(new CppUnit::TestCaller("camelToKebabCase", &StringUtilTest::camelToKebabCase));
     suite->addTest(new CppUnit::TestCaller("kebabToCamelCase", &StringUtilTest::kebabToCamelCase));
 
-    suite->addTest(new CppUnit::TestCaller("readNextUtf8", &StringUtilTest::readNextUtf8));
+    suite->addTest(new CppUnit::TestCaller("readNextCodepoint", &StringUtilTest::readNextCodepoint));
+    suite->addTest(new CppUnit::TestCaller("readCodepoints", &StringUtilTest::readCodepoints));
+    suite->addTest(new CppUnit::TestCaller("readUtf8String", &StringUtilTest::readUtf8String));
 
     return suite;
 }
