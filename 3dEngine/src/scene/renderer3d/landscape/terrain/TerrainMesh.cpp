@@ -202,7 +202,7 @@ namespace urchin {
         triangleIndices.reserve(6);
 
         unsigned int rowNum = vertexIndex / xSize;
-        long squareIndex = vertexIndex - xSize - rowNum;
+        unsigned int squareIndex = vertexIndex - xSize - rowNum;
 
         bool isLeftBorderVertex = (vertexIndex % xSize) == 0;
         bool isRightBorderVertex = ((vertexIndex + 1) % xSize) == 0;
@@ -211,7 +211,7 @@ namespace urchin {
 
         //above triangles to the vertex
         if (!isFirstRowVertex) {
-            long firstLeftTopTriangle = (squareIndex * 2) + 1;
+            unsigned int firstLeftTopTriangle = (squareIndex * 2) + 1;
 
             //left triangle
             if (!isLeftBorderVertex) {
@@ -227,7 +227,7 @@ namespace urchin {
 
         //below triangles to the vertex
         if (!isLastRowVertex) {
-            long firstLeftBottomTriangle = (squareIndex * 2) + (xSize - 1) * 2;
+            unsigned int firstLeftBottomTriangle = (squareIndex * 2) + (xSize - 1) * 2;
 
             //left triangles
             if (!isLeftBorderVertex) {

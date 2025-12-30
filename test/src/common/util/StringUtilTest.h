@@ -16,4 +16,6 @@ class StringUtilTest final : public CppUnit::TestFixture {
 
         void camelToKebabCase();
         void kebabToCamelCase();
+
+        void readNextUtf8();
 };

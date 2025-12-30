@@ -176,4 +176,44 @@ namespace urchin {
         return camelCaseStr;
     }
 
+    char32_t StringUtil::readNextUtf8(const char*& it, const char* endIt) {
+        if (it == endIt) {
+            throw std::runtime_error("utf8::next: unexpected end");
+        }
+
+        unsigned char firstByte = static_cast<unsigned char>(*it++);
+        if (firstByte < 0x80) { //1 byte UTF-8 (ASCII)
+            return firstByte;
+        }
+
+        int extraBytes;
+        char32_t codepoint = 0;
+        if ((firstByte >> 5) == 0b110) { //0b110xxxxx
+            extraBytes = 1;
+            codepoint = firstByte & 0x1F;
+        } else if ((firstByte >> 4) == 0b1110) { //0b1110xxxx
+            extraBytes = 2;
+            codepoint = firstByte & 0x0F;
+        } else if ((firstByte >> 3) == 0b11110) { //0b11110xxx
+            extraBytes = 3;
+            codepoint = firstByte & 0x07;
+        } else {
+            throw std::runtime_error("Invalid UTF-8 first byte");
+        }
+
+        if (it + extraBytes > endIt) {
+            throw std::runtime_error("Invalid UTF-8 sequence");
+        }
+
+        for (int i = 0; i < extraBytes; ++i) {
+            unsigned char ch = static_cast<unsigned char>(*it++);
+            if ((ch >> 6) != 0b10) {
+                throw std::runtime_error("UTF-8 continuation bytes must match with 0b10xxxxxx");
+            }
+            codepoint = (codepoint << 6) | (ch & 0x3F);
+        }
+
+        return codepoint;
+    }
+
 }

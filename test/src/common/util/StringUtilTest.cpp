@@ -1,4 +1,5 @@
 #include <cppunit/extensions/HelperMacros.h>
+#include <cstring>
 #include <UrchinCommon.h>
 
 #include "common/util/StringUtilTest.h"
@@ -79,6 +80,26 @@ void StringUtilTest::kebabToCamelCase() {
     AssertHelper::assertStringEquals(camelCaseStr, "-myKebabCase-");
 }
 
+void StringUtilTest::readNextUtf8() {
+    const char* testStr = "A©€\xF0\x9F\x98\x80"; //characters encoded respectively on 1 byte, 2 bytes, 3 bytes and 4 bytes
+    const char* textIt = testStr;
+    const char* textEndIt = textIt + std::strlen(testStr);
+
+    char32_t firstChar = StringUtil::readNextUtf8(textIt, textEndIt);
+    AssertHelper::assertTrue(firstChar == 0x0041);
+
+    char32_t secondChar = StringUtil::readNextUtf8(textIt, textEndIt);
+    AssertHelper::assertTrue(secondChar == 0x00A9);
+
+    char32_t thirdChar = StringUtil::readNextUtf8(textIt, textEndIt);
+    AssertHelper::assertTrue(thirdChar == 0x20AC);
+
+    char32_t fourthChar = StringUtil::readNextUtf8(textIt, textEndIt);
+    AssertHelper::assertTrue(fourthChar == 0x1F600);
+
+    AssertHelper::assertTrue(*textIt == '\0');
+}
+
 CppUnit::Test* StringUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("StringUtilTest");
 
@@ -91,6 +112,8 @@ CppUnit::Test* StringUtilTest::suite() {
 
     suite->addTest(new CppUnit::TestCaller("camelToKebabCase", &StringUtilTest::camelToKebabCase));
     suite->addTest(new CppUnit::TestCaller("kebabToCamelCase", &StringUtilTest::kebabToCamelCase));
+
+    suite->addTest(new CppUnit::TestCaller("readNextUtf8", &StringUtilTest::readNextUtf8));
 
     return suite;
 }
