@@ -18,7 +18,7 @@ namespace urchin {
 
             WidgetType getWidgetType() const override;
 
-            std::string getText();
+            std::string getText() const;
             const Text& getTextWidget() const;
             void updateText(const std::string&);
 
@@ -54,14 +54,14 @@ namespace urchin {
             void deleteSelectedText();
 
             //properties
-            WStringConvertA stringConvert;
+            WStringConvertA stringConvert; //TODO remove me
             const std::string skinName;
             std::vector<char32_t> allowedCharacters;
             int maxCharacter;
 
             //display information
             std::shared_ptr<Text> text;
-            U32StringA originalText; //original text of the text box (string)
+            std::vector<char32_t> originalText; //original text of the text box (string)
             unsigned int maxWidthText; //maximum length of text can be displayed
             std::size_t startTextIndex; //index of the first letter to display
             std::shared_ptr<StaticBitmap> cursor;

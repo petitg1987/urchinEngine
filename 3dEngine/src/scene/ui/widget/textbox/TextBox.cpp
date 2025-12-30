@@ -75,8 +75,8 @@ namespace urchin {
         return WidgetType::TEXTBOX;
     }
 
-    std::string TextBox::getText() {
-        return std::string(stringConvert.to_bytes(originalText));
+    std::string TextBox::getText() const {
+        return StringUtil::readUtf8String(originalText);
     }
 
     const Text& TextBox::getTextWidget() const {
@@ -84,13 +84,13 @@ namespace urchin {
     }
 
     void TextBox::updateText(const std::string& text) {
-        originalText = stringConvert.from_bytes(std::string(text).c_str());
-        cursorIndex = originalText.length();
+        StringUtil::readCodepoints(text, this->originalText);
+        cursorIndex = originalText.size();
         refreshText(true);
     }
 
     void TextBox::setAllowedCharacters(const std::string& allowedCharacters) {
-        StringUtil::readCodepoints(this->allowedCharacters, allowedCharacters);
+        StringUtil::readCodepoints(allowedCharacters, this->allowedCharacters);
     }
 
     void TextBox::setMaxCharacter(unsigned int maxCharacter) {
@@ -102,7 +102,7 @@ namespace urchin {
     }
 
     unsigned int TextBox::getCharacterCount() const {
-        return (unsigned int)originalText.length();
+        return (unsigned int)originalText.size();
     }
 
     bool TextBox::onKeyPressEvent(InputDeviceKey key) {
@@ -129,20 +129,24 @@ namespace urchin {
             if (key == InputDeviceKey::A) {
                 if (ctrlKeyPressed) {
                     selectionStartIndex = 0;
-                    cursorIndex = originalText.length();
+                    cursorIndex = originalText.size();
                     refreshCursorPosition(cursorIndex);
                     refreshText(false);
                     displaySelection();
                 }
             } else if (key == InputDeviceKey::C) {
                 if (ctrlKeyPressed && hasTextSelected()) {
-                    U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
-                    getClipboard().setText(std::string(stringConvert.to_bytes(selectedText)));
+                    std::span<char32_t> selectedText = std::span(originalText).subspan(
+                        std::min(selectionStartIndex, cursorIndex),
+                        std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
+                    getClipboard().setText(StringUtil::readUtf8String(selectedText));
                 }
             } else if (key == InputDeviceKey::X) {
                 if (ctrlKeyPressed && hasTextSelected()) {
-                    U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
-                    getClipboard().setText(std::string(stringConvert.to_bytes(selectedText)));
+                    std::span<char32_t> selectedText = std::span(originalText).subspan(
+                            std::min(selectionStartIndex, cursorIndex),
+                            std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
+                    getClipboard().setText(StringUtil::readUtf8String(selectedText));
                     deleteSelectedText();
                 }
             } else if (key == InputDeviceKey::V) {
@@ -166,7 +170,7 @@ namespace urchin {
                 if (hasTextSelected()) {
                     cursorIndex = std::max(cursorIndex, selectionStartIndex);
                     refreshText(false);
-                } else if (cursorIndex < originalText.length()) {
+                } else if (cursorIndex < originalText.size()) {
                     cursorIndex++;
                     refreshText(false);
                 }
@@ -175,9 +179,7 @@ namespace urchin {
                 if (hasTextSelected()) {
                     deleteSelectedText();
                 } else if (cursorIndex > 0) {
-                    U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
-                    originalText = originalText.substr(0, cursorIndex - 1L);
-                    originalText.append(tmpRight);
+                    originalText.erase(originalText.begin() + ((long)cursorIndex - 1));
 
                     cursorIndex--;
                     refreshText(true);
@@ -186,10 +188,8 @@ namespace urchin {
             } else if (key == InputDeviceKey::DELETE_KEY) {
                 if (hasTextSelected()) {
                     deleteSelectedText();
-                } else if (cursorIndex < originalText.length()) {
-                    U32StringA tmpRight = originalText.substr(cursorIndex + 1L, originalText.length() - cursorIndex);
-                    originalText = originalText.substr(0, cursorIndex);
-                    originalText.append(tmpRight);
+                } else if (cursorIndex < originalText.size()) {
+                    originalText.erase(originalText.begin() + (long)cursorIndex);
 
                     refreshText(true);
                     resetSelection();
@@ -219,10 +219,7 @@ namespace urchin {
                 }
 
                 if (!isMaxCharacterReach()) {
-                    U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
-                    originalText = originalText.substr(0, cursorIndex);
-                    originalText.append(1, unicodeCharacter);
-                    originalText.append(tmpRight);
+                    originalText.insert(originalText.begin() + (long)cursorIndex, unicodeCharacter);
 
                     cursorIndex++;
                     refreshText(true);
@@ -288,7 +285,7 @@ namespace urchin {
 
         unsigned int widthText = 0;
         std::size_t endTextIndex;
-        for (endTextIndex = startTextIndex; endTextIndex < originalText.length(); ++endTextIndex) {
+        for (endTextIndex = startTextIndex; endTextIndex < originalText.size(); ++endTextIndex) {
             char32_t textLetter = originalText[endTextIndex];
             widthText += (unsigned int)std::max(text->getFont().getGlyph(textLetter).letterWidth, 0);
             if (widthText > maxWidthText) {
@@ -296,8 +293,8 @@ namespace urchin {
             }
         }
 
-        U32StringA textToDisplay = originalText.substr(startTextIndex, endTextIndex - startTextIndex);
-        text->updateText(std::string(stringConvert.to_bytes(textToDisplay)));
+        std::span<char32_t> textToDisplay = std::span(originalText).subspan(startTextIndex, endTextIndex - startTextIndex);
+        text->updateText(StringUtil::readUtf8String(textToDisplay));
 
         refreshCursorPosition(cursorIndex);
 
@@ -330,7 +327,7 @@ namespace urchin {
         float widthText = 0.0f;
 
         std::size_t computedCursorIndex = startTextIndex;
-        for (; computedCursorIndex < originalText.length(); ++computedCursorIndex) {
+        for (; computedCursorIndex < originalText.size(); ++computedCursorIndex) {
             char32_t textLetter = originalText[computedCursorIndex];
             widthText += (float)font.getGlyph(textLetter).letterWidth / 2.0f;
             if (widthText > (float)approximatePositionX) {
@@ -365,9 +362,11 @@ namespace urchin {
     }
 
     void TextBox::deleteSelectedText() {
-        U32StringA tmpRight = originalText.substr(std::max(selectionStartIndex, cursorIndex), originalText.length() - std::max(selectionStartIndex, cursorIndex));
-        originalText = originalText.substr(0, std::min(selectionStartIndex, cursorIndex));
-        originalText.append(tmpRight);
+        if (selectionStartIndex != cursorIndex) {
+            long startDeletionIndex = (long)std::min(selectionStartIndex, cursorIndex);
+            long endDeletionIndex = (long)std::max(selectionStartIndex, cursorIndex);
+            originalText.erase(originalText.begin() + startDeletionIndex, originalText.begin() + endDeletionIndex);
+        }
 
         cursorIndex = std::min(selectionStartIndex, cursorIndex);
         refreshCursorPosition(cursorIndex);

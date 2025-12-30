@@ -115,9 +115,8 @@ void StringUtilTest::readCodepoints() {
 
 void StringUtilTest::readUtf8String() {
     std::vector<char32_t> codepoints = {0x0041, 0x00A9, 0x20AC, 0x1F600};
-    std::string utf8String;
 
-    StringUtil::readUtf8String(codepoints, utf8String);
+    std::string utf8String = StringUtil::readUtf8String(codepoints);
 
     AssertHelper::assertStringEquals(utf8String, "A©€\xF0\x9F\x98\x80");
 }

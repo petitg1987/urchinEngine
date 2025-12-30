@@ -178,7 +178,7 @@ namespace urchin {
 
     char32_t StringUtil::readNextCodepoint(const char*& beginIt, const char* endIt) {
         if (beginIt == endIt) {
-            throw std::runtime_error("Nothing to read");
+            throw std::runtime_error("No next codepoint to read");
         }
 
         unsigned char firstByte = static_cast<unsigned char>(*beginIt++);
@@ -198,17 +198,17 @@ namespace urchin {
             extraBytes = 3;
             codepoint = firstByte & 0x07;
         } else {
-            throw std::runtime_error("Invalid UTF-8 first byte");
+            throw std::runtime_error("Invalid UTF-8 first byte: " + std::to_string(firstByte));
         }
 
         if (beginIt + extraBytes > endIt) {
-            throw std::runtime_error("Invalid UTF-8 sequence");
+            throw std::runtime_error("Invalid UTF-8 sequence for first byte: " + std::to_string(firstByte));
         }
 
         for (int i = 0; i < extraBytes; ++i) {
             unsigned char ch = static_cast<unsigned char>(*beginIt++);
             if ((ch >> 6) != 0b10) {
-                throw std::runtime_error("UTF-8 continuation bytes must match with 0b10xxxxxx");
+                throw std::runtime_error("Invalid UTF-8 continuation byte: " + std::to_string(ch));
             }
             codepoint = (codepoint << 6) | (ch & 0x3F);
         }
@@ -232,32 +232,27 @@ namespace urchin {
         }
     }
 
-    /**
-     * @param utf8String [out] Output UTF-8 string
-     */
-    void StringUtil::readUtf8String(const std::vector<char32_t>& codepoints, std::string& utf8String) {
-        utf8String.clear();
-
-        if (!codepoints.empty()) {
-            utf8String.reserve(codepoints.size() * 2); //estimated memory size
-            for (char32_t codepoint : codepoints) {
-                if (codepoint <= 0x7F) {
-                    utf8String += static_cast<char>(codepoint);
-                } else if (codepoint <= 0x7FF) {
-                    utf8String += static_cast<char>(0xC0 | (codepoint >> 6));
-                    utf8String += static_cast<char>(0x80 | (codepoint & 0x3F));
-                } else if (codepoint <= 0xFFFF) {
-                    utf8String += static_cast<char>(0xE0 | (codepoint >> 12));
-                    utf8String += static_cast<char>(0x80 | ((codepoint >> 6) & 0x3F));
-                    utf8String += static_cast<char>(0x80 | (codepoint & 0x3F));
-                } else {
-                    utf8String += static_cast<char>(0xF0 | (codepoint >> 18));
-                    utf8String += static_cast<char>(0x80 | ((codepoint >> 12) & 0x3F));
-                    utf8String += static_cast<char>(0x80 | ((codepoint >> 6) & 0x3F));
-                    utf8String += static_cast<char>(0x80 | (codepoint & 0x3F));
-                }
+    std::string StringUtil::readUtf8String(std::span<const char32_t> codepoints) {
+        std::string utf8String;
+        utf8String.reserve(codepoints.size() * 2); //estimated memory size
+        for (char32_t codepoint : codepoints) {
+            if (codepoint <= 0x7F) {
+                utf8String += static_cast<char>(codepoint);
+            } else if (codepoint <= 0x7FF) {
+                utf8String += static_cast<char>(0xC0 | (codepoint >> 6));
+                utf8String += static_cast<char>(0x80 | (codepoint & 0x3F));
+            } else if (codepoint <= 0xFFFF) {
+                utf8String += static_cast<char>(0xE0 | (codepoint >> 12));
+                utf8String += static_cast<char>(0x80 | ((codepoint >> 6) & 0x3F));
+                utf8String += static_cast<char>(0x80 | (codepoint & 0x3F));
+            } else {
+                utf8String += static_cast<char>(0xF0 | (codepoint >> 18));
+                utf8String += static_cast<char>(0x80 | ((codepoint >> 12) & 0x3F));
+                utf8String += static_cast<char>(0x80 | ((codepoint >> 6) & 0x3F));
+                utf8String += static_cast<char>(0x80 | (codepoint & 0x3F));
             }
         }
+        return utf8String;
     }
 
 }

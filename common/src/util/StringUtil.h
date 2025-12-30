@@ -35,7 +35,7 @@ namespace urchin {
 
             [[nodiscard]] static char32_t readNextCodepoint(const char*&, const char*);
             static void readCodepoints(const std::string&, std::vector<char32_t>&);
-            static void readUtf8String(const std::vector<char32_t>&, std::string&);
+            static std::string readUtf8String(std::span<const char32_t>);
 
             template<class T> static std::string toString(const T&);
 
