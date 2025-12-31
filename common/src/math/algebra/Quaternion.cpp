@@ -21,7 +21,7 @@ namespace urchin {
     template<class T> Quaternion<T> Quaternion<T>::fromRotationMatrix(const Matrix3<T>& matrix) {
         const T trace = matrix(0, 0) + matrix(1, 1) + matrix(2, 2);
 
-        if (trace > 0.0) {
+        if (trace > 0.0f) {
             const T s = 0.5f / std::sqrt(trace + 1.0f);
             return Quaternion<T>(
                     (matrix(2, 1) - matrix(1, 2)) * s,

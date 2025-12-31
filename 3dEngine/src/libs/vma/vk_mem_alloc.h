@@ -10,6 +10,7 @@
     #pragma clang diagnostic ignored "-Wnullability-extension"
     #pragma clang diagnostic ignored "-Wnullability-completeness"
     #pragma clang diagnostic ignored "-Wunused-private-field"
+    #pragma clang diagnostic ignored "-Wc++98-compat-extra-semi"
 #elif defined(__GNUC__)
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunused-parameter"
