@@ -3,11 +3,11 @@ project(test)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 find_package(Threads REQUIRED)
 if (NOT WIN32)
-    set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
+    set(LINK_OPT -Wl,--export-dynamic) #necessary for SignalHandler to work correctly
 endif()
 
 add_definitions(-fno-stack-protector -ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)

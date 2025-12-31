@@ -6,7 +6,7 @@ if (CMAKE_BUILD_TYPE MATCHES "Debug")
 endif()
 
 set(URCHIN_BUILD_TOOLS "YES" CACHE STRING "Build the urchin engine tools (map editor, test runner).")
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 set(PRIVATE_URCHIN_HEADERS common/src/UrchinCommon.h 3dEngine/src/Urchin3dEngine.h physicsEngine/src/UrchinPhysicsEngine.h soundEngine/src/UrchinSoundEngine.h aiEngine/src/UrchinAIEngine.h aggregation/src/UrchinAggregation.h)
 get_directory_property(hasParent PARENT_DIRECTORY)

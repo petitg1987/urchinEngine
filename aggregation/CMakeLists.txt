@@ -2,13 +2,13 @@ cmake_minimum_required(VERSION 3.16)
 project(urchinAggregation)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 if ((CMAKE_BUILD_TYPE MATCHES "Release") OR (CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo"))
     SET(CMAKE_UNITY_BUILD TRUE)
 endif()
 
 if (NOT WIN32)
-    set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
+    set(LINK_OPT -Wl,--export-dynamic) #necessary for SignalHandler to work correctly
 endif()
 
 add_definitions(-fno-stack-protector -ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)

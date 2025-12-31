@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(urchin3dEngine)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 if ((CMAKE_BUILD_TYPE MATCHES "Release") OR (CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo"))
     SET(CMAKE_UNITY_BUILD TRUE)
 endif()
@@ -44,7 +44,7 @@ if (WIN32)
     set(FREETYPE_LIB freetype.a bz2.a)
     SET(VULKAN_LIB vulkan-1)
 else()
-    set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
+    set(LINK_OPT -Wl,--export-dynamic) #necessary for SignalHandler to work correctly
     if(${CMAKE_VERSION} VERSION_LESS "3.24.0") #for build in Docker image
         set(FREETYPE_LIB freetype.a png16.a brotlidec.a brotlicommon.a z.a)
     else()

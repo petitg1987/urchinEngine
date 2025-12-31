@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(urchinNetworkEngine)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 if ((CMAKE_BUILD_TYPE MATCHES "Release") OR (CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo"))
     SET(CMAKE_UNITY_BUILD TRUE)
 endif()
@@ -12,7 +12,7 @@ if (WIN32)
 else()
     include(deps/curl/curl-static.cmake) #only used on Linux because build is too slow on Windows
 
-    set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
+    set(LINK_OPT -Wl,--export-dynamic) #necessary for SignalHandler to work correctly
     set(CURL_LIB curl.a ssl.a crypto.a brotlidec.a brotlicommon.a z.a nghttp2.a)
 endif()
 

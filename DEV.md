@@ -12,11 +12,19 @@
 * Install Msys2 application and libraries:
   * Install with default values: https://www.msys2.org/
   * Add in PATH variable: "C:\msys64\mingw64\bin"
-  * In mingw64.exe (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg make`
+  * In mingw64.exe (not msys2.exe), execute:
+    ```
+    pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw-w64-x86_64-clang-20 mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg make
+    echo 'export PATH=/mingw64/opt/llvm-20/bin:$PATH' >> ~/.bashrc
+    ```
 * Install Freetype library:
-  * Copy https://download.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.gz in: "C:\msys64\home\greg"
-  * Execute: `./configure --with-zlib=no && make && make install`
-  * Copy include in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
+  * Unzip https://download.savannah.gnu.org/releases/freetype/freetype-2.14.1.tar.gz in: "C:\msys64\home\greg"
+  * Execute:
+    ```
+    cd ~/freetype-2.14.1 && ./configure --with-zlib=no && make && make install
+    mkdir /mingw64/x86_64-w64-mingw32/include/
+    cp -r ~/freetype-2.14.1/include/. /mingw64/x86_64-w64-mingw32/include/
+    ```
   * *Info*: libfreetype-6.dll is in "C:\msys64\mingw64\bin"
 * Install OpenAL library:
   * Install with "Yes, launch the OpenAL redist" checked: https://www.openal.org/downloads/OpenAL11CoreSDK.zip
@@ -27,13 +35,13 @@
 * Install Vulkan library:
   * Install Vulkan SDK in default folder (C:\VulkanSDK): https://vulkan.lunarg.com/sdk/home#windows
   * Copy lib & include respectively in "C:\msys64\mingw64\lib" and in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
-  * Create link to binaries in Mingw64 (adapt path): `ln -s ${HOMEDRIVE}/VulkanSDK/1.3.296.0/Bin /home/greg/vulkan-bin`
-  * Update ~/.bash_profile to add binaries in Mingw64 PATH: `PATH="${PATH}:/home/greg/vulkan-bin"`
+  * Create link to binaries in Mingw64 (adapt path): `ln -s ${HOMEDRIVE}/VulkanSDK/1.4.335.0/Bin /home/greg/vulkan-bin`
+  * Execute: `echo 'export PATH=$PATH:/home/greg/vulkan-bin' >> ~/.bashrc`
   * *Info*: vuklan-1.dll can be found in the runtime zip: https://vulkan.lunarg.com/sdk/home#windows
   * *Info*: Do not uninstall Vulkan SDK application because it is required for validation layer & during release process to compile shaders
 * Install curl library (custom static library only for HTTP/HTTPS protocols):
   ```
-  Pacman -S unzip openssl-devel
+  pacman -S unzip openssl-devel
   rm /tmp/curl/ -rf && mkdir -p /tmp/curl/ && cd /tmp/curl/
   wget -P /tmp/curl/ https://curl.haxx.se/download/curl-8.11.0.zip
   unzip curl-8.11.0.zip && cd /tmp/curl/curl-8.11.0
@@ -46,10 +54,13 @@
   cat /usr/local/lib/pkgconfig/libcurl.pc | grep "Libs.private" #Display required dependencies
   ```
 * Configure Clion:
-  * In File > Settings... > Build, Execution, Deployment > Toolchains, Environment: C:\msys64\mingw64
+  * In File > Settings... > Build, Execution, Deployment > Toolchains, Toolsset: C:\msys64\mingw64
 
 # CLion configuration
 ## Build configuration
+* Configure compiler to Clang (File > Settings > Build,Execution,Deployment > Toolchains)
+  * C Compiler: `/usr/bin/clang` / `C:\msys64\mingw64\opt\llvm-20\bin\clang.exe`
+  * C++ Compiler: `/usr/bin/clang++` / `C:\msys64\mingw64\opt\llvm-20\bin\clang++.exe`
 * Add CMake profiles (File > Settings > Build,Execution,Deployment > CMake)
   * Profile **Debug**:
     * Name: `Debug`

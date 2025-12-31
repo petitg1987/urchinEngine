@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(urchinSoundEngine)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 if ((CMAKE_BUILD_TYPE MATCHES "Release") OR (CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo"))
     SET(CMAKE_UNITY_BUILD TRUE)
 endif()
@@ -12,7 +12,7 @@ if (WIN32)
     set(OPENAL_LIB openal32)
     SET(VORBIS_LIB vorbisfile.a vorbis.a ogg.a)
 else()
-    set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
+    set(LINK_OPT -Wl,--export-dynamic) #necessary for SignalHandler to work correctly
     set(OPENAL_LIB openal)
     SET(VORBIS_LIB vorbisfile.a vorbis.a ogg.a)
 endif()
