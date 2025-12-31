@@ -14,6 +14,7 @@
   * Add in PATH variable: "C:\msys64\mingw64\bin"
   * In mingw64.exe (not msys2.exe), execute:
     ```
+    pacman -Syu
     pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw-w64-x86_64-clang-20 mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg make
     echo 'export PATH=/mingw64/opt/llvm-20/bin:$PATH' >> ~/.bashrc
     ```
