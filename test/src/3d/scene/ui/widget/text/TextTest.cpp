@@ -11,9 +11,9 @@ void TextTest::twoLines() {
     uiRenderer->addWidget(text);
 
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines().size(), 2);
-    AssertHelper::assertTrue(text->getCutTextLines()[0].text == WStringConvertA().from_bytes("mmm"));
+    AssertHelper::assertTrue(StringUtil::readUtf8String(text->getCutTextLines()[0].text) == "mmm");
     AssertHelper::assertTrue(text->getCutTextLines()[0].cutType == TextCutType::CLASSIC);
-    AssertHelper::assertTrue(text->getCutTextLines()[1].text == WStringConvertA().from_bytes("mmm"));
+    AssertHelper::assertTrue(StringUtil::readUtf8String(text->getCutTextLines()[1].text) == "mmm");
     AssertHelper::assertTrue(text->getCutTextLines()[1].cutType == TextCutType::CLASSIC);
 
     AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToCutTextIndex(0), 0); //first char
@@ -37,9 +37,9 @@ void TextTest::cutWord() {
     uiRenderer->addWidget(text);
 
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines().size(), 2);
-    AssertHelper::assertTrue(text->getCutTextLines()[0].text == WStringConvertA().from_bytes("aaa"));
+    AssertHelper::assertTrue(StringUtil::readUtf8String(text->getCutTextLines()[0].text) == "aaa");
     AssertHelper::assertTrue(text->getCutTextLines()[0].cutType == TextCutType::WORD);
-    AssertHelper::assertTrue(text->getCutTextLines()[1].text == WStringConvertA().from_bytes("bbb"));
+    AssertHelper::assertTrue(StringUtil::readUtf8String(text->getCutTextLines()[1].text) == "bbb");
     AssertHelper::assertTrue(text->getCutTextLines()[1].cutType == TextCutType::CLASSIC);
 
     AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToCutTextIndex(0), 0); //first char
@@ -65,9 +65,9 @@ void TextTest::cutMiddleWord() {
     uiRenderer->addWidget(text);
 
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines().size(), 2);
-    AssertHelper::assertTrue(text->getCutTextLines()[0].text == WStringConvertA().from_bytes("aaa"));
+    AssertHelper::assertTrue(StringUtil::readUtf8String(text->getCutTextLines()[0].text) == "aaa");
     AssertHelper::assertTrue(text->getCutTextLines()[0].cutType == TextCutType::MIDDLE_WORD);
-    AssertHelper::assertTrue(text->getCutTextLines()[1].text == WStringConvertA().from_bytes("bbb"));
+    AssertHelper::assertTrue(StringUtil::readUtf8String(text->getCutTextLines()[1].text) == "bbb");
     AssertHelper::assertTrue(text->getCutTextLines()[1].cutType == TextCutType::CLASSIC);
 
     AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToCutTextIndex(0), 0); //first char
@@ -96,9 +96,9 @@ void TextTest::emptyLineAndCut() {
     uiRenderer->addWidget(text);
 
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines().size(), 3);
-    AssertHelper::assertUnsignedIntEquals(text->getCutTextLines()[0].text.length(), 0);
-    AssertHelper::assertTrue(text->getCutTextLines()[1].text == WStringConvertA().from_bytes("aaa"));
-    AssertHelper::assertTrue(text->getCutTextLines()[2].text == WStringConvertA().from_bytes("bbb"));
+    AssertHelper::assertUnsignedIntEquals(text->getCutTextLines()[0].text.size(), 0);
+    AssertHelper::assertTrue(StringUtil::readUtf8String(text->getCutTextLines()[1].text) == "aaa");
+    AssertHelper::assertTrue(StringUtil::readUtf8String(text->getCutTextLines()[2].text) == "bbb");
 
     AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(0), 0);
     AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(1), 4);

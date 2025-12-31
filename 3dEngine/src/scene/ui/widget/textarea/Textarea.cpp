@@ -313,12 +313,14 @@ namespace urchin {
         computedCursorPosition.Y = 0.0f;
         for (const TextLine& textLine : text->getCutTextLines()) {
             computedCursorPosition.X = 0.0f;
-            for (std::size_t columnIndex = 0; columnIndex <= textLine.text.length(); ++columnIndex) {
+            for (std::size_t columnIndex = 0; columnIndex <= textLine.text.size(); ++columnIndex) {
                 if (currentIndex == textCursorIndex) {
                     return computedCursorPosition;
                 } else {
-                    char32_t textLetter = textLine.text[columnIndex];
-                    computedCursorPosition.X += text->getFont().getGlyph(textLetter).letterWidth;
+                    if (columnIndex < textLine.text.size()) {
+                        char32_t textLetter = textLine.text[columnIndex];
+                        computedCursorPosition.X += text->getFont().getGlyph(textLetter).letterWidth;
+                    }
 
                     currentIndex++;
                 }
@@ -363,11 +365,7 @@ namespace urchin {
             currentHeight += (float)text->getFont().getSpaceBetweenLines();
             if ((float)approximatePositionY < currentHeight) {
                 float currentWidth = 0.0f;
-                for (std::size_t columnIndex = 0; columnIndex <= text->getCutTextLines()[lineIndex].text.length(); ++columnIndex) {
-                    if (columnIndex != 0) {
-                        textCursorIndex++;
-                    }
-
+                for (std::size_t columnIndex = 0; columnIndex < text->getCutTextLines()[lineIndex].text.size(); ++columnIndex, ++textCursorIndex) { //TODO <= remove: why ???
                     char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
                     currentWidth += (float)text->getFont().getGlyph(textLetter).letterWidth / 2.0f;
                     if ((float)approximatePositionX < currentWidth) {
@@ -377,7 +375,7 @@ namespace urchin {
                 }
                 break;
             } else {
-                textCursorIndex += text->getCutTextLines()[lineIndex].text.length(); //index at end of line
+                textCursorIndex += text->getCutTextLines()[lineIndex].text.size(); //index at end of line
             }
         }
 

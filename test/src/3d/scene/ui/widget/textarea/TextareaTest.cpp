@@ -17,8 +17,8 @@ void TextareaTest::textCut() {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
     }
     AssertHelper::assertUnsignedIntEquals(textarea->getTextWidget().getCutTextLines().size(), 2);
-    AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[0].text == WStringConvertA().from_bytes("mmm"));
-    AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[1].text == WStringConvertA().from_bytes("mmm"));
+    AssertHelper::assertTrue(StringUtil::readUtf8String(textarea->getTextWidget().getCutTextLines()[0].text) == "mmm");
+    AssertHelper::assertTrue(StringUtil::readUtf8String(textarea->getTextWidget().getCutTextLines()[1].text) == "mmm");
 
     float endOfLinePosX = textarea->getWidth() - 1.0f /* outline right */ - 10.0f /* scrollbar width */ - TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
     uiRenderer->onMouseMove(endOfLinePosX, 1.0, 0.0, 0.0); //move mouse at end of first line
@@ -27,12 +27,12 @@ void TextareaTest::textCut() {
         uiRenderer->onKeyPress(InputDeviceKey::DELETE_KEY);
     }
     AssertHelper::assertUnsignedIntEquals(textarea->getTextWidget().getCutTextLines().size(), 1);
-    AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[0].text == WStringConvertA().from_bytes("mmm"));
+    AssertHelper::assertTrue(StringUtil::readUtf8String(textarea->getTextWidget().getCutTextLines()[0].text) == "mmm");
 
     uiRenderer->onChar('m');
     AssertHelper::assertUnsignedIntEquals(textarea->getTextWidget().getCutTextLines().size(), 2);
-    AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[0].text == WStringConvertA().from_bytes("mmm"));
-    AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[1].text == WStringConvertA().from_bytes("m"));
+    AssertHelper::assertTrue(StringUtil::readUtf8String(textarea->getTextWidget().getCutTextLines()[0].text) == "mmm");
+    AssertHelper::assertTrue(StringUtil::readUtf8String(textarea->getTextWidget().getCutTextLines()[1].text) == "m");
 }
 
 void TextareaTest::textCopyPaste() {

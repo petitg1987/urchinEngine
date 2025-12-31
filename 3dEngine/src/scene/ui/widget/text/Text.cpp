@@ -135,7 +135,7 @@ namespace urchin {
         int delta = 0;
         std::size_t currentIndex = 0;
         for (const TextLine& lineIndex : cutTextLines) {
-            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.length(); ++columnIndex) {
+            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.size(); ++columnIndex) {
                 if (currentIndex == cutTextIndex) {
                     return (std::size_t)((long)cutTextIndex + delta);
                 } else {
@@ -153,14 +153,14 @@ namespace urchin {
         std::size_t cutTextDelta = 0;
         std::size_t currentCutTextIndex = 0;
         for (const TextLine& lineIndex : cutTextLines) {
-            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.length(); ++columnIndex) {
+            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.size(); ++columnIndex) {
                 if (currentCutTextIndex == baseTextIndex + cutTextDelta) {
-                    if (columnIndex == lineIndex.text.length() && lineIndex.cutType == TextCutType::MIDDLE_WORD && wordCutIndexPositioning == WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) {
+                    if (columnIndex == lineIndex.text.size() && lineIndex.cutType == TextCutType::MIDDLE_WORD && wordCutIndexPositioning == WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) {
                         //index cannot be at end of line when cut type is middle of word
                         return currentCutTextIndex + 1;
                     }
                     return currentCutTextIndex;
-                } else if (columnIndex == lineIndex.text.length() && lineIndex.cutType == TextCutType::MIDDLE_WORD) {
+                } else if (columnIndex == lineIndex.text.size() && lineIndex.cutType == TextCutType::MIDDLE_WORD) {
                     currentCutTextIndex++;
                     cutTextDelta++;
                 } else {
@@ -176,13 +176,13 @@ namespace urchin {
 
         std::size_t currentIndex = 0;
         for (const TextLine& textLine : cutTextLines) {
-            if (currentIndex + textLine.text.length() >= cutTextIndex) {
-                std::size_t textEndOfCurrentLineIndex = currentIndex + textLine.text.length();
+            if (currentIndex + textLine.text.size() >= cutTextIndex) {
+                std::size_t textEndOfCurrentLineIndex = currentIndex + textLine.text.size();
                 std::size_t endOfLineDelta = textEndOfCurrentLineIndex - cutTextIndex;
                 return baseTextIndex + endOfLineDelta;
             }
 
-            currentIndex += textLine.text.length() + 1 /* for line return */;
+            currentIndex += textLine.text.size() + 1 /* for line return */;
         }
         throw std::runtime_error("Base text index " + std::to_string(baseTextIndex) + " does not exist for text: " + baseText);
     }
@@ -285,7 +285,8 @@ namespace urchin {
 
     void Text::cutText() {
         cutTextLines.clear();
-        U32StringA u32Text = stringConvert.from_bytes(baseText.c_str());
+        std::vector<char32_t> u32Text;
+        StringUtil::readCodepoints(baseText, u32Text);
 
         std::size_t startLineIndex = 0;
 
@@ -295,11 +296,12 @@ namespace urchin {
             unsigned int lineLength = 0;
             unsigned int lengthFromLastSpace = 0;
 
-            for (std::size_t letterIndex = 0; letterIndex < u32Text.length(); letterIndex++) { //each letters
+            for (std::size_t letterIndex = 0; letterIndex < u32Text.size(); letterIndex++) { //each letters
                 char32_t textLetter = u32Text[letterIndex];
 
                 if (textLetter == '\n') {
-                    cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .cutType = TextCutType::CLASSIC});
+                    std::span<char32_t> cutLine = std::span(u32Text).subspan(startLineIndex, letterIndex - startLineIndex);
+                    cutTextLines.emplace_back(TextLine{.text = std::vector(cutLine.begin(), cutLine.end()), .cutType = TextCutType::CLASSIC});
                     startLineIndex = letterIndex + 1;
                     lineLength = 0;
                     lengthFromLastSpace = 0;
@@ -313,11 +315,13 @@ namespace urchin {
 
                 if (lineLength + letterLength > (unsigned int)maxWidthPixel) { //cut too long line
                     if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
-                        cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex), .cutType = TextCutType::WORD});
+                        std::span<char32_t> cutLine = std::span(u32Text).subspan(startLineIndex, lastSpaceIndex - startLineIndex);
+                        cutTextLines.emplace_back(TextLine{.text = std::vector(cutLine.begin(), cutLine.end()), .cutType = TextCutType::WORD});
                         startLineIndex = lastSpaceIndex + 1;
                         lineLength = lengthFromLastSpace;
                     } else if ((int)letterIndex - (int)startLineIndex > 0) { //cut line at the middle of a word
-                        cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .cutType = TextCutType::MIDDLE_WORD});
+                        std::span<char32_t> cutLine = std::span(u32Text).subspan(startLineIndex, letterIndex - startLineIndex);
+                        cutTextLines.emplace_back(TextLine{.text = std::vector(cutLine.begin(), cutLine.end()), .cutType = TextCutType::MIDDLE_WORD});
                         startLineIndex = letterIndex;
                         lineLength = letterLength;
                         lengthFromLastSpace = letterLength;
@@ -328,9 +332,10 @@ namespace urchin {
                 }
             }
         } else {
-            for (std::size_t letterIndex = 0; letterIndex < u32Text.length(); letterIndex++) { //each letters
+            for (std::size_t letterIndex = 0; letterIndex < u32Text.size(); letterIndex++) { //each letters
                 if (u32Text[letterIndex] == '\n') {
-                    cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .cutType = TextCutType::CLASSIC});
+                    std::span<char32_t> cutLine = std::span(u32Text).subspan(startLineIndex, letterIndex - startLineIndex);
+                    cutTextLines.emplace_back(TextLine{.text = std::vector(cutLine.begin(), cutLine.end()), .cutType = TextCutType::CLASSIC});
                     startLineIndex = letterIndex + 1;
                 }
             }
@@ -338,8 +343,9 @@ namespace urchin {
 
         if (startLineIndex == 0) {
             cutTextLines.emplace_back(TextLine{.text = u32Text, .cutType = TextCutType::CLASSIC});
-        } else if ((int)u32Text.length() - (int)startLineIndex >= 0) {
-            cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, u32Text.length() - startLineIndex), .cutType = TextCutType::CLASSIC});
+        } else if ((int)u32Text.size() - (int)startLineIndex >= 0) {
+            std::span<char32_t> cutLine = std::span(u32Text).subspan(startLineIndex, u32Text.size() - startLineIndex);
+            cutTextLines.emplace_back(TextLine{.text = std::vector(cutLine.begin(), cutLine.end()), .cutType = TextCutType::CLASSIC});
         }
     }
 
