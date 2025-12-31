@@ -114,7 +114,7 @@ namespace urchin {
             std::string text = value;
 
             //remove parameters (nothing to translate)
-            std::regex paramRegex("\\{[a-zA-Z-]+}");
+            std::regex paramRegex("\\{[a-zA-Z-]+\\}");
             text = std::regex_replace(text, paramRegex, " ");
 
             //remove numbers (nothing to translate)

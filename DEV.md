@@ -11,36 +11,36 @@
 ## Windows
 * Install Msys2 application and libraries:
   * Install with default values: https://www.msys2.org/
-  * Add in PATH variable: "C:\msys64\mingw64\bin"
-  * In mingw64.exe (not msys2.exe), execute:
+  * Add in PATH variable: "C:\msys64\clang64\bin"
+  * In clang64.exe, execute `pacman -Syu` (console will restart) and re-execute again `pacman -Syu`
+  * In clang64.exe, execute:
     ```
-    pacman -Syu
-    pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw-w64-x86_64-clang-20 mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg make
-    echo 'export PATH=/mingw64/opt/llvm-20/bin:$PATH' >> ~/.bashrc
+    pacman -S mingw-w64-clang-x86_64-toolchain mingw-w64-clang-x86_64-cmake mingw-w64-clang-x86_64-libvorbis mingw-w64-clang-x86_64-libogg mingw-w64-clang-x86_64-make make
     ```
 * Install Freetype library:
   * Unzip https://download.savannah.gnu.org/releases/freetype/freetype-2.14.1.tar.gz in: "C:\msys64\home\greg"
   * Execute:
     ```
     cd ~/freetype-2.14.1 && ./configure --with-zlib=no && make && make install
-    mkdir /mingw64/x86_64-w64-mingw32/include/
-    cp -r ~/freetype-2.14.1/include/. /mingw64/x86_64-w64-mingw32/include/
+    cp -r ~/freetype-2.14.1/include/. /clang64/include/
     ```
-  * *Info*: libfreetype-6.dll is in "C:\msys64\mingw64\bin"
 * Install OpenAL library:
   * Install with "Yes, launch the OpenAL redist" checked: https://www.openal.org/downloads/OpenAL11CoreSDK.zip
-  * Copy lib (Win64) & include from "C:\Program Files (x86)\OpenAL 1.1 SDK" in "C:\msys64\mingw64\lib" & "C:\msys64\mingw64\x86_64-w64-mingw32\include\AL"
+  * Copy lib (Win64) & include from "C:\Program Files (x86)\OpenAL 1.1 SDK" in "C:\msys64\clang64\lib" & "C:\msys64\clang64\include\AL"
   * Rename the copied lib from OpenAL32.lib to libOpenAL32.dll.a
   * *Info*: OpenAL32.dll is in "C:\Windows\System32\OpenAL32.dll" and soft_oal.dll can be downloaded on https://community.pcgamingwiki.com/files/file/7-openal-soft/
   * Uninstall OpenAL and OpenAL SDK applications
 * Install Vulkan library:
   * Install Vulkan SDK in default folder (C:\VulkanSDK): https://vulkan.lunarg.com/sdk/home#windows
-  * Copy lib & include respectively in "C:\msys64\mingw64\lib" and in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
-  * Create link to binaries in Mingw64 (adapt path): `ln -s ${HOMEDRIVE}/VulkanSDK/1.4.335.0/Bin /home/greg/vulkan-bin`
-  * Execute: `echo 'export PATH=$PATH:/home/greg/vulkan-bin' >> ~/.bashrc`
+  * Copy lib & include respectively in "C:\msys64\clang64\lib" and in "C:\msys64\clang64\include"
+  * Execute (adapt SDK version):
+  ```
+  ln -s ${HOMEDRIVE}/VulkanSDK/1.4.335.0/Bin /home/greg/vulkan-bin
+  echo 'export PATH=$PATH:/home/greg/vulkan-bin' >> ~/.bashrc
+  ```
   * *Info*: vuklan-1.dll can be found in the runtime zip: https://vulkan.lunarg.com/sdk/home#windows
   * *Info*: Do not uninstall Vulkan SDK application because it is required for validation layer & during release process to compile shaders
-* Install curl library (custom static library only for HTTP/HTTPS protocols):
+* In clang64.exe, install curl library (custom static library only for HTTP/HTTPS protocols):
   ```
   pacman -S unzip openssl-devel
   rm /tmp/curl/ -rf && mkdir -p /tmp/curl/ && cd /tmp/curl/
@@ -49,19 +49,18 @@
   ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-hsts --disable-alt-svc --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn2 --without-libpsl --with-ssl --with-nghttp2
   make V=1
   make install #create library in /usr/local/lib/libcurl.a
-  mv /mingw64/lib/libcurl.a /mingw64/lib/libcurl.a_backup #In case libcurl is installed via package "mingw-w64-x86_64-cmake"
-  cp /usr/local/lib/libcurl.a /mingw64/lib/
-  cp -r /usr/local/include/curl/ /mingw64/x86_64-w64-mingw32/include/
+  mv /clang64/lib/libcurl.a /clang64/lib/libcurl.a_backup
+  cp /usr/local/lib/libcurl.a /clang64/lib/
+  cp -r /usr/local/include/curl/ /clang64/include/
   cat /usr/local/lib/pkgconfig/libcurl.pc | grep "Libs.private" #Display required dependencies
   ```
-* Configure Clion:
-  * In File > Settings... > Build, Execution, Deployment > Toolchains, Toolsset: C:\msys64\mingw64
 
 # CLion configuration
 ## Build configuration
 * Configure compiler to Clang (File > Settings > Build,Execution,Deployment > Toolchains)
-  * C Compiler: `/usr/bin/clang` / `C:\msys64\mingw64\opt\llvm-20\bin\clang.exe`
-  * C++ Compiler: `/usr/bin/clang++` / `C:\msys64\mingw64\opt\llvm-20\bin\clang++.exe`
+  * Toolset (Windows only): `C:\msys64\clang64`
+  * C Compiler: `/usr/bin/clang` / `C:\msys64\clang64\bin\clang.exe`
+  * C++ Compiler: `/usr/bin/clang++` / `C:\msys64\clang64\bin\clang++.exe`
 * Add CMake profiles (File > Settings > Build,Execution,Deployment > CMake)
   * Profile **Debug**:
     * Name: `Debug`

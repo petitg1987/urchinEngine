@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <stack>
 
 #include "scene/ui/widget/Widget.h"
 #include "scene/ui/widget/container/Container.h"

@@ -3,7 +3,7 @@
 namespace urchin {
 
     //static
-    const std::regex ParameterizedText::PARAMETER_REGEX = std::regex("\\{[a-zA-Z-]+}", std::regex_constants::optimize);
+    const std::regex ParameterizedText::PARAMETER_REGEX = std::regex("\\{[a-zA-Z-]+\\}", std::regex_constants::optimize);
 
     ParameterizedText::ParameterizedText(std::string text, std::vector<std::string> parameters) :
             text(std::move(text)),

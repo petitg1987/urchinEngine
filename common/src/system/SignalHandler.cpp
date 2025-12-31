@@ -1,11 +1,13 @@
 #include <iostream>
 #include <string>
 #include <cassert>
-#include <array>
+
 #ifdef _WIN32
+    #include <sstream>
     #include <windows.h>
     #include <imagehlp.h>
 #else
+    #include <array>
     #include <execinfo.h>
     #include <cxxabi.h>
     #include <unistd.h>

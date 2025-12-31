@@ -1,3 +1,4 @@
+#include <exception>
 #include <UrchinCommon.h>
 
 #include "AIEnvironment.h"
