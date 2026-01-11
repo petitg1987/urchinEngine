@@ -14,7 +14,7 @@ namespace urchin {
         public:
             ManifoldResult(AbstractBody&, AbstractBody&);
             ManifoldResult(const ManifoldResult&) = default;
-            ManifoldResult(ManifoldResult&&) = default;
+            ManifoldResult(ManifoldResult&&) noexcept = default;
 
             AbstractBody& getBody(unsigned int) const;
             AbstractBody& getBody1() const;
