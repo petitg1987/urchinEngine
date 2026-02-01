@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 
 blenderVersion=$(blender --version | grep -oP '\d.\d+')
 targetPath="$HOME/.config/blender/$blenderVersion/scripts/addons/"
-mkdir -p $targetPath
+mkdir -p "$targetPath"
 
 cp "./io_export_urchin.py" "$targetPath"
 
