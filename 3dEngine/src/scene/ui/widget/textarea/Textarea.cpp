@@ -365,7 +365,7 @@ namespace urchin {
             currentHeight += (float)text->getFont().getSpaceBetweenLines();
             if ((float)approximatePositionY < currentHeight) {
                 float currentWidth = 0.0f;
-                for (std::size_t columnIndex = 0; columnIndex < text->getCutTextLines()[lineIndex].text.size(); ++columnIndex, ++textCursorIndex) { //TODO <= remove: why ???
+                for (std::size_t columnIndex = 0; columnIndex < text->getCutTextLines()[lineIndex].text.size(); ++columnIndex, ++textCursorIndex) {
                     char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
                     currentWidth += (float)text->getFont().getGlyph(textLetter).letterWidth / 2.0f;
                     if ((float)approximatePositionX < currentWidth) {
