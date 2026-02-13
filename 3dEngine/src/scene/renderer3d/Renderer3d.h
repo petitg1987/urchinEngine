@@ -170,8 +170,8 @@ namespace urchin {
                 alignas(16) Point3<float> viewPosition;
             } positioningData;
             struct SceneInfo {
-                alignas(4) bool isShadowActivated;
-                alignas(4) bool isAmbientOcclusionActivated;
+                alignas(4) UgBool32 isShadowActivated;
+                alignas(4) UgBool32 isAmbientOcclusionActivated;
             } sceneInfo;
 
             //post-processing

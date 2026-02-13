@@ -67,7 +67,7 @@ namespace urchin {
             float baseMaxDisplayDistance;
             struct {
                 alignas(4) float maxDisplayDistance;
-                alignas(4) bool useTerrainLighting;
+                alignas(4) UgBool32 useTerrainLighting;
                 alignas(4) float windStrength;
                 alignas(16) Vector3<float> windDirection;
             } properties;

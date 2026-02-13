@@ -32,7 +32,7 @@ namespace urchin {
         }
 
         properties.maxDisplayDistance = baseMaxDisplayDistance;
-        properties.useTerrainLighting = true;
+        properties.useTerrainLighting = UG_TRUE;
         properties.windDirection = Vector3(1.0f, 0.0f, 0.0f);
         properties.windStrength = 0.5f;
 
@@ -107,11 +107,11 @@ namespace urchin {
     }
 
     bool TerrainObjectSpawner::useTerrainLighting() const {
-        return properties.useTerrainLighting;
+        return properties.useTerrainLighting == UG_TRUE;
     }
 
     void TerrainObjectSpawner::setUseTerrainLighting(bool useTerrainLighting) {
-        this->properties.useTerrainLighting = useTerrainLighting;
+        this->properties.useTerrainLighting = useTerrainLighting ? UG_TRUE : UG_FALSE;
         updateProperties();
     }
 
@@ -241,7 +241,7 @@ namespace urchin {
         meshData.lightMask = terrain->getLightMask();
 
         //material
-        if (properties.useTerrainLighting) {
+        if (properties.useTerrainLighting == UG_TRUE) {
             meshData.encodedEmissiveFactor = std::clamp(terrain->getMaterials()->getMaterials()[0]->getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
             meshData.ambientFactor = terrain->getAmbient();
         } else {

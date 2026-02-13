@@ -56,8 +56,8 @@ namespace urchin {
             struct LightInfo {
                 alignas(4) int lightType;
                 alignas(4) unsigned int lightMask;
-                alignas(4) bool isPbrEnabled;
-                alignas(4) bool hasShadow;
+                alignas(4) UgBool32 isPbrEnabled;
+                alignas(4) UgBool32 hasShadow;
                 alignas(4) int shadowLightIndex;
                 alignas(4) float shadowStrength;
                 alignas(16) Point3<float> lightColor;

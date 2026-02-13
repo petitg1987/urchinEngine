@@ -126,7 +126,7 @@ namespace urchin {
         }
 
         if (modelsToLayersMask.isEmpty()) { //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
-            modelsToLayersMask.insert(defaultEmptyModel.get(), std::bitset<8>(1 << 1));
+            modelsToLayersMask.insert(defaultEmptyModel.get(), std::bitset<8>(255));
         }
 
         for (const auto& modelToLayersMask : modelsToLayersMask) {

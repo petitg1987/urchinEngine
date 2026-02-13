@@ -76,8 +76,8 @@ namespace urchin {
         shadowManager.addObserver(this, ShadowManager::NUMBER_LIGHTS_WITH_SHADOW_UPDATE);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SPLIT_SHADOW_MAPS_UPDATE);
 
-        sceneInfo.isShadowActivated = visualConfig.isShadowActivated();
-        sceneInfo.isAmbientOcclusionActivated = visualConfig.isAmbientOcclusionActivated();
+        sceneInfo.isShadowActivated = visualConfig.isShadowActivated() ? UG_TRUE : UG_FALSE;
+        sceneInfo.isAmbientOcclusionActivated = visualConfig.isAmbientOcclusionActivated() ? UG_TRUE : UG_FALSE;
 
         createOrUpdateDeferredPasses();
     }
@@ -152,14 +152,15 @@ namespace urchin {
     }
 
     void Renderer3d::activateShadow(bool isShadowActivated) {
-        if (sceneInfo.isShadowActivated != isShadowActivated) {
-            sceneInfo.isShadowActivated = isShadowActivated;
+        UgBool32 ugIsShadowActivated = isShadowActivated ? UG_TRUE : UG_FALSE;
+        if (sceneInfo.isShadowActivated != ugIsShadowActivated) {
+            sceneInfo.isShadowActivated = ugIsShadowActivated;
             createOrUpdateDeferredPasses();
         }
     }
 
     bool Renderer3d::isShadowActivated() const {
-        return sceneInfo.isShadowActivated;
+        return sceneInfo.isShadowActivated ? UG_TRUE : UG_FALSE;
     }
 
     ShadowManager& Renderer3d::getShadowManager() {
@@ -167,14 +168,15 @@ namespace urchin {
     }
 
     void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated) {
-        if (sceneInfo.isAmbientOcclusionActivated != isAmbientOcclusionActivated) {
-            sceneInfo.isAmbientOcclusionActivated = isAmbientOcclusionActivated;
+        UgBool32 ugIsAmbientOcclusionActivated = isAmbientOcclusionActivated ? UG_TRUE : UG_FALSE;
+        if (sceneInfo.isAmbientOcclusionActivated != ugIsAmbientOcclusionActivated) {
+            sceneInfo.isAmbientOcclusionActivated = ugIsAmbientOcclusionActivated;
             createOrUpdateDeferredPasses();
         }
     }
 
     bool Renderer3d::isAmbientOcclusionActivated() const {
-        return sceneInfo.isAmbientOcclusionActivated;
+        return sceneInfo.isAmbientOcclusionActivated ? UG_TRUE : UG_FALSE;
     }
 
     AmbientOcclusionManager& Renderer3d::getAmbientOcclusionManager() {
@@ -477,7 +479,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateScene");
 
         //refresh input textures
-        if (sceneInfo.isAmbientOcclusionActivated) {
+        if (sceneInfo.isAmbientOcclusionActivated == UG_TRUE) {
             ambientOcclusionManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), normalAndAmbientTexture);
         }
 
@@ -525,7 +527,7 @@ namespace urchin {
         }
 
         //determine lights and models producing shadow on scene (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
-        if (sceneInfo.isShadowActivated) {
+        if (sceneInfo.isShadowActivated == UG_TRUE) {
             shadowManager.updateVisibleLightsAndModels(camera->getFrustum(), camera->getPosition(), lightManager.getVisibleLights());
         }
 
@@ -542,7 +544,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "renFirstPass");
 
         //deferred shadow map
-        if (sceneInfo.isShadowActivated) {
+        if (sceneInfo.isShadowActivated == UG_TRUE) {
             unsigned int numDependenciesToShadowMaps = 1; //second pass
             shadowManager.updateShadowMaps(frameCount, numDependenciesToShadowMaps);
         }
@@ -572,7 +574,7 @@ namespace urchin {
         deferredFirstPassRenderTarget->render(frameCount, numDependenciesToFirstPassOutput);
 
         //deferred ambient occlusion
-        if (sceneInfo.isAmbientOcclusionActivated) {
+        if (sceneInfo.isAmbientOcclusionActivated == UG_TRUE) {
             unsigned int numDependenciesToAOTexture = 1; //second pass
             numDependenciesToAOTexture += DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER ? 1 : 0;
             ambientOcclusionManager.updateAOTexture(frameCount, numDependenciesToAOTexture, *camera);
@@ -581,7 +583,7 @@ namespace urchin {
 
     unsigned int Renderer3d::computeDependenciesToFirstPassOutput() const {
         unsigned int numDependenciesToFirstPassOutput = 1; //second pass
-        if (sceneInfo.isAmbientOcclusionActivated) {
+        if (sceneInfo.isAmbientOcclusionActivated == UG_TRUE) {
             if (ambientOcclusionManager.getConfig().isBlurActivated) {
                 numDependenciesToFirstPassOutput += 3; //AO texture & AO blur (vertical & horizontal)
             } else {
@@ -639,11 +641,11 @@ namespace urchin {
 
         fogContainer.loadFog(*deferredSecondPassRenderer, FOG_UNIFORM_BINDING);
 
-        if (sceneInfo.isAmbientOcclusionActivated) {
+        if (sceneInfo.isAmbientOcclusionActivated == UG_TRUE) {
             ambientOcclusionManager.loadAOTexture(*deferredSecondPassRenderer, AO_TEX_UNIFORM_BINDING);
         }
 
-        if (sceneInfo.isShadowActivated) {
+        if (sceneInfo.isShadowActivated == UG_TRUE) {
             shadowManager.loadShadowMaps(*deferredSecondPassRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING, SM_TEX_UNIFORM_BINDING,
                 SM_OFFSET_TEX_UNIFORM_BINDING);
         }
@@ -698,7 +700,7 @@ namespace urchin {
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
-            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER && sceneInfo.isAmbientOcclusionActivated) {
+            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER && sceneInfo.isAmbientOcclusionActivated == UG_TRUE) {
                 auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager.getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE);
                 textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, 0.0f, 0.05f);

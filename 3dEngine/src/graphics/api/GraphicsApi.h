@@ -4,6 +4,7 @@
 #define VULKAN_GRAPHICS_API
 
 #ifdef VULKAN_GRAPHICS_API
+    #include "graphics/api/vulkan/GraphicsType.h"
     #include "graphics/api/vulkan/GraphicsApiService.h"
     #include "graphics/api/vulkan/render/GenericRenderer.h"
     #include "graphics/api/vulkan/render/GenericCompute.h"

@@ -92,7 +92,7 @@ namespace urchin {
 
     /**
      * @param dataPtr Shader data pointer. Data must be memory aligned with "alignas(N)" expression using std140 alignment:
-     *   - N=4 for scalar
+     *   - N=4 for scalar, UgBool32
      *   - N=8 for Vector2
      *   - N=16 for Point3, Point4, Vector3, Vector4, Matrix3 (not working ?), Matrix4
      *   - N=16 for embedded struct

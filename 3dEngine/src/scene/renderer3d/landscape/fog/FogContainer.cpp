@@ -34,7 +34,7 @@ namespace urchin {
         const Fog* activeFog = getActiveFog();
         bool hasFog = activeFog != nullptr;
 
-        fogData.hasFog = hasFog;
+        fogData.hasFog = hasFog ? UG_TRUE : UG_FALSE;
         fogData.density = hasFog ? activeFog->getDensity() : 0.0f;
         fogData.gradient = hasFog ? activeFog->getGradient() : 0.0f;
         fogData.maxHeight = hasFog ? activeFog->getMaxHeight() : 0.0f;
