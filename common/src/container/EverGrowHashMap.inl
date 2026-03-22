@@ -143,7 +143,7 @@ template<typename K, typename V> void EverGrowHashMap<K, V>::rehash() {
     for (std::vector<Node>& bucket : table) {
         for (Node& node : bucket) {
             std::size_t newIndex = hashFunc(node.key) % newBucketCount;
-            newTable[newIndex].emplace_back(node.key, node.value);
+            newTable[newIndex].emplace_back(std::move(node.key), std::move(node.value));
         }
     }
 
