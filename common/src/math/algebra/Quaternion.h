@@ -9,7 +9,7 @@ namespace urchin {
 
     template<class T> class Quaternion {
         public:
-            enum RotationSequence {
+            enum class RotationSequence {
                 XYZ,
                 XZY,
                 YXZ,

@@ -21,13 +21,13 @@ namespace urchin {
     template<class T> Quaternion<T> Quaternion<T>::fromRotationMatrix(const Matrix3<T>& matrix) {
         const T trace = matrix(0, 0) + matrix(1, 1) + matrix(2, 2);
 
-        if (trace > 0.0f) {
-            const T s = 0.5f / std::sqrt(trace + 1.0f);
+        if (trace > (T)0.0) {
+            const T s = (T)0.5 / std::sqrt(trace + (T)1.0);
             return Quaternion<T>(
                     (matrix(2, 1) - matrix(1, 2)) * s,
                     (matrix(0, 2) - matrix(2, 0)) * s,
                     (matrix(1, 0) - matrix(0, 1)) * s,
-                    0.25f / s);
+                    (T)0.25 / s);
         } else {
             if ((matrix(0, 0) > matrix(1, 1)) && (matrix(0, 0) > matrix(2, 2))) {
                 const T s = std::sqrt((T)1.0 + matrix(0, 0) - matrix(1, 1) - matrix(2, 2)) * (T)2.0;
@@ -81,7 +81,7 @@ namespace urchin {
             case RotationSequence::ZYZ:
                 return rotationZ(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationZ(eulerAngles[0]);
             default:
-                throw std::invalid_argument("Unknown quaternion rotation sequence: " + std::to_string(rotationSequence));
+                throw std::invalid_argument("Unknown quaternion rotation sequence: " + std::to_string((int)rotationSequence));
         }
     }
 
@@ -174,29 +174,27 @@ namespace urchin {
     }
 
     template<class T> void Quaternion<T>::computeW() {
-        const T t = 1.0f - (X * X) - (Y * Y) - (Z * Z);
+        const T t = (T)1.0 - (X * X) - (Y * Y) - (Z * Z);
 
-        if (t < 0.0f) {
-            W = 0.0f;
+        if (t < (T)0.0) {
+            W = (T)0.0;
         } else {
             W = -std::sqrt(t);
         }
     }
 
     template<class T> void Quaternion<T>::setIdentity() {
-        X = Y = Z = 0.0;
-        W = 1.0;
+        X = Y = Z = (T)0.0;
+        W = (T)1.0;
     }
 
     template<class T> Quaternion<T> Quaternion<T>::normalize() const {
         const T normValue = norm();
-
-        //checks for bogus norm, to protect against divide by zero
         if (normValue > 0.0) [[likely]] {
             return Quaternion<T>(X / normValue, Y / normValue, Z / normValue, W / normValue);
         }
 
-        return Quaternion(X, Y, Z, W);
+        return Quaternion();
     }
 
     /**
@@ -246,8 +244,9 @@ namespace urchin {
             assert(normValue <= (T)1.001);
         #endif
 
-        Quaternion<T> finalResult = (*this) * vector * this->conjugate();
-        return Vector3<T>(finalResult.X, finalResult.Y, finalResult.Z);
+        Vector3<T> quaternionVec(X, Y, Z);
+        Vector3<T> t = quaternionVec.crossProduct(vector) * (T)2.0;
+        return vector + (t * W) + quaternionVec.crossProduct(t);
     }
 
     template<class T> Quaternion<T> Quaternion<T>::slerp(const Quaternion& q, T t) const {
@@ -418,7 +417,7 @@ namespace urchin {
             case RotationSequence::ZYZ:
                 return twoAxisEulerRotation(2, 1, 0);
             default:
-                throw std::invalid_argument("Unknown quaternion rotation sequence: " + std::to_string(rotationSequence));
+                throw std::invalid_argument("Unknown quaternion rotation sequence: " + std::to_string((int)rotationSequence));
         }
     }
 
