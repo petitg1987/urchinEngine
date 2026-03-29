@@ -5,7 +5,7 @@
 * Technical demo of physics and shadows (2015): <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 
 # Description
-Game engine library in C++20: 3D, Physics, Sound, Network, IA, Map Editor
+Game engine library in C++23: 3D, Physics, Sound, Network, IA, Map Editor
 
 * 3D Engine:
   * Graphic API: Vulkan
