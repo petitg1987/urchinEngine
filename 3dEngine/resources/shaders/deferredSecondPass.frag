@@ -229,19 +229,22 @@ void main() {
         vec3 normal = normalize(vec3(normalAndAmbient) * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
         vec3 modelAmbient = albedo * normalAndAmbient.a;
 
-        fragColor = vec4(lightsData.globalAmbient, 1.0); //start with global ambient
+        //global ambient
+        fragColor = vec4(lightsData.globalAmbient, 1.0);
 
+        //indirect light (ambient or image based lighting & ambient occlusion)
+        fragColor.rgb += modelAmbient;
         if (sceneInfo.hasAmbientOcclusion) {
-            float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r * AO_STRENGTH;
-            fragColor.rgb -= vec3(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor); //subtract ambient occlusion
+            fragColor.rgb *= 1.0f - (texture(ambientOcclusionTex, texCoordinates).r * AO_STRENGTH);
         }
+
+        //emissive light
+        fragColor.rgb += albedo * emissiveFactor;
 
         const vec3 dielectricSurfacesBaseReflectivity = vec3(0.04); //value is a mean of all no-metallic surfaces (plastic, water, ruby, diamond, glass...)
         float roughness = float(materialAndMaskValues.r) / 255.0;
         float metallic = float(materialAndMaskValues.g) / 255.0;
         vec3 baseReflectivity = mix(dielectricSurfacesBaseReflectivity, albedo, metallic);
-
-        fragColor.rgb += albedo * emissiveFactor; //add emissive lighting
 
         for (int lightIndex = 0; lightIndex < lightsData.lightsCount; ++lightIndex) {
             LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
@@ -284,9 +287,6 @@ void main() {
                 }
                 shadowAttenuation = 1.0 - (shadowQuantity * lightInfo.shadowStrength);
             }
-
-            //add ambient
-            fragColor.rgb += modelAmbient * lightAttenuation;
 
             //update with PBR formula
             vec3 pbrFragColor = bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL;
