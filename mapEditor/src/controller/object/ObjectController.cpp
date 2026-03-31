@@ -41,8 +41,8 @@ namespace urchin {
         markModified();
     }
 
-    ObjectEntity& ObjectController::cloneObjectEntity(std::string newObjectName, const ObjectEntity& toCloneObjectEntity) {
-        return addObjectEntity(toCloneObjectEntity.clone(std::move(newObjectName)));
+    ObjectEntity& ObjectController::cloneObjectEntity(std::string newObjectName, std::vector<std::string> newGroupHierarchy, const ObjectEntity& toCloneObjectEntity) {
+        return addObjectEntity(toCloneObjectEntity.clone(std::move(newObjectName), std::move(newGroupHierarchy)));
     }
 
     void ObjectController::updateObjectEntity(const ObjectEntity& constObjectEntity, std::string updatedObjectName, std::vector<std::string> updatedGroupHierarchy) {

@@ -178,10 +178,10 @@ namespace urchin {
         }
     }
 
-    std::unique_ptr<ObjectEntity> ObjectEntity::clone(std::string newName) const {
+    std::unique_ptr<ObjectEntity> ObjectEntity::clone(std::string newName, std::vector<std::string> newGroupHierarchy) const {
         auto newObject = std::make_unique<ObjectEntity>();
         newObject->setName(std::move(newName));
-        newObject->setGroupHierarchy(getGroupHierarchy());
+        newObject->setGroupHierarchy(std::move(newGroupHierarchy));
         newObject->setModel(std::make_unique<Model>(*getModel()));
 
         RigidBody* toCloneRigidBody = getRigidBody();

@@ -597,8 +597,9 @@ namespace urchin {
 
         if (cloneObjectEntityDialog.result() == QDialog::Accepted) {
             const std::string& newObjectName = cloneObjectEntityDialog.getObjectName();
+            const std::vector<std::string>& newGroupHierarchy = cloneObjectEntityDialog.getGroupHierarchy();
             const ObjectEntity& toCloneObjectEntity = *objectTableView->getMainSelectedObjectEntity();
-            ObjectEntity& objectEntityInserted = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
+            ObjectEntity& objectEntityInserted = objectController->cloneObjectEntity(newObjectName, newGroupHierarchy, toCloneObjectEntity);
             objectController->moveObjectInFrontOfCamera(objectEntityInserted, true);
 
             objectTableView->addObjectEntity(objectEntityInserted, true);

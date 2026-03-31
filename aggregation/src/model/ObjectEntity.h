@@ -37,7 +37,7 @@ namespace urchin {
             SoundComponent* getSoundComponent() const;
             void setSoundComponent(const std::shared_ptr<SoundComponent>&);
 
-            std::unique_ptr<ObjectEntity> clone(std::string) const;
+            std::unique_ptr<ObjectEntity> clone(std::string, std::vector<std::string>) const;
             void updateTransform(const Transform<float>&);
             void updatePosition(const Point3<float>&);
             void updateOrientation(const Quaternion<float>&);

@@ -30,7 +30,7 @@ LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosit
         vec3 vertexToLight = lightInfo.position - worldPosition;
         float dist = length(vertexToLight);
         lightValues.vertexToLight = vertexToLight / dist;
-        lightValues.lightAttenuation = pow(max(0.0, (1.0 - (dist / lightInfo.scopeRadius))), lightInfo.falloffExponent);
+        lightValues.lightAttenuation = pow(max(0.0, (1.0 - (dist / lightInfo.scopeRadius))), lightInfo.falloffExponent); //TODO review ?
     } else if (lightInfo.lightType == 2) { //spot light
         vec3 vertexToLight = lightInfo.position - worldPosition;
         float dist = length(vertexToLight);

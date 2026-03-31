@@ -19,7 +19,7 @@ namespace urchin {
             const ObjectEntity* findObjectEntityByBodyId(std::string_view) const;
             ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(const ObjectEntity&);
-            ObjectEntity& cloneObjectEntity(std::string, const ObjectEntity&);
+            ObjectEntity& cloneObjectEntity(std::string, std::vector<std::string>, const ObjectEntity&);
             void updateObjectEntity(const ObjectEntity&, std::string, std::vector<std::string>);
             std::map<const ObjectEntity*, std::vector<std::string>> retrieveObjectEntitiesToUpdate(const std::vector<std::string>&, const std::vector<std::string>&) const;
             std::vector<const ObjectEntity*> updateObjectEntities(const std::vector<std::string>&, const std::vector<std::string>&);

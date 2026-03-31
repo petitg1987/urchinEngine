@@ -81,7 +81,7 @@ namespace urchin {
         return frustumScopes.value()[index];
     }
 
-    void OmnidirectionalLight::computeScope() {
+    void OmnidirectionalLight::computeScope() { //TODO review ?
         sphereScope = std::make_optional<Sphere<float>>(scopeRadius, getPosition());
         bboxScope = std::make_optional<AABBox<float>>(getPosition() - scopeRadius, getPosition() + scopeRadius);
 
