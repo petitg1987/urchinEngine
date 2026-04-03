@@ -254,7 +254,7 @@ void main() {
             }
 
             LightValues lightValues = computeLightValues(lightInfo, normal, vec3(worldPosition));
-            float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.008);
+            float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.02);
 
             vec3 lightRadiance = lightInfo.lightColor * lightAttenuation;
             vec3 bidirectionalReflectanceDist;

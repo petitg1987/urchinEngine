@@ -28,17 +28,29 @@ LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosit
         lightValues.lightAttenuation = 1.0;
     } else if (lightInfo.lightType == 1) { //omnidirectional light
         vec3 vertexToLight = lightInfo.position - worldPosition;
-        float dist = length(vertexToLight);
+        float dist = max(length(vertexToLight), 0.0001);
+
+        float normalizedDist = dist / lightInfo.scopeRadius;
+        float linearAttenuation = max(0.0, 1.0 - normalizedDist);
+        float exponentAttenuation = pow(linearAttenuation, lightInfo.falloffExponent);
+        float edgeFactor = smoothstep(0.8, 1.0, normalizedDist);
+
         lightValues.vertexToLight = vertexToLight / dist;
-        lightValues.lightAttenuation = pow(max(0.0, (1.0 - (dist / lightInfo.scopeRadius))), lightInfo.falloffExponent); //TODO review ?
+        lightValues.lightAttenuation = mix(exponentAttenuation, linearAttenuation, edgeFactor);
     } else if (lightInfo.lightType == 2) { //spot light
         vec3 vertexToLight = lightInfo.position - worldPosition;
-        float dist = length(vertexToLight);
+        float dist = max(length(vertexToLight), 0.0001);
+
+        float normalizedDist = dist / lightInfo.scopeRadius;
+        float linearAttenuation = max(0.0, 1.0 - normalizedDist);
+        float exponentAttenuation = pow(linearAttenuation, lightInfo.falloffExponent);
+        float edgeFactor = smoothstep(0.8, 1.0, normalizedDist);
+
         float theta = dot(normalize(vertexToLight), -lightInfo.direction);
         float epsilon = lightInfo.innerCosAngle - lightInfo.outerCosAngle;
         float intensity = clamp((theta - lightInfo.outerCosAngle) / epsilon, 0.0, 1.0);
         lightValues.vertexToLight = vertexToLight / dist;
-        lightValues.lightAttenuation = pow(max(0.0, (1.0 - (dist / lightInfo.scopeRadius))), lightInfo.falloffExponent) * intensity;
+        lightValues.lightAttenuation = mix(exponentAttenuation, linearAttenuation, edgeFactor) * intensity;
     }
 
     lightValues.NdotL = max(dot(normal, lightValues.vertexToLight), 0.0);
