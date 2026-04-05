@@ -13,6 +13,7 @@ namespace urchin {
             void removeTaggableResource(TaggableResource&) const;
 
             template<class T> void findByTag(std::string_view, std::vector<T>&) const;
+            template<class T> T* findFirstByTag(std::string_view) const;
             void addTag(TaggableResource*, std::string);
             void removeTag(const TaggableResource*, std::string_view);
 
