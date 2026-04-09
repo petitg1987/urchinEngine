@@ -11,7 +11,7 @@ namespace urchin {
         model = new QStandardItemModel(this);
         this->setModel(model);
 
-        connect(model, &QStandardItemModel::itemChanged, this, [this]() {
+        connect(model, &QStandardItemModel::itemChanged, this, [this] {
             update(); //trigger paint event
             emit onBitChanged();
         });
@@ -29,7 +29,7 @@ namespace urchin {
         updateLabels(defaultLabels);
     }
 
-    void BitsetComboBox::updateLabels(std::span<const std::string> labels) const {
+    void BitsetComboBox::updateLabels(std::span<const std::string> labels) {
         model->blockSignals(true);
 
         assert(totalBits == labels.size());
@@ -42,9 +42,10 @@ namespace urchin {
         }
 
         model->blockSignals(false);
+        update();
     }
 
-    void BitsetComboBox::setBitValues(unsigned long bitValues) const {
+    void BitsetComboBox::setBitValues(unsigned long bitValues) {
         model->blockSignals(true);
 
         std::bitset<32> bits(bitValues);
@@ -53,6 +54,7 @@ namespace urchin {
         }
 
         model->blockSignals(false);
+        update();
     }
 
     unsigned long BitsetComboBox::getBitValues() const {
@@ -71,7 +73,7 @@ namespace urchin {
         initStyleOption(&opt);
 
         std::string allBitsStrings = std::bitset<32>(getBitValues()).to_string();
-        std::string bitsString = allBitsStrings.substr(allBitsStrings.size() - totalBits, allBitsStrings.size() - 1);
+        std::string bitsString = allBitsStrings.substr(allBitsStrings.size() - totalBits);
         std::ranges::reverse(bitsString);
 
         std::string spaceBitsString;
