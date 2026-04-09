@@ -10,7 +10,7 @@ namespace urchin {
 
     CloneObjectDialog::CloneObjectDialog(QWidget* parent, const std::string& originalName, std::vector<std::string> originalGroupHierarchy, const ObjectController& objectController) :
             QDialog(parent),
-            proposedName(EntityControllerUtil::determineNewCloneName(originalName, objectController.getObjectEntities())),
+            proposedName(EntityControllerUtil::determineNewCloneName(originalName, originalGroupHierarchy, objectController.getObjectEntities())),
             originalGroupHierarchy(std::move(originalGroupHierarchy)),
             objectController(objectController),
             objectNameLabel(nullptr),
