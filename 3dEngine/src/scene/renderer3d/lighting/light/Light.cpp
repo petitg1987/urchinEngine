@@ -12,10 +12,11 @@ namespace urchin {
     }
 
     std::string Light::getName() const {
-        if (getLightType() == LightType::SUN) {
-            return std::to_string(getDirections()[0].X) + "@" + std::to_string(getDirections()[0].Y) + "@" + std::to_string(getDirections()[0].Z) + "_" + std::to_string((int)getLightType());
+        Vector3<float> dirOrPos = getDirections()[0];
+        if (getLightType() != LightType::SUN) {
+            dirOrPos = getPosition().toVector();
         }
-        return std::to_string(getPosition().X) + "@" + std::to_string(getPosition().Y) + "@" + std::to_string(getPosition().Z) + "_" + std::to_string((int)getLightType());
+        return std::format("{:.2f}", dirOrPos.X) + "@" + std::format("{:.2f}",dirOrPos.Y) + "@" + std::format("{:.2f}",dirOrPos.Z) + "_" + std::to_string((int)getLightType());
     }
 
     const Transform<float>& Light::getTransform() const {
