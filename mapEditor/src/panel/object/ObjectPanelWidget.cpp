@@ -553,7 +553,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showAddObjectDialog() {
-        std::vector<std::string> defaultGroupHierarchy = std::vector<std::string>{};
+        std::vector<std::string> defaultGroupHierarchy = {};
         if (objectTableView->hasMainObjectEntitySelected()) {
             defaultGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
         } else if (objectTableView->hasMainGroupHierarchySelected()) {
