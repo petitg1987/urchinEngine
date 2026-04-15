@@ -553,7 +553,12 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showAddObjectDialog() {
-        std::vector<std::string> defaultGroupHierarchy = objectTableView->hasMainObjectEntitySelected() ? objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy() : std::vector<std::string>{};
+        std::vector<std::string> defaultGroupHierarchy = std::vector<std::string>{};
+        if (objectTableView->hasMainObjectEntitySelected()) {
+            defaultGroupHierarchy = objectTableView->getMainSelectedObjectEntity()->getGroupHierarchy();
+        } else if (objectTableView->hasMainGroupHierarchySelected()) {
+            defaultGroupHierarchy = objectTableView->getMainGroupHierarchySelected().value();
+        }
         uint8_t defaultLightMask = std::numeric_limits<uint8_t>::max();
         if (objectTableView->hasMainObjectEntitySelected()) {
             defaultLightMask = objectTableView->getMainSelectedObjectEntity()->getModel()->getLightMask();
