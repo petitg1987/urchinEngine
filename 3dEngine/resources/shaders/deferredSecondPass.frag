@@ -288,9 +288,12 @@ void main() {
                 shadowAttenuation = 1.0 - (shadowQuantity * lightInfo.shadowStrength);
             }
 
+            //emissive correction (emissive materials generally don't reflect well the direct light)
+            float lightingFactor = smoothstep(0.0, 1.0, 1.0 - emissiveFactor);
+
             //update with PBR formula
             vec3 pbrFragColor = bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL;
-            fragColor.rgb += shadowAttenuation * pbrFragColor;
+            fragColor.rgb += shadowAttenuation * pbrFragColor * lightingFactor;
         }
     } else { //do not apply lighting (e.g. skybox, geometry models...)
         fragColor.rgba = vec4(albedo * (1.0 + emissiveFactor), 1.0); //albedo + add emissive lighting
