@@ -99,16 +99,16 @@ namespace urchin {
 
     void AIEnvironment::startAIUpdate() {
         try {
-            auto frameStartTime = std::chrono::steady_clock::now();
+            auto frameStartTime = std::chrono::high_resolution_clock::now();
 
             while (continueExecution()) {
                 processAIUpdate();
 
-                auto frameEndTime = std::chrono::steady_clock::now();
+                auto frameEndTime = std::chrono::high_resolution_clock::now();
                 auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
                 if (deltaTimeInUs < 250) { //small delta time on Windows is imprecise: wait two milliseconds more to get a more precise value
                     std::this_thread::sleep_for(std::chrono::milliseconds(2));
-                    frameEndTime = std::chrono::steady_clock::now();
+                    frameEndTime = std::chrono::high_resolution_clock::now();
                     deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
                 }
 
@@ -117,7 +117,7 @@ namespace urchin {
                     if (SleepUtil::stepSleep((int)(remainingTime * 1000.0f), this)) {
                         break;
                     }
-                    frameStartTime = std::chrono::steady_clock::now();
+                    frameStartTime = std::chrono::high_resolution_clock::now();
                 } else {
                     frameStartTime = frameEndTime;
                 }

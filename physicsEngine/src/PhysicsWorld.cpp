@@ -136,7 +136,7 @@ namespace urchin {
 
             float remainingTime = 0.0f;
             float maxAdditionalTimeStep = expectedTimeStepInSec * 0.5f;
-            auto executionStartTime = std::chrono::steady_clock::now();
+            auto executionStartTime = std::chrono::high_resolution_clock::now();
 
             while (continueExecution()) {
                 float additionalTimeStep = std::abs(remainingTime);
@@ -150,12 +150,12 @@ namespace urchin {
 
                 processPhysicsUpdate(dt);
 
-                auto executionEndTime = std::chrono::steady_clock::now();
+                auto executionEndTime = std::chrono::high_resolution_clock::now();
                 auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(executionEndTime - executionStartTime).count();
                 auto realDeltaTimeInUs = deltaTimeInUs;
                 if (deltaTimeInUs < 250) { //small delta time on Windows is imprecise: wait two milliseconds more to get a more precise value
                     std::this_thread::sleep_for(std::chrono::milliseconds(2));
-                    executionEndTime = std::chrono::steady_clock::now();
+                    executionEndTime = std::chrono::high_resolution_clock::now();
                     deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(executionEndTime - executionStartTime).count();
                 }
 
@@ -168,7 +168,7 @@ namespace urchin {
                 if (remainingTime >= 0.0f) {
                     std::this_thread::sleep_for(std::chrono::milliseconds((int)(remainingTime * 1000.0f)));
                     remainingTime = 0.0f;
-                    executionStartTime = std::chrono::steady_clock::now();
+                    executionStartTime = std::chrono::high_resolution_clock::now();
                 } else {
                     executionStartTime = executionEndTime;
                 }

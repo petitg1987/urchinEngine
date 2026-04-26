@@ -104,15 +104,15 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "fpsLimit");
         if (fpsLimit > 0 && !screenRenderTarget.isVerticalSyncEnabled()) {
             if (fpsLimitPreviousTime == MIN_TIME_POINT) [[unlikely]] {
-                fpsLimitPreviousTime = std::chrono::steady_clock::now();
+                fpsLimitPreviousTime = std::chrono::high_resolution_clock::now();
             } else {
-                auto currentTime = std::chrono::steady_clock::now();
+                auto currentTime = std::chrono::high_resolution_clock::now();
                 auto deltaTimeInUs = (double)std::chrono::duration_cast<std::chrono::microseconds>(currentTime - fpsLimitPreviousTime).count();
 
                 double expectedDeltaInUs = (1000.0 * 1000.0) / (double)fpsLimit;
                 if (deltaTimeInUs < expectedDeltaInUs) {
                     SleepUtil::sleepUs(std::lround(expectedDeltaInUs - deltaTimeInUs));
-                    fpsLimitPreviousTime = std::chrono::steady_clock::now();
+                    fpsLimitPreviousTime = std::chrono::high_resolution_clock::now();
                 } else {
                     fpsLimitPreviousTime = currentTime;
                 }
@@ -122,9 +122,9 @@ namespace urchin {
 
     void Scene::computeDeltaTime() {
         if (previousCurrentTime == MIN_TIME_POINT) [[unlikely]] {
-            previousCurrentTime = std::chrono::steady_clock::now();
+            previousCurrentTime = std::chrono::high_resolution_clock::now();
         } else {
-            auto currentTime = std::chrono::steady_clock::now();
+            auto currentTime = std::chrono::high_resolution_clock::now();
             auto deltaTimeInUs = (double) std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousCurrentTime).count();
 
             static int frameCount = 0;

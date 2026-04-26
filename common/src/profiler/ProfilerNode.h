@@ -29,7 +29,7 @@ namespace urchin {
             std::vector<std::unique_ptr<ProfilerNode>> children;
 
             unsigned int startCount;
-            std::chrono::steady_clock::time_point startTime;
+            std::chrono::high_resolution_clock::time_point startTime;
             unsigned int numberOfCall;
             double totalTime;
     };

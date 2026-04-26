@@ -33,7 +33,7 @@ namespace urchin {
             float totalVideoMemoryGB;
 
             unsigned int metricsEventCount;
-            std::chrono::steady_clock::time_point metricsTextLastRefreshTime;
+            std::chrono::high_resolution_clock::time_point metricsTextLastRefreshTime;
 
     };
 
