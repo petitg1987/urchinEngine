@@ -86,13 +86,14 @@ void main() {
         vec4 samplePointViewSpace = positioningData.mView * vec4(samplePointWorldSpace, 1.0);
         vec4 samplePointClipSpace = projection.mProjection * samplePointViewSpace;
         vec3 samplePointNDC = samplePointClipSpace.xyz / samplePointClipSpace.w;
-        vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
+        vec2 samplePointTexCoord = clamp(samplePointNDC.xy * 0.5 + 0.5, 0.0, 1.0);
 
         float zSceneNDC = texture(depthTex, samplePointTexCoord).r;
         vec3 scenePositionViewSpace = fetchEyePosition(samplePointTexCoord, zSceneNDC);
 
-        float rangeCheck = smoothstep(0.0, 1.0, RADIUS / abs(scenePositionViewSpace.z - samplePointViewSpace.z));
-        occlusion += (scenePositionViewSpace.z >= samplePointViewSpace.z + distanceBias ? rangeCheck : 0.0);
+        if (scenePositionViewSpace.z >= samplePointViewSpace.z + distanceBias) {
+            occlusion += smoothstep(0.0, 1.0, RADIUS / abs(scenePositionViewSpace.z - samplePointViewSpace.z));
+        }
     }
 
     float aoValue = occlusion / float(KERNEL_SAMPLES);
