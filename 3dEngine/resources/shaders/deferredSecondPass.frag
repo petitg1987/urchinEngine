@@ -82,8 +82,6 @@ float maxComponent(vec3 components) {
 }
 
 float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 worldPosition, float NdotL, float biasReduceFactor) {
-    float shadowQuantity = 0.0f;
-
     vec4 shadowCoord = shadowMatrix.mLightProjectionView[shadowLightIndex * MAX_SPLIT_SHADOW_MAPS + splitShadowMapIndex] * worldPosition;
     shadowCoord.xyz /= shadowCoord.w;
     shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
@@ -98,29 +96,36 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
     vec2 sceneSize = textureSize(depthTex, 0);
     ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
 
-    int testPointsInShadow = 0;
-    int offsetSampleIndex = 0;
-    for (; offsetSampleIndex < testPointsQuantity; ++offsetSampleIndex) {
-        vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, offsetSampleIndex), 0).xy * SOFT_EDGE_LENGTH * shadowMapInvSize;
+    //Phase 1: probe with reduced sample count to detect uniform regions
+    int probeCount = min(5, shadowInfo.offsetSampleCount);
+    int probeInShadow = 0;
+    for (int i = 0; i < probeCount; ++i) {
+        vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, i), 0).xy * SOFT_EDGE_LENGTH * shadowMapInvSize;
+        float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
+        float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
+        if (shadowCoord.z - adjustedBias > shadowDepth) {
+            probeInShadow++;
+        }
+    }
+
+    //Early exit: fully lit or fully shadowed — no soft edge
+    if (probeInShadow == 0) {
+        return 0.0;
+    } else if (probeInShadow == probeCount) {
+        return 1.0;
+    }
+
+    //Phase 2: soft edge detected — run full sample set for accurate penumbra
+    float shadowQuantity = float(probeInShadow);
+    for (int i = probeCount; i < shadowInfo.offsetSampleCount; ++i) {
+        vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, i), 0).xy * SOFT_EDGE_LENGTH * shadowMapInvSize;
         float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
         float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
         if (shadowCoord.z - adjustedBias > shadowDepth) {
             shadowQuantity += 1.0f;
-            testPointsInShadow++;
         }
     }
-
-    if (testPointsInShadow != 0 && testPointsInShadow != testPointsQuantity) {
-        for (; offsetSampleIndex < shadowInfo.offsetSampleCount; ++offsetSampleIndex) {
-            vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, offsetSampleIndex), 0).xy * SOFT_EDGE_LENGTH * shadowMapInvSize;
-            float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
-            float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
-            if (shadowCoord.z - adjustedBias > shadowDepth) {
-                shadowQuantity += 1.0f;
-            }
-        }
-    }
-    shadowQuantity /= offsetSampleIndex;
+    shadowQuantity = shadowQuantity / float(shadowInfo.offsetSampleCount);
 
     //DEBUG: fetch shadow map one time, no PCF filter
     /* shadowQuantity = 0.0f;
