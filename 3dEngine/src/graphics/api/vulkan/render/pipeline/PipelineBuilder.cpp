@@ -134,7 +134,6 @@ namespace urchin {
     std::size_t PipelineBuilder::computePipelineHash() const {
         std::size_t hash = 0;
 
-        //unsigned int repeatCount;
         if (data) {
             HashUtil::combine(hash, data->size());
             for (const DataContainer& singleData: *data) {
@@ -333,7 +332,7 @@ namespace urchin {
         rasterization.depthBiasClamp = 0.0f;
         rasterization.depthBiasSlopeFactor = 0.0f;
 
-        //multisampling stage (mainly for anti-aliasing)
+        //multisampling stage (mainly for antialiasing)
         VkPipelineMultisampleStateCreateInfo multisampling{};
         multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
         multisampling.sampleShadingEnable = VK_FALSE;
