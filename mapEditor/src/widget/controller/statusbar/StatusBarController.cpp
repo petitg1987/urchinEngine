@@ -32,7 +32,7 @@ namespace urchin {
             case MODEL_SELECTED:
                 return {"Select model: LMB", "Move selected: Ctrl + X/Y/Z"};
             case MODEL_MOVE:
-                return {"Move selected: Mouse OR Numpad+Enter", "Switch axis: Ctrl + X/Y/Z", "Confirm move: LMB", "Cancel move: Esc"};
+                return {"Move selected: Mouse OR Number+Enter", "Switch axis: Ctrl + X/Y/Z", "Confirm move: LMB", "Cancel move: Esc"};
             default:
                 throw std::runtime_error("Unknown status bar state: " + std::to_string(state));
         }
