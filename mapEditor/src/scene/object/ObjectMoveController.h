@@ -25,7 +25,9 @@ namespace urchin {
             bool onMouseMove(double, double);
             void onMouseOut();
             bool onMouseLeftButton();
+            bool onEnterKey();
             bool onEscapeKey();
+            bool onChar(char32_t);
 
             void setSelectedObjectEntities(std::vector<const ObjectEntity*>);
             const ObjectEntity& getLastMovedObjectEntity() const;
@@ -51,6 +53,7 @@ namespace urchin {
             std::vector<const ObjectEntity*> selectedObjectEntities;
             const ObjectEntity* lastMovedObjectEntity;
             int selectedAxis;
+            std::vector<char> numbersBuffer;
             std::map<const ObjectEntity*, Point3<float>> savedPositions;
 
             double oldMouseX;

@@ -177,6 +177,26 @@ namespace urchin {
         return propagateEvent;
     }
 
+    bool ObjectMoveController::onEnterKey() {
+        bool propagateEvent = true;
+
+        if (selectedAxis != -1 && !numbersBuffer.empty()) {
+            std::string numberStr(numbersBuffer.begin(), numbersBuffer.end());
+            if (TypeConverter::isFloat(numberStr)) {
+                float moveDistance = TypeConverter::toFloat(numberStr);
+                for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
+                    Point3<float> newPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
+                    newPosition[(unsigned int)selectedAxis] += moveDistance;
+                    updateObjectPosition(selectedObjectEntity, newPosition);
+                }
+                numbersBuffer.clear();
+                propagateEvent = false;
+            }
+        }
+
+        return propagateEvent;
+    }
+
     bool ObjectMoveController::onEscapeKey() {
         bool propagateEvent = true;
         if (selectedAxis != -1) {
@@ -188,6 +208,35 @@ namespace urchin {
             selectedAxis = -1;
             propagateEvent = false;
         }
+        return propagateEvent;
+    }
+
+    bool ObjectMoveController::onChar(char32_t unicodeCharacter) {
+        bool propagateEvent = true;
+
+        if (selectedAxis != -1) {
+            if (unicodeCharacter >= U'0' && unicodeCharacter <= U'9') {
+                numbersBuffer.push_back(static_cast<char>(unicodeCharacter));
+            } else if (unicodeCharacter == U'.' || unicodeCharacter == U',') {
+                numbersBuffer.push_back('.');
+            } else if (unicodeCharacter == U'-') {
+                numbersBuffer.push_back('-');
+            } else if (unicodeCharacter != U'\n' && unicodeCharacter != U'\r') {
+                numbersBuffer.clear();
+            }
+
+            if (!numbersBuffer.empty() && (numbersBuffer[0] != '-' || numbersBuffer.size() > 1)) {
+                std::string numberStr(numbersBuffer.begin(), numbersBuffer.end());
+                if (!TypeConverter::isFloat(numberStr)) {
+                    numbersBuffer.clear();
+                }
+            }
+
+            propagateEvent = false;
+        } else {
+            numbersBuffer.clear();
+        }
+
         return propagateEvent;
     }
 
