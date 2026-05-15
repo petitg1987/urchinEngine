@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     bool WaterTableView::hasWaterEntitySelected() const {
-        return this->currentIndex().row() != -1 && this->selectionModel()->isSelected(currentIndex());
+        return this->currentIndex().isValid() && this->selectionModel()->isSelected(currentIndex());
     }
 
     const WaterEntity* WaterTableView::getSelectedWaterEntity() const {

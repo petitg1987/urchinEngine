@@ -101,7 +101,7 @@ namespace urchin {
     }
 
     bool ObjectTableView::hasMainObjectEntitySelected() const {
-        if (currentIndex().row() != -1 && selectionModel()->isSelected(currentIndex())) {
+        if (currentIndex().isValid() && selectionModel()->isSelected(currentIndex())) {
             QStandardItem* selectedItem = objectsListModel->itemFromIndex(currentIndex());
             return selectedItem->data(IS_OBJECT_ENTITY_DATA).value<bool>();
         }
@@ -219,6 +219,7 @@ namespace urchin {
         }
 
         for (const QPersistentModelIndex &persistentIndex : persistentIndexes) {
+            std::cout<<"remove"<<std::endl; //TODO GPE cause problem
             objectsListModel->removeRow(persistentIndex.row(), persistentIndex.parent());
         }
 

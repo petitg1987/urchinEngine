@@ -115,7 +115,7 @@ namespace urchin {
     }
 
     void BodyConvexHullShapeWidget::removeSelectedPoint() {
-        if (pointsTable->currentIndex().row() != -1) {
+        if (pointsTable->currentIndex().isValid()) {
             pointsTableModel->removeRow(pointsTable->currentIndex().row());
             pointsTable->resizeRowsToContents();
 
