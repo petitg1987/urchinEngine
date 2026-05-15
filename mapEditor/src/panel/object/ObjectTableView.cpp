@@ -205,11 +205,13 @@ namespace urchin {
         return newGroupItem;
     }
 
-    void ObjectTableView::removeSelectedItems() const {
+    void ObjectTableView::removeSelectedItems() {
         removeItemsByIndexes(selectedIndexes());
     }
 
-    void ObjectTableView::removeItemsByIndexes(QModelIndexList indexesToRemove) const {
+    void ObjectTableView::removeItemsByIndexes(QModelIndexList indexesToRemove) {
+        objectsListModel->blockSignals(true);
+
         //Use persistent index to avoid invalid index after first row removed
         QList<QPersistentModelIndex> persistentIndexes;
         QList<QPersistentModelIndex> persistentGroupIndexes;
@@ -219,7 +221,6 @@ namespace urchin {
         }
 
         for (const QPersistentModelIndex &persistentIndex : persistentIndexes) {
-            std::cout<<"remove"<<std::endl; //TODO GPE cause problem
             objectsListModel->removeRow(persistentIndex.row(), persistentIndex.parent());
         }
 
@@ -236,6 +237,10 @@ namespace urchin {
                 objectsListModel->removeRow(topIndexToRemove->row(), topIndexToRemove->parent());
             }
         }
+
+        objectsListModel->blockSignals(false);
+        notifyObservers(this, OBJECT_SELECTION_CHANGED);
+        emit objectsListModel->layoutChanged();
     }
 
     void ObjectTableView::refreshObjectEntity(const ObjectEntity& objectEntity) {
