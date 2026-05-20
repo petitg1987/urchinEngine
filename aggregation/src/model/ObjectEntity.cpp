@@ -250,6 +250,10 @@ namespace urchin {
         updateTransform(Transform(model->getTransform().getPosition(), newOrientation, model->getTransform().getScale()));
     }
 
+    void ObjectEntity::updateScale(const Vector3<float>& newScale) {
+        updateTransform(Transform(model->getTransform().getPosition(), model->getTransform().getOrientation(), newScale));
+    }
+
     void ObjectEntity::refresh() const {
         if (rigidBody && rigidBody->isActive()) {
             PhysicsTransform physicsTransform = rigidBody->getTransform();

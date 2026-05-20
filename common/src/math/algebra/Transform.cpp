@@ -28,7 +28,7 @@ namespace urchin {
         mTransform = mPosition * mOrientation * mScale;
     }
 
-    template<class T> const Point3<T> &Transform<T>::getPosition() const {
+    template<class T> const Point3<T>& Transform<T>::getPosition() const {
         return pPosition;
     }
 

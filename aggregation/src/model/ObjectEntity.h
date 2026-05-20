@@ -41,6 +41,7 @@ namespace urchin {
             void updateTransform(const Transform<float>&);
             void updatePosition(const Point3<float>&);
             void updateOrientation(const Quaternion<float>&);
+            void updateScale(const Vector3<float>&);
 
             void refresh() const;
 
