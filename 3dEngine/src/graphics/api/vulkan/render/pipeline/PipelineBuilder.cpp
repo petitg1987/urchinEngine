@@ -308,12 +308,15 @@ namespace urchin {
         viewport.height = (float)renderTarget->getHeight();
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
+        VkRect2D scissor{};
+        scissor.offset = {.x = 0, .y = 0};
+        scissor.extent = {.width = renderTarget->getWidth(), .height = renderTarget->getHeight()};
         VkPipelineViewportStateCreateInfo viewportState{};
         viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
         viewportState.viewportCount = 1;
         viewportState.pViewports = &viewport;
         viewportState.scissorCount = 1;
-        viewportState.pScissors = nullptr; //must be null because of VK_DYNAMIC_STATE_SCISSOR usage
+        viewportState.pScissors = &scissor; //not used because of VK_DYNAMIC_STATE_SCISSOR usage
 
         //rasterization stage (vertices turned into fragments + depth testing + face culling)
         VkPipelineRasterizationStateCreateInfo rasterization{};
