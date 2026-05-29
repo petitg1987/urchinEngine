@@ -1,3 +1,5 @@
+#include <format>
+
 #include "scene/renderer3d/lighting/light/Light.h"
 
 namespace urchin {
