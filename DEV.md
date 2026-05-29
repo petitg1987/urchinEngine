@@ -35,7 +35,7 @@
   * Copy lib & include respectively in "C:\msys64\clang64\lib" and in "C:\msys64\clang64\include"
   * Execute (adapt SDK version):
   ```
-  ln -s ${HOMEDRIVE}/VulkanSDK/1.4.335.0/Bin /home/greg/vulkan-bin
+  ln -s ${HOMEDRIVE}/VulkanSDK/1.4.350.0/Bin /home/greg/vulkan-bin
   echo 'export PATH=$PATH:/home/greg/vulkan-bin' >> ~/.bashrc
   ```
   * *Info*: vuklan-1.dll can be found in the runtime zip: https://vulkan.lunarg.com/sdk/home#windows
