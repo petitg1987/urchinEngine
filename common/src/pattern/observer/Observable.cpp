@@ -4,6 +4,11 @@
 
 namespace urchin {
 
+    Observable::Observable() :
+            notifying(false) {
+
+    }
+
     Observable::~Observable() {
         mapObservers.clear();
     }
@@ -26,9 +31,16 @@ namespace urchin {
     }
 
     void Observable::removeObserver(Observer* observer, int notificationType) {
-        auto itFind = mapObservers.find(notificationType);
-        if (itFind != mapObservers.end()) {
-            std::erase(itFind->second, observer);
+        auto itObservers = mapObservers.find(notificationType);
+        if (itObservers != mapObservers.end()) {
+            if (notifying) {
+                auto itObserver = std::ranges::find(itObservers->second, observer);
+                if (itObserver != itObservers->second.end()) {
+                    *itObserver = nullptr;
+                }
+            } else {
+                std::erase(itObservers->second, observer);
+            }
         }
     }
 
@@ -38,9 +50,15 @@ namespace urchin {
     void Observable::notifyObservers(Observable* observable, int notificationType) {
         auto itFind = mapObservers.find(notificationType);
         if (itFind != mapObservers.end()) {
-            for (Observer* observer : itFind->second) {
-                observer->notify(observable, notificationType);
+            notifying = true;
+            std::size_t count = itFind->second.size();
+            for (std::size_t i = 0; i < count; i++) {
+                if (itFind->second[i]) {
+                    itFind->second[i]->notify(observable, notificationType);
+                }
             }
+            notifying = false;
+            std::erase(itFind->second, nullptr);
         }
     }
 }

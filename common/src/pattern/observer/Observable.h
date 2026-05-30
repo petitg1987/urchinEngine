@@ -9,6 +9,7 @@ namespace urchin {
 
     class Observable {
         public:
+            Observable();
             virtual ~Observable();
 
             void addObserver(Observer*, int);
@@ -18,6 +19,7 @@ namespace urchin {
             void notifyObservers(Observable*, int);
 
         private:
+            bool notifying;
             std::map<int, std::vector<Observer*>> mapObservers;
     };
 
