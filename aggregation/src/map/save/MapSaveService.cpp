@@ -27,7 +27,9 @@ namespace urchin {
         const UdaChunk* lightMaskNamesChunk = udaParser.getFirstChunk(true, LIGHT_MASK_NAMES_TAG);
         std::vector<UdaChunk*> lightMaskNamesChunkList = udaParser.getChunks(LIGHT_MASK_NAME_TAG, UdaAttribute(), lightMaskNamesChunk);
         std::array<std::string, 8> lightMaskNames;
-        assert(lightMaskNamesChunkList.size() == lightMaskNames.size());
+        if (lightMaskNamesChunkList.size() != lightMaskNames.size()) {
+            throw std::runtime_error("Wrong size of " + std::to_string(lightMaskNamesChunkList.size()) + " for light mask names in map: " + filename);
+        }
         for (std::size_t i = 0; i < lightMaskNames.size(); ++i) {
             lightMaskNames[i] = lightMaskNamesChunkList[i]->getStringValue();
         }
