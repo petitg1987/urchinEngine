@@ -11,11 +11,16 @@ namespace urchin {
 
     void PerfMetrics::registerDt(float dtInSec) {
         float dtInMs = dtInSec * 1000.0f;
+        bool registered = false;
         for (unsigned int i = 0; i < msThresholds.size(); ++i) {
             if (dtInMs <= msThresholds[i]) {
                 counts[i]++;
+                registered = true;
                 break;
             }
+        }
+        if (!registered) {
+            counts[counts.size() + 1]++;
         }
     }
 
