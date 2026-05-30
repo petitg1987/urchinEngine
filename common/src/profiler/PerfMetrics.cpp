@@ -20,7 +20,7 @@ namespace urchin {
             }
         }
         if (!registered) {
-            counts[counts.size() - 1]++;
+            counts[NUM_THRESHOLDS]++;
         }
     }
 
