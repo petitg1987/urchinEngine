@@ -14,6 +14,9 @@ namespace urchin {
         auto imgTerrain = ResourceRetriever::instance().getResource<Image>(this->heightFilename);
         if (imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE) {
             throw std::runtime_error("Height map must be grayscale. Image format: " + std::to_string(imgTerrain->getImageFormat()));
+        } else if (imgTerrain->getWidth() < 2u || imgTerrain->getHeight() < 2u) {
+            throw std::runtime_error("Height map must have a size of at least 2 pixels in width and height. Image size: "
+                + std::to_string(imgTerrain->getWidth()) + "x" + std::to_string(imgTerrain->getHeight()));
         }
         
         xSize = imgTerrain->getWidth();
