@@ -40,7 +40,7 @@ void main() {
     float totalWeight = 0.0;
     fragColor = computeBlurWeightedValue(vec2(0.0, 0.0), 0.0, linearDepth, totalWeight);
 
-    vec2 blurDirection = (IS_VERTICAL_BLUR == 1) ? vec2(0.0, 1.0) : vec2 (1.0, 0.0);
+    vec2 blurDirection = mix(vec2(1.0, 0.0), vec2(0.0, 1.0), float(IS_VERTICAL_BLUR)); //Note: do not use ternary condition because it crashs on AMD Windows driver !
     for (int i = 1; i <= blurRadiusInt; ++i) {
         vec2 uvOffset = i * pixelSize * blurDirection;
         fragColor += computeBlurWeightedValue(uvOffset, float(i), linearDepth, totalWeight);

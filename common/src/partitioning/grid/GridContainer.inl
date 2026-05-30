@@ -159,7 +159,8 @@ template<class T> std::vector<std::shared_ptr<T>> GridContainer<T>::findAllDirec
                 return pos[axisIndex] > item->getGridPosition()[axisIndex];
             });
             int directNeighborPosition = gridPosition[axisIndex] - 1;
-            while (lowerBound-- != set.begin()) {
+            while (lowerBound != set.begin()) {
+                --lowerBound;
                 if ((*lowerBound)->getGridPosition()[axisIndex] == directNeighborPosition--) {
                     result.push_back(*lowerBound);
                 } else {
