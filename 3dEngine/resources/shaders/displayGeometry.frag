@@ -13,6 +13,9 @@ void main() {
     //albedo and emissive
     fragAlbedoAndEmissive = vec4(visual.color, 0.0);
 
+    //normal and ambient
+    fragNormalAndAmbient = vec4(0.0, 0.0, 0.0, 0.0); //write on texture to avoid a Vulkan validation warning on Windows
+
     //pbr & mask
     fragPbrAndMask.b = 0; //no lighting
 }
