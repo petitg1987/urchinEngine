@@ -67,14 +67,11 @@ namespace urchin {
 
     void SoundFileReader::advanceReadCursor(unsigned int numSamplesRead, bool advanceLoop) const { //slow method, must be called only in sound thread or at init
         ogg_int64_t cursorPosition = ov_pcm_tell(&vorbisFile);
+        unsigned int totalFrames = getNumberOfSamples() / getNumberOfChannels();
         cursorPosition += numSamplesRead / getNumberOfChannels();
-        if (advanceLoop) {
-            cursorPosition = cursorPosition % getNumberOfSamples();
+        if (cursorPosition > totalFrames) {
+            cursorPosition = advanceLoop ? (cursorPosition % totalFrames) : totalFrames;
         }
-
-        #ifdef URCHIN_DEBUG
-            assert(cursorPosition <= getNumberOfSamples() / getNumberOfChannels());
-        #endif
 
         bool advanceResult = ov_pcm_seek(&vorbisFile, cursorPosition);
         if (advanceResult != 0) {
@@ -99,7 +96,7 @@ namespace urchin {
     }
 
     int SoundFileReader::seek(void* dataSource, ogg_int64_t offset, int origin) {
-        static const std::vector seekDirections = {std::ios_base::beg, std::ios_base::cur, std::ios_base::end};
+        static constexpr std::array seekDirections = {std::ios_base::beg, std::ios_base::cur, std::ios_base::end};
         std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
         stream.seekg(offset, seekDirections.at((unsigned long)origin));
         stream.clear(); //in case we seeked to EOF
