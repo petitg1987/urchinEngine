@@ -158,7 +158,7 @@ namespace urchin {
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         poolSizes[1].descriptorCount = (uint32_t)textureDescriptorCount;
 
-        int uniformTexOutputsCount = std::max(1, (int)uniformTextureOutputs.size());
+        int uniformTexOutputsCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * (int)uniformTextureOutputs.size());
         poolSizes[2].type = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
         poolSizes[2].descriptorCount = (uint32_t)uniformTexOutputsCount;
 

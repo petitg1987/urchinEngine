@@ -40,18 +40,11 @@ namespace urchin {
         }
         DebugLabelHelper::nameObject(DebugLabelHelper::IMAGE, image, imageName);
 
-        VkMemoryRequirements memRequirements{};
-        vkGetImageMemoryRequirements(logicalDevice, image, &memRequirements);
-
         VmaAllocationCreateInfo allocCreateInfo{};
         allocCreateInfo.usage = (tiling == VK_IMAGE_TILING_OPTIMAL) ? VMA_MEMORY_USAGE_GPU_ONLY : VMA_MEMORY_USAGE_GPU_TO_CPU; //assume that tiling no optimal is only used for GPU to CPU transfers
         allocCreateInfo.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
 
-        VmaAllocationInfo allocInfo{};
-        allocInfo.size = memRequirements.size;
-        allocInfo.memoryType = findMemoryType(memRequirements.memoryTypeBits);
-
-        result = vmaAllocateMemoryForImage(GraphicsSetupService::instance().getAllocator(), image, &allocCreateInfo, &imageMemory, &allocInfo);
+        result = vmaAllocateMemoryForImage(GraphicsSetupService::instance().getAllocator(), image, &allocCreateInfo, &imageMemory, nullptr);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate image memory for image " + imageName + " of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::string(string_VkFormat(format)) + " with error code: " + std::to_string(result));
         }
@@ -62,18 +55,6 @@ namespace urchin {
         }
 
         return image;
-    }
-
-    uint32_t ImageHelper::findMemoryType(uint32_t typeFilter) {
-        VkPhysicalDeviceMemoryProperties memProperties{};
-        vkGetPhysicalDeviceMemoryProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &memProperties);
-
-        for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
-            if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) == VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
-                return i;
-            }
-        }
-        throw std::runtime_error("Failed to find suitable memory type with type filter: " + std::to_string(typeFilter));
     }
 
     std::vector<VkImageView> ImageHelper::createImageViews(VkImage image, VkImageViewType type, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t layerCount,
@@ -119,12 +100,26 @@ namespace urchin {
     }
 
     VkFormatFeatureFlags ImageHelper::usageFlagToFeatureFlag(VkImageUsageFlags usage) {
-        if (usage & VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT) { //contain depth stencil attachment
-            return VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT;
-        } else if (usage == VK_IMAGE_USAGE_TRANSFER_DST_BIT) { //only for transfer destination
-            return VK_FORMAT_FEATURE_TRANSFER_DST_BIT;
+        VkFormatFeatureFlags features = 0;
+        if (usage & VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT) {
+            features |= VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT;
         }
-        return VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT | VK_FORMAT_FEATURE_TRANSFER_DST_BIT;
+        if (usage & VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT) {
+            features |= VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT;
+        }
+        if (usage & VK_IMAGE_USAGE_STORAGE_BIT) {
+            features |= VK_FORMAT_FEATURE_STORAGE_IMAGE_BIT;
+        }
+        if (usage & VK_IMAGE_USAGE_SAMPLED_BIT) {
+            features |= VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT;
+        }
+        if (usage & VK_IMAGE_USAGE_TRANSFER_SRC_BIT) {
+            features |= VK_FORMAT_FEATURE_TRANSFER_SRC_BIT;
+        }
+        if (usage & VK_IMAGE_USAGE_TRANSFER_DST_BIT) {
+            features |= VK_FORMAT_FEATURE_TRANSFER_DST_BIT;
+        }
+        return features;
     }
 
 }
