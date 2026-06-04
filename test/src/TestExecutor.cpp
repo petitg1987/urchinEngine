@@ -36,6 +36,7 @@
 #include "3d/graphics/render/GenericRendererComparatorTest.h"
 #include "3d/scene/renderer3d/Renderer3dTest.h"
 #include "3d/scene/renderer3d/model/culler/ModelOcclusionCullerTest.h"
+#include "3d/scene/renderer3d/model/displayer/ModelSetDisplayerTest.h"
 #include "3d/scene/renderer3d/lighting/shadow/light/LightSplitShadowMapTest.h"
 #include "3d/scene/ui/UIRendererTest.h"
 #include "3d/scene/ui/widget/text/TextTest.h"
@@ -121,6 +122,7 @@ void add3dUnitTests(CppUnit::TextUi::TestRunner& runner) {
 
     //model
     runner.addTest(ModelOcclusionCullerTest::suite());
+    runner.addTest(ModelSetDisplayerTest::suite());
 
     //shadow
     runner.addTest(LightSplitShadowMapTest::suite());
