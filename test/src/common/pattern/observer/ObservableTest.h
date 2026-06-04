@@ -1,16 +1,21 @@
 #pragma once
 
+#include <functional>
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 #include <UrchinCommon.h>
 
-struct MyObservable : urchin::Observable {
+class MyObservable : public urchin::Observable {
 
 };
 
-struct MyObserver : urchin::Observer {
-    void notify(urchin::Observable*, int) override;
-    std::vector<std::pair<urchin::Observable*, int>> receivedNotifications;
+class MyObserver : public urchin::Observer {
+    public:
+        explicit MyObserver(std::function<void(urchin::Observable*, int)>);
+        void notify(urchin::Observable*, int) override;
+
+    private:
+        std::function<void(urchin::Observable*, int)> notifyCallback;
 };
 
 class ObservableTest final : public CppUnit::TestFixture {
@@ -18,4 +23,6 @@ class ObservableTest final : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void notifyObservers();
+        void notifyObserversWithRemove();
+        void notifyObserversWithAdd();
 };
