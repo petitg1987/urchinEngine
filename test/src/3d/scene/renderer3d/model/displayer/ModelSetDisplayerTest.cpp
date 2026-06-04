@@ -19,7 +19,7 @@ void ModelSetDisplayerTest::test() { //TODO renaming
     modelSetDisplayer->addNewModel(model2.get());
     modelSetDisplayer->addNewModel(model3.get());
 
-    AssertHelper::assertFalse(model1->getModelInstanceDisplayers()[0] == model2->getModelInstanceDisplayers()[0]);
+    AssertHelper::assertTrue(model1->getModelInstanceDisplayers()[0] != model2->getModelInstanceDisplayers()[0]);
     AssertHelper::assertTrue(model2->getModelInstanceDisplayers()[0] == model3->getModelInstanceDisplayers()[0]);
 }
 
