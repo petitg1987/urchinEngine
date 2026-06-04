@@ -122,7 +122,7 @@ namespace urchin {
             } else {
                 //The displayer will be replaced in the 'replaceAllModels' method, but it is already detached here.
                 //Indeed, the updated value in the model could be wrongly used by another update of model in the displayer via ModelInstanceDisplayer#getReferenceModel().
-                removeModelFromDisplayer(*model, *displayer);
+                removeModelFromDisplayer(*model, *displayer); //TODO if no displayer (purge ?) => no remove of observation !
             }
         }
     }
@@ -205,7 +205,7 @@ namespace urchin {
                 currentModelInstanceDisplayer->updateLayersMask(currentModelInstanceDisplayer->getLayersMask() | layersMask);
                 return; //the model displayer attached to the model is still valid
             }
-            removeModelFromDisplayer(*model, *currentModelInstanceDisplayer);
+            removeModelFromDisplayer(*model, *currentModelInstanceDisplayer); //TODO if no displayer (purge ?) => no remove of observation !
         }
 
         if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
@@ -255,7 +255,7 @@ namespace urchin {
         if (model) {
             exclusiveInstanceDisplayers.erase(model);
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            if (modelInstanceDisplayer) {
+            if (modelInstanceDisplayer) { //TODO if no displayer (purge ?) => no remove of observation !
                 removeModelFromDisplayer(*model, *modelInstanceDisplayer);
             }
 

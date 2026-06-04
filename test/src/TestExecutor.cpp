@@ -32,6 +32,7 @@
 #include "common/math/geometry/3d/Line3DTest.h"
 #include "common/math/geometry/3d/PlaneTest.h"
 #include "common/partitioning/GridContainerTest.h"
+#include "common/pattern/observer/ObservableTest.h"
 #include "3d/graphics/render/GenericRendererComparatorTest.h"
 #include "3d/scene/renderer3d/Renderer3dTest.h"
 #include "3d/scene/renderer3d/model/culler/ModelOcclusionCullerTest.h"
@@ -106,6 +107,9 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
 
     //partitioning
     runner.addTest(GridContainerTest::suite());
+
+    //pattern
+    runner.addTest(ObservableTest::suite());
 }
 
 void add3dUnitTests(CppUnit::TextUi::TestRunner& runner) {
