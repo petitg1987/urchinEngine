@@ -325,6 +325,13 @@ namespace urchin {
         return lastRenderingTime;
     }
 
+    void ModelInstanceDisplayer::alterLastRenderingTime(std::chrono::steady_clock::time_point lastRenderingTime) {
+        if (!renderTarget.isTestMode()) {
+            throw std::runtime_error("Alter last rendering time not allowed outside test mode");
+        }
+        this->lastRenderingTime = lastRenderingTime;
+    }
+
     void ModelInstanceDisplayer::resetRenderingModels() {
         instanceMatrices.clear();
         instanceModelMatrices.clear();

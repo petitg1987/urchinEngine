@@ -48,27 +48,64 @@ void ModelSetDisplayerTest::removeInstanceModel() {
     //Display with common displayer for model 1 and 2
     modelSetDisplayer->replaceAllModels(std::vector{model1.get(), model2.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+    AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertTrue(model1->getModelInstanceDisplayers()[0] == model2->getModelInstanceDisplayers()[0]);
-    AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 1);
-    AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 1);
+    AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 1l);
+    AssertHelper::assertTrue(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED)[0] == modelSetDisplayer.get());
+    AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 1l);
+    AssertHelper::assertTrue(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED)[0] == modelSetDisplayer.get());
 
     //Remove model 1
     modelSetDisplayer->removeModel(model1.get());
-    AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0);
+    AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l);
 
     //Update model 2 and remove
     model2->updateUv(0, {Point2(99.0f, 99.0f), Point2(99.0f, 99.0f), Point2(99.0f, 99.0f)});
     modelSetDisplayer->removeModel(model2.get());
-    AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0);
+    AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l);
 }
 
-//TODO add more tests (purge, exclusive)
+void ModelSetDisplayerTest::purgeUnusedDisplayer() {
+    auto model1 = ModelBuilder().newEmptyModel("testModel1");
+    auto model2 = ModelBuilder().newEmptyModel("testModel2");
+    OffscreenRender offscreenRender("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
+    offscreenRender.setOutputSize(1024, 768, 1, false);
+    auto modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
+    modelSetDisplayer->setupShader("testVS", "testFS", std::unique_ptr<ShaderConstants>(nullptr));
+    modelSetDisplayer->initialize(offscreenRender);
+
+    //Display model 1 and 2
+    modelSetDisplayer->replaceAllModels(std::vector{model1.get(), model2.get()});
+    modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+    AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 1l);
+    AssertHelper::assertTrue(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED)[0] == modelSetDisplayer.get());
+    AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 1l);
+    AssertHelper::assertTrue(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED)[0] == modelSetDisplayer.get());
+
+    //Display only model 2 five minutes later (model 1 displayer is removed)
+    model1->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
+    model2->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
+    modelSetDisplayer->replaceAllModels(std::vector{model2.get()});
+    modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+    AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 0l);
+    AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
+
+    modelSetDisplayer = std::unique_ptr<ModelSetDisplayer>(nullptr);
+    AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l); //TODO fix it
+    AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l);
+}
+
+//TODO add more tests (exclusive)
 
 CppUnit::Test* ModelSetDisplayerTest::suite() {
     auto* suite = new CppUnit::TestSuite("ModelSetDisplayerTest");
 
     suite->addTest(new CppUnit::TestCaller("updateInstancedModel", &ModelSetDisplayerTest::updateInstancedModel));
     suite->addTest(new CppUnit::TestCaller("removeInstanceModel", &ModelSetDisplayerTest::removeInstanceModel));
+    suite->addTest(new CppUnit::TestCaller("purgeUnusedDisplayer", &ModelSetDisplayerTest::purgeUnusedDisplayer));
 
     return suite;
 }
