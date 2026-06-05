@@ -93,7 +93,8 @@ void ModelSetDisplayerTest::purgeUnusedDisplayer() {
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 0l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
 
-    modelSetDisplayer = std::unique_ptr<ModelSetDisplayer>(nullptr);
+    modelSetDisplayer->~ModelSetDisplayer();
+    modelSetDisplayer.release();
     AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l); //TODO fix it
     AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l);
 }
