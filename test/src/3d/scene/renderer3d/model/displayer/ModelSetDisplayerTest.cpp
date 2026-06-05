@@ -99,7 +99,37 @@ void ModelSetDisplayerTest::purgeUnusedDisplayer() {
     AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l);
 }
 
-//TODO add more tests (exclusive)
+void ModelSetDisplayerTest::modelWithoutInstancing() {
+    auto model1 = ModelBuilder().newEmptyModel("testModel1");
+    model1->updateUv(0, {Point2(99.0f, 99.0f), Point2(99.0f, 99.0f), Point2(99.0f, 99.0f)});
+    auto model2 = std::make_unique<Model>(*model1);
+    OffscreenRender offscreenRender("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
+    offscreenRender.setOutputSize(1024, 768, 1, false);
+    auto modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
+    modelSetDisplayer->setupShader("testVS", "testFS", std::unique_ptr<ShaderConstants>(nullptr));
+    modelSetDisplayer->initialize(offscreenRender);
+
+    //Display with all individual displayers
+    modelSetDisplayer->replaceAllModels(std::vector{model1.get(), model2.get()});
+    modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+    AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertTrue(model1->getModelInstanceDisplayers()[0] != model2->getModelInstanceDisplayers()[0]);
+    ModelInstanceDisplayer* initialModel1Displayer = model1->getModelInstanceDisplayers()[0];
+    ModelInstanceDisplayer* initialModel2Displayer = model2->getModelInstanceDisplayers()[0];
+
+    //Display only model 1
+    modelSetDisplayer->replaceAllModels(std::vector{model1.get()});
+    modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+
+    //Display with existing displayer
+    modelSetDisplayer->replaceAllModels(std::vector{model1.get(), model2.get()});
+    modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+    AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertTrue(model1->getModelInstanceDisplayers()[0] == initialModel1Displayer);
+    AssertHelper::assertTrue(model2->getModelInstanceDisplayers()[0] == initialModel2Displayer);
+}
 
 CppUnit::Test* ModelSetDisplayerTest::suite() {
     auto* suite = new CppUnit::TestSuite("ModelSetDisplayerTest");
@@ -107,6 +137,7 @@ CppUnit::Test* ModelSetDisplayerTest::suite() {
     suite->addTest(new CppUnit::TestCaller("updateInstancedModel", &ModelSetDisplayerTest::updateInstancedModel));
     suite->addTest(new CppUnit::TestCaller("removeInstanceModel", &ModelSetDisplayerTest::removeInstanceModel));
     suite->addTest(new CppUnit::TestCaller("purgeUnusedDisplayer", &ModelSetDisplayerTest::purgeUnusedDisplayer));
+    suite->addTest(new CppUnit::TestCaller("modelWithoutInstancing", &ModelSetDisplayerTest::modelWithoutInstancing));
 
     return suite;
 }

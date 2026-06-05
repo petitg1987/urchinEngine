@@ -10,4 +10,5 @@ class ModelSetDisplayerTest final : public CppUnit::TestFixture {
         void updateInstancedModel();
         void removeInstanceModel();
         void purgeUnusedDisplayer();
+        void modelWithoutInstancing();
 };
