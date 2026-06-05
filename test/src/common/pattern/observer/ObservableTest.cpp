@@ -16,43 +16,49 @@ void MyObserver::notify(Observable* observable, int notificationType) {
 }
 
 void ObservableTest::notifyObservers() {
+    int notificationType = 0;
     std::vector<std::pair<Observable*, int>> receivedNotif;
     MyObservable myObservable;
     MyObserver myObserver([&](Observable* o, int nt) { receivedNotif.push_back(std::make_pair(o, nt)); });
-    myObservable.addObserver(&myObserver, 0);
+    myObservable.addObserver(&myObserver, notificationType);
 
-    myObservable.notifyObservers(&myObservable, 0);
+    myObservable.notifyObservers(&myObservable, notificationType);
 
     AssertHelper::assertUnsignedIntEquals(receivedNotif.size(), 1l);
     AssertHelper::assertTrue(receivedNotif[0].first == &myObservable);
-    AssertHelper::assertIntEquals(receivedNotif[0].second, 0);
+    AssertHelper::assertIntEquals(receivedNotif[0].second, notificationType);
 }
 
 void ObservableTest::notifyObserversWithRemove() {
+    int notificationType = 0;
     std::vector<std::pair<Observable*, int>> receivedNotif;
     MyObservable myObservable;
     MyObserver myObserver2([&](Observable* o, int nt) { receivedNotif.push_back(std::make_pair(o, nt)); });
-    MyObserver myObserver1([&](Observable*, int) { myObservable.removeObserver(&myObserver2, 0); });
-    myObservable.addObserver(&myObserver1, 0);
-    myObservable.addObserver(&myObserver2, 0);
+    MyObserver myObserver1([&](Observable*, int) { myObservable.removeObserver(&myObserver2, notificationType); });
+    myObservable.addObserver(&myObserver1, notificationType);
+    myObservable.addObserver(&myObserver2, notificationType);
 
-    myObservable.notifyObservers(&myObservable, 0);
+    myObservable.notifyObservers(&myObservable, notificationType);
 
     AssertHelper::assertUnsignedIntEquals(receivedNotif.size(), 0l);
+    AssertHelper::assertUnsignedIntEquals(myObservable.getObservers(notificationType).size(), 1l);
 }
 
 void ObservableTest::notifyObserversWithAdd() {
+    int notificationType = 0;
     std::vector<std::pair<Observable*, int>> receivedNotif;
     MyObservable myObservable;
     MyObserver myObserver2([&](Observable* o, int nt) { receivedNotif.push_back(std::make_pair(o, nt)); });
-    MyObserver myObserver1([&](Observable*, int) { myObservable.addObserver(&myObserver2, 0); });
-    myObservable.addObserver(&myObserver1, 0);
+    MyObserver myObserver1([&](Observable*, int) { myObservable.addObserver(&myObserver2, notificationType); });
+    myObservable.addObserver(&myObserver1, notificationType);
 
-    myObservable.notifyObservers(&myObservable, 0);
+    myObservable.notifyObservers(&myObservable, notificationType);
     AssertHelper::assertUnsignedIntEquals(receivedNotif.size(), 0l);
+    AssertHelper::assertUnsignedIntEquals(myObservable.getObservers(notificationType).size(), 2l);
 
-    myObservable.notifyObservers(&myObservable, 0);
+    myObservable.notifyObservers(&myObservable, notificationType);
     AssertHelper::assertUnsignedIntEquals(receivedNotif.size(), 1l);
+    AssertHelper::assertUnsignedIntEquals(myObservable.getObservers(notificationType).size(), 2l);
 }
 
 CppUnit::Test* ObservableTest::suite() {

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <map>
+#include <span>
 
 #include "pattern/observer/Observer.h"
 
@@ -15,6 +16,7 @@ namespace urchin {
             void addObserver(Observer*, int);
             void addObserverAndTriggerNotify(Observer*, int);
             void removeObserver(Observer*, int);
+            std::span<Observer* const> getObservers(int) const;
 
             void notifyObservers(Observable*, int);
 

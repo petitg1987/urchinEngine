@@ -7,5 +7,5 @@ class ModelSetDisplayerTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
-        void test();
+        void updateInstancedModel();
 };

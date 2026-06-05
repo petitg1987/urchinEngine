@@ -44,6 +44,14 @@ namespace urchin {
         }
     }
 
+    std::span<Observer* const> Observable::getObservers(int notificationType) const {
+        auto itObservers = mapObservers.find(notificationType);
+        if (itObservers != mapObservers.end()) {
+            return itObservers->second;
+        }
+        return {};
+    }
+
     /**
     * @param observable Observable producing this notification
     */
