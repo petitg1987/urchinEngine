@@ -56,7 +56,7 @@ void ModelSetDisplayerTest::removeInstanceModel() {
     modelSetDisplayer->removeModel(model1.get());
     AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0);
 
-    //Remove model 2
+    //Update model 2 and remove
     model2->updateUv(0, {Point2(99.0f, 99.0f), Point2(99.0f, 99.0f), Point2(99.0f, 99.0f)});
     modelSetDisplayer->removeModel(model2.get());
     AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0); //TODO fix that !
