@@ -21,6 +21,7 @@ namespace urchin {
 
     ModelSetDisplayer::~ModelSetDisplayer() {
         clearDisplayers();
+        cleanAllModels();
     }
 
     void ModelSetDisplayer::initialize(RenderTarget& renderTarget) {
@@ -122,7 +123,7 @@ namespace urchin {
             } else {
                 //The displayer will be replaced in the 'replaceAllModels' method, but it is already detached here.
                 //Indeed, the updated value in the model could be wrongly used by another update of model in the displayer via ModelInstanceDisplayer#getReferenceModel().
-                removeModelFromDisplayer(*model, *displayer); //TODO if no displayer (purge ?) => no remove of observation !
+                displayer->removeInstanceModel(*model);
             }
         }
     }
@@ -137,27 +138,19 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::clearDisplayers() {
-        for (Model* model : std::views::keys(exclusiveInstanceDisplayers)) {
-            unobserveModelUpdate(*model);
+        for (const auto& [model, displayer] : exclusiveInstanceDisplayers) {
+            displayer->removeInstanceModel(*model);
         }
         exclusiveInstanceDisplayers.clear();
 
         for (const std::unique_ptr<ModelInstanceDisplayer>& displayer : std::views::values(shareableInstanceDisplayers)) {
-            for (Model* model : displayer->getInstanceModels()) {
-                unobserveModelUpdate(*model);
+            std::vector<Model*> modelsWithDisplayer;
+            modelsWithDisplayer.assign(displayer->getInstanceModels().begin(), displayer->getInstanceModels().end()); //TODO instead of create a new vector: loop on original and remove
+            for (Model* modelWithDisplayer : modelsWithDisplayer) {
+                displayer->removeInstanceModel(*modelWithDisplayer);
             }
         }
         shareableInstanceDisplayers.clear();
-    }
-
-    void ModelSetDisplayer::removeModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
-        modelInstanceDisplayer.removeInstanceModel(model);
-        unobserveModelUpdate(model);
-    }
-
-    void ModelSetDisplayer::addModelToDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
-        modelInstanceDisplayer.addInstanceModel(model);
-        observeModelUpdate(model);
     }
 
     void ModelSetDisplayer::observeModelUpdate(Model& model) {
@@ -177,6 +170,9 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::cleanAllModels() {
+        for (Model* model : models) {
+            unobserveModelUpdate(*model);
+        }
         this->models.clear();
 
         for (const std::unique_ptr<ModelInstanceDisplayer>& modelInstanceDisplayer : std::views::values(exclusiveInstanceDisplayers)) {
@@ -197,6 +193,8 @@ namespace urchin {
         }
 
         this->models.push_back(model);
+        observeModelUpdate(*model);
+
         std::size_t modelInstanceId = model->computeInstanceId(displayMode);
 
         ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
@@ -205,7 +203,7 @@ namespace urchin {
                 currentModelInstanceDisplayer->updateLayersMask(currentModelInstanceDisplayer->getLayersMask() | layersMask);
                 return; //the model displayer attached to the model is still valid
             }
-            removeModelFromDisplayer(*model, *currentModelInstanceDisplayer); //TODO if no displayer (purge ?) => no remove of observation !
+            currentModelInstanceDisplayer->removeInstanceModel(*model);
         }
 
         if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
@@ -213,14 +211,14 @@ namespace urchin {
             if (itFind != exclusiveInstanceDisplayers.end()) {
                 assert(itFind->second->getInstanceCount() == 0);
                 assert(itFind->second->getLayersMask().none());
-                addModelToDisplayer(*model, *itFind->second);
+                itFind->second->addInstanceModel(*model);
                 itFind->second->updateLayersMask(layersMask);
                 return; //the model displayer used in past for this model has been found
             }
         } else {
             const auto& itFind = shareableInstanceDisplayers.find(modelInstanceId);
             if (itFind != shareableInstanceDisplayers.end()) {
-                addModelToDisplayer(*model, *itFind->second);
+                itFind->second->addInstanceModel(*model);
                 itFind->second->updateLayersMask(itFind->second->getLayersMask() | layersMask);
                 return; //a matching model instance displayer has been found for the model
             }
@@ -233,7 +231,7 @@ namespace urchin {
         modelInstanceDisplayer->setupFaceCull(enableFaceCull);
         modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
         modelInstanceDisplayer->setupLayersMask(layersMask);
-        addModelToDisplayer(*model, *modelInstanceDisplayer);
+        modelInstanceDisplayer->addInstanceModel(*model);
         modelInstanceDisplayer->initialize();
         if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
             exclusiveInstanceDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
@@ -255,9 +253,11 @@ namespace urchin {
         if (model) {
             exclusiveInstanceDisplayers.erase(model);
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            if (modelInstanceDisplayer) { //TODO if no displayer (purge ?) => no remove of observation !
-                removeModelFromDisplayer(*model, *modelInstanceDisplayer);
+            if (modelInstanceDisplayer) {
+                modelInstanceDisplayer->removeInstanceModel(*model);
             }
+
+            unobserveModelUpdate(*model);
 
             std::erase(models, model);
         }

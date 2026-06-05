@@ -51,8 +51,6 @@ namespace urchin {
         private:
             ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
             void clearDisplayers();
-            void removeModelFromDisplayer(Model&, ModelInstanceDisplayer&);
-            void addModelToDisplayer(Model&, ModelInstanceDisplayer&);
 
             void observeModelUpdate(Model&);
             void unobserveModelUpdate(Model&);
