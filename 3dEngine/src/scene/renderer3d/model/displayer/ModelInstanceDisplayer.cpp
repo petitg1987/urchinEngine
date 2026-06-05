@@ -26,10 +26,7 @@ namespace urchin {
     }
 
     ModelInstanceDisplayer::~ModelInstanceDisplayer() {
-        std::vector<Model*> copiedInstanceModels = instanceModels;
-        for (Model* model : copiedInstanceModels) {
-            removeInstanceModel(*model);
-        }
+        removeAllInstanceModels();
     }
 
     void ModelInstanceDisplayer::setupCustomShaderVariable(CustomModelShaderVariable* customShaderVariable) {
@@ -315,6 +312,13 @@ namespace urchin {
         if (erasedCount != 1) {
             Logger::instance().logError("Removing the instance model fail: " + model.getConstMeshes()->getId());
         }
+    }
+
+    void ModelInstanceDisplayer::removeAllInstanceModels() {
+        for (Model* model : instanceModels) {
+            model->detachModelInstanceDisplayer(*this);
+        }
+        instanceModels.clear();
     }
 
     unsigned int ModelInstanceDisplayer::getInstanceCount() const {

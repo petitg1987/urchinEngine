@@ -144,11 +144,7 @@ namespace urchin {
         exclusiveInstanceDisplayers.clear();
 
         for (const std::unique_ptr<ModelInstanceDisplayer>& displayer : std::views::values(shareableInstanceDisplayers)) {
-            std::vector<Model*> modelsWithDisplayer;
-            modelsWithDisplayer.assign(displayer->getInstanceModels().begin(), displayer->getInstanceModels().end()); //TODO instead of create a new vector: loop on original and remove
-            for (Model* modelWithDisplayer : modelsWithDisplayer) {
-                displayer->removeInstanceModel(*modelWithDisplayer);
-            }
+            displayer->removeAllInstanceModels();
         }
         shareableInstanceDisplayers.clear();
     }

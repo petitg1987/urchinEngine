@@ -42,6 +42,7 @@ namespace urchin {
 
             void addInstanceModel(Model&);
             void removeInstanceModel(Model&);
+            void removeAllInstanceModels();
             unsigned int getInstanceCount() const;
             std::chrono::steady_clock::time_point getLastRenderingTime() const;
             void alterLastRenderingTime(std::chrono::steady_clock::time_point);

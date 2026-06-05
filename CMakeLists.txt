@@ -5,6 +5,11 @@ if (CMAKE_BUILD_TYPE MATCHES "Debug")
     add_definitions(-DURCHIN_DEBUG)
 endif()
 
+if(USE_SANITIZER MATCHES "true")
+    set(CMAKE_CXX_FLAGS -fsanitize=address,leak,undefined)
+    set(CMAKE_LINKER_FLAGS -fsanitize=address,leak,undefined)
+endif()
+
 set(URCHIN_BUILD_TOOLS "YES" CACHE STRING "Build the urchin engine tools (map editor, test runner).")
 set(CMAKE_CXX_STANDARD 23)
 

@@ -67,6 +67,12 @@
     * Build type: `Debug`
     * Build directory: `.build/debug`
     * Build options: `-j 14`
+  * Profile **DebugSanitizer**:
+    * Name: `DebugSanitizer`
+    * Build type: `Debug`
+    * CMake options: `-DUSE_SANITIZER=true`
+    * Build directory: `.build/debug-sanitizer`
+    * Build options: `-j 14`
   * Profile **Release**:
     * Name: `RelWithDebInfo`
     * Build type: `RelWithDebInfo`
