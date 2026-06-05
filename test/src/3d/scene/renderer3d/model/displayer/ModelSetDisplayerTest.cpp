@@ -107,7 +107,7 @@ void ModelSetDisplayerTest::purgeUnusedDisplayer() {
 
     //Destroy model set displayer
     modelSetDisplayer.reset(nullptr);
-    AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l); //TODO fix it
+    AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l);
     AssertHelper::assertUnsignedIntEquals(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l);
 }
 
