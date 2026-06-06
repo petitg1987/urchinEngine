@@ -532,7 +532,7 @@ namespace urchin {
         }
 
         //update models (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
-        modelSetDisplayer->replaceModelsToDisplay(modelsInFrustum);
+        modelSetDisplayer->setModelsToDisplay(modelsInFrustum);
         transparentManager.replaceAllModels(modelsInFrustum);
     }
 

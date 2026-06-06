@@ -17,7 +17,7 @@ void ModelSetDisplayerTest::updateInstancedModel() {
     modelSetDisplayer->initialize(offscreenRender);
 
     //Display with common displayer for model 2 and 3
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get(), model2.get(), model3.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get(), model2.get(), model3.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
@@ -28,7 +28,7 @@ void ModelSetDisplayerTest::updateInstancedModel() {
 
     //Display with all individual displayers
     model3->setLightMask(0);
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get(), model2.get(), model3.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get(), model2.get(), model3.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
@@ -38,7 +38,7 @@ void ModelSetDisplayerTest::updateInstancedModel() {
 
     //Display with common displayer for model 2 and 3
     model3->setLightMask(std::numeric_limits<uint8_t>::max());
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get(), model2.get(), model3.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get(), model2.get(), model3.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
@@ -58,7 +58,7 @@ void ModelSetDisplayerTest::removeInstanceModel() {
     modelSetDisplayer->initialize(offscreenRender);
 
     //Display with common displayer for model 1 and 2
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get(), model2.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get(), model2.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
@@ -88,7 +88,7 @@ void ModelSetDisplayerTest::purgeUnusedDisplayer() {
     modelSetDisplayer->initialize(offscreenRender);
 
     //Display model 1 and 2
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get(), model2.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get(), model2.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
@@ -100,13 +100,13 @@ void ModelSetDisplayerTest::purgeUnusedDisplayer() {
     //Display only model 2 five minutes later (model 1 displayer is removed)
     model1->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
     model2->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model2.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model2.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 0l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
 
     //Display model 1 and 2 (model 1 displayed is re-created)
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get(), model2.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get(), model2.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
@@ -114,7 +114,7 @@ void ModelSetDisplayerTest::purgeUnusedDisplayer() {
     //Display only model 1 five minutes later (model 2 displayer is removed)
     model1->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
     model2->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 0l);
@@ -136,7 +136,7 @@ void ModelSetDisplayerTest::modelWithoutInstancing() {
     modelSetDisplayer->initialize(offscreenRender);
 
     //Display with all individual displayers
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get(), model2.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get(), model2.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
@@ -145,11 +145,11 @@ void ModelSetDisplayerTest::modelWithoutInstancing() {
     ModelInstanceDisplayer* initialModel2Displayer = model2->getModelInstanceDisplayers()[0];
 
     //Display only model 1
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
 
     //Display with existing displayer
-    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get(), model2.get()});
+    modelSetDisplayer->setModelsToDisplay(std::vector{model1.get(), model2.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);

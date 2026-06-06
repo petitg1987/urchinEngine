@@ -264,7 +264,7 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::replaceModelsToDisplay(std::span<Model* const> modelsToDisplay) {
+    void ModelSetDisplayer::setModelsToDisplay(std::span<Model* const> modelsToDisplay) {
         resetModelsToDisplay();
         for (Model* modelToDisplay : modelsToDisplay) {
             addModelToDisplay(modelToDisplay);

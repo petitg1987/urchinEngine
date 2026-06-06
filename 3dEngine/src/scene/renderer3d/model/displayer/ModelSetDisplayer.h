@@ -38,7 +38,7 @@ namespace urchin {
             bool registerModel(Model*);
             void unregisterModel(Model*);
             void addModelToDisplay(Model*, std::bitset<8> = std::bitset<8>(ULLONG_MAX));
-            void replaceModelsToDisplay(std::span<Model* const>);
+            void setModelsToDisplay(std::span<Model* const>);
             void resetModelsToDisplay();
             std::span<Model* const> getModelsToDisplay() const;
             bool isDisplayerExist(const Model&) const;
