@@ -233,19 +233,16 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::unregisterModel(Model* model) {
-        if (!model) {
-            return;
+        if (model) {
+            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+            if (modelInstanceDisplayer) {
+                detachModelFromDisplayer(model, modelInstanceDisplayer);
+            }
+
+            unobserveModelUpdate(*model);
+            registeredModels.erase(model);
+            std::erase(modelsToDisplay, model);
         }
-
-        ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-        if (modelInstanceDisplayer) {
-            detachModelFromDisplayer(model, modelInstanceDisplayer);
-        }
-
-        unobserveModelUpdate(*model);
-        registeredModels.erase(model);
-
-        std::erase(modelsToDisplay, model);
     }
 
     void ModelSetDisplayer::addModelToDisplay(Model* modelToDisplay, std::bitset<8> layersMask) {
