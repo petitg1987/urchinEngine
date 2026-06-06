@@ -66,7 +66,6 @@ namespace urchin {
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
         modelSetDisplayer->setupFaceCull(false);
         modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
-
         modelSetDisplayer->initialize(*renderTarget);
     }
 
