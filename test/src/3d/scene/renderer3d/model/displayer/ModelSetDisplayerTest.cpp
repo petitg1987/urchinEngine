@@ -17,6 +17,7 @@ void ModelSetDisplayerTest::updateInstancedModel() {
     modelSetDisplayer->initialize(offscreenRender);
 
     //Display with common displayer for model 2 and 3
+    modelSetDisplayer->registerModel(model1.get()); //register a model in advance to improve performance of 'setModelsToDisplay'
     modelSetDisplayer->setModelsToDisplay(std::vector{model1.get(), model2.get(), model3.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
