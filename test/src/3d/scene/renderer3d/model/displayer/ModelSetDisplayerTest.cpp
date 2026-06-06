@@ -158,7 +158,35 @@ void ModelSetDisplayerTest::modelWithoutInstancing() {
     AssertHelper::assertTrue(model2->getModelInstanceDisplayers()[0] == initialModel2Displayer);
 }
 
-//TODO add tests for layer !
+void ModelSetDisplayerTest::layerMaskRestriction() {
+    auto model1 = ModelBuilder().newEmptyModel("testModel1");
+    auto model2 = std::make_unique<Model>(*model1);
+    OffscreenRender offscreenRender("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
+    offscreenRender.setOutputSize(1024, 768, 1, false);
+    auto modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
+    modelSetDisplayer->setupShader("testVS", "testFS", std::unique_ptr<ShaderConstants>(nullptr));
+    modelSetDisplayer->initialize(offscreenRender);
+
+    //Display with common displayer for model 2 and 3
+    modelSetDisplayer->resetModelsToDisplay();
+    modelSetDisplayer->addModelToDisplay(model1.get(), std::bitset<8>(1));
+    modelSetDisplayer->addModelToDisplay(model2.get(), std::bitset<8>(2));
+    modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+    AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertTrue(model1->getModelInstanceDisplayers()[0] == model2->getModelInstanceDisplayers()[0]);
+    AssertHelper::assertTrue(model1->getModelInstanceDisplayers()[0]->getLayersMask() == std::bitset<8>(3));
+
+    //Display with all individual displayers
+    model1->setLightMask(0);
+    modelSetDisplayer->resetModelsToDisplay();
+    modelSetDisplayer->addModelToDisplay(model1.get(), std::bitset<8>(1));
+    modelSetDisplayer->addModelToDisplay(model2.get(), std::bitset<8>(2));
+    modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+    AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertTrue(model1->getModelInstanceDisplayers()[0]->getLayersMask() == std::bitset<8>(1));
+    AssertHelper::assertTrue(model2->getModelInstanceDisplayers()[0]->getLayersMask() == std::bitset<8>(2));
+}
 
 CppUnit::Test* ModelSetDisplayerTest::suite() {
     auto* suite = new CppUnit::TestSuite("ModelSetDisplayerTest");
@@ -167,6 +195,7 @@ CppUnit::Test* ModelSetDisplayerTest::suite() {
     suite->addTest(new CppUnit::TestCaller("removeInstanceModel", &ModelSetDisplayerTest::removeInstanceModel));
     suite->addTest(new CppUnit::TestCaller("purgeUnusedDisplayer", &ModelSetDisplayerTest::purgeUnusedDisplayer));
     suite->addTest(new CppUnit::TestCaller("modelWithoutInstancing", &ModelSetDisplayerTest::modelWithoutInstancing));
+    suite->addTest(new CppUnit::TestCaller("layerMaskRestriction", &ModelSetDisplayerTest::layerMaskRestriction));
 
     return suite;
 }

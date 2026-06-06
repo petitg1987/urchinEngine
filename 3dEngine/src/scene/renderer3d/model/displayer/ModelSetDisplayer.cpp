@@ -177,6 +177,7 @@ namespace urchin {
         modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
         modelInstanceDisplayer->setupFaceCull(enableFaceCull);
         modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
+        modelInstanceDisplayer->setupLayersMask(std::bitset<8>(0));
         modelInstanceDisplayer->addInstanceModel(*model);
         modelInstanceDisplayer->initialize();
         if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
@@ -272,10 +273,10 @@ namespace urchin {
         this->modelsToDisplay.clear();
 
         for (const std::unique_ptr<ModelInstanceDisplayer>& modelInstanceDisplayer : std::views::values(exclusiveInstanceDisplayers)) {
-            modelInstanceDisplayer->updateLayersMask(std::bitset<8>());
+            modelInstanceDisplayer->updateLayersMask(std::bitset<8>(0));
         }
         for (const std::unique_ptr<ModelInstanceDisplayer>& modelInstanceDisplayer : std::views::values(shareableInstanceDisplayers)) {
-            modelInstanceDisplayer->updateLayersMask(std::bitset<8>());
+            modelInstanceDisplayer->updateLayersMask(std::bitset<8>(0));
         }
     }
 

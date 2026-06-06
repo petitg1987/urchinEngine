@@ -11,4 +11,5 @@ class ModelSetDisplayerTest final : public CppUnit::TestFixture {
         void removeInstanceModel();
         void purgeUnusedDisplayer();
         void modelWithoutInstancing();
+        void layerMaskRestriction();
 };
