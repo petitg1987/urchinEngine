@@ -35,7 +35,7 @@ namespace urchin {
 
             void notify(Observable*, int) override;
 
-            void cleanAllModels();
+            void cleanAllModels(); //TODO do not remove displayer from model (should be named: cleanAllModelsToDisplay or better ?) but removeModel() remove displayer
             void addNewModel(Model*, std::bitset<8> = std::bitset<8>(ULLONG_MAX));
             void replaceAllModels(std::span<Model* const>);
             void removeModel(Model*);

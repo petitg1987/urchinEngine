@@ -26,7 +26,7 @@ namespace urchin {
 
     void ModelSetDisplayer::initialize(RenderTarget& renderTarget) {
         if (isInitialized) {
-            throw std::runtime_error("Model displayer is already initialized.");
+            throw std::runtime_error("Model set displayer is already initialized.");
         }
         this->renderTarget = &renderTarget;
 
@@ -39,7 +39,7 @@ namespace urchin {
 
     void ModelSetDisplayer::setupShader(std::string vertexShaderName, std::string fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
         if (isInitialized) {
-            throw std::runtime_error("Impossible to set custom shader once the model displayer initialized.");
+            throw std::runtime_error("Impossible to set custom shader once the model set displayer is initialized.");
         }
 
         this->vertexShaderName = std::move(vertexShaderName);
@@ -49,7 +49,7 @@ namespace urchin {
 
     void ModelSetDisplayer::setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable> customShaderVariable) {
         if (isInitialized) {
-            throw std::runtime_error("Impossible to set custom shader variable once the model displayer initialized.");
+            throw std::runtime_error("Impossible to set custom shader variable once the model set displayer is initialized.");
         }
         this->customShaderVariable = std::move(customShaderVariable);
     }
@@ -60,7 +60,7 @@ namespace urchin {
 
     void ModelSetDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
         if (isInitialized) {
-            throw std::runtime_error("Impossible to set depth operations once the model displayer initialized.");
+            throw std::runtime_error("Impossible to set depth operations once the model set displayer is initialized.");
         }
         this->depthTestEnabled = depthTestEnabled;
         this->depthWriteEnabled = depthWriteEnabled;
@@ -68,21 +68,21 @@ namespace urchin {
 
     void ModelSetDisplayer::setupFaceCull(bool enableFaceCull) {
         if (isInitialized) {
-            throw std::runtime_error("Impossible to set face cull once the model displayer initialized.");
+            throw std::runtime_error("Impossible to set face cull once the model set displayer is initialized.");
         }
         this->enableFaceCull = enableFaceCull;
     }
 
     void ModelSetDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
         if (isInitialized) {
-            throw std::runtime_error("Impossible to set blend functions once the model displayer initialized.");
+            throw std::runtime_error("Impossible to set blend functions once the model set displayer is initialized.");
         }
         this->blendFunctions = blendFunctions;
     }
 
     void ModelSetDisplayer::setupLayerIndexDataInShader(bool enableLayerIndexDataInShader) {
         if (isInitialized) {
-            throw std::runtime_error("Impossible to set layer index data in shader once the model displayer initialized.");
+            throw std::runtime_error("Impossible to set layer index data in shader once the model set displayer is initialized.");
         }
         this->enableLayerIndexDataInShader = enableLayerIndexDataInShader;
     }
@@ -191,7 +191,7 @@ namespace urchin {
 
     void ModelSetDisplayer::addNewModel(Model* model, std::bitset<8> layersMask) {
         if (!isInitialized) {
-            throw std::runtime_error("Model displayer must be initialized before adding model");
+            throw std::runtime_error("Model set displayer must be initialized before adding model");
         }
 
         if (meshFilter && !meshFilter->isAccepted(*model)) {
@@ -283,7 +283,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 
         if (!isInitialized) {
-            throw std::runtime_error("Model displayer must be initialized before call display");
+            throw std::runtime_error("Model set displayer must be initialized before call display");
         }
 
         activeInstanceDisplayers.clear();
@@ -305,7 +305,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 
         if (!isInitialized) {
-            throw std::runtime_error("Model displayer must be initialized before call display");
+            throw std::runtime_error("Model set displayer must be initialized before call display");
         }
 
         std::ranges::sort(models, [&modelSorter, &userData](const Model* model1, const Model* model2) {
