@@ -21,12 +21,12 @@ void Renderer3dTest::modelPreWarm() {
     renderer3D.preWarmModels();
 
     const ModelSetDisplayer& mainModelsDisplayer = renderer3D.getModelSetDisplayer();
-    AssertHelper::assertUnsignedIntEquals(mainModelsDisplayer.getModels().size(), 1);
-    AssertHelper::assertStringEquals(mainModelsDisplayer.getModels()[0]->getConstMeshes()->getName(), opaqueModel->getConstMeshes()->getName());
+    AssertHelper::assertUnsignedIntEquals(mainModelsDisplayer.getModelsToDisplay().size(), 1);
+    AssertHelper::assertStringEquals(mainModelsDisplayer.getModelsToDisplay()[0]->getConstMeshes()->getName(), opaqueModel->getConstMeshes()->getName());
     AssertHelper::assertTrue(mainModelsDisplayer.isDisplayerExist(*opaqueModel));
     const ModelSetDisplayer& transparentModelsDisplayer = renderer3D.getTransparentManager().getModelSetDisplayer();
-    AssertHelper::assertUnsignedIntEquals(transparentModelsDisplayer.getModels().size(), 1);
-    AssertHelper::assertStringEquals(transparentModelsDisplayer.getModels()[0]->getConstMeshes()->getName(), transparentModel->getConstMeshes()->getName());
+    AssertHelper::assertUnsignedIntEquals(transparentModelsDisplayer.getModelsToDisplay().size(), 1);
+    AssertHelper::assertStringEquals(transparentModelsDisplayer.getModelsToDisplay()[0]->getConstMeshes()->getName(), transparentModel->getConstMeshes()->getName());
     AssertHelper::assertTrue(transparentModelsDisplayer.isDisplayerExist(*transparentModel));
 }
 

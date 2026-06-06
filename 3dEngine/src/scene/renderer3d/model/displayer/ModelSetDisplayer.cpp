@@ -20,10 +20,12 @@ namespace urchin {
     }
 
     ModelSetDisplayer::~ModelSetDisplayer() {
-        clearDisplayers(); //TODO remove if unregisterModel destroy displayers
-        for (Model* registeredModel : registeredModels) {
+        std::vector registeredModelsToRemove(registeredModels.begin(), registeredModels.end());
+        for (Model* registeredModel : registeredModelsToRemove) {
             unregisterModel(registeredModel);
         }
+        assert(exclusiveInstanceDisplayers.empty());
+        assert(shareableInstanceDisplayers.empty());
     }
 
     void ModelSetDisplayer::initialize(RenderTarget& renderTarget) {
@@ -133,10 +135,10 @@ namespace urchin {
                     displayer->updateModelProperties(model);
                 }
             } else {
-                //The displayer will be replaced in the 'replaceModelsToDisplay' method, but it is already detached here.
-                //Indeed, the updated value in the model could be wrongly used by another update of model in the displayer via ModelInstanceDisplayer#getReferenceModel().
-                //The displayer is not recreated directly here because we don't want to re-create it at each notify received for performance reason
-                displayer->removeInstanceModel(*model);
+                //TODO what if addModelToDisplay is not re-call ?!!!!
+                //The displayer will be replaced in the 'addModelToDisplay' method.
+                //The displayer is not recreated directly here because we don't want to re-create it at each notification received for performance reason
+                detachModelFromDisplayer(model, displayer);
             }
         }
     }
@@ -175,22 +177,24 @@ namespace urchin {
         modelInstanceDisplayer->addInstanceModel(*model);
         modelInstanceDisplayer->initialize();
         if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
-            return exclusiveInstanceDisplayers.try_emplace(model, std::move(modelInstanceDisplayer)).first->second.get(); //TODO beurk !
+            const auto insertionResult = exclusiveInstanceDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
+            assert(insertionResult.second);
+            return insertionResult.first->second.get();
         } else {
-            return shareableInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer)).first->second.get(); //TODO beurk !
+            const auto insertionResult = shareableInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer));
+            assert(insertionResult.second);
+            return insertionResult.first->second.get();
         }
     }
 
-    void ModelSetDisplayer::clearDisplayers() {
-        for (const auto& [model, displayer] : exclusiveInstanceDisplayers) {
-            displayer->removeInstanceModel(*model);
-        }
-        exclusiveInstanceDisplayers.clear();
+    void ModelSetDisplayer::detachModelFromDisplayer(Model* model, ModelInstanceDisplayer* modelInstanceDisplayer) {
+        modelInstanceDisplayer->removeInstanceModel(*model);
 
-        for (const std::unique_ptr<ModelInstanceDisplayer>& displayer : std::views::values(shareableInstanceDisplayers)) {
-            displayer->removeAllInstanceModels();
+        if (exclusiveInstanceDisplayers.contains(model)) {
+            exclusiveInstanceDisplayers.erase(model);
+        } else if (modelInstanceDisplayer->getInstanceCount() == 0) {
+            shareableInstanceDisplayers.erase(modelInstanceDisplayer->getInstanceId());
         }
-        shareableInstanceDisplayers.clear();
     }
 
     void ModelSetDisplayer::observeModelUpdate(Model& model) {
@@ -230,14 +234,9 @@ namespace urchin {
             return;
         }
 
-        exclusiveInstanceDisplayers.erase(model);
-
         ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
         if (modelInstanceDisplayer) {
-            modelInstanceDisplayer->removeInstanceModel(*model);
-            if (modelInstanceDisplayer->getInstanceCount() == 0 && modelInstanceDisplayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
-                //TODO remove displayer
-            }
+            detachModelFromDisplayer(model, modelInstanceDisplayer);
         }
 
         unobserveModelUpdate(*model);
@@ -258,7 +257,7 @@ namespace urchin {
                 modelInstanceDisplayer = createOrUseDisplayerForModel(modelToDisplay);
             }
 
-            modelInstanceDisplayer->updateLayersMask(modelInstanceDisplayer->getLayersMask() | layersMask); //TODO add tests !
+            modelInstanceDisplayer->updateLayersMask(modelInstanceDisplayer->getLayersMask() | layersMask);
 
             this->modelsToDisplay.push_back(modelToDisplay);
         }

@@ -52,7 +52,7 @@ namespace urchin {
         private:
             ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
             ModelInstanceDisplayer* createOrUseDisplayerForModel(Model*);
-            void clearDisplayers();
+            void detachModelFromDisplayer(Model*, ModelInstanceDisplayer*);
 
             void observeModelUpdate(Model&);
             void unobserveModelUpdate(Model&);
