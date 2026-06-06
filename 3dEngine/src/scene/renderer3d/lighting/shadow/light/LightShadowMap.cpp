@@ -37,19 +37,19 @@ namespace urchin {
             shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
             if (light.getLightType() == Light::LightType::SUN) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapSun.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
-                shadowModelSetDisplayer->initialize(*renderTarget);
                 shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ModelShadowSunShaderVariable>(this));
                 shadowModelSetDisplayer->setupLayerIndexDataInShader(true);
+                shadowModelSetDisplayer->initialize(*renderTarget);
             } else if (light.getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapOmnidirectional.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
-                shadowModelSetDisplayer->initialize(*renderTarget);
                 shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ModelShadowOmnidirectionalShaderVariable>(this));
                 shadowModelSetDisplayer->setupLayerIndexDataInShader(true);
+                shadowModelSetDisplayer->initialize(*renderTarget);
             } else if (light.getLightType() == Light::LightType::SPOT) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapSpot.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
-                shadowModelSetDisplayer->initialize(*renderTarget);
                 shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ModelShadowSpotShaderVariable>(this));
                 shadowModelSetDisplayer->setupLayerIndexDataInShader(false);
+                shadowModelSetDisplayer->initialize(*renderTarget);
             } else {
                 throw std::runtime_error("Unknown light type to setup shadow model set displayer: " + std::to_string((int)light.getLightType()));
             }

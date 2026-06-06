@@ -48,8 +48,10 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable> customShaderVariable) {
+        if (isInitialized) {
+            throw std::runtime_error("Impossible to set custom shader variable once the model displayer initialized.");
+        }
         this->customShaderVariable = std::move(customShaderVariable);
-        clearDisplayers();
     }
 
     CustomModelShaderVariable* ModelSetDisplayer::getCustomShaderVariable() const {
@@ -57,24 +59,32 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
+        if (isInitialized) {
+            throw std::runtime_error("Impossible to set depth operations once the model displayer initialized.");
+        }
         this->depthTestEnabled = depthTestEnabled;
         this->depthWriteEnabled = depthWriteEnabled;
-        clearDisplayers();
     }
 
     void ModelSetDisplayer::setupFaceCull(bool enableFaceCull) {
+        if (isInitialized) {
+            throw std::runtime_error("Impossible to set face cull once the model displayer initialized.");
+        }
         this->enableFaceCull = enableFaceCull;
-        clearDisplayers();
     }
 
     void ModelSetDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
+        if (isInitialized) {
+            throw std::runtime_error("Impossible to set blend functions once the model displayer initialized.");
+        }
         this->blendFunctions = blendFunctions;
-        clearDisplayers();
     }
 
     void ModelSetDisplayer::setupLayerIndexDataInShader(bool enableLayerIndexDataInShader) {
+        if (isInitialized) {
+            throw std::runtime_error("Impossible to set layer index data in shader once the model displayer initialized.");
+        }
         this->enableLayerIndexDataInShader = enableLayerIndexDataInShader;
-        clearDisplayers();
     }
 
     void ModelSetDisplayer::setupMeshFilter(std::unique_ptr<MeshFilter> meshFilter) {
@@ -180,7 +190,9 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::addNewModel(Model* model, std::bitset<8> layersMask) {
-        assert(renderTarget);
+        if (!isInitialized) {
+            throw std::runtime_error("Model displayer must be initialized before adding model");
+        }
 
         if (meshFilter && !meshFilter->isAccepted(*model)) {
             return;
@@ -272,8 +284,6 @@ namespace urchin {
 
         if (!isInitialized) {
             throw std::runtime_error("Model displayer must be initialized before call display");
-        } else if (!renderTarget) {
-            throw std::runtime_error("Render target must be specified before call display");
         }
 
         activeInstanceDisplayers.clear();
@@ -296,8 +306,6 @@ namespace urchin {
 
         if (!isInitialized) {
             throw std::runtime_error("Model displayer must be initialized before call display");
-        } else if (!renderTarget) {
-            throw std::runtime_error("Render target must be specified before call display");
         }
 
         std::ranges::sort(models, [&modelSorter, &userData](const Model* model1, const Model* model2) {
