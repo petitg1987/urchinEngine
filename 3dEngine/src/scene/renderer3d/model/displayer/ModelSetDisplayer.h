@@ -35,11 +35,12 @@ namespace urchin {
 
             void notify(Observable*, int) override;
 
-            void cleanAllModels(); //TODO do not remove displayer from model (should be named: cleanAllModelsToDisplay or better ?) but removeModel() remove displayer
-            void addNewModel(Model*, std::bitset<8> = std::bitset<8>(ULLONG_MAX));
-            void replaceAllModels(std::span<Model* const>);
-            void removeModel(Model*);
-            std::span<Model* const> getModels() const;
+            bool registerModel(Model*);
+            void unregisterModel(Model*);
+            void addModelToDisplay(Model*, std::bitset<8> = std::bitset<8>(ULLONG_MAX));
+            void replaceModelsToDisplay(std::span<Model* const>);
+            void resetModelsToDisplay();
+            std::span<Model* const> getModelsToDisplay() const;
             bool isDisplayerExist(const Model&) const;
 
             void prepareRendering(unsigned int, const Matrix4<float>&);
@@ -50,6 +51,7 @@ namespace urchin {
 
         private:
             ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
+            ModelInstanceDisplayer* createOrUseDisplayerForModel(Model*);
             void clearDisplayers();
 
             void observeModelUpdate(Model&);
@@ -76,7 +78,8 @@ namespace urchin {
             std::unique_ptr<MeshFilter> meshFilter;
 
             RenderTarget* renderTarget;
-            std::vector<Model*> models;
+            std::unordered_set<Model*> registeredModels;
+            std::vector<Model*> modelsToDisplay;
             EverGrowHashSet<ModelInstanceDisplayer*> activeInstanceDisplayers;
             std::unordered_map<Model*, std::unique_ptr<ModelInstanceDisplayer>> exclusiveInstanceDisplayers;
             std::unordered_map<std::size_t, std::unique_ptr<ModelInstanceDisplayer>> shareableInstanceDisplayers;

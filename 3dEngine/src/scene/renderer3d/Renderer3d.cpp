@@ -247,7 +247,7 @@ namespace urchin {
         if (model) {
             shadowManager.removeModel(model);
             transparentManager.removeModel(model);
-            modelSetDisplayer->removeModel(model);
+            modelSetDisplayer->unregisterModel(model);
             unregisterModelForAnimation(*model);
             unregisterModelForBillboarding(*model);
             return modelOcclusionCuller.removeModel(model);
@@ -532,7 +532,7 @@ namespace urchin {
         }
 
         //update models (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
-        modelSetDisplayer->replaceAllModels(modelsInFrustum);
+        modelSetDisplayer->replaceModelsToDisplay(modelsInFrustum);
         transparentManager.replaceAllModels(modelsInFrustum);
     }
 

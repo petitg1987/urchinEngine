@@ -74,12 +74,12 @@ namespace urchin {
     }
 
     void TransparentManager::replaceAllModels(const std::vector<Model*>& models) const {
-        modelSetDisplayer->replaceAllModels(models);
+        modelSetDisplayer->replaceModelsToDisplay(models);
     }
 
     void TransparentManager::removeModel(Model* model) const {
         if (modelSetDisplayer) {
-            modelSetDisplayer->removeModel(model);
+            modelSetDisplayer->unregisterModel(model);
         }
     }
 
@@ -93,7 +93,7 @@ namespace urchin {
 
         sortUserData.camera = &camera;
         sortUserData.modelsDistanceToCamera.clear();
-        for (const Model* model : modelSetDisplayer->getModels()) {
+        for (const Model* model : modelSetDisplayer->getModelsToDisplay()) {
             Point3<float> modelPosition = model->getTransform().getPosition();
             if (!camera.getFrustum().collideWithPoint(modelPosition)) {
                 LineSegment3D modelLineSegment(model->getAABBox().getMin(), model->getAABBox().getMax());

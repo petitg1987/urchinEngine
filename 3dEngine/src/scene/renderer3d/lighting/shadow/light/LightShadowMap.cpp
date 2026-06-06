@@ -101,13 +101,13 @@ namespace urchin {
     }
 
     void LightShadowMap::removeModel(Model* model) const {
-        shadowModelSetDisplayer->removeModel(model);
+        shadowModelSetDisplayer->unregisterModel(model);
     }
 
     void LightShadowMap::updateVisibleModels() {
         ScopeProfiler sp(Profiler::graphic(), "smUpModels");
 
-        shadowModelSetDisplayer->cleanAllModels();
+        shadowModelSetDisplayer->resetModelsToDisplay();
 
         modelsToLayersMask.clear();
         std::size_t layerIndex = 0;
@@ -130,7 +130,7 @@ namespace urchin {
         }
 
         for (const auto& modelToLayersMask : modelsToLayersMask) {
-            shadowModelSetDisplayer->addNewModel(modelToLayersMask.key, modelToLayersMask.value);
+            shadowModelSetDisplayer->addModelToDisplay(modelToLayersMask.key, modelToLayersMask.value);
         }
     }
 
