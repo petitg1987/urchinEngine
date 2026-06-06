@@ -105,6 +105,20 @@ void ModelSetDisplayerTest::purgeUnusedDisplayer() {
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 0l);
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
 
+    //Display model 1 and 2 (model 1 displayed is re-created)
+    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get(), model2.get()});
+    modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+    AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
+
+    //Display only model 1 five minutes later (model 2 displayer is removed)
+    model1->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
+    model2->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
+    modelSetDisplayer->replaceModelsToDisplay(std::vector{model1.get()});
+    modelSetDisplayer->prepareRendering(0, Matrix4<float>());
+    AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);
+    AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 0l);
+
     //Destroy model set displayer
     modelSetDisplayer.reset(nullptr);
     AssertHelper::assertUnsignedIntEquals(model1->getObservers(Model::NotificationType::MESH_UV_UPDATED).size(), 0l);

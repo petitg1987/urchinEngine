@@ -97,48 +97,51 @@ namespace urchin {
 
     void ModelSetDisplayer::notify(Observable* observable, int notificationType) {
         if (auto model = dynamic_cast<Model*>(observable)) {
-            ModelInstanceDisplayer* displayer = findModelInstanceDisplayer(*model);
-            if (!displayer) {
+            #ifdef URCHIN_DEBUG
+                assert(registeredModels.contains(model));
+            #endif
+
+            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+            if (!modelInstanceDisplayer) {
+                //displayer has been purged because it has not been used for a long time
                 return;
             }
 
             bool canUpdateDisplayer = false;
             std::size_t newModelInstanceId = model->computeInstanceId(displayMode);
-            if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
-                if (displayer->getInstanceCount() <= 1 && !shareableInstanceDisplayers.contains(newModelInstanceId)) {
+            if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && modelInstanceDisplayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
+                if (modelInstanceDisplayer->getInstanceCount() <= 1 && !shareableInstanceDisplayers.contains(newModelInstanceId)) {
                     //case: displayer is not shared and there isn't other displayer matching the new instance ID
                     canUpdateDisplayer = true;
 
-                    auto displayerNodeHandler = shareableInstanceDisplayers.extract(displayer->getInstanceId());
-                    assert(displayerNodeHandler.mapped().get() == displayer);
+                    auto displayerNodeHandler = shareableInstanceDisplayers.extract(modelInstanceDisplayer->getInstanceId());
+                    assert(displayerNodeHandler.mapped().get() == modelInstanceDisplayer);
                     displayerNodeHandler.mapped()->updateInstanceId(newModelInstanceId);
                     displayerNodeHandler.key() = newModelInstanceId;
                     shareableInstanceDisplayers.insert(std::move(displayerNodeHandler));
-                } else if (newModelInstanceId == displayer->getInstanceId()) {
+                } else if (newModelInstanceId == modelInstanceDisplayer->getInstanceId()) {
                     //case: update scale from 1.0 to 1.0, etc.
                     canUpdateDisplayer = true;
                 }
-            } else if (newModelInstanceId == ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() == ModelDisplayable::INSTANCING_DENY_ID) {
+            } else if (newModelInstanceId == ModelDisplayable::INSTANCING_DENY_ID && modelInstanceDisplayer->getInstanceId() == ModelDisplayable::INSTANCING_DENY_ID) {
                 canUpdateDisplayer = true;
             }
 
             if (canUpdateDisplayer) {
                 if (notificationType == Model::MESH_VERTICES_UPDATED) {
-                    displayer->updateMeshVertices(model);
+                    modelInstanceDisplayer->updateMeshVertices(model);
                 } else if (notificationType == Model::MESH_UV_UPDATED) {
-                    displayer->updateMeshUv(model);
+                    modelInstanceDisplayer->updateMeshUv(model);
                 } else if (notificationType == Model::MATERIAL_UPDATED) {
-                    displayer->updateMaterial(model);
+                    modelInstanceDisplayer->updateMaterial(model);
                 } else if (notificationType == Model::SCALE_UPDATED) {
-                    displayer->updateScale();
+                    modelInstanceDisplayer->updateScale();
                 } else if (notificationType == Model::MODEL_PROPERTIES_UPDATED) {
-                    displayer->updateModelProperties(model);
+                    modelInstanceDisplayer->updateModelProperties(model);
                 }
             } else {
-                //TODO what if addModelToDisplay is not re-call ?!!!!
-                //The displayer will be replaced in the 'addModelToDisplay' method.
-                //The displayer is not recreated directly here because we don't want to re-create it at each notification received for performance reason
-                detachModelFromDisplayer(model, displayer);
+                detachModelFromDisplayer(model, modelInstanceDisplayer);
+                createOrUseDisplayerForModel(model);
             }
         }
     }
@@ -251,9 +254,7 @@ namespace urchin {
         if (modelRegistered && (!meshFilter || meshFilter->isAccepted(*modelToDisplay))) {
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*modelToDisplay);
             if (!modelInstanceDisplayer) {
-                //No model displayer found. Possible causes:
-                // - Displayer was not anymore valid due to changes applied on the model
-                // - The displayer has been purged because it has not been used for a long time
+                //displayer has been purged because it has not been used for a long time
                 modelInstanceDisplayer = createOrUseDisplayerForModel(modelToDisplay);
             }
 
