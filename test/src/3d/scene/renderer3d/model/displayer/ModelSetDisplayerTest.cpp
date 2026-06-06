@@ -167,7 +167,7 @@ void ModelSetDisplayerTest::layerMaskRestriction() {
     modelSetDisplayer->setupShader("testVS", "testFS", std::unique_ptr<ShaderConstants>(nullptr));
     modelSetDisplayer->initialize(offscreenRender);
 
-    //Display with common displayer for model 2 and 3
+    //Display with common displayer for model 1 and 2
     modelSetDisplayer->resetModelsToDisplay();
     modelSetDisplayer->addModelToDisplay(model1.get(), std::bitset<8>(1));
     modelSetDisplayer->addModelToDisplay(model2.get(), std::bitset<8>(2));
