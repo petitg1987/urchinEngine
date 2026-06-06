@@ -283,10 +283,6 @@ namespace urchin {
         return modelsToDisplay;
     }
 
-    bool ModelSetDisplayer::isDisplayerExist(const Model& model) const {
-        return findModelInstanceDisplayer(model) != nullptr;
-    }
-
     void ModelSetDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 

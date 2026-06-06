@@ -23,11 +23,12 @@ void Renderer3dTest::modelPreWarm() {
     const ModelSetDisplayer& mainModelsDisplayer = renderer3D.getModelSetDisplayer();
     AssertHelper::assertUnsignedIntEquals(mainModelsDisplayer.getModelsToDisplay().size(), 1);
     AssertHelper::assertStringEquals(mainModelsDisplayer.getModelsToDisplay()[0]->getConstMeshes()->getName(), opaqueModel->getConstMeshes()->getName());
-    AssertHelper::assertTrue(mainModelsDisplayer.isDisplayerExist(*opaqueModel));
+    AssertHelper::assertTrue(std::ranges::any_of(opaqueModel->getModelInstanceDisplayers(), [&mainModelsDisplayer](const auto* displayer) {return &displayer->getModelSetDisplayer() == &mainModelsDisplayer;}));
     const ModelSetDisplayer& transparentModelsDisplayer = renderer3D.getTransparentManager().getModelSetDisplayer();
     AssertHelper::assertUnsignedIntEquals(transparentModelsDisplayer.getModelsToDisplay().size(), 1);
     AssertHelper::assertStringEquals(transparentModelsDisplayer.getModelsToDisplay()[0]->getConstMeshes()->getName(), transparentModel->getConstMeshes()->getName());
-    AssertHelper::assertTrue(transparentModelsDisplayer.isDisplayerExist(*transparentModel));
+    AssertHelper::assertTrue(std::ranges::any_of(transparentModel->getModelInstanceDisplayers(), [&transparentModelsDisplayer](const auto* displayer) {return &displayer->getModelSetDisplayer() == &transparentModelsDisplayer;}));
+
 }
 
 std::unique_ptr<Model> Renderer3dTest::buildModel(const std::string& materialFilename, const std::string& modelName, const Point3<float>& position) const {

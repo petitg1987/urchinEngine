@@ -41,7 +41,6 @@ namespace urchin {
             void setModelsToDisplay(std::span<Model* const>);
             void resetModelsToDisplay();
             std::span<Model* const> getModelsToDisplay() const;
-            bool isDisplayerExist(const Model&) const;
 
             void prepareRendering(unsigned int, const Matrix4<float>&);
             void prepareRendering(unsigned int&, const Matrix4<float>&, const ModelSortFunction&, const void*);
