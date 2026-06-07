@@ -8,8 +8,8 @@ layout(constant_id = 0) const uint MAX_LIGHTS = 1000; //must be equals to LightM
 layout(constant_id = 1) const float AO_STRENGTH = 0.0;
 layout(constant_id = 2) const uint MAX_LIGHTS_WITH_SHADOW = 10; //must be equals to ShadowManager::LIGHTS_WITH_SHADOW_SHADER_LIMIT
 layout(constant_id = 3) const uint MAX_SPLIT_SHADOW_MAPS = 6; //must be equals to ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT
-layout(constant_id = 4) const float SHADOW_MAP_CONSTANT_BIAS_FACTOR = 0.0;
-layout(constant_id = 5) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
+layout(constant_id = 4) const float SHADOW_MAP_NORMAL_BIAS_CONSTANT_FACTOR = 0.0; //normal offset bias expressed in shadow texels
+layout(constant_id = 5) const float SHADOW_MAP_NORMAL_BIAS_SLOPE_FACTOR = 0.0; //extra normal offset bias (in texels) at grazing light angles
 layout(constant_id = 6) const int SHADOW_MAP_OFFSET_TEX_SIZE = 0;
 layout(constant_id = 7) const float MAX_EMISSIVE_FACTOR = 0.0;
 
@@ -81,20 +81,50 @@ float maxComponent(vec3 components) {
     return max(max(components.x, components.y), components.z);
 }
 
-float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 worldPosition, float NdotL, float biasReduceFactor) {
-    vec4 shadowCoord = shadowMatrix.mLightProjectionView[shadowLightIndex * MAX_SPLIT_SHADOW_MAPS + splitShadowMapIndex] * worldPosition;
+/*
+ * Find out how big a single shadow map texel is in world units at a specific location
+ */
+float computeSmTexelInWorldSize(mat4 mLightProjectionView, vec4 worldPosition, int shadowMapWidth) {
+    vec4 positionInClipSpace = mLightProjectionView * worldPosition;
+
+    //Clip gradient: if I move 1 unit in world space, how much does positionInClipSpace change?
+    vec3 clipXGradient = vec3(mLightProjectionView[0][0], mLightProjectionView[1][0], mLightProjectionView[2][0]);
+    vec3 clipYGradient = vec3(mLightProjectionView[0][1], mLightProjectionView[1][1], mLightProjectionView[2][1]);
+    vec3 clipWGradient = vec3(mLightProjectionView[0][3], mLightProjectionView[1][3], mLightProjectionView[2][3]);
+
+    //Apply quotient rule
+    float invClipW2 = 1.0 / (positionInClipSpace.w * positionInClipSpace.w);
+    vec3 ndcXGradient = (clipXGradient * positionInClipSpace.w - positionInClipSpace.x * clipWGradient) * invClipW2;
+    vec3 ndcYGradient = (clipYGradient * positionInClipSpace.w - positionInClipSpace.y * clipWGradient) * invClipW2;
+
+    float worldSizePerNdcX = 1.0 / max(length(ndcXGradient), 1e-8);
+    float worldSizePerNdcY = 1.0 / max(length(ndcYGradient), 1e-8);
+    float ndcSizePerTexel = 2.0 / float(shadowMapWidth); //NDC ranges from -1.0 to 1.0
+    return 0.5 * (worldSizePerNdcX + worldSizePerNdcY) * ndcSizePerTexel;
+}
+
+float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 worldPosition, vec3 normal, float NdotL) {
+    mat4 mLightProjectionView = shadowMatrix.mLightProjectionView[shadowLightIndex * MAX_SPLIT_SHADOW_MAPS + splitShadowMapIndex];
+
+    //TODO review !!!
+    //Normal offset bias: move the sample along the surface normal by a fraction of the shadow texel world size. Because it is
+    //applied in world space, it adapts to every projection (sun cascades, omnidirectional, spot) and to distance without per-light
+    //tuning, and it scales with the light grazing angle (the main source of shadow acne) instead of biasing the depth comparison.
+    int shadowMapWidth = textureSize(shadowMapTex[shadowLightIndex], 0).x;
+    float smTexelInWorldSize = computeSmTexelInWorldSize(mLightProjectionView, worldPosition, shadowMapWidth);
+    float grazingFactor = sqrt(clamp(1.0 - NdotL * NdotL, 0.0, 1.0)); //sin of the angle between the normal and the light
+    float normalOffset = smTexelInWorldSize * (SHADOW_MAP_NORMAL_BIAS_CONSTANT_FACTOR + SHADOW_MAP_NORMAL_BIAS_SLOPE_FACTOR * grazingFactor);
+    vec4 offsetWorldPosition = vec4(vec3(worldPosition) + normal * normalOffset, 1.0);
+
+    vec4 shadowCoord = mLightProjectionView * offsetWorldPosition;
     shadowCoord.xyz /= shadowCoord.w;
     shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
     shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
-    float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
-    float bias = (slopeBias + SHADOW_MAP_CONSTANT_BIAS_FACTOR) * biasReduceFactor;
-
     const float SOFT_EDGE_LENGTH = 2.5f;
-    float shadowMapInvSize = 1.0 / float(textureSize(shadowMapTex[shadowLightIndex], 0));
-    int testPointsQuantity = min(5, shadowInfo.offsetSampleCount);
+    float shadowMapInvSize = 1.0 / float(shadowMapWidth);
     vec2 sceneSize = textureSize(depthTex, 0);
-    ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
+    ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE); //TODO does offsetTexCoordinate can use smTexelInWorldSize ?
 
     //Phase 1: probe with reduced sample count to detect uniform regions
     int probeCount = min(5, shadowInfo.offsetSampleCount);
@@ -102,8 +132,7 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
     for (int i = 0; i < probeCount; ++i) {
         vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, i), 0).xy * SOFT_EDGE_LENGTH * shadowMapInvSize;
         float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
-        float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
-        if (shadowCoord.z - adjustedBias > shadowDepth) {
+        if (shadowCoord.z > shadowDepth) {
             probeInShadow++;
         }
     }
@@ -120,8 +149,7 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
     for (int i = probeCount; i < shadowInfo.offsetSampleCount; ++i) {
         vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, i), 0).xy * SOFT_EDGE_LENGTH * shadowMapInvSize;
         float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
-        float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
-        if (shadowCoord.z - adjustedBias > shadowDepth) {
+        if (shadowCoord.z > shadowDepth) {
             shadowQuantity += 1.0f;
         }
     }
@@ -130,25 +158,25 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
     //DEBUG: fetch shadow map one time, no PCF filter
     /* shadowQuantity = 0.0f;
     float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, splitShadowMapIndex)).r;
-    if (shadowCoord.z - bias > shadowDepth) {
+    if (shadowCoord.z > shadowDepth) {
         shadowQuantity = 1.0f;
     } */
 
     return shadowQuantity;
 }
 
-float computeSunShadowQuantity(int shadowLightIndex, vec4 worldPosition, float NdotL) {
+float computeSunShadowQuantity(int shadowLightIndex, vec4 worldPosition, vec3 normal, float NdotL) {
     for (int splitShadowMapIndex = 0; splitShadowMapIndex < MAX_SPLIT_SHADOW_MAPS; ++splitShadowMapIndex) {
         float frustumCenterDist = distance(vec3(worldPosition), shadowInfo.splitData[splitShadowMapIndex].xyz);
         float frustumRadius = shadowInfo.splitData[splitShadowMapIndex].w;
         if (frustumCenterDist < frustumRadius) {
-            return computeShadowQuantity(shadowLightIndex, splitShadowMapIndex, worldPosition, NdotL, 1.0f);
+            return computeShadowQuantity(shadowLightIndex, splitShadowMapIndex, worldPosition, normal, NdotL);
         }
     }
     return 0.0;
 }
 
-float computeOmnidirectionalShadowQuantity(int shadowLightIndex, vec4 worldPosition, float NdotL, vec3 lightPosition) {
+float computeOmnidirectionalShadowQuantity(int shadowLightIndex, vec4 worldPosition, vec3 normal, float NdotL, vec3 lightPosition) {
     vec3 lightToFragment = vec3(worldPosition) - lightPosition;
     vec3 absDir = abs(lightToFragment);
 
@@ -161,13 +189,11 @@ float computeOmnidirectionalShadowQuantity(int shadowLightIndex, vec4 worldPosit
         shadowMapIndex = lightToFragment.z > 0.0 ? 4 /* Front (Z+) */ : 5 /* Back (Z-) */;
     }
 
-    float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear
-    return computeShadowQuantity(shadowLightIndex, shadowMapIndex, worldPosition, NdotL, biasReduceFactor);
+    return computeShadowQuantity(shadowLightIndex, shadowMapIndex, worldPosition, normal, NdotL);
 }
 
-float computeSpotShadowQuantity(int shadowLightIndex, vec4 worldPosition, float NdotL) {
-    float biasReduceFactor = 0.15f; //specific bias because shadow map depth is not linear
-    return computeShadowQuantity(shadowLightIndex, 0, worldPosition, NdotL, biasReduceFactor);
+float computeSpotShadowQuantity(int shadowLightIndex, vec4 worldPosition, vec3 normal, float NdotL) {
+    return computeShadowQuantity(shadowLightIndex, 0, worldPosition, normal, NdotL);
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
@@ -283,12 +309,12 @@ void main() {
             if (sceneInfo.hasShadow && lightInfo.hasShadow) {
                 float shadowQuantity = 0.0f;
                 if (lightInfo.lightType == 0) { //sun
-                    shadowQuantity = computeSunShadowQuantity(lightInfo.shadowLightIndex, worldPosition, lightValues.NdotL);
+                    shadowQuantity = computeSunShadowQuantity(lightInfo.shadowLightIndex, worldPosition, normal, lightValues.NdotL);
                 } else if (lightInfo.lightType == 1) { //omnidirectional
                     vec3 lightPosition = lightInfo.position;
-                    shadowQuantity = computeOmnidirectionalShadowQuantity(lightInfo.shadowLightIndex, worldPosition, lightValues.NdotL, lightPosition);
+                    shadowQuantity = computeOmnidirectionalShadowQuantity(lightInfo.shadowLightIndex, worldPosition, normal, lightValues.NdotL, lightPosition);
                 } else if (lightInfo.lightType == 2) { //spot
-                    shadowQuantity = computeSpotShadowQuantity(lightInfo.shadowLightIndex, worldPosition, lightValues.NdotL);
+                    shadowQuantity = computeSpotShadowQuantity(lightInfo.shadowLightIndex, worldPosition, normal, lightValues.NdotL);
                 }
                 shadowAttenuation = 1.0 - (shadowQuantity * lightInfo.shadowStrength);
             }

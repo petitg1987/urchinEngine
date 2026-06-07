@@ -456,8 +456,8 @@ namespace urchin {
                 .ambientOcclusionStrength = ambientOcclusionManager.getAmbientOcclusionStrength(), //apply AO strength after AO blur to not lose color precision on 8bit texture
                 .maxLightsWithShadow = shadowManager.getMaxLightsWithShadow(),
                 .maxSplitShadowMaps = shadowManager.getMaxSplitShadowMaps(),
-                .shadowMapConstantBiasFactor = shadowManager.getShadowMapConstantBiasFactor(),
-                .shadowMapSlopeBiasFactor = shadowManager.getShadowMapSlopeBiasFactor(),
+                .shadowMapNormalBiasConstantFactor = shadowManager.getShadowMapNormalBiasConstantFactor(),
+                .shadowMapNormalBiasSlopeFactor = shadowManager.getShadowMapNormalBiasSlopeFactor(),
                 .shadowMapOffsetTexSize = shadowManager.getShadowMapOffsetTexSize(),
                 .maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR
         };
@@ -466,8 +466,8 @@ namespace urchin {
                 sizeof(DeferredSecondPassShaderConst::ambientOcclusionStrength),
                 sizeof(DeferredSecondPassShaderConst::maxLightsWithShadow),
                 sizeof(DeferredSecondPassShaderConst::maxSplitShadowMaps),
-                sizeof(DeferredSecondPassShaderConst::shadowMapConstantBiasFactor),
-                sizeof(DeferredSecondPassShaderConst::shadowMapSlopeBiasFactor),
+                sizeof(DeferredSecondPassShaderConst::shadowMapNormalBiasConstantFactor),
+                sizeof(DeferredSecondPassShaderConst::shadowMapNormalBiasSlopeFactor),
                 sizeof(DeferredSecondPassShaderConst::shadowMapOffsetTexSize),
                 sizeof(DeferredSecondPassShaderConst::maxEmissiveFactor)
         };

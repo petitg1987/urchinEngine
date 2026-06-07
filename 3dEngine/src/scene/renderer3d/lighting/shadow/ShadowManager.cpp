@@ -79,12 +79,13 @@ namespace urchin {
         return std::max(std::max(1u /* spot */, 6u /* omnidirectional */), getConfig().nbSunSplitShadowMaps);
     }
 
-    float ShadowManager::getShadowMapConstantBiasFactor() const {
-        return 0.0003f;
+    //TODO review comment
+    float ShadowManager::getShadowMapNormalBiasConstantFactor() const {
+        return 1.0f; //normal offset bias expressed in shadow texels, applied whatever the light angle is
     }
 
-    float ShadowManager::getShadowMapSlopeBiasFactor() const {
-        return 0.0007f;
+    float ShadowManager::getShadowMapNormalBiasSlopeFactor() const {
+        return 2.5f; //extra normal offset bias (in texels) at grazing light angles, covers the PCF kernel spread
     }
 
     unsigned int ShadowManager::getShadowMapOffsetTexSize() const {
