@@ -55,9 +55,9 @@ namespace urchin {
             RegisteredModelIt unregisterModel(RegisteredModelIt);
             void purgeUnusedRegisteredModels();
 
-            ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
+            ModelInstanceDisplayer& findModelInstanceDisplayer(const Model&) const;
             ModelInstanceDisplayer* createOrUseDisplayerForModel(Model*);
-            void detachModelFromDisplayer(Model*, ModelInstanceDisplayer*);
+            void detachModelFromDisplayer(Model*, ModelInstanceDisplayer&);
 
             void observeModelUpdate(Model&);
             void unobserveModelUpdate(Model&);

@@ -101,39 +101,39 @@ namespace urchin {
                 assert(registeredModels.contains(model));
             #endif
 
-            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+            ModelInstanceDisplayer& modelInstanceDisplayer = findModelInstanceDisplayer(*model);
 
             bool canUpdateDisplayer = false;
             std::size_t newModelInstanceId = model->computeInstanceId(displayMode);
-            if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && modelInstanceDisplayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
-                if (modelInstanceDisplayer->getInstanceCount() <= 1 && !shareableInstanceDisplayers.contains(newModelInstanceId)) {
+            if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && modelInstanceDisplayer.getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
+                if (modelInstanceDisplayer.getInstanceCount() <= 1 && !shareableInstanceDisplayers.contains(newModelInstanceId)) {
                     //case: displayer is not shared and there isn't other displayer matching the new instance ID
                     canUpdateDisplayer = true;
 
-                    auto displayerNodeHandler = shareableInstanceDisplayers.extract(modelInstanceDisplayer->getInstanceId());
-                    assert(displayerNodeHandler.mapped().get() == modelInstanceDisplayer);
+                    auto displayerNodeHandler = shareableInstanceDisplayers.extract(modelInstanceDisplayer.getInstanceId());
+                    assert(displayerNodeHandler.mapped().get() == &modelInstanceDisplayer);
                     displayerNodeHandler.mapped()->updateInstanceId(newModelInstanceId);
                     displayerNodeHandler.key() = newModelInstanceId;
                     shareableInstanceDisplayers.insert(std::move(displayerNodeHandler));
-                } else if (newModelInstanceId == modelInstanceDisplayer->getInstanceId()) {
+                } else if (newModelInstanceId == modelInstanceDisplayer.getInstanceId()) {
                     //case: update scale from 1.0 to 1.0, etc.
                     canUpdateDisplayer = true;
                 }
-            } else if (newModelInstanceId == ModelDisplayable::INSTANCING_DENY_ID && modelInstanceDisplayer->getInstanceId() == ModelDisplayable::INSTANCING_DENY_ID) {
+            } else if (newModelInstanceId == ModelDisplayable::INSTANCING_DENY_ID && modelInstanceDisplayer.getInstanceId() == ModelDisplayable::INSTANCING_DENY_ID) {
                 canUpdateDisplayer = true;
             }
 
             if (canUpdateDisplayer) {
                 if (notificationType == Model::MESH_VERTICES_UPDATED) {
-                    modelInstanceDisplayer->updateMeshVertices(model);
+                    modelInstanceDisplayer.updateMeshVertices(model);
                 } else if (notificationType == Model::MESH_UV_UPDATED) {
-                    modelInstanceDisplayer->updateMeshUv(model);
+                    modelInstanceDisplayer.updateMeshUv(model);
                 } else if (notificationType == Model::MATERIAL_UPDATED) {
-                    modelInstanceDisplayer->updateMaterial(model);
+                    modelInstanceDisplayer.updateMaterial(model);
                 } else if (notificationType == Model::SCALE_UPDATED) {
-                    modelInstanceDisplayer->updateScale();
+                    modelInstanceDisplayer.updateScale();
                 } else if (notificationType == Model::MODEL_PROPERTIES_UPDATED) {
-                    modelInstanceDisplayer->updateModelProperties(model);
+                    modelInstanceDisplayer.updateModelProperties(model);
                 }
             } else {
                 detachModelFromDisplayer(model, modelInstanceDisplayer);
@@ -142,10 +142,10 @@ namespace urchin {
         }
     }
 
-    ModelInstanceDisplayer* ModelSetDisplayer::findModelInstanceDisplayer(const Model& model) const {
+    ModelInstanceDisplayer& ModelSetDisplayer::findModelInstanceDisplayer(const Model& model) const {
         for (ModelInstanceDisplayer* modelInstanceDisplayer : model.getModelInstanceDisplayers()) {
             if (&modelInstanceDisplayer->getModelSetDisplayer() == this) {
-                return modelInstanceDisplayer;
+                return *modelInstanceDisplayer;
             }
         }
         throw std::runtime_error("Missing model instance displayer for model: " + model.getName());
@@ -189,13 +189,13 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::detachModelFromDisplayer(Model* model, ModelInstanceDisplayer* modelInstanceDisplayer) {
-        modelInstanceDisplayer->removeInstanceModel(*model);
+    void ModelSetDisplayer::detachModelFromDisplayer(Model* model, ModelInstanceDisplayer& modelInstanceDisplayer) {
+        modelInstanceDisplayer.removeInstanceModel(*model);
 
         if (exclusiveInstanceDisplayers.contains(model)) {
             exclusiveInstanceDisplayers.erase(model);
-        } else if (modelInstanceDisplayer->getInstanceCount() == 0) {
-            shareableInstanceDisplayers.erase(modelInstanceDisplayer->getInstanceId());
+        } else if (modelInstanceDisplayer.getInstanceCount() == 0) {
+            shareableInstanceDisplayers.erase(modelInstanceDisplayer.getInstanceId());
         }
     }
 
@@ -242,7 +242,7 @@ namespace urchin {
 
     ModelSetDisplayer::RegisteredModelIt ModelSetDisplayer::unregisterModel(RegisteredModelIt itRegisteredModel) {
         Model *model = itRegisteredModel->first;
-        ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+        ModelInstanceDisplayer& modelInstanceDisplayer = findModelInstanceDisplayer(*model);
         detachModelFromDisplayer(model, modelInstanceDisplayer);
 
         unobserveModelUpdate(*model);
@@ -278,8 +278,8 @@ namespace urchin {
         bool modelRegistered = registerModel(modelToDisplay);
 
         if (modelRegistered && (!meshFilter || meshFilter->isAccepted(*modelToDisplay))) {
-            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*modelToDisplay);
-            modelInstanceDisplayer->updateLayersMask(modelInstanceDisplayer->getLayersMask() | layersMask);
+            ModelInstanceDisplayer& modelInstanceDisplayer = findModelInstanceDisplayer(*modelToDisplay);
+            modelInstanceDisplayer.updateLayersMask(modelInstanceDisplayer.getLayersMask() | layersMask);
 
             modelsToDisplay.push_back(modelToDisplay);
         }
@@ -318,11 +318,11 @@ namespace urchin {
         for (Model* model: modelsToDisplay) {
             registeredModels.at(model) = std::chrono::steady_clock::now();
 
-            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            if (activeInstanceDisplayers.insert(modelInstanceDisplayer)) {
-                modelInstanceDisplayer->resetRenderingModels();
+            ModelInstanceDisplayer& modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+            if (activeInstanceDisplayers.insert(&modelInstanceDisplayer)) {
+                modelInstanceDisplayer.resetRenderingModels();
             }
-            modelInstanceDisplayer->registerRenderingModel(*model);
+            modelInstanceDisplayer.registerRenderingModel(*model);
         }
         for (ModelInstanceDisplayer* activeModelDisplayer: activeInstanceDisplayers) {
             activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
@@ -344,19 +344,19 @@ namespace urchin {
         for (Model* model: modelsToDisplay) {
             registeredModels.at(model) = std::chrono::steady_clock::now();
 
-            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            modelInstanceDisplayer->resetRenderingModels();
-            modelInstanceDisplayer->registerRenderingModel(*model);
+            ModelInstanceDisplayer& modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+            modelInstanceDisplayer.resetRenderingModels();
+            modelInstanceDisplayer.registerRenderingModel(*model);
 
             renderingOrder++;
-            modelInstanceDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
+            modelInstanceDisplayer.prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
 
     void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) {
         for (Model* model : modelsToDisplay) {
             registeredModels.at(model) = std::chrono::steady_clock::now();
-            findModelInstanceDisplayer(*model)->drawBBox(geometryContainer);
+            findModelInstanceDisplayer(*model).drawBBox(geometryContainer);
         }
     }
 
@@ -364,7 +364,7 @@ namespace urchin {
         for (Model* model : modelsToDisplay) {
             if (model->getConstMeshes()) {
                 registeredModels.at(model) = std::chrono::steady_clock::now();
-                findModelInstanceDisplayer(*model)->drawBaseBones(geometryContainer, meshFilter.get());
+                findModelInstanceDisplayer(*model).drawBaseBones(geometryContainer, meshFilter.get());
             }
         }
     }
