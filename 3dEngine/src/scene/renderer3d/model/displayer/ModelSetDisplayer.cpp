@@ -15,14 +15,14 @@ namespace urchin {
             depthWriteEnabled(true),
             enableFaceCull(true),
             enableLayerIndexDataInShader(false),
-            renderTarget(nullptr) {
+            renderTarget(nullptr),
+            registeredModels({}) {
 
     }
 
     ModelSetDisplayer::~ModelSetDisplayer() {
-        std::vector registeredModelsToRemove(registeredModels.begin(), registeredModels.end());
-        for (Model* registeredModel : registeredModelsToRemove) {
-            unregisterModel(registeredModel);
+        for (auto it = registeredModels.begin(); it != registeredModels.end();) {
+            it = unregisterModel(it);
         }
         assert(exclusiveInstanceDisplayers.empty());
         assert(shareableInstanceDisplayers.empty());
@@ -102,10 +102,6 @@ namespace urchin {
             #endif
 
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            if (!modelInstanceDisplayer) {
-                //displayer has been purged because it has not been used for a long time
-                return;
-            }
 
             bool canUpdateDisplayer = false;
             std::size_t newModelInstanceId = model->computeInstanceId(displayMode);
@@ -152,12 +148,14 @@ namespace urchin {
                 return modelInstanceDisplayer;
             }
         }
-        return nullptr;
+        throw std::runtime_error("Missing model instance displayer for model: " + model.getName());
     }
 
     ModelInstanceDisplayer* ModelSetDisplayer::createOrUseDisplayerForModel(Model* model) {
         #ifdef URCHIN_DEBUG
-            assert(!findModelInstanceDisplayer(*model));
+            assert(std::ranges::none_of(model->getModelInstanceDisplayers(), [&](const ModelInstanceDisplayer* displayer) {
+                return &displayer->getModelSetDisplayer() == this;
+            }));
         #endif
 
         std::size_t modelInstanceId = model->computeInstanceId(displayMode);
@@ -226,7 +224,7 @@ namespace urchin {
             return false;
         }
 
-        registeredModels.emplace(model);
+        registeredModels.emplace(model, std::chrono::steady_clock::now());
         observeModelUpdate(*model);
 
         createOrUseDisplayerForModel(model);
@@ -235,14 +233,44 @@ namespace urchin {
 
     void ModelSetDisplayer::unregisterModel(Model* model) {
         if (model) {
-            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            if (modelInstanceDisplayer) {
-                detachModelFromDisplayer(model, modelInstanceDisplayer);
+            RegisteredModelIt itRegisteredModel = registeredModels.find(model);
+            if (itRegisteredModel != registeredModels.end()) {
+                unregisterModel(itRegisteredModel);
             }
+        }
+    }
 
-            unobserveModelUpdate(*model);
-            registeredModels.erase(model);
-            std::erase(modelsToDisplay, model);
+    ModelSetDisplayer::RegisteredModelIt ModelSetDisplayer::unregisterModel(RegisteredModelIt itRegisteredModel) {
+        Model *model = itRegisteredModel->first;
+        ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+        detachModelFromDisplayer(model, modelInstanceDisplayer);
+
+        unobserveModelUpdate(*model);
+        std::erase(modelsToDisplay, model);
+        return registeredModels.erase(itRegisteredModel);
+    }
+
+    void ModelSetDisplayer::purgeUnusedRegisteredModels() {
+        constexpr double OLD_MODELS_TIME_MS = 30'000.0;
+        auto currentTime = std::chrono::steady_clock::now();
+        for (auto it = registeredModels.begin(); it != registeredModels.end();) {
+            auto unusedTimeInMs = (double)std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - it->second).count();
+            if (unusedTimeInMs >= OLD_MODELS_TIME_MS) {
+                it = unregisterModel(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+
+    void ModelSetDisplayer::alterRegisterModelLastUsageTime(Model* model, std::chrono::steady_clock::time_point lastUsageTime) {
+        if (!renderTarget || !renderTarget->isTestMode()) {
+            throw std::runtime_error("Alter registered model last usage time not allowed outside test mode");
+        }
+
+        RegisteredModelIt itFind = registeredModels.find(model);
+        if (itFind != registeredModels.end()) {
+            itFind->second = lastUsageTime;
         }
     }
 
@@ -251,14 +279,9 @@ namespace urchin {
 
         if (modelRegistered && (!meshFilter || meshFilter->isAccepted(*modelToDisplay))) {
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*modelToDisplay);
-            if (!modelInstanceDisplayer) {
-                //displayer has been purged because it has not been used for a long time
-                modelInstanceDisplayer = createOrUseDisplayerForModel(modelToDisplay);
-            }
-
             modelInstanceDisplayer->updateLayersMask(modelInstanceDisplayer->getLayersMask() | layersMask);
 
-            this->modelsToDisplay.push_back(modelToDisplay);
+            modelsToDisplay.push_back(modelToDisplay);
         }
     }
 
@@ -292,9 +315,10 @@ namespace urchin {
         }
 
         activeInstanceDisplayers.clear();
-        for (const Model* model: modelsToDisplay) {
+        for (Model* model: modelsToDisplay) {
+            registeredModels.at(model) = std::chrono::steady_clock::now();
+
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            assert(modelInstanceDisplayer);
             if (activeInstanceDisplayers.insert(modelInstanceDisplayer)) {
                 modelInstanceDisplayer->resetRenderingModels();
             }
@@ -304,7 +328,7 @@ namespace urchin {
             activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
 
-        purgeUnusedInstanceDisplayers();
+        purgeUnusedRegisteredModels();
     }
 
     void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const ModelSortFunction& modelSorter, const void* userData) {
@@ -317,7 +341,9 @@ namespace urchin {
         std::ranges::sort(modelsToDisplay, [&modelSorter, &userData](const Model* model1, const Model* model2) {
             return modelSorter(model1, model2, userData);
         });
-        for (const Model* model: modelsToDisplay) {
+        for (Model* model: modelsToDisplay) {
+            registeredModels.at(model) = std::chrono::steady_clock::now();
+
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
             modelInstanceDisplayer->resetRenderingModels();
             modelInstanceDisplayer->registerRenderingModel(*model);
@@ -327,32 +353,17 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::purgeUnusedInstanceDisplayers() {
-        constexpr double OLD_DISPLAYERS_TIME_MS = 30'000.0;
-        auto purgeOldInstanceDisplayers = [](auto& instanceDisplayersMap) {
-            auto currentTime = std::chrono::steady_clock::now();
-            for (auto it = instanceDisplayersMap.begin(); it != instanceDisplayersMap.end();) {
-                auto unusedTimeInMs = (double)std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - it->second->getLastRenderingTime()).count();
-                if (unusedTimeInMs >= OLD_DISPLAYERS_TIME_MS) {
-                    it = instanceDisplayersMap.erase(it);
-                } else {
-                    ++it;
-                }
-            }
-        };
-        purgeOldInstanceDisplayers(exclusiveInstanceDisplayers);
-        purgeOldInstanceDisplayers(shareableInstanceDisplayers);
-    }
-
-    void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) const {
-        for (const auto& model : modelsToDisplay) {
+    void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) {
+        for (Model* model : modelsToDisplay) {
+            registeredModels.at(model) = std::chrono::steady_clock::now();
             findModelInstanceDisplayer(*model)->drawBBox(geometryContainer);
         }
     }
 
-    void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer) const {
-        for (const auto& model : modelsToDisplay) {
+    void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer) {
+        for (Model* model : modelsToDisplay) {
             if (model->getConstMeshes()) {
+                registeredModels.at(model) = std::chrono::steady_clock::now();
                 findModelInstanceDisplayer(*model)->drawBaseBones(geometryContainer, meshFilter.get());
             }
         }

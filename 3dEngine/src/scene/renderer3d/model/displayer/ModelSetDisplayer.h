@@ -37,6 +37,8 @@ namespace urchin {
 
             bool registerModel(Model*);
             void unregisterModel(Model*);
+            void alterRegisterModelLastUsageTime(Model*, std::chrono::steady_clock::time_point);
+
             void addModelToDisplay(Model*, std::bitset<8> = std::bitset<8>(ULLONG_MAX));
             void setModelsToDisplay(std::span<Model* const>);
             void resetModelsToDisplay();
@@ -45,18 +47,20 @@ namespace urchin {
             void prepareRendering(unsigned int, const Matrix4<float>&);
             void prepareRendering(unsigned int&, const Matrix4<float>&, const ModelSortFunction&, const void*);
 
-            void drawBBox(GeometryContainer&) const;
-            void drawBaseBones(GeometryContainer&) const;
+            void drawBBox(GeometryContainer&);
+            void drawBaseBones(GeometryContainer&);
 
         private:
+            using RegisteredModelIt = std::unordered_map<Model*, std::chrono::steady_clock::time_point>::iterator;
+            RegisteredModelIt unregisterModel(RegisteredModelIt);
+            void purgeUnusedRegisteredModels();
+
             ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
             ModelInstanceDisplayer* createOrUseDisplayerForModel(Model*);
             void detachModelFromDisplayer(Model*, ModelInstanceDisplayer*);
 
             void observeModelUpdate(Model&);
             void unobserveModelUpdate(Model&);
-
-            void purgeUnusedInstanceDisplayers();
 
             bool isInitialized;
 
@@ -77,7 +81,7 @@ namespace urchin {
             std::unique_ptr<MeshFilter> meshFilter;
 
             RenderTarget* renderTarget;
-            std::unordered_set<Model*> registeredModels;
+            std::unordered_map<Model*, std::chrono::steady_clock::time_point> registeredModels;
             std::vector<Model*> modelsToDisplay;
             EverGrowHashSet<ModelInstanceDisplayer*> activeInstanceDisplayers;
             std::unordered_map<Model*, std::unique_ptr<ModelInstanceDisplayer>> exclusiveInstanceDisplayers;

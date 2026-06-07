@@ -99,8 +99,8 @@ void ModelSetDisplayerTest::purgeUnusedDisplayer() {
     AssertHelper::assertTrue(model2->getObservers(Model::NotificationType::MESH_UV_UPDATED)[0] == modelSetDisplayer.get());
 
     //Display only model 2 five minutes later (model 1 displayer is removed)
-    model1->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
-    model2->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
+    modelSetDisplayer->alterRegisterModelLastUsageTime(model1.get(), std::chrono::steady_clock::now() - std::chrono::minutes(5));
+    modelSetDisplayer->alterRegisterModelLastUsageTime(model2.get(), std::chrono::steady_clock::now() - std::chrono::minutes(5));
     modelSetDisplayer->setModelsToDisplay(std::vector{model2.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 0l);
@@ -113,8 +113,8 @@ void ModelSetDisplayerTest::purgeUnusedDisplayer() {
     AssertHelper::assertUnsignedIntEquals(model2->getModelInstanceDisplayers().size(), 1l);
 
     //Display only model 1 five minutes later (model 2 displayer is removed)
-    model1->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
-    model2->getModelInstanceDisplayers()[0]->alterLastRenderingTime(std::chrono::steady_clock::now() - std::chrono::minutes(5));
+    modelSetDisplayer->alterRegisterModelLastUsageTime(model1.get(), std::chrono::steady_clock::now() - std::chrono::minutes(5));
+    modelSetDisplayer->alterRegisterModelLastUsageTime(model2.get(), std::chrono::steady_clock::now() - std::chrono::minutes(5));
     modelSetDisplayer->setModelsToDisplay(std::vector{model1.get()});
     modelSetDisplayer->prepareRendering(0, Matrix4<float>());
     AssertHelper::assertUnsignedIntEquals(model1->getModelInstanceDisplayers().size(), 1l);

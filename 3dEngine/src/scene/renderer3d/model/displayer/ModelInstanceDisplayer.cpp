@@ -325,17 +325,6 @@ namespace urchin {
         return (unsigned int)instanceModels.size();
     }
 
-    std::chrono::steady_clock::time_point ModelInstanceDisplayer::getLastRenderingTime() const {
-        return lastRenderingTime;
-    }
-
-    void ModelInstanceDisplayer::alterLastRenderingTime(std::chrono::steady_clock::time_point lastRenderingTime) {
-        if (!renderTarget.isTestMode()) {
-            throw std::runtime_error("Alter last rendering time not allowed outside test mode");
-        }
-        this->lastRenderingTime = lastRenderingTime;
-    }
-
     void ModelInstanceDisplayer::resetRenderingModels() {
         instanceMatrices.clear();
         instanceModelMatrices.clear();
@@ -357,8 +346,6 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) {
-        lastRenderingTime = std::chrono::steady_clock::now();
-
         if (instanceMatrices.empty() && instanceModelMatrices.empty()) {
             return;
         }
@@ -385,8 +372,6 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::drawBBox(GeometryContainer& geometryContainer) {
-        lastRenderingTime = std::chrono::steady_clock::now();
-
         for (const auto& aabboxModel : aabboxModels) {
             geometryContainer.removeGeometry(*aabboxModel);
         }
@@ -399,9 +384,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) {
-        lastRenderingTime = std::chrono::steady_clock::now();
-
+    void ModelInstanceDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) const {
         for (const Model* instanceModel : instanceModels) {
             if (instanceModel->getMeshes()) {
                 for (unsigned int m = 0; m < instanceModel->getMeshes()->getNumMeshes(); ++m) {
