@@ -20,7 +20,9 @@ namespace urchin {
         this->isEnabled = enable;
 
         if (isEnabled) {
-            createOrUpdateRenderData();
+            if (inputTexture) {
+                createOrUpdateRenderData();
+            }
         } else {
             freeRenderData();
         }

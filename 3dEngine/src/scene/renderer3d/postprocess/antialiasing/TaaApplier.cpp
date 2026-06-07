@@ -28,7 +28,9 @@ namespace urchin {
         this->isEnabled = enable;
 
         if (isEnabled) {
-            createOrUpdateRenderData();
+            if (sceneTexture) {
+                createOrUpdateRenderData();
+            }
         } else {
             freeRenderData();
         }
