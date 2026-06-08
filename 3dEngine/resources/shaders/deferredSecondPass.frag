@@ -259,6 +259,9 @@ void main() {
         //emissive light
         fragColor.rgb += albedo * emissiveFactor;
 
+        //emissive correction (emissive materials generally don't reflect well the direct light)
+        float lightingFactor = smoothstep(0.0, 1.0, 1.0 - emissiveFactor);
+
         const vec3 dielectricSurfacesBaseReflectivity = vec3(0.04); //value is a mean of all no-metallic surfaces (plastic, water, ruby, diamond, glass...)
         float roughness = float(materialAndMaskValues.r) / 255.0;
         float metallic = float(materialAndMaskValues.g) / 255.0;
@@ -305,9 +308,6 @@ void main() {
                 }
                 shadowAttenuation = 1.0 - (shadowQuantity * lightInfo.shadowStrength);
             }
-
-            //emissive correction (emissive materials generally don't reflect well the direct light)
-            float lightingFactor = smoothstep(0.0, 1.0, 1.0 - emissiveFactor); //TODO move outside loop
 
             //update with PBR formula
             vec3 pbrFragColor = bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL;
