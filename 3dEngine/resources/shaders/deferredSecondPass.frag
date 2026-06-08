@@ -95,7 +95,7 @@ float computeSmTexelInWorldSize(mat4 mLightProjectionView, vec4 worldPosition, i
     return 0.5 * (worldSizePerNdcX + worldSizePerNdcY) * ndcSizePerTexel;
 }
 
-float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 worldPosition, vec3 normal, float NdotL) {
+float computeShadowQuantity(uint shadowLightIndex, uint splitShadowMapIndex, vec4 worldPosition, vec3 normal, float NdotL) {
     mat4 mLightProjectionView = shadowMatrix.mLightProjectionView[shadowLightIndex * MAX_SPLIT_SHADOW_MAPS + splitShadowMapIndex];
     int shadowMapWidth = textureSize(shadowMapTex[shadowLightIndex], 0).x;
 
@@ -152,8 +152,8 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
     return shadowQuantity;
 }
 
-float computeSunShadowQuantity(int shadowLightIndex, vec4 worldPosition, vec3 normal, float NdotL) {
-    for (int splitShadowMapIndex = 0; splitShadowMapIndex < MAX_SPLIT_SHADOW_MAPS; ++splitShadowMapIndex) {
+float computeSunShadowQuantity(uint shadowLightIndex, vec4 worldPosition, vec3 normal, float NdotL) {
+    for (uint splitShadowMapIndex = 0; splitShadowMapIndex < MAX_SPLIT_SHADOW_MAPS; ++splitShadowMapIndex) {
         float frustumCenterDist = distance(vec3(worldPosition), shadowInfo.splitData[splitShadowMapIndex].xyz);
         float frustumRadius = shadowInfo.splitData[splitShadowMapIndex].w;
         if (frustumCenterDist < frustumRadius) {
@@ -163,24 +163,24 @@ float computeSunShadowQuantity(int shadowLightIndex, vec4 worldPosition, vec3 no
     return 0.0;
 }
 
-float computeOmnidirectionalShadowQuantity(int shadowLightIndex, vec4 worldPosition, vec3 normal, float NdotL, vec3 lightPosition) {
+float computeOmnidirectionalShadowQuantity(uint shadowLightIndex, vec4 worldPosition, vec3 normal, float NdotL, vec3 lightPosition) {
     vec3 lightToFragment = vec3(worldPosition) - lightPosition;
     vec3 absDir = abs(lightToFragment);
 
-    int shadowMapIndex = 0;
+    uint shadowMapIndex = 0u;
     if (absDir.x > absDir.y && absDir.x > absDir.z) {
-        shadowMapIndex = lightToFragment.x > 0.0 ? 0 /* Right (X+) */ : 1 /* Left (X-) */;
+        shadowMapIndex = lightToFragment.x > 0.0 ? 0u /* Right (X+) */ : 1u /* Left (X-) */;
     } else if (absDir.y > absDir.x && absDir.y > absDir.z) {
-        shadowMapIndex = lightToFragment.y > 0.0 ? 2 /* Top (Y+) */ : 3 /* Bottom (Y-) */;
+        shadowMapIndex = lightToFragment.y > 0.0 ? 2u /* Top (Y+) */ : 3u /* Bottom (Y-) */;
     } else {
-        shadowMapIndex = lightToFragment.z > 0.0 ? 4 /* Front (Z+) */ : 5 /* Back (Z-) */;
+        shadowMapIndex = lightToFragment.z > 0.0 ? 4u /* Front (Z+) */ : 5u /* Back (Z-) */;
     }
 
     return computeShadowQuantity(shadowLightIndex, shadowMapIndex, worldPosition, normal, NdotL);
 }
 
-float computeSpotShadowQuantity(int shadowLightIndex, vec4 worldPosition, vec3 normal, float NdotL) {
-    return computeShadowQuantity(shadowLightIndex, 0, worldPosition, normal, NdotL);
+float computeSpotShadowQuantity(uint shadowLightIndex, vec4 worldPosition, vec3 normal, float NdotL) {
+    return computeShadowQuantity(shadowLightIndex, 0u, worldPosition, normal, NdotL);
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
@@ -264,7 +264,7 @@ void main() {
         float metallic = float(materialAndMaskValues.g) / 255.0;
         vec3 baseReflectivity = mix(dielectricSurfacesBaseReflectivity, albedo, metallic);
 
-        for (int lightIndex = 0; lightIndex < lightsData.lightsCount; ++lightIndex) {
+        for (uint lightIndex = 0; lightIndex < lightsData.lightsCount; ++lightIndex) {
             LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
 
             if ((lightInfo.lightMask & meshLightMask) == 0) {
@@ -293,7 +293,7 @@ void main() {
 
             //shadow
             float shadowAttenuation = 1.0; //1.0 = no shadow
-            if (sceneInfo.hasShadow && lightInfo.hasShadow) {
+            if (sceneInfo.hasShadow && lightInfo.hasShadow && lightValues.NdotL > 0.0) {
                 float shadowQuantity = 0.0;
                 if (lightInfo.lightType == 0) { //sun
                     shadowQuantity = computeSunShadowQuantity(lightInfo.shadowLightIndex, worldPosition, normal, lightValues.NdotL);
@@ -307,7 +307,7 @@ void main() {
             }
 
             //emissive correction (emissive materials generally don't reflect well the direct light)
-            float lightingFactor = smoothstep(0.0, 1.0, 1.0 - emissiveFactor);
+            float lightingFactor = smoothstep(0.0, 1.0, 1.0 - emissiveFactor); //TODO move outside loop
 
             //update with PBR formula
             vec3 pbrFragColor = bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL;

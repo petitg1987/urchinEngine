@@ -124,7 +124,7 @@ namespace urchin {
             lightInfo.lightMask = light->getLightMask();
             lightInfo.isPbrEnabled = light->isPbrEnabled() ? UG_TRUE : UG_FALSE;
             lightInfo.hasShadow = (itVisibleLightsWithShadow != visibleLightsWithShadow.end()) ? UG_TRUE : UG_FALSE;
-            lightInfo.shadowLightIndex = (int)std::distance(visibleLightsWithShadow.begin(), itVisibleLightsWithShadow);
+            lightInfo.shadowLightIndex = lightInfo.hasShadow ? (unsigned int)std::distance(visibleLightsWithShadow.begin(), itVisibleLightsWithShadow) : 0u;
             lightInfo.shadowStrength = light->getShadowStrength();
             lightInfo.lightColor = light->getLightColor();
 

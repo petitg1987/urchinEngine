@@ -58,7 +58,7 @@ namespace urchin {
                 alignas(4) unsigned int lightMask;
                 alignas(4) UgBool32 isPbrEnabled;
                 alignas(4) UgBool32 hasShadow;
-                alignas(4) int shadowLightIndex;
+                alignas(4) unsigned int shadowLightIndex;
                 alignas(4) float shadowStrength;
                 alignas(16) Point3<float> lightColor;
                 alignas(16) Vector3<float> direction;
