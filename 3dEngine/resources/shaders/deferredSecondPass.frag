@@ -73,14 +73,6 @@ vec4 fetchWorldPosition(vec2 texCoord, float depthValue) {
     return worldPosition;
 }
 
-float linearStep(float min, float max, float v) {
-      return clamp((v - min) / (max - min), 0.0, 1.0);
-}
-
-float maxComponent(vec3 components) {
-    return max(max(components.x, components.y), components.z);
-}
-
 /*
  * Find out how big a single shadow map texel is in world units at a specific location
  */
@@ -105,26 +97,21 @@ float computeSmTexelInWorldSize(mat4 mLightProjectionView, vec4 worldPosition, i
 
 float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 worldPosition, vec3 normal, float NdotL) {
     mat4 mLightProjectionView = shadowMatrix.mLightProjectionView[shadowLightIndex * MAX_SPLIT_SHADOW_MAPS + splitShadowMapIndex];
-
-    //TODO review !!!
-    //Normal offset bias: move the sample along the surface normal by a fraction of the shadow texel world size. Because it is
-    //applied in world space, it adapts to every projection (sun cascades, omnidirectional, spot) and to distance without per-light
-    //tuning, and it scales with the light grazing angle (the main source of shadow acne) instead of biasing the depth comparison.
     int shadowMapWidth = textureSize(shadowMapTex[shadowLightIndex], 0).x;
+
     float smTexelInWorldSize = computeSmTexelInWorldSize(mLightProjectionView, worldPosition, shadowMapWidth);
     float grazingFactor = sqrt(clamp(1.0 - NdotL * NdotL, 0.0, 1.0)); //sin of the angle between the normal and the light
     float normalOffset = smTexelInWorldSize * (SHADOW_MAP_NORMAL_BIAS_CONSTANT_FACTOR + SHADOW_MAP_NORMAL_BIAS_SLOPE_FACTOR * grazingFactor);
-    vec4 offsetWorldPosition = vec4(vec3(worldPosition) + normal * normalOffset, 1.0);
+    vec3 worldPositionWithOffset = vec3(worldPosition) + normal * normalOffset;
 
-    vec4 shadowCoord = mLightProjectionView * offsetWorldPosition;
+    vec4 shadowCoord = mLightProjectionView * vec4(worldPositionWithOffset, 1.0);
     shadowCoord.xyz /= shadowCoord.w;
-    shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
-    shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
+    shadowCoord.st = shadowCoord.st * 0.5 + 0.5;
 
     const float SOFT_EDGE_LENGTH = 2.5f;
     float shadowMapInvSize = 1.0 / float(shadowMapWidth);
     vec2 sceneSize = textureSize(depthTex, 0);
-    ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE); //TODO does offsetTexCoordinate can use smTexelInWorldSize ?
+    ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
 
     //Phase 1: probe with reduced sample count to detect uniform regions
     int probeCount = min(5, shadowInfo.offsetSampleCount);
@@ -150,16 +137,16 @@ float computeShadowQuantity(int shadowLightIndex, int splitShadowMapIndex, vec4 
         vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, i), 0).xy * SOFT_EDGE_LENGTH * shadowMapInvSize;
         float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, splitShadowMapIndex)).r;
         if (shadowCoord.z > shadowDepth) {
-            shadowQuantity += 1.0f;
+            shadowQuantity += 1.0;
         }
     }
     shadowQuantity = shadowQuantity / float(shadowInfo.offsetSampleCount);
 
     //DEBUG: fetch shadow map one time, no PCF filter
-    /* shadowQuantity = 0.0f;
+    /* shadowQuantity = 0.0;
     float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, splitShadowMapIndex)).r;
     if (shadowCoord.z > shadowDepth) {
-        shadowQuantity = 1.0f;
+        shadowQuantity = 1.0;
     } */
 
     return shadowQuantity;
@@ -225,7 +212,7 @@ float distributionGGX(vec3 normal, vec3 halfWay, float roughness) {
 
 float geometrySchlickGGX(float NdotV, float roughness) {
     float alpha = roughness * roughness;
-    float k = alpha / 2.0f;
+    float k = alpha / 2.0;
     return NdotV / (NdotV * (1.0 - k) + k);
 }
 
@@ -266,7 +253,7 @@ void main() {
         //indirect light (ambient or image based lighting & ambient occlusion)
         fragColor.rgb += modelAmbient;
         if (sceneInfo.hasAmbientOcclusion) {
-            fragColor.rgb *= 1.0f - (texture(ambientOcclusionTex, texCoordinates).r * AO_STRENGTH);
+            fragColor.rgb *= 1.0 - (texture(ambientOcclusionTex, texCoordinates).r * AO_STRENGTH);
         }
 
         //emissive light
@@ -307,7 +294,7 @@ void main() {
             //shadow
             float shadowAttenuation = 1.0; //1.0 = no shadow
             if (sceneInfo.hasShadow && lightInfo.hasShadow) {
-                float shadowQuantity = 0.0f;
+                float shadowQuantity = 0.0;
                 if (lightInfo.lightType == 0) { //sun
                     shadowQuantity = computeSunShadowQuantity(lightInfo.shadowLightIndex, worldPosition, normal, lightValues.NdotL);
                 } else if (lightInfo.lightType == 1) { //omnidirectional
