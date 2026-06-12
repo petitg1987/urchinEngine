@@ -34,7 +34,8 @@ namespace urchin {
         removeAllWidgets();
     }
 
-    void UIRenderer::setupUi3d(Camera* camera, const Transform<float>& transform, const Point2<int>& uiResolution, const Point2<float>& uiSize, float ambient) {
+    void UIRenderer::setupUi3d(Camera* camera, const Transform<float>& transform, const Point2<int>& uiResolution, const Point2<float>& uiSize,
+            float ambient, uint8_t lightMask) {
         if (!widgets.empty()) {
             throw std::runtime_error("UI renderer cannot be initialized for UI 3d because widgets already exist");
         }
@@ -64,8 +65,15 @@ namespace urchin {
         ui3dData->uiPosition = (topLeft + bottomRight) / 2.0f;
         ui3dData->uiSphereBounding = Sphere(ui3dData->uiPosition.distance(bottomRight), ui3dData->uiPosition);
 
-        std::vector variablesSize = {sizeof(ambient)};
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ambient);
+        Ui3dShaderConst ui3dConstData {
+                .ambient = ambient,
+                .lightMask = lightMask
+        };
+        std::vector variablesSize = {
+                sizeof(ambient),
+                sizeof(unsigned int)
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ui3dConstData);
         this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "ui3d.frag.spv", std::move(shaderConstants), renderTarget.isTestMode());
 
         onResize((unsigned int)uiResolution.X, (unsigned int)uiResolution.Y);

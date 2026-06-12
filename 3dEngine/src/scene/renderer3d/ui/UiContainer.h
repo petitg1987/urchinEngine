@@ -21,7 +21,7 @@ namespace urchin {
             bool onMouseMove(double, double, double, double) const;
             bool onScroll(double) const;
 
-            UIRenderer& newUI3dRenderer(const Transform<float>&, const Point2<int>&, const Point2<float>&, float);
+            UIRenderer& newUI3dRenderer(const Transform<float>&, const Point2<int>&, const Point2<float>&, float, uint8_t = std::numeric_limits<uint8_t>::max());
             void removeUI3dRenderer(const UIRenderer*);
 
             void prepareRendering(float, unsigned int&, const Camera&) const;

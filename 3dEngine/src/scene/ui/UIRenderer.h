@@ -36,7 +36,7 @@ namespace urchin {
             ~UIRenderer() override;
 
             //3d specific
-            void setupUi3d(Camera*, const Transform<float>&, const Point2<int>&, const Point2<float>&, float);
+            void setupUi3d(Camera*, const Transform<float>&, const Point2<int>&, const Point2<float>&, float, uint8_t lightMask);
             void setupClipboard(std::unique_ptr<Clipboard>);
             void onCameraProjectionUpdate(Camera&);
             void setMaximumInteractiveDistance(float) const;
@@ -74,6 +74,11 @@ namespace urchin {
             void prepareRendering(float, unsigned int&, const Matrix4<float>&, const Vector2<float>&) const;
 
         private:
+            struct Ui3dShaderConst {
+                float ambient;
+                unsigned int lightMask;
+            };
+
             bool adjustMouseCoordinates(Point2<int>&) const;
             void prepareWidgets(float, const std::vector<std::shared_ptr<Widget>>&) const;
 

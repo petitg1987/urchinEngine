@@ -125,7 +125,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        AmbientOcclusionShaderConst aoConstData{
+        AmbientOcclusionShaderConst aoConstData {
                 .kernelSamples = config.kernelSamples,
                 .radius = config.radius,
                 .depthStartAttenuation = config.distanceStartAttenuation,

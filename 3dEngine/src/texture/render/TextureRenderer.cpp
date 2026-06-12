@@ -185,9 +185,9 @@ namespace urchin {
 
     void TextureRenderer::initializeShader(bool isTestMode) {
         TextureRendererShaderConst trConstData {
-            .isDefaultValue = colorType == DEFAULT_VALUE,
-            .isGrayscaleValue = colorType == GRAYSCALE_VALUE,
-            .isInverseGrayscaleValue = colorType == INVERSE_GRAYSCALE_VALUE
+                .isDefaultValue = colorType == DEFAULT_VALUE,
+                .isGrayscaleValue = colorType == GRAYSCALE_VALUE,
+                .isInverseGrayscaleValue = colorType == INVERSE_GRAYSCALE_VALUE
         };
         std::vector variablesSize = {
                 sizeof(TextureRendererShaderConst::isDefaultValue),

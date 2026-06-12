@@ -68,10 +68,10 @@ namespace urchin {
 
     void OutputRenderer::createOrUpdateShaders() {
         OutputShaderConst outputConstData {
-            .gammaFactor = gammaFactor
+                .gammaFactor = gammaFactor
         };
         std::vector variablesSize = {
-            sizeof(OutputShaderConst::gammaFactor)
+                sizeof(OutputShaderConst::gammaFactor)
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &outputConstData);
         outputShader = ShaderBuilder::createShader("outputRenderer.vert.spv", "outputRenderer.frag.spv", std::move(shaderConstants), outputRenderTarget.isTestMode());

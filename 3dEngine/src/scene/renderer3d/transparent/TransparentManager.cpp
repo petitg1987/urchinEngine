@@ -50,9 +50,10 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateModelSetDisplayer() {
-        ModelTransparentShaderConst modelTransparentConstData{};
-        modelTransparentConstData.maxLights = lightManager.getMaxLights();
-        modelTransparentConstData.maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR;
+        ModelTransparentShaderConst modelTransparentConstData {
+                .maxLights = lightManager.getMaxLights(),
+                .maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR
+        };
         std::vector variablesSize = {
                 sizeof(modelTransparentConstData.maxLights),
                 sizeof(modelTransparentConstData.maxEmissiveFactor)
