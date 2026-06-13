@@ -26,6 +26,7 @@ namespace urchin {
             Vector2<T> xy() const;
             Vector2<T> xz() const;
             Vector2<T> yz() const;
+            std::size_t dominantAxis() const;
 
             Vector3<T> operator +() const;
             Vector3<T> operator -() const;

@@ -89,6 +89,18 @@ namespace urchin {
         return Vector2<T>(Y, Z);
     }
 
+    template<class T> std::size_t Vector3<T>::dominantAxis() const {
+        T ax = std::abs(X);
+        T ay = std::abs(Y);
+        T az = std::abs(Z);
+        if (ax >= ay && ax >= az) {
+            return 0;
+        } else if (ay >= az) {
+            return 1;
+        }
+        return 2;
+    }
+
     template<class T> Vector3<T> Vector3<T>::operator +() const {
         return Vector3<T>(X, Y, Z);
     }
