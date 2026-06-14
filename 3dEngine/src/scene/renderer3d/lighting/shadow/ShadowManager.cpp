@@ -80,11 +80,11 @@ namespace urchin {
     }
 
     float ShadowManager::getShadowMapNormalBiasConstantFactor() const {
-        return 1.0f; //normal offset bias expressed in shadow texels
+        return 2.0f; //normal offset bias expressed in shadow texels
     }
 
     float ShadowManager::getShadowMapNormalBiasSlopeFactor() const {
-        return 2.5f; //additional normal offset bias expressed in shadow texels at grazing light angles
+        return 3.0f; //additional normal offset bias expressed in shadow texels at grazing light angles
     }
 
     unsigned int ShadowManager::getShadowMapOffsetTexSize() const {
