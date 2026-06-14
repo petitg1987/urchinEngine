@@ -139,18 +139,21 @@ namespace urchin {
     }
 
     std::string StringUtil::camelToPascalCase(const std::string& camelCaseStr) {
+        //myText > MyText
         std::string pascalCaseStr = camelCaseStr;
         pascalCaseStr[0] = static_cast<char>(std::toupper(pascalCaseStr[0]));
         return pascalCaseStr;
     }
 
     std::string StringUtil::pascalToCamelCase(const std::string& pascalCaseStr) {
+        //MyText > myText
         std::string camelCaseStr = pascalCaseStr;
         camelCaseStr[0] = static_cast<char>(std::tolower(camelCaseStr[0]));
         return camelCaseStr;
     }
 
     std::string StringUtil::camelToKebabCase(const std::string& camelCaseStr) {
+        //myText > my-text
         std::string kebabCaseStr;
         kebabCaseStr.push_back(static_cast<char>(tolower(camelCaseStr[0])));
         for (std::size_t i = 1; i < camelCaseStr.size(); ++i) {
@@ -163,6 +166,7 @@ namespace urchin {
     }
 
     std::string StringUtil::kebabToCamelCase(const std::string& kebabCaseStr) {
+        //my-text > myText
         std::string camelCaseStr;
         camelCaseStr.push_back(static_cast<char>(tolower(kebabCaseStr[0])));
         for (std::size_t i = 1; i < kebabCaseStr.size(); ++i) {
