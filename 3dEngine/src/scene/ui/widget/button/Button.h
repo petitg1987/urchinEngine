@@ -38,9 +38,9 @@ namespace urchin {
             const std::string buttonText;
 
             //visual
-            std::shared_ptr<Texture> texInfoDefault;
-            std::shared_ptr<Texture> texInfoOnFocus;
-            std::shared_ptr<Texture> texInfoOnClick;
+            std::shared_ptr<Texture> texDefault;
+            std::shared_ptr<Texture> texOnFocus;
+            std::shared_ptr<Texture> texOnClick;
     };
 
 }

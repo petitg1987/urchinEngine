@@ -26,14 +26,14 @@ namespace urchin {
         auto buttonChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "button", UdaAttribute("skin", skinName));
 
         auto skinDefaultChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), buttonChunk);
-        texInfoDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinDefaultChunk);
-        changeTexture(texInfoDefault);
+        texDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinDefaultChunk);
+        changeTexture(texDefault);
 
         auto skinFocusChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "focus"), buttonChunk);
-        texInfoOnFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinFocusChunk);
+        texOnFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinFocusChunk);
 
         auto skinClickChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "click"), buttonChunk);
-        texInfoOnClick = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinClickChunk);
+        texOnClick = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinClickChunk);
 
         if (!buttonText.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), buttonChunk);
@@ -51,16 +51,16 @@ namespace urchin {
 
     void Button::refreshTexture() {
         if (getWidgetState() == FOCUS) {
-            if (getTexture().get() != texInfoOnFocus.get()) {
-                changeTexture(texInfoOnFocus);
+            if (getTexture().get() != texOnFocus.get()) {
+                changeTexture(texOnFocus);
             }
         } else if (getWidgetState() == CLICKING) {
-            if (getTexture().get() != texInfoOnClick.get()) {
-                changeTexture(texInfoOnClick);
+            if (getTexture().get() != texOnClick.get()) {
+                changeTexture(texOnClick);
             }
         } else {
-            if (getTexture().get() != texInfoDefault.get()) {
-                changeTexture(texInfoDefault);
+            if (getTexture().get() != texDefault.get()) {
+                changeTexture(texDefault);
             }
         }
     }
