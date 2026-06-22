@@ -194,6 +194,17 @@ namespace urchin {
         return AABBox<T>(min, max);
     }
 
+    template<class T> bool OBBox<T>::collideWithPoint(const Point3<T>& point) const {
+        Vector3<T> centerToPoint = centerOfMass.vector(point);
+        for (std::size_t i = 0; i < 3; ++i) {
+            T projection = centerToPoint.dotProduct(normalizedAxis[i]);
+            if (projection < -halfSizes[i] || projection > halfSizes[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
     * @return True if the bounding box collides or is inside this bounding box
     */

@@ -37,6 +37,7 @@ namespace urchin {
             Point3<T> getSupportPoint(const Vector3<T>&) const override;
             AABBox<T> toAABBox() const;
 
+            bool collideWithPoint(const Point3<T>&) const override;
             bool collideWithOBBox(const OBBox<T>&) const override;
             bool collideWithAABBox(const AABBox<T>&) const override;
             Point3<T> intersectPoint(const Line3D<T>&, bool&) const override;

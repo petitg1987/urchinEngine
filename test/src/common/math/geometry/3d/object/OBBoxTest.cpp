@@ -5,7 +5,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void OBBoxTest::noIntersection() {
+void OBBoxTest::noLineIntersection() {
     OBBox oBBox(AABBox(Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3(-2.0f, 4.0f, 4.0f), Point3(2.0f, 1.0f, 1.0f));
 
@@ -72,7 +72,7 @@ void OBBoxTest::bottomRightToTopLeftLineIntersection() {
 }
 
 void OBBoxTest::oBBoxObliqueIntersection() {
-    OBBox oBBox(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(0.78539816339f) /* 45 degrees */);
+    OBBox oBBox(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(MathValue::PI_FLOAT / 4.0f));
     Line3D line(Point3(0.0f, 3.0f, 0.0f), Point3(0.0f, -3.0f, 0.0f));
 
     bool hasIntersection = false;
@@ -80,6 +80,42 @@ void OBBoxTest::oBBoxObliqueIntersection() {
 
     AssertHelper::assertTrue(hasIntersection);
     AssertHelper::assertPoint3FloatEquals(intersectionPoint, Point3(0.0f, 1.414213f, 0.0f));
+}
+
+void OBBoxTest::pointInsideNearToCorner() {
+    OBBox oBBox(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 2.0f, 0.0f), Quaternion<float>::rotationZ(0.0f));
+    Point3 point(0.99f, 2.99f, 0.99f);
+
+    bool pointIsInside = oBBox.collideWithPoint(point);
+
+    AssertHelper::assertTrue(pointIsInside);
+}
+
+void OBBoxTest::pointOutsideNearToCorner() {
+    OBBox oBBox(Vector3(1.0f, 1.0f, 1.0f), Point3(0.0f, 2.0f, 0.0f), Quaternion<float>::rotationZ(0.0f));
+    Point3 point(1.01f, 2.99f, 0.99f);
+
+    bool pointIsInside = oBBox.collideWithPoint(point);
+
+    AssertHelper::assertFalse(pointIsInside);
+}
+
+void OBBoxTest::pointInsideNearToRightSide() {
+    OBBox oBBox(Vector3(2.0f, 2.0f, 1.0f), Point3(2.0f, 2.0f, 0.0f), Quaternion<float>::rotationY(0.0f));
+    Point3 point(3.5f, 2.0f, 0.0f);
+
+    bool pointIsInside = oBBox.collideWithPoint(point);
+
+    AssertHelper::assertTrue(pointIsInside);
+}
+
+void OBBoxTest::pointOutsideNearToRightSide() {
+    OBBox oBBox(Vector3(2.0f, 2.0f, 1.0f), Point3(2.0f, 2.0f, 0.0f), Quaternion<float>::rotationY(MathValue::PI_FLOAT / 4.0f));
+    Point3 point(3.5f, 2.0f, 0.0f);
+
+    bool pointIsInside = oBBox.collideWithPoint(point);
+
+    AssertHelper::assertFalse(pointIsInside);
 }
 
 void OBBoxTest::matrixMultiplication() {
@@ -101,13 +137,18 @@ void OBBoxTest::matrixMultiplication() {
 CppUnit::Test* OBBoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("OBBoxTest");
 
-    suite->addTest(new CppUnit::TestCaller("noIntersection", &OBBoxTest::noIntersection));
+    suite->addTest(new CppUnit::TestCaller("noLineIntersection", &OBBoxTest::noLineIntersection));
     suite->addTest(new CppUnit::TestCaller("leftToRightLineIntersection", &OBBoxTest::leftToRightLineIntersection));
     suite->addTest(new CppUnit::TestCaller("rightToLeftLineIntersection", &OBBoxTest::rightToLeftLineIntersection));
     suite->addTest(new CppUnit::TestCaller("farToNearLineIntersection", &OBBoxTest::farToNearLineIntersection));
     suite->addTest(new CppUnit::TestCaller("nearToFarLineIntersection", &OBBoxTest::nearToFarLineIntersection));
     suite->addTest(new CppUnit::TestCaller("bottomRightToTopLeftLineIntersection", &OBBoxTest::bottomRightToTopLeftLineIntersection));
     suite->addTest(new CppUnit::TestCaller("oBBoxObliqueIntersection", &OBBoxTest::oBBoxObliqueIntersection));
+
+    suite->addTest(new CppUnit::TestCaller("pointInsideNearToCorner", &OBBoxTest::pointInsideNearToCorner));
+    suite->addTest(new CppUnit::TestCaller("pointOutsideNearToCorner", &OBBoxTest::pointOutsideNearToCorner));
+    suite->addTest(new CppUnit::TestCaller("pointInsideNearToRightSide", &OBBoxTest::pointInsideNearToRightSide));
+    suite->addTest(new CppUnit::TestCaller("pointOutsideNearToRightSide", &OBBoxTest::pointOutsideNearToRightSide));
 
     suite->addTest(new CppUnit::TestCaller("matrixMultiplication", &OBBoxTest::matrixMultiplication));
 
