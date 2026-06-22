@@ -44,7 +44,6 @@ namespace urchin {
 
         private:
             template<class U> bool separatedAxisTheoremCollision(const U&) const;
-            bool pointInsideSquare(const Point3<T>&, const std::array<Point3<T>, 4>&, const Vector3<T>&) const; //TODO to remove ?
 
             Vector3<T> halfSizes;
             Point3<T> centerOfMass;

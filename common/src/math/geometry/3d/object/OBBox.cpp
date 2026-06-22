@@ -263,14 +263,6 @@ namespace urchin {
         return bestIntersectionPoint;
     }
 
-    template<class T> bool OBBox<T>::pointInsideSquare(const Point3<T>& testPoint, const std::array<Point3<T>, 4>& points, const Vector3<T>& normal) const {
-        T orient1 = testPoint.vector(points[0]).crossProduct(testPoint.vector(points[1])).dotProduct(normal);
-        T orient2 = testPoint.vector(points[1]).crossProduct(testPoint.vector(points[2])).dotProduct(normal);
-        T orient3 = testPoint.vector(points[2]).crossProduct(testPoint.vector(points[3])).dotProduct(normal);
-        T orient4 = testPoint.vector(points[3]).crossProduct(testPoint.vector(points[0])).dotProduct(normal);
-        return (orient1 < 0.0 && orient2 < 0.0 && orient3 < 0.0 && orient4 < 0.0) || (orient1 > 0.0 && orient2 > 0.0 && orient3 > 0.0 && orient4 > 0.0);
-    }
-
     template<class T> OBBox<T> operator *(const Matrix4<T>& m, const OBBox<T>& obb) {
         #ifdef URCHIN_DEBUG
             //projection matrix not accepted because result will not an oriented bounding box
