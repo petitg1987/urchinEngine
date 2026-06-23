@@ -68,7 +68,7 @@ namespace urchin {
     std::size_t ShaderBuilder::computeShaderId(std::string_view vertexShaderFilename, std::string_view fragmentShaderFilename, const ShaderConstants* shaderConstants) {
         std::size_t shaderId = 0;
 
-        HashUtil::combine(shaderId, vertexShaderFilename, fragmentShaderFilename);
+        HashUtil::hashCombine(shaderId, vertexShaderFilename, fragmentShaderFilename);
 
         if (shaderConstants) {
             const auto* variablesData = static_cast<std::size_t*>(shaderConstants->getData());
@@ -79,7 +79,7 @@ namespace urchin {
                 std::size_t readValue = 0;
 
                 std::memcpy(&readValue, variablesData + i, readSize);
-                HashUtil::combine(shaderId, readValue);
+                HashUtil::hashCombine(shaderId, readValue);
             }
         }
 

@@ -237,13 +237,13 @@ namespace urchin {
         //See https://www.khronos.org/registry/vulkan/specs/1.2-extensions/html/vkspec.html#renderpass-compatibility for details
         renderPassCompatibilityId = 0;
         if (hasDepthAttachment()) {
-            HashUtil::combine(renderPassCompatibilityId, depthAttachmentRef.attachment);
+            HashUtil::hashCombine(renderPassCompatibilityId, depthAttachmentRef.attachment);
         }
         for (auto& colorAttachmentRef : colorAttachmentRefs) {
-            HashUtil::combine(renderPassCompatibilityId, colorAttachmentRef.attachment);
+            HashUtil::hashCombine(renderPassCompatibilityId, colorAttachmentRef.attachment);
         }
         for (auto& attachment : attachments) {
-            HashUtil::combine(renderPassCompatibilityId, attachment.format, attachment.samples, attachment.flags);
+            HashUtil::hashCombine(renderPassCompatibilityId, attachment.format, attachment.samples, attachment.flags);
         }
 
         VkSubpassDescription2 subpass{};

@@ -52,7 +52,7 @@ namespace urchin {
 
     std::size_t StaticBitmap::getImplementationInstanceId() const {
         std::size_t implementationInstanceId = 0;
-        HashUtil::combine(implementationInstanceId, texture->getId());
+        HashUtil::hashCombine(implementationInstanceId, texture->getId());
         return implementationInstanceId;
     }
 

@@ -135,24 +135,24 @@ namespace urchin {
         std::size_t hash = 0;
 
         if (data) {
-            HashUtil::combine(hash, data->size());
+            HashUtil::hashCombine(hash, data->size());
             for (const DataContainer& singleData: *data) {
                 for (std::size_t variableTypeIndex = 0; variableTypeIndex < singleData.getVariableTypes().size(); ++variableTypeIndex) {
-                    HashUtil::combine(hash, singleData.getVariableSize(variableTypeIndex));
+                    HashUtil::hashCombine(hash, singleData.getVariableSize(variableTypeIndex));
                 }
             }
         }
         if (instanceData) {
             for (std::size_t variableTypeIndex = 0; variableTypeIndex < instanceData->getVariableTypes().size(); ++variableTypeIndex) {
-                HashUtil::combine(hash, instanceData->getVariableSize(variableTypeIndex));
+                HashUtil::hashCombine(hash, instanceData->getVariableSize(variableTypeIndex));
             }
         }
 
         for (const BlendFunction& bf : blendFunctions) {
-            HashUtil::combine(hash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());
+            HashUtil::hashCombine(hash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());
         }
 
-        HashUtil::combine(hash,
+        HashUtil::hashCombine(hash,
                 renderTarget->getWidth(), renderTarget->getHeight(), renderTarget->getRenderPassCompatibilityId(),
                 shader->getShaderId(),
                 shapeType,

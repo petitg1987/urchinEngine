@@ -34,17 +34,17 @@ namespace urchin {
 
         std::size_t instanceHash = model->getConstMeshes()->retrieveHashId();
         if (displayMode == DisplayMode::DEFAULT_MODE) {
-            HashUtil::combine(instanceHash, model->getLightMask());
+            HashUtil::hashCombine(instanceHash, model->getLightMask());
             bool hasUvScaling = false;
             for (unsigned int meshIndex = 0; meshIndex < model->getMeshes()->getNumMeshes(); ++meshIndex) {
                 const Material& material = model->getMeshes()->getMesh(meshIndex).getMaterial();
-                HashUtil::combine(instanceHash, material.retrieveHashId());
+                HashUtil::hashCombine(instanceHash, material.retrieveHashId());
                 hasUvScaling = hasUvScaling || material.getUvScale().hasScaling();
             }
             if (hasUvScaling) {
                 //UV are not part of the shader instance variables. Therefore, different scaling cannot be part of the same model instancing.
                 float scaleHashId = model->getTransform().getScale().X * 10000.0f + model->getTransform().getScale().Y * 100.0f + model->getTransform().getScale().Z;
-                HashUtil::combine(instanceHash, scaleHashId);
+                HashUtil::hashCombine(instanceHash, scaleHashId);
             }
             return instanceHash;
         } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
