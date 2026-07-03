@@ -39,6 +39,28 @@ namespace urchin {
         return create(materialName, std::move(albedoTexture));
     }
 
+    std::shared_ptr<MaterialBuilder> MaterialBuilder::create(const std::string& materialName, const Material& material) {
+        auto materialBuilder = std::shared_ptr<MaterialBuilder>(new MaterialBuilder(std::move(materialName), material.getAlbedoTexture()))
+                ->normalTexture(material.getNormalTexture())
+                ->roughnessTexture(material.getRoughnessTexture())
+                ->metalnessTexture(material.getMetalnessTexture())
+                ->uvScale(material.getUvScale())
+                ->emissiveFactor(material.getEmissiveFactor())
+                ->ambientFactor(material.getAmbientFactor());
+
+        if (material.repeatTextures()) {
+            materialBuilder->enableRepeatTextures();
+        }
+        if (!material.isDepthTestEnabled()) {
+            materialBuilder->disableDepthTest();
+        }
+        if (!material.isDepthWriteEnabled()) {
+            materialBuilder->disableDepthWrite();
+        }
+
+        return materialBuilder;
+    }
+
     const std::string& MaterialBuilder::getMaterialName() const {
         return materialName;
     }
