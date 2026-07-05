@@ -11,8 +11,8 @@ namespace urchin {
             explicit CameraSpaceService(const Camera&);
 
             Point3<float> worldSpacePointToViewSpace(const Point3<float>&) const;
-            Point2<float> worldSpacePointToNdcSpace(const Point3<float>&) const;
-            Point2<float> worldSpacePointToScreenSpace(const Point3<float>&) const;
+            Point2<float> worldSpacePointToNdcSpace(const Point3<float>&, bool&) const;
+            Point2<float> worldSpacePointToScreenSpace(const Point3<float>&, bool&) const;
 
             Point3<float> screenPointToViewSpace(const Point2<float>&) const;
             Ray<float> screenPointToRay(const Point2<float>&, float) const;

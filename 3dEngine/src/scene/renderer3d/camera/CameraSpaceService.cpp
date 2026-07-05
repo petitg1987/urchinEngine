@@ -12,16 +12,24 @@ namespace urchin {
         return {pointViewSpace.X, pointViewSpace.Y, pointViewSpace.Z};
     }
 
-    Point2<float> CameraSpaceService::worldSpacePointToNdcSpace(const Point3<float>& worldSpacePoint) const {
+    /**
+     * @param pointBehindCamera [out] True if the point is behind the camera
+     */
+    Point2<float> CameraSpaceService::worldSpacePointToNdcSpace(const Point3<float>& worldSpacePoint, bool& pointBehindCamera) const {
         Point4<float> pointClipSpace = camera.getProjectionMatrixWithoutJitter() * (camera.getViewMatrix() * Point4(worldSpacePoint, 1.0f));
-        if (pointClipSpace.W != 0.0f) [[likely]] {
-            return {pointClipSpace.X / pointClipSpace.W, pointClipSpace.Y / pointClipSpace.W};
+        if (pointClipSpace.W <= 0.0f) {
+            pointBehindCamera = true;
+            return {0.0f, 0.0f};
         }
-        return {pointClipSpace.X, pointClipSpace.Y};
+        pointBehindCamera = false;
+        return {pointClipSpace.X / pointClipSpace.W, pointClipSpace.Y / pointClipSpace.W};
     }
 
-    Point2<float> CameraSpaceService::worldSpacePointToScreenSpace(const Point3<float>& worldSpacePoint) const {
-        Point2<float> pointNdcSpace = worldSpacePointToNdcSpace(worldSpacePoint);
+    /**
+     * @param pointBehindCamera [out] True if the point is behind the camera
+     */
+    Point2<float> CameraSpaceService::worldSpacePointToScreenSpace(const Point3<float>& worldSpacePoint, bool& pointBehindCamera) const {
+        Point2<float> pointNdcSpace = worldSpacePointToNdcSpace(worldSpacePoint, pointBehindCamera);
         return {((pointNdcSpace.X + 1.0f) / 2.0f) * ((float)camera.getSceneWidth()), ((pointNdcSpace.Y + 1.0f) / 2.0f) * ((float)camera.getSceneHeight())};
     }
 
