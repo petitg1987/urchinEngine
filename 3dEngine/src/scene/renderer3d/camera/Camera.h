@@ -33,6 +33,7 @@ namespace urchin {
 
             const Matrix4<float>& getViewMatrix() const;
             const Matrix4<float>& getProjectionMatrix() const;
+            Matrix4<float> getProjectionMatrixWithoutJitter() const;
 
             //pre-computed values
             const Quaternion<float>& getOrientation() const;

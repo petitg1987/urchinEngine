@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     Point2<float> CameraSpaceService::worldSpacePointToNdcSpace(const Point3<float>& worldSpacePoint) const {
-        Point4<float> pointClipSpace = camera.getProjectionViewMatrix() * Point4(worldSpacePoint, 1.0f);
+        Point4<float> pointClipSpace = camera.getProjectionMatrixWithoutJitter() * (camera.getViewMatrix() * Point4(worldSpacePoint, 1.0f));
         if (pointClipSpace.W != 0.0f) [[likely]] {
             return {pointClipSpace.X / pointClipSpace.W, pointClipSpace.Y / pointClipSpace.W};
         }

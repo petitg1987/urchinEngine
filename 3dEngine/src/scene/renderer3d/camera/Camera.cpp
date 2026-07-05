@@ -119,6 +119,13 @@ namespace urchin {
         return mProjection;
     }
 
+    Matrix4<float> Camera::getProjectionMatrixWithoutJitter() const {
+        Matrix4<float> projectionWithoutJitter = mProjection;
+        projectionWithoutJitter.a13 = 0.0f;
+        projectionWithoutJitter.a23 = 0.0f;
+        return projectionWithoutJitter;
+    }
+
     const Matrix4<float>& Camera::getProjectionViewMatrix() const {
         return mProjectionView;
     }
