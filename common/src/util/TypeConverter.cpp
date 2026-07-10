@@ -1,5 +1,4 @@
 #include <iostream>
-#include <limits>
 #include <cmath>
 #include <cassert>
 #include <iomanip>
@@ -239,20 +238,20 @@ namespace urchin {
     /**
      * Convert float to string. Unlike std::to_string(), this method is independent of the locale.
      */
-    std::string TypeConverter::toString(float value) {
+    std::string TypeConverter::toString(float value, int precision) {
         std::ostringstream ss;
         ss.imbue(std::locale::classic());
-        ss << std::setprecision(std::numeric_limits<float>::digits10) << std::fixed << value;
+        ss << std::setprecision(precision) << std::fixed << value;
         return std::string(ss.str());
     }
 
     /**
      * Convert double to string. Unlike std::to_string(), this method is independent of the locale.
      */
-    std::string TypeConverter::toString(double value) {
+    std::string TypeConverter::toString(double value, int precision) {
         std::ostringstream ss;
         ss.imbue(std::locale::classic());
-        ss << std::setprecision(std::numeric_limits<double>::digits10) << std::fixed << value;
+        ss << std::setprecision(precision) << std::fixed << value;
         return std::string(ss.str());
     }
 

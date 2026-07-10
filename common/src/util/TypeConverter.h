@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <limits>
 #include <cstdint>
 
 #include "math/algebra/point/Point2.h"
@@ -55,8 +56,8 @@ namespace urchin {
             static Vector4<int> toVector4Int(std::string_view);
             static Quaternion<float> toQuaternion(std::string_view);
 
-            static std::string toString(float);
-            static std::string toString(double);
+            static std::string toString(float, int precision = std::numeric_limits<float>::digits10);
+            static std::string toString(double, int precision = std::numeric_limits<float>::digits10);
             static std::string toString(int);
 
         private:
