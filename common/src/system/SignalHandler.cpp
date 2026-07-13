@@ -122,10 +122,9 @@ namespace urchin {
         sigAction.sa_flags = SA_SIGINFO | SA_ONSTACK;
 
         sigaction(SIGSEGV, &sigAction, nullptr);
+        sigaction(SIGBUS, &sigAction, nullptr);
         sigaction(SIGFPE, &sigAction, nullptr);
-        sigaction(SIGINT, &sigAction, nullptr);
         sigaction(SIGILL, &sigAction, nullptr);
-        sigaction(SIGTERM, &sigAction, nullptr);
         sigaction(SIGABRT, &sigAction, nullptr);
     }
 
