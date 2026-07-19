@@ -65,6 +65,11 @@ namespace urchin {
         changeTexture(texture);
     }
 
+    void StaticBitmap::updateTexture(std::shared_ptr<Texture> texture) {
+        this->texture = std::move(texture);
+        changeTexture(this->texture);
+    }
+
     const std::string& StaticBitmap::getTextureName() const {
         return texture->getName();
     }
