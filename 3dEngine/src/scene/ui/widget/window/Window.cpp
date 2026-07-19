@@ -52,9 +52,9 @@ namespace urchin {
         bool propagateEvent = true;
         if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle2D titleZone(Point2((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-                                  Point2((int)getGlobalPositionX() + ((int) getWidth() - getOutline().rightWidth), (int)getGlobalPositionY() + getOutline().topWidth));
-            Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int) getWidth() - getOutline().rightWidth), (int)getGlobalPositionY()),
-                                  Point2((int)getGlobalPositionX() + (int) getWidth(), (int)getGlobalPositionY() + getOutline().topWidth));
+                                  Point2((int)getGlobalPositionX() + ((int)getWidth() - (int)getOutline().rightWidth), (int)getGlobalPositionY() + (int)getOutline().topWidth));
+            Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int)getWidth() - (int)getOutline().rightWidth), (int)getGlobalPositionY()),
+                                  Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getOutline().topWidth));
 
             if (!getUi3dData() && titleZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 mousePositionX = getMouseX() - MathFunction::roundToInt(getPositionX());
@@ -76,8 +76,8 @@ namespace urchin {
     }
 
     bool Window::onKeyReleaseEvent(InputDeviceKey key) {
-        Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int)getWidth() - getOutline().rightWidth), (int)getGlobalPositionY()),
-                              Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + getOutline().topWidth));
+        Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int)getWidth() - (int)getOutline().rightWidth), (int)getGlobalPositionY()),
+                              Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getOutline().topWidth));
         if (key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }

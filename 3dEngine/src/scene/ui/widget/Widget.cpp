@@ -350,11 +350,11 @@ namespace urchin {
         notifyObservers(this, TEXTURE_UPDATED);
     }
 
-    WidgetOutline& Widget::getOutline() {
+    Outline& Widget::getOutline() {
         return widgetOutline;
     }
 
-    const WidgetOutline& Widget::getOutline() const {
+    const Outline& Widget::getOutline() const {
         return widgetOutline;
     }
 

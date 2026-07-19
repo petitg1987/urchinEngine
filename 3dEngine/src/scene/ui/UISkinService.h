@@ -5,15 +5,9 @@
 
 #include "graphics/api/GraphicsApi.h"
 #include "scene/ui/widget/LengthType.h"
+#include "scene/ui/Outline.h"
 
 namespace urchin {
-
-    struct WidgetOutline {
-        int topWidth = 0;
-        int bottomWidth = 0;
-        int leftWidth = 0;
-        int rightWidth = 0;
-    };
 
     struct Length {
         float value;
@@ -26,7 +20,7 @@ namespace urchin {
 
             void setSkin(const std::string&);
 
-            std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const UdaChunk*, WidgetOutline* widgetOutline = nullptr) const;
+            std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const UdaChunk*, Outline* widgetOutline = nullptr) const;
             Length loadLength(const UdaChunk*, std::string_view) const;
 
             const UdaParser& getSkinReader() const;

@@ -129,8 +129,8 @@ namespace urchin {
             virtual void createOrUpdateWidget() = 0;
             void changeTexture(std::shared_ptr<Texture>);
 
-            WidgetOutline& getOutline();
-            const WidgetOutline& getOutline() const;
+            Outline& getOutline();
+            const Outline& getOutline() const;
 
             virtual bool onKeyPressEvent(InputDeviceKey);
             virtual bool onKeyReleaseEvent(InputDeviceKey);
@@ -157,7 +157,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> texture;
 
-            WidgetOutline widgetOutline;
+            Outline widgetOutline;
             WidgetState widgetState;
 
             Position position;
