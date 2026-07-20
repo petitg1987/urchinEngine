@@ -14,7 +14,7 @@ namespace urchin {
 
         auto widthMinusRight = std::max(0u, (unsigned int)((int)width - (int)outline.rightWidth));
         auto heightMinusBottom = std::max(0u, (unsigned int)((int)height - (int)outline.bottomWidth));
-        unsigned int leftMultiplyInternalFormat = std::min(width, outline.leftWidth * componentsCount);
+        unsigned int leftMultiplyInternalFormat = std::min(width, outline.leftWidth) * componentsCount;
         unsigned int topAdjusted = std::min(height, outline.topWidth);
 
         //copy corner top left
