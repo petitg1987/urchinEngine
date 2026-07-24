@@ -68,6 +68,7 @@ namespace urchin {
             glyph[i].shiftX = face->glyph->bitmap_left;
             glyph[i].shiftY = face->glyph->bitmap_top - bitmapTopA;
             glyph[i].letterWidth = (int)(face->glyph->advance.x >> 6);
+            glyph[i].letterHeight = (int)(face->glyph->bitmap.rows);
             glyph[i].bitmapWidth = face->glyph->bitmap.width;
             glyph[i].bitmapHeight = face->glyph->bitmap.rows;
             glyph[i].buf.clear();

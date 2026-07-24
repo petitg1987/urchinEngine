@@ -201,8 +201,6 @@ namespace urchin {
         vertexCoord.reserve(baseText.size() * 4);
 
         float offsetY = 0.0f;
-        auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
-
         for (const TextLine& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
             for (char32_t textLetter : textLine.text) { //each letter
@@ -223,7 +221,7 @@ namespace urchin {
 
                 offsetX += (float)font->getGlyph(textLetter).letterWidth;
             }
-            offsetY += spaceBetweenLines;
+            offsetY += (float)font->getSpaceBetweenLines();
         }
 
         if (vertexCoord.empty()) {
@@ -270,17 +268,23 @@ namespace urchin {
 
         //compute widget size
         float width = 0.0f;
+        float height = 0.0f;
         for (const auto& textLine : cutTextLines) { //each line
             float lineWidth = 0.0f;
             for (char32_t textLetter : textLine.text) { //each letter
                 auto letterWidth = (float)font->getGlyph(textLetter).letterWidth;
                 lineWidth += letterWidth;
+                auto letterHeight = (float)font->getGlyph(textLetter).letterHeight;
+                height = std::max(height, letterHeight);
             }
             width = std::max(width, lineWidth);
         }
+
         std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
-        auto textHeight = (float)(font->getHeight() + (numberOfInterLines * font->getSpaceBetweenLines()));
-        Widget::updateSize(Size(width, textHeight, PIXEL));
+        if (numberOfInterLines > 0) {
+            height = (float)(font->getHeight() + (numberOfInterLines * font->getSpaceBetweenLines()));
+        }
+        Widget::updateSize(Size(width, height, PIXEL));
     }
 
     void Text::cutText() {

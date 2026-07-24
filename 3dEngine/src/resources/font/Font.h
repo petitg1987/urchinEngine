@@ -14,6 +14,7 @@ namespace urchin {
         int shiftX;
         int shiftY;
         int letterWidth;
+        int letterHeight;
         std::vector<unsigned char> buf;
     };
 
