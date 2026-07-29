@@ -15,7 +15,8 @@ namespace urchin {
             emissiveFactor(materialBuilder.getEmissiveFactor()),
             ambientFactor(materialBuilder.getAmbientFactor()),
             depthTestEnabled(materialBuilder.isDepthTestEnabled()),
-            depthWriteEnabled(materialBuilder.isDepthWriteEnabled()) {
+            depthWriteEnabled(materialBuilder.isDepthWriteEnabled()),
+            cullFaceEnabled(materialBuilder.isCullFaceEnabled()) {
         if (!this->normalTexture) {
             this->normalTexture = ResourceRetriever::instance().getResource<Texture>(LoaderTexture::DEFAULT_TEXTURE_FILENAME, {{"textureType", "normal"}});
         }
@@ -69,6 +70,10 @@ namespace urchin {
     
     bool Material::isDepthWriteEnabled() const {
         return depthWriteEnabled;
+    }
+
+    bool Material::isCullFaceEnabled() const {
+        return cullFaceEnabled;
     }
 
 }

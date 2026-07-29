@@ -178,7 +178,7 @@ namespace urchin {
             if (mesh.getMaterial().isDepthWriteEnabled()) {
                 meshRendererBuilder->enableDepthWrite();
             }
-            if (mesh.getMaterial().getAlbedoTexture()->hasTransparency()) {
+            if (mesh.getMaterial().isCullFaceEnabled() || mesh.getMaterial().getAlbedoTexture()->hasTransparency()) {
                 meshRendererBuilder->disableCullFace();
             }
 

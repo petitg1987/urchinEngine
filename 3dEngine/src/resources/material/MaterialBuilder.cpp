@@ -17,7 +17,8 @@ namespace urchin {
             mEmissiveFactor(0.0f),
             mAmbientFactor(0.5f),
             mDepthTestEnabled(true),
-            mDepthWriteEnabled(true) {
+            mDepthWriteEnabled(true),
+            mCullFaceEnabled(true) {
 
     }
 
@@ -56,6 +57,9 @@ namespace urchin {
         }
         if (!material.isDepthWriteEnabled()) {
             materialBuilder->disableDepthWrite();
+        }
+        if (!material.isCullFaceEnabled()) {
+            materialBuilder->disableCullFace();
         }
 
         return materialBuilder;
@@ -156,6 +160,15 @@ namespace urchin {
 
     bool MaterialBuilder::isDepthWriteEnabled() const {
         return mDepthWriteEnabled;
+    }
+
+    std::shared_ptr<MaterialBuilder> MaterialBuilder::disableCullFace() {
+        this->mCullFaceEnabled = false;
+        return shared_from_this();
+    }
+
+    bool MaterialBuilder::isCullFaceEnabled() const {
+        return mCullFaceEnabled;
     }
 
     std::unique_ptr<Material> MaterialBuilder::build() {

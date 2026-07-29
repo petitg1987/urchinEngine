@@ -29,6 +29,7 @@ namespace urchin {
 
             bool isDepthTestEnabled() const;
             bool isDepthWriteEnabled() const;
+            bool isCullFaceEnabled() const;
 
         private:
             std::shared_ptr<Texture> albedoTexture;
@@ -45,6 +46,7 @@ namespace urchin {
 
             bool depthTestEnabled;
             bool depthWriteEnabled;
+            bool cullFaceEnabled;
     };
 
 }

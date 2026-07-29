@@ -118,7 +118,7 @@ namespace urchin {
             if (depthWriteEnabled && mesh.getMaterial().isDepthWriteEnabled()) {
                 meshRendererBuilder->enableDepthWrite();
             }
-            if (!enableFaceCull) {
+            if (!enableFaceCull || !mesh.getMaterial().isCullFaceEnabled()) {
                 meshRendererBuilder->disableCullFace();
             }
             if (!blendFunctions.empty()) {

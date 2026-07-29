@@ -45,6 +45,8 @@ namespace urchin {
             bool isDepthTestEnabled() const;
             std::shared_ptr<MaterialBuilder> disableDepthWrite();
             bool isDepthWriteEnabled() const;
+            std::shared_ptr<MaterialBuilder> disableCullFace();
+            bool isCullFaceEnabled() const;
 
             std::unique_ptr<Material> build();
 
@@ -67,6 +69,7 @@ namespace urchin {
 
             bool mDepthTestEnabled;
             bool mDepthWriteEnabled;
+            bool mCullFaceEnabled;
     };
 
 }

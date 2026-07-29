@@ -158,6 +158,12 @@ namespace urchin {
             materialBuilder->disableDepthWrite();
         }
 
+        //cull face
+        auto cullFaceChunk = udaParser.getFirstChunk(false, "cullFace");
+        if (cullFaceChunk && !cullFaceChunk->getBoolValue()) {
+            materialBuilder->disableCullFace();
+        }
+
         return materialBuilder->build();
     }
 
