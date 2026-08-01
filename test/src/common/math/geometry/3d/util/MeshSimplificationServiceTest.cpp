@@ -32,6 +32,31 @@ void MeshSimplificationServiceTest::simplify() {
     });
 }
 
+void MeshSimplificationServiceTest::simplifyWithCollapsedTriangle() {
+    std::vector vertices = {
+        Point3(0.0f, 0.0f, 0.0f),
+        Point3(2.0f, 0.0f, 0.0f),
+        Point3(0.0f, 2.0f, 0.0f),
+        Point3(5.0f, 5.0f, 5.0f),
+        Point3(5.0f, 5.0f, 5.0f),
+        Point3(5.0f, 5.0f, 5.0f),
+        Point3(0.0f, 0.0f, 0.0f)
+    };
+    std::vector<std::array<uint32_t, 3>> trianglesIndices = {
+        {0, 2, 1},
+        {3, 4, 5}, //fully collapsed
+        {0, 6, 1} //partially collapsed
+    };
+    MeshData mesh(vertices, trianglesIndices);
+
+    MeshData simplifiedMesh = MeshSimplificationService().simplify(mesh);
+
+    AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 1);
+    AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(0, simplifiedMesh), std::array{
+        Point3(0.0f, 0.0f, 0.0f), Point3(0.0f, 2.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f)
+    });
+}
+
 std::array<Point3<float>, 3> MeshSimplificationServiceTest::extractTrianglePoints(std::size_t triangleIndex, const MeshData& mesh) const {
     const std::array<uint32_t, 3>& triangleIndices = mesh.getTrianglesIndices()[triangleIndex];
     return {mesh.getVertices()[triangleIndices[0]], mesh.getVertices()[triangleIndices[1]], mesh.getVertices()[triangleIndices[2]]};
@@ -41,6 +66,7 @@ CppUnit::Test* MeshSimplificationServiceTest::suite() {
     auto* suite = new CppUnit::TestSuite("MeshSimplificationServiceTest");
 
     suite->addTest(new CppUnit::TestCaller("simplify", &MeshSimplificationServiceTest::simplify));
+    suite->addTest(new CppUnit::TestCaller("simplifyWithCollapsedTriangle", &MeshSimplificationServiceTest::simplifyWithCollapsedTriangle));
 
     return suite;
 }
