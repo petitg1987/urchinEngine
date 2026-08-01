@@ -274,6 +274,10 @@ namespace urchin {
         }
     }
 
+    std::size_t ModelSetDisplayer::getRegisteredModelsSize() const {
+        return registeredModels.size();
+    }
+
     void ModelSetDisplayer::addModelToDisplay(Model* modelToDisplay, std::bitset<8> layersMask) {
         bool modelRegistered = registerModel(modelToDisplay);
 

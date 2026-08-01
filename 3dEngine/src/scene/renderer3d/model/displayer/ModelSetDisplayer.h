@@ -38,6 +38,7 @@ namespace urchin {
             bool registerModel(Model*);
             void unregisterModel(Model*);
             void alterRegisterModelLastUsageTime(Model*, std::chrono::steady_clock::time_point);
+            std::size_t getRegisteredModelsSize() const;
 
             void addModelToDisplay(Model*, std::bitset<8> = std::bitset<8>(ULLONG_MAX));
             void setModelsToDisplay(std::span<Model* const>);
