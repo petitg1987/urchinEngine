@@ -3,6 +3,7 @@
 
 #include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
 #include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
+#include "scene/renderer3d/lighting/shadow/light/ShadowMeshFilter.h"
 #include "scene/renderer3d/lighting/shadow/display/ModelShadowSunShaderVariable.h"
 #include "scene/renderer3d/lighting/shadow/display/ModelShadowOmnidirectionalShaderVariable.h"
 #include "scene/renderer3d/lighting/shadow/display/ModelShadowSpotShaderVariable.h"
@@ -35,7 +36,7 @@ namespace urchin {
             std::vector variablesDescriptions = {sizeof(nbSplitShadowMaps)};
             auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbSplitShadowMaps);
             shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
-            //shadowModelSetDisplayer->setupMeshFilter(); //TODO add filter for translucent mesh !
+            shadowModelSetDisplayer->setupMeshFilter(std::make_unique<ShadowMeshFilter>());
             if (light.getLightType() == Light::LightType::SUN) {
                 shadowModelSetDisplayer->setupShader("modelShadowMapSun.vert.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
                 shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ModelShadowSunShaderVariable>(this));
