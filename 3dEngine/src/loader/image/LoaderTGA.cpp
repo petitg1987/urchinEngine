@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <fstream>
+#include <algorithm>
 #include <UrchinCommon.h>
 
 #include "loader/image/LoaderTGA.h"
@@ -122,7 +123,8 @@ namespace urchin {
         unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0: origin bottom, 1: origin top
         bool addAlphaChannel = componentsCount == 3 && format == Image::IMAGE_RGBA;
         unsigned int expectedComponentsCount = addAlphaChannel ? 4 : componentsCount;
-        bool hasTransparency = false;
+        unsigned char minAlpha = 255;
+        unsigned char maxAlpha = componentsCount == 4 ? 0 : 255;
 
         std::vector<unsigned char> adjustedTexels(width * height * expectedComponentsCount, 255 /* 255 for alpha channel */);
         for (unsigned int heightIndex = 0, heightInverseIndex = height - 1; heightIndex < height; heightIndex++, heightInverseIndex--) {
@@ -134,14 +136,15 @@ namespace urchin {
                     unsigned int srcIndex = srcHeightIndex * (width * componentsCount) + widthIndex * componentsCount + componentIndex;
                     adjustedTexels[dstIndex] = texels[srcIndex];
 
-                    if (!hasTransparency && componentIndex == 3 && adjustedTexels[dstIndex] < 255) {
-                        hasTransparency = true;
+                    if (componentIndex == 3) {
+                        minAlpha = std::min(minAlpha, adjustedTexels[dstIndex]);
+                        maxAlpha = std::max(maxAlpha, adjustedTexels[dstIndex]);
                     }
                 }
             }
         }
 
-        return std::make_shared<Image>(width, height, format, std::move(adjustedTexels), hasTransparency);
+        return std::make_shared<Image>(width, height, format, std::move(adjustedTexels), TransparencyData::buildFromAlpha8Bits(minAlpha, maxAlpha));
     }
 
     /**

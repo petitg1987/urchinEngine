@@ -16,7 +16,7 @@ namespace urchin {
 
         private:
             std::vector<unsigned char> decode(const std::string&, lodepng::State&, const std::vector<unsigned char>&, unsigned int&, unsigned int&) const;
-            bool isPixelsHaveTransparency(const std::vector<unsigned char>& pixelsRgba8Bits) const;
+            TransparencyData buildTransparencyData(const std::vector<unsigned char>&) const;
             std::vector<uint16_t> to16Bits(const std::vector<unsigned char>&) const;
     };
 

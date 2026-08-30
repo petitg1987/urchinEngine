@@ -5,6 +5,7 @@
 
 #include "resources/Resource.h"
 #include "graphics/texture/TextureFormat.h"
+#include "graphics/texture/TransparencyData.h"
 
 namespace urchin {
 
@@ -19,8 +20,8 @@ namespace urchin {
                 CHANNEL_16_INT
             };
 
-            Image(unsigned int, unsigned int, ImageFormat, std::vector<unsigned char>&&, bool);
-            Image(unsigned int, unsigned int, ImageFormat, std::vector<uint16_t>&&, bool);
+            Image(unsigned int, unsigned int, ImageFormat, std::vector<unsigned char>&&, const TransparencyData&);
+            Image(unsigned int, unsigned int, ImageFormat, std::vector<uint16_t>&&, const TransparencyData&);
             ~Image() override = default;
 
             unsigned int getWidth() const;
@@ -31,7 +32,7 @@ namespace urchin {
             ChannelPrecision getChannelPrecision() const;
             const std::vector<unsigned char>& getTexels() const;
             const std::vector<uint16_t>& getTexels16Bits() const;
-            bool hasTransparency() const;
+            const TransparencyData& getTransparencyData() const;
 
             unsigned int retrieveComponentsCount() const;
             TextureFormat retrieveTextureFormat() const;
@@ -43,7 +44,7 @@ namespace urchin {
             ChannelPrecision channelPrecision;
             std::vector<unsigned char> texels8; //8 bits
             std::vector<uint16_t> texels16; //16 bits
-            bool bHasTransparency;
+            TransparencyData transparencyData;
     };
 
 }

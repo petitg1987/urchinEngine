@@ -125,7 +125,8 @@ namespace urchin {
             }
         }
 
-        auto alphabetTexture = Texture::build(ttfFilename, textureSize, textureSize, TextureFormat::RGBA_8_UINT_NORM, texels.data(), true, TextureDataType::INT_8);
+        TransparencyData transparencyData = TransparencyData::buildFromAlpha8Bits(0, 255);
+        auto alphabetTexture = Texture::build(ttfFilename, textureSize, textureSize, TextureFormat::RGBA_8_UINT_NORM, texels.data(), transparencyData, TextureDataType::INT_8);
 
         //clear buffers of characters
         for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS; i++) {

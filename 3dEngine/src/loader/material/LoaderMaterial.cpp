@@ -75,7 +75,7 @@ namespace urchin {
                 }
 
                 std::vector roughnessTextureData({(unsigned char) (255.0f * roughness)});
-                roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, roughnessTextureData.data(), false, TextureDataType::INT_8);
+                roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, roughnessTextureData.data(), TransparencyData::buildOpaque(), TextureDataType::INT_8);
             }
 
             if (roughnessTexture) {
@@ -108,7 +108,7 @@ namespace urchin {
                 }
 
                 std::vector metalnessTextureData({(unsigned char) (255.0f * metalness)});
-                metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, metalnessTextureData.data(), false, TextureDataType::INT_8);
+                metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, metalnessTextureData.data(), TransparencyData::buildOpaque(), TextureDataType::INT_8);
             }
 
             if (metalnessTexture) {

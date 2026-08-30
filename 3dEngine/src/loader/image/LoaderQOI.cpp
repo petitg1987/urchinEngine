@@ -12,7 +12,8 @@ namespace urchin {
             throw std::runtime_error("Unable to load image: " + filename);
         }
 
-        return std::make_shared<Image>(desc.width, desc.height, Image::IMAGE_RGBA, std::move(pixels), desc.hasTransparency);
+        TransparencyData transparencyData = TransparencyData::buildFromAlpha8Bits(desc.minAlpha, desc.maxAlpha);
+        return std::make_shared<Image>(desc.width, desc.height, Image::IMAGE_RGBA, std::move(pixels), transparencyData);
     }
 
 }

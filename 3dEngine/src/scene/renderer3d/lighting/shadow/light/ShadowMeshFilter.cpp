@@ -7,7 +7,8 @@ namespace urchin {
     }
 
     bool ShadowMeshFilter::isAccepted(const Mesh& mesh) const {
-        return !mesh.getMaterial().hasTransparency(); //TODO impl: transparancy > 50%
+        constexpr float MAX_TRANSPARENCY_TO_CAST_SHADOW = 0.5f;
+        return mesh.getMaterial().getTransparencyData().getMaxTransparency() <= MAX_TRANSPARENCY_TO_CAST_SHADOW;
     }
 
 }

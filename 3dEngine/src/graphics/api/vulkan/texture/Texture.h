@@ -7,6 +7,7 @@
 
 #include "graphics/texture/TextureType.h"
 #include "graphics/texture/TextureFormat.h"
+#include "graphics/texture/TransparencyData.h"
 #include "resources/Resource.h"
 
 VK_DEFINE_HANDLE(VmaAllocation)
@@ -38,11 +39,11 @@ namespace urchin {
 
             ~Texture() override;
 
-            static std::shared_ptr<Texture> build(std::string, unsigned int, unsigned int, TextureFormat, const void*, bool, TextureDataType);
+            static std::shared_ptr<Texture> build(std::string, unsigned int, unsigned int, TextureFormat, const void*, const TransparencyData&, TextureDataType);
             static std::shared_ptr<Texture> buildNoData(const std::string&, unsigned int, unsigned int, TextureFormat);
-            static std::shared_ptr<Texture> buildArray(std::string, unsigned int, unsigned int, unsigned int, TextureFormat, const void*, bool, TextureDataType);
+            static std::shared_ptr<Texture> buildArray(std::string, unsigned int, unsigned int, unsigned int, TextureFormat, const void*, const TransparencyData&, TextureDataType);
             static std::shared_ptr<Texture> buildArrayNoData(const std::string&, unsigned int, unsigned int, unsigned int, TextureFormat);
-            static std::shared_ptr<Texture> buildCubeMap(std::string, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&, bool, TextureDataType);
+            static std::shared_ptr<Texture> buildCubeMap(std::string, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&, const TransparencyData&, TextureDataType);
 
             static std::shared_ptr<Texture> buildEmptyRgba8Bits(std::string);
             static std::shared_ptr<Texture> buildEmptyGreyscale8Bits(std::string);
@@ -62,11 +63,11 @@ namespace urchin {
             bool isDepthFormat() const;
             uint32_t getMipLevels() const;
             bool hasMipmap() const;
-            bool hasTransparency() const;
+            const TransparencyData& getTransparencyData() const;
             OutputUsage getOutputUsage() const;
 
         private:
-            Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&, bool, TextureDataType);
+            Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&, const TransparencyData&, TextureDataType);
 
             void cleanup();
 
@@ -97,7 +98,7 @@ namespace urchin {
             TextureFormat format;
             std::vector<std::vector<uint8_t>> dataPtr;
             uint32_t mipLevels;
-            bool bHasTransparency;
+            TransparencyData transparencyData;
             bool writableTexture;
             OutputUsage outputUsage;
 

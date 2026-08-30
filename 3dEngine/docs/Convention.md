@@ -14,3 +14,11 @@
 
 # Faces orientation
 * Visible: clockwise
+
+# Transparency 
+* Transparent
+  * 0.0 = fully opaque
+  * 1.0 = fully transparent
+* Alpha
+  * 0.0 = fully transparent
+  * 1.0 = fully opaque

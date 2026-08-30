@@ -12,7 +12,7 @@
  * Update done for Urchin (23/12/2021):
  *   - Remove #ifdef QOI_IMPLEMENTATION / #endif
  *   - Return std::vector<unsigned char> (instead of void*) for qoi_decode / qoi_read
- *   - Add bool hasTransparency in qoi_header_t
+ *   - Add unsigned char minAlpha/maxAlpha in qoi_header_t
  */
 
 
@@ -215,7 +215,8 @@ typedef struct {
     unsigned int height;
     unsigned char channels;
     unsigned char colorspace;
-    bool hasTransparency;
+    unsigned char minAlpha;
+    unsigned char maxAlpha;
 } qoi_desc;
 
 #ifndef QOI_NO_STDIO
@@ -480,7 +481,8 @@ inline std::vector<unsigned char> qoi_decode(const void *data, int size, qoi_des
 	desc->height = qoi_read_32(bytes, &p);
 	desc->channels = bytes[p++];
 	desc->colorspace = bytes[p++];
-    desc->hasTransparency = false;
+    desc->minAlpha = 255;
+    desc->maxAlpha = 255;
 
 	if (
 		desc->width == 0 || desc->height == 0 ||
@@ -494,6 +496,10 @@ inline std::vector<unsigned char> qoi_decode(const void *data, int size, qoi_des
 
 	if (channels == 0) {
 		channels = desc->channels;
+	}
+
+	if (channels == 4) {
+		desc->maxAlpha = 0; /* computed below from the alpha channel */
 	}
 
 	px_len = desc->width * desc->height * channels;
@@ -547,7 +553,8 @@ inline std::vector<unsigned char> qoi_decode(const void *data, int size, qoi_des
 		}
 
 		if (channels == 4) {
-            desc->hasTransparency |= px.rgba.a != 255;
+			desc->minAlpha = px.rgba.a < desc->minAlpha ? px.rgba.a : desc->minAlpha;
+			desc->maxAlpha = px.rgba.a > desc->maxAlpha ? px.rgba.a : desc->maxAlpha;
 			*(qoi_rgba_t*)(&pixels[px_pos]) = px;
 		}
 		else {

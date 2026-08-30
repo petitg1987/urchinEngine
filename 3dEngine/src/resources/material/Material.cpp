@@ -6,7 +6,7 @@ namespace urchin {
 
     Material::Material(const MaterialBuilder& materialBuilder) :
             albedoTexture(materialBuilder.getAlbedoTexture()),
-            bHasTransparency(materialBuilder.hasTransparency()),
+            transparencyData(materialBuilder.getTransparencyData()),
             bRepeatTextures(materialBuilder.repeatTextures()),
             uvScale(materialBuilder.getUvScale()),
             normalTexture(materialBuilder.getNormalTexture()),
@@ -32,8 +32,8 @@ namespace urchin {
         return albedoTexture;
     }
 
-    bool Material::hasTransparency() const {
-        return bHasTransparency;
+    const TransparencyData& Material::getTransparencyData() const {
+        return transparencyData;
     }
 
     bool Material::repeatTextures() const {

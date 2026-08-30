@@ -16,7 +16,7 @@ namespace urchin {
             static constexpr float MAX_EMISSIVE_FACTOR = 20.0f;
 
             const std::shared_ptr<Texture>& getAlbedoTexture() const;
-            bool hasTransparency() const;
+            const TransparencyData& getTransparencyData() const;
 
             bool repeatTextures() const;
             const UvScale& getUvScale() const;
@@ -33,7 +33,7 @@ namespace urchin {
 
         private:
             std::shared_ptr<Texture> albedoTexture;
-            bool bHasTransparency;
+            TransparencyData transparencyData;
 
             bool bRepeatTextures;
             UvScale uvScale;

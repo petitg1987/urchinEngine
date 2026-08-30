@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <UrchinCommon.h>
 
 #include "loader/image/LoaderPNG.h"
@@ -24,11 +25,11 @@ namespace urchin {
                 state.info_raw.bitdepth = 8;
                 state.info_raw.colortype = LCT_RGBA;
                 std::vector<unsigned char> pixels8Bits = decode(filename, state, png, width, height);
-                bool hasTransparency = false;
+                TransparencyData transparencyData = TransparencyData::buildOpaque();
                 if (colorType == LCT_RGBA) {
-                    hasTransparency = isPixelsHaveTransparency(pixels8Bits);
+                    transparencyData = buildTransparencyData(pixels8Bits);
                 }
-                return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, std::move(pixels8Bits), hasTransparency);
+                return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, std::move(pixels8Bits), transparencyData);
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image: " + std::to_string(bitDepth));
             }
@@ -37,12 +38,12 @@ namespace urchin {
                 state.info_raw.bitdepth = 8;
                 state.info_raw.colortype = LCT_GREY;
                 std::vector<unsigned char> pixels8Bits = decode(filename, state, png, width, height);
-                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels8Bits), false);
+                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels8Bits), TransparencyData::buildOpaque());
             } else if (bitDepth == 16) {
                 state.info_raw.bitdepth = 16;
                 state.info_raw.colortype = LCT_GREY;
                 std::vector<uint16_t> pixels16Bits = to16Bits(decode(filename, state, png, width, height));
-                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels16Bits), false);
+                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels16Bits), TransparencyData::buildOpaque());
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
             }
@@ -64,14 +65,15 @@ namespace urchin {
         return pixels;
     }
 
-    bool LoaderPNG::isPixelsHaveTransparency(const std::vector<unsigned char>& pixelsRgba8Bits) const {
+    TransparencyData LoaderPNG::buildTransparencyData(const std::vector<unsigned char>& pixelsRgba8Bits) const {
         assert(pixelsRgba8Bits.size() % 4 == 0);
+        unsigned char minAlpha = 255;
+        unsigned char maxAlpha = 0;
         for (std::size_t i = 3; i < pixelsRgba8Bits.size(); i += 4) {
-            if (pixelsRgba8Bits[i] < 255) {
-                return true;
-            }
+            minAlpha = std::min(minAlpha, pixelsRgba8Bits[i]);
+            maxAlpha = std::max(maxAlpha, pixelsRgba8Bits[i]);
         }
-        return false;
+        return TransparencyData::buildFromAlpha8Bits(minAlpha, maxAlpha);
     }
 
     std::vector<uint16_t> LoaderPNG::to16Bits(const std::vector<unsigned char>& pixelsGrey16bits) const {

@@ -30,8 +30,8 @@ namespace urchin {
     }
 
     std::shared_ptr<MaterialBuilder> MaterialBuilder::create(const std::string& materialName, const std::array<unsigned char, 4>& albedoColor) {
-        bool hasTransparency = albedoColor[3] != 255;
-        std::shared_ptr<Texture> albedoTexture = Texture::build(materialName + "-albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, albedoColor.data(), hasTransparency, TextureDataType::INT_8);
+        TransparencyData transparencyData = TransparencyData::buildFromAlpha8Bits(albedoColor[3], albedoColor[3]);
+        std::shared_ptr<Texture> albedoTexture = Texture::build(materialName + "-albedo", 1, 1, TextureFormat::RGBA_8_UINT_NORM, albedoColor.data(), transparencyData, TextureDataType::INT_8);
         return create(materialName, std::move(albedoTexture));
     }
 
@@ -73,8 +73,8 @@ namespace urchin {
         return mAlbedoTexture;
     }
 
-    bool MaterialBuilder::hasTransparency() const {
-        return mAlbedoTexture->hasTransparency();
+    const TransparencyData& MaterialBuilder::getTransparencyData() const {
+        return mAlbedoTexture->getTransparencyData();
     }
 
     std::shared_ptr<MaterialBuilder> MaterialBuilder::enableRepeatTextures() {

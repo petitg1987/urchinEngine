@@ -84,7 +84,7 @@ namespace urchin {
         }
 
         //create the texture
-        return Texture::build("9-slicing widget", width, height, rawImage->retrieveTextureFormat(), texels.data(), rawImage->hasTransparency(), TextureDataType::INT_8);
+        return Texture::build("9-slicing widget", width, height, rawImage->retrieveTextureFormat(), texels.data(), rawImage->getTransparencyData(), TextureDataType::INT_8);
     }
 
 }

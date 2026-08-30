@@ -18,7 +18,7 @@ namespace urchin {
             const std::string& getMaterialName() const;
 
             const std::shared_ptr<Texture>& getAlbedoTexture() const;
-            bool hasTransparency() const;
+            const TransparencyData& getTransparencyData() const;
 
             std::shared_ptr<MaterialBuilder> enableRepeatTextures();
             bool repeatTextures() const;

@@ -11,7 +11,7 @@
 namespace urchin {
 
     Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr,
-        bool hasTransparency, TextureDataType dataType) :
+        const TransparencyData& transparencyData, TextureDataType dataType) :
             isInitialized(false),
             textureType(textureType),
             width(width),
@@ -20,7 +20,7 @@ namespace urchin {
             nbImages(dataPtr.size()),
             format(format),
             mipLevels(1),
-            bHasTransparency(hasTransparency),
+            transparencyData(transparencyData),
             writableTexture(false),
             outputUsage(OutputUsage::GRAPHICS),
             lastTextureWriter(nullptr),
@@ -30,7 +30,7 @@ namespace urchin {
         if (width == 0 || height == 0 || layer == 0) {
             throw std::runtime_error("Invalid texture size of " + std::to_string(width) + "x" + std::to_string(height) + "x" + std::to_string(layer));
         }
-        if (hasTransparency && (format != TextureFormat::RGBA_8_UINT_NORM && format != TextureFormat::RGBA_8_UINT
+        if (transparencyData.hasTransparency() && (format != TextureFormat::RGBA_8_UINT_NORM && format != TextureFormat::RGBA_8_UINT
                 && format != TextureFormat::RGBA_16_FLOAT && format != TextureFormat::RGBA_32_FLOAT)) {
             throw std::runtime_error("Transparency texture is not expected with format: " + std::to_string((int)format));
         }
@@ -57,34 +57,34 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Texture::build(std::string name, unsigned int width, unsigned int height, TextureFormat format, const void* dataPtr,
-            bool hasTransparency, TextureDataType textureDataType) {
+            const TransparencyData& transparencyData, TextureDataType textureDataType) {
         std::vector allDataPtr(1, dataPtr);
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, width, height, 1, format, allDataPtr, hasTransparency, textureDataType));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, width, height, 1, format, allDataPtr, transparencyData, textureDataType));
         texture->setName(std::move(name));
         return texture;
     }
 
     std::shared_ptr<Texture> Texture::buildNoData(const std::string& name, unsigned int width, unsigned int height, TextureFormat format) {
-        return build(name, width, height, format, nullptr, false, TextureDataType::NULL_PTR);
+        return build(name, width, height, format, nullptr, TransparencyData::buildOpaque(), TextureDataType::NULL_PTR);
     }
 
     std::shared_ptr<Texture> Texture::buildArray(std::string name, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr,
-            bool hasTransparency, TextureDataType textureDataType) {
+            const TransparencyData& transparencyData, TextureDataType textureDataType) {
         std::vector allDataPtr(1, dataPtr);
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, width, height, layer, format, allDataPtr, hasTransparency, textureDataType));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, width, height, layer, format, allDataPtr, transparencyData, textureDataType));
         texture->setName(std::move(name));
         return texture;
     }
 
     std::shared_ptr<Texture> Texture::buildArrayNoData(const std::string& name, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format) {
-        return buildArray(name, width, height, layer, format, nullptr, false, TextureDataType::NULL_PTR);
+        return buildArray(name, width, height, layer, format, nullptr, TransparencyData::buildOpaque(), TextureDataType::NULL_PTR);
     }
 
     std::shared_ptr<Texture> Texture::buildCubeMap(std::string name, unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void*>& cubeDataPtr,
-            bool hasTransparency, TextureDataType textureDataType) {
+            const TransparencyData& transparencyData, TextureDataType textureDataType) {
         assert(cubeDataPtr.size() == 6);
         unsigned int layerCount = 6; //in Vulkan, cube maps are considered as an image of 6 layers
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr, hasTransparency, textureDataType));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr, transparencyData, textureDataType));
         texture->setName(std::move(name));
         return texture;
     }
@@ -92,7 +92,7 @@ namespace urchin {
     std::shared_ptr<Texture> Texture::buildEmptyRgba8Bits(std::string name) {
         std::array<uint8_t, 4> textureData = {255, 20, 147, 255}; //pink
         std::vector<const void*> allDataPtr(1, textureData.data());
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_UINT_NORM, allDataPtr, false, TextureDataType::INT_8));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_UINT_NORM, allDataPtr, TransparencyData::buildOpaque(), TextureDataType::INT_8));
         texture->setName(std::move(name));
         return texture;
     }
@@ -100,7 +100,7 @@ namespace urchin {
     std::shared_ptr<Texture> Texture::buildEmptyGreyscale8Bits(std::string name) {
         std::array textureData = {(uint8_t)0};
         std::vector<const void*> allDataPtr(1, textureData.data());
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, allDataPtr, false, TextureDataType::INT_8));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_UINT_NORM, allDataPtr, TransparencyData::buildOpaque(), TextureDataType::INT_8));
         texture->setName(std::move(name));
         return texture;
     }
@@ -108,7 +108,7 @@ namespace urchin {
     std::shared_ptr<Texture> Texture::buildEmptyArrayGreyscale32Bits(std::string name) {
         std::array textureArrayData = {0.25f, 0.5f};
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::GRAYSCALE_32_FLOAT, allDataPtr, false, TextureDataType::FLOAT_32));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::GRAYSCALE_32_FLOAT, allDataPtr, TransparencyData::buildOpaque(), TextureDataType::FLOAT_32));
         texture->setName(std::move(name));
         return texture;
     }
@@ -119,7 +119,7 @@ namespace urchin {
             0.5f, 1.0f
         };
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr, false, TextureDataType::FLOAT_32));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr, TransparencyData::buildOpaque(), TextureDataType::FLOAT_32));
         texture->setName(std::move(name));
         return texture;
     }
@@ -213,8 +213,8 @@ namespace urchin {
         return mipLevels > 1;
     }
 
-    bool Texture::hasTransparency() const {
-        return bHasTransparency;
+    const TransparencyData& Texture::getTransparencyData() const {
+        return transparencyData;
     }
 
     OutputUsage Texture::getOutputUsage() const {

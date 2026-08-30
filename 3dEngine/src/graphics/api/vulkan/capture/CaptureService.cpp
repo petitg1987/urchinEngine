@@ -118,7 +118,8 @@ namespace urchin {
             desc.width = dstWidth;
             desc.height = dstHeight;
             desc.colorspace = 1;
-            desc.hasTransparency = false;
+            desc.minAlpha = 255;
+            desc.maxAlpha = 255;
             int createQoiStatus = qoi_write(filename.c_str(), imageData.data(), &desc);
             if (createQoiStatus == 0) {
                 throw std::runtime_error("Impossible to encode capture in QOI format (status: " + std::to_string(createQoiStatus) + ", filename: " + filename + ")");

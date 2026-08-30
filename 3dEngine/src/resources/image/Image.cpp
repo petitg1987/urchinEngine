@@ -4,23 +4,23 @@
 
 namespace urchin {
 
-    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<unsigned char>&& texels8, bool hasTransparency) :
+    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<unsigned char>&& texels8, const TransparencyData& transparencyData) :
             width(width),
             height(height),
             format(format),
             channelPrecision(CHANNEL_8_INT),
             texels8(std::move(texels8)),
-            bHasTransparency(hasTransparency) {
+            transparencyData(transparencyData) {
 
     }
 
-    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<uint16_t>&& texels16, bool hasTransparency) :
+    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<uint16_t>&& texels16, const TransparencyData& transparencyData) :
             width(width),
             height(height),
             format(format),
             channelPrecision(CHANNEL_16_INT),
             texels16(std::move(texels16)),
-            bHasTransparency(hasTransparency) {
+            transparencyData(transparencyData) {
 
     }
 
@@ -67,8 +67,8 @@ namespace urchin {
         return texels16;
     }
 
-    bool Image::hasTransparency() const {
-        return bHasTransparency;
+    const TransparencyData& Image::getTransparencyData() const {
+        return transparencyData;
     }
 
     unsigned int Image::retrieveComponentsCount() const {

@@ -183,7 +183,7 @@ namespace urchin {
             ssaoNoise.emplace_back(0); //z
             ssaoNoise.emplace_back(255); //w (not used)
         }
-        noiseTexture = Texture::build("AO noise", config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_UINT_NORM, ssaoNoise.data(), false, TextureDataType::INT_8);
+        noiseTexture = Texture::build("AO noise", config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_UINT_NORM, ssaoNoise.data(), TransparencyData::buildOpaque(), TextureDataType::INT_8);
     }
 
     void AmbientOcclusionManager::exportSVG(std::string filename, const std::vector<Vector4<float>>& ssaoKernel) const {

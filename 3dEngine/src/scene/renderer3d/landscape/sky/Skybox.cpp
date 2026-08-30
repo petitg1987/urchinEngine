@@ -48,7 +48,7 @@ namespace urchin {
         for (std::size_t i = 0; i < skyboxImages.size(); ++i) {
             if (filenames[i].empty()) {
                 std::vector<unsigned char> defaultTexPixels(skyboxSize * skyboxSize * 4, 0);
-                skyboxImages[i] = std::make_shared<Image>(skyboxSize, skyboxSize, Image::IMAGE_RGBA, std::move(defaultTexPixels), false);
+                skyboxImages[i] = std::make_shared<Image>(skyboxSize, skyboxSize, Image::IMAGE_RGBA, std::move(defaultTexPixels), TransparencyData::buildFromAlpha8Bits(0, 0));
             }
         }
 
@@ -79,8 +79,9 @@ namespace urchin {
         //texture creation
         std::vector<const void*> cubeDataPtr = {skyboxImages[0]->getTexels().data(), skyboxImages[1]->getTexels().data(), skyboxImages[2]->getTexels().data(),
                                                 skyboxImages[3]->getTexels().data(), skyboxImages[4]->getTexels().data(), skyboxImages[5]->getTexels().data()};
-        bool hasTransparency = std::ranges::any_of(skyboxImages, [](const auto& img) { return img->hasTransparency(); });
-        auto skyboxTexture = Texture::buildCubeMap("skybox", skyboxImages[0]->getWidth(), skyboxImages[0]->getHeight(), skyboxImages[0]->retrieveTextureFormat(), cubeDataPtr, hasTransparency, TextureDataType::INT_8);
+        TransparencyData transparencyData = std::ranges::fold_left(skyboxImages, TransparencyData::buildOpaque(),
+                [](const TransparencyData& mergedData, const auto& img) { return mergedData.merge(img->getTransparencyData()); });
+        auto skyboxTexture = Texture::buildCubeMap("skybox", skyboxImages[0]->getWidth(), skyboxImages[0]->getHeight(), skyboxImages[0]->retrieveTextureFormat(), cubeDataPtr, transparencyData, TextureDataType::INT_8);
         std::ranges::fill(skyboxImages, std::shared_ptr<Image>(nullptr));
 
         //visual

@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     bool TransparentMeshFilter::isAccepted(const Mesh& mesh) const {
-        return mesh.getMaterial().hasTransparency();
+        return mesh.getMaterial().getTransparencyData().hasTransparency();
     }
 
 }
