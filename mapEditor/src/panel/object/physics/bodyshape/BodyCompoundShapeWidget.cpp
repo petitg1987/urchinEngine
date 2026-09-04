@@ -48,6 +48,11 @@ namespace urchin {
         buttonLayout->addWidget(boxifyButton);
         ButtonStyleHelper::applyDefaultStyle(boxifyButton);
         connect(boxifyButton, SIGNAL(clicked()), this, SLOT(boxifySelectedLocalizedShape()));
+
+        cloneButton = new QPushButton("Clone");
+        buttonLayout->addWidget(cloneButton);
+        ButtonStyleHelper::applyDefaultStyle(cloneButton);
+        connect(cloneButton, SIGNAL(clicked()), this, SLOT(cloneSelectedLocalizedShape()));
     }
 
     std::string BodyCompoundShapeWidget::getBodyShapeName() const {
@@ -97,12 +102,14 @@ namespace urchin {
                     setupShapeBox(localizedShapeLayout, localizedShape);
 
                     boxifyButton->setEnabled(localizedShape->shape->getShapeType() == CollisionShape3D::CONVEX_HULL_SHAPE);
+                    cloneButton->setEnabled(true);
 
                     localizedShapeDetails->show();
                 } else {
                     localizedShapeDetails = nullptr;
 
                     boxifyButton->setEnabled(false);
+                    cloneButton->setEnabled(false);
                 }
             }
         }
@@ -296,6 +303,20 @@ namespace urchin {
 
         localizedShapeTableView->removeSelectedLocalizedShape();
         int rowId = localizedShapeTableView->addLocalizedShape(newLocalizedShape);
+        localizedShapeTableView->selectLocalizedShape(rowId);
+
+        updateBodyShape();
+    }
+
+    void BodyCompoundShapeWidget::cloneSelectedLocalizedShape() {
+        const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
+
+        auto clonedLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+        clonedLocalizedShape->shapeIndex = retrieveNextShapeIndex();
+        clonedLocalizedShape->shape = localizedShape->shape->clone();
+        clonedLocalizedShape->transform = localizedShape->transform;
+
+        int rowId = localizedShapeTableView->addLocalizedShape(clonedLocalizedShape);
         localizedShapeTableView->selectLocalizedShape(rowId);
 
         updateBodyShape();

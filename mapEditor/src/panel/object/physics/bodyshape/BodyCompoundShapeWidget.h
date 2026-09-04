@@ -42,6 +42,7 @@ namespace urchin {
             QPushButton* addShapeButton;
             QPushButton* removeShapeButton;
             QPushButton* boxifyButton;
+            QPushButton* cloneButton;
 
             QWidget* localizedShapeDetails;
             QDoubleSpinBox* positionX;
@@ -57,6 +58,7 @@ namespace urchin {
             void addNewLocalizedShape();
             void removeSelectedLocalizedShape();
             void boxifySelectedLocalizedShape();
+            void cloneSelectedLocalizedShape();
             std::size_t retrieveNextShapeIndex() const;
 
             void updateLocalizedShapeOrientationType();
