@@ -5,7 +5,7 @@
 
 #include <UrchinCommon.h>
 
-class MeshSimplificationServiceTest final : public CppUnit::TestFixture {
+class MeshDataServiceTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

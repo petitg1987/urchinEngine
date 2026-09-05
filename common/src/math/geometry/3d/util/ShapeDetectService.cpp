@@ -11,7 +11,7 @@
 #include "math/geometry/3d/shape/BoxShape.h"
 #include "math/geometry/3d/shape/SphereShape.h"
 #include "math/geometry/3d/shape/ConvexHullShape3D.h"
-#include "math/geometry/3d/util/MeshSimplificationService.h"
+#include "math/geometry/3d/util/MeshDataService.h"
 #include "math/geometry/3d/voxel/VoxelService.h"
 
 namespace urchin {
@@ -129,7 +129,7 @@ namespace urchin {
 		}
 
 		Point3<float> firstPoint = points[0];
-		std::size_t farthestPointIndex = findFarthestPoint(points, firstPoint);
+		std::size_t farthestPointIndex = MeshDataService::findFarthestPoint(points, firstPoint);
 
 		Point3<float> sphereCenterPoint = (firstPoint + points[farthestPointIndex]) / 2.0f;
 		float expectedRadius = firstPoint.distance(sphereCenterPoint);
@@ -154,7 +154,7 @@ namespace urchin {
 			return std::nullopt;
 		}
 
-		std::vector<Point3<float>> simplifiedVertices = MeshSimplificationService::downsampleVertices(mesh.getVertices(), 0.05f); //TODO param !
+		std::vector<Point3<float>> simplifiedVertices = MeshDataService::downsampleVertices(mesh.getVertices(), 0.05f); //TODO param !
 
 		try {
 			return std::make_optional<LocalizedShape>({
@@ -230,7 +230,7 @@ namespace urchin {
 			edgesCount[edgeIdProducer(triangleIndices[2], triangleIndices[0])]++;
 		}
 
-		for (const auto& [edgeId, count] : edgesCount) {
+		for (const auto& count: edgesCount | std::views::values) {
 			if (count != 2) {
 				return false;
 			}
@@ -278,21 +278,6 @@ namespace urchin {
 	    }
 
 		return std::make_pair<>(closestPointIndex, farthestPointIndex);
-	}
-
-	std::size_t ShapeDetectService::findFarthestPoint(const std::vector<Point3<float>>& points, const Point3<float>& refPoint) const {
-		std::size_t farthestPointIndex = 0;
-
-		float maxDistance = 0;
-		for (std::size_t i = 0; i < points.size(); ++i) {
-			float distance = refPoint.squareDistance(points[i]);
-			if (distance > maxDistance) {
-				maxDistance = distance;
-				farthestPointIndex = i;
-			}
-		}
-
-		return farthestPointIndex;
 	}
 
 }

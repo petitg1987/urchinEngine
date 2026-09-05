@@ -26,7 +26,7 @@
 #include "common/math/geometry/3d/object/Triangle3DTest.h"
 #include "common/math/geometry/3d/object/TetrahedronTest.h"
 #include "common/math/geometry/3d/object/ConvexHull3DTest.h"
-#include "common/math/geometry/3d/util/MeshSimplificationServiceTest.h"
+#include "common/math/geometry/3d/util/MeshDataServiceTest.h"
 #include "common/math/geometry/3d/util/SortPointsServiceTest.h"
 #include "common/math/geometry/3d/voxel/VoxelServiceTest.h"
 #include "common/math/geometry/3d/Line3DTest.h"
@@ -100,7 +100,7 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(Triangle3DTest::suite());
     runner.addTest(TetrahedronTest::suite());
     runner.addTest(ConvexHull3DTest::suite());
-    runner.addTest(MeshSimplificationServiceTest::suite());
+    runner.addTest(MeshDataServiceTest::suite());
     runner.addTest(SortPointsServiceTest::suite());
     runner.addTest(VoxelServiceTest::suite());
     runner.addTest(Line3DTest::suite());

@@ -2,11 +2,11 @@
 #include <cppunit/TestCaller.h>
 #include <vector>
 
-#include "common/math/geometry/3d/util/MeshSimplificationServiceTest.h"
+#include "common/math/geometry/3d/util/MeshDataServiceTest.h"
 #include "AssertHelper.h"
 using namespace urchin;
 
-void MeshSimplificationServiceTest::mergeDuplicateVertices() {
+void MeshDataServiceTest::mergeDuplicateVertices() {
     std::vector vertices = {
         Point3(0.0f, 0.0f, 0.0f),
         Point3(0.0f, 0.0f, 0.0f),
@@ -20,7 +20,7 @@ void MeshSimplificationServiceTest::mergeDuplicateVertices() {
     };
     MeshData mesh(vertices, trianglesIndices);
 
-    MeshData simplifiedMesh = MeshSimplificationService::mergeDuplicateVertices(mesh);
+    MeshData simplifiedMesh = MeshDataService::mergeDuplicateVertices(mesh);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getVertices().size(), 4);
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 2);
@@ -32,7 +32,7 @@ void MeshSimplificationServiceTest::mergeDuplicateVertices() {
     });
 }
 
-void MeshSimplificationServiceTest::mergeDuplicateVerticesWithCollapsedTriangle() {
+void MeshDataServiceTest::mergeDuplicateVerticesWithCollapsedTriangle() {
     std::vector vertices = {
         Point3(0.0f, 0.0f, 0.0f),
         Point3(2.0f, 0.0f, 0.0f),
@@ -49,7 +49,7 @@ void MeshSimplificationServiceTest::mergeDuplicateVerticesWithCollapsedTriangle(
     };
     MeshData mesh(vertices, trianglesIndices);
 
-    MeshData simplifiedMesh = MeshSimplificationService::mergeDuplicateVertices(mesh);
+    MeshData simplifiedMesh = MeshDataService::mergeDuplicateVertices(mesh);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 1);
     AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(0, simplifiedMesh), std::array{
@@ -57,7 +57,7 @@ void MeshSimplificationServiceTest::mergeDuplicateVerticesWithCollapsedTriangle(
     });
 }
 
-void MeshSimplificationServiceTest::downsampleVertices() {
+void MeshDataServiceTest::downsampleVertices() {
     std::vector vertices = {
         Point3(0.0f, 0.0f, 0.0f),
         Point3(0.05f, 0.0f, 0.0f), //too close from the first vertex
@@ -66,7 +66,7 @@ void MeshSimplificationServiceTest::downsampleVertices() {
         Point3(0.99f, 0.0f, 0.0f) //too close from the third vertex
     };
 
-    std::vector<Point3<float>> simplifiedVertices = MeshSimplificationService::downsampleVertices(vertices, 0.1f);
+    std::vector<Point3<float>> simplifiedVertices = MeshDataService::downsampleVertices(vertices, 0.1f);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedVertices.size(), 3);
     AssertHelper::assertPoints3FloatEquals(simplifiedVertices, std::array{
@@ -74,18 +74,18 @@ void MeshSimplificationServiceTest::downsampleVertices() {
     });
 }
 
-std::array<Point3<float>, 3> MeshSimplificationServiceTest::extractTrianglePoints(std::size_t triangleIndex, const MeshData& mesh) const {
+std::array<Point3<float>, 3> MeshDataServiceTest::extractTrianglePoints(std::size_t triangleIndex, const MeshData& mesh) const {
     const std::array<uint32_t, 3>& triangleIndices = mesh.getTrianglesIndices()[triangleIndex];
     return {mesh.getVertices()[triangleIndices[0]], mesh.getVertices()[triangleIndices[1]], mesh.getVertices()[triangleIndices[2]]};
 }
 
-CppUnit::Test* MeshSimplificationServiceTest::suite() {
-    auto* suite = new CppUnit::TestSuite("MeshSimplificationServiceTest");
+CppUnit::Test* MeshDataServiceTest::suite() {
+    auto* suite = new CppUnit::TestSuite("MeshDataServiceTest");
 
-    suite->addTest(new CppUnit::TestCaller("mergeDuplicateVertices", &MeshSimplificationServiceTest::mergeDuplicateVertices));
-    suite->addTest(new CppUnit::TestCaller("mergeDuplicateVerticesWithCollapsedTriangle", &MeshSimplificationServiceTest::mergeDuplicateVerticesWithCollapsedTriangle));
+    suite->addTest(new CppUnit::TestCaller("mergeDuplicateVertices", &MeshDataServiceTest::mergeDuplicateVertices));
+    suite->addTest(new CppUnit::TestCaller("mergeDuplicateVerticesWithCollapsedTriangle", &MeshDataServiceTest::mergeDuplicateVerticesWithCollapsedTriangle));
 
-    suite->addTest(new CppUnit::TestCaller("downsampleVertices", &MeshSimplificationServiceTest::downsampleVertices));
+    suite->addTest(new CppUnit::TestCaller("downsampleVertices", &MeshDataServiceTest::downsampleVertices));
 
     return suite;
 }
