@@ -16,14 +16,16 @@ namespace urchin {
 
             int getId() const;
             const std::string& getLabel() const;
+            float getMergeVerticesMaxDistance() const;
             float getVoxelizationSize() const;
             unsigned int getConvexHullMaxPoints() const;
 
         private:
-            DefaultShapeQuality(int, std::string, float, unsigned int);
+            DefaultShapeQuality(int, std::string, float, float, unsigned int);
 
             int id;
             std::string label;
+            float mergeVerticesMaxDistance;
             float voxelizationSize;
             unsigned int convexHullMaxPoints;
     };

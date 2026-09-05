@@ -79,7 +79,7 @@ namespace urchin {
         return true;
     }
 
-    std::vector<Point3<float>> MeshDataService::downsampleVertices(const std::vector<Point3<float>>& vertices, float minDistance) {
+    std::vector<Point3<float>> MeshDataService::downsampleVertices(const std::vector<Point3<float>>& vertices, float mergeVerticesMaxDistance) {
         struct GridCellHash {
             std::size_t operator()(const std::array<int, 3>& gridCell) const {
                 std::size_t seed = 0;
@@ -91,11 +91,11 @@ namespace urchin {
         std::vector<Point3<float>> simplifiedVertices;
         simplifiedVertices.reserve(vertices.size());
 
-        float minSquareDistance = minDistance * minDistance;
+        float mergeVerticesMaxSquareDistance = mergeVerticesMaxDistance * mergeVerticesMaxDistance;
         std::unordered_map<std::array<int, 3>, std::vector<Point3<float>>, GridCellHash> keptVerticesByGridCell;
 
         for (const Point3<float>& vertex : vertices) {
-            std::array gridCell = {(int)std::floor(vertex.X / minDistance), (int)std::floor(vertex.Y / minDistance), (int)std::floor(vertex.Z / minDistance)};
+            std::array gridCell = {(int)std::floor(vertex.X / mergeVerticesMaxDistance), (int)std::floor(vertex.Y / mergeVerticesMaxDistance), (int)std::floor(vertex.Z / mergeVerticesMaxDistance)};
 
             bool hasCloseVertex = false;
             for (int xOffset = -1; xOffset <= 1 && !hasCloseVertex; ++xOffset) {
@@ -107,7 +107,7 @@ namespace urchin {
                         }
 
                         for (const Point3<float>& keptVertex : itFind->second) {
-                            if (vertex.squareDistance(keptVertex) < minSquareDistance) {
+                            if (vertex.squareDistance(keptVertex) < mergeVerticesMaxSquareDistance) {
                                 hasCloseVertex = true;
                                 break;
                             }

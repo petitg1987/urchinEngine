@@ -23,6 +23,7 @@ namespace urchin {
 
             const ObjectEntity& objectEntity;
 
+            float mergeVerticesMaxDistance;
             std::unique_ptr<ShapeDetectService> shapeDetectService;
     };
 

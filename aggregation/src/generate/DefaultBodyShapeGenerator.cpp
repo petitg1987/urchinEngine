@@ -7,8 +7,10 @@
 namespace urchin {
 
     DefaultBodyShapeGenerator::DefaultBodyShapeGenerator(const ObjectEntity& objectEntity, const DefaultShapeQuality& defaultShapeQuality) :
-            objectEntity(objectEntity) {
+            objectEntity(objectEntity),
+            mergeVerticesMaxDistance(defaultShapeQuality.getMergeVerticesMaxDistance()) {
         ShapeDetectService::Config shapeDetectConfig = {
+            .mergeVerticesMaxDistance = defaultShapeQuality.getMergeVerticesMaxDistance(),
             .voxelizationSize = defaultShapeQuality.getVoxelizationSize(),
             .convexHullMaxPoints = defaultShapeQuality.getConvexHullMaxPoints()
         };
@@ -75,7 +77,7 @@ namespace urchin {
 
                 std::vector<MeshData> splitMeshesData = splitDistinctMeshes(simplifiedMeshData);
                 for (MeshData splitMeshData : splitMeshesData) {
-                    if (!MeshDataService::isFlatMesh(splitMeshData, 0.01f)) { //TODO use param in constructor
+                    if (!MeshDataService::isFlatMesh(splitMeshData, mergeVerticesMaxDistance)) {
                         meshesData.push_back(splitMeshData);
                     }
                 }
@@ -155,7 +157,7 @@ namespace urchin {
                 allVertices.insert(allVertices.end(), meshData.getVertices().begin(), meshData.getVertices().end());
             }
 
-            std::vector<Point3<float>> simplifiedVertices = MeshDataService::downsampleVertices(allVertices, 0.02f); //TODO use param in constructor
+            std::vector<Point3<float>> simplifiedVertices = MeshDataService::downsampleVertices(allVertices, mergeVerticesMaxDistance);
 
             try {
                 return std::make_unique<ConvexHullShape3D<float>>(simplifiedVertices);

@@ -14,6 +14,7 @@ namespace urchin {
     class ShapeDetectService {
         public:
             struct Config {
+                float mergeVerticesMaxDistance;
                 float voxelizationSize;
                 unsigned int convexHullMaxPoints;
             };

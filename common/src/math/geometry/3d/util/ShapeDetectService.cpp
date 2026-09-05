@@ -154,7 +154,7 @@ namespace urchin {
 			return std::nullopt;
 		}
 
-		std::vector<Point3<float>> simplifiedVertices = MeshDataService::downsampleVertices(mesh.getVertices(), 0.05f); //TODO param !
+		std::vector<Point3<float>> simplifiedVertices = MeshDataService::downsampleVertices(mesh.getVertices(), config.mergeVerticesMaxDistance);
 		if (simplifiedVertices.size() > config.convexHullMaxPoints) {
 			return std::nullopt;
 		}
