@@ -2,9 +2,7 @@
 #include <optional>
 #include <unordered_map>
 #include <queue>
-#include <map>
 #include <ranges>
-#include <set>
 #include <cassert>
 
 #include "math/geometry/3d/util/ShapeDetectService.h"
@@ -29,98 +27,27 @@ namespace urchin {
 			}
 		#endif
 
-		std::vector<MeshData> subMeshes = splitDistinctMeshes(mesh);
-
 		std::vector<LocalizedShape> result;
-		result.reserve(subMeshes.size());
 
-		for (const MeshData& subMesh : subMeshes) {
-			std::optional<LocalizedShape> boxShape = tryBuildBox(subMesh.getVertices());
-			if (boxShape.has_value()) {
-				result.push_back(std::move(boxShape.value()));
-				continue;
-			}
-
-			std::optional<LocalizedShape> sphereShape = tryBuildSphere(subMesh.getVertices());
-			if (sphereShape.has_value()) {
-				result.push_back(std::move(sphereShape.value()));
-				continue;
-			}
-
-			std::optional<LocalizedShape> convexHullShape = tryBuildConvexHull(subMesh);
-			if (convexHullShape.has_value()) {
-				result.push_back(std::move(convexHullShape.value()));
-				continue;
-			}
-
-			std::vector<LocalizedShape> boxShapes = buildAABBoxes(subMesh);
-			for (LocalizedShape& box : boxShapes) {
-				result.push_back(std::move(box));
-			}
+		std::optional<LocalizedShape> boxShape = tryBuildBox(mesh.getVertices());
+		if (boxShape.has_value()) {
+			result.push_back(std::move(boxShape.value()));
+			return result;
 		}
 
-		return result;
-	}
-
-	std::vector<MeshData> ShapeDetectService::splitDistinctMeshes(const MeshData& mesh) const {
-	    std::vector<MeshData> subMeshes;
-
-		std::map<uint32_t, std::vector<std::size_t>> vertexToTriangles;
-		for (std::size_t triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
-		    for (std::size_t i = 0; i < 3; ++i) {
-		        uint32_t vertexIndex = mesh.getTrianglesIndices()[triangleIndex][i];
-		        vertexToTriangles[vertexIndex].push_back(triangleIndex);
-		    }
+		std::optional<LocalizedShape> sphereShape = tryBuildSphere(mesh.getVertices());
+		if (sphereShape.has_value()) {
+			result.push_back(std::move(sphereShape.value()));
+			return result;
 		}
 
-		std::vector visitedTriangles(mesh.getTrianglesIndices().size(), false);
-		for (std::size_t triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
-			if (visitedTriangles[triangleIndex]) {
-				continue;
-			}
-
-			std::vector<Point3<float>> subMeshVertices;
-			std::vector<std::array<uint32_t, 3>> subMeshTrianglesIndices;
-			std::map<uint32_t, uint32_t> originalToSubMeshVertexMap;
-
-			std::queue<std::size_t> trianglesQueue;
-			trianglesQueue.push(triangleIndex);
-			visitedTriangles[triangleIndex] = true;
-
-			while (!trianglesQueue.empty()) {
-				std::size_t currentTriangleIndex = trianglesQueue.front();
-				trianglesQueue.pop();
-
-				subMeshTrianglesIndices.push_back({0u, 0u, 0u});
-				for (std::size_t i = 0; i < 3; ++i) {
-					uint32_t originalVertexIndex = mesh.getTrianglesIndices()[currentTriangleIndex][i];
-					if (!originalToSubMeshVertexMap.contains(originalVertexIndex)) {
-						uint32_t subMeshVertexIndex = (uint32_t)subMeshVertices.size();
-						originalToSubMeshVertexMap[originalVertexIndex] = subMeshVertexIndex;
-						subMeshVertices.push_back(mesh.getVertices()[originalVertexIndex]);
-					}
-					subMeshTrianglesIndices.back()[i] = originalToSubMeshVertexMap[originalVertexIndex];
-				}
-
-				std::set<std::size_t> neighborTrianglesIndices;
-				for (std::size_t i = 0; i < 3; ++i) {
-				    uint32_t vertexIndex = mesh.getTrianglesIndices()[currentTriangleIndex][i];
-				    for (std::size_t neighborTriangleIndex : vertexToTriangles[vertexIndex]) {
-				        if (!visitedTriangles[neighborTriangleIndex]) {
-				            neighborTrianglesIndices.insert(neighborTriangleIndex);
-				        }
-				    }
-				}
-				for (std::size_t neighborTriangleIndex : neighborTrianglesIndices) {
-			        trianglesQueue.push(neighborTriangleIndex);
-					visitedTriangles[neighborTriangleIndex] = true;
-				}
-			}
-
-			subMeshes.emplace_back(subMeshVertices, subMeshTrianglesIndices);
+		std::optional<LocalizedShape> convexHullShape = tryBuildConvexHull(mesh);
+		if (convexHullShape.has_value()) {
+			result.push_back(std::move(convexHullShape.value()));
+			return result;
 		}
 
-		return subMeshes;
+		return buildAABBoxes(mesh);
 	}
 
 	std::optional<ShapeDetectService::LocalizedShape> ShapeDetectService::tryBuildBox(const std::vector<Point3<float>>& points) const {

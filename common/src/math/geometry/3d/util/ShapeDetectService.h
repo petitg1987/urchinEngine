@@ -29,8 +29,6 @@ namespace urchin {
             std::vector<LocalizedShape> detect(const MeshData&) const;
 
         private:
-            std::vector<MeshData> splitDistinctMeshes(const MeshData&) const;
-
             std::optional<LocalizedShape> tryBuildBox(const std::vector<Point3<float>>&) const;
             std::optional<LocalizedShape> tryBuildSphere(const std::vector<Point3<float>>&) const;
             std::optional<LocalizedShape> tryBuildConvexHull(const MeshData&) const;

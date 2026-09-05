@@ -1,3 +1,7 @@
+#include <queue>
+#include <set>
+#include <map>
+
 #include "generate/DefaultBodyShapeGenerator.h"
 
 namespace urchin {
@@ -61,21 +65,99 @@ namespace urchin {
         return shape->scale(scale);
     }
 
-    std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape() const {
+    std::vector<MeshData> DefaultBodyShapeGenerator::buildMeshesData() const {
+        std::vector<MeshData> meshesData;
         if (objectEntity.getModel()->getConstMeshes()) {
             const Meshes* meshes = objectEntity.getModel()->getMeshes();
 
-            MeshData meshData({}, {});
             for (unsigned int meshIndex = 0; meshIndex < meshes->getNumMeshes(); ++meshIndex) {
                 const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
                 const std::vector<std::array<uint32_t, 3>>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
-                meshData.addNewMesh(vertices, triangleIndices);
+
+                MeshData simplifiedMeshData = meshSimplificationService->simplify(MeshData(vertices, triangleIndices));
+
+                std::vector<MeshData> splitMeshesData = splitDistinctMeshes(simplifiedMeshData);
+                for (MeshData splitMeshData : splitMeshesData) {
+                    meshesData.push_back(splitMeshData);
+                }
+            }
+        }
+
+        return meshesData;
+    }
+
+    std::vector<MeshData> DefaultBodyShapeGenerator::splitDistinctMeshes(const MeshData& mesh) const {
+	    std::vector<MeshData> subMeshes;
+
+		std::map<uint32_t, std::vector<std::size_t>> vertexToTriangles;
+		for (std::size_t triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
+		    for (std::size_t i = 0; i < 3; ++i) {
+		        uint32_t vertexIndex = mesh.getTrianglesIndices()[triangleIndex][i];
+		        vertexToTriangles[vertexIndex].push_back(triangleIndex);
+		    }
+		}
+
+		std::vector visitedTriangles(mesh.getTrianglesIndices().size(), false);
+		for (std::size_t triangleIndex = 0; triangleIndex < mesh.getTrianglesIndices().size(); ++triangleIndex) {
+			if (visitedTriangles[triangleIndex]) {
+				continue;
+			}
+
+			std::vector<Point3<float>> subMeshVertices;
+			std::vector<std::array<uint32_t, 3>> subMeshTrianglesIndices;
+			std::map<uint32_t, uint32_t> originalToSubMeshVertexMap;
+
+			std::queue<std::size_t> trianglesQueue;
+			trianglesQueue.push(triangleIndex);
+			visitedTriangles[triangleIndex] = true;
+
+			while (!trianglesQueue.empty()) {
+				std::size_t currentTriangleIndex = trianglesQueue.front();
+				trianglesQueue.pop();
+
+				subMeshTrianglesIndices.push_back({0u, 0u, 0u});
+				for (std::size_t i = 0; i < 3; ++i) {
+					uint32_t originalVertexIndex = mesh.getTrianglesIndices()[currentTriangleIndex][i];
+					if (!originalToSubMeshVertexMap.contains(originalVertexIndex)) {
+						uint32_t subMeshVertexIndex = (uint32_t)subMeshVertices.size();
+						originalToSubMeshVertexMap[originalVertexIndex] = subMeshVertexIndex;
+						subMeshVertices.push_back(mesh.getVertices()[originalVertexIndex]);
+					}
+					subMeshTrianglesIndices.back()[i] = originalToSubMeshVertexMap[originalVertexIndex];
+				}
+
+				std::set<std::size_t> neighborTrianglesIndices;
+				for (std::size_t i = 0; i < 3; ++i) {
+				    uint32_t vertexIndex = mesh.getTrianglesIndices()[currentTriangleIndex][i];
+				    for (std::size_t neighborTriangleIndex : vertexToTriangles[vertexIndex]) {
+				        if (!visitedTriangles[neighborTriangleIndex]) {
+				            neighborTrianglesIndices.insert(neighborTriangleIndex);
+				        }
+				    }
+				}
+				for (std::size_t neighborTriangleIndex : neighborTrianglesIndices) {
+			        trianglesQueue.push(neighborTriangleIndex);
+					visitedTriangles[neighborTriangleIndex] = true;
+				}
+			}
+
+			subMeshes.emplace_back(subMeshVertices, subMeshTrianglesIndices);
+		}
+
+		return subMeshes;
+	}
+
+    std::unique_ptr<ConvexHullShape3D<float>> DefaultBodyShapeGenerator::buildConvexHullShape() const {
+        std::vector<MeshData> meshesData = buildMeshesData();
+
+        if (!meshesData.empty()) {
+            MeshData mergedMeshData({}, {});
+            for (const MeshData& meshData : meshesData) { //TODO eliminate single plan mesh + only merge std::vector<Point3>>
+                mergedMeshData.addNewMesh(meshData.getVertices(), meshData.getTrianglesIndices());
             }
 
-            MeshData simplifiedMesh = meshSimplificationService->simplify(meshData);
-
             try {
-                return std::make_unique<ConvexHullShape3D<float>>(simplifiedMesh.getVertices());
+                return std::make_unique<ConvexHullShape3D<float>>(mergedMeshData.getVertices());
             } catch (const std::invalid_argument&) {
                 //ignore build convex hull errors
             }
@@ -91,22 +173,14 @@ namespace urchin {
     std::vector<std::shared_ptr<const LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildLocalizedCollisionShapes() const {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> result;
 
-        if (objectEntity.getModel()->getConstMeshes()) {
-            const Meshes* meshes = objectEntity.getModel()->getMeshes();
-            result.reserve(meshes->getNumMeshes());
-
-            std::size_t nextShapeIndex = 0;
-            for (unsigned int meshIndex = 0; meshIndex < meshes->getNumMeshes(); ++meshIndex) {
-                const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
-                const std::vector<std::array<uint32_t, 3>>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
-                MeshData meshData(vertices, triangleIndices);
-
-                std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(nextShapeIndex, meshData);
-                for (std::unique_ptr<LocalizedCollisionShape>& localizedCollisionShape : localizedCollisionShapes) {
-                    assert(nextShapeIndex == localizedCollisionShape->shapeIndex);
-                    result.push_back(std::move(localizedCollisionShape));
-                    nextShapeIndex++;
-                }
+        std::vector<MeshData> meshesData = buildMeshesData();
+        std::size_t nextShapeIndex = 0;
+        for (const MeshData& meshData : meshesData) {
+            std::vector<std::unique_ptr<LocalizedCollisionShape>> localizedCollisionShapes = buildBestCollisionShapes(nextShapeIndex, meshData);
+            for (std::unique_ptr<LocalizedCollisionShape>& localizedCollisionShape : localizedCollisionShapes) {
+                assert(nextShapeIndex == localizedCollisionShape->shapeIndex);
+                result.push_back(std::move(localizedCollisionShape));
+                nextShapeIndex++;
             }
         }
 
@@ -122,8 +196,7 @@ namespace urchin {
     }
 
     std::vector<std::unique_ptr<LocalizedCollisionShape>> DefaultBodyShapeGenerator::buildBestCollisionShapes(std::size_t nextShapeIndex, const MeshData& mesh) const {
-        MeshData simplifiedMesh = meshSimplificationService->simplify(mesh);
-        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = shapeDetectService->detect(simplifiedMesh);
+        std::vector<ShapeDetectService::LocalizedShape> bestLocalizedShapes = shapeDetectService->detect(mesh);
 
         std::vector<std::unique_ptr<LocalizedCollisionShape>> result;
         result.reserve(bestLocalizedShapes.size());
