@@ -1,9 +1,11 @@
+#include <cmath>
 #include <unordered_map>
 #include <unordered_set>
 
 #include "math/geometry/3d/util/MeshSimplificationService.h"
 #include "math/geometry/3d/Plane.h"
 #include "container/VectorUtil.h"
+#include "util/HashUtil.h"
 
 namespace urchin {
 
@@ -77,11 +79,48 @@ namespace urchin {
         return true;
     }
 
-    std::vector<Point3<float>> MeshSimplificationService::removeCloseVertices(const std::vector<Point3<float>>& vertices, float /*distanceThreshold*/) const {
+    std::vector<Point3<float>> MeshSimplificationService::downsampleVertices(const std::vector<Point3<float>>& vertices, float minDistance) const {
+        struct GridCellHash {
+            std::size_t operator()(const std::array<int, 3>& gridCell) const {
+                std::size_t seed = 0;
+                HashUtil::hashCombine(seed, gridCell[0], gridCell[1], gridCell[2]);
+                return seed;
+            }
+        };
+
         std::vector<Point3<float>> simplifiedVertices;
         simplifiedVertices.reserve(vertices.size());
 
-        //TODO impl
+        float minSquareDistance = minDistance * minDistance;
+        std::unordered_map<std::array<int, 3>, std::vector<Point3<float>>, GridCellHash> keptVerticesByGridCell;
+
+        for (const Point3<float>& vertex : vertices) {
+            std::array gridCell = {(int)std::floor(vertex.X / minDistance), (int)std::floor(vertex.Y / minDistance), (int)std::floor(vertex.Z / minDistance)};
+
+            bool hasCloseVertex = false;
+            for (int xOffset = -1; xOffset <= 1 && !hasCloseVertex; ++xOffset) {
+                for (int yOffset = -1; yOffset <= 1 && !hasCloseVertex; ++yOffset) {
+                    for (int zOffset = -1; zOffset <= 1 && !hasCloseVertex; ++zOffset) {
+                        auto itFind = keptVerticesByGridCell.find({gridCell[0] + xOffset, gridCell[1] + yOffset, gridCell[2] + zOffset});
+                        if (itFind == keptVerticesByGridCell.end()) {
+                            continue;
+                        }
+
+                        for (const Point3<float>& keptVertex : itFind->second) {
+                            if (vertex.squareDistance(keptVertex) < minSquareDistance) {
+                                hasCloseVertex = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!hasCloseVertex) {
+                simplifiedVertices.push_back(vertex);
+                keptVerticesByGridCell[gridCell].push_back(vertex);
+            }
+        }
 
         return simplifiedVertices;
     }

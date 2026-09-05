@@ -155,7 +155,7 @@ namespace urchin {
 
 		try {
 			return std::make_optional<LocalizedShape>({
-				.shape = std::make_unique<ConvexHullShape3D<float>>(mesh.getVertices()),
+				.shape = std::make_unique<ConvexHullShape3D<float>>(mesh.getVertices()), //TODO simplify vertices with downsampleVertices
 				.position = Point3(0.0f, 0.0f, 0.0f),
 				.orientation = Quaternion<float>()
 			});

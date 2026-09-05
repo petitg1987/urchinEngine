@@ -57,6 +57,23 @@ void MeshSimplificationServiceTest::mergeDuplicateVerticesWithCollapsedTriangle(
     });
 }
 
+void MeshSimplificationServiceTest::downsampleVertices() {
+    std::vector vertices = {
+        Point3(0.0f, 0.0f, 0.0f),
+        Point3(0.05f, 0.0f, 0.0f), //too close from the first vertex
+        Point3(1.0f, 0.0f, 0.0f),
+        Point3(0.0f, 1.0f, 0.0f),
+        Point3(0.99f, 0.0f, 0.0f) //too close from the third vertex
+    };
+
+    std::vector<Point3<float>> simplifiedVertices = MeshSimplificationService().downsampleVertices(vertices, 0.1f);
+
+    AssertHelper::assertUnsignedIntEquals(simplifiedVertices.size(), 3);
+    AssertHelper::assertPoints3FloatEquals(simplifiedVertices, std::array{
+        Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(0.0f, 1.0f, 0.0f)
+    });
+}
+
 std::array<Point3<float>, 3> MeshSimplificationServiceTest::extractTrianglePoints(std::size_t triangleIndex, const MeshData& mesh) const {
     const std::array<uint32_t, 3>& triangleIndices = mesh.getTrianglesIndices()[triangleIndex];
     return {mesh.getVertices()[triangleIndices[0]], mesh.getVertices()[triangleIndices[1]], mesh.getVertices()[triangleIndices[2]]};
@@ -67,6 +84,8 @@ CppUnit::Test* MeshSimplificationServiceTest::suite() {
 
     suite->addTest(new CppUnit::TestCaller("mergeDuplicateVertices", &MeshSimplificationServiceTest::mergeDuplicateVertices));
     suite->addTest(new CppUnit::TestCaller("mergeDuplicateVerticesWithCollapsedTriangle", &MeshSimplificationServiceTest::mergeDuplicateVerticesWithCollapsedTriangle));
+
+    suite->addTest(new CppUnit::TestCaller("downsampleVertices", &MeshSimplificationServiceTest::downsampleVertices));
 
     return suite;
 }

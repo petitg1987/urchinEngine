@@ -157,10 +157,11 @@ namespace urchin {
             for (const MeshData& meshData : meshesData) {
                 allVertices.insert(allVertices.end(), meshData.getVertices().begin(), meshData.getVertices().end());
             }
-            //TODO simplify allVertices
+
+            std::vector<Point3<float>> simplifiedVertices = meshSimplificationService->downsampleVertices(allVertices, 0.02f); //TODO use param in constructor
 
             try {
-                return std::make_unique<ConvexHullShape3D<float>>(allVertices);
+                return std::make_unique<ConvexHullShape3D<float>>(simplifiedVertices);
             } catch (const std::invalid_argument&) {
                 //ignore build convex hull errors
             }
