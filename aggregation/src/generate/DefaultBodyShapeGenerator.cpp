@@ -78,7 +78,7 @@ namespace urchin {
 
                 std::vector<MeshData> splitMeshesData = splitDistinctMeshes(simplifiedMeshData);
                 for (MeshData splitMeshData : splitMeshesData) {
-                    if (!meshSimplificationService->isFlatMesh(splitMeshData, 0.01f)) { //TODO use constexpr
+                    if (!meshSimplificationService->isFlatMesh(splitMeshData, 0.01f)) { //TODO use param in constructor
                         meshesData.push_back(splitMeshData);
                     }
                 }
@@ -157,6 +157,7 @@ namespace urchin {
             for (const MeshData& meshData : meshesData) {
                 allVertices.insert(allVertices.end(), meshData.getVertices().begin(), meshData.getVertices().end());
             }
+            //TODO simplify allVertices
 
             try {
                 return std::make_unique<ConvexHullShape3D<float>>(allVertices);

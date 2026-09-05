@@ -77,6 +77,15 @@ namespace urchin {
         return true;
     }
 
+    std::vector<Point3<float>> MeshSimplificationService::removeCloseVertices(const std::vector<Point3<float>>& vertices, float /*distanceThreshold*/) const {
+        std::vector<Point3<float>> simplifiedVertices;
+        simplifiedVertices.reserve(vertices.size());
+
+        //TODO impl
+
+        return simplifiedVertices;
+    }
+
     std::size_t MeshSimplificationService::findFarthestPoint(const std::vector<Point3<float>>& points, const Point3<float>& refPoint) const {
         std::size_t farthestPointIndex = 0;
 
