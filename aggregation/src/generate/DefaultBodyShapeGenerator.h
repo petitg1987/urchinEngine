@@ -23,7 +23,6 @@ namespace urchin {
 
             const ObjectEntity& objectEntity;
 
-            std::unique_ptr<MeshSimplificationService> meshSimplificationService;
             std::unique_ptr<ShapeDetectService> shapeDetectService;
     };
 

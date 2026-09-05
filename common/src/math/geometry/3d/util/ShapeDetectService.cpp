@@ -11,6 +11,7 @@
 #include "math/geometry/3d/shape/BoxShape.h"
 #include "math/geometry/3d/shape/SphereShape.h"
 #include "math/geometry/3d/shape/ConvexHullShape3D.h"
+#include "math/geometry/3d/util/MeshSimplificationService.h"
 #include "math/geometry/3d/voxel/VoxelService.h"
 
 namespace urchin {
@@ -153,9 +154,11 @@ namespace urchin {
 			return std::nullopt;
 		}
 
+		std::vector<Point3<float>> simplifiedVertices = MeshSimplificationService::downsampleVertices(mesh.getVertices(), 0.05f); //TODO param !
+
 		try {
 			return std::make_optional<LocalizedShape>({
-				.shape = std::make_unique<ConvexHullShape3D<float>>(mesh.getVertices()), //TODO simplify vertices with downsampleVertices
+				.shape = std::make_unique<ConvexHullShape3D<float>>(simplifiedVertices),
 				.position = Point3(0.0f, 0.0f, 0.0f),
 				.orientation = Quaternion<float>()
 			});

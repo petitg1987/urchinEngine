@@ -8,9 +8,6 @@ namespace urchin {
 
     DefaultBodyShapeGenerator::DefaultBodyShapeGenerator(const ObjectEntity& objectEntity, const DefaultShapeQuality& defaultShapeQuality) :
             objectEntity(objectEntity) {
-
-        meshSimplificationService = std::make_unique<MeshSimplificationService>();
-
         ShapeDetectService::Config shapeDetectConfig = {
             .voxelizationSize = defaultShapeQuality.getVoxelizationSize(),
             .convexHullMaxPoints = defaultShapeQuality.getConvexHullMaxPoints()
@@ -74,11 +71,11 @@ namespace urchin {
                 const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
                 const std::vector<std::array<uint32_t, 3>>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
 
-                MeshData simplifiedMeshData = meshSimplificationService->mergeDuplicateVertices(MeshData(vertices, triangleIndices));
+                MeshData simplifiedMeshData = MeshSimplificationService::mergeDuplicateVertices(MeshData(vertices, triangleIndices));
 
                 std::vector<MeshData> splitMeshesData = splitDistinctMeshes(simplifiedMeshData);
                 for (MeshData splitMeshData : splitMeshesData) {
-                    if (!meshSimplificationService->isFlatMesh(splitMeshData, 0.01f)) { //TODO use param in constructor
+                    if (!MeshSimplificationService::isFlatMesh(splitMeshData, 0.01f)) { //TODO use param in constructor
                         meshesData.push_back(splitMeshData);
                     }
                 }
@@ -158,7 +155,7 @@ namespace urchin {
                 allVertices.insert(allVertices.end(), meshData.getVertices().begin(), meshData.getVertices().end());
             }
 
-            std::vector<Point3<float>> simplifiedVertices = meshSimplificationService->downsampleVertices(allVertices, 0.02f); //TODO use param in constructor
+            std::vector<Point3<float>> simplifiedVertices = MeshSimplificationService::downsampleVertices(allVertices, 0.02f); //TODO use param in constructor
 
             try {
                 return std::make_unique<ConvexHullShape3D<float>>(simplifiedVertices);

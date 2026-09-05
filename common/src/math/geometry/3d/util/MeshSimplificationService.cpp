@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    MeshData MeshSimplificationService::mergeDuplicateVertices(const MeshData& meshData) const {
+    MeshData MeshSimplificationService::mergeDuplicateVertices(const MeshData& meshData) {
         std::unordered_map<Point3<float>, uint32_t, Point3<float>::Hash> pointToNewIndex;
         std::vector<uint32_t> oldToNewIndex(meshData.getVertices().size());
 
@@ -42,7 +42,7 @@ namespace urchin {
         return MeshData(newVertices, newTrianglesIndices);
     }
 
-    bool MeshSimplificationService::isFlatMesh(const MeshData& meshData, float planeDistanceThreshold) const {
+    bool MeshSimplificationService::isFlatMesh(const MeshData& meshData, float planeDistanceThreshold) {
         const std::vector<Point3<float>>& vertices = meshData.getVertices();
         if (vertices.size() < 4) {
             return true;
@@ -79,7 +79,7 @@ namespace urchin {
         return true;
     }
 
-    std::vector<Point3<float>> MeshSimplificationService::downsampleVertices(const std::vector<Point3<float>>& vertices, float minDistance) const {
+    std::vector<Point3<float>> MeshSimplificationService::downsampleVertices(const std::vector<Point3<float>>& vertices, float minDistance) {
         struct GridCellHash {
             std::size_t operator()(const std::array<int, 3>& gridCell) const {
                 std::size_t seed = 0;
@@ -125,7 +125,7 @@ namespace urchin {
         return simplifiedVertices;
     }
 
-    std::size_t MeshSimplificationService::findFarthestPoint(const std::vector<Point3<float>>& points, const Point3<float>& refPoint) const {
+    std::size_t MeshSimplificationService::findFarthestPoint(const std::vector<Point3<float>>& points, const Point3<float>& refPoint) {
         std::size_t farthestPointIndex = 0;
 
         float maxDistance = 0;

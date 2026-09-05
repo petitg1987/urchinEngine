@@ -20,7 +20,7 @@ void MeshSimplificationServiceTest::mergeDuplicateVertices() {
     };
     MeshData mesh(vertices, trianglesIndices);
 
-    MeshData simplifiedMesh = MeshSimplificationService().mergeDuplicateVertices(mesh);
+    MeshData simplifiedMesh = MeshSimplificationService::mergeDuplicateVertices(mesh);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getVertices().size(), 4);
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 2);
@@ -49,7 +49,7 @@ void MeshSimplificationServiceTest::mergeDuplicateVerticesWithCollapsedTriangle(
     };
     MeshData mesh(vertices, trianglesIndices);
 
-    MeshData simplifiedMesh = MeshSimplificationService().mergeDuplicateVertices(mesh);
+    MeshData simplifiedMesh = MeshSimplificationService::mergeDuplicateVertices(mesh);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 1);
     AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(0, simplifiedMesh), std::array{
@@ -66,7 +66,7 @@ void MeshSimplificationServiceTest::downsampleVertices() {
         Point3(0.99f, 0.0f, 0.0f) //too close from the third vertex
     };
 
-    std::vector<Point3<float>> simplifiedVertices = MeshSimplificationService().downsampleVertices(vertices, 0.1f);
+    std::vector<Point3<float>> simplifiedVertices = MeshSimplificationService::downsampleVertices(vertices, 0.1f);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedVertices.size(), 3);
     AssertHelper::assertPoints3FloatEquals(simplifiedVertices, std::array{

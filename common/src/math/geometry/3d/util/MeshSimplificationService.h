@@ -6,12 +6,14 @@ namespace urchin {
 
     class MeshSimplificationService {
         public:
-            MeshData mergeDuplicateVertices(const MeshData&) const;
-            bool isFlatMesh(const MeshData&, float) const;
-            std::vector<Point3<float>> downsampleVertices(const std::vector<Point3<float>>&, float) const;
+            MeshSimplificationService() = delete;
+
+            static MeshData mergeDuplicateVertices(const MeshData&);
+            static bool isFlatMesh(const MeshData&, float);
+            static std::vector<Point3<float>> downsampleVertices(const std::vector<Point3<float>>&, float);
 
         private:
-            std::size_t findFarthestPoint(const std::vector<Point3<float>>&, const Point3<float>&) const;
+            static std::size_t findFarthestPoint(const std::vector<Point3<float>>&, const Point3<float>&);
     };
 
 }
