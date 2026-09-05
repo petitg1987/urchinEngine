@@ -6,7 +6,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void MeshSimplificationServiceTest::simplify() {
+void MeshSimplificationServiceTest::mergeDuplicateVertices() {
     std::vector vertices = {
         Point3(0.0f, 0.0f, 0.0f),
         Point3(0.0f, 0.0f, 0.0f),
@@ -20,7 +20,7 @@ void MeshSimplificationServiceTest::simplify() {
     };
     MeshData mesh(vertices, trianglesIndices);
 
-    MeshData simplifiedMesh = MeshSimplificationService().simplify(mesh);
+    MeshData simplifiedMesh = MeshSimplificationService().mergeDuplicateVertices(mesh);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getVertices().size(), 4);
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 2);
@@ -32,7 +32,7 @@ void MeshSimplificationServiceTest::simplify() {
     });
 }
 
-void MeshSimplificationServiceTest::simplifyWithCollapsedTriangle() {
+void MeshSimplificationServiceTest::mergeDuplicateVerticesWithCollapsedTriangle() {
     std::vector vertices = {
         Point3(0.0f, 0.0f, 0.0f),
         Point3(2.0f, 0.0f, 0.0f),
@@ -49,7 +49,7 @@ void MeshSimplificationServiceTest::simplifyWithCollapsedTriangle() {
     };
     MeshData mesh(vertices, trianglesIndices);
 
-    MeshData simplifiedMesh = MeshSimplificationService().simplify(mesh);
+    MeshData simplifiedMesh = MeshSimplificationService().mergeDuplicateVertices(mesh);
 
     AssertHelper::assertUnsignedIntEquals(simplifiedMesh.getTrianglesIndices().size(), 1);
     AssertHelper::assertPoints3FloatEquals(extractTrianglePoints(0, simplifiedMesh), std::array{
@@ -65,8 +65,8 @@ std::array<Point3<float>, 3> MeshSimplificationServiceTest::extractTrianglePoint
 CppUnit::Test* MeshSimplificationServiceTest::suite() {
     auto* suite = new CppUnit::TestSuite("MeshSimplificationServiceTest");
 
-    suite->addTest(new CppUnit::TestCaller("simplify", &MeshSimplificationServiceTest::simplify));
-    suite->addTest(new CppUnit::TestCaller("simplifyWithCollapsedTriangle", &MeshSimplificationServiceTest::simplifyWithCollapsedTriangle));
+    suite->addTest(new CppUnit::TestCaller("mergeDuplicateVertices", &MeshSimplificationServiceTest::mergeDuplicateVertices));
+    suite->addTest(new CppUnit::TestCaller("mergeDuplicateVerticesWithCollapsedTriangle", &MeshSimplificationServiceTest::mergeDuplicateVerticesWithCollapsedTriangle));
 
     return suite;
 }

@@ -9,8 +9,8 @@ class MeshSimplificationServiceTest final : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
-        void simplify();
-        void simplifyWithCollapsedTriangle();
+        void mergeDuplicateVertices();
+        void mergeDuplicateVerticesWithCollapsedTriangle();
 
     private:
         std::array<urchin::Point3<float>, 3> extractTrianglePoints(std::size_t, const urchin::MeshData&) const;
