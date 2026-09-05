@@ -35,6 +35,7 @@ namespace urchin {
             std::vector<LocalizedShape> buildAABBoxes(const MeshData&) const;
 
             bool isConvexMesh(const MeshData&) const;
+            bool isFlatMesh(const MeshData&) const;
             bool isManifoldMesh(const MeshData&) const;
             AABBox<float> computeAABBox(const std::vector<Point3<float>>&) const;
             std::pair<std::size_t, std::size_t> findClosestAndFarthestPoints(const std::vector<Point3<float>>&, const Point3<float>&) const;

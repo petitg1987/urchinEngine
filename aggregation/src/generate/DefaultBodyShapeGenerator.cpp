@@ -74,11 +74,13 @@ namespace urchin {
                 const std::vector<Point3<float>>& vertices = meshes->getMesh(meshIndex).getVertices();
                 const std::vector<std::array<uint32_t, 3>>& triangleIndices = meshes->getConstMeshes().getConstMeshes()[meshIndex]->getTrianglesIndices();
 
-                MeshData simplifiedMeshData = meshSimplificationService->simplify(MeshData(vertices, triangleIndices));
+                MeshData simplifiedMeshData = meshSimplificationService->mergeDuplicateVertices(MeshData(vertices, triangleIndices));
 
                 std::vector<MeshData> splitMeshesData = splitDistinctMeshes(simplifiedMeshData);
                 for (MeshData splitMeshData : splitMeshesData) {
-                    meshesData.push_back(splitMeshData);
+                    if (!meshSimplificationService->isFlatMesh(splitMeshData, 0.01f)) { //TODO use constexpr
+                        meshesData.push_back(splitMeshData);
+                    }
                 }
             }
         }
@@ -151,13 +153,13 @@ namespace urchin {
         std::vector<MeshData> meshesData = buildMeshesData();
 
         if (!meshesData.empty()) {
-            MeshData mergedMeshData({}, {});
-            for (const MeshData& meshData : meshesData) { //TODO eliminate single plan mesh + only merge std::vector<Point3>>
-                mergedMeshData.addNewMesh(meshData.getVertices(), meshData.getTrianglesIndices());
+            std::vector<Point3<float>> allVertices;
+            for (const MeshData& meshData : meshesData) {
+                allVertices.insert(allVertices.end(), meshData.getVertices().begin(), meshData.getVertices().end());
             }
 
             try {
-                return std::make_unique<ConvexHullShape3D<float>>(mergedMeshData.getVertices());
+                return std::make_unique<ConvexHullShape3D<float>>(allVertices);
             } catch (const std::invalid_argument&) {
                 //ignore build convex hull errors
             }
