@@ -8,6 +8,7 @@ namespace urchin {
         public:
             LanguageTranslator(LabelTranslator&, std::string);
 
+            bool isTranslationExist(std::string_view) const;
             std::string translate(std::string_view) const;
 
         private:

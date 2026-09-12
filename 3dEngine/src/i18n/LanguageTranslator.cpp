@@ -10,6 +10,10 @@ namespace urchin {
 
     }
 
+    bool LanguageTranslator::isTranslationExist(std::string_view labelKey) const {
+        return labelTranslator.getLanguageLabels(language).contains(labelKey);
+    }
+
     std::string LanguageTranslator::translate(std::string_view labelKey) const {
         return labelTranslator.translate(language, labelKey);
     }
