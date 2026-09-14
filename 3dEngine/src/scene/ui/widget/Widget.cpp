@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <stack>
 
 #include "scene/ui/widget/Widget.h"
@@ -304,7 +305,7 @@ namespace urchin {
             startPosition -= getWidth() / 2.0f;
         }
 
-        return startPosition + getPositionX();
+        return std::round(startPosition + getPositionX());
     }
 
     float Widget::getGlobalPositionY() const {
@@ -357,7 +358,7 @@ namespace urchin {
             startPosition -= getHeight() / 2.0f;
         }
 
-        return startPosition + getPositionY();
+        return std::round(startPosition + getPositionY());
     }
 
     void Widget::updateSize(Size size) {
@@ -383,7 +384,7 @@ namespace urchin {
     }
 
     float Widget::getWidth() const {
-        return widthLengthToPixel(size.getWidth(), size.getWidthType(), [this] { return getHeight(); });
+        return std::round(widthLengthToPixel(size.getWidth(), size.getWidthType(), [this] { return getHeight(); }));
     }
 
     float Widget::getWidthMinusPadding() const {
@@ -391,7 +392,7 @@ namespace urchin {
     }
 
     float Widget::getHeight() const {
-        return heightLengthToPixel(size.getHeight(), size.getHeightType(), [this] { return getWidth(); });
+        return std::round(heightLengthToPixel(size.getHeight(), size.getHeightType(), [this] { return getWidth(); }));
     }
 
     float Widget::getHeightMinusPadding() const {
