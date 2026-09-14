@@ -80,9 +80,9 @@ namespace urchin {
             virtual void updateSize(Size);
             Size getSize() const;
             float getWidth() const;
-            float getWidthMinusOutline() const;
+            float getWidthMinusPadding() const;
             float getHeight() const;
-            float getHeightMinusOutline() const;
+            float getHeightMinusPadding() const;
             Rectangle2D<int> widgetRectangle() const;
 
             void updateScale(const Vector2<float>&);
@@ -129,8 +129,8 @@ namespace urchin {
             virtual void createOrUpdateWidget() = 0;
             void changeTexture(std::shared_ptr<Texture>);
 
-            Outline& getOutline();
-            const Outline& getOutline() const;
+            Outline& getPadding();
+            const Outline& getPadding() const;
 
             virtual bool onKeyPressEvent(InputDeviceKey);
             virtual bool onKeyReleaseEvent(InputDeviceKey);
@@ -157,7 +157,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> texture;
 
-            Outline widgetOutline;
+            Outline widgetPadding;
             WidgetState widgetState;
 
             Position position;

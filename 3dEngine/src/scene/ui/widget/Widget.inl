@@ -14,12 +14,12 @@ template<class T> float Widget::widthLengthToPixel(float widthValue, LengthType 
         if (!parentContainer) {
             throw std::runtime_error("Missing parent container on the widget");
         }
-        return widthValue / 100.0f * (parentContainer->getWidth() - (float)parentContainer->getOutline().leftWidth - (float)parentContainer->getOutline().rightWidth);
+        return widthValue / 100.0f * (parentContainer->getWidth() - (float)parentContainer->getPadding().leftWidth - (float)parentContainer->getPadding().rightWidth);
     } else if (lengthType == PARENT_PERCENT) {
         if (!getParent()) {
             throw std::runtime_error("Missing parent on the widget");
         }
-        return widthValue / 100.0f * (getParent()->getWidth() - (float)getParent()->getOutline().leftWidth - (float)getParent()->getOutline().rightWidth);
+        return widthValue / 100.0f * (getParent()->getWidth() - (float)getParent()->getPadding().leftWidth - (float)getParent()->getPadding().rightWidth);
     } else if (lengthType == RATIO_TO_HEIGHT) {
         float relativeMultiplyFactor = widthValue;
         return heightValueInPixel() * relativeMultiplyFactor;
@@ -37,12 +37,12 @@ template<class T> float Widget::heightLengthToPixel(float heightValue, LengthTyp
         if (!parentContainer) {
             throw std::runtime_error("Missing parent container on the widget");
         }
-        return heightValue / 100.0f * (parentContainer->getHeight() - (float)parentContainer->getOutline().topWidth - (float)parentContainer->getOutline().bottomWidth);
+        return heightValue / 100.0f * (parentContainer->getHeight() - (float)parentContainer->getPadding().topWidth - (float)parentContainer->getPadding().bottomWidth);
     } else if (lengthType == PARENT_PERCENT) {
         if (!getParent()) {
             throw std::runtime_error("Missing parent on the widget");
         }
-        return heightValue / 100.0f * (getParent()->getHeight() - (float)getParent()->getOutline().topWidth - (float)getParent()->getOutline().bottomWidth);
+        return heightValue / 100.0f * (getParent()->getHeight() - (float)getParent()->getPadding().topWidth - (float)getParent()->getPadding().bottomWidth);
     } else if (lengthType == RATIO_TO_WIDTH) {
         float relativeMultiplyFactor = heightValue;
         return widthValueInPixel() * relativeMultiplyFactor;

@@ -30,13 +30,13 @@ namespace urchin {
         auto windowChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "window", UdaAttribute("skin", skinName));
 
         auto skinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute(), windowChunk);
-        texWindow = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunk, &getOutline());
+        texWindow = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunk, &getPadding());
         changeTexture(texWindow);
 
         if (!titleKey.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), windowChunk);
             title = Text::create(this, Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), i18n(titleKey));
-            title->updatePosition(Position(0.0f, -((float)getOutline().topWidth + title->getHeight()) / 2.0f, PIXEL));
+            title->updatePosition(Position(1.0f, ((float)getPadding().topWidth - title->getHeight()) / 2.0f, PIXEL));
         }
     }
 
@@ -52,9 +52,9 @@ namespace urchin {
         bool propagateEvent = true;
         if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle2D titleZone(Point2((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-                                  Point2((int)getGlobalPositionX() + ((int)getWidth() - (int)getOutline().rightWidth), (int)getGlobalPositionY() + (int)getOutline().topWidth));
-            Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int)getWidth() - (int)getOutline().rightWidth), (int)getGlobalPositionY()),
-                                  Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getOutline().topWidth));
+                                  Point2((int)getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), (int)getGlobalPositionY() + (int)getPadding().topWidth));
+            Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), (int)getGlobalPositionY()),
+                                  Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getPadding().topWidth));
 
             if (!getUi3dData() && titleZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 mousePositionX = getMouseX() - MathFunction::roundToInt(getPositionX());
@@ -76,8 +76,8 @@ namespace urchin {
     }
 
     bool Window::onKeyReleaseEvent(InputDeviceKey key) {
-        Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int)getWidth() - (int)getOutline().rightWidth), (int)getGlobalPositionY()),
-                              Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getOutline().topWidth));
+        Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), (int)getGlobalPositionY()),
+                              Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getPadding().topWidth));
         if (key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }
