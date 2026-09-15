@@ -109,14 +109,14 @@ namespace urchin {
             static_cast<unsigned char>(fontColor.Z * 255), static_cast<unsigned char>(0)
         };
         std::vector texels(textureSize * textureSize, fontColorRgba);
-        for (unsigned int i = 0, c = 0; i < textureSize; i += maxCharactersSize) {
-            for (unsigned int j = 0; j < textureSize; j += maxCharactersSize, c++) {
-                const Glyph& currentGlyph = glyph[c];
-                for (unsigned int yy = 0, m = 0; yy < currentGlyph.bitmapHeight; yy++) {
-                    std::size_t baseYIndex = (i + yy) * textureSize;
-                    for (unsigned int xx = 0; xx < currentGlyph.bitmapWidth; xx++, m++) {
-                        std::size_t baseIndex = baseYIndex + (j + xx);
-                        texels[baseIndex][3] = currentGlyph.buf[m];
+        for (unsigned int charOriginY = 0, charIndex = 0; charOriginY < textureSize; charOriginY += maxCharactersSize) {
+            for (unsigned int charOriginX = 0; charOriginX < textureSize; charOriginX += maxCharactersSize, charIndex++) {
+                const Glyph& currentGlyph = glyph[charIndex];
+                for (unsigned int glyphY = 0, glyphBufIndex = 0; glyphY < currentGlyph.bitmapHeight; glyphY++) {
+                    std::size_t rowStartIndex = (charOriginY + glyphY) * textureSize;
+                    for (unsigned int glyphX = 0; glyphX < currentGlyph.bitmapWidth; glyphX++, glyphBufIndex++) {
+                        std::size_t texelIndex = rowStartIndex + (charOriginX + glyphX);
+                        texels[texelIndex][3] = currentGlyph.buf[glyphBufIndex];
                     }
                 }
             }
