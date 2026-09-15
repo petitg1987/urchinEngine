@@ -14,7 +14,6 @@ namespace urchin {
         assert(params.contains("fontColor"));
         unsigned int fontSize = TypeConverter::toUnsignedInt(params.find("fontSize")->second);
         Vector3<float> fontColor = TypeConverter::toVector3(params.find("fontColor")->second);
-        std::array fontColor255 = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255)};
 
         //initialize freetype
         FT_Library library;
@@ -105,21 +104,19 @@ namespace urchin {
         unsigned int textureSize = maxCharactersSize * UnicodeUtil::NUM_CHARACTERS_BY_LINE;
 
         //texture creation
-        constexpr unsigned int NUM_COLORS = 4u;
-        std::vector<unsigned char> texels(textureSize * textureSize * NUM_COLORS, 0);
+        std::array fontColorRgba = {
+            static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255),
+            static_cast<unsigned char>(fontColor.Z * 255), static_cast<unsigned char>(0)
+        };
+        std::vector texels(textureSize * textureSize, fontColorRgba);
         for (unsigned int i = 0, c = 0; i < textureSize; i += maxCharactersSize) {
             for (unsigned int j = 0; j < textureSize; j += maxCharactersSize, c++) {
-
                 const Glyph& currentGlyph = glyph[c];
                 for (unsigned int yy = 0, m = 0; yy < currentGlyph.bitmapHeight; yy++) {
-                    std::size_t baseYIndex = (i + yy) * textureSize * NUM_COLORS;
+                    std::size_t baseYIndex = (i + yy) * textureSize;
                     for (unsigned int xx = 0; xx < currentGlyph.bitmapWidth; xx++, m++) {
-                        std::size_t baseIndex = baseYIndex + ((j + xx) * NUM_COLORS);
-
-                        if (currentGlyph.buf[m] > 0) {
-                            std::memcpy(&texels[baseIndex], fontColor255.data(), 3 * sizeof(unsigned char));
-                        }
-                        texels[baseIndex + 3] = currentGlyph.buf[m];
+                        std::size_t baseIndex = baseYIndex + (j + xx);
+                        texels[baseIndex][3] = currentGlyph.buf[m];
                     }
                 }
             }
@@ -127,6 +124,7 @@ namespace urchin {
 
         TransparencyData transparencyData = TransparencyData::buildFromAlpha8Bits(0, 255);
         auto alphabetTexture = Texture::build(ttfFilename, textureSize, textureSize, TextureFormat::RGBA_8_UINT_NORM, texels.data(), transparencyData, TextureDataType::INT_8);
+        alphabetTexture->enableMipmap(); //TODO apply only for 3d ui (or remove)
 
         //clear buffers of characters
         for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS; i++) {
