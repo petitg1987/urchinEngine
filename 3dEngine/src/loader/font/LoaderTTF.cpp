@@ -124,7 +124,7 @@ namespace urchin {
 
         TransparencyData transparencyData = TransparencyData::buildFromAlpha8Bits(0, 255);
         auto alphabetTexture = Texture::build(ttfFilename, textureSize, textureSize, TextureFormat::RGBA_8_UINT_NORM, texels.data(), transparencyData, TextureDataType::INT_8);
-        alphabetTexture->enableMipmap(); //TODO apply only for 3d ui (or remove)
+        alphabetTexture->enableMipmap(); //TODO apply only for UI 3d
 
         //clear buffers of characters
         for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS; i++) {
