@@ -359,7 +359,11 @@ namespace urchin {
         std::string fontColor = UISkinService::instance().getSkinReader().getFirstChunk(true, "color", UdaAttribute(), textChunk)->getStringValue();
         unsigned int fontHeight = retrieveFontHeight(textChunk);
 
-        std::map<std::string, std::string, std::less<>> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
+        std::map<std::string, std::string, std::less<>> fontParams = {
+            {"fontSize", std::to_string(fontHeight)},
+            {"fontColor", fontColor},
+            {"useMipmap", "1"}
+        };
         font = ResourceRetriever::instance().getResource<Font>(ttfFilename, fontParams);
         changeTexture(font->getTexture());
     }

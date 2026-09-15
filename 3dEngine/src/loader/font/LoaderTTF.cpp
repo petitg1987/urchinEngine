@@ -12,8 +12,10 @@ namespace urchin {
     std::shared_ptr<Font> LoaderTTF::loadFromFile(const std::string& ttfFilename, const std::map<std::string, std::string, std::less<>>& params) {
         assert(params.contains("fontSize"));
         assert(params.contains("fontColor"));
+        assert(params.contains("useMipmap"));
         unsigned int fontSize = TypeConverter::toUnsignedInt(params.find("fontSize")->second);
         Vector3<float> fontColor = TypeConverter::toVector3(params.find("fontColor")->second);
+        bool useMipmap = TypeConverter::toBool(params.find("useMipmap")->second);
 
         //initialize freetype
         FT_Library library;
@@ -124,7 +126,9 @@ namespace urchin {
 
         TransparencyData transparencyData = TransparencyData::buildFromAlpha8Bits(0, 255);
         auto alphabetTexture = Texture::build(ttfFilename, textureSize, textureSize, TextureFormat::RGBA_8_UINT_NORM, texels.data(), transparencyData, TextureDataType::INT_8);
-        alphabetTexture->enableMipmap(); //TODO apply only for UI 3d
+        if (useMipmap) {
+            alphabetTexture->enableMipmap();
+        }
 
         //clear buffers of characters
         for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS; i++) {
