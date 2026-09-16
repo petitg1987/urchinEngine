@@ -82,7 +82,7 @@ namespace urchin {
         auto scrollbarChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "scrollbar", UdaAttribute("skin", scrollbarSkinName));
         Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
         scrollbarWidthInPixel = widthLengthToPixel(scrollbarWidth.value, scrollbarWidth.type, [] {return 0.0f;}) + TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
-        textContainer = Container::createScrollable(this, Position(0.0f, 0.0f, SCREEN_PERCENT), Size(100.0f, 100.0f, PARENT_PERCENT), scrollbarSkinName);
+        textContainer = Container::createScrollable(this, Position(0.0f, 0.0f, SCREEN_PERCENT, PARENT_CONTENT_LEFT_TOP), Size(100.0f, 100.0f, PARENT_PERCENT), scrollbarSkinName);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textareaChunk);
         text = Text::create(textContainer.get(), Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), "");
