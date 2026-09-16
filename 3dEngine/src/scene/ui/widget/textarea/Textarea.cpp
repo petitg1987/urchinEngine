@@ -117,11 +117,11 @@ namespace urchin {
                 changeTexture(texTextareaFocus);
 
                 Rectangle2D textZone(
-                        Point2((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-                        Point2((int)getGlobalPositionX() + (int)getWidth() - (int)scrollbarWidthInPixel, (int)getGlobalPositionY() + (int)getHeight()));
+                        Point2(getGlobalPositionX(), getGlobalPositionY()),
+                        Point2(getGlobalPositionX() + (int)getWidth() - (int)scrollbarWidthInPixel, getGlobalPositionY() + (int)getHeight()));
                 if (textZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
-                    int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
-                    int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
+                    int localMouseX = getMouseX() - text->getGlobalPositionX();
+                    int localMouseY = getMouseY() - text->getGlobalPositionY();
                     cursorIndex = computeCursorIndex(localMouseX, localMouseY);
                     refreshCursorPosition(cursorIndex);
                     resetSelection();
@@ -264,8 +264,8 @@ namespace urchin {
 
     bool Textarea::onMouseMoveEvent(int mouseX, int mouseY) {
         if (selectModeOn) {
-            int localMouseX = mouseX - MathFunction::roundToInt(text->getGlobalPositionX());
-            int localMouseY = mouseY - MathFunction::roundToInt(text->getGlobalPositionY());
+            int localMouseX = mouseX - text->getGlobalPositionX();
+            int localMouseY = mouseY - text->getGlobalPositionY();
 
             cursorIndex = computeCursorIndex(localMouseX, localMouseY);
             refreshCursorPosition(cursorIndex);

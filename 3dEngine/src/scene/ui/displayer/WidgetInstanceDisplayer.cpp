@@ -214,8 +214,8 @@ namespace urchin {
         // B) Scale widget (scale.X, scale.Y)
         // C) Rotate widget (sinRotate, cosRotate)
         // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
-        float transX = widget.getGlobalPositionX() + widget.getWidth() / 2.0f;
-        float transY = widget.getGlobalPositionY() + widget.getHeight() / 2.0f;
+        float transX = (float)widget.getGlobalPositionX() + widget.getWidth() / 2.0f;
+        float transY = (float)widget.getGlobalPositionY() + widget.getHeight() / 2.0f;
         float transOriginX = -widget.getWidth() / 2.0f;
         float transOriginY = -widget.getHeight() / 2.0f;
         float sinRotate = std::sin(widget.getRotation());

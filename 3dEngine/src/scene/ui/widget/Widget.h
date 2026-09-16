@@ -74,8 +74,8 @@ namespace urchin {
             Position getPosition() const;
             float getPositionX() const;
             float getPositionY() const;
-            float getGlobalPositionX() const;
-            float getGlobalPositionY() const;
+            int getGlobalPositionX() const;
+            int getGlobalPositionY() const;
 
             virtual void updateSize(Size);
             Size getSize() const;

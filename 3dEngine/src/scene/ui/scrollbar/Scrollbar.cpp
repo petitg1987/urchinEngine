@@ -141,8 +141,8 @@ namespace urchin {
 
     void Scrollbar::updateScrollingPosition(int positionY) {
         auto halfCursorHeight = scrollbarCursor->getHeight() / 2.0f;
-        auto minPositionY = scrollbarLine->getGlobalPositionY() + halfCursorHeight;
-        auto maxPositionY = scrollbarLine->getGlobalPositionY() + scrollbarLine->getHeight() - halfCursorHeight;
+        auto minPositionY = (float)scrollbarLine->getGlobalPositionY() + halfCursorHeight;
+        auto maxPositionY = (float)scrollbarLine->getGlobalPositionY() + scrollbarLine->getHeight() - halfCursorHeight;
 
         scrollPercentage = ((float)positionY - minPositionY) / (maxPositionY - minPositionY);
         scrollPercentage = std::clamp(scrollPercentage, 0.0f, 1.0f);

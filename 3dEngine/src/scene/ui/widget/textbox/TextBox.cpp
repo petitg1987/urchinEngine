@@ -113,8 +113,8 @@ namespace urchin {
                 state = ACTIVE;
                 changeTexture(texTextBoxFocus);
 
-                int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
-                int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
+                int localMouseX = getMouseX() - text->getGlobalPositionX();
+                int localMouseY = getMouseY() - text->getGlobalPositionY();
                 cursorIndex = computeCursorIndex(localMouseX, localMouseY);
                 refreshCursorPosition(cursorIndex);
                 resetSelection();
@@ -236,8 +236,8 @@ namespace urchin {
 
     bool TextBox::onMouseMoveEvent(int mouseX, int mouseY) {
         if (selectModeOn) {
-            int localMouseX = mouseX - MathFunction::roundToInt(text->getGlobalPositionX());
-            int localMouseY = mouseY - MathFunction::roundToInt(text->getGlobalPositionY());
+            int localMouseX = mouseX - text->getGlobalPositionX();
+            int localMouseY = mouseY - text->getGlobalPositionY();
 
             cursorIndex = computeCursorIndex(localMouseX, localMouseY);
             refreshCursorPosition(cursorIndex);

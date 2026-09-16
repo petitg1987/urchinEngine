@@ -259,41 +259,41 @@ namespace urchin {
         return heightLengthToPixel(position.getY(), position.getYType(), [this] { return getPositionX(); });
     }
 
-    float Widget::getGlobalPositionX() const {
+    int Widget::getGlobalPositionX() const {
         float startPosition = 0;
         if (position.getRelativeTo() == PARENT_LEFT_TOP || position.getRelativeTo() == PARENT_LEFT_BOTTOM || position.getRelativeTo() == PARENT_LEFT_CENTERY) {
             if (parent) {
-                startPosition = parent->getGlobalPositionX();
+                startPosition = (float)parent->getGlobalPositionX();
             } else {
                 startPosition = 0.0f;
             }
         } else if (position.getRelativeTo() == PARENT_RIGHT_TOP || position.getRelativeTo() == PARENT_RIGHT_BOTTOM || position.getRelativeTo() == PARENT_RIGHT_CENTERY) {
             if (parent) {
-                startPosition = parent->getGlobalPositionX() + parent->getWidth();
+                startPosition = (float)parent->getGlobalPositionX() + parent->getWidth();
             } else {
                 startPosition = (float)getSceneSize().X;
             }
         } else if (position.getRelativeTo() == PARENT_CENTER_XY || position.getRelativeTo() == PARENT_CENTERX_TOP || position.getRelativeTo() == PARENT_CENTERX_BOTTOM) {
             if (parent) {
-                startPosition = parent->getGlobalPositionX() + parent->getWidth() / 2.0f;
+                startPosition = (float)parent->getGlobalPositionX() + parent->getWidth() / 2.0f;
             } else {
                 startPosition = (float)getSceneSize().X / 2.0f;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_LEFT_TOP || position.getRelativeTo() == PARENT_CONTENT_LEFT_BOTTOM || position.getRelativeTo() == PARENT_CONTENT_LEFT_CENTERY) {
             if (parent) {
-                startPosition = parent->getGlobalPositionX() + (float)parent->getPadding().leftWidth;
+                startPosition = (float)parent->getGlobalPositionX() + (float)parent->getPadding().leftWidth;
             } else {
                 startPosition = 0.0f;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_RIGHT_TOP || position.getRelativeTo() == PARENT_CONTENT_RIGHT_BOTTOM || position.getRelativeTo() == PARENT_CONTENT_RIGHT_CENTERY) {
             if (parent) {
-                startPosition = parent->getGlobalPositionX() + parent->getWidth() - (float)parent->getPadding().rightWidth;
+                startPosition = (float)parent->getGlobalPositionX() + parent->getWidth() - (float)parent->getPadding().rightWidth;
             } else {
                 startPosition = (float)getSceneSize().X;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_CENTER_XY || position.getRelativeTo() == PARENT_CONTENT_CENTERX_TOP || position.getRelativeTo() == PARENT_CONTENT_CENTERX_BOTTOM) {
             if (parent) {
-                startPosition = parent->getGlobalPositionX() + (float)parent->getPadding().leftWidth + parent->getWidthMinusPadding() / 2.0f;
+                startPosition = (float)parent->getGlobalPositionX() + (float)parent->getPadding().leftWidth + parent->getWidthMinusPadding() / 2.0f;
             } else {
                 startPosition = (float)getSceneSize().X / 2.0f;
             }
@@ -305,44 +305,44 @@ namespace urchin {
             startPosition -= getWidth() / 2.0f;
         }
 
-        return std::round(startPosition + getPositionX());
+        return MathFunction::roundToInt(startPosition + getPositionX());
     }
 
-    float Widget::getGlobalPositionY() const {
+    int Widget::getGlobalPositionY() const {
         float startPosition = 0;
         if (position.getRelativeTo() == PARENT_LEFT_TOP || position.getRelativeTo() == PARENT_RIGHT_TOP || position.getRelativeTo() == PARENT_CENTERX_TOP) {
             if (parent) {
-                startPosition = parent->getGlobalPositionY();
+                startPosition = (float)parent->getGlobalPositionY();
             } else {
                 startPosition = 0.0f;
             }
         } else if (position.getRelativeTo() == PARENT_LEFT_BOTTOM || position.getRelativeTo() == PARENT_RIGHT_BOTTOM || position.getRelativeTo() == PARENT_CENTERX_BOTTOM) {
             if (parent) {
-                startPosition = parent->getGlobalPositionY() + parent->getHeight();
+                startPosition = (float)parent->getGlobalPositionY() + parent->getHeight();
             } else {
                 startPosition = (float)getSceneSize().Y;
             }
         } else if (position.getRelativeTo() == PARENT_CENTER_XY || position.getRelativeTo() == PARENT_LEFT_CENTERY || position.getRelativeTo() == PARENT_RIGHT_CENTERY) {
             if (parent) {
-                startPosition = parent->getGlobalPositionY() + parent->getHeight() / 2.0f;
+                startPosition = (float)parent->getGlobalPositionY() + parent->getHeight() / 2.0f;
             } else {
                 startPosition = (float)getSceneSize().Y / 2.0f;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_LEFT_TOP || position.getRelativeTo() == PARENT_CONTENT_RIGHT_TOP || position.getRelativeTo() == PARENT_CONTENT_CENTERX_TOP) {
             if (parent) {
-                startPosition = parent->getGlobalPositionY() + (float)parent->getPadding().topWidth;
+                startPosition = (float)parent->getGlobalPositionY() + (float)parent->getPadding().topWidth;
             } else {
                 startPosition = 0.0f;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_LEFT_BOTTOM || position.getRelativeTo() == PARENT_CONTENT_RIGHT_BOTTOM || position.getRelativeTo() == PARENT_CONTENT_CENTERX_BOTTOM) {
             if (parent) {
-                startPosition = parent->getGlobalPositionY() + parent->getHeight() - (float)parent->getPadding().bottomWidth;
+                startPosition = (float)parent->getGlobalPositionY() + parent->getHeight() - (float)parent->getPadding().bottomWidth;
             } else {
                 startPosition = (float)getSceneSize().Y;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_CENTER_XY || position.getRelativeTo() == PARENT_CONTENT_LEFT_CENTERY || position.getRelativeTo() == PARENT_CONTENT_RIGHT_CENTERY) {
             if (parent) {
-                startPosition = parent->getGlobalPositionY() + (float)parent->getPadding().topWidth + parent->getHeightMinusPadding() / 2.0f;
+                startPosition = (float)parent->getGlobalPositionY() + (float)parent->getPadding().topWidth + parent->getHeightMinusPadding() / 2.0f;
             } else {
                 startPosition = (float)getSceneSize().Y / 2.0f;
             }
@@ -358,7 +358,7 @@ namespace urchin {
             startPosition -= getHeight() / 2.0f;
         }
 
-        return std::round(startPosition + getPositionY());
+        return MathFunction::roundToInt(startPosition + getPositionY());
     }
 
     void Widget::updateSize(Size size) {
@@ -400,8 +400,10 @@ namespace urchin {
     }
 
     Rectangle2D<int> Widget::widgetRectangle() const {
-        return {Point2((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-            Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getHeight())};
+        return {
+            Point2(getGlobalPositionX(), getGlobalPositionY()),
+            Point2(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight())
+        };
     }
 
     void Widget::updateScale(const Vector2<float>& scale) {
@@ -476,7 +478,7 @@ namespace urchin {
 
         if (scissorContainer) [[unlikely]] {
             return Scissor(
-                    Vector2((int)scissorContainer->getGlobalPositionX(), (int)scissorContainer->getGlobalPositionY()),
+                    Vector2(scissorContainer->getGlobalPositionX(), scissorContainer->getGlobalPositionY()),
                     Vector2((int)scissorContainer->getWidth(), (int)scissorContainer->getHeight())
             );
         }

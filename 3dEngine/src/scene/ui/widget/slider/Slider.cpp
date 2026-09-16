@@ -127,7 +127,7 @@ namespace urchin {
 
         //compute index
         unsigned int oldSelectedIndex = selectedIndex;
-        float relativeMouseX = (float)mouseX - getGlobalPositionX();
+        auto relativeMouseX = (float)(mouseX - getGlobalPositionX());
         float sliderCursorXPosition = std::clamp(relativeMouseX, sliderCursorMinXPosition, sliderCursorMaxXPosition);
         float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorXPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
         int rawSelectedIndex = MathFunction::floorToInt((float)values.size() * valuePercentage);
