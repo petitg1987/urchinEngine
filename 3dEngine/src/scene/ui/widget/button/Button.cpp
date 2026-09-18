@@ -80,7 +80,7 @@ namespace urchin {
         return true;
     }
 
-    void Button::onWidgetStateUpdatedEvent() { //TODO GPE review
+    void Button::onGameControllerFocusUpdate() {
         refreshTexture();
     }
 

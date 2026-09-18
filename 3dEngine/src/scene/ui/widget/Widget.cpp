@@ -18,7 +18,7 @@ namespace urchin {
             mouseY(0),
             parent(nullptr),
             widgetState(DEFAULT),
-            bHasKeyboardFocus(false),
+            hasGameControllerFocus(false),
             position(std::move(position)),
             size(size),
             scale(Vector2(1.0f, 1.0f)),
@@ -224,24 +224,23 @@ namespace urchin {
     }
 
     /**
-     * Update the focus of the widget without using the mouse (e.g.: keyboard navigation). A widget focused in such
-     * a way can be clicked with the enter key. The focus is lost as soon as the mouse is moved outside the widget.
+     * Update the focus for a navigation device (e.g.: keyboard, gamepad)
      */
-    void Widget::updateFocus(bool bFocus) {
-        if (bFocus) {
-            bHasKeyboardFocus = true;
+    void Widget::updateNavigationFocus(bool navigationFocus) {
+        if (navigationFocus) {
+            hasGameControllerFocus = true;
             if (widgetState == DEFAULT) {
                 widgetState = FOCUS;
-                onWidgetStateUpdatedEvent();
+                onGameControllerFocusUpdate();
                 for (const auto& eventListener : eventListeners) {
                     eventListener->onFocus(this);
                 }
             }
         } else {
-            bHasKeyboardFocus = false;
+            hasGameControllerFocus = false;
             if (widgetState != DEFAULT) {
                 widgetState = DEFAULT;
-                onWidgetStateUpdatedEvent();
+                onGameControllerFocusUpdate();
                 for (const auto& eventListener : eventListeners) {
                     eventListener->onFocusLost(this);
                 }
@@ -575,7 +574,7 @@ namespace urchin {
 
     bool Widget::handleWidgetKeyPress(InputDeviceKey key) {
         bool widgetStateUpdated = false;
-        if (key == InputDeviceKey::MOUSE_LEFT || (key == InputDeviceKey::ENTER && bHasKeyboardFocus)) {
+        if (key == InputDeviceKey::MOUSE_LEFT || (key == InputDeviceKey::ENTER && hasGameControllerFocus)) {
             if (widgetState == FOCUS) {
                 widgetState = CLICKING;
                 widgetStateUpdated = true;
@@ -629,7 +628,7 @@ namespace urchin {
                     widgetStateUpdated = true;
                 }
             }
-        } else if (key == InputDeviceKey::ENTER && bHasKeyboardFocus) {
+        } else if (key == InputDeviceKey::ENTER && hasGameControllerFocus) {
             if (widgetState == CLICKING) {
                 widgetState = FOCUS;
                 widgetStateUpdated = true;
@@ -697,7 +696,7 @@ namespace urchin {
             }
         } else if (widgetState == FOCUS) {
             widgetState = DEFAULT;
-            bHasKeyboardFocus = false;
+            hasGameControllerFocus = false;
             widgetStateUpdated = true;
         }
         return widgetStateUpdated;
@@ -745,7 +744,7 @@ namespace urchin {
     }
 
     void Widget::handleWidgetResetState() {
-        bHasKeyboardFocus = false;
+        hasGameControllerFocus = false;
 
         if (widgetState == CLICKING) {
             widgetState = FOCUS;
@@ -766,7 +765,7 @@ namespace urchin {
         //to override
     }
 
-    void Widget::onWidgetStateUpdatedEvent() {
+    void Widget::onGameControllerFocusUpdate() {
         //to override
     }
 
