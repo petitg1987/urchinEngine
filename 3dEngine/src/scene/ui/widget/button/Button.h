@@ -29,6 +29,7 @@ namespace urchin {
             bool onKeyPressEvent(InputDeviceKey) override;
             bool onKeyReleaseEvent(InputDeviceKey) override;
             bool onMouseMoveEvent(int, int) override;
+            void onWidgetStateUpdatedEvent() override;
 
             //properties
             const std::string skinName;

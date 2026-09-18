@@ -68,6 +68,7 @@ namespace urchin {
             void addEventListener(std::shared_ptr<EventListener>);
             const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
             WidgetState getWidgetState() const;
+            void updateFocus(bool);
             Point2<int> getSceneSize() const;
 
             void updatePosition(Position);
@@ -138,6 +139,7 @@ namespace urchin {
             virtual bool onMouseMoveEvent(int, int);
             virtual bool onScrollEvent(double);
             virtual void onResetStateEvent();
+            virtual void onWidgetStateUpdatedEvent();
 
         private:
             bool handleWidgetKeyPress(InputDeviceKey);
@@ -159,6 +161,7 @@ namespace urchin {
 
             Outline widgetPadding;
             WidgetState widgetState;
+            bool bHasKeyboardFocus; //TODO GPE review
 
             Position position;
             Size size;

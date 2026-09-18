@@ -80,6 +80,10 @@ namespace urchin {
         return true;
     }
 
+    void Button::onWidgetStateUpdatedEvent() { //TODO GPE review
+        refreshTexture();
+    }
+
     void Button::prepareWidgetRendering(float) {
         if (text) {
             //update the text position because the text size is updated when the UI language is changed
