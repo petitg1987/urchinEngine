@@ -68,7 +68,7 @@ namespace urchin {
             void addEventListener(std::shared_ptr<EventListener>);
             const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
             WidgetState getWidgetState() const;
-            void updateNavigationFocus(bool);
+            void updateGameControllerFocus(bool);
             Point2<int> getSceneSize() const;
 
             void updatePosition(Position);

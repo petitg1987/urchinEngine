@@ -224,9 +224,9 @@ namespace urchin {
     }
 
     /**
-     * Update the focus for a navigation device (e.g.: keyboard, gamepad)
+     * Update the focus for a game controller device (any input device except the mouse)
      */
-    void Widget::updateNavigationFocus(bool navigationFocus) {
+    void Widget::updateGameControllerFocus(bool navigationFocus) {
         if (navigationFocus) {
             hasGameControllerFocus = true;
             if (widgetState == DEFAULT) {
