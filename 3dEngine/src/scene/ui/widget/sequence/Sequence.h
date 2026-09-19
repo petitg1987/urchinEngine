@@ -33,6 +33,9 @@ namespace urchin {
             void createOrUpdateWidget() override;
             void prepareWidgetRendering(float) override;
 
+            bool onKeyPressEvent(InputDeviceKey) override;
+            bool triggerButton(Text&) const;
+
             void setupLeftButtonListeners();
             void setupRightButtonListeners();
 

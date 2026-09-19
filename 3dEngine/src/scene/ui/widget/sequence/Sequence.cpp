@@ -3,6 +3,7 @@
 
 #include "scene/ui/widget/sequence/Sequence.h"
 #include "scene/ui/UISkinService.h"
+#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 
@@ -134,6 +135,25 @@ namespace urchin {
                 rightButton->addEventListener(this->rightButtonEventListener);
             }
         }
+    }
+
+    bool Sequence::onKeyPressEvent(InputDeviceKey key) {
+        if (isGameControllerFocused()) {
+            if (key == InputDeviceKey::LEFT_ARROW) {
+                return triggerButton(*leftButton);
+            } else if (key == InputDeviceKey::RIGHT_ARROW) {
+                return triggerButton(*rightButton);
+            }
+        }
+        return true;
+    }
+
+    bool Sequence::triggerButton(Text& button) const {
+        bool propagateEvent = true;
+        for (const auto& eventListener : button.getEventListeners()) {
+            propagateEvent &= eventListener->onMouseLeftClickRelease(&button);
+        }
+        return propagateEvent;
     }
 
     void Sequence::prepareWidgetRendering(float) {
