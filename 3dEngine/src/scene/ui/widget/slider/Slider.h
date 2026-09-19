@@ -34,6 +34,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
             void updateSliderValue(int);
+            void shiftSliderValue(int);
             void moveSliderCursor() const;
 
             //display information

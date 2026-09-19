@@ -248,6 +248,10 @@ namespace urchin {
         }
     }
 
+    bool Widget::isGameControllerFocused() const {
+        return hasGameControllerFocus;
+    }
+
     Point2<int> Widget::getSceneSize() const {
         if (!uiRenderer) {
             throw std::runtime_error("Scene size not available because the widget is not initialized");

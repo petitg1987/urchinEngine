@@ -88,6 +88,16 @@ namespace urchin {
     }
 
     bool Slider::onKeyPressEvent(InputDeviceKey key) {
+        if (isGameControllerFocused()) {
+            if (key == InputDeviceKey::LEFT_ARROW) {
+                shiftSliderValue(true);
+                return false;
+            } else if (key == InputDeviceKey::RIGHT_ARROW) {
+                shiftSliderValue(false);
+                return false;
+            }
+        }
+
         if (key == InputDeviceKey::MOUSE_LEFT) {
             if (cursorImage->widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = CURSOR_SELECTED;
@@ -141,6 +151,27 @@ namespace urchin {
 
         //event
         if (oldSelectedIndex != selectedIndex) {
+            for (auto& eventListener : getEventListeners()) {
+                eventListener->onValueChange(this);
+            }
+        }
+    }
+
+    void Slider::shiftSliderValue(int shiftLeft) {
+        unsigned int oldSelectedIndex = selectedIndex;
+        if (shiftLeft) {
+            if (selectedIndex > 0) {
+                selectedIndex--;
+            }
+        } else {
+            if (selectedIndex < values.size() - 1) {
+                selectedIndex++;
+            }
+        }
+
+        if (oldSelectedIndex != selectedIndex) {
+            moveSliderCursor();
+            currentValueText->updateText(values[selectedIndex]);
             for (auto& eventListener : getEventListeners()) {
                 eventListener->onValueChange(this);
             }
