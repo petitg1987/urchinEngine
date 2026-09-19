@@ -52,10 +52,12 @@ namespace urchin {
         }
     }
 
-    bool CheckBox::onKeyReleaseEvent(InputDeviceKey) {
+    bool CheckBox::onKeyReleaseEvent(InputDeviceKey key) {
         if (getWidgetState() == FOCUS) {
-            switchValue();
-            return false;
+            if (key == InputDeviceKey::MOUSE_LEFT || (key == InputDeviceKey::ENTER && isGameControllerFocused())) {
+                switchValue();
+                return false;
+            }
         }
         return true;
     }
