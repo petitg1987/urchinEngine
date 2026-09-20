@@ -28,6 +28,7 @@ namespace urchin {
             void resetChildren();
 
             bool isScrollable() const;
+            void scrollToWidget(const Widget&, int) const;
             void updateScrollShiftY(int) const;
             int getScrollShiftY() const override;
             void onScrollableContentUpdated() const override;

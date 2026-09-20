@@ -62,6 +62,21 @@ namespace urchin {
         return scrollbar != nullptr;
     }
 
+    void Container::scrollToWidget(const Widget& widget, int extraPixelMargin) const {
+        if (isScrollable()) {
+            int containerTopY = getGlobalPositionY() + extraPixelMargin;
+            int containerBottomY = getGlobalPositionY() + MathFunction::roundToInt(getHeight()) - extraPixelMargin;
+            int widgetTopY = widget.getGlobalPositionY();
+            int widgetBottomY = widgetTopY + MathFunction::roundToInt(widget.getHeight());
+
+            if (widgetTopY < containerTopY) {
+                scrollbar->updateScrollShiftY(getScrollShiftY() + (containerTopY - widgetTopY));
+            } else if (widgetBottomY > containerBottomY) {
+                scrollbar->updateScrollShiftY(getScrollShiftY() - (widgetBottomY - containerBottomY));
+            }
+        }
+    }
+
     void Container::updateScrollShiftY(int shiftPixelPositionY) const {
         if (scrollbar) {
             scrollbar->updateScrollShiftY(shiftPixelPositionY);
