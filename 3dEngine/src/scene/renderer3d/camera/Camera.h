@@ -23,7 +23,7 @@ namespace urchin {
 
             void useMouseToMoveCamera(bool);
             bool isUseMouseToMoveCamera() const;
-            void setMouseSensitivityPercentage(float);
+            void setSensitivityPercentage(float);
             void setInvertYAxis(bool);
             void setDistance(float);
             bool isFirstPersonCamera() const;
@@ -73,7 +73,7 @@ namespace urchin {
             float computeFov(float) const;
             void updateComponents();
 
-            const float MOUSE_SENSITIVITY_FACTOR;
+            const float SENSITIVITY_FACTOR;
             Matrix4<float> mView;
             Matrix4<float> mProjection;
 
@@ -96,7 +96,7 @@ namespace urchin {
             float maxRotationX;
             float distance; //distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
             bool useMouse; //true if the cursor is used to move the camera
-            float mouseSensitivityPercentage;
+            float sensitivityPercentage;
             bool invertYAxis;
             unsigned int sceneWidth;
             unsigned int sceneHeight;

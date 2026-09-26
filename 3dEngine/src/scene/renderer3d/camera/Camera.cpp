@@ -3,7 +3,7 @@
 namespace urchin {
 
     Camera::Camera(float horizontalFovAngle, float nearPlane, float farPlane) :
-            MOUSE_SENSITIVITY_FACTOR(ConfigService::instance().getFloatValue("camera.mouseSensitivityFactor")),
+            SENSITIVITY_FACTOR(ConfigService::instance().getFloatValue("camera.sensitivityFactor")),
             mView(Matrix4<float>()),
             mProjection(Matrix4<float>()),
             position(Point3(0.0f, 0.0f, 0.0f)),
@@ -15,7 +15,7 @@ namespace urchin {
             maxRotationX(0.995f),
             distance(0.0f),
             useMouse(false),
-            mouseSensitivityPercentage(1.0f),
+            sensitivityPercentage(1.0f),
             invertYAxis(false),
             sceneWidth(0),
             sceneHeight(0) {
@@ -77,8 +77,8 @@ namespace urchin {
         return useMouse;
     }
 
-    void Camera::setMouseSensitivityPercentage(float mouseSensitivityPercentage) {
-        this->mouseSensitivityPercentage = mouseSensitivityPercentage;
+    void Camera::setSensitivityPercentage(float sensitivityPercentage) {
+        this->sensitivityPercentage = sensitivityPercentage;
     }
 
     void Camera::setInvertYAxis(bool invertYAxis) {
@@ -260,8 +260,8 @@ namespace urchin {
             }
 
             Vector2<float> mouseDirection;
-            mouseDirection.X = (float)(-deltaMouseX * (double)MOUSE_SENSITIVITY_FACTOR * (double)mouseSensitivityPercentage);
-            mouseDirection.Y = (float)(-deltaMouseY * (double)MOUSE_SENSITIVITY_FACTOR * (double)mouseSensitivityPercentage);
+            mouseDirection.X = (float)(-deltaMouseX * (double)SENSITIVITY_FACTOR * (double)sensitivityPercentage);
+            mouseDirection.Y = (float)(-deltaMouseY * (double)SENSITIVITY_FACTOR * (double)sensitivityPercentage);
             if (invertYAxis) {
                 mouseDirection.Y = - mouseDirection.Y;
             }
