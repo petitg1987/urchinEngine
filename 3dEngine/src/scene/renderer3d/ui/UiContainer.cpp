@@ -17,7 +17,7 @@ namespace urchin {
         }
     }
 
-    bool UiContainer::onKeyPress(InputDeviceKey key) const {
+    bool UiContainer::onKeyPress(Control::Key key) const {
         for (const auto& ui : uis) {
             if (!ui->onKeyPress(key)) {
                 return false;
@@ -26,7 +26,7 @@ namespace urchin {
         return true;
     }
 
-    bool UiContainer::onKeyRelease(InputDeviceKey key) const {
+    bool UiContainer::onKeyRelease(Control::Key key) const {
         for (const auto& ui : uis) {
             if (!ui->onKeyRelease(key)) {
                 return false;

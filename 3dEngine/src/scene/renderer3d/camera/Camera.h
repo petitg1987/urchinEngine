@@ -2,7 +2,6 @@
 
 #include <UrchinCommon.h>
 
-#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 
@@ -58,8 +57,8 @@ namespace urchin {
             void rotate(const Quaternion<float>&);
             void updateViewUp(const Vector3<float>&, const Vector3<float>&);
 
-            virtual bool onKeyPress(InputDeviceKey);
-            virtual bool onKeyRelease(InputDeviceKey);
+            virtual bool onKeyPress(Control::Key);
+            virtual bool onKeyRelease(Control::Key);
             virtual bool onMouseMove(double, double);
 
             virtual void moveForward(float);

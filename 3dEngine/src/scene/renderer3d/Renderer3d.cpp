@@ -270,7 +270,7 @@ namespace urchin {
         return paused;
     }
 
-    bool Renderer3d::onKeyPress(InputDeviceKey key) {
+    bool Renderer3d::onKeyPress(Control::Key key) {
         bool propagateEvent = true;
         if (!paused) {
             propagateEvent = camera->onKeyPress(key);
@@ -281,7 +281,7 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Renderer3d::onKeyRelease(InputDeviceKey key) {
+    bool Renderer3d::onKeyRelease(Control::Key key) {
         bool propagateEvent = true;
         if (!paused) {
             propagateEvent = camera->onKeyRelease(key);

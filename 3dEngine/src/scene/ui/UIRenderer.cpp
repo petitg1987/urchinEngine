@@ -163,7 +163,7 @@ namespace urchin {
         }
     }
 
-    bool UIRenderer::onKeyPress(InputDeviceKey key) {
+    bool UIRenderer::onKeyPress(Control::Key key) {
         if (bCanInteractWithUi) {
             //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
             std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
@@ -176,7 +176,7 @@ namespace urchin {
         return true;
     }
 
-    bool UIRenderer::onKeyRelease(InputDeviceKey key) {
+    bool UIRenderer::onKeyRelease(Control::Key key) {
         if (bCanInteractWithUi) {
             //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
             std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;

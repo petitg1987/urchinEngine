@@ -45,8 +45,8 @@ namespace urchin {
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
 
-            bool onKeyPress(InputDeviceKey) override;
-            bool onKeyRelease(InputDeviceKey) override;
+            bool onKeyPress(Control::Key) override;
+            bool onKeyRelease(Control::Key) override;
             bool onChar(char32_t) override;
             bool onMouseMove(double, double, double, double) override;
             bool onCursorMove();

@@ -3,7 +3,6 @@
 
 #include "scene/ui/widget/sequence/Sequence.h"
 #include "scene/ui/UISkinService.h"
-#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 
@@ -137,11 +136,11 @@ namespace urchin {
         }
     }
 
-    bool Sequence::onKeyPressEvent(InputDeviceKey key) {
+    bool Sequence::onKeyPressEvent(Control::Key key) {
         if (isGameControllerFocused()) {
-            if (key == InputDeviceKey::LEFT_ARROW) {
+            if (key == Control::Key::ARROW_LEFT) {
                 return triggerButton(*leftButton);
-            } else if (key == InputDeviceKey::RIGHT_ARROW) {
+            } else if (key == Control::Key::ARROW_RIGHT) {
                 return triggerButton(*rightButton);
             }
         }

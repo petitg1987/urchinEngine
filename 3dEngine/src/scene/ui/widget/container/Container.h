@@ -37,8 +37,8 @@ namespace urchin {
             Container(Position, Size, std::string);
 
             void createOrUpdateWidget() override;
-            bool onKeyPressEvent(InputDeviceKey) override;
-            bool onKeyReleaseEvent(InputDeviceKey) override;
+            bool onKeyPressEvent(Control::Key) override;
+            bool onKeyReleaseEvent(Control::Key) override;
             bool onMouseMoveEvent(int, int) override;
             bool onScrollEvent(double) override;
 

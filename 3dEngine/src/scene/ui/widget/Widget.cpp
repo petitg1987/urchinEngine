@@ -8,7 +8,6 @@
 #include "scene/ui/widget/WidgetTypeUtil.h"
 #include "scene/ui/displayer/WidgetSetDisplayer.h"
 #include "scene/ui/UIRenderer.h"
-#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 
@@ -553,7 +552,7 @@ namespace urchin {
         return bIsVisible;
     }
 
-    bool Widget::onKeyPress(InputDeviceKey key) {
+    bool Widget::onKeyPress(Control::Key key) {
         bool propagateEvent = true;
         if (isInitialized() && isVisible()) {
             bool widgetStateUpdated = handleWidgetKeyPress(key);
@@ -576,9 +575,9 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Widget::handleWidgetKeyPress(InputDeviceKey key) {
+    bool Widget::handleWidgetKeyPress(Control::Key key) {
         bool widgetStateUpdated = false;
-        if (key == InputDeviceKey::MOUSE_LEFT || (key == InputDeviceKey::ENTER && hasGameControllerFocus)) {
+        if (key == Control::Key::LMB || ((key == Control::Key::ENTER || key == Control::Key::NUM_PAD_ENTER) && hasGameControllerFocus)) {
             if (widgetState == FOCUS) {
                 widgetState = CLICKING;
                 widgetStateUpdated = true;
@@ -587,11 +586,11 @@ namespace urchin {
         return widgetStateUpdated;
     }
 
-    bool Widget::onKeyPressEvent(InputDeviceKey) {
+    bool Widget::onKeyPressEvent(Control::Key) {
         return true;
     }
 
-    bool Widget::onKeyRelease(InputDeviceKey key) {
+    bool Widget::onKeyRelease(Control::Key key) {
         bool propagateEvent = true;
         if (isInitialized() && isVisible()) {
             bool widgetStateUpdated = handleWidgetKeyRelease(key);
@@ -618,9 +617,9 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Widget::handleWidgetKeyRelease(InputDeviceKey key) {
+    bool Widget::handleWidgetKeyRelease(Control::Key key) {
         bool widgetStateUpdated = false;
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == Control::Key::LMB) {
             if (isMouseOnWidget(mouseX, mouseY)) {
                 if (widgetState == CLICKING) {
                     widgetState = FOCUS;
@@ -632,7 +631,7 @@ namespace urchin {
                     widgetStateUpdated = true;
                 }
             }
-        } else if (key == InputDeviceKey::ENTER && hasGameControllerFocus) {
+        } else if ((key == Control::Key::ENTER || key == Control::Key::NUM_PAD_ENTER) && hasGameControllerFocus) {
             if (widgetState == CLICKING) {
                 widgetState = FOCUS;
                 widgetStateUpdated = true;
@@ -641,7 +640,7 @@ namespace urchin {
         return widgetStateUpdated;
     }
 
-    bool Widget::onKeyReleaseEvent(InputDeviceKey) {
+    bool Widget::onKeyReleaseEvent(Control::Key) {
         return true;
     }
 

@@ -34,8 +34,8 @@ namespace urchin {
             bool requireRenderer() const override;
             void prepareWidgetRendering(float) override;
 
-            bool onKeyPressEvent(InputDeviceKey) override;
-            bool onKeyReleaseEvent(InputDeviceKey) override;
+            bool onKeyPressEvent(Control::Key) override;
+            bool onKeyReleaseEvent(Control::Key) override;
             bool onCharEvent(char32_t) override;
             bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;
@@ -48,6 +48,7 @@ namespace urchin {
             void refreshCursorPosition(std::size_t);
             std::size_t computeCursorIndex(int, int) const;
 
+            bool isCtrlKeyPressed() const;
             bool hasTextSelected() const;
             void resetSelection();
             void displaySelection() const;
@@ -72,7 +73,8 @@ namespace urchin {
             bool selectModeOn;
             std::size_t selectionStartIndex; //index of the cursor in 'originalText'
             std::shared_ptr<StaticBitmap> selectionImage;
-            bool ctrlKeyPressed;
+            bool ctrlLeftKeyPressed;
+            bool ctrlRightKeyPressed;
 
             //state
             enum TextBoxStates {

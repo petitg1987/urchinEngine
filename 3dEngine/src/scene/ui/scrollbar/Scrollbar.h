@@ -14,8 +14,8 @@ namespace urchin {
             void initializeOrUpdate();
             void onScrollableWidgetsUpdated();
 
-            bool onKeyPressEvent(InputDeviceKey);
-            bool onKeyReleaseEvent(InputDeviceKey);
+            bool onKeyPressEvent(Control::Key);
+            bool onKeyReleaseEvent(Control::Key);
             bool onMouseMoveEvent(int, int);
             bool onScrollEvent(double);
 

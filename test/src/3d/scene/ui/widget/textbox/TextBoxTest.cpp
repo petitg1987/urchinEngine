@@ -12,14 +12,14 @@ void TextBoxTest::textShift() {
 
     std::string textValue = "abcdefg"; //text box can only display 'abcde' (a: 5px, b: 6px, c: 5px, d: 6px, e: 5px, f: 3px, g: 6px)
     uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over text box
-    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate text box
+    uiRenderer->onKeyPress(Control::Key::LMB); //activate text box
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
     }
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "cdefg");
 
     for (std::size_t i = 0; i < textValue.size(); ++i) {
-        uiRenderer->onKeyPress(InputDeviceKey::LEFT_ARROW);
+        uiRenderer->onKeyPress(Control::Key::ARROW_LEFT);
     }
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "abcde");
 }
@@ -31,22 +31,22 @@ void TextBoxTest::textSelection() {
 
     std::string textValue = "0123456789"; //text box can only display the text partially (each number: 5px)
     uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over text box
-    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate text box
+    uiRenderer->onKeyPress(Control::Key::LMB); //activate text box
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
     }
 
     for (std::size_t i = 0; i < textValue.size(); ++i) {
-        uiRenderer->onKeyPress(InputDeviceKey::LEFT_ARROW);
+        uiRenderer->onKeyPress(Control::Key::ARROW_LEFT);
     }
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "0123456");
 
-    uiRenderer->onKeyPress(InputDeviceKey::CTRL);
-    uiRenderer->onKeyPress(InputDeviceKey::A); //select all
-    uiRenderer->onKeyRelease(InputDeviceKey::CTRL);
+    uiRenderer->onKeyPress(Control::Key::CTRL_LEFT);
+    uiRenderer->onKeyPress(Control::Key::A); //select all
+    uiRenderer->onKeyRelease(Control::Key::CTRL_LEFT);
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "3456789");
 
-    uiRenderer->onKeyPress(InputDeviceKey::DELETE_KEY); //delete selection
+    uiRenderer->onKeyPress(Control::Key::DEL); //delete selection
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "");
 }
 

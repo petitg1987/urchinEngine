@@ -1,7 +1,6 @@
 #include <UrchinCommon.h>
 
 #include "scene/renderer3d/camera/FreeCamera.h"
-#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 
@@ -17,16 +16,16 @@ namespace urchin {
         this->rotateSpeed = rotateSpeed;
     }
 
-    bool FreeCamera::onKeyPress(InputDeviceKey key) {
-        if (key == InputDeviceKey::MOUSE_RIGHT) {
+    bool FreeCamera::onKeyPress(Control::Key key) {
+        if (key == Control::Key::RMB) {
             useMouseToMoveCamera(true);
             return false;
         }
         return true;
     }
 
-    bool FreeCamera::onKeyRelease(InputDeviceKey key) {
-        if (key == InputDeviceKey::MOUSE_RIGHT) {
+    bool FreeCamera::onKeyRelease(Control::Key key) {
+        if (key == Control::Key::RMB) {
             useMouseToMoveCamera(false);
             return false;
         }

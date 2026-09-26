@@ -23,8 +23,8 @@ namespace urchin {
             void createOrUpdateWidget() override;
             bool requireRenderer() const override;
 
-            bool onKeyPressEvent(InputDeviceKey) override;
-            bool onKeyReleaseEvent(InputDeviceKey) override;
+            bool onKeyPressEvent(Control::Key) override;
+            bool onKeyReleaseEvent(Control::Key) override;
             bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;
 

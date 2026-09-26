@@ -3,7 +3,6 @@
 #include <UrchinCommon.h>
 
 #include "scene/ui/widget/window/Window.h"
-#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 
@@ -48,9 +47,9 @@ namespace urchin {
         return WidgetType::WINDOW;
     }
 
-    bool Window::onKeyPressEvent(InputDeviceKey key) {
+    bool Window::onKeyPressEvent(Control::Key key) {
         bool propagateEvent = true;
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == Control::Key::LMB) {
             Rectangle2D titleZone(Point2(getGlobalPositionX(), getGlobalPositionY()),
                                   Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), getGlobalPositionY() + (int)getPadding().topWidth));
             Rectangle2D closeZone(Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), getGlobalPositionY()),
@@ -75,10 +74,10 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Window::onKeyReleaseEvent(InputDeviceKey key) {
+    bool Window::onKeyReleaseEvent(Control::Key key) {
         Rectangle2D closeZone(Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), getGlobalPositionY()),
                               Point2(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getPadding().topWidth));
-        if (key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
+        if (key == Control::Key::LMB && state == CLOSING && closeZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }
 

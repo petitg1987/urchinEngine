@@ -3,7 +3,6 @@
 #include "scene/ui/scrollbar/Scrollbar.h"
 #include "scene/ui/scrollbar/Scrollable.h"
 #include "resources/ResourceRetriever.h"
-#include "scene/InputDeviceKey.h"
 
 namespace urchin {
 
@@ -71,8 +70,8 @@ namespace urchin {
         }
     }
 
-    bool Scrollbar::onKeyPressEvent(InputDeviceKey key) {
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+    bool Scrollbar::onKeyPressEvent(Control::Key key) {
+        if (key == Control::Key::LMB) {
             if (scrollbarCursor->widgetRectangle().collideWithPoint(Point2(mouseX, mouseY))) {
                 state = CURSOR_SELECTED;
             } else if (scrollbarLine->widgetRectangle().collideWithPoint(Point2(mouseX, mouseY))) {
@@ -83,8 +82,8 @@ namespace urchin {
         return true;
     }
 
-    bool Scrollbar::onKeyReleaseEvent(InputDeviceKey key) {
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+    bool Scrollbar::onKeyReleaseEvent(Control::Key key) {
+        if (key == Control::Key::LMB) {
             state = DEFAULT;
         }
         return true;

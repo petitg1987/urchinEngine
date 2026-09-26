@@ -1,7 +1,6 @@
 #pragma once
 
 #include "scene/Scene.h"
-#include "scene/InputDeviceKey.h"
 
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/camera/FpsCamera.h"

@@ -1,6 +1,5 @@
 #include "scene/ui/widget/slider/Slider.h"
 #include "scene/ui/widget/staticbitmap/StaticBitmap.h"
-#include "scene/InputDeviceKey.h"
 #include "resources/ResourceRetriever.h"
 
 namespace urchin {
@@ -87,18 +86,18 @@ namespace urchin {
         }
     }
 
-    bool Slider::onKeyPressEvent(InputDeviceKey key) {
+    bool Slider::onKeyPressEvent(Control::Key key) {
         if (isGameControllerFocused()) {
-            if (key == InputDeviceKey::LEFT_ARROW) {
+            if (key == Control::Key::ARROW_LEFT) {
                 shiftSliderValue(true);
                 return false;
-            } else if (key == InputDeviceKey::RIGHT_ARROW) {
+            } else if (key == Control::Key::ARROW_RIGHT) {
                 shiftSliderValue(false);
                 return false;
             }
         }
 
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == Control::Key::LMB) {
             if (cursorImage->widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = CURSOR_SELECTED;
                 return false;
@@ -111,8 +110,8 @@ namespace urchin {
         return true;
     }
 
-    bool Slider::onKeyReleaseEvent(InputDeviceKey key) {
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+    bool Slider::onKeyReleaseEvent(Control::Key key) {
+        if (key == Control::Key::LMB) {
             state = DEFAULT;
         }
         return true;
