@@ -47,9 +47,9 @@ namespace urchin {
         return WidgetType::WINDOW;
     }
 
-    bool Window::onKeyPressEvent(Control::Key key) {
+    bool Window::onKeyPressEvent(InputKey key) {
         bool propagateEvent = true;
-        if (key == Control::Key::LMB) {
+        if (key == InputKey::LMB) {
             Rectangle2D titleZone(Point2(getGlobalPositionX(), getGlobalPositionY()),
                                   Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), getGlobalPositionY() + (int)getPadding().topWidth));
             Rectangle2D closeZone(Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), getGlobalPositionY()),
@@ -74,10 +74,10 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Window::onKeyReleaseEvent(Control::Key key) {
+    bool Window::onKeyReleaseEvent(InputKey key) {
         Rectangle2D closeZone(Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), getGlobalPositionY()),
                               Point2(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getPadding().topWidth));
-        if (key == Control::Key::LMB && state == CLOSING && closeZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
+        if (key == InputKey::LMB && state == CLOSING && closeZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }
 

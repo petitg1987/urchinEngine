@@ -57,8 +57,8 @@ namespace urchin {
             void rotate(const Quaternion<float>&);
             void updateViewUp(const Vector3<float>&, const Vector3<float>&);
 
-            virtual bool onKeyPress(Control::Key);
-            virtual bool onKeyRelease(Control::Key);
+            virtual bool onKeyPress(InputKey);
+            virtual bool onKeyRelease(InputKey);
             virtual bool onMouseMove(double, double);
 
             virtual void moveForward(float);

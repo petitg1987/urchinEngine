@@ -44,8 +44,8 @@ namespace urchin {
             void takeScreenShot(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
             //events
-            bool onKeyPress(Control::Key);
-            bool onKeyRelease(Control::Key);
+            bool onKeyPress(InputKey);
+            bool onKeyRelease(InputKey);
             bool onChar(char32_t);
             bool onMouseMove(double, double, double, double);
             bool onScroll(double);

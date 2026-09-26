@@ -243,12 +243,12 @@ namespace urchin {
         updateComponents();
     }
 
-    bool Camera::onKeyPress(Control::Key) {
+    bool Camera::onKeyPress(InputKey) {
         //do nothing
         return true;
     }
 
-    bool Camera::onKeyRelease(Control::Key) {
+    bool Camera::onKeyRelease(InputKey) {
         //do nothing
         return true;
     }

@@ -34,8 +34,8 @@ namespace urchin {
             bool requireRenderer() const override;
             void prepareWidgetRendering(float) override;
 
-            bool onKeyPressEvent(Control::Key) override;
-            bool onKeyReleaseEvent(Control::Key) override;
+            bool onKeyPressEvent(InputKey) override;
+            bool onKeyReleaseEvent(InputKey) override;
             bool onCharEvent(char32_t) override;
             bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;

@@ -12,7 +12,7 @@ void TextareaTest::textCut() {
 
     std::string textValue = "mmmmmm"; //textarea can only display 'mmm' on one line
     uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over textarea
-    uiRenderer->onKeyPress(Control::Key::LMB); //activate textarea
+    uiRenderer->onKeyPress(InputKey::LMB); //activate textarea
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
     }
@@ -22,9 +22,9 @@ void TextareaTest::textCut() {
 
     float endOfLinePosX = textarea->getWidth() - 1.0f /* outline right */ - 10.0f /* scrollbar width */ - TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
     uiRenderer->onMouseMove(endOfLinePosX, 1.0, 0.0, 0.0); //move mouse at end of first line
-    uiRenderer->onKeyPress(Control::Key::LMB); //place cursor at end of first line
+    uiRenderer->onKeyPress(InputKey::LMB); //place cursor at end of first line
     for (std::size_t i = 0; i < 3; ++i) {
-        uiRenderer->onKeyPress(Control::Key::DEL);
+        uiRenderer->onKeyPress(InputKey::DEL);
     }
     AssertHelper::assertUnsignedIntEquals(textarea->getTextWidget().getCutTextLines().size(), 1);
     AssertHelper::assertTrue(StringUtil::readUtf8String(textarea->getTextWidget().getCutTextLines()[0].text) == "mmm");
@@ -42,20 +42,20 @@ void TextareaTest::textCopyPaste() {
 
     std::string textValue = "123";
     uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over textarea
-    uiRenderer->onKeyPress(Control::Key::LMB); //activate textarea
+    uiRenderer->onKeyPress(InputKey::LMB); //activate textarea
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
     }
     float endOfLinePosX = textarea->getWidth() - 1.0f /* outline right */ - 10.0f /* scrollbar width */ - TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
-    uiRenderer->onKeyPress(Control::Key::CTRL_LEFT);
-    uiRenderer->onKeyPress(Control::Key::A); //select all
-    uiRenderer->onKeyPress(Control::Key::C); //copy
-    uiRenderer->onKeyRelease(Control::Key::CTRL_LEFT);
+    uiRenderer->onKeyPress(InputKey::CTRL_LEFT);
+    uiRenderer->onKeyPress(InputKey::A); //select all
+    uiRenderer->onKeyPress(InputKey::C); //copy
+    uiRenderer->onKeyRelease(InputKey::CTRL_LEFT);
     uiRenderer->onMouseMove(endOfLinePosX, 1.0f, 0.0, 0.0); //move mouse at end of first line
-    uiRenderer->onKeyPress(Control::Key::LMB); //place cursor at end of first line
-    uiRenderer->onKeyPress(Control::Key::CTRL_LEFT);
-    uiRenderer->onKeyPress(Control::Key::V); //paste
-    uiRenderer->onKeyRelease(Control::Key::CTRL_LEFT);
+    uiRenderer->onKeyPress(InputKey::LMB); //place cursor at end of first line
+    uiRenderer->onKeyPress(InputKey::CTRL_LEFT);
+    uiRenderer->onKeyPress(InputKey::V); //paste
+    uiRenderer->onKeyRelease(InputKey::CTRL_LEFT);
 
     AssertHelper::assertStringEquals(textarea->getText(), "123123");
 }
@@ -66,13 +66,13 @@ void TextareaTest::leftArrowWithSelection() {
     uiRenderer->addWidget(textarea);
 
     uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over textarea
-    uiRenderer->onKeyPress(Control::Key::LMB); //activate textarea
+    uiRenderer->onKeyPress(InputKey::LMB); //activate textarea
     uiRenderer->onChar('a');
     uiRenderer->onChar('b');
-    uiRenderer->onKeyPress(Control::Key::CTRL_LEFT);
-    uiRenderer->onKeyPress(Control::Key::A); //select all
-    uiRenderer->onKeyRelease(Control::Key::CTRL_LEFT);
-    uiRenderer->onKeyPress(Control::Key::ARROW_LEFT); //cursor index at 0
+    uiRenderer->onKeyPress(InputKey::CTRL_LEFT);
+    uiRenderer->onKeyPress(InputKey::A); //select all
+    uiRenderer->onKeyRelease(InputKey::CTRL_LEFT);
+    uiRenderer->onKeyPress(InputKey::ARROW_LEFT); //cursor index at 0
     uiRenderer->onChar('c');
 
     AssertHelper::assertStringEquals(textarea->getText(), "cab");

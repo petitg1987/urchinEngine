@@ -23,7 +23,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
             void refreshTexture();
-            bool onKeyReleaseEvent(Control::Key) override;
+            bool onKeyReleaseEvent(InputKey) override;
             void switchValue();
 
             //properties

@@ -15,8 +15,8 @@ namespace urchin {
             virtual void applyUpdatedGammaFactor() = 0;
             float getGammaFactor() const;
 
-            virtual bool onKeyPress(Control::Key) = 0;
-            virtual bool onKeyRelease(Control::Key) = 0;
+            virtual bool onKeyPress(InputKey) = 0;
+            virtual bool onKeyRelease(InputKey) = 0;
             virtual bool onChar(char32_t) = 0;
             virtual bool onMouseMove(double, double, double, double) = 0;
             virtual bool onScroll(double) = 0;

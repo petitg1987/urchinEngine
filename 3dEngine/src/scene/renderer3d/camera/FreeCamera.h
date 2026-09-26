@@ -16,8 +16,8 @@ namespace urchin {
 
             void setSpeed(float, float);
 
-            bool onKeyPress(Control::Key) override;
-            bool onKeyRelease(Control::Key) override;
+            bool onKeyPress(InputKey) override;
+            bool onKeyRelease(InputKey) override;
 
             void moveForward(float) override;
             void moveBackward(float) override;

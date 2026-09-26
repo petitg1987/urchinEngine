@@ -105,12 +105,12 @@ namespace urchin {
         return (unsigned int)originalText.size();
     }
 
-    bool TextBox::onKeyPressEvent(Control::Key key) {
-        if (key == Control::Key::CTRL_LEFT) {
+    bool TextBox::onKeyPressEvent(InputKey key) {
+        if (key == InputKey::CTRL_LEFT) {
             ctrlLeftKeyPressed = true;
-        } else if (key == Control::Key::CTRL_RIGHT) {
+        } else if (key == InputKey::CTRL_RIGHT) {
             ctrlRightKeyPressed = true;
-        } else if (key == Control::Key::LMB) {
+        } else if (key == InputKey::LMB) {
             if (widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 changeTexture(texTextBoxFocus);
@@ -128,7 +128,7 @@ namespace urchin {
                 resetSelection();
             }
         } else if (state == ACTIVE) {
-            if (key == Control::Key::A) {
+            if (key == InputKey::A) {
                 if (isCtrlKeyPressed()) {
                     selectionStartIndex = 0;
                     cursorIndex = originalText.size();
@@ -136,14 +136,14 @@ namespace urchin {
                     refreshText(false);
                     displaySelection();
                 }
-            } else if (key == Control::Key::C) {
+            } else if (key == InputKey::C) {
                 if (isCtrlKeyPressed() && hasTextSelected()) {
                     std::span<char32_t> selectedText = std::span(originalText).subspan(
                         std::min(selectionStartIndex, cursorIndex),
                         std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
                     getClipboard().setText(StringUtil::readUtf8String(selectedText));
                 }
-            } else if (key == Control::Key::X) {
+            } else if (key == InputKey::X) {
                 if (isCtrlKeyPressed() && hasTextSelected()) {
                     std::span<char32_t> selectedText = std::span(originalText).subspan(
                             std::min(selectionStartIndex, cursorIndex),
@@ -151,7 +151,7 @@ namespace urchin {
                     getClipboard().setText(StringUtil::readUtf8String(selectedText));
                     deleteSelectedText();
                 }
-            } else if (key == Control::Key::V) {
+            } else if (key == InputKey::V) {
                 if (isCtrlKeyPressed() && !getClipboard().getText().empty()) {
                     deleteSelectedText();
                     std::string textToPaste = getClipboard().getText();
@@ -161,7 +161,7 @@ namespace urchin {
                         onCharEvent(StringUtil::readNextCodepoint(textIt, textEndIt));
                     }
                 }
-            } else if (key == Control::Key::ARROW_LEFT) {
+            } else if (key == InputKey::ARROW_LEFT) {
                 if (hasTextSelected()) {
                     cursorIndex = std::min(cursorIndex, selectionStartIndex);
                     refreshText(false);
@@ -170,7 +170,7 @@ namespace urchin {
                     refreshText(false);
                 }
                 resetSelection();
-            } else if (key == Control::Key::ARROW_RIGHT) {
+            } else if (key == InputKey::ARROW_RIGHT) {
                 if (hasTextSelected()) {
                     cursorIndex = std::max(cursorIndex, selectionStartIndex);
                     refreshText(false);
@@ -179,7 +179,7 @@ namespace urchin {
                     refreshText(false);
                 }
                 resetSelection();
-            } else if (key == Control::Key::BACKSPACE) {
+            } else if (key == InputKey::BACKSPACE) {
                 if (hasTextSelected()) {
                     deleteSelectedText();
                 } else if (cursorIndex > 0) {
@@ -189,7 +189,7 @@ namespace urchin {
                     refreshText(true);
                     resetSelection();
                 }
-            } else if (key == Control::Key::DEL) {
+            } else if (key == InputKey::DEL) {
                 if (hasTextSelected()) {
                     deleteSelectedText();
                 } else if (cursorIndex < originalText.size()) {
@@ -203,12 +203,12 @@ namespace urchin {
         return true;
     }
 
-    bool TextBox::onKeyReleaseEvent(Control::Key key) {
-        if (key == Control::Key::CTRL_LEFT) {
+    bool TextBox::onKeyReleaseEvent(InputKey key) {
+        if (key == InputKey::CTRL_LEFT) {
             ctrlLeftKeyPressed = false;
-        } else if (key == Control::Key::CTRL_RIGHT) {
+        } else if (key == InputKey::CTRL_RIGHT) {
             ctrlRightKeyPressed = false;
-        } else if (key == Control::Key::LMB) {
+        } else if (key == InputKey::LMB) {
             if (selectModeOn) {
                 selectModeOn = false;
                 return false;

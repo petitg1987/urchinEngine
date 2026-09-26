@@ -15,8 +15,8 @@ namespace urchin {
 
             void onCameraProjectionUpdate(Camera&);
 
-            bool onKeyPress(Control::Key) const;
-            bool onKeyRelease(Control::Key) const;
+            bool onKeyPress(InputKey) const;
+            bool onKeyRelease(InputKey) const;
             bool onChar(char32_t) const;
             bool onMouseMove(double, double, double, double) const;
             bool onScroll(double) const;

@@ -38,10 +38,10 @@ void UIRendererTest::clickingState() {
     uiRenderer->addWidget(widget);
 
     uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
-    uiRenderer->onKeyPress(Control::Key::LMB);
+    uiRenderer->onKeyPress(InputKey::LMB);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::CLICKING);
 
-    uiRenderer->onKeyRelease(Control::Key::LMB);
+    uiRenderer->onKeyRelease(InputKey::LMB);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::FOCUS);
 }
 
@@ -51,7 +51,7 @@ void UIRendererTest::noClickingStateBecauseMouseOutside() {
     uiRenderer->addWidget(widget);
 
     uiRenderer->onMouseMove(10.0, 10.0, 0.0, 0.0);
-    uiRenderer->onKeyPress(Control::Key::LMB);
+    uiRenderer->onKeyPress(InputKey::LMB);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
 }
 
@@ -81,9 +81,9 @@ void UIRendererTest::focusLostEventWithClick() {
     uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
     assert(focused);
 
-    uiRenderer->onKeyPress(Control::Key::LMB);
+    uiRenderer->onKeyPress(InputKey::LMB);
     uiRenderer->onMouseMove(110.0, 50.0, 0.0, 0.0);
-    uiRenderer->onKeyRelease(Control::Key::LMB);
+    uiRenderer->onKeyRelease(InputKey::LMB);
 
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
     AssertHelper::assertTrue(focusLost);
@@ -149,7 +149,7 @@ void UIRendererTest::buttonRemoveParentContainer() {
     AssertHelper::assertTrue(uiRenderer->getI18nService().isTranslatableLabelExist(textPTr));
 
     uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
-    uiRenderer->onKeyPress(Control::Key::LMB);
+    uiRenderer->onKeyPress(InputKey::LMB);
 
     AssertHelper::assertTrue(childContainer.expired());
     AssertHelper::assertTrue(deleteButton.expired());

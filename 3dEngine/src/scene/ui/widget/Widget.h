@@ -108,8 +108,8 @@ namespace urchin {
             void setIsVisible(bool);
             bool isVisible() const;
 
-            bool onKeyPress(Control::Key);
-            bool onKeyRelease(Control::Key);
+            bool onKeyPress(InputKey);
+            bool onKeyRelease(InputKey);
             bool onChar(char32_t);
             bool onMouseMove(int, int);
             bool onScroll(double);
@@ -133,8 +133,8 @@ namespace urchin {
             Outline& getPadding();
             const Outline& getPadding() const;
 
-            virtual bool onKeyPressEvent(Control::Key);
-            virtual bool onKeyReleaseEvent(Control::Key);
+            virtual bool onKeyPressEvent(InputKey);
+            virtual bool onKeyReleaseEvent(InputKey);
             virtual bool onCharEvent(char32_t);
             virtual bool onMouseMoveEvent(int, int);
             virtual bool onScrollEvent(double);
@@ -142,8 +142,8 @@ namespace urchin {
             virtual void onGameControllerFocusUpdate();
 
         private:
-            bool handleWidgetKeyPress(Control::Key);
-            bool handleWidgetKeyRelease(Control::Key);
+            bool handleWidgetKeyPress(InputKey);
+            bool handleWidgetKeyRelease(InputKey);
             bool handleWidgetMouseMove(int, int);
             void handleWidgetResetState();
             bool isMouseOnWidget(int, int) const;

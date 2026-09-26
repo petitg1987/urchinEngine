@@ -112,7 +112,8 @@
 #include "system/thread/LockById.h"
 #include "system/thread/ScopeLockById.h"
 #include "system/thread/SleepUtil.h"
-#include "system/control/Control.h"
+#include "system/input/InputKey.h"
+#include "system/input/InputKeyLabel.h"
 
 #include "util/DateTimeUtil.h"
 #include "util/FileUtil.h"

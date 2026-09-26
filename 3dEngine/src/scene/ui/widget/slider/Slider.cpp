@@ -86,18 +86,18 @@ namespace urchin {
         }
     }
 
-    bool Slider::onKeyPressEvent(Control::Key key) {
+    bool Slider::onKeyPressEvent(InputKey key) {
         if (isGameControllerFocused()) {
-            if (key == Control::Key::ARROW_LEFT) {
+            if (key == InputKey::ARROW_LEFT) {
                 shiftSliderValue(true);
                 return false;
-            } else if (key == Control::Key::ARROW_RIGHT) {
+            } else if (key == InputKey::ARROW_RIGHT) {
                 shiftSliderValue(false);
                 return false;
             }
         }
 
-        if (key == Control::Key::LMB) {
+        if (key == InputKey::LMB) {
             if (cursorImage->widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = CURSOR_SELECTED;
                 return false;
@@ -110,8 +110,8 @@ namespace urchin {
         return true;
     }
 
-    bool Slider::onKeyReleaseEvent(Control::Key key) {
-        if (key == Control::Key::LMB) {
+    bool Slider::onKeyReleaseEvent(InputKey key) {
+        if (key == InputKey::LMB) {
             state = DEFAULT;
         }
         return true;
