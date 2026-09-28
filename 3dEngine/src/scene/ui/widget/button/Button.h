@@ -24,7 +24,7 @@ namespace urchin {
             bool requireRenderer() const override;
             void prepareWidgetRendering(float) override;
 
-            void refreshTexture();
+            bool refreshTexture();
 
             bool onKeyPressEvent(InputKey) override;
             bool onKeyReleaseEvent(InputKey) override;

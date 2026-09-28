@@ -129,6 +129,7 @@ namespace urchin {
                     resetSelection();
                     selectModeOn = true;
                 }
+                return false;
             } else {
                 state = INACTIVE;
                 changeTexture(texTextareaDefault);
@@ -136,12 +137,16 @@ namespace urchin {
                 resetSelection();
             }
         } else if (state == ACTIVE) {
+            std::size_t previousCursorIndex = cursorIndex;
+            bool hadTextSelection = hasTextSelected();
+
             if (key == InputKey::A) {
                 if (isCtrlKeyPressed()) {
                     selectionStartIndex = 0;
                     cursorIndex = originalText.size();
                     refreshCursorPosition(cursorIndex);
                     displaySelection();
+                    return false;
                 }
             } else if (key == InputKey::C) {
                 if (isCtrlKeyPressed() && hasTextSelected()) {
@@ -149,6 +154,7 @@ namespace urchin {
                         std::min(selectionStartIndex, cursorIndex),
                         std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
                     getClipboard().setText(StringUtil::readUtf8String(selectedText));
+                    return false;
                 }
             } else if (key == InputKey::X) {
                 if (isCtrlKeyPressed() && hasTextSelected()) {
@@ -157,6 +163,7 @@ namespace urchin {
                             std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
                     getClipboard().setText(StringUtil::readUtf8String(selectedText));
                     deleteSelectedText();
+                    return false;
                 }
             } else if (key == InputKey::V) {
                 if (isCtrlKeyPressed() && !getClipboard().getText().empty()) {
@@ -167,36 +174,46 @@ namespace urchin {
                     while (textIt != textEndIt) {
                         onCharEvent(StringUtil::readNextCodepoint(textIt, textEndIt));
                     }
+                    return false;
                 }
             } else if (key == InputKey::ARROW_LEFT) {
                 if (hasTextSelected()) {
                     cursorIndex = std::min(cursorIndex, selectionStartIndex);
                     refreshCursorPosition(cursorIndex);
+                    resetSelection();
+                    return false;
                 } else if (cursorIndex > 0) {
                     cursorIndex--;
                     refreshCursorPosition(cursorIndex);
+                    resetSelection();
+                    return false;
                 }
-                resetSelection();
             } else if (key == InputKey::ARROW_RIGHT) {
                 if (hasTextSelected()) {
                     cursorIndex = std::max(cursorIndex, selectionStartIndex);
                     refreshCursorPosition(cursorIndex);
+                    resetSelection();
+                    return false;
                 } else if (cursorIndex < originalText.size()) {
                     cursorIndex++;
                     refreshCursorPosition(cursorIndex);
+                    resetSelection();
+                    return false;
                 }
-                resetSelection();
             } else if (key == InputKey::ARROW_UP) {
                 cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
                 refreshCursorPosition(cursorIndex);
                 resetSelection();
+                return previousCursorIndex == cursorIndex && !hadTextSelection;
             } else if (key == InputKey::ARROW_DOWN) {
                 cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y + (int)text->getFont().getSpaceBetweenLines());
                 refreshCursorPosition(cursorIndex);
                 resetSelection();
+                return previousCursorIndex == cursorIndex && !hadTextSelection;
             } else if (key == InputKey::BACKSPACE) {
                 if (hasTextSelected()) {
                     deleteSelectedText();
+                    return false;
                 } else if (cursorIndex > 0) {
                     originalText.erase(originalText.begin() + ((long)cursorIndex - 1));
                     refreshText(true);
@@ -204,16 +221,19 @@ namespace urchin {
                     cursorIndex--;
                     refreshCursorPosition(cursorIndex);
                     resetSelection();
+                    return false;
                 }
             } else if (key == InputKey::DEL) {
                 if (hasTextSelected()) {
                     deleteSelectedText();
+                    return false;
                 } else if (cursorIndex < originalText.size()) {
                     originalText.erase(originalText.begin() + (long)cursorIndex);
                     refreshText(true);
 
                     refreshCursorPosition(cursorIndex);
                     resetSelection();
+                    return false;
                 }
             } else if (key == InputKey::ENTER || key == InputKey::NUM_PAD_ENTER) {
                 if (hasTextSelected()) {
@@ -226,6 +246,7 @@ namespace urchin {
                 cursorIndex++;
                 refreshCursorPosition(cursorIndex);
                 resetSelection();
+                return false;
             }
         }
         return true;

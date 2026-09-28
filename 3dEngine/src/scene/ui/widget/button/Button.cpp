@@ -49,35 +49,37 @@ namespace urchin {
         return WidgetType::BUTTON;
     }
 
-    void Button::refreshTexture() {
+    bool Button::refreshTexture() {
+        bool textureRefreshed = false;
         if (getWidgetState() == FOCUS) {
             if (getTexture().get() != texOnFocus.get()) {
                 changeTexture(texOnFocus);
+                textureRefreshed = true;
             }
         } else if (getWidgetState() == CLICKING) {
             if (getTexture().get() != texOnClick.get()) {
                 changeTexture(texOnClick);
+                textureRefreshed = true;
             }
         } else {
             if (getTexture().get() != texDefault.get()) {
                 changeTexture(texDefault);
+                textureRefreshed = true;
             }
         }
+        return textureRefreshed;
     }
 
     bool Button::onKeyPressEvent(InputKey) {
-        refreshTexture();
-        return true;
+        return !refreshTexture();
     }
 
     bool Button::onKeyReleaseEvent(InputKey) {
-        refreshTexture();
-        return true;
+        return !refreshTexture();
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        refreshTexture();
-        return true;
+        return !refreshTexture();
     }
 
     void Button::onGameControllerFocusUpdate() {
