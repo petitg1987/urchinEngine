@@ -305,6 +305,19 @@ namespace urchin {
         changeTexture(texTextareaDefault);
     }
 
+    void Textarea::onGameControllerFocusUpdate() {
+        if (isGameControllerFocused()) {
+            state = ACTIVE;
+            changeTexture(texTextareaFocus);
+            refreshCursorPosition(cursorIndex);
+        } else {
+            state = INACTIVE;
+            changeTexture(texTextareaDefault);
+            cursor->setIsVisible(false);
+            resetSelection();
+        }
+    }
+
     bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const {
         if (!UnicodeUtil::isCharacterDisplayable(unicodeCharacter) && unicodeCharacter != '\n') {
             return false;

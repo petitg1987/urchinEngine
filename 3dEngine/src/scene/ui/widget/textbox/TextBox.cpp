@@ -272,6 +272,19 @@ namespace urchin {
         changeTexture(texTextBoxDefault);
     }
 
+    void TextBox::onGameControllerFocusUpdate() {
+        if (isGameControllerFocused()) {
+            state = ACTIVE;
+            changeTexture(texTextBoxFocus);
+            refreshCursorPosition(cursorIndex);
+        } else {
+            state = INACTIVE;
+            changeTexture(texTextBoxDefault);
+            cursor->setIsVisible(false);
+            resetSelection();
+        }
+    }
+
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {
         if (!UnicodeUtil::isCharacterDisplayable(unicodeCharacter)) {
             return false;

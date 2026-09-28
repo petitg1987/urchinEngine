@@ -36,6 +36,7 @@ namespace urchin {
             bool onCharEvent(char32_t) override;
             bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;
+            void onGameControllerFocusUpdate() override;
 
             bool isCharacterAllowed(char32_t) const;
             bool isMaxCharacterReach() const;
