@@ -66,13 +66,14 @@ void TextareaTest::leftArrowWithSelection() {
     uiRenderer->addWidget(textarea);
 
     uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over textarea
-    uiRenderer->onKeyPress(InputKey::LMB); //activate textarea
+    AssertHelper::assertFalse(uiRenderer->onKeyPress(InputKey::LMB)); //activate textarea
     uiRenderer->onChar('a');
     uiRenderer->onChar('b');
-    uiRenderer->onKeyPress(InputKey::CTRL_LEFT);
-    uiRenderer->onKeyPress(InputKey::A); //select all
-    uiRenderer->onKeyRelease(InputKey::CTRL_LEFT);
-    uiRenderer->onKeyPress(InputKey::ARROW_LEFT); //cursor index at 0
+    AssertHelper::assertTrue(uiRenderer->onKeyPress(InputKey::CTRL_LEFT));
+    AssertHelper::assertFalse(uiRenderer->onKeyPress(InputKey::A)); //select all
+    AssertHelper::assertTrue(uiRenderer->onKeyRelease(InputKey::CTRL_LEFT));
+    AssertHelper::assertFalse(uiRenderer->onKeyPress(InputKey::ARROW_LEFT)); //cursor index at 0
+    AssertHelper::assertTrue(uiRenderer->onKeyPress(InputKey::ARROW_LEFT)); //cursor index still at 0
     uiRenderer->onChar('c');
 
     AssertHelper::assertStringEquals(textarea->getText(), "cab");
