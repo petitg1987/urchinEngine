@@ -239,7 +239,8 @@ namespace urchin {
             score += 250'000;
         }
 
-        score += (int)std::min(deviceProperties.limits.maxImageDimension2D, MAX_IMAGE_DIMENSION_SCORE); //indicator of the device performance/quality
+        //score based on max image dimension
+        score += (int)std::min(deviceProperties.limits.maxImageDimension2D, MAX_IMAGE_DIMENSION_SCORE);
 
         return {physicalDeviceToCheck, std::string(deviceProperties.deviceName), score};
     }
