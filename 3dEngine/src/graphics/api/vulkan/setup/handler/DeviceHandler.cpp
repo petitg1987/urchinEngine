@@ -20,9 +20,9 @@ namespace urchin {
 
     }
 
-    PhysicalDeviceSuitability::PhysicalDeviceSuitability(VkPhysicalDevice physicalDevice, std::string missingRequisiteDescription) :
+    PhysicalDeviceSuitability::PhysicalDeviceSuitability(VkPhysicalDevice physicalDevice, std::string deviceName, std::string missingRequisiteDescription) :
             physicalDevice(physicalDevice),
-            deviceName(std::nullopt),
+            deviceName(std::move(deviceName)),
             score(-1),
             missingRequisiteDescription(missingRequisiteDescription) {
 
@@ -149,10 +149,7 @@ namespace urchin {
         std::multimap<int, PhysicalDeviceSuitability> physicalDeviceCandidates;
         for (const auto& device : physicalDevices) {
             auto physicalDeviceSuitability = retrievePhysicalDeviceSuitability(device);
-
-            std::string deviceName = physicalDeviceSuitability.deviceName.has_value() ? physicalDeviceSuitability.deviceName.value() : "[UNKNOWN_NAME]";
-            Logger::instance().logInfo("Found physical device candidate named '" + deviceName + "' with a score of " + std::to_string(physicalDeviceSuitability.score));
-
+            Logger::instance().logInfo("Found physical device candidate named '" + physicalDeviceSuitability.deviceName + "' with a score of " + std::to_string(physicalDeviceSuitability.score));
             physicalDeviceCandidates.insert(std::make_pair(physicalDeviceSuitability.score, physicalDeviceSuitability));
         }
 
@@ -163,8 +160,7 @@ namespace urchin {
             throw UserAuthorityException("Failed to find a suitable graphic card: " + noDeviceFoundReason, "Make sure your graphic card matches the minimum requirements and/or upgrade your graphic drivers");
         }
 
-        assert(bestPhysicalDevice->second.deviceName.has_value());
-        Logger::instance().logInfo("Physical device with a score of " + std::to_string(bestPhysicalDevice->second.score) + " selected: " + bestPhysicalDevice->second.deviceName.value());
+        Logger::instance().logInfo("Physical device with a score of " + std::to_string(bestPhysicalDevice->second.score) + " selected: " + bestPhysicalDevice->second.deviceName);
 
         return bestPhysicalDevice->second.physicalDevice;
     }
@@ -178,7 +174,7 @@ namespace urchin {
         //check Vulkan version
         if (deviceProperties.apiVersion < VK_API_VERSION_1_3) {
             std::string deviceVersion = std::to_string(VK_API_VERSION_MAJOR(deviceProperties.apiVersion)) + "." + std::to_string(VK_API_VERSION_MINOR(deviceProperties.apiVersion));
-            return {physicalDeviceToCheck, "Vulkan 1.3 is not supported (device version: " + deviceVersion + ")"};
+            return {physicalDeviceToCheck, deviceProperties.deviceName, "Vulkan 1.3 is not supported (device version: " + deviceVersion + ")"};
         }
 
         //check expected features
@@ -187,7 +183,7 @@ namespace urchin {
             if (isFeatureAvailable) {
                 score += 5000;
             } else if (!expectedFeature.optional) {
-                return {physicalDeviceToCheck, "missing Vulkan feature '" + expectedFeature.featureDescription + "' support"};
+                return {physicalDeviceToCheck, deviceProperties.deviceName, "missing Vulkan feature '" + expectedFeature.featureDescription + "' support"};
             }
         }
 
@@ -196,14 +192,14 @@ namespace urchin {
             if (isFeatureAvailable) {
                 score += 5000;
             } else if (!expectedFeature.optional) {
-                return {physicalDeviceToCheck, "missing Vulkan feature '" + expectedFeature.featureDescription + "' support"};
+                return {physicalDeviceToCheck, deviceProperties.deviceName, "missing Vulkan feature '" + expectedFeature.featureDescription + "' support"};
             }
         }
 
         //check required extensions
         for (const auto& [extensionName, extensionDescription] : physicalDeviceRequiredExtensions) {
             if (!checkPhysicalDeviceExtensionSupport(physicalDeviceToCheck, extensionName)) {
-                return {physicalDeviceToCheck, "missing Vulkan extension '" + extensionDescription + "' support"};
+                return {physicalDeviceToCheck, deviceProperties.deviceName, "missing Vulkan extension '" + extensionDescription + "' support"};
             }
         }
 
@@ -219,19 +215,19 @@ namespace urchin {
         QueueHandler queueFamilyHandler;
         queueFamilyHandler.initializeQueueFamilies(physicalDeviceToCheck, surface);
         if (!queueFamilyHandler.isAllQueueFamiliesFound()) {
-            return {physicalDeviceToCheck, "missing a queue family support"};
+            return {physicalDeviceToCheck, deviceProperties.deviceName, "missing a queue family support"};
         }
 
         //check swap chain is adequate
         SwapChainSupportDetails swapChainSupport = SwapChainHandler::querySwapChainSupport(physicalDeviceToCheck);
         if (swapChainSupport.formats.empty() || swapChainSupport.presentModes.empty()) {
-            return {physicalDeviceToCheck, "missing adequate swap chain support"};
+            return {physicalDeviceToCheck, deviceProperties.deviceName, "missing adequate swap chain support"};
         }
 
         //check max compute work group invocations
         if (deviceProperties.limits.maxComputeWorkGroupInvocations < GenericComputeBuilder::MAX_COMPUTE_WORK_GROUP_INVOCATIONS) {
             std::string valueOverMin = std::to_string(deviceProperties.limits.maxComputeWorkGroupInvocations) + "/" + std::to_string(GenericComputeBuilder::MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
-            return {physicalDeviceToCheck, "minimum requirement for compute work group invocations is insufficient (" + valueOverMin + ")"};
+            return {physicalDeviceToCheck, deviceProperties.deviceName, "minimum requirement for compute work group invocations is insufficient (" + valueOverMin + ")"};
         }
 
         //score based on GPU type

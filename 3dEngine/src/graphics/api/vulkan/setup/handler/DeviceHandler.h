@@ -16,10 +16,10 @@ namespace urchin {
 
     struct PhysicalDeviceSuitability {
         PhysicalDeviceSuitability(VkPhysicalDevice, std::string, int);
-        PhysicalDeviceSuitability(VkPhysicalDevice, std::string);
+        PhysicalDeviceSuitability(VkPhysicalDevice, std::string, std::string);
 
         VkPhysicalDevice physicalDevice;
-        std::optional<std::string> deviceName;
+        std::string deviceName;
         int score;
         std::optional<std::string> missingRequisiteDescription;
     };
