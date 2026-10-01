@@ -40,6 +40,8 @@ namespace urchin {
             GpuType getGpuType() const;
 
         private:
+            static constexpr uint32_t MAX_IMAGE_DIMENSION_SCORE = 65536;
+
             bool isFeature10Available(VkPhysicalDevice, unsigned long) const;
             bool isFeature13Available(VkPhysicalDevice, unsigned long) const;
 

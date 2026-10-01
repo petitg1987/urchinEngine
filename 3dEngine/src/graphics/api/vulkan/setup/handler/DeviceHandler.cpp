@@ -165,12 +165,17 @@ namespace urchin {
         return bestPhysicalDevice->second.physicalDevice;
     }
 
-    //TODO ask AI if it's good or missing usage of INTEGRATED GPU
     PhysicalDeviceSuitability DeviceHandler::retrievePhysicalDeviceSuitability(VkPhysicalDevice physicalDeviceToCheck) {
         int score = 0;
 
         VkPhysicalDeviceProperties deviceProperties{};
         vkGetPhysicalDeviceProperties(physicalDeviceToCheck, &deviceProperties);
+
+        //check Vulkan version
+        if (deviceProperties.apiVersion < VK_API_VERSION_1_3) {
+            std::string deviceVersion = std::to_string(VK_API_VERSION_MAJOR(deviceProperties.apiVersion)) + "." + std::to_string(VK_API_VERSION_MINOR(deviceProperties.apiVersion));
+            return {physicalDeviceToCheck, "Vulkan 1.3 is not supported (device version: " + deviceVersion + ")"};
+        }
 
         //check expected features
         for (const auto& expectedFeature : physicalDeviceExpectedFeatures) {
@@ -225,10 +230,17 @@ namespace urchin {
             return {physicalDeviceToCheck, "minimum requirement for compute work group invocations is insufficient (" + valueOverMin + ")"};
         }
 
-        if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) { //discrete GPU have better performance
-            score += 10000;
+        //score based on GPU type
+        if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
+            score += 1'000'000;
+        } else if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU) {
+            score += 500'000;
+        } else if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU) {
+            score += 250'000;
         }
-        score += (int)deviceProperties.limits.maxImageDimension2D; //indicator of the device performance/quality
+
+        score += (int)std::min(deviceProperties.limits.maxImageDimension2D, MAX_IMAGE_DIMENSION_SCORE); //indicator of the device performance/quality
+
         return {physicalDeviceToCheck, std::string(deviceProperties.deviceName), score};
     }
 
