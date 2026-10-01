@@ -3,6 +3,7 @@
 #include "graphics/setup/FramebufferSizeRetriever.h"
 #include "graphics/setup/SurfaceCreator.h"
 #include "graphics/api/vulkan/MemoryUsage.h"
+#include "graphics/GpuType.h"
 
 namespace urchin {
 
@@ -16,6 +17,7 @@ namespace urchin {
 
             uint64_t getUsedMemory() const;
             uint64_t getTotalMemory() const;
+            GpuType getGpuType() const;
 
         private:
             MemoryUsage memoryUsage;

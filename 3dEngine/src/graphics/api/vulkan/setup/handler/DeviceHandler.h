@@ -4,6 +4,8 @@
 #include <string>
 #include <vulkan/vulkan.h>
 
+#include "graphics/GpuType.h"
+
 namespace urchin {
 
     struct PhysicalDeviceFeature {
@@ -35,6 +37,7 @@ namespace urchin {
 
             bool isAnisotropySupported() const;
             bool isMemoryBudgetExtSupported() const;
+            GpuType getGpuType() const;
 
         private:
             bool isFeature10Available(VkPhysicalDevice, unsigned long) const;

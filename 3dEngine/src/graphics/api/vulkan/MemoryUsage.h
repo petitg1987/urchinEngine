@@ -12,7 +12,8 @@ namespace urchin {
         public:
             MemoryUsage();
 
-            void onFrameStart();
+            void initialize();
+            void onFrameStart() const;
 
             void checkMemoryUsage() const;
 

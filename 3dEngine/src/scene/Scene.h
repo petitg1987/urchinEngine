@@ -6,6 +6,7 @@
 #include <UrchinCommon.h>
 #include "scene/renderer3d/Renderer3d.h"
 #include "scene/ui/UIRenderer.h"
+#include "graphics/GpuType.h"
 #include "graphics/api/GraphicsApi.h"
 
 namespace urchin {
@@ -40,6 +41,7 @@ namespace urchin {
 
             uint64_t getUsedVideoMemory() const;
             uint64_t getTotalVideoMemory() const;
+            GpuType getGpuType() const;
             void updateGammaFactor(float);
             void takeScreenShot(const std::string&, unsigned int = 0, unsigned int = 0) const;
 

@@ -10,11 +10,12 @@ namespace urchin {
         memProperties.memoryHeapCount = 0;
     }
 
-    void MemoryUsage::onFrameStart() {
-        if (memProperties.memoryHeapCount == 0) {
-            vkGetPhysicalDeviceMemoryProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &memProperties);
-        }
+    void MemoryUsage::initialize() {
+        vkGetPhysicalDeviceMemoryProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &memProperties);
+        onFrameStart();
+    }
 
+    void MemoryUsage::onFrameStart() const {
         if (GraphicsSetupService::instance().getDevices().isMemoryBudgetExtSupported()) {
             vmaGetHeapBudgets(GraphicsSetupService::instance().getAllocator(), budgets->data());
         }

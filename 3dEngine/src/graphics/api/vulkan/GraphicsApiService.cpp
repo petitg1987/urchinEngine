@@ -8,6 +8,7 @@ namespace urchin {
 
     GraphicsApiService::GraphicsApiService(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, FramebufferSizeRetriever& framebufferSizeRetriever) {
         GraphicsSetupService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), framebufferSizeRetriever);
+        memoryUsage.initialize();
     }
 
     GraphicsApiService::~GraphicsApiService() {
@@ -34,6 +35,10 @@ namespace urchin {
 
     uint64_t GraphicsApiService::getTotalMemory() const {
         return memoryUsage.getTotalMemory();
+    }
+
+    GpuType GraphicsApiService::getGpuType() const {
+        return GraphicsSetupService::instance().getDevices().getGpuType();
     }
 
 }

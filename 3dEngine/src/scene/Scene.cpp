@@ -213,6 +213,10 @@ namespace urchin {
         return graphicsApiService->getTotalMemory();
     }
 
+    GpuType Scene::getGpuType() const {
+        return graphicsApiService->getGpuType();
+    }
+
     void Scene::updateGammaFactor(float gammaFactor) {
         this->gammaFactor = gammaFactor;
 

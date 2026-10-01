@@ -109,6 +109,22 @@ namespace urchin {
         return itPhysicsDeviceOptionalExt != physicalDeviceOptionalExtensionsSupported.end() && std::ranges::find(itPhysicsDeviceOptionalExt->second, VK_EXT_MEMORY_BUDGET_EXTENSION_NAME) != itPhysicsDeviceOptionalExt->second.end();
     }
 
+    GpuType DeviceHandler::getGpuType() const {
+        assert(devicesInitialized);
+        VkPhysicalDeviceProperties deviceProperties;
+        vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
+        if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
+            return GpuType::DEDICATED;
+        } else if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU) {
+            return GpuType::INTEGRATED;
+        } else if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU) {
+            return GpuType::VIRTUAL;
+        } else if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_CPU) {
+            return GpuType::CPU;
+        }
+        return GpuType::OTHER;
+    }
+
     /**
      * Returns the most suitable physical device (=graphic card) to run the engine
      */
@@ -149,6 +165,7 @@ namespace urchin {
         return bestPhysicalDevice->second.physicalDevice;
     }
 
+    //TODO ask AI if it's good or missing usage of INTEGRATED GPU
     PhysicalDeviceSuitability DeviceHandler::retrievePhysicalDeviceSuitability(VkPhysicalDevice physicalDeviceToCheck) {
         int score = 0;
 
