@@ -149,6 +149,10 @@ namespace urchin {
         std::multimap<int, PhysicalDeviceSuitability> physicalDeviceCandidates;
         for (const auto& device : physicalDevices) {
             auto physicalDeviceSuitability = retrievePhysicalDeviceSuitability(device);
+
+            std::string deviceName = physicalDeviceSuitability.deviceName.has_value() ? physicalDeviceSuitability.deviceName.value() : "[UNKNOWN_NAME]";
+            Logger::instance().logInfo("Found physical device candidate named '" + deviceName + "' with a score of " + std::to_string(physicalDeviceSuitability.score));
+
             physicalDeviceCandidates.insert(std::make_pair(physicalDeviceSuitability.score, physicalDeviceSuitability));
         }
 
@@ -160,7 +164,7 @@ namespace urchin {
         }
 
         assert(bestPhysicalDevice->second.deviceName.has_value());
-        Logger::instance().logInfo("Physical device with a score of " + std::to_string(bestPhysicalDevice->second.score) + " found: " + bestPhysicalDevice->second.deviceName.value());
+        Logger::instance().logInfo("Physical device with a score of " + std::to_string(bestPhysicalDevice->second.score) + " selected: " + bestPhysicalDevice->second.deviceName.value());
 
         return bestPhysicalDevice->second.physicalDevice;
     }
