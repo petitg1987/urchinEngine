@@ -171,21 +171,33 @@ namespace urchin {
             }
             return DEFAULT;
         #else
-            const std::string LAYOUT_LABEL = "layout:";
-            std::string xKeyboardInfo = CommandExecutor::execute("setxkbmap -query"); //only work with X11
-            std::size_t layoutBeginLocation = xKeyboardInfo.find(LAYOUT_LABEL);
-            if (layoutBeginLocation != std::string::npos) {
-                layoutBeginLocation += LAYOUT_LABEL.size();
-                std::size_t layoutEndLocation = xKeyboardInfo.find('\n', layoutBeginLocation);
-                std::size_t searchLength = layoutEndLocation != std::string::npos ? (layoutEndLocation - layoutBeginLocation) : xKeyboardInfo.size() - layoutBeginLocation;
-                std::string layout = xKeyboardInfo.substr(layoutBeginLocation, searchLength);
-                StringUtil::trim(layout);
-                if (StringUtil::insensitiveStartWith(layout, "fr") || StringUtil::insensitiveStartWith(layout, "be")) {
-                    return AZERTY;
+            std::string layout;
+            bool isWayland = !getEnvVariable("WAYLAND_DISPLAY").empty() || getEnvVariable("XDG_SESSION_TYPE") == "wayland";
+            if (!isWayland) {
+                layout = extractPropertyValue(CommandExecutor::execute("setxkbmap -query 2>/dev/null"), "layout:");
+            } else {
+                layout = getEnvVariable("XKB_DEFAULT_LAYOUT");
+                if (layout.empty()) {
+                    layout = extractPropertyValue(CommandExecutor::execute("localectl status 2>/dev/null"), "X11 Layout:");
                 }
+            }
+            if (StringUtil::insensitiveStartWith(layout, "fr") || StringUtil::insensitiveStartWith(layout, "be")) {
+                return AZERTY;
             }
             return DEFAULT;
         #endif
+    }
+
+    std::string SystemInfo::extractPropertyValue(const std::string& text, const std::string& label) {
+        std::size_t valueBeginLocation = text.find(label);
+        if (valueBeginLocation == std::string::npos) {
+            return "";
+        }
+        valueBeginLocation += label.size();
+        std::size_t valueEndLocation = text.find_first_of(",\n", valueBeginLocation);
+        std::string value = text.substr(valueBeginLocation, (valueEndLocation == std::string::npos) ? std::string::npos : valueEndLocation - valueBeginLocation);
+        StringUtil::trim(value);
+        return value;
     }
 
     std::string SystemInfo::userLanguage() {

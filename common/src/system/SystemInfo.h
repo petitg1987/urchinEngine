@@ -29,6 +29,7 @@ namespace urchin {
 
         private:
             static std::string getEnvVariable(const std::string&);
+            static std::string extractPropertyValue(const std::string&, const std::string&);
     };
 
 }
