@@ -1,8 +1,8 @@
 #include <vector>
 #include <cassert>
 #include <stdexcept>
+#include <vulkan/vk_enum_string_helper.h>
 
-#include "libs/vkenum/vk_enum.h"
 #include "graphics/api/vulkan/setup/handler/QueueHandler.h"
 
 namespace urchin {

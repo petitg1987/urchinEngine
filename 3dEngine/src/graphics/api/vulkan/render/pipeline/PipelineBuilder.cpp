@@ -1,6 +1,6 @@
 #include <ranges>
+#include <vulkan/vk_enum_string_helper.h>
 
-#include "libs/vkenum/vk_enum.h"
 #include "graphics/api/vulkan/render/pipeline/PipelineBuilder.h"
 #include "graphics/api/vulkan/render/pipeline/PipelineContainer.h"
 #include "graphics/api/vulkan/helper/DebugLabelHelper.h"

@@ -2,10 +2,17 @@
 ## Linux
 * Install required libraries:
   ```
-  wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
-  sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-noble.list http://packages.lunarg.com/vulkan/lunarg-vulkan-noble.list
-  sudo apt install vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools vulkan-sdk
-  sudo apt install qtbase5-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev libbrotli-dev
+  cd /home/greg/ && wget https://sdk.lunarg.com/sdk/download/1.4.363.0/linux/vulkansdk-linux-x86_64-1.4.363.0.tar.xz
+  tar -xJf vulkansdk-linux-x86_64-1.4.363.0.tar.xz
+  sudo mv ./1.4.363.0 /opt/vulkan-sdk
+  rm vulkansdk-linux-x86_64-1.4.363.0.tar.xz
+  echo 'export VULKAN_SDK=/opt/vulkan-sdk/x86_64' >> ~/.bashrc
+  echo 'export PATH=$VULKAN_SDK/bin:$PATH' >> ~/.bashrc
+  source ~/.bashrc
+  sudo ln -s /opt/vulkan-sdk/x86_64/bin/glslc /usr/local/bin/glslc #for Clion which do not read ~/.bashrc
+  sudo apt install vulkan-tools
+
+  sudo apt install qtbase5-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev libbrotli-dev libjitterentropy3-dev
   ```
 
 ## Windows

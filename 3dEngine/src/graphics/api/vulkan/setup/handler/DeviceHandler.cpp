@@ -2,8 +2,8 @@
 #include <cassert>
 #include <ranges>
 #include <UrchinCommon.h>
+#include <vulkan/vk_enum_string_helper.h>
 
-#include "libs/vkenum/vk_enum.h"
 #include "graphics/api/vulkan/setup/handler/DeviceHandler.h"
 #include "graphics/api/vulkan/setup/handler/QueueHandler.h"
 #include "graphics/api/vulkan/render/handler/SwapChainHandler.h"

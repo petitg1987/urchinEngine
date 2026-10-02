@@ -13,7 +13,7 @@ else()
     include(deps/curl/curl-static.cmake) #only used on Linux because build is too slow on Windows
 
     set(LINK_OPT -Wl,--export-dynamic) #necessary for SignalHandler to work correctly
-    set(CURL_LIB curl.a ssl.a crypto.a brotlidec.a brotlicommon.a z.a nghttp2.a)
+    set(CURL_LIB curl.a ssl.a crypto.a brotlidec.a brotlicommon.a z.a nghttp2.a zstd.a jitterentropy.a)
 endif()
 
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wimplicit-fallthrough -Wnon-virtual-dtor -Woverloaded-virtual -Wextra-semi -Werror -DCURL_STATICLIB)
