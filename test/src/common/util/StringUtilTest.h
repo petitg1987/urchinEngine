@@ -14,6 +14,8 @@ class StringUtilTest final : public CppUnit::TestFixture {
         void splitEmptyStringByString();
         void joinString();
 
+        void insensitiveStartWith();
+
         void camelToKebabCase();
         void kebabToCamelCase();
 

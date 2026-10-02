@@ -180,7 +180,7 @@ namespace urchin {
                 std::size_t searchLength = layoutEndLocation != std::string::npos ? (layoutEndLocation - layoutBeginLocation) : xKeyboardInfo.size() - layoutBeginLocation;
                 std::string layout = xKeyboardInfo.substr(layoutBeginLocation, searchLength);
                 StringUtil::trim(layout);
-                if (StringUtil::insensitiveEquals(layout, "fr") || StringUtil::insensitiveEquals(layout, "be")) {
+                if (StringUtil::insensitiveStartWith(layout, "fr") || StringUtil::insensitiveStartWith(layout, "be")) {
                     return AZERTY;
                 }
             }

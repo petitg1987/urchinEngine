@@ -138,6 +138,13 @@ namespace urchin {
         return true;
     }
 
+    bool StringUtil::insensitiveStartWith(std::string_view str, std::string_view prefix) {
+        if (prefix.size() > str.size()) {
+            return false;
+        }
+        return insensitiveEquals(str.substr(0, prefix.size()), prefix);
+    }
+
     std::string StringUtil::camelToPascalCase(const std::string& camelCaseStr) {
         //myText > MyText
         std::string pascalCaseStr = camelCaseStr;

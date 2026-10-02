@@ -27,6 +27,7 @@ namespace urchin {
             static void trim(std::string&);
 
             static bool insensitiveEquals(std::string_view, std::string_view);
+            static bool insensitiveStartWith(std::string_view, std::string_view);
 
             [[nodiscard]] static std::string camelToPascalCase(const std::string&);
             [[nodiscard]] static std::string pascalToCamelCase(const std::string&);

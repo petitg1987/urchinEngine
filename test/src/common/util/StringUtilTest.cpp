@@ -68,6 +68,16 @@ void StringUtilTest::joinString() {
     AssertHelper::assertStringEquals(joined, "str1,,str2");
 }
 
+void StringUtilTest::insensitiveStartWith() {
+    AssertHelper::assertTrue(StringUtil::insensitiveStartWith("Hello World", "hELLO"));
+    AssertHelper::assertTrue(StringUtil::insensitiveStartWith("Hello", "HELLO"));
+    AssertHelper::assertTrue(StringUtil::insensitiveStartWith("Hello", ""));
+    AssertHelper::assertTrue(StringUtil::insensitiveStartWith("", ""));
+    AssertHelper::assertFalse(StringUtil::insensitiveStartWith("Hello World", "world"));
+    AssertHelper::assertFalse(StringUtil::insensitiveStartWith("Hello", "Hello!"));
+    AssertHelper::assertFalse(StringUtil::insensitiveStartWith("", "a"));
+}
+
 void StringUtilTest::camelToKebabCase() {
     std::string kebabCaseStr = StringUtil::camelToKebabCase("myCamelCaseBBC");
 
@@ -130,6 +140,8 @@ CppUnit::Test* StringUtilTest::suite() {
     suite->addTest(new CppUnit::TestCaller("splitUniqueStringByString", &StringUtilTest::splitUniqueStringByString));
     suite->addTest(new CppUnit::TestCaller("splitEmptyStringByString", &StringUtilTest::splitEmptyStringByString));
     suite->addTest(new CppUnit::TestCaller("joinString", &StringUtilTest::joinString));
+
+    suite->addTest(new CppUnit::TestCaller("insensitiveStartWith", &StringUtilTest::insensitiveStartWith));
 
     suite->addTest(new CppUnit::TestCaller("camelToKebabCase", &StringUtilTest::camelToKebabCase));
     suite->addTest(new CppUnit::TestCaller("kebabToCamelCase", &StringUtilTest::kebabToCamelCase));
