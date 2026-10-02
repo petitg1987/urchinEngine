@@ -12,7 +12,7 @@
   sudo ln -s /opt/vulkan-sdk/x86_64/bin/glslc /usr/local/bin/glslc #for Clion which do not read ~/.bashrc
   sudo apt install vulkan-tools
 
-  sudo apt install qtbase5-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev libbrotli-dev libjitterentropy3-dev
+  sudo apt install libfreetype-dev qtbase5-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev libjitterentropy3-dev
   ```
 
 ## Windows
@@ -53,7 +53,7 @@
   rm /tmp/curl/ -rf && mkdir -p /tmp/curl/ && cd /tmp/curl/
   wget -P /tmp/curl/ https://curl.haxx.se/download/curl-8.11.0.zip
   unzip curl-8.11.0.zip && cd /tmp/curl/curl-8.11.0
-  ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-hsts --disable-alt-svc --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn2 --without-libpsl --with-ssl --with-nghttp2
+  ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-hsts --disable-alt-svc --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn2 --without-libpsl --without-brotli --without-zstd --without-zlib --with-ssl --with-nghttp2
   make V=1
   make install #create library in /usr/local/lib/libcurl.a
   mv /clang64/lib/libcurl.a /clang64/lib/libcurl.a_backup
