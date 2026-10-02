@@ -41,7 +41,7 @@ endforeach()
 add_custom_target(urchinShader ALL DEPENDS "${compiledShaderNames}")
 
 if (WIN32)
-    set(FREETYPE_LIB freetype.a bz2.a)
+    set(FREETYPE_LIB freetype.a bz2.a brotlidec.a brotlicommon.a)
     SET(VULKAN_LIB vulkan-1)
 else()
     set(LINK_OPT -Wl,--export-dynamic) #necessary for SignalHandler to work correctly
