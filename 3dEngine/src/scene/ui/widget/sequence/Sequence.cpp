@@ -56,17 +56,18 @@ namespace urchin {
         std::string rightButtonString = rightButtonTextChunk->getStringValue();
 
         //buttons
-        leftButton = Text::create(this, Position(-1.0f, -1.0f, PIXEL, getPosition().getRelativeTo(), getPosition().getReferencePoint()), buttonsTextSkin, leftButtonString);
+        leftButton = Container::create(this, Position(0.0f, 0.0f, PIXEL), Size(0.0f, getHeight(), PIXEL));
+        auto leftButtonText = Text::create(leftButton.get(), Position(0.0f, 0.0f, PIXEL), buttonsTextSkin, leftButtonString);
+        leftButtonText->updatePosition(Position(0.0f, (getHeight() - leftButtonText->getHeight()) / 2.0f, PIXEL));
+        leftButton->updateSize(Size(leftButtonText->getWidth(), getHeight(), PIXEL));
         setupLeftButtonListeners();
-        float leftButtonXPos = 0.0f;
-        float leftButtonYPos = (getHeight() - leftButton->getHeight()) / 2.0f;
-        leftButton->updatePosition(Position(leftButtonXPos, leftButtonYPos, PIXEL));
 
-        rightButton = Text::create(this, Position(-1.0f, -1.0f, PIXEL), buttonsTextSkin, rightButtonString);
+        rightButton = Container::create(this, Position(0.0f, 0.0f, PIXEL), Size(0.0f, getHeight(), PIXEL));
+        auto rightButtonText = Text::create(rightButton.get(), Position(0.0f, 0.0f, PIXEL), buttonsTextSkin, rightButtonString);
+        rightButtonText->updatePosition(Position(0.0f, (getHeight() - rightButtonText->getHeight()) / 2.0f, PIXEL));
+        rightButton->updateSize(Size(rightButtonText->getWidth(), getHeight(), PIXEL));
+        rightButton->updatePosition(Position(getWidth() - rightButtonText->getWidth(), 0.0f, PIXEL));
         setupRightButtonListeners();
-        float rightButtonXPos = getWidth() - rightButton->getWidth();
-        float rightButtonYPos = (getHeight() - rightButton->getHeight()) / 2.0f;
-        rightButton->updatePosition(Position(rightButtonXPos, rightButtonYPos, PIXEL));
 
         //values
         valuesText.resize(values.size(), std::shared_ptr<Text>(nullptr));
@@ -147,7 +148,7 @@ namespace urchin {
         return true;
     }
 
-    bool Sequence::triggerButton(Text& button) const {
+    bool Sequence::triggerButton(Widget& button) const {
         bool propagateEvent = true;
         for (const auto& eventListener : button.getEventListeners()) {
             propagateEvent &= eventListener->onMouseLeftClickRelease(&button);

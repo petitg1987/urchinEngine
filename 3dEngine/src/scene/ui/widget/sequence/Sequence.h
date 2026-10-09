@@ -8,6 +8,7 @@
 #include "scene/ui/widget/Position.h"
 #include "scene/ui/widget/Size.h"
 #include "scene/ui/widget/text/Text.h"
+#include "scene/ui/widget/container/Container.h"
 #include "scene/ui/EventListener.h"
 namespace urchin {
 
@@ -34,7 +35,7 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
             bool onKeyPressEvent(InputKey) override;
-            bool triggerButton(Text&) const;
+            bool triggerButton(Widget&) const;
 
             void setupLeftButtonListeners();
             void setupRightButtonListeners();
@@ -58,8 +59,8 @@ namespace urchin {
             };
 
             //visual
-            std::shared_ptr<Text> leftButton;
-            std::shared_ptr<Text> rightButton;
+            std::shared_ptr<Container> leftButton;
+            std::shared_ptr<Container> rightButton;
             std::vector<std::shared_ptr<Text>> valuesText;
     };
 
