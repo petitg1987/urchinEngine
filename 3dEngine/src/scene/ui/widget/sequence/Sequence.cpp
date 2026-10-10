@@ -101,8 +101,8 @@ namespace urchin {
 
     void Sequence::moveProgressCursor() const {
         if (progressCursorImage) {
-            float cursorXPos = progressLineImage->getPositionX() + (float)selectedIndex * progressCursorImage->getWidth();
-            progressCursorImage->updatePosition(Position(cursorXPos, progressLineImage->getPositionY(), PIXEL, PARENT_LEFT_BOTTOM)); //TODO review: not neought precise
+            float cursorXPos = progressLineImage->getPositionX() + (float)selectedIndex * (progressLineImage->getWidth() / (float)values.size());
+            progressCursorImage->updatePosition(Position(cursorXPos, progressLineImage->getPositionY(), PIXEL, PARENT_LEFT_BOTTOM));
         }
     }
 
