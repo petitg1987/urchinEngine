@@ -9,6 +9,7 @@
 #include "scene/ui/widget/Size.h"
 #include "scene/ui/widget/text/Text.h"
 #include "scene/ui/widget/container/Container.h"
+#include "scene/ui/widget/staticbitmap/StaticBitmap.h"
 #include "scene/ui/EventListener.h"
 namespace urchin {
 
@@ -37,8 +38,14 @@ namespace urchin {
             bool onKeyPressEvent(InputKey) override;
             bool triggerButton(Widget&) const;
 
+            void moveProgressCursor() const;
+
             void setupLeftButtonListeners();
             void setupRightButtonListeners();
+
+            static constexpr float PROGRESS_BAR_SHIFT_TOP_PERC = 0.15f;
+            static constexpr float PROGRESS_BAR_SHIFT_LEFT_PERC = 0.10f;
+            static constexpr float PROGRESS_BAR_HEIGHT_RATIO = 0.04f;
 
             //display information
             const std::string skinName;
@@ -62,6 +69,8 @@ namespace urchin {
             std::shared_ptr<Container> leftButton;
             std::shared_ptr<Container> rightButton;
             std::vector<std::shared_ptr<Text>> valuesText;
+            std::shared_ptr<StaticBitmap> progressLineImage;
+            std::shared_ptr<StaticBitmap> progressCursorImage;
     };
 
 }

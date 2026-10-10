@@ -1,4 +1,6 @@
 #include <stdexcept>
+#include <algorithm>
+#include <cmath>
 #include <utility>
 
 #include "scene/ui/widget/sequence/Sequence.h"
@@ -39,6 +41,8 @@ namespace urchin {
         }
         detachChild(rightButton.get());
         detachChild(leftButton.get());
+        detachChild(progressLineImage.get());
+        detachChild(progressCursorImage.get());
 
         //skin information
         auto sequenceChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "sequence", UdaAttribute("skin", skinName));
@@ -76,6 +80,30 @@ namespace urchin {
             valuesText[i]->setIsVisible(false);
         }
         valuesText[selectedIndex]->setIsVisible(true);
+
+        //progress bar
+        auto progressBarChunk = UISkinService::instance().getSkinReader().getFirstChunk(false, "progressBar", UdaAttribute(), sequenceChunk);
+        if (progressBarChunk) {
+            auto imageLineChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "imageLine", UdaAttribute(), progressBarChunk);
+            auto imageCursorChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "imageCursor", UdaAttribute(), progressBarChunk);
+
+            float progressBarPosXStart = leftButton->getWidth() + getWidth() * PROGRESS_BAR_SHIFT_LEFT_PERC;
+            float progressBarPosYStart = -getHeight() * PROGRESS_BAR_SHIFT_TOP_PERC;
+            float progressBarWidth = getWidth() - 2.0f * progressBarPosXStart;
+            float progressBarHeight = std::max(1.0f, std::round(PROGRESS_BAR_HEIGHT_RATIO * getHeight()));
+            progressLineImage = StaticBitmap::create(this, Position(progressBarPosXStart, progressBarPosYStart, PIXEL, PARENT_LEFT_BOTTOM),
+                Size(progressBarWidth, progressBarHeight, PIXEL), imageLineChunk->getStringValue());
+            progressCursorImage = StaticBitmap::create(this, Position(progressBarPosXStart, progressBarPosYStart, PIXEL, PARENT_LEFT_BOTTOM),
+                Size(progressBarWidth / (float)values.size(), progressBarHeight, PIXEL), imageCursorChunk->getStringValue());
+            moveProgressCursor();
+        }
+    }
+
+    void Sequence::moveProgressCursor() const {
+        if (progressCursorImage) {
+            float cursorXPos = progressLineImage->getPositionX() + (float)selectedIndex * progressCursorImage->getWidth();
+            progressCursorImage->updatePosition(Position(cursorXPos, progressLineImage->getPositionY(), PIXEL, PARENT_LEFT_BOTTOM)); //TODO review: not neought precise
+        }
     }
 
     WidgetType Sequence::getWidgetType() const {
@@ -105,6 +133,7 @@ namespace urchin {
         }
 
         this->selectedIndex = index;
+        moveProgressCursor();
     }
 
     void Sequence::setLeftButtonEventListener(std::shared_ptr<EventListener> leftButtonEventListener) {
@@ -198,6 +227,7 @@ namespace urchin {
         }
 
         if (oldSelectedIndex != sequence->selectedIndex) {
+            sequence->moveProgressCursor();
             for (auto& eventListener : sequence->getEventListeners()) {
                 eventListener->onValueChange(sequence);
             }
