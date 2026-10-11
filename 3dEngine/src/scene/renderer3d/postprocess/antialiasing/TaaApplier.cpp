@@ -168,7 +168,7 @@ namespace urchin {
     void TaaApplier::updateQuality(AntiAliasingQuality quality) {
         this->quality = quality;
 
-        if (isEnabled) {
+        if (isEnabled && resolveRenderTarget) {
             createOrUpdateResolveRenderer();
         }
     }

@@ -82,9 +82,15 @@ namespace urchin {
     void FxaaApplier::createOrUpdateFxaaShader() {
         AntiAliasingShaderConst antiAliasingShaderConst = {};
         if (quality == AntiAliasingQuality::MEDIUM) {
-            antiAliasingShaderConst = {8, 1.0f, 1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 8.0f, -1.0f, -1.0f, -1.0f, -1.0f};
+            antiAliasingShaderConst = {
+                .qualityPs = 8, .qualityP0 = 1.0f, .qualityP1 = 1.5f, .qualityP2 = 2.0f, .qualityP3 = 2.0f, .qualityP4 = 2.0f, .qualityP5 = 2.0f,
+                .qualityP6 = 4.0f, .qualityP7 = 8.0f, .qualityP8 = -1.0f, .qualityP9 = -1.0f, .qualityP10 = -1.0f, .qualityP11 = -1.0f
+            };
         } else if (quality == AntiAliasingQuality::HIGH) {
-            antiAliasingShaderConst = {12, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 8.0f};
+            antiAliasingShaderConst = {
+                .qualityPs = 12, .qualityP0 = 1.0f, .qualityP1 = 1.0f, .qualityP2 = 1.0f, .qualityP3 = 1.0f, .qualityP4 = 1.0f, .qualityP5 = 1.5f,
+                .qualityP6 = 2.0f, .qualityP7 = 2.0f, .qualityP8 = 2.0f, .qualityP9 = 2.0f, .qualityP10 = 4.0f, .qualityP11 = 8.0f
+            };
         }
 
         std::vector variablesSize = {
@@ -109,7 +115,7 @@ namespace urchin {
     void FxaaApplier::updateQuality(AntiAliasingQuality quality) {
         this->quality = quality;
 
-        if (isEnabled) {
+        if (isEnabled && renderTarget) {
             createOrUpdateRenderer();
         }
     }
