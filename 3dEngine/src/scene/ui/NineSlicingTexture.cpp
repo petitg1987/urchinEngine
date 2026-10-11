@@ -6,10 +6,6 @@
 #include "resources/ResourceRetriever.h"
 
 namespace urchin {
-//TODO GPE review:
-    std::shared_ptr<Texture> NineSlicingTexture::build(const std::shared_ptr<Image>& rawImage, unsigned int width, unsigned int height, const Outline& outline) const {
-        return build(rawImage, width, height, outline, outline);
-    }
 
     std::shared_ptr<Texture> NineSlicingTexture::build(const std::shared_ptr<Image>& rawImage, unsigned int width, unsigned int height, const Outline& sourceOutline, const Outline& targetOutline) const {
         if (width < targetOutline.leftPixel + targetOutline.rightPixel) {
@@ -31,6 +27,7 @@ namespace urchin {
             throw std::runtime_error("Nine slicing source image height (" + std::to_string(rawHeight) + ") must be greater than top + bottom outline width (" + std::to_string(sourceOutline.topPixel + sourceOutline.bottomPixel) + ") for image: " + rawImage->getName());
         }
 
+        //TODO GPE review:
         //for each target column/row: source columns/rows with their weight (outlines are scaled, middle parts are repeated)
         std::vector<std::vector<SourceTexelWeight>> columnsMapping = computeAxisMapping(width, rawWidth, sourceOutline.leftPixel, sourceOutline.rightPixel, targetOutline.leftPixel, targetOutline.rightPixel);
         std::vector<std::vector<SourceTexelWeight>> rowsMapping = computeAxisMapping(height, rawHeight, sourceOutline.topPixel, sourceOutline.bottomPixel, targetOutline.topPixel, targetOutline.bottomPixel);

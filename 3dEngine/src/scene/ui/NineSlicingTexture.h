@@ -11,7 +11,6 @@ namespace urchin {
 
     class NineSlicingTexture {
         public:
-            std::shared_ptr<Texture> build(const std::shared_ptr<Image>&, unsigned int, unsigned int, const Outline&) const;
             std::shared_ptr<Texture> build(const std::shared_ptr<Image>&, unsigned int, unsigned int, const Outline&, const Outline&) const;
 
         private:
