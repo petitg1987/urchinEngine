@@ -14,9 +14,13 @@ namespace urchin {
     std::shared_ptr<Texture> NineSlicingTexture::build(const std::shared_ptr<Image>& rawImage, unsigned int width, unsigned int height, const Outline& sourceOutline, const Outline& targetOutline) const {
         if (width < targetOutline.leftPixel + targetOutline.rightPixel) {
             throw std::runtime_error("Nine slicing texture width (" + std::to_string(width) + ") is smaller than left + right outline width (" + std::to_string(targetOutline.leftPixel + targetOutline.rightPixel) + ") for image: " + rawImage->getName());
-        }
-        if (height < targetOutline.topPixel + targetOutline.bottomPixel) {
+        } else if (height < targetOutline.topPixel + targetOutline.bottomPixel) {
             throw std::runtime_error("Nine slicing texture height (" + std::to_string(height) + ") is smaller than top + bottom outline width (" + std::to_string(targetOutline.topPixel + targetOutline.bottomPixel) + ") for image: " + rawImage->getName());
+        } else if ((sourceOutline.leftPixel == 0 && targetOutline.leftPixel != 0) ||
+                (sourceOutline.rightPixel == 0 && targetOutline.rightPixel != 0) ||
+                (sourceOutline.topPixel == 0 && targetOutline.topPixel != 0) ||
+                (sourceOutline.bottomPixel == 0 && targetOutline.bottomPixel != 0)) {
+            throw std::runtime_error("Nine slicing target outline cannot be defined where the source outline is zero for image: " + rawImage->getName());
         }
 
         unsigned int componentsCount = rawImage->retrieveComponentsCount();
@@ -25,13 +29,8 @@ namespace urchin {
         unsigned int rawHeight = rawImage->getHeight();
         if (rawWidth <= sourceOutline.leftPixel + sourceOutline.rightPixel) {
             throw std::runtime_error("Nine slicing source image width (" + std::to_string(rawWidth) + ") must be greater than left + right outline width (" + std::to_string(sourceOutline.leftPixel + sourceOutline.rightPixel) + ") for image: " + rawImage->getName());
-        }
-        if (rawHeight <= sourceOutline.topPixel + sourceOutline.bottomPixel) {
+        } else if (rawHeight <= sourceOutline.topPixel + sourceOutline.bottomPixel) {
             throw std::runtime_error("Nine slicing source image height (" + std::to_string(rawHeight) + ") must be greater than top + bottom outline width (" + std::to_string(sourceOutline.topPixel + sourceOutline.bottomPixel) + ") for image: " + rawImage->getName());
-        }
-        if ((sourceOutline.leftPixel == 0 && targetOutline.leftPixel != 0) || (sourceOutline.rightPixel == 0 && targetOutline.rightPixel != 0)
-                || (sourceOutline.topPixel == 0 && targetOutline.topPixel != 0) || (sourceOutline.bottomPixel == 0 && targetOutline.bottomPixel != 0)) {
-            throw std::runtime_error("Nine slicing target outline cannot be defined where the source outline is zero for image: " + rawImage->getName());
         }
 
         //for each target column/row: source columns/rows with their weight (outlines are scaled, middle parts are repeated)
