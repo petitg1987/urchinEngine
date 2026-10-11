@@ -27,10 +27,10 @@ namespace urchin {
             throw std::runtime_error("Nine slicing source image height (" + std::to_string(rawHeight) + ") must be greater than top + bottom outline width (" + std::to_string(sourceOutline.topPixel + sourceOutline.bottomPixel) + ") for image: " + rawImage->getName());
         }
 
-        //TODO GPE review:
-        //for each target column/row: source columns/rows with their weight (outlines are scaled, middle parts are repeated)
-        std::vector<std::vector<SourceTexelWeight>> columnsMapping = computeAxisMapping(width, rawWidth, sourceOutline.leftPixel, sourceOutline.rightPixel, targetOutline.leftPixel, targetOutline.rightPixel);
-        std::vector<std::vector<SourceTexelWeight>> rowsMapping = computeAxisMapping(height, rawHeight, sourceOutline.topPixel, sourceOutline.bottomPixel, targetOutline.topPixel, targetOutline.bottomPixel);
+        std::vector<std::vector<SourceTexelWeight>> columnsMapping = computeAxisMapping(width, rawWidth,
+            sourceOutline.leftPixel, sourceOutline.rightPixel, targetOutline.leftPixel, targetOutline.rightPixel);
+        std::vector<std::vector<SourceTexelWeight>> rowsMapping = computeAxisMapping(height, rawHeight,
+            sourceOutline.topPixel, sourceOutline.bottomPixel, targetOutline.topPixel, targetOutline.bottomPixel);
 
         unsigned int componentsCount = rawImage->retrieveComponentsCount();
         const std::vector<unsigned char>& rawTexels = rawImage->getTexels();
@@ -56,7 +56,6 @@ namespace urchin {
             }
         }
 
-        //create the texture
         return Texture::build("9-slicing widget", width, height, rawImage->retrieveTextureFormat(), texels.data(), rawImage->getTransparencyData(), TextureDataType::INT_8);
     }
 
@@ -79,9 +78,6 @@ namespace urchin {
         return axisMapping;
     }
 
-    /**
-     * Box filter: the target texel is the weighted average of the source texels it covers
-     */
     void NineSlicingTexture::addScaledMapping(std::vector<SourceTexelWeight>& texelMapping, unsigned int targetIndex, unsigned int sourceStart, unsigned int sourceSize, unsigned int targetSize) {
         float ratio = (float)sourceSize / (float)targetSize;
         float begin = (float)targetIndex * ratio;
