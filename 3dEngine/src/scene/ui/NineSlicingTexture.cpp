@@ -23,8 +23,6 @@ namespace urchin {
             throw std::runtime_error("Nine slicing target outline cannot be defined where the source outline is zero for image: " + rawImage->getName());
         }
 
-        unsigned int componentsCount = rawImage->retrieveComponentsCount();
-        const std::vector<unsigned char>& rawTexels = rawImage->getTexels();
         unsigned int rawWidth = rawImage->getWidth();
         unsigned int rawHeight = rawImage->getHeight();
         if (rawWidth <= sourceOutline.leftPixel + sourceOutline.rightPixel) {
@@ -37,6 +35,8 @@ namespace urchin {
         std::vector<std::vector<SourceTexelWeight>> columnsMapping = computeAxisMapping(width, rawWidth, sourceOutline.leftPixel, sourceOutline.rightPixel, targetOutline.leftPixel, targetOutline.rightPixel);
         std::vector<std::vector<SourceTexelWeight>> rowsMapping = computeAxisMapping(height, rawHeight, sourceOutline.topPixel, sourceOutline.bottomPixel, targetOutline.topPixel, targetOutline.bottomPixel);
 
+        unsigned int componentsCount = rawImage->retrieveComponentsCount();
+        const std::vector<unsigned char>& rawTexels = rawImage->getTexels();
         std::vector<unsigned char> texels(height * width * componentsCount, 0);
         std::vector<float> texelComponents(componentsCount);
         for (unsigned int y = 0; y < height; ++y) {
