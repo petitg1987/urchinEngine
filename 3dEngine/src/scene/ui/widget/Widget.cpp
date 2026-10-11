@@ -310,19 +310,19 @@ namespace urchin {
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_LEFT_TOP || position.getRelativeTo() == PARENT_CONTENT_LEFT_BOTTOM || position.getRelativeTo() == PARENT_CONTENT_LEFT_CENTERY) {
             if (parent) {
-                startPosition = (float)parent->getGlobalPositionX() + (float)parent->getPadding().leftWidth;
+                startPosition = (float)parent->getGlobalPositionX() + (float)parent->getPadding().leftPixel;
             } else {
                 startPosition = 0.0f;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_RIGHT_TOP || position.getRelativeTo() == PARENT_CONTENT_RIGHT_BOTTOM || position.getRelativeTo() == PARENT_CONTENT_RIGHT_CENTERY) {
             if (parent) {
-                startPosition = (float)parent->getGlobalPositionX() + parent->getWidth() - (float)parent->getPadding().rightWidth;
+                startPosition = (float)parent->getGlobalPositionX() + parent->getWidth() - (float)parent->getPadding().rightPixel;
             } else {
                 startPosition = (float)getSceneSize().X;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_CENTER_XY || position.getRelativeTo() == PARENT_CONTENT_CENTERX_TOP || position.getRelativeTo() == PARENT_CONTENT_CENTERX_BOTTOM) {
             if (parent) {
-                startPosition = (float)parent->getGlobalPositionX() + (float)parent->getPadding().leftWidth + parent->getWidthMinusPadding() / 2.0f;
+                startPosition = (float)parent->getGlobalPositionX() + (float)parent->getPadding().leftPixel + parent->getWidthMinusPadding() / 2.0f;
             } else {
                 startPosition = (float)getSceneSize().X / 2.0f;
             }
@@ -359,19 +359,19 @@ namespace urchin {
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_LEFT_TOP || position.getRelativeTo() == PARENT_CONTENT_RIGHT_TOP || position.getRelativeTo() == PARENT_CONTENT_CENTERX_TOP) {
             if (parent) {
-                startPosition = (float)parent->getGlobalPositionY() + (float)parent->getPadding().topWidth;
+                startPosition = (float)parent->getGlobalPositionY() + (float)parent->getPadding().topPixel;
             } else {
                 startPosition = 0.0f;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_LEFT_BOTTOM || position.getRelativeTo() == PARENT_CONTENT_RIGHT_BOTTOM || position.getRelativeTo() == PARENT_CONTENT_CENTERX_BOTTOM) {
             if (parent) {
-                startPosition = (float)parent->getGlobalPositionY() + parent->getHeight() - (float)parent->getPadding().bottomWidth;
+                startPosition = (float)parent->getGlobalPositionY() + parent->getHeight() - (float)parent->getPadding().bottomPixel;
             } else {
                 startPosition = (float)getSceneSize().Y;
             }
         } else if (position.getRelativeTo() == PARENT_CONTENT_CENTER_XY || position.getRelativeTo() == PARENT_CONTENT_LEFT_CENTERY || position.getRelativeTo() == PARENT_CONTENT_RIGHT_CENTERY) {
             if (parent) {
-                startPosition = (float)parent->getGlobalPositionY() + (float)parent->getPadding().topWidth + parent->getHeightMinusPadding() / 2.0f;
+                startPosition = (float)parent->getGlobalPositionY() + (float)parent->getPadding().topPixel + parent->getHeightMinusPadding() / 2.0f;
             } else {
                 startPosition = (float)getSceneSize().Y / 2.0f;
             }
@@ -417,7 +417,7 @@ namespace urchin {
     }
 
     float Widget::getWidthMinusPadding() const {
-        return getWidth() - (float)getPadding().leftWidth - (float)getPadding().rightWidth;
+        return getWidth() - (float)getPadding().leftPixel - (float)getPadding().rightPixel;
     }
 
     float Widget::getHeight() const {
@@ -425,7 +425,7 @@ namespace urchin {
     }
 
     float Widget::getHeightMinusPadding() const {
-        return getHeight() - (float)getPadding().topWidth - (float)getPadding().bottomWidth;
+        return getHeight() - (float)getPadding().topPixel - (float)getPadding().bottomPixel;
     }
 
     Rectangle2D<int> Widget::widgetRectangle() const {

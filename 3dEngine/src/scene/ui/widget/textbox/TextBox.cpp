@@ -48,7 +48,7 @@ namespace urchin {
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, PIXEL, PARENT_CONTENT_LEFT_CENTERY, LEFT_CENTERY), textSkinChunk->getStringValue(), "");
-        maxWidthText = (unsigned int)((int)getWidth() - ((int)getPadding().leftWidth + (int)getPadding().rightWidth + (int)TextFieldConst::CURSOR_WIDTH_PIXEL));
+        maxWidthText = (unsigned int)((int)getWidth() - ((int)getPadding().leftPixel + (int)getPadding().rightPixel + (int)TextFieldConst::CURSOR_WIDTH_PIXEL));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};

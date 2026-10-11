@@ -86,7 +86,7 @@ namespace urchin {
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textareaChunk);
         text = Text::create(textContainer.get(), Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), "");
-        float maxWidthText = getWidth() - (float)(getPadding().leftWidth + getPadding().rightWidth) - scrollbarWidthInPixel;
+        float maxWidthText = getWidth() - (float)(getPadding().leftPixel + getPadding().rightPixel) - scrollbarWidthInPixel;
         text->setMaxWidth(maxWidthText, PIXEL);
 
         Vector3<float> fontColor = text->getFont().getFontColor();

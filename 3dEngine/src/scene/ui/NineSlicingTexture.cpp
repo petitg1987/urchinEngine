@@ -12,31 +12,31 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> NineSlicingTexture::build(const std::shared_ptr<Image>& rawImage, unsigned int width, unsigned int height, const Outline& sourceOutline, const Outline& targetOutline) const {
-        if (width < targetOutline.leftWidth + targetOutline.rightWidth) {
-            throw std::runtime_error("Nine slicing texture width (" + std::to_string(width) + ") is smaller than left + right outline width (" + std::to_string(targetOutline.leftWidth + targetOutline.rightWidth) + ") for image: " + rawImage->getName());
+        if (width < targetOutline.leftPixel + targetOutline.rightPixel) {
+            throw std::runtime_error("Nine slicing texture width (" + std::to_string(width) + ") is smaller than left + right outline width (" + std::to_string(targetOutline.leftPixel + targetOutline.rightPixel) + ") for image: " + rawImage->getName());
         }
-        if (height < targetOutline.topWidth + targetOutline.bottomWidth) {
-            throw std::runtime_error("Nine slicing texture height (" + std::to_string(height) + ") is smaller than top + bottom outline width (" + std::to_string(targetOutline.topWidth + targetOutline.bottomWidth) + ") for image: " + rawImage->getName());
+        if (height < targetOutline.topPixel + targetOutline.bottomPixel) {
+            throw std::runtime_error("Nine slicing texture height (" + std::to_string(height) + ") is smaller than top + bottom outline width (" + std::to_string(targetOutline.topPixel + targetOutline.bottomPixel) + ") for image: " + rawImage->getName());
         }
 
         unsigned int componentsCount = rawImage->retrieveComponentsCount();
         const std::vector<unsigned char>& rawTexels = rawImage->getTexels();
         unsigned int rawWidth = rawImage->getWidth();
         unsigned int rawHeight = rawImage->getHeight();
-        if (rawWidth <= sourceOutline.leftWidth + sourceOutline.rightWidth) {
-            throw std::runtime_error("Nine slicing source image width (" + std::to_string(rawWidth) + ") must be greater than left + right outline width (" + std::to_string(sourceOutline.leftWidth + sourceOutline.rightWidth) + ") for image: " + rawImage->getName());
+        if (rawWidth <= sourceOutline.leftPixel + sourceOutline.rightPixel) {
+            throw std::runtime_error("Nine slicing source image width (" + std::to_string(rawWidth) + ") must be greater than left + right outline width (" + std::to_string(sourceOutline.leftPixel + sourceOutline.rightPixel) + ") for image: " + rawImage->getName());
         }
-        if (rawHeight <= sourceOutline.topWidth + sourceOutline.bottomWidth) {
-            throw std::runtime_error("Nine slicing source image height (" + std::to_string(rawHeight) + ") must be greater than top + bottom outline width (" + std::to_string(sourceOutline.topWidth + sourceOutline.bottomWidth) + ") for image: " + rawImage->getName());
+        if (rawHeight <= sourceOutline.topPixel + sourceOutline.bottomPixel) {
+            throw std::runtime_error("Nine slicing source image height (" + std::to_string(rawHeight) + ") must be greater than top + bottom outline width (" + std::to_string(sourceOutline.topPixel + sourceOutline.bottomPixel) + ") for image: " + rawImage->getName());
         }
-        if ((sourceOutline.leftWidth == 0 && targetOutline.leftWidth != 0) || (sourceOutline.rightWidth == 0 && targetOutline.rightWidth != 0)
-                || (sourceOutline.topWidth == 0 && targetOutline.topWidth != 0) || (sourceOutline.bottomWidth == 0 && targetOutline.bottomWidth != 0)) {
+        if ((sourceOutline.leftPixel == 0 && targetOutline.leftPixel != 0) || (sourceOutline.rightPixel == 0 && targetOutline.rightPixel != 0)
+                || (sourceOutline.topPixel == 0 && targetOutline.topPixel != 0) || (sourceOutline.bottomPixel == 0 && targetOutline.bottomPixel != 0)) {
             throw std::runtime_error("Nine slicing target outline cannot be defined where the source outline is zero for image: " + rawImage->getName());
         }
 
         //for each target column/row: source columns/rows with their weight (outlines are scaled, middle parts are repeated)
-        std::vector<std::vector<SourceTexelWeight>> columnsMapping = computeAxisMapping(width, rawWidth, sourceOutline.leftWidth, sourceOutline.rightWidth, targetOutline.leftWidth, targetOutline.rightWidth);
-        std::vector<std::vector<SourceTexelWeight>> rowsMapping = computeAxisMapping(height, rawHeight, sourceOutline.topWidth, sourceOutline.bottomWidth, targetOutline.topWidth, targetOutline.bottomWidth);
+        std::vector<std::vector<SourceTexelWeight>> columnsMapping = computeAxisMapping(width, rawWidth, sourceOutline.leftPixel, sourceOutline.rightPixel, targetOutline.leftPixel, targetOutline.rightPixel);
+        std::vector<std::vector<SourceTexelWeight>> rowsMapping = computeAxisMapping(height, rawHeight, sourceOutline.topPixel, sourceOutline.bottomPixel, targetOutline.topPixel, targetOutline.bottomPixel);
 
         std::vector<unsigned char> texels(height * width * componentsCount, 0);
         std::vector<float> texelComponents(componentsCount);

@@ -28,17 +28,17 @@ namespace urchin {
         auto rawWidgetImage = ResourceRetriever::instance().getResource<Image>(widgetImageElem->getStringValue());
 
         Outline sourceOutline {
-            .topWidth = loadSourceOutline(skinChunk, "top"),
-            .bottomWidth = loadSourceOutline(skinChunk, "bottom"),
-            .leftWidth = loadSourceOutline(skinChunk, "left"),
-            .rightWidth = loadSourceOutline(skinChunk, "right")
+            .topPixel = loadSourceOutline(skinChunk, "top"),
+            .bottomPixel = loadSourceOutline(skinChunk, "bottom"),
+            .leftPixel = loadSourceOutline(skinChunk, "left"),
+            .rightPixel = loadSourceOutline(skinChunk, "right")
         };
 
         Outline targetOutline {
-            .topWidth = loadTargetOutline(skinChunk, "top", sourceOutline.topWidth, height),
-            .bottomWidth = loadTargetOutline(skinChunk, "bottom", sourceOutline.bottomWidth, height),
-            .leftWidth = loadTargetOutline(skinChunk, "left", sourceOutline.leftWidth, width),
-            .rightWidth = loadTargetOutline(skinChunk, "right", sourceOutline.rightWidth, width)
+            .topPixel = loadTargetOutline(skinChunk, "top", sourceOutline.topPixel, height),
+            .bottomPixel = loadTargetOutline(skinChunk, "bottom", sourceOutline.bottomPixel, height),
+            .leftPixel = loadTargetOutline(skinChunk, "left", sourceOutline.leftPixel, width),
+            .rightPixel = loadTargetOutline(skinChunk, "right", sourceOutline.rightPixel, width)
         };
 
         if (widgetOutline) {

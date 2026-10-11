@@ -35,7 +35,7 @@ namespace urchin {
         if (!titleKey.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), windowChunk);
             title = Text::create(this, Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), i18n(titleKey));
-            title->updatePosition(Position(1.0f, ((float)getPadding().topWidth - title->getHeight()) / 2.0f, PIXEL));
+            title->updatePosition(Position(1.0f, ((float)getPadding().topPixel - title->getHeight()) / 2.0f, PIXEL));
         }
     }
 
@@ -51,9 +51,9 @@ namespace urchin {
         bool propagateEvent = true;
         if (key == InputKey::LMB) {
             Rectangle2D titleZone(Point2(getGlobalPositionX(), getGlobalPositionY()),
-                                  Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), getGlobalPositionY() + (int)getPadding().topWidth));
-            Rectangle2D closeZone(Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), getGlobalPositionY()),
-                                  Point2(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getPadding().topWidth));
+                                  Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightPixel), getGlobalPositionY() + (int)getPadding().topPixel));
+            Rectangle2D closeZone(Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightPixel), getGlobalPositionY()),
+                                  Point2(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getPadding().topPixel));
 
             if (!getUi3dData() && titleZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 mousePositionX = getMouseX() - MathFunction::roundToInt(getPositionX());
@@ -75,8 +75,8 @@ namespace urchin {
     }
 
     bool Window::onKeyReleaseEvent(InputKey key) {
-        Rectangle2D closeZone(Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightWidth), getGlobalPositionY()),
-                              Point2(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getPadding().topWidth));
+        Rectangle2D closeZone(Point2(getGlobalPositionX() + ((int)getWidth() - (int)getPadding().rightPixel), getGlobalPositionY()),
+                              Point2(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getPadding().topPixel));
         if (key == InputKey::LMB && state == CLOSING && closeZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }
