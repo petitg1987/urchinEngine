@@ -28,6 +28,9 @@ namespace urchin {
         private:
             UISkinService();
 
+            unsigned int loadSourceOutline(const UdaChunk*, std::string) const;
+            unsigned int loadTargetOutline(const UdaChunk*, std::string, unsigned int, unsigned int) const;
+
             std::unique_ptr<UdaParser> skinReader;
     };
 }

@@ -27,22 +27,41 @@ namespace urchin {
         auto widgetImageElem = getSkinReader().getFirstChunk(true, "image", UdaAttribute(), skinChunk);
         auto rawWidgetImage = ResourceRetriever::instance().getResource<Image>(widgetImageElem->getStringValue());
 
-        auto topElem = getSkinReader().getFirstChunk(true, "part", UdaAttribute("zone", "top"), skinChunk);
-        auto bottomElem = getSkinReader().getFirstChunk(true, "part", UdaAttribute("zone", "bottom"), skinChunk);
-        auto leftElem = getSkinReader().getFirstChunk(true, "part", UdaAttribute("zone", "left"), skinChunk);
-        auto rightElem = getSkinReader().getFirstChunk(true, "part", UdaAttribute("zone", "right"), skinChunk);
+        Outline sourceOutline {
+            .topWidth = loadSourceOutline(skinChunk, "top"),
+            .bottomWidth = loadSourceOutline(skinChunk, "bottom"),
+            .leftWidth = loadSourceOutline(skinChunk, "left"),
+            .rightWidth = loadSourceOutline(skinChunk, "right")
+        };
 
-        Outline outline {
-            .topWidth = topElem->getUnsignedIntValue(),
-            .bottomWidth = bottomElem->getUnsignedIntValue(),
-            .leftWidth = leftElem->getUnsignedIntValue(),
-            .rightWidth = rightElem->getUnsignedIntValue()
+        Outline targetOutline {
+            .topWidth = loadTargetOutline(skinChunk, "top", sourceOutline.topWidth, height),
+            .bottomWidth = loadTargetOutline(skinChunk, "bottom", sourceOutline.bottomWidth, height),
+            .leftWidth = loadTargetOutline(skinChunk, "left", sourceOutline.leftWidth, width),
+            .rightWidth = loadTargetOutline(skinChunk, "right", sourceOutline.rightWidth, width)
         };
 
         if (widgetOutline) {
-            *widgetOutline = outline;
+            *widgetOutline = targetOutline;
         }
-        return NineSlicingTexture().build(rawWidgetImage, width, height, outline);
+        return NineSlicingTexture().build(rawWidgetImage, width, height, sourceOutline, targetOutline);
+    }
+
+    unsigned int UISkinService::loadSourceOutline(const UdaChunk* skinChunk, std::string zone) const {
+        return getSkinReader().getFirstChunk(true, "sourceOutlinePixel", UdaAttribute("zone", std::move(zone)), skinChunk)->getUnsignedIntValue();
+    }
+
+    unsigned int UISkinService::loadTargetOutline(const UdaChunk* skinChunk, std::string zone, unsigned int sourceWidth, unsigned int widgetLength) const {
+        auto targetPercentElem = getSkinReader().getFirstChunk(false, "outlineTargetPercent", UdaAttribute("zone", std::move(zone)), skinChunk);
+        if (!targetPercentElem) {
+            return sourceWidth;
+        }
+
+        float targetPercent = targetPercentElem->getFloatValue();
+        if (targetPercent < 0.0f || targetPercent > 100.0f) {
+            throw std::runtime_error("Target percent of zone " + std::string(zone) + " must be between 0 and 100: " + std::to_string(targetPercent));
+        }
+        return MathFunction::roundToUInt(targetPercent / 100.0f * (float)widgetLength);
     }
 
     Length UISkinService::loadLength(const UdaChunk* mainChunk, std::string_view lengthName) const {
