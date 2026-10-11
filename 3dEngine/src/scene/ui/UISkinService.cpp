@@ -48,7 +48,11 @@ namespace urchin {
     }
 
     unsigned int UISkinService::loadSourceOutline(const UdaChunk* skinChunk, std::string zone) const {
-        return getSkinReader().getFirstChunk(true, "sourceOutlinePixel", UdaAttribute("zone", std::move(zone)), skinChunk)->getUnsignedIntValue();
+        auto sourceElem = getSkinReader().getFirstChunk(true, "sourceOutlinePixel", UdaAttribute("zone", std::move(zone)), skinChunk);
+        if (!sourceElem) {
+            return 0;
+        }
+        return sourceElem->getUnsignedIntValue();
     }
 
     unsigned int UISkinService::loadTargetOutline(const UdaChunk* skinChunk, std::string zone, unsigned int sourceWidth, unsigned int widgetLength) const {
