@@ -33,26 +33,34 @@ namespace urchin {
             sourceOutline.topPixel, sourceOutline.bottomPixel, targetOutline.topPixel, targetOutline.bottomPixel);
 
         unsigned int componentsCount = rawImage->retrieveComponentsCount();
+        std::size_t rawRowSize = (std::size_t)rawWidth * componentsCount;
         const std::vector<unsigned char>& rawTexels = rawImage->getTexels();
-        std::vector<unsigned char> texels(height * width * componentsCount, 0);
+        std::vector<unsigned char> texels((std::size_t)height * width * componentsCount);
+        std::vector<float> verticalRow(rawRowSize);
         std::vector<float> texelComponents(componentsCount);
         for (unsigned int y = 0; y < height; ++y) {
+            std::ranges::fill(verticalRow, 0.0f);
+            for (const SourceTexelWeight& row : rowsMapping[y]) {
+                const unsigned char* rawRow = rawTexels.data() + (std::size_t)row.index * rawRowSize;
+                for (std::size_t i = 0; i < rawRowSize; ++i) {
+                    verticalRow[i] += row.weight * (float)rawRow[i];
+                }
+            }
+
+            unsigned char* targetTexel = texels.data() + (std::size_t)y * width * componentsCount;
             for (unsigned int x = 0; x < width; ++x) {
                 std::ranges::fill(texelComponents, 0.0f);
-                for (const SourceTexelWeight& row : rowsMapping[y]) {
-                    for (const SourceTexelWeight& column : columnsMapping[x]) {
-                        float weight = row.weight * column.weight;
-                        std::size_t rawTexelIndex = ((std::size_t)row.index * rawWidth + column.index) * componentsCount;
-                        for (unsigned int c = 0; c < componentsCount; ++c) {
-                            texelComponents[c] += weight * (float)rawTexels[rawTexelIndex + c];
-                        }
+                for (const SourceTexelWeight& column : columnsMapping[x]) {
+                    const float* verticalTexel = verticalRow.data() + (std::size_t)column.index * componentsCount;
+                    for (unsigned int c = 0; c < componentsCount; ++c) {
+                        texelComponents[c] += column.weight * verticalTexel[c];
                     }
                 }
 
-                std::size_t texelIndex = ((std::size_t)y * width + x) * componentsCount;
                 for (unsigned int c = 0; c < componentsCount; ++c) {
-                    texels[texelIndex + c] = (unsigned char)std::clamp(std::lround(texelComponents[c]), 0l, 255l);
+                    targetTexel[c] = (unsigned char)(std::clamp(texelComponents[c], 0.0f, 255.0f) + 0.5f);
                 }
+                targetTexel += componentsCount;
             }
         }
 
