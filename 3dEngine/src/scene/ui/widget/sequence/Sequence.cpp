@@ -168,9 +168,9 @@ namespace urchin {
 
     bool Sequence::onKeyPressEvent(InputKey key) {
         if (isGameControllerFocused()) {
-            if (key == InputKey::ARROW_LEFT) {
+            if (InputKeyNavigation::isLeft(key)) {
                 return triggerButton(*leftButton);
-            } else if (key == InputKey::ARROW_RIGHT) {
+            } else if (InputKeyNavigation::isRight(key)) {
                 return triggerButton(*rightButton);
             }
         }

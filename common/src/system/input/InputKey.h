@@ -118,6 +118,29 @@ namespace urchin {
         MOUSE_F1,
         MOUSE_F2,
 
+        //gamepad
+        GAMEPAD_BUTTON_SOUTH = 2000, //Playstation: cross, Xbox: A
+        GAMEPAD_BUTTON_EAST, //Playstation: circle, Xbox: B
+        GAMEPAD_BUTTON_WEST, //Playstation: Square, Xbox: X
+        GAMEPAD_BUTTON_NORTH, //Playstation: Triangle, Xbox: Y
+        GAMEPAD_BACK, //Playstation: share, Xbox: view
+        GAMEPAD_GUIDE, //Playstation: PS button, Xbox: XBox button
+        GAMEPAD_START, //Playstation: options, Xbox: menu
+        GAMEPAD_LEFT_STICK_PRESS,
+        GAMEPAD_RIGHT_STICK_PRESS,
+        GAMEPAD_LEFT_SHOULDER, //Playstation: L1, Xbox: Left bumper
+        GAMEPAD_RIGHT_SHOULDER, //Playstation: R1, Xbox: Right bumper
+        GAMEPAD_LEFT_TRIGGER, //Playstation: L2, Xbox: Left trigger
+        GAMEPAD_RIGHT_TRIGGER, //Playstation: R2, Xbox: Right trigger
+        GAMEPAD_DPAD_UP,
+        GAMEPAD_DPAD_DOWN,
+        GAMEPAD_DPAD_LEFT,
+        GAMEPAD_DPAD_RIGHT,
+        GAMEPAD_LEFT_STICK_UP,
+        GAMEPAD_LEFT_STICK_DOWN,
+        GAMEPAD_LEFT_STICK_LEFT,
+        GAMEPAD_LEFT_STICK_RIGHT,
+
         UNKNOWN_KEY = 9999
     };
 

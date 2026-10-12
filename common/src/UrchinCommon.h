@@ -114,6 +114,7 @@
 #include "system/thread/SleepUtil.h"
 #include "system/input/InputKey.h"
 #include "system/input/InputKeyLabel.h"
+#include "system/input/InputKeyNavigation.h"
 
 #include "util/DateTimeUtil.h"
 #include "util/FileUtil.h"

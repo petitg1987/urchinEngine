@@ -577,7 +577,7 @@ namespace urchin {
 
     bool Widget::handleWidgetKeyPress(InputKey key) {
         bool widgetStateUpdated = false;
-        if (key == InputKey::LMB || ((key == InputKey::ENTER || key == InputKey::NUM_PAD_ENTER) && hasGameControllerFocus)) {
+        if (key == InputKey::LMB || (InputKeyNavigation::isValidate(key) && hasGameControllerFocus)) {
             if (widgetState == FOCUS) {
                 widgetState = CLICKING;
                 widgetStateUpdated = true;
@@ -631,7 +631,7 @@ namespace urchin {
                     widgetStateUpdated = true;
                 }
             }
-        } else if ((key == InputKey::ENTER || key == InputKey::NUM_PAD_ENTER) && hasGameControllerFocus) {
+        } else if (InputKeyNavigation::isValidate(key) && hasGameControllerFocus) {
             if (widgetState == CLICKING) {
                 widgetState = FOCUS;
                 widgetStateUpdated = true;

@@ -88,10 +88,10 @@ namespace urchin {
 
     bool Slider::onKeyPressEvent(InputKey key) {
         if (isGameControllerFocused()) {
-            if (key == InputKey::ARROW_LEFT) {
+            if (InputKeyNavigation::isLeft(key)) {
                 shiftSliderValue(true);
                 return false;
-            } else if (key == InputKey::ARROW_RIGHT) {
+            } else if (InputKeyNavigation::isRight(key)) {
                 shiftSliderValue(false);
                 return false;
             }
