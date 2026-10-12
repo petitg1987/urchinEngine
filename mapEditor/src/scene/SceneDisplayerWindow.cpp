@@ -1,6 +1,7 @@
 #include <utility>
 #include <QtWidgets/QShortcut>
 #include <QtGui/QGuiApplication>
+#include <QtGui/QScreen>
 
 #include "scene/SceneDisplayerWindow.h"
 #include "widget/controller/mouse/MouseController.h"
@@ -22,6 +23,7 @@ namespace urchin {
             mouseY(0),
             hasPendingObjectMove(false) {
         setSurfaceType(VulkanSurface);
+        connect(this, &QWindow::screenChanged, this, [this]() {resizeScene();});
 
         connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), &QShortcut::activated, this, [this] {onCtrlXYZPressed(0);});
         connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Y), parent), &QShortcut::activated, this, [this] {onCtrlXYZPressed(1);});
@@ -58,14 +60,7 @@ namespace urchin {
                 render();
                 break;
             } case QEvent::Resize: {
-                if (sceneDisplayer) {
-                    unsigned int width = 0;
-                    unsigned int height = 0;
-                    SceneWindowController(this).getFramebufferSizeRetriever()->getFramebufferSizeInPixel(width, height);
-                    if (width != 0 && height != 0) {
-                        sceneDisplayer->resize(width, height);
-                    }
-                }
+                resizeScene();
                 break;
             } case QEvent::Leave: { //mouse leaves widget
                 Point2<double> mousePositionInPixel = mouseController.getMousePosition();
@@ -78,6 +73,17 @@ namespace urchin {
             }
         }
         return QWindow::event(e);
+    }
+
+    void SceneDisplayerWindow::resizeScene() const {
+        if (sceneDisplayer) {
+            unsigned int width = 0;
+            unsigned int height = 0;
+            SceneWindowController(const_cast<SceneDisplayerWindow*>(this)).getFramebufferSizeRetriever()->getFramebufferSizeInPixel(width, height);
+            if (width != 0 && height != 0) {
+                sceneDisplayer->resize(width, height);
+            }
+        }
     }
 
     void SceneDisplayerWindow::setupVkInstance(VkInstance instance) {

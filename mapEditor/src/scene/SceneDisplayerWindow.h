@@ -55,6 +55,7 @@ namespace urchin {
         private:
             void clearVkInstance();
             void updateSceneDisplayerViewProperties() const;
+            void resizeScene() const;
             void processPendingObjectMove();
 
             QVulkanInstance vulkanInstance;
