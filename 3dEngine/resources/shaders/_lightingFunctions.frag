@@ -58,11 +58,6 @@ LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosit
     return lightValues;
 }
 
-vec3 reduceColorBanding(vec3 value, float strength) {
-    float ditheringNoise = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715)))) - 0.5; //from -0.5 to 0.5
-    return value + (ditheringNoise * strength);
-}
-
 float reduceColorBanding(float value, float strength) {
     float ditheringNoise = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715)))) - 0.5; //from -0.5 to 0.5
     return value + (ditheringNoise * strength);
