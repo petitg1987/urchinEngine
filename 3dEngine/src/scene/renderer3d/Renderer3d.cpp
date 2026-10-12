@@ -1,4 +1,7 @@
 #include <cstring>
+#include <chrono>
+#include <iostream>
+#include <optional>
 
 #include "scene/renderer3d/Renderer3d.h"
 #include "scene/renderer3d/FirstPassModelShaderVariable.h"
