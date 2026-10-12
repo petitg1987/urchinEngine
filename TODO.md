@@ -91,6 +91,7 @@
 
 # Map editor
 * Objects
+  * ▲ **NEW FEATURE**: Make MouseController works on Wayland  
   * ► **NEW FEATURE**: Make objects without physics selectable with left click
 * Terrain
   * ► **NEW FEATURE**: Handle objects spawner
