@@ -527,7 +527,7 @@ namespace urchin {
         }
 
         {
-            BufferUploadBatch bufferUploadBatch; //TODO move higher ?
+            BufferUploadBatch bufferUploadBatch;
 
             //determine lights and models producing shadow on scene (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
             if (sceneInfo.isShadowActivated == UG_TRUE) {
