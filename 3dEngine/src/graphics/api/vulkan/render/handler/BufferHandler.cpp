@@ -5,6 +5,7 @@
 #include "graphics/api/vulkan/setup/GraphicsSetupService.h"
 #include "graphics/api/vulkan/helper/BufferHelper.h"
 #include "graphics/api/vulkan/helper/CommandBufferHelper.h"
+#include "graphics/api/vulkan/helper/BufferUploadBatch.h"
 
 namespace urchin {
 
@@ -115,9 +116,14 @@ namespace urchin {
             vmaUnmapMemory(allocator, stagingBufferMemory);
 
             buffer = BufferHelper::createBuffer(name, bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageType, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, bufferMemory);
-            copyBuffer(stagingBuffer, buffer, bufferSize);
-
-            vmaDestroyBuffer(allocator, stagingBuffer, stagingBufferMemory);
+            if (BufferUploadBatch::isActive()) {
+                BufferUploadBatch::addCopy(stagingBuffer, stagingBufferMemory, buffer, bufferSize);
+            } else {
+                copyBuffer(stagingBuffer, buffer, bufferSize);
+                vmaDestroyBuffer(allocator, stagingBuffer, stagingBufferMemory);
+            }
+            stagingBuffer = nullptr;
+            stagingBufferMemory = nullptr;
         } else if (bufferKind == DYNAMIC) {
             buffer = BufferHelper::createBuffer(name, bufferSize, usageType, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, bufferMemory);
 
@@ -133,6 +139,7 @@ namespace urchin {
         auto allocator = GraphicsSetupService::instance().getAllocator();
 
         if (buffer != nullptr) {
+            BufferUploadBatch::cancelCopies(buffer);
             vmaDestroyBuffer(allocator, buffer, nullptr);
             buffer = nullptr;
         }

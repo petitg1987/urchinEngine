@@ -6,6 +6,7 @@
 #ifdef VULKAN_GRAPHICS_API
     #include "graphics/api/vulkan/GraphicsType.h"
     #include "graphics/api/vulkan/GraphicsApiService.h"
+    #include "graphics/api/vulkan/helper/BufferUploadBatch.h"
     #include "graphics/api/vulkan/render/GenericRenderer.h"
     #include "graphics/api/vulkan/render/GenericCompute.h"
     #include "graphics/api/vulkan/render/TextureCopier.h"

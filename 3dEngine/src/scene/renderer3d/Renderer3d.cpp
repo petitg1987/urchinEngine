@@ -526,14 +526,18 @@ namespace urchin {
             modelBillboard->updateBillboard(*camera);
         }
 
-        //determine lights and models producing shadow on scene (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
-        if (sceneInfo.isShadowActivated == UG_TRUE) {
-            shadowManager.updateVisibleLightsAndModels(camera->getFrustum(), camera->getPosition(), lightManager.getVisibleLights());
-        }
+        {
+            BufferUploadBatch bufferUploadBatch; //TODO move higher ?
 
-        //update models (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
-        modelSetDisplayer->setModelsToDisplay(modelsInFrustum);
-        transparentManager.replaceAllModels(modelsInFrustum);
+            //determine lights and models producing shadow on scene (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
+            if (sceneInfo.isShadowActivated == UG_TRUE) {
+                shadowManager.updateVisibleLightsAndModels(camera->getFrustum(), camera->getPosition(), lightManager.getVisibleLights());
+            }
+
+            //update models (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
+            modelSetDisplayer->setModelsToDisplay(modelsInFrustum);
+            transparentManager.replaceAllModels(modelsInFrustum);
+        }
     }
 
     /**

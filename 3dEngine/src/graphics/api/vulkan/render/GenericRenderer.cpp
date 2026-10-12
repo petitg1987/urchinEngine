@@ -1,7 +1,6 @@
 #include <vulkan/vk_enum_string_helper.h>
 
 #include "graphics/api/vulkan/render/GenericRenderer.h"
-#include "graphics/api/vulkan/helper/DebugLabelHelper.h"
 #include "graphics/api/vulkan/setup/GraphicsSetupService.h"
 #include "graphics/api/vulkan/render/pipeline/PipelineBuilder.h"
 #include "graphics/api/vulkan/render/target/RenderTarget.h"
@@ -108,7 +107,7 @@ namespace urchin {
 
         if (instanceData) {
             std::string bufferName = getName() + " - instanceData";
-            instanceDataBuffer.initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, getRenderTarget().getNumFramebuffer(), instanceData->getBufferSize(), instanceData->getData());
+            instanceDataBuffer.initialize(bufferName, BufferHandler::VERTEX, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), instanceData->getBufferSize(), instanceData->getData());
             instanceData->markDataAsProcessed();
         }
     }
