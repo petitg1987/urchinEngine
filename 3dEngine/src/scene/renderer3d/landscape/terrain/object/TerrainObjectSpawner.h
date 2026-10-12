@@ -88,7 +88,7 @@ namespace urchin {
             } positioningData;
 
             struct {
-                alignas(4) unsigned int lightMask;
+                alignas(4) uint32_t lightMask;
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;
                 alignas(4) float modelHeight;

@@ -74,7 +74,7 @@ namespace urchin {
             struct {
                 alignas(4) float minColorRange;
                 alignas(4) float maxColorRange;
-                alignas(4) int layer;
+                alignas(4) int32_t layer;
             } renderingData;
             Matrix4<float> mProjection;
     };
