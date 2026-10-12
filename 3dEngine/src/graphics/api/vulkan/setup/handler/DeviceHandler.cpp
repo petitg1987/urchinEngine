@@ -46,6 +46,7 @@ namespace urchin {
         }
         physicalDeviceExpectedVulkan13Features = {
             PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceVulkan13Features, synchronization2), .featureDescription = "synchronization 2", .optional = false}, //99.88%
+            PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceVulkan13Features, shaderDemoteToHelperInvocation), .featureDescription = "shader demote to helper invocation", .optional = false}, //99.88% (required for shaders discard operation)
         };
 
         physicalDeviceRequiredExtensions = {
