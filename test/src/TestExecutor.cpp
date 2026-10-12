@@ -53,7 +53,6 @@
 #include "physics/collision/bodystate/IslandContainerTest.h"
 #include "physics/collision/CollisionWorldIT.h"
 #include "physics/character/CharacterControllerIT.h"
-#include "physics/character/CharacterControllerMT.h"
 #include "ai/path/pathfinding/FunnelAlgorithmTest.h"
 #include "ai/path/pathfinding/PathfindingAStarTest.h"
 #include "sound/player/filereader/SoundFileReaderTest.h"
@@ -165,11 +164,6 @@ void addPhysicsIntegrationTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(CharacterControllerIT::suite());
 }
 
-void addPhysicsMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
-    //character
-    runner.addTest(CharacterControllerMT::suite());
-}
-
 void addAiUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //pathfinding
     runner.addTest(FunnelAlgorithmTest::suite());
@@ -192,10 +186,6 @@ void addAllIntegrationTests(CppUnit::TextUi::TestRunner& runner) {
     addPhysicsIntegrationTests(runner);
 }
 
-void addAllMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
-    addPhysicsMonkeyTests(runner);
-}
-
 int main(int argc, char *argv[]) {
     FileSystem::instance().setupResourcesDirectory(SystemInfo::executableDirectory() + "resources/");
     ConfigService::instance().loadProperties("engine.properties");
@@ -203,7 +193,6 @@ int main(int argc, char *argv[]) {
 
     std::string hasUnitTests = "no";
     std::string hasIntegrationTests = "no";
-    std::string hasMonkeyTests = "no";
 
     for (int i = 1; i < argc; ++i) {
         if (std::strcmp(argv[i], "unit") == 0) {
@@ -212,15 +201,12 @@ int main(int argc, char *argv[]) {
         } else if (std::strcmp(argv[i], "integration") == 0) {
             addAllIntegrationTests(runner);
             hasIntegrationTests = "yes";
-        } else if (std::strcmp(argv[i], "monkey") == 0) {
-            addAllMonkeyTests(runner);
-            hasMonkeyTests = "yes";
         } else {
             throw std::invalid_argument("Unknown program argument: " + std::string(argv[i]));
         }
     }
 
-    std::cout << "Start running tests (unit: "<< hasUnitTests << ", integration: " << hasIntegrationTests << ", monkey: " << hasMonkeyTests << ")" << std::endl;
+    std::cout << "Start running tests (unit: "<< hasUnitTests << ", integration: " << hasIntegrationTests << ")" << std::endl;
     bool success = runner.run();
 
     Logger::instance().purge();

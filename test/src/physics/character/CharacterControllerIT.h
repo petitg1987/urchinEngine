@@ -13,10 +13,12 @@ class CharacterControllerIT final : public CppUnit::TestFixture {
         void characterMovingOnRemovedObjects();
 
         void ccdFallingCharacter();
+        void ccdFallingCharacterAfterFrameDrop();
         void ccdMovingCharacter();
 
     private:
-        void constructGround(urchin::PhysicsWorld&) const;
+        void constructHeightfieldFloor(urchin::PhysicsWorld&) const;
+        void constructBoxFloor(urchin::PhysicsWorld&) const;
         void constructWall(urchin::PhysicsWorld&) const;
         std::vector<std::shared_ptr<urchin::RigidBody>> constructCubes(urchin::PhysicsWorld&, float) const;
 };

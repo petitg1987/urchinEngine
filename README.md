@@ -77,7 +77,7 @@ Game engine library in C++23: 3D, Physics, Sound, Network, IA, Map Editor
 * Execute tests:
   ```
   cd urchinEngine/test/
-  ./testExecutor [unit] [integration] [monkey]
+  ./testExecutor [unit] [integration]
   ```
 * Launch map editor:
   ```

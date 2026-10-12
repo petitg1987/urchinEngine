@@ -86,12 +86,9 @@
     * Build directory: `.build/release`
     * Build options: `-j 14`
 * Add CMake applications
-  * Application **testExecutor (monkey)**:
-    * Target/executable: `testExecutor`
-    * Program arguments: `unit integration monkey`
   * Application **testExecutor**:
     * Target/executable: `testExecutor`
-    * Program arguments: `unit integration`    
+    * Program arguments: `unit integration`
   * Application **urchinMapEditor**:
     * Target/executable: `urchinMapEditor`
 

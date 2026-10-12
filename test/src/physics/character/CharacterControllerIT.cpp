@@ -7,7 +7,7 @@ using namespace urchin;
 
 void CharacterControllerIT::fallingCharacterOnObjects() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
-    constructGround(*physicsWorld);
+    constructHeightfieldFloor(*physicsWorld);
     float cubeHeight = 0.5f;
     auto cubes = constructCubes(*physicsWorld, cubeHeight);
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
@@ -45,7 +45,7 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
 
 void CharacterControllerIT::characterMovingOnRemovedObjects() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
-    constructGround(*physicsWorld);
+    constructHeightfieldFloor(*physicsWorld);
 
     std::unique_ptr<CollisionShape3D>  cubeShape = std::make_unique<CollisionBoxShape>(Vector3(0.5f, 0.5f, 0.5f));
     auto cubeBody = std::make_shared<RigidBody>("cube", PhysicsTransform(Point3(0.0f, 0.5f, 0.0f), Quaternion<float>()), std::move(cubeShape));
@@ -86,7 +86,7 @@ void CharacterControllerIT::characterMovingOnRemovedObjects() {
 
 void CharacterControllerIT::ccdFallingCharacter() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
-    constructGround(*physicsWorld);
+    constructHeightfieldFloor(*physicsWorld);
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, 50.0f, 0.0f), Quaternion<float>()));
@@ -110,9 +110,29 @@ void CharacterControllerIT::ccdFallingCharacter() {
     AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
 }
 
+void CharacterControllerIT::ccdFallingCharacterAfterFrameDrop() {
+    auto physicsWorld = std::make_unique<PhysicsWorld>();
+    constructBoxFloor(*physicsWorld);
+    auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
+    float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, 50.0f, 0.0f), Quaternion<float>()));
+    auto characterController = CharacterController(std::move(character), CharacterControllerConfig(), *physicsWorld);
+    physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
+
+    characterController.update(3.0f); //simulate a big frame drop
+    float posYAfterFrameDrop = characterController.getPhysicsCharacter().getTransform().getPosition().Y;
+    AssertHelper::assertTrue(posYAfterFrameDrop > characterHeight / 2.0f - 0.01f, "Character must not go through the floor. Position Y: " + std::to_string(posYAfterFrameDrop));
+
+    for (std::size_t i = 0; i < 300; ++i) {
+        physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
+        characterController.update(1.0f / 60.0f);
+    }
+    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
+}
+
 void CharacterControllerIT::ccdMovingCharacter() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
-    constructGround(*physicsWorld);
+    constructHeightfieldFloor(*physicsWorld);
     constructWall(*physicsWorld);
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
@@ -141,7 +161,7 @@ void CharacterControllerIT::ccdMovingCharacter() {
     AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Z, -9.75f, 0.15f);
 }
 
-void CharacterControllerIT::constructGround(PhysicsWorld& physicsWorld) const {
+void CharacterControllerIT::constructHeightfieldFloor(PhysicsWorld& physicsWorld) const {
     std::vector groundPoints = {
             Point3(-100.0f, 0.0f, -100.0f), Point3(100.0f, 0.0f, -100.0f),
             Point3(-100.0f, 0.0f, 100.0f), Point3(100.0f, 0.0f, 100.0f)
@@ -149,6 +169,12 @@ void CharacterControllerIT::constructGround(PhysicsWorld& physicsWorld) const {
     auto groundShape = std::make_unique<CollisionHeightfieldShape>(groundPoints, 2, 2);
     auto groundBody = std::make_unique<RigidBody>("ground", PhysicsTransform(Point3(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(groundShape));
     physicsWorld.getBodyContainer().addBody(std::move(groundBody));
+}
+
+void CharacterControllerIT::constructBoxFloor(PhysicsWorld& physicsWorld) const {
+    auto floorShape = std::make_unique<CollisionBoxShape>(Vector3(100.0f, 0.1f, 100.0f));
+    auto floorBody = std::make_unique<RigidBody>("floor", PhysicsTransform(Point3(0.0f, -0.1f, 0.0f), Quaternion<float>()), std::move(floorShape));
+    physicsWorld.getBodyContainer().addBody(std::move(floorBody));
 }
 
 void CharacterControllerIT::constructWall(PhysicsWorld& physicsWorld) const {
@@ -182,6 +208,7 @@ CppUnit::Test* CharacterControllerIT::suite() {
     suite->addTest(new CppUnit::TestCaller("characterMovingOnRemovedObjects", &CharacterControllerIT::characterMovingOnRemovedObjects));
 
     suite->addTest(new CppUnit::TestCaller("ccdFallingCharacter", &CharacterControllerIT::ccdFallingCharacter));
+    suite->addTest(new CppUnit::TestCaller("ccdFallingCharacterAfterFrameDrop", &CharacterControllerIT::ccdFallingCharacterAfterFrameDrop));
     suite->addTest(new CppUnit::TestCaller("ccdMovingCharacter", &CharacterControllerIT::ccdMovingCharacter));
 
     return suite;

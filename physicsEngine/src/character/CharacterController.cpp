@@ -132,18 +132,15 @@ namespace urchin {
         std::size_t stepLoopCounter = 0;
         float remainingDt = dt;
         do {
-            float stepDt;
-            if (stepLoopCounter < MAX_UPDATE_LOOP_BY_FRAME) [[likely]] {
-                stepDt = std::min(remainingDt, 1.0f / MIN_UPDATE_FREQUENCY);
-                remainingDt -= stepDt;
-            } else {
+            if (stepLoopCounter >= MAX_UPDATE_LOOP_BY_FRAME) [[unlikely]] {
                 static unsigned int numErrorsLogged = 0;
                 if (numErrorsLogged++ < MAX_ERRORS_LOG) {
-                    Logger::instance().logWarning("Maximum of iteration reached on character update (dt: " + std::to_string(dt) + ", remaining dt: " + std::to_string(remainingDt) + ")");
+                    Logger::instance().logWarning("Maximum of iteration reached on character update (dt: " + std::to_string(dt) + ", discarded dt: " + std::to_string(remainingDt) + ")");
                 }
-                stepDt = remainingDt;
-                remainingDt = 0.0f;
+                break;
             }
+            float stepDt = std::min(remainingDt, 1.0f / MIN_UPDATE_FREQUENCY);
+            remainingDt -= stepDt;
 
             updateStep(stepDt);
 
