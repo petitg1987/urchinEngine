@@ -53,10 +53,11 @@ namespace urchin {
             static constexpr uint32_t VELOCITY_DATA_UNIFORM_BINDING = 0;
             static constexpr uint32_t VELOCITY_DEPTH_TEX_UNIFORM_BINDING = 1;
 
-            static constexpr uint32_t RESOLVE_SCENE_TEX_UNIFORM_BINDING = 0;
-            static constexpr uint32_t RESOLVE_DEPTH_TEX_UNIFORM_BINDING = 1;
-            static constexpr uint32_t RESOLVE_VELOCITY_TEX_UNIFORM_BINDING = 2;
-            static constexpr uint32_t RESOLVE_HISTORY_TEX_UNIFORM_BINDING = 3;
+            static constexpr uint32_t RESOLVE_DATA_UNIFORM_BINDING = 0;
+            static constexpr uint32_t RESOLVE_SCENE_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t RESOLVE_DEPTH_TEX_UNIFORM_BINDING = 2;
+            static constexpr uint32_t RESOLVE_VELOCITY_TEX_UNIFORM_BINDING = 3;
+            static constexpr uint32_t RESOLVE_HISTORY_TEX_UNIFORM_BINDING = 4;
 
             //properties
             bool isTestMode;
@@ -75,6 +76,9 @@ namespace urchin {
                 alignas(8) Vector2<float> currentJitter;
                 alignas(8) Vector2<float> previousJitter;
             } velocityData;
+            struct ResolveData {
+                alignas(4) uint32_t cyclicFrameIndex;
+            } resolveData;
 
             //display - velocity
             std::shared_ptr<Texture> velocityTexture;

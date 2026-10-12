@@ -15,6 +15,7 @@ namespace urchin {
             copySceneTexToHistory(true),
             frameCount(0) {
         std::memset((void*)&velocityData, 0, sizeof(velocityData));
+        std::memset((void*)&resolveData, 0, sizeof(resolveData));
 
         velocityData.currentJitter = currentJitter;
         velocityData.previousJitter = currentJitter;
@@ -158,6 +159,7 @@ namespace urchin {
         resolveRenderer = GenericRendererBuilder::create("anti aliasing: resolve", *resolveRenderTarget, *taaResolveShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
+                ->addUniformData(RESOLVE_DATA_UNIFORM_BINDING, sizeof(resolveData), &resolveData)
                 ->addUniformTextureReader(RESOLVE_SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(RESOLVE_DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(RESOLVE_VELOCITY_TEX_UNIFORM_BINDING, TextureReader::build(velocityTexture, TextureParam::buildNearest()))
@@ -183,6 +185,8 @@ namespace urchin {
             resolveRenderTarget->addPreRenderTextureCopier(TextureCopier(*sceneTexture, *outputOrHistoryTextures[getHistoryTextureIndex()]));
         }
 
+        resolveData.cyclicFrameIndex = frameCount % 64;
+        resolveRenderer->updateUniformData(RESOLVE_DATA_UNIFORM_BINDING, &resolveData);
         resolveRenderer->updateUniformTextureReader(RESOLVE_HISTORY_TEX_UNIFORM_BINDING, TextureReader::build(outputOrHistoryTextures[getHistoryTextureIndex()], TextureParam::buildLinear()));
         resolveRenderTarget->enableOnlyOutputTexture(outputOrHistoryTextures[getOutputTextureIndex()]);
 

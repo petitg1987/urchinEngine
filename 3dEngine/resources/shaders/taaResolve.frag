@@ -6,10 +6,13 @@ layout(constant_id = 0) const bool TAA_HIGH_QUALITY = true;
 #include "_lightingFunctions.frag"
 #include "_samplingFunctions.frag"
 
-layout(binding = 0) uniform sampler2D sceneTex;
-layout(binding = 1) uniform sampler2D depthTex;
-layout(binding = 2) uniform sampler2D velocityTex;
-layout(binding = 3) uniform sampler2D historyTex;
+layout(std140, set = 0, binding = 0) uniform ResolveData {
+    uint cyclicFrameIndex;
+} resolveData;
+layout(binding = 1) uniform sampler2D sceneTex;
+layout(binding = 2) uniform sampler2D depthTex;
+layout(binding = 3) uniform sampler2D velocityTex;
+layout(binding = 4) uniform sampler2D historyTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -122,6 +125,6 @@ void main() {
     historyWeight *= 1.0 / (1.0 + luminanceHistory);
 
     vec3 result = (sourceColor * sourceWeight + historyColor * historyWeight) / max(sourceWeight + historyWeight, 0.00001);
-    result = reduceColorBanding(result, 0.005);
+    result = reduceColorBanding(result, 0.004, resolveData.cyclicFrameIndex);
     fragColor = vec4(result, 1.0);
 }

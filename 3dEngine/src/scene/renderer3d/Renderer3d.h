@@ -168,6 +168,7 @@ namespace urchin {
             struct PositioningData {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Point3<float> viewPosition;
+                alignas(4) uint32_t cyclicFrameIndex;
             } positioningData;
             struct SceneInfo {
                 alignas(4) UgBool32 isShadowActivated;

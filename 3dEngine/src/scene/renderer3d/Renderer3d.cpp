@@ -634,6 +634,7 @@ namespace urchin {
 
         positioningData.inverseProjectionViewMatrix = camera->getProjectionViewInverseMatrix();
         positioningData.viewPosition = camera->getPosition();
+        positioningData.cyclicFrameIndex = frameCount % 64;
         deferredSecondPassRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
 
         const std::vector<Light*>& visibleLightsWithShadow = shadowManager.getVisibleLightsWithShadow();

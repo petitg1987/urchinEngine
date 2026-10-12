@@ -86,7 +86,7 @@ namespace urchin {
             std::vector<InstanceMatrix> instanceMatrices; //for DEFAULT_MODE only
             std::vector<Matrix4<float>> instanceModelMatrices; //for DEPTH_ONLY_MODE only
             struct {
-                alignas(4) unsigned int lightMask;
+                alignas(4) uint32_t lightMask;
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;
             } meshData;

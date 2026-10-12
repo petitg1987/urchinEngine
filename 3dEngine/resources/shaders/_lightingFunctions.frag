@@ -68,6 +68,18 @@ float reduceColorBanding(float value, float strength) {
     return value + (ditheringNoise * strength);
 }
 
+vec3 reduceColorBanding(vec3 value, float strength, uint cyclicFrameIndex) {
+    vec2 animatedFragCoord = gl_FragCoord.xy + 5.588238 * float(cyclicFrameIndex);
+    float ditheringNoise = fract(52.9829189 * fract(dot(animatedFragCoord, vec2(0.06711056, 0.00583715)))) - 0.5; //from -0.5 to 0.5
+    return value + (ditheringNoise * strength);
+}
+
+float reduceColorBanding(float value, float strength, uint cyclicFrameIndex) {
+    vec2 animatedFragCoord = gl_FragCoord.xy + 5.588238 * float(cyclicFrameIndex);
+    float ditheringNoise = fract(52.9829189 * fract(dot(animatedFragCoord, vec2(0.06711056, 0.00583715)))) - 0.5; //from -0.5 to 0.5
+    return value + (ditheringNoise * strength);
+}
+
 float luminance(vec3 color) {
     return dot(color, vec3(0.299, 0.587, 0.114));
 }

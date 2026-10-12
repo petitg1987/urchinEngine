@@ -17,6 +17,7 @@ layout(constant_id = 7) const float MAX_EMISSIVE_FACTOR = 0.0;
 layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mInverseProjectionView;
     vec3 viewPosition;
+    uint cyclicFrameIndex;
 } positioningData;
 layout(std140, set = 0, binding = 1) uniform SceneInfo {
     bool hasShadow;
@@ -275,7 +276,7 @@ void main() {
             }
 
             LightValues lightValues = computeLightValues(lightInfo, normal, vec3(worldPosition));
-            float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.02);
+            float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.015, positioningData.cyclicFrameIndex);
 
             vec3 lightRadiance = lightInfo.lightColor * lightAttenuation;
             vec3 bidirectionalReflectanceDist;
