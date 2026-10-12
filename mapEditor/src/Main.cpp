@@ -33,6 +33,8 @@ int main(int argc, char *argv[]) {
     QApplication::setFont(defaultFont);
 
     QApplication::setStyle("Fusion");
+    QApplication::setWindowIcon(QIcon(QApplication::applicationDirPath() + "/icon/icon.png"));
+    QApplication::setDesktopFileName("urchinmapeditor");
 
     new MapEditorWindow(std::string(argv[0]));
 
