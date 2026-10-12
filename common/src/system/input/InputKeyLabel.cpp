@@ -79,6 +79,8 @@ namespace urchin {
         keysLabelMap[InputKey::MOUSE_F1] = "Mouse F1";
         keysLabelMap[InputKey::MOUSE_F2] = "Mouse F2";
 
+        //TODO do it for gamepad !
+
         keysLabelMap[InputKey::UNKNOWN_KEY] = "[UNKNOWN]";
 
         return keysLabelMap;
