@@ -12,7 +12,7 @@
   sudo ln -s /opt/vulkan-sdk/x86_64/bin/glslc /usr/local/bin/glslc #for Clion which do not read ~/.bashrc
   sudo apt install vulkan-tools
 
-  sudo apt install libfreetype-dev qtbase5-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev libjitterentropy3-dev
+  sudo apt install libfreetype-dev qt6-base-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev libjitterentropy3-dev
   ```
 
 ## Windows

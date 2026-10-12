@@ -16,10 +16,8 @@ include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../so
 list(TRANSFORM URCHIN_HEADERS PREPEND ../)
 
 #QT
-find_package(Qt5Core)
-find_package(Qt5Widgets)
-find_package(Qt5Gui)
-SET(QT_LIB Qt5::Core Qt5::Widgets Qt5::Gui)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui)
+SET(QT_LIB Qt6::Core Qt6::Widgets Qt6::Gui)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_custom_target(mapSyncShaders ALL rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/spirv/ ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/ --delete DEPENDS urchin3dEngine)

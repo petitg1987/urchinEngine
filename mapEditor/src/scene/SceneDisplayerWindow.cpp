@@ -1,6 +1,5 @@
 #include <utility>
-#include <QtWidgets/QShortcut>
-#include <QtGui/QGuiApplication>
+#include <QtGui/QShortcut>
 #include <QtGui/QScreen>
 
 #include "scene/SceneDisplayerWindow.h"
@@ -348,8 +347,8 @@ namespace urchin {
 
     void SceneDisplayerWindow::mouseMoveEvent(QMouseEvent* event) {
         //mouse coordinate computed in pixel
-        double newMouseX = (double)event->x() * devicePixelRatio();
-        double newMouseY = (double)event->y() * devicePixelRatio();
+        double newMouseX = event->position().x() * devicePixelRatio();
+        double newMouseY = event->position().y() * devicePixelRatio();
 
         double deltaMouseX = newMouseX - mouseX;
         double deltaMouseY = newMouseY - mouseY;

@@ -190,7 +190,7 @@ namespace urchin {
             auto* selectSignalMapper = new QSignalMapper();
             connect(selectMaterialFileButton, SIGNAL(clicked()), selectSignalMapper, SLOT(map()));
             selectSignalMapper->setMapping(selectMaterialFileButton, QString::fromStdString(std::to_string(i)));
-            connect(selectSignalMapper, SIGNAL(mapped(const QString&)), this, SLOT(showMaterialFilenameDialog(const QString&)));
+            connect(selectSignalMapper, SIGNAL(mappedString(const QString&)), this, SLOT(showMaterialFilenameDialog(const QString&)));
 
             auto* clearMaterialFileButton = new QPushButton("Clr");
             materialLayout->addWidget(clearMaterialFileButton, 2 + (int)i, 4);
@@ -199,7 +199,7 @@ namespace urchin {
             auto* clearSignalMapper = new QSignalMapper();
             connect(clearMaterialFileButton, SIGNAL(clicked()), clearSignalMapper, SLOT(map()));
             clearSignalMapper->setMapping(clearMaterialFileButton, QString::fromStdString(std::to_string(i)));
-            connect(clearSignalMapper, SIGNAL(mapped(const QString&)), this, SLOT(clearMaterialFilename(const QString&)));
+            connect(clearSignalMapper, SIGNAL(mappedString(const QString&)), this, SLOT(clearMaterialFilename(const QString&)));
         }
     }
 
