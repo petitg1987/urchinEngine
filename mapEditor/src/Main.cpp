@@ -1,10 +1,14 @@
 #include <QApplication>
+#include <QLoggingCategory>
 
 #include "MapEditorWindow.h"
 using namespace urchin;
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
+
+    //Hide error related to KDE itself
+    QLoggingCategory::setFilterRules("kf.i18n.warning=false");
 
     QPalette palette;
     palette.setColor(QPalette::Window, QColor(53, 53, 53));

@@ -49,6 +49,10 @@ namespace urchin {
             } else if (e->type() == QEvent::KeyRelease) {
                 keyReleaseEvent(static_cast<QKeyEvent*>(e));
                 return true;
+            } else if (e->type() == QEvent::FocusIn) {
+                //Skip QWindowContainer focus handling: it calls QWindow::requestActivate() which is not supported on Wayland.
+                //Window activation is not required because key events are received through the containerWidget.
+                return true;
             }
         }
         return QWindow::eventFilter(watched, e);
