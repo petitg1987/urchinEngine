@@ -79,7 +79,32 @@ namespace urchin {
         keysLabelMap[InputKey::MOUSE_F1] = "Mouse F1";
         keysLabelMap[InputKey::MOUSE_F2] = "Mouse F2";
 
-        //TODO do it for gamepad !
+        //gamepad
+        keysLabelMap[InputKey::GAMEPAD_BUTTON_SOUTH] = "A";
+        keysLabelMap[InputKey::GAMEPAD_BUTTON_EAST] = "B";
+        keysLabelMap[InputKey::GAMEPAD_BUTTON_WEST] = "X";
+        keysLabelMap[InputKey::GAMEPAD_BUTTON_NORTH] = "Y";
+        keysLabelMap[InputKey::GAMEPAD_BACK] = "View";
+        keysLabelMap[InputKey::GAMEPAD_GUIDE] = "Home";
+        keysLabelMap[InputKey::GAMEPAD_START] = "Menu";
+        keysLabelMap[InputKey::GAMEPAD_LEFT_STICK_PRESS] = "LStick";
+        keysLabelMap[InputKey::GAMEPAD_RIGHT_STICK_PRESS] = "RStick";
+        keysLabelMap[InputKey::GAMEPAD_LEFT_SHOULDER] = "LB";
+        keysLabelMap[InputKey::GAMEPAD_RIGHT_SHOULDER] = "RB";
+        keysLabelMap[InputKey::GAMEPAD_LEFT_TRIGGER] = "LT";
+        keysLabelMap[InputKey::GAMEPAD_RIGHT_TRIGGER] = "RT";
+        keysLabelMap[InputKey::GAMEPAD_DPAD_UP] = "D-pad Up";
+        keysLabelMap[InputKey::GAMEPAD_DPAD_DOWN] = "D-pad Down";
+        keysLabelMap[InputKey::GAMEPAD_DPAD_LEFT] = "D-pad Left";
+        keysLabelMap[InputKey::GAMEPAD_DPAD_RIGHT] = "D-pad Right";
+        keysLabelMap[InputKey::GAMEPAD_LEFT_STICK_UP] = "LStick Up";
+        keysLabelMap[InputKey::GAMEPAD_LEFT_STICK_DOWN] = "LStick Down";
+        keysLabelMap[InputKey::GAMEPAD_LEFT_STICK_LEFT] = "LStick Left";
+        keysLabelMap[InputKey::GAMEPAD_LEFT_STICK_RIGHT] = "LStick Right";
+        keysLabelMap[InputKey::GAMEPAD_RIGHT_STICK_UP] = "RStick Up";
+        keysLabelMap[InputKey::GAMEPAD_RIGHT_STICK_DOWN] = "RStick Down";
+        keysLabelMap[InputKey::GAMEPAD_RIGHT_STICK_LEFT] = "RStick Left";
+        keysLabelMap[InputKey::GAMEPAD_RIGHT_STICK_RIGHT] = "RStick Right";
 
         keysLabelMap[InputKey::UNKNOWN_KEY] = "[UNKNOWN]";
 

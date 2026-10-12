@@ -27,7 +27,7 @@ namespace urchin {
     }
 
     bool InputKeyNavigation::isGamepadKey(InputKey key) {
-        return key >= InputKey::GAMEPAD_BUTTON_SOUTH && key <= InputKey::GAMEPAD_LEFT_STICK_RIGHT;
+        return key >= InputKey::GAMEPAD_BUTTON_SOUTH && key <= InputKey::GAMEPAD_RIGHT_STICK_RIGHT;
     }
 
 }
