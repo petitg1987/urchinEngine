@@ -1,5 +1,6 @@
 #include "widget/controller/mouse/MouseController.h"
 #include "scene/SceneDisplayerWindow.h"
+#include <QtGui/QGuiApplication>
 
 namespace urchin {
 
@@ -8,10 +9,14 @@ namespace urchin {
 
     }
 
-    void MouseController::moveMouse(double x, double y) const {
+    bool MouseController::moveMouse(double x, double y) const {
+        if (QGuiApplication::platformName() == "wayland") {
+            return false; //Wayland doesn't allow cursor positioning
+        }
         int mouseXDpiAdjusted = MathFunction::roundToInt(x / widget->devicePixelRatio());
         int mouseYDpiAdjusted = MathFunction::roundToInt(y / widget->devicePixelRatio());
         QCursor::setPos(widget->mapToGlobal(QPoint(mouseXDpiAdjusted, mouseYDpiAdjusted)));
+        return true;
     }
 
     Point2<double> MouseController::getMousePosition() const {

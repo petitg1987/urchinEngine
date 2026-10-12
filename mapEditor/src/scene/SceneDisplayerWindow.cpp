@@ -1,5 +1,6 @@
 #include <utility>
 #include <QtWidgets/QShortcut>
+#include <QtGui/QGuiApplication>
 
 #include "scene/SceneDisplayerWindow.h"
 #include "widget/controller/mouse/MouseController.h"
@@ -7,6 +8,7 @@
 namespace urchin {
 
     SceneDisplayerWindow::SceneDisplayerWindow(QWidget* parent, StatusBarController& statusBarController, std::string mapEditorPath) :
+            containerWidget(nullptr),
             statusBarController(statusBarController),
             mapEditorPath(std::move(mapEditorPath)),
             sceneWindowController(SceneWindowController(this)),
@@ -17,18 +19,37 @@ namespace urchin {
             leftKeyPressed(false),
             rightKeyPressed(false),
             mouseX(0),
-            mouseY(0) {
+            mouseY(0),
+            hasPendingObjectMove(false) {
         setSurfaceType(VulkanSurface);
 
-        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), &QShortcut::activated, this, [this]() {onCtrlXYZPressed(0);});
-        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Y), parent), &QShortcut::activated, this, [this]() {onCtrlXYZPressed(1);});
-        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Z), parent), &QShortcut::activated, this, [this]() {onCtrlXYZPressed(2);});
+        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), &QShortcut::activated, this, [this] {onCtrlXYZPressed(0);});
+        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Y), parent), &QShortcut::activated, this, [this] {onCtrlXYZPressed(1);});
+        connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Z), parent), &QShortcut::activated, this, [this] {onCtrlXYZPressed(2);});
     }
 
     void SceneDisplayerWindow::exposeEvent(QExposeEvent *) {
         if (isExposed()) {
             render(); //launch first frame
         }
+    }
+
+    void SceneDisplayerWindow::setContainerWidget(QWidget* containerWidget) {
+        this->containerWidget = containerWidget;
+        containerWidget->installEventFilter(this);
+    }
+
+    bool SceneDisplayerWindow::eventFilter(QObject* watched, QEvent* e) {
+        if (watched == containerWidget) {
+            if (e->type() == QEvent::KeyPress) {
+                keyPressEvent(static_cast<QKeyEvent*>(e));
+                return true;
+            } else if (e->type() == QEvent::KeyRelease) {
+                keyReleaseEvent(static_cast<QKeyEvent*>(e));
+                return true;
+            }
+        }
+        return QWindow::eventFilter(watched, e);
     }
 
     bool SceneDisplayerWindow::event(QEvent *e) {
@@ -147,6 +168,8 @@ namespace urchin {
         if (!sceneDisplayer) {
             loadEmptyScene();
         }
+
+        processPendingObjectMove();
 
         if (forwardKeyPressed) {
             sceneDisplayer->getCamera()->moveForward(sceneDisplayer->getScene().getDeltaTimeInSec());
@@ -273,6 +296,10 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::mousePressEvent(QMouseEvent* event) {
+        if (containerWidget) {
+            containerWidget->setFocus();
+        }
+
         if (sceneDisplayer) {
             //engine
             if (event->button() == Qt::LeftButton) {
@@ -284,6 +311,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::mouseReleaseEvent(QMouseEvent* event) {
+        processPendingObjectMove();
         if (sceneDisplayer) {
             bool propagateMouseEvent = true;
 
@@ -322,6 +350,15 @@ namespace urchin {
         if (sceneDisplayer) {
             bool propagateEvent = sceneDisplayer->getScene().onMouseMove(mouseX, mouseY, deltaMouseX, deltaMouseY);
             if (propagateEvent && sceneDisplayer->getObjectMoveController()) {
+                hasPendingObjectMove = true;
+            }
+        }
+    }
+
+    void SceneDisplayerWindow::processPendingObjectMove() {
+        if (hasPendingObjectMove) {
+            hasPendingObjectMove = false;
+            if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
                 sceneDisplayer->getObjectMoveController()->onMouseMove(mouseX, mouseY);
             }
         }
@@ -364,7 +401,8 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::onCtrlXYZPressed(int axisIndex) {
-        requestActivate(); //requested to ensure next keys pressed (e.g.: escape) works correctly
+        containerWidget->setFocus(); //requested to ensure next keys pressed (e.g.: escape) works correctly
+        processPendingObjectMove();
         if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ((unsigned int)axisIndex);
         }

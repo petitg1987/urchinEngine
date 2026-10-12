@@ -95,11 +95,9 @@ namespace urchin {
             newMousePosition.Y = (double)sceneHeight - SAFETY_MARGIN;
         }
 
-        if (mousePosition != newMousePosition) {
+        if (mousePosition != newMousePosition && mouseController.moveMouse(newMousePosition.X, newMousePosition.Y)) {
             oldMouseX = newMousePosition.X;
             oldMouseY = newMousePosition.Y;
-
-            mouseController.moveMouse(newMousePosition.X, newMousePosition.Y);
             return true;
         }
 

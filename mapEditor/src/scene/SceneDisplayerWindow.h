@@ -26,6 +26,8 @@ namespace urchin {
             void exposeEvent(QExposeEvent *) override;
             bool event(QEvent *) override;
             void setupVkInstance(VkInstance);
+            void setContainerWidget(QWidget*);
+            bool eventFilter(QObject*, QEvent*) override;
 
             void loadMap(SceneController&, const std::string&, const std::string&);
             void loadEmptyScene();
@@ -53,8 +55,10 @@ namespace urchin {
         private:
             void clearVkInstance();
             void updateSceneDisplayerViewProperties() const;
+            void processPendingObjectMove();
 
             QVulkanInstance vulkanInstance;
+            QWidget* containerWidget;
             StatusBarController& statusBarController;
             std::string mapEditorPath;
 
@@ -69,6 +73,7 @@ namespace urchin {
             bool rightKeyPressed;
             double mouseX;
             double mouseY;
+            bool hasPendingObjectMove;
             std::string lastPickedBodyId;
 
         private slots:
