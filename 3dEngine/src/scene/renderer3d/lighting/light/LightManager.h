@@ -5,8 +5,8 @@
 
 #include "graphics/api/GraphicsApi.h"
 #include "graphics/render/GenericRendererBuilder.h"
-#include "resources/geometry/aabbox/AABBoxModel.h"
 #include "resources/geometry/GeometryContainer.h"
+#include "resources/geometry/aabbox/AABBoxModel.h"
 #include "scene/renderer3d/lighting/light/Light.h"
 
 namespace urchin {
@@ -54,11 +54,11 @@ namespace urchin {
             Light* lastUpdatedLight;
 
             struct LightInfo {
-                alignas(4) int lightType;
-                alignas(4) unsigned int lightMask;
+                alignas(4) int32_t lightType;
+                alignas(4) uint32_t lightMask;
                 alignas(4) UgBool32 isPbrEnabled;
                 alignas(4) UgBool32 hasShadow;
-                alignas(4) unsigned int shadowLightIndex;
+                alignas(4) uint32_t shadowLightIndex;
                 alignas(4) float shadowStrength;
                 alignas(16) Point3<float> lightColor;
                 alignas(16) Vector3<float> direction;
@@ -71,7 +71,7 @@ namespace urchin {
 
             struct LightsData { //Warning: any changes in this struct required to review 'dataUpdateSize' in 'loadVisibleLights' method
                 alignas(16) Point3<float> globalAmbientColor;
-                alignas(4) unsigned int lightsCount;
+                alignas(4) uint32_t lightsCount;
                 alignas(16) std::array<LightInfo, MAX_LIGHTS> lightsInfo;
             } lightsData;
     };

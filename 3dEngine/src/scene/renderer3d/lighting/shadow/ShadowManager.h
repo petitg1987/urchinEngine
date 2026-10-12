@@ -94,7 +94,7 @@ namespace urchin {
             std::shared_ptr<Texture> shadowMapOffsetTexture;
             struct {
                 alignas(16) std::array<Point4<float>, (std::size_t)SPLIT_SHADOW_MAPS_SHADER_LIMIT> splitData;
-                alignas(4) int offsetSampleCount;
+                alignas(4) int32_t offsetSampleCount;
             } shadowInfo;
 
             //shadow lights information
