@@ -23,6 +23,7 @@ namespace urchin {
         filterOutMessages.emplace_back("vkCreateInstance(): Both GPU Assisted Validation and Normal Core Check Validation are enabled"); //allow validation layer to be active for debug
         filterOutMessages.emplace_back("vkCreateInstance(): Attempting to enable extension VK_EXT_debug_utils"); //allow validation layer to be active for debug
         filterOutMessages.emplace_back("vkCreateDevice(): Internal Warning:"); //internal warning
+        filterOutMessages.emplace_back("vkCreateDevice(): Warning that validation is adjusting settings"); //GPU assisted validation forces some device features
         filterOutMessages.emplace_back("VK_SUBOPTIMAL_KHR was returned"); //best practices warning: swap chain is already recreated when vkQueuePresentKHR returns VK_SUBOPTIMAL_KHR (see ScreenRender::render)
     }
 
