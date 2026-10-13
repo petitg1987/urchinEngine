@@ -50,6 +50,7 @@ namespace urchin {
             virtual void updatePipelineProcessorData(uint32_t);
             virtual bool needCommandBufferRefresh(std::size_t) const;
             std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t, std::size_t);
+            void releaseReplacedTextureReaders();
 
         protected:
             void setupPipelineBuilder(std::unique_ptr<PipelineBuilder>);
@@ -85,6 +86,7 @@ namespace urchin {
 
             std::map<uint32_t, ShaderDataContainer> uniformData;
             std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
+            std::vector<std::shared_ptr<TextureReader>> replacedTextureReaders;
             std::map<uint32_t, std::shared_ptr<Texture>> uniformTextureOutputs;
             std::map<uint32_t, ShaderDataContainer> storageBufferData;
             mutable std::vector<OffscreenRender*> texturesWriter;

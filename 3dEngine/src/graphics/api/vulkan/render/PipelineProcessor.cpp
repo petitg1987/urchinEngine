@@ -42,6 +42,7 @@ namespace urchin {
 
     PipelineProcessor::~PipelineProcessor() {
         uniformTextureReaders.clear();
+        replacedTextureReaders.clear();
         uniformTextureOutputs.clear();
         renderTarget.removeProcessor(this);
     }
@@ -352,7 +353,12 @@ namespace urchin {
 
         if (!getRenderTarget().isTestMode()) {
             textureReader->initialize();
-            uniformTextureReaders.at(binding)[textureIndex] = textureReader;
+
+            std::shared_ptr<TextureReader>& uniformTextureReader = uniformTextureReaders.at(binding)[textureIndex];
+            if (uniformTextureReader != textureReader) {
+                replacedTextureReaders.emplace_back(std::move(uniformTextureReader)); //kept alive until command buffers using them are idle
+                uniformTextureReader = textureReader;
+            }
 
             std::fill(descriptorSetsDirty.begin(), descriptorSetsDirty.end(), true);
         }
@@ -428,6 +434,10 @@ namespace urchin {
 
     std::vector<VkDescriptorSet>& PipelineProcessor::getDescriptorSets() {
         return descriptorSets;
+    }
+
+    void PipelineProcessor::releaseReplacedTextureReaders() {
+        replacedTextureReaders.clear();
     }
 
     bool PipelineProcessor::needCommandBufferRefresh(std::size_t framebufferIndex) const {

@@ -495,6 +495,9 @@ namespace urchin {
             beginInfo.pInheritanceInfo = nullptr; //only relevant for secondary command buffers
 
             waitCommandBuffersIdle();
+            for (PipelineProcessor* processor : processors) {
+                processor->releaseReplacedTextureReaders();
+            }
             VkResult resultResetCmdPool = vkResetCommandPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
             if (resultResetCmdPool != VK_SUCCESS) {
                 throw std::runtime_error("Failed to reset command pool with error code '" + std::string(string_VkResult(resultResetCmdPool)) + "' on render target: " + getName());
