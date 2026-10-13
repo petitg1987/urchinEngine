@@ -43,7 +43,6 @@ namespace urchin {
             uint64_t getTotalVideoMemory() const;
             GpuType getGpuType() const;
             void updateGammaFactor(float);
-            void takeScreenShot(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
             //events
             bool onKeyPress(InputKey);

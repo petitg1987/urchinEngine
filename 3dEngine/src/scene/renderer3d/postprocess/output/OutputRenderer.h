@@ -12,6 +12,7 @@ namespace urchin {
             ~OutputRenderer();
 
             void refreshInputTexture(const std::shared_ptr<Texture>&);
+            const std::shared_ptr<Texture>& getInputTexture() const;
             void onGammaFactorUpdate(float);
 
             void render(unsigned int) const;

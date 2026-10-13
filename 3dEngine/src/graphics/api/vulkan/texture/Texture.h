@@ -36,6 +36,7 @@ namespace urchin {
             friend class RenderTarget;
             friend class OffscreenRender;
             friend class ScreenRender;
+            friend class CaptureService;
 
             ~Texture() override;
 

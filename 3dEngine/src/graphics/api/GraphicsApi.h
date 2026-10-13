@@ -10,6 +10,7 @@
     #include "graphics/api/vulkan/render/GenericRenderer.h"
     #include "graphics/api/vulkan/render/GenericCompute.h"
     #include "graphics/api/vulkan/render/TextureCopier.h"
+    #include "graphics/api/vulkan/capture/CaptureService.h"
     #include "graphics/api/vulkan/render/target/RenderTarget.h"
     #include "graphics/api/vulkan/render/target/OffscreenRender.h"
     #include "graphics/api/vulkan/render/target/ScreenRender.h"

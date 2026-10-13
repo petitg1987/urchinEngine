@@ -221,6 +221,13 @@ namespace urchin {
         outputRenderer.onGammaFactorUpdate(getGammaFactor());
     }
 
+    void Renderer3d::takeScreenshot(const std::string& filename, unsigned int width, unsigned int height) const {
+        if (!lastRenderedSceneTexture) {
+            throw std::runtime_error("Impossible to take a screenshot: no scene rendered yet");
+        }
+        CaptureService::instance().takeCapture(filename, *lastRenderedSceneTexture, width, height);
+    }
+
     void Renderer3d::onCameraProjectionUpdate() {
         ScopeProfiler sp(Profiler::graphic(), "render3dProjUp");
 
@@ -353,6 +360,7 @@ namespace urchin {
         }
 
         outputRenderer.render(screenRenderingOrder);
+        lastRenderedSceneTexture = outputRenderer.getInputTexture();
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);

@@ -29,6 +29,10 @@ namespace urchin {
         }
     }
 
+    const std::shared_ptr<Texture>& OutputRenderer::getInputTexture() const {
+        return sceneTexture;
+    }
+
     void OutputRenderer::onGammaFactorUpdate(float gammaFactor) {
         this->gammaFactor = gammaFactor;
 

@@ -228,10 +228,6 @@ namespace urchin {
         }
     }
 
-    void Scene::takeScreenShot(const std::string& filename, unsigned int width, unsigned int height) const {
-        screenRenderTarget.takeScreenshot(filename, width, height);
-    }
-
     bool Scene::onKeyPress(InputKey key) {
         for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onKeyPress(key)) {

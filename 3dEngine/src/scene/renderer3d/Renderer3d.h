@@ -61,6 +61,7 @@ namespace urchin {
             ReflectionApplier& getReflectionApplier();
             void updateRenderingScale(float);
             void applyUpdatedGammaFactor() override;
+            void takeScreenshot(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
             //camera
             Camera& getCamera() const;
@@ -183,6 +184,7 @@ namespace urchin {
             bool isReflectionActivated;
             TransparentManager transparentManager;
             OutputRenderer outputRenderer;
+            std::shared_ptr<Texture> lastRenderedSceneTexture;
 
             //debug
             bool refreshDebugFramebuffers;

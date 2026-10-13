@@ -28,8 +28,6 @@ namespace urchin {
             std::size_t getNumFramebuffer() const override;
             std::size_t getNumColorAttachment() const override;
 
-            void takeScreenshot(const std::string&, unsigned int = 0, unsigned int = 0) const;
-
             void render(uint32_t, unsigned int) override;
 
         private:
