@@ -10,6 +10,8 @@ namespace urchin {
             values(values),
             selectedIndex(0),
             state(DEFAULT),
+            navigationKeyPressed(std::nullopt),
+            keyPressedRepeatCountdown(0.0f),
             currentValueText(nullptr),
             cursorImage(nullptr) {
         if (values.size() < 2) {
@@ -87,14 +89,13 @@ namespace urchin {
     }
 
     bool Slider::onKeyPressEvent(InputKey key) {
-        if (isGameControllerFocused()) {
-            if (InputKeyNavigation::isLeft(key)) {
-                shiftSliderValue(true);
-                return false;
-            } else if (InputKeyNavigation::isRight(key)) {
-                shiftSliderValue(false);
-                return false;
+        if (isGameControllerFocused() && (InputKeyNavigation::isLeft(key) || InputKeyNavigation::isRight(key))) {
+            if (navigationKeyPressed != key) {
+                navigationKeyPressed = key;
+                keyPressedRepeatCountdown = KEY_PRESSED_REPEAT_DELAY;
+                shiftSliderValue(InputKeyNavigation::isLeft(key));
             }
+            return false;
         }
 
         if (key == InputKey::LMB) {
@@ -113,6 +114,8 @@ namespace urchin {
     bool Slider::onKeyReleaseEvent(InputKey key) {
         if (key == InputKey::LMB) {
             state = DEFAULT;
+        } else if (navigationKeyPressed == key) {
+            resetNavigationKeyPressed();
         }
         return true;
     }
@@ -127,6 +130,32 @@ namespace urchin {
 
     void Slider::onResetStateEvent() {
         state = DEFAULT;
+        resetNavigationKeyPressed();
+    }
+
+    void Slider::onGameControllerFocusUpdate() {
+        resetNavigationKeyPressed();
+    }
+
+    void Slider::resetNavigationKeyPressed() {
+        navigationKeyPressed.reset();
+        keyPressedRepeatCountdown = 0.0f;
+    }
+
+    void Slider::prepareWidgetRendering(float dt) {
+        if (navigationKeyPressed.has_value()) {
+            if (!isGameControllerFocused()) {
+                resetNavigationKeyPressed();
+            } else {
+                keyPressedRepeatCountdown -= dt;
+                if (keyPressedRepeatCountdown <= 0.0f) {
+                    std::cout<<keyPressedRepeatCountdown<<std::endl;
+                    shiftSliderValue(InputKeyNavigation::isLeft(navigationKeyPressed.value()));
+                    keyPressedRepeatCountdown = std::min(KEY_PRESSED_REPEAT_MAX_INTERVAL,
+                        std::max(0.0f, (KEY_PRESSED_REPEAT_INTERVAL_E2E / (float)values.size()) + keyPressedRepeatCountdown));
+                }
+            }
+        }
     }
 
     void Slider::updateSliderValue(int mouseX) {

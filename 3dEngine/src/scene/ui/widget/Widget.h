@@ -161,7 +161,7 @@ namespace urchin {
 
             Outline widgetPadding;
             WidgetState widgetState;
-            bool hasGameControllerFocus;
+            bool hasGameControllerFocus; //widget focused by keyboard or gamepad (mouse excluded)
 
             Position position;
             Size size;

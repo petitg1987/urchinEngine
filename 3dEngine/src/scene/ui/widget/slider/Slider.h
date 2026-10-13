@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <optional>
 
 #include "scene/ui/widget/Widget.h"
 #include "scene/ui/widget/Position.h"
@@ -17,6 +18,7 @@ namespace urchin {
             static std::shared_ptr<Slider> create(Widget*, Position, Size, std::string, const std::vector<ParameterizedText>&);
 
             WidgetType getWidgetType() const override;
+            void prepareWidgetRendering(float) override;
 
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
@@ -31,14 +33,20 @@ namespace urchin {
             bool onKeyReleaseEvent(InputKey) override;
             bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;
+            void onGameControllerFocusUpdate() override;
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
             void updateSliderValue(int);
             void shiftSliderValue(int);
             void moveSliderCursor() const;
+            void resetNavigationKeyPressed();
+
+            static constexpr float TEXT_SHIFT_LENGTH = 25.0f;
+            static constexpr float KEY_PRESSED_REPEAT_DELAY = 0.4f;
+            static constexpr float KEY_PRESSED_REPEAT_INTERVAL_E2E = 4.0f;
+            static constexpr float KEY_PRESSED_REPEAT_MAX_INTERVAL = 0.04f;
 
             //display information
-            static constexpr float TEXT_SHIFT_LENGTH = 25.0f;
             const std::string skinName;
             const std::vector<ParameterizedText> values;
             unsigned int selectedIndex;
@@ -49,6 +57,8 @@ namespace urchin {
                 CURSOR_SELECTED,
             };
             TextBoxStates state;
+            std::optional<InputKey> navigationKeyPressed;
+            float keyPressedRepeatCountdown;
 
             //visual
             std::shared_ptr<Text> currentValueText;
