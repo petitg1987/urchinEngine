@@ -149,7 +149,6 @@ namespace urchin {
             } else {
                 keyPressedRepeatCountdown -= dt;
                 if (keyPressedRepeatCountdown <= 0.0f) {
-                    std::cout<<keyPressedRepeatCountdown<<std::endl;
                     shiftSliderValue(InputKeyNavigation::isLeft(navigationKeyPressed.value()));
                     keyPressedRepeatCountdown = std::min(KEY_PRESSED_REPEAT_MAX_INTERVAL,
                         std::max(0.0f, (KEY_PRESSED_REPEAT_INTERVAL_E2E / (float)values.size()) + keyPressedRepeatCountdown));
