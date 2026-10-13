@@ -42,7 +42,7 @@ namespace urchin {
 
         VkSwapchainCreateInfoKHR createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-        createInfo.surface = GraphicsSetupService::getSurface();
+        createInfo.surface = GraphicsSetupService::instance().getSurface();
         createInfo.minImageCount = imageCount;
         createInfo.imageFormat = imgFormat;
         createInfo.imageColorSpace = imgColorSpace;
@@ -119,33 +119,33 @@ namespace urchin {
 
     SwapChainSupportDetails SwapChainHandler::querySwapChainSupport(VkPhysicalDevice physicalDevice) {
         SwapChainSupportDetails details;
-        VkResult resultSurfaceCapabilities = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, GraphicsSetupService::getSurface(), &details.capabilities);
+        VkResult resultSurfaceCapabilities = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, GraphicsSetupService::instance().getSurface(), &details.capabilities);
         if (resultSurfaceCapabilities != VK_SUCCESS) {
             throw std::runtime_error("Failed to get surface capabilities with error code: " + std::string(string_VkResult(resultSurfaceCapabilities)));
         }
 
         uint32_t formatCount;
-        VkResult resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicsSetupService::getSurface(), &formatCount, nullptr);
+        VkResult resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicsSetupService::instance().getSurface(), &formatCount, nullptr);
         if (resultSurfaceFormats != VK_SUCCESS && resultSurfaceFormats != VK_INCOMPLETE) {
             throw std::runtime_error("Failed to get surface formats with error code: " + std::string(string_VkResult(resultSurfaceFormats)));
         }
         if (formatCount != 0) {
             assert(formatCount < 9999); //format count contains wrong value when xcb library is linked statically (bug ?)
             details.formats.resize(formatCount);
-            resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicsSetupService::getSurface(), &formatCount, details.formats.data());
+            resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicsSetupService::instance().getSurface(), &formatCount, details.formats.data());
             if (resultSurfaceFormats != VK_SUCCESS && resultSurfaceFormats != VK_INCOMPLETE) {
                 throw std::runtime_error("Failed to get surface formats with error code: " + std::to_string(resultSurfaceFormats));
             }
         }
 
         uint32_t presentModeCount;
-        VkResult resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicsSetupService::getSurface(), &presentModeCount, nullptr);
+        VkResult resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicsSetupService::instance().getSurface(), &presentModeCount, nullptr);
         if (resultSurfacePresentMode != VK_SUCCESS && resultSurfacePresentMode != VK_INCOMPLETE) {
             throw std::runtime_error("Failed to get surface present modes with error code: " + std::string(string_VkResult(resultSurfacePresentMode)));
         }
         if (presentModeCount != 0) {
             details.presentModes.resize(presentModeCount);
-            resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicsSetupService::getSurface(), &presentModeCount, details.presentModes.data());
+            resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicsSetupService::instance().getSurface(), &presentModeCount, details.presentModes.data());
             if (resultSurfacePresentMode != VK_SUCCESS && resultSurfacePresentMode != VK_INCOMPLETE) {
                 throw std::runtime_error("Failed to get surface present modes with error code: " + std::string(string_VkResult(resultSurfacePresentMode)));
             }

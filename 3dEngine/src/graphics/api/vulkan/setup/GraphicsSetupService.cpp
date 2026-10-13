@@ -8,10 +8,6 @@ using namespace urchin;
 
 namespace urchin {
 
-    //static
-    VkInstance GraphicsSetupService::vkInstance = nullptr;
-    VkSurfaceKHR GraphicsSetupService::surface = nullptr;
-
     GraphicsSetupService& GraphicsSetupService::instance() {
         static GraphicsSetupService instance;
         return instance;
@@ -21,6 +17,8 @@ namespace urchin {
             framebufferSizeRetriever(nullptr),
             isInitialized(false),
             vulkanVersion(VK_API_VERSION_1_3), //must be aligned with glslc target environment
+            vkInstance(nullptr),
+            surface(nullptr),
             allocateCommandPool(nullptr),
             allocator(nullptr) {
 
@@ -28,7 +26,6 @@ namespace urchin {
 
     GraphicsSetupService::~GraphicsSetupService() {
         assert(!isInitialized);
-        destroyUniqueInstanceAndSurface();
     }
 
     void GraphicsSetupService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator,
@@ -39,7 +36,8 @@ namespace urchin {
         this->validationLayer = std::make_unique<ValidationLayer>();
         this->deviceHandler = std::make_unique<DeviceHandler>();
 
-        createUniqueInstanceAndSurface(windowRequiredExtensions, surfaceCreator);
+        createInstance(windowRequiredExtensions);
+        surface = static_cast<VkSurfaceKHR>(surfaceCreator->createSurface(vkInstance));
         validationLayer->initializeDebugMessenger(vkInstance);
         deviceHandler->initializeDevices(vkInstance, surface);
         queueHandler.initializeQueueFamilies(deviceHandler->getPhysicalDevice(), surface);
@@ -62,35 +60,19 @@ namespace urchin {
         vkDestroyCommandPool(getDevices().getLogicalDevice(), allocateCommandPool, nullptr);
 
         deviceHandler.reset();
+
+        vkDestroySurfaceKHR(vkInstance, surface, nullptr);
+        surface = nullptr;
+
         validationLayer.reset();
+
+        vkDestroyInstance(vkInstance, nullptr);
+        vkInstance = nullptr;
 
         isInitialized = false;
     }
 
-    void GraphicsSetupService::createUniqueInstanceAndSurface(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator) const {
-        //create a unique instance/surface for the whole lifetime of the application because some UI libraries do not support the re-creation
-        if (!vkInstance) {
-            createInstance(windowRequiredExtensions);
-        }
-
-        if (!surface) {
-            surface = static_cast<VkSurfaceKHR>(surfaceCreator->createSurface(vkInstance));
-        }
-    }
-
-    void GraphicsSetupService::destroyUniqueInstanceAndSurface() const {
-        if (surface) {
-            vkDestroySurfaceKHR(vkInstance, surface, nullptr);
-            surface = nullptr;
-        }
-
-        if (vkInstance) {
-            vkDestroyInstance(vkInstance, nullptr);
-            vkInstance = nullptr;
-        }
-    }
-
-    void GraphicsSetupService::createInstance(const std::vector<std::string>& windowRequiredExtensions) const {
+    void GraphicsSetupService::createInstance(const std::vector<std::string>& windowRequiredExtensions) {
         Logger::instance().logInfo("Creating a Vulkan instance with window required extensions: " + StringUtil::join(windowRequiredExtensions, ','));
 
         VkApplicationInfo applicationInfo{};
@@ -151,7 +133,7 @@ namespace urchin {
         return framebufferSizeRetriever;
     }
 
-    VkSurfaceKHR GraphicsSetupService::getSurface() {
+    VkSurfaceKHR GraphicsSetupService::getSurface() const {
         assert(surface);
         return surface;
     }

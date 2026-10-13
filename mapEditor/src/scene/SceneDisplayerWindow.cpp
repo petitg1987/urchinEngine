@@ -29,6 +29,10 @@ namespace urchin {
         connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Z), parent), &QShortcut::activated, this, [this] {onCtrlXYZPressed(2);});
     }
 
+    SceneDisplayerWindow::~SceneDisplayerWindow() {
+        releaseScene();
+    }
+
     void SceneDisplayerWindow::exposeEvent(QExposeEvent *) {
         if (isExposed()) {
             render(); //launch first frame
@@ -65,6 +69,11 @@ namespace urchin {
             } case QEvent::Resize: {
                 resizeScene();
                 break;
+            } case QEvent::PlatformSurface: {
+                if (static_cast<QPlatformSurfaceEvent*>(e)->surfaceEventType() == QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed) {
+                    releaseScene();
+                }
+                break;
             } case QEvent::Leave: { //mouse leaves widget
                 Point2<double> mousePositionInPixel = mouseController.getMousePosition();
                 if (sceneDisplayer && sceneDisplayer->getObjectMoveController() && !geometry().contains(QPoint((int)mousePositionInPixel.X, (int)mousePositionInPixel.Y))) {
@@ -97,6 +106,20 @@ namespace urchin {
         setVulkanInstance(&vulkanInstance);
     }
 
+    Scene& SceneDisplayerWindow::getScene() {
+        if (!scene) {
+            SceneDisplayer::initializeEngineResources(mapEditorPath);
+            scene = std::make_unique<Scene>(SceneWindowController::windowRequiredExtensions(), sceneWindowController.getSurfaceCreator(), sceneWindowController.getFramebufferSizeRetriever(), true);
+        }
+        return *scene;
+    }
+
+    void SceneDisplayerWindow::releaseScene() {
+        sceneDisplayer.reset(nullptr);
+        scene.reset(nullptr);
+        clearVkInstance();
+    }
+
     void SceneDisplayerWindow::clearVkInstance() {
         vulkanInstance.destroy();
         setVulkanInstance(nullptr);
@@ -106,7 +129,7 @@ namespace urchin {
         closeMap();
         statusBarController.applyState(MAP_LOADED);
 
-        sceneDisplayer = std::make_unique<SceneDisplayer>(sceneWindowController, &sceneController, mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(getScene(), &sceneController, mouseController, statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize( //size is computed in pixel
                 MathFunction::roundToUInt((float)geometry().width() * (float)devicePixelRatio()),
@@ -116,7 +139,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::loadEmptyScene() {
-        sceneDisplayer = std::make_unique<SceneDisplayer>(sceneWindowController, nullptr, mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(getScene(), nullptr, mouseController, statusBarController);
         sceneDisplayer->loadEmptyScene(mapEditorPath);
         sceneDisplayer->resize( //size is computed in pixel
                 MathFunction::roundToUInt((float)geometry().width() * (float)devicePixelRatio()),
@@ -131,8 +154,6 @@ namespace urchin {
 
     void SceneDisplayerWindow::closeMap() {
         statusBarController.clearState();
-        clearVkInstance();
-
         sceneDisplayer.reset(nullptr);
     }
 

@@ -12,7 +12,7 @@ namespace urchin {
             GraphicsApiService(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, FramebufferSizeRetriever&);
             ~GraphicsApiService();
 
-            void frameStart(uint32_t);
+            void frameStart(uint32_t) const;
             void frameEnd() const;
 
             uint64_t getUsedMemory() const;

@@ -23,7 +23,7 @@ namespace urchin {
             void cleanup();
 
             const FramebufferSizeRetriever* getFramebufferSizeRetriever() const;
-            static VkSurfaceKHR getSurface();
+            VkSurfaceKHR getSurface() const;
             const DeviceHandler& getDevices() const;
             const QueueHandler& getQueues() const;
             VkCommandPool getAllocateCommandPool() const;
@@ -33,20 +33,16 @@ namespace urchin {
         private:
             GraphicsSetupService();
 
-            void createUniqueInstanceAndSurface(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&) const;
-            void destroyUniqueInstanceAndSurface() const;
-
-            void createInstance(const std::vector<std::string>&) const;
+            void createInstance(const std::vector<std::string>&);
 
             void createAllocateCommandPool();
             void createAllocator();
 
-            static VkInstance vkInstance;
-            static VkSurfaceKHR surface;
-
             FramebufferSizeRetriever* framebufferSizeRetriever;
             bool isInitialized;
             const uint32_t vulkanVersion;
+            VkInstance vkInstance;
+            VkSurfaceKHR surface;
             std::unique_ptr<ValidationLayer> validationLayer;
             std::unique_ptr<DeviceHandler> deviceHandler;
             QueueHandler queueHandler;

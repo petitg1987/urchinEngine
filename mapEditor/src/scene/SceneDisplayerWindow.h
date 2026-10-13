@@ -17,7 +17,7 @@ namespace urchin {
 
         public:
             SceneDisplayerWindow(QWidget*, StatusBarController&, std::string);
-            ~SceneDisplayerWindow() override = default;
+            ~SceneDisplayerWindow() override;
 
             enum NotificationType {
                 BODY_PICKED
@@ -53,6 +53,8 @@ namespace urchin {
             void addObserverObjectMoveController(Observer*, int) const;
 
         private:
+            Scene& getScene();
+            void releaseScene();
             void clearVkInstance();
             void updateSceneDisplayerViewProperties() const;
             void resizeScene() const;
@@ -65,6 +67,7 @@ namespace urchin {
 
             SceneWindowController sceneWindowController;
             MouseController mouseController;
+            std::unique_ptr<Scene> scene;
             std::unique_ptr<SceneDisplayer> sceneDisplayer;
             std::array<bool, SceneDisplayer::LAST_VIEW_PROPERTIES> viewProperties;
 

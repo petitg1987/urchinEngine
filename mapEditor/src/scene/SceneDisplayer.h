@@ -18,9 +18,6 @@
 
 namespace urchin {
 
-    class SceneDisplayerWindow;
-    class SceneWindowController;
-
     class SceneDisplayer {
         public:
             enum ViewProperties {
@@ -32,8 +29,10 @@ namespace urchin {
                 LAST_VIEW_PROPERTIES
             };
 
-            SceneDisplayer(SceneWindowController&, SceneController*, MouseController&, StatusBarController&);
+            SceneDisplayer(Scene&, SceneController*, MouseController&, StatusBarController&);
             ~SceneDisplayer();
+
+            static void initializeEngineResources(const std::string&);
 
             void loadMap(const std::string&, const std::string&, const std::string&);
             void loadEmptyScene(const std::string&);
@@ -55,7 +54,6 @@ namespace urchin {
             ObjectMoveController* getObjectMoveController() const;
 
         private:
-            static void initializeEngineResources(const std::string&);
             void initializeScene(const std::string&);
 
             void refreshObjectsModel() const;
@@ -64,13 +62,12 @@ namespace urchin {
             void refreshNavMeshModel() const;
 
             bool isInitialized;
-            SceneWindowController& windowController;
+            Scene& scene;
             SceneController* sceneController;
             MouseController& mouseController;
             StatusBarController& statusBarController;
 
             //3d
-            std::unique_ptr<Scene> scene;
             std::shared_ptr<SceneFreeCamera> camera;
             std::unique_ptr<BodyShapeDisplayer> bodyShapeDisplayer;
             std::unique_ptr<ObjectMoveController> objectMoveController;

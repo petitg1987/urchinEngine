@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     QApplication::setWindowIcon(QIcon(QApplication::applicationDirPath() + "/icon/icon.png"));
     QApplication::setDesktopFileName("urchinmapeditor");
 
-    new MapEditorWindow(std::string(argv[0]));
+    MapEditorWindow mapEditorWindow(argv[0]);
 
     int mainResult = QApplication::exec();
     if (mainResult == 0) {
