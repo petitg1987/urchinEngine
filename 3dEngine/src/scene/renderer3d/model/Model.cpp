@@ -216,6 +216,11 @@ namespace urchin {
         }
     }
 
+    void Model::onTransformUpdated() {
+        onMoving(transform);
+        notifyObservers(this, TRANSFORM_UPDATED);
+    }
+
     void Model::notifyMeshVerticesUpdatedByAnimation() {
         std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
         for (std::size_t updatedMeshIndex : activeAnimation->getAnimatedMeshIndices()) {
@@ -319,21 +324,21 @@ namespace urchin {
     void Model::setPosition(const Point3<float>& position) {
         if (position != transform.getPosition()) {
             transform.setPosition(position);
-            onMoving(transform);
+            onTransformUpdated();
         }
     }
 
     void Model::setOrientation(const Quaternion<float>& orientation) {
         if (orientation != transform.getOrientation()) {
             transform.setOrientation(orientation);
-            onMoving(transform);
+            onTransformUpdated();
         }
     }
 
     void Model::setScale(const Vector3<float>& scale) {
         if (scale != transform.getScale()) {
             transform.setScale(scale);
-            onMoving(transform);
+            onTransformUpdated();
             notifyObservers(this, SCALE_UPDATED);
         }
     }
@@ -342,7 +347,7 @@ namespace urchin {
         if (transform != this->transform) {
             bool scaleUpdated = this->transform.getScale() != transform.getScale();
             this->transform = transform;
-            onMoving(transform);
+            onTransformUpdated();
             if (scaleUpdated) {
                 notifyObservers(this, SCALE_UPDATED);
             }
@@ -409,8 +414,11 @@ namespace urchin {
         Vector3 up = forward.crossProduct(right).normalize();
         Matrix3 rotationMatrix = Matrix3<float>::buildRotation(right, up, forward);
 
-        transform.setOrientation(Quaternion<float>::fromRotationMatrix(rotationMatrix));
-        onMoving(transform);
+        Quaternion<float> orientation = Quaternion<float>::fromRotationMatrix(rotationMatrix);
+        if (orientation != transform.getOrientation()) {
+            transform.setOrientation(orientation);
+            onTransformUpdated();
+        }
     }
 
     void Model::updateVertices(unsigned int meshIndex, const std::vector<Point3<float>>& vertices) {

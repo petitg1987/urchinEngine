@@ -18,7 +18,7 @@ Game engine library in C++23: 3D, Physics, Sound, Network, IA, Map Editor
     * Ambient
     * Emissive
     * Depth test/write
-  * Dynamic shadow: cascade shadow maps + improved PCF filter + stabilized shadow
+  * Dynamic shadow: cascade shadow maps + improved PCF filter + stabilized shadow + cache
   * Dynamic lighting with deferred shading: directional, omnidirectional, spot
   * Terrain multi-layered and objects spawner (grass, rocks...)
   * Ambient occlusion (SSAO+)

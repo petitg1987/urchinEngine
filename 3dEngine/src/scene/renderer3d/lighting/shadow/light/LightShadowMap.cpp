@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <utility>
+#include <cstring>
 
 #include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
 #include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
@@ -18,7 +19,9 @@ namespace urchin {
             shadowViewDistance(shadowViewDistance),
             shadowMapResolution(shadowMapResolution),
             defaultEmptyModel(ModelBuilder().newEmptyModel("defaultEmptyShadowModel")),
-            modelsToLayersMask(EverGrowHashMap<Model*, std::bitset<8>>()) {
+            currentModelsToLayersMask(EverGrowHashMap<Model*, std::bitset<8>>()),
+            shadowMapOutdated(true),
+            displayedModelsToLayersMask(EverGrowHashMap<Model*, std::bitset<8>>()) {
 
         if (nbSplitShadowMaps > ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) {
             throw std::invalid_argument("Number of split shadow maps must be <= " + std::to_string(ShadowManager::SPLIT_SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(nbSplitShadowMaps));
@@ -54,6 +57,23 @@ namespace urchin {
                 shadowModelSetDisplayer->initialize(*renderTarget);
             } else {
                 throw std::runtime_error("Unknown light type to setup shadow model set displayer: " + std::to_string((int)light.getLightType()));
+            }
+        }
+    }
+
+    LightShadowMap::~LightShadowMap() {
+        for (const auto& displayedModelToLayersMask : displayedModelsToLayersMask) {
+            unobserveModel(*displayedModelToLayersMask.key);
+        }
+    }
+
+    void LightShadowMap::notify(Observable* observable, int notificationType) {
+        if (dynamic_cast<Model*>(observable)) {
+            if (notificationType == Model::TRANSFORM_UPDATED
+                    || notificationType == Model::MESH_VERTICES_UPDATED
+                    || notificationType == Model::MATERIAL_UPDATED
+                    || notificationType == Model::MODEL_PROPERTIES_UPDATED) {
+                shadowMapOutdated = true;
             }
         }
     }
@@ -102,24 +122,27 @@ namespace urchin {
         return lightSplitShadowMaps;
     }
 
-    void LightShadowMap::removeModel(Model* model) const {
+    void LightShadowMap::removeModel(Model* model) {
         shadowModelSetDisplayer->unregisterModel(model);
+
+        if (displayedModelsToLayersMask.erase(model)) {
+            unobserveModel(*model);
+            shadowMapOutdated = true;
+        }
     }
 
     void LightShadowMap::updateVisibleModels() {
         ScopeProfiler sp(Profiler::graphic(), "smUpModels");
 
-        shadowModelSetDisplayer->resetModelsToDisplay();
-
-        modelsToLayersMask.clear();
+        currentModelsToLayersMask.clear();
         std::size_t layerIndex = 0;
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
             std::span<Model* const> modelsBySplit = lightSplitShadowMap->retrieveVisibleModels();
 
             for (Model* const model : modelsBySplit) {
-                std::bitset<8>* foundLayersMask = modelsToLayersMask.find(model);
+                std::bitset<8>* foundLayersMask = currentModelsToLayersMask.find(model);
                 if (foundLayersMask == nullptr) {
-                    modelsToLayersMask.insert(model, std::bitset<8>(1 << layerIndex));
+                    currentModelsToLayersMask.insert(model, std::bitset<8>(1 << layerIndex));
                 } else {
                     foundLayersMask->set(layerIndex);
                 }
@@ -127,18 +150,93 @@ namespace urchin {
             layerIndex++;
         }
 
-        if (modelsToLayersMask.isEmpty()) { //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
-            modelsToLayersMask.insert(defaultEmptyModel.get(), std::bitset<8>(255));
+        if (currentModelsToLayersMask.isEmpty()) { //At least one model is required to have the shadow map in correct layout (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)
+            currentModelsToLayersMask.insert(defaultEmptyModel.get(), std::bitset<8>(255));
         }
 
-        for (const auto& modelToLayersMask : modelsToLayersMask) {
-            shadowModelSetDisplayer->addModelToDisplay(modelToLayersMask.key, modelToLayersMask.value);
+        if (shadowMapOutdated || hasShadowCastersChanged()) {
+            updateShadowCasters();
+
+            shadowModelSetDisplayer->resetModelsToDisplay();
+            for (const auto& modelToLayersMask : displayedModelsToLayersMask) {
+                shadowModelSetDisplayer->addModelToDisplay(modelToLayersMask.key, modelToLayersMask.value);
+            }
+
+            shadowMapOutdated = true;
         }
     }
 
-    void LightShadowMap::renderModels(uint32_t frameCount, unsigned int numDependenciesToShadowMaps, unsigned int renderingOrder) const {
+    bool LightShadowMap::hasShadowCastersChanged() {
+        if (currentModelsToLayersMask.getSize() != displayedModelsToLayersMask.getSize()) {
+            return true;
+        }
+
+        for (const auto& modelToLayersMask : currentModelsToLayersMask) {
+            const std::bitset<8>* displayedLayersMask = displayedModelsToLayersMask.find(modelToLayersMask.key);
+            if (displayedLayersMask == nullptr || *displayedLayersMask != modelToLayersMask.value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void LightShadowMap::updateShadowCasters() {
+        for (const auto& displayedModelToLayersMask : displayedModelsToLayersMask) {
+            if (currentModelsToLayersMask.find(displayedModelToLayersMask.key) == nullptr) {
+                unobserveModel(*displayedModelToLayersMask.key);
+            }
+        }
+        for (const auto& currentModelToLayersMask : currentModelsToLayersMask) {
+            if (displayedModelsToLayersMask.find(currentModelToLayersMask.key) == nullptr) {
+                observeModel(*currentModelToLayersMask.key);
+            }
+        }
+
+        //TODO find better solution. Local variable ?
+        std::swap(currentModelsToLayersMask, displayedModelsToLayersMask);
+        currentModelsToLayersMask.clear();
+    }
+
+    bool LightShadowMap::hasLightProjectionViewMatricesChanged() const {
+        if (renderedLightProjectionViewMatrices.size() != lightSplitShadowMaps.size()) {
+            return true;
+        }
+
+        for (std::size_t i = 0; i < lightSplitShadowMaps.size(); ++i) {
+            if (std::memcmp(&renderedLightProjectionViewMatrices[i], &lightSplitShadowMaps[i]->getLightProjectionViewMatrix(), sizeof(Matrix4<float>)) != 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void LightShadowMap::observeModel(Model& model) {
+        model.addObserver(this, Model::TRANSFORM_UPDATED);
+        model.addObserver(this, Model::MESH_VERTICES_UPDATED);
+        model.addObserver(this, Model::MATERIAL_UPDATED);
+        model.addObserver(this, Model::MODEL_PROPERTIES_UPDATED);
+    }
+
+    void LightShadowMap::unobserveModel(Model& model) {
+        model.removeObserver(this, Model::MODEL_PROPERTIES_UPDATED);
+        model.removeObserver(this, Model::MATERIAL_UPDATED);
+        model.removeObserver(this, Model::MESH_VERTICES_UPDATED);
+        model.removeObserver(this, Model::TRANSFORM_UPDATED);
+    }
+
+    void LightShadowMap::renderModels(uint32_t frameCount, unsigned int numDependenciesToShadowMaps, unsigned int renderingOrder) {
+        if (!shadowMapOutdated && !hasLightProjectionViewMatricesChanged()) {
+            return;
+        }
+
         renderTarget->disableAllProcessors();
         shadowModelSetDisplayer->prepareRendering(renderingOrder, Matrix4<float>() /* not used for shadow */);
         renderTarget->render(frameCount, numDependenciesToShadowMaps);
+
+        shadowMapOutdated = false;
+        renderedLightProjectionViewMatrices.clear();
+        for (const std::unique_ptr<LightSplitShadowMap>& lightSplitShadowMap : lightSplitShadowMaps) {
+            renderedLightProjectionViewMatrices.push_back(lightSplitShadowMap->getLightProjectionViewMatrix());
+        }
     }
 }

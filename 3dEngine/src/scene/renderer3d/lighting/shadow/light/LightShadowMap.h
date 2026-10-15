@@ -14,9 +14,12 @@ namespace urchin {
 
     class ShadowModelShaderVariable;
 
-    class LightShadowMap final {
+    class LightShadowMap final : public Observer {
         public:
             LightShadowMap(bool, Light&, const ModelOcclusionCuller&, float, unsigned int, unsigned int);
+            ~LightShadowMap() override;
+
+            void notify(Observable*, int) override;
 
             void onLightAffectedZoneUpdated() const;
             void onSplitFrustumUpdated(const std::vector<SplitFrustum>&) const;
@@ -30,12 +33,18 @@ namespace urchin {
 
             const std::vector<std::unique_ptr<LightSplitShadowMap>>& getLightSplitShadowMaps() const;
 
-            void removeModel(Model* model) const;
+            void removeModel(Model* model);
             void updateVisibleModels();
 
-            void renderModels(uint32_t, unsigned int, unsigned int) const;
+            void renderModels(uint32_t, unsigned int, unsigned int);
 
         private:
+            bool hasShadowCastersChanged();
+            void updateShadowCasters();
+            bool hasLightProjectionViewMatricesChanged() const;
+            void observeModel(Model&);
+            void unobserveModel(Model&);
+
             Light& light;
             const ModelOcclusionCuller& modelOcclusionCuller;
             float shadowViewDistance;
@@ -43,10 +52,15 @@ namespace urchin {
 
             std::vector<std::unique_ptr<LightSplitShadowMap>> lightSplitShadowMaps;
             std::unique_ptr<Model> defaultEmptyModel;
-            EverGrowHashMap<Model*, std::bitset<8>> modelsToLayersMask;
+            EverGrowHashMap<Model*, std::bitset<8>> currentModelsToLayersMask;
 
             std::unique_ptr<OffscreenRender> renderTarget;
             std::unique_ptr<ModelSetDisplayer> shadowModelSetDisplayer;
+
+            //shadow map cache data
+            bool shadowMapOutdated;
+            EverGrowHashMap<Model*, std::bitset<8>> displayedModelsToLayersMask;
+            std::vector<Matrix4<float>> renderedLightProjectionViewMatrices;
     };
 
 }

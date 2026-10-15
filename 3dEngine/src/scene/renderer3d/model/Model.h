@@ -18,14 +18,15 @@ namespace urchin {
     class Model final : public Octreeable<Model>, public ModelDisplayable {
         public:
             enum NotificationType {
-                MESH_VERTICES_UPDATED = MAX_NOTIFICATION_TYPE,
+                MESH_VERTICES_UPDATED = LAST_OCTREEABLE_NOTIFICATION_TYPE,
                 MESH_UV_UPDATED,
                 MATERIAL_UPDATED,
                 SCALE_UPDATED,
                 ANIMATION_STARTED,
                 BILLBOARDING_STARTED,
                 MODEL_PROPERTIES_UPDATED,
-                CULL_BEHAVIOR_UPDATED
+                CULL_BEHAVIOR_UPDATED,
+                TRANSFORM_UPDATED
             };
             enum class ShadowBehavior {
                 RECEIVER_AND_CASTER, //Models which can receive and cast shadow
@@ -93,6 +94,7 @@ namespace urchin {
             const AABBox<float> &getDefaultModelLocalAABBox() const;
             void initialize();
             void onMoving(const Transform<float>&);
+            void onTransformUpdated();
             void notifyMeshVerticesUpdatedByAnimation();
             void notifyMeshVerticesUpdated();
             void notifyMeshVerticesUpdated(unsigned int);

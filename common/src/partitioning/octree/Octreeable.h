@@ -21,7 +21,7 @@ namespace urchin {
 
             enum NotificationType {
                 MOVE,
-                MAX_NOTIFICATION_TYPE
+                LAST_OCTREEABLE_NOTIFICATION_TYPE
             };
 
             void notifyOctreeableMove();
