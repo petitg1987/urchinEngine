@@ -37,10 +37,30 @@ void EverGrowHashMapTest::insertGetErase() {
     AssertHelper::assertNull(map.find(12));
 }
 
+void EverGrowHashMapTest::moveAssignment() {
+    EverGrowHashMap<int, float> sourceMap(8, 0.75f);
+    sourceMap.insert(1, 1.0f);
+    sourceMap.insert(2, 2.0f);
+    EverGrowHashMap<int, float> targetMap(4, 0.75f);
+    targetMap.insert(3, 3.0f);
+
+    targetMap = std::move(sourceMap);
+
+    AssertHelper::assertUnsignedIntEquals(targetMap.getSize(), 2);
+    AssertHelper::assertUnsignedIntEquals(targetMap.getNumBuckets(), 8);
+    AssertHelper::assertFloatEquals(targetMap.at(1), 1.0f);
+    AssertHelper::assertFloatEquals(targetMap.at(2), 2.0f);
+    AssertHelper::assertNull(targetMap.find(3));
+    AssertHelper::assertTrue(sourceMap.isEmpty());
+    AssertHelper::assertUnsignedIntEquals(sourceMap.getNumBuckets(), 4);
+    AssertHelper::assertNull(sourceMap.find(3));
+}
+
 CppUnit::Test* EverGrowHashMapTest::suite() {
     auto* suite = new CppUnit::TestSuite("EverGrowHashMapTest");
 
     suite->addTest(new CppUnit::TestCaller("insertGetErase", &EverGrowHashMapTest::insertGetErase));
+    suite->addTest(new CppUnit::TestCaller("moveAssignment", &EverGrowHashMapTest::moveAssignment));
 
     return suite;
 }

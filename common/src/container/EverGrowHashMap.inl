@@ -46,6 +46,15 @@ template<typename K, typename V> EverGrowHashMap<K, V>::EverGrowHashMap(std::siz
     }
 }
 
+template<typename K, typename V> EverGrowHashMap<K, V>& EverGrowHashMap<K, V>::operator=(EverGrowHashMap&& other) noexcept {
+    std::swap(table, other.table);
+    std::swap(numBuckets, other.numBuckets);
+    std::swap(currentSize, other.currentSize);
+    std::swap(maxLoadFactor, other.maxLoadFactor);
+    other.clear();
+    return *this;
+}
+
 template<typename K, typename V> void EverGrowHashMap<K, V>::insert(const K& key, const V& value) {
     if (static_cast<float>(currentSize) / numBuckets > maxLoadFactor) {
         rehash();

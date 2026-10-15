@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <vector>
+#include <utility>
 
 namespace urchin {
 
@@ -34,6 +35,7 @@ namespace urchin {
             };
 
             explicit EverGrowHashMap(std::size_t = 8, float = 0.75);
+            EverGrowHashMap& operator=(EverGrowHashMap&&) noexcept;
 
             void insert(const K&, const V&);
             V at(const K&) const;

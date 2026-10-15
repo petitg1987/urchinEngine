@@ -10,7 +10,7 @@ namespace urchin {
             sceneWidth(0),
             sceneHeight(0),
             camera(nullptr),
-            sortUserData({.camera = nullptr, .modelsDistanceToCamera = EverGrowHashMap<const Model*, float>()}) {
+            sortUserData{.camera = nullptr, .modelsDistanceToCamera = EverGrowHashMap<const Model*, float>()} {
 
     }
 

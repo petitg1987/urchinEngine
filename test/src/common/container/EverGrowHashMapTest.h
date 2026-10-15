@@ -8,4 +8,5 @@ class EverGrowHashMapTest final : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void insertGetErase();
+        void moveAssignment();
 };

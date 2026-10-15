@@ -192,9 +192,7 @@ namespace urchin {
             }
         }
 
-        //TODO find better solution. Local variable ?
-        std::swap(currentModelsToLayersMask, displayedModelsToLayersMask);
-        currentModelsToLayersMask.clear();
+        displayedModelsToLayersMask = std::move(currentModelsToLayersMask);
     }
 
     bool LightShadowMap::hasLightProjectionViewMatricesChanged() const {
