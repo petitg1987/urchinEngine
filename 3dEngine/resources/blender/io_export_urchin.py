@@ -6,7 +6,7 @@ from mathutils import Matrix
 bl_info = {
     "name": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
     "version": (1, 0, 0),
-    "blender": (4, 0, 0),
+    "blender": (5, 0, 0),
     "location": "File > Export",
     "description": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
     "category": "Import-Export"}
@@ -444,7 +444,7 @@ def get_min_max(list_of_points):
 def get_meshes_to_export():
     meshes_to_export = []
     for obj in bpy.context.visible_objects:
-        if (obj is not None) and (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0):
+        if (obj is not None) and (obj.type == 'MESH') and (len(obj.data.vertices) > 0):
             meshes_to_export.append(obj)
 
     return meshes_to_export
@@ -493,8 +493,11 @@ def rotate_axis(obj_to_rotate, angle, axis):
     bpy.context.view_layer.objects.active = obj_to_rotate
     obj_to_rotate.select_set(True)
 
-    # Rotate
-    bpy.ops.transform.rotate(value=math.radians(angle), orient_axis=axis, orient_type='GLOBAL')
+    # Rotate around the object origin with a global axis
+    origin = obj_to_rotate.matrix_world.translation.copy()
+    rotation_matrix = Matrix.Translation(origin) @ Matrix.Rotation(math.radians(angle), 4, axis) @ Matrix.Translation(-origin)
+    obj_to_rotate.matrix_world = rotation_matrix @ obj_to_rotate.matrix_world
+    bpy.context.view_layer.update()
 
     # Apply rotation
     for child in bpy.context.object.children:
@@ -516,10 +519,10 @@ def export_urchin(settings):
 
     armature = find_armature(get_meshes_to_export())
     try:
-        rotate_axis(armature, 90, 'X')
+        rotate_axis(armature, -90, 'X') # Blender Z-up to Urchin Y-up
         export_all(settings)
     finally:
-        rotate_axis(armature, -90, 'X')
+        rotate_axis(armature, 90, 'X')
 
 
 def export_all(settings):
@@ -536,8 +539,7 @@ def export_all(settings):
     # MESH EXPORT
     meshes = []
     for mesh_to_export in get_meshes_to_export():
-        # Get the evaluate object => object where modifiers (triangulation...) are applied.
-        # More details: https://docs.blender.org/api/blender2.8/bpy.types.Depsgraph.html
+        # Get the evaluated object => object where modifiers (triangulation...) are applied
         deps_graph = bpy.context.evaluated_depsgraph_get()
         mesh_eval = mesh_to_export.evaluated_get(deps_graph)
         modified_mesh = mesh_eval.to_mesh()
@@ -546,19 +548,10 @@ def export_all(settings):
         print("Processing mesh: " + modified_mesh.name)
         meshes.append(mesh)
 
-        num_tris = 0
-        num_weights = 0
-        for f in modified_mesh.polygons:
-            num_tris += len(f.vertices) - 2
-        for v in modified_mesh.vertices:
-            num_weights += len(v.groups)
-
         w_matrix = mesh_to_export.matrix_world
         verts = modified_mesh.vertices
 
-        faces = []
-        for f in modified_mesh.polygons:
-            faces.append(f)
+        faces = list(modified_mesh.polygons)
 
         create_vertex_a = 0  # normal vertex
         create_vertex_b = 0  # cloned because flat face
@@ -587,16 +580,17 @@ def export_all(settings):
                     faces.remove(face)
                     face_vertices = []
                     for i in range(len(face.vertices)):
-                        vertex = False
-                        if face.vertices[i] in vertices:
-                            vertex = vertices[face.vertices[i]]
+                        # Smooth faces share a vertex only when they have the same corner normal: this keeps the sharp edges (e.g. 'Auto Smooth' modifier) split
+                        corner_normal = modified_mesh.corner_normals[face.loop_start + i].vector
+                        vertex_key = (face.vertices[i], round(corner_normal[0], 4), round(corner_normal[1], 4), round(corner_normal[2], 4))
+                        vertex = vertices.get(vertex_key)
 
                         if not vertex:  # found unique vertex, add to list
                             coord = point_by_matrix(verts[face.vertices[i]].co, w_matrix)
 
                             vertex = Vertex(sub_mesh, coord)
                             if face.use_smooth:  # smooth face can share vertex, not flat face
-                                vertices[face.vertices[i]] = vertex
+                                vertices[vertex_key] = vertex
                             create_vertex_a += 1
 
                             influences = []
