@@ -30,7 +30,7 @@ namespace urchin {
             explicit EverGrowHashSet(std::size_t = 8, float = 0.75);
 
             bool insert(const K&);
-            bool isExist(const K&);
+            bool isExist(const K&) const;
             bool erase(const K&);
             void clear();
 

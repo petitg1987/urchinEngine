@@ -58,10 +58,10 @@ template<typename K> bool EverGrowHashSet<K>::insert(const K& key) {
     return true;
 }
 
-template<typename K> bool EverGrowHashSet<K>::isExist(const K& key) {
+template<typename K> bool EverGrowHashSet<K>::isExist(const K& key) const {
     std::size_t index = hashFunc(key) % numBuckets;
 
-    for (auto& savedKey : table[index]) {
+    for (const auto& savedKey : table[index]) {
         if (savedKey == key) {
             return true;
         }
