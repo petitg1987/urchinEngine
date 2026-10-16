@@ -3,8 +3,11 @@
  */
 template<class FILTER> void ModelOcclusionCuller::getModelsInConvexObject(const ConvexObject3D<float>& convexObject, std::vector<Model*>& models, bool strictFiltering, const FILTER& filter) const {
     assert(models.empty());
-    getNoCullModels(models, filter);
-    modelOctreeManager.getOctreeablesIn(convexObject, models, strictFiltering, filter);
+    auto filterWithCustomFilter = [this, &filter](const Model* const model) {
+        return filter(model) && isVisibleByCustomFilter(*model);
+    };
+    getNoCullModels(models, filterWithCustomFilter);
+    modelOctreeManager.getOctreeablesIn(convexObject, models, strictFiltering, filterWithCustomFilter);
 }
 
 /**

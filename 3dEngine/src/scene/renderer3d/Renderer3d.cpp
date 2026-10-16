@@ -1,6 +1,4 @@
 #include <cstring>
-#include <chrono>
-#include <iostream>
 #include <optional>
 
 #include "scene/renderer3d/Renderer3d.h"
@@ -263,6 +261,10 @@ namespace urchin {
             return modelOcclusionCuller.removeModel(model);
         }
         return {nullptr};
+    }
+
+    void Renderer3d::setModelVisibilityCustomFilter(std::shared_ptr<const ModelVisibilityCustomFilter> modelVisibilityCustomFilter) {
+        modelOcclusionCuller.setModelVisibilityCustomFilter(std::move(modelVisibilityCustomFilter));
     }
 
     /**

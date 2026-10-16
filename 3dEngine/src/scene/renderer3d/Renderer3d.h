@@ -69,6 +69,7 @@ namespace urchin {
             //models
             void addModel(std::shared_ptr<Model>);
             std::shared_ptr<Model> removeModel(Model*);
+            void setModelVisibilityCustomFilter(std::shared_ptr<const ModelVisibilityCustomFilter>);
             void preWarmModels();
 
             //events

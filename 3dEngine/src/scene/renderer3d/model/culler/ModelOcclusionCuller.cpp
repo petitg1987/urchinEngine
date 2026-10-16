@@ -62,6 +62,14 @@ namespace urchin {
         return modelPtr;
     }
 
+    void ModelOcclusionCuller::setModelVisibilityCustomFilter(std::shared_ptr<const ModelVisibilityCustomFilter> modelVisibilityCustomFilter) {
+        this->modelVisibilityCustomFilter = std::move(modelVisibilityCustomFilter);
+    }
+
+    bool ModelOcclusionCuller::isVisibleByCustomFilter(const Model& model) const {
+        return !modelVisibilityCustomFilter || modelVisibilityCustomFilter->isVisible(model);
+    }
+
     /**
      * @param models [out] models in convex objects
      */
