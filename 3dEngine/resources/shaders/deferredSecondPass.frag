@@ -276,6 +276,10 @@ void main() {
             }
 
             LightValues lightValues = computeLightValues(lightInfo, normal, vec3(worldPosition));
+            if (lightValues.lightAttenuation <= 0.0 || lightValues.NdotL <= 0.0) {
+                continue;
+            }
+
             float lightAttenuation = reduceColorBanding(lightValues.lightAttenuation, 0.015, positioningData.cyclicFrameIndex);
 
             vec3 lightRadiance = lightInfo.lightColor * lightAttenuation;
