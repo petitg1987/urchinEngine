@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include "character/PhysicsCharacter.h"
 #include "character/CharacterControllerConfig.h"
@@ -16,6 +17,7 @@ namespace urchin {
 
         float maxDotProductUpNormalAxis;
         Vector3<float> mostUpVerticalNormal;
+        const AbstractBody* mostUpVerticalBody;
 
         float maxDotProductDownNormalAxis;
         Vector3<float> mostDownVerticalNormal;
@@ -45,6 +47,7 @@ namespace urchin {
 
             PhysicsCharacter& getPhysicsCharacter() const;
             bool isOnGround() const;
+            const std::string& getGroundBodyId() const;
             bool isGravityEnabled() const;
 
             void update(float);
@@ -58,7 +61,7 @@ namespace urchin {
             void updateBodiesTransform(float);
             void recoverFromPenetration(float);
             void resetSignificantContactValues();
-            void saveSignificantContactValues(const Vector3<float>&);
+            void saveSignificantContactValues(const Vector3<float>&, const AbstractBody&);
             void computeSignificantContactValues(float);
             float computeSlope() const;
             void respawnBodies();
@@ -87,10 +90,11 @@ namespace urchin {
             Point3<float> previousBodyPosition;
             Quaternion<float> initialOrientation;
             unsigned int numberOfHit; //number of contact point touching the character
-            bool onGround; //character is on the ground
+            bool onGround;
+            std::string groundBodyId;
             bool hitRoof; //character has hit the roof
             float timeInTheAir; //time (sec.) character is not on the ground
-            bool jumping; //character is jumping
+            bool jumping;
             bool gravityEnabled; //without gravity, character is able to navigate freely up and down
             float slopeInPercentage; //slope in percentage (a positive value means that character climb)
     };

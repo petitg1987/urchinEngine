@@ -119,6 +119,10 @@ namespace urchin {
         return onGround;
     }
 
+    const std::string& CharacterController::getGroundBodyId() const {
+        return groundBodyId;
+    }
+
     bool CharacterController::isGravityEnabled() const {
         return gravityEnabled;
     }
@@ -310,6 +314,7 @@ namespace urchin {
 
             for (const auto& manifoldResult : manifoldResults) {
                 float sign = &manifoldResult.getBody1() == ghostBody.get() ? -1.0f : 1.0f;
+                const AbstractBody& otherBody = &manifoldResult.getBody1() == ghostBody.get() ? manifoldResult.getBody2() : manifoldResult.getBody1();
                 for (unsigned int i = 0; i < manifoldResult.getNumContactPoints(); ++i) {
                     const ManifoldContactPoint& manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
                     float depth = manifoldContactPoint.getDepth();
@@ -323,7 +328,7 @@ namespace urchin {
                         ccdGhostBody->setTransform(characterTransform);
 
                         if (subStepIndex == 0) {
-                            saveSignificantContactValues(normal);
+                            saveSignificantContactValues(normal, otherBody);
                         }
                     }
                 }
@@ -338,18 +343,20 @@ namespace urchin {
 
         significantContactValues.maxDotProductUpNormalAxis = std::numeric_limits<float>::min();
         significantContactValues.mostUpVerticalNormal = Vector3<float>();
+        significantContactValues.mostUpVerticalBody = nullptr;
 
         significantContactValues.maxDotProductDownNormalAxis = -std::numeric_limits<float>::max();
         significantContactValues.mostDownVerticalNormal = Vector3<float>();
     }
 
-    void CharacterController::saveSignificantContactValues(const Vector3<float>& normal) {
+    void CharacterController::saveSignificantContactValues(const Vector3<float>& normal, const AbstractBody& body) {
         significantContactValues.numberOfHit++;
 
         float dotProductUpNormalAxis = -normal.Y; //equivalent to: (-normal).dotProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
         if (dotProductUpNormalAxis > significantContactValues.maxDotProductUpNormalAxis) {
             significantContactValues.maxDotProductUpNormalAxis = dotProductUpNormalAxis;
             significantContactValues.mostUpVerticalNormal = -normal;
+            significantContactValues.mostUpVerticalBody = &body;
         }
 
         float dotProductDownNormalAxis = normal.Y; //equivalent to: (-normal).dotProduct(Vector3<float>(0.0f, -1.0f, 0.0f));
@@ -363,6 +370,12 @@ namespace urchin {
         numberOfHit = significantContactValues.numberOfHit;
         onGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < config.getMaxSlopeInRadian();
         hitRoof = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < config.getMaxSlopeInRadian();
+
+        if (!onGround) {
+            groundBodyId = "";
+        } else if (groundBodyId != significantContactValues.mostUpVerticalBody->getId()) {
+            groundBodyId = significantContactValues.mostUpVerticalBody->getId();
+        }
 
         if (onGround) {
             if (timeInTheAir > 0.05f) {
