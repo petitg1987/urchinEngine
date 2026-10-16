@@ -89,6 +89,10 @@ namespace urchin {
         return removedLight;
     }
 
+    void LightManager::setLightVisibilityCustomFilter(std::shared_ptr<const LightVisibilityCustomFilter> lightVisibilityCustomFilter) {
+        this->lightVisibilityCustomFilter = std::move(lightVisibilityCustomFilter);
+    }
+
     void LightManager::setGlobalAmbientColor(const Point3<float>& globalAmbientColor) {
         this->lightsData.globalAmbientColor = globalAmbientColor;
     }
@@ -102,7 +106,13 @@ namespace urchin {
 
         lightOctreeManager.refreshOctreeables();
         lightsInFrustum.clear();
-        lightOctreeManager.getOctreeablesIn(frustum, lightsInFrustum, false);
+        if (lightVisibilityCustomFilter) {
+            lightOctreeManager.getOctreeablesIn(frustum, lightsInFrustum, false, [this](const Light* const light) {
+                return lightVisibilityCustomFilter->isVisible(*light);
+            });
+        } else {
+            lightOctreeManager.getOctreeablesIn(frustum, lightsInFrustum, false);
+        }
 
         visibleLights.clear();
         std::ranges::transform(sunLights, std::back_inserter(visibleLights),[](const std::shared_ptr<Light>& sunLight) { return sunLight.get(); });

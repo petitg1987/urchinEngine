@@ -8,6 +8,7 @@
 #include "resources/geometry/GeometryContainer.h"
 #include "resources/geometry/aabbox/AABBoxModel.h"
 #include "scene/renderer3d/lighting/light/Light.h"
+#include "scene/renderer3d/lighting/light/LightVisibilityCustomFilter.h"
 
 namespace urchin {
 
@@ -29,6 +30,7 @@ namespace urchin {
             std::span<Light* const> getVisibleLights() const;
             void addLight(std::shared_ptr<Light>);
             std::shared_ptr<Light> removeLight(Light*);
+            void setLightVisibilityCustomFilter(std::shared_ptr<const LightVisibilityCustomFilter>);
 
             void setGlobalAmbientColor(const Point3<float>&);
             const Point3<float>& getGlobalAmbientColor() const;
@@ -50,6 +52,7 @@ namespace urchin {
             std::shared_ptr<AABBoxModel> debugLightOctree;
             std::vector<Light*> lightsInFrustum;
             std::vector<Light*> visibleLights;
+            std::shared_ptr<const LightVisibilityCustomFilter> lightVisibilityCustomFilter;
 
             Light* lastUpdatedLight;
 

@@ -13,6 +13,7 @@
 #include "scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/lighting/light/spot/SpotLight.h"
 #include "scene/renderer3d/lighting/light/LightManager.h"
+#include "scene/renderer3d/lighting/light/LightVisibilityCustomFilter.h"
 #include "scene/renderer3d/lighting/shadow/ShadowManager.h"
 #include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
 #include "scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h"
