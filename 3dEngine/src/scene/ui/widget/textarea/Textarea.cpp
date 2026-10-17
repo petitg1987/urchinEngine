@@ -22,6 +22,11 @@ namespace urchin {
         return Widget::create<Textarea>(new Textarea(std::move(position), size, std::move(skinName)), parent);
     }
 
+    void Textarea::uninitialize() {
+        hideVirtualKeyboard();
+        Widget::uninitialize();
+    }
+
     WidgetType Textarea::getWidgetType() const {
         return WidgetType::TEXTAREA;
     }
@@ -117,6 +122,7 @@ namespace urchin {
             if (widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 changeTexture(texTextareaFocus);
+                showVirtualKeyboard(VirtualKeyboardType::MULTIPLE_LINES);
 
                 Rectangle2D textZone(
                         Point2(getGlobalPositionX(), getGlobalPositionY()),
@@ -135,6 +141,7 @@ namespace urchin {
                 changeTexture(texTextareaDefault);
                 cursor->setIsVisible(false);
                 resetSelection();
+                hideVirtualKeyboard();
             }
         } else if (state == ACTIVE) {
             std::size_t previousCursorIndex = cursorIndex;
@@ -303,6 +310,7 @@ namespace urchin {
     void Textarea::onResetStateEvent() {
         state = INACTIVE;
         changeTexture(texTextareaDefault);
+        hideVirtualKeyboard();
     }
 
     void Textarea::onGameControllerFocusUpdate() {
@@ -310,11 +318,13 @@ namespace urchin {
             state = ACTIVE;
             changeTexture(texTextareaFocus);
             refreshCursorPosition(cursorIndex);
+            showVirtualKeyboard(VirtualKeyboardType::MULTIPLE_LINES);
         } else {
             state = INACTIVE;
             changeTexture(texTextareaDefault);
             cursor->setIsVisible(false);
             resetSelection();
+            hideVirtualKeyboard();
         }
     }
 

@@ -71,6 +71,11 @@ namespace urchin {
         return true;
     }
 
+    void TextBox::uninitialize() {
+        hideVirtualKeyboard();
+        Widget::uninitialize();
+    }
+
     WidgetType TextBox::getWidgetType() const {
         return WidgetType::TEXTBOX;
     }
@@ -114,6 +119,7 @@ namespace urchin {
             if (widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 changeTexture(texTextBoxFocus);
+                showVirtualKeyboard(VirtualKeyboardType::SINGLE_LINE);
 
                 int localMouseX = getMouseX() - text->getGlobalPositionX();
                 int localMouseY = getMouseY() - text->getGlobalPositionY();
@@ -127,6 +133,7 @@ namespace urchin {
                 changeTexture(texTextBoxDefault);
                 cursor->setIsVisible(false);
                 resetSelection();
+                hideVirtualKeyboard();
             }
         } else if (state == ACTIVE) {
             if (key == InputKey::A) {
@@ -270,6 +277,7 @@ namespace urchin {
     void TextBox::onResetStateEvent() {
         state = INACTIVE;
         changeTexture(texTextBoxDefault);
+        hideVirtualKeyboard();
     }
 
     void TextBox::onGameControllerFocusUpdate() {
@@ -277,11 +285,13 @@ namespace urchin {
             state = ACTIVE;
             changeTexture(texTextBoxFocus);
             refreshCursorPosition(cursorIndex);
+            showVirtualKeyboard(VirtualKeyboardType::SINGLE_LINE);
         } else {
             state = INACTIVE;
             changeTexture(texTextBoxDefault);
             cursor->setIsVisible(false);
             resetSelection();
+            hideVirtualKeyboard();
         }
     }
 

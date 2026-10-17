@@ -16,6 +16,7 @@ namespace urchin {
             renderTarget(renderTarget),
             i18nService(i18nService),
             clipboard(std::make_unique<ClipboardLocal>()),
+            virtualKeyboardOwner(nullptr),
             uiResolution((int)renderTarget.getWidth(), (int)renderTarget.getHeight()),
             uiShader(ShaderBuilder::createShader("ui.vert.spv", "ui.frag.spv", renderTarget.isTestMode())),
             rawMouseX(0.0),
@@ -87,6 +88,14 @@ namespace urchin {
             throw std::runtime_error("The provided clipboard can not be null");
         }
         this->clipboard = std::move(clipboard);
+    }
+
+    void UIRenderer::setupVirtualKeyboard(std::unique_ptr<VirtualKeyboard> virtualKeyboard) {
+        if (this->virtualKeyboard && virtualKeyboardOwner) {
+            this->virtualKeyboard->hide();
+        }
+        this->virtualKeyboard = std::move(virtualKeyboard);
+        this->virtualKeyboardOwner = nullptr;
     }
 
     void UIRenderer::onCameraProjectionUpdate(Camera& camera) {
@@ -307,6 +316,20 @@ namespace urchin {
 
     Clipboard& UIRenderer::getClipboard() const {
         return *clipboard;
+    }
+
+    void UIRenderer::showVirtualKeyboard(const Widget& requester, VirtualKeyboardType virtualKeyboardType, const std::optional<Rectangle2D<int>>& textFieldRectangle) {
+        if (virtualKeyboard) {
+            virtualKeyboardOwner = &requester;
+            virtualKeyboard->show(virtualKeyboardType, textFieldRectangle);
+        }
+    }
+
+    void UIRenderer::hideVirtualKeyboard(const Widget& requester) {
+        if (virtualKeyboard && virtualKeyboardOwner == &requester) {
+            virtualKeyboardOwner = nullptr;
+            virtualKeyboard->hide();
+        }
     }
 
     const Point2<int>& UIRenderer::getUiResolution() const {

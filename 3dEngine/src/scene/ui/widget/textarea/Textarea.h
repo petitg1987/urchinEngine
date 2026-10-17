@@ -13,6 +13,7 @@ namespace urchin {
         public:
             static std::shared_ptr<Textarea> create(Widget*, Position, Size, std::string);
 
+            void uninitialize() override;
             WidgetType getWidgetType() const override;
 
             std::string getText() const;

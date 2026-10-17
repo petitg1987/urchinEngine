@@ -11,6 +11,7 @@ class TextBoxTest final : public CppUnit::TestFixture {
 
         void textShift();
         void textSelection();
+        void virtualKeyboardFocusSwitch();
 
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();

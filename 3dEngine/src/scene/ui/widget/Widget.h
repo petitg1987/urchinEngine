@@ -12,6 +12,7 @@
 #include "scene/ui/UISkinService.h"
 #include "scene/ui/EventListener.h"
 #include "scene/ui/ClipboardLocal.h"
+#include "scene/ui/VirtualKeyboard.h"
 #include "scene/ui/displayer/WidgetDisplayable.h"
 #include "i18n/I18nService.h"
 
@@ -126,6 +127,8 @@ namespace urchin {
             I18nService& getI18nService() const;
             UI3dData* getUi3dData() const;
             Clipboard& getClipboard() const;
+            void showVirtualKeyboard(VirtualKeyboardType) const;
+            void hideVirtualKeyboard() const;
 
             virtual void createOrUpdateWidget() = 0;
             void changeTexture(std::shared_ptr<Texture>);

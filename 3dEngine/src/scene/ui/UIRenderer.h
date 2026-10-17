@@ -5,6 +5,7 @@
 #include "graphics/api/GraphicsApi.h"
 #include "scene/Renderer.h"
 #include "scene/ui/widget/Widget.h"
+#include "scene/ui/VirtualKeyboard.h"
 #include "scene/renderer3d/camera/CameraSpaceService.h"
 #include "texture/render/TextureRenderer.h"
 
@@ -38,6 +39,7 @@ namespace urchin {
             //3d specific
             void setupUi3d(Camera*, const Transform<float>&, const Point2<int>&, const Point2<float>&, float, uint8_t lightMask);
             void setupClipboard(std::unique_ptr<Clipboard>);
+            void setupVirtualKeyboard(std::unique_ptr<VirtualKeyboard>);
             void onCameraProjectionUpdate(Camera&);
             void setMaximumInteractiveDistance(float) const;
             void setPointerType(UI3dPointerType) const;
@@ -56,6 +58,8 @@ namespace urchin {
             RenderTarget& getRenderTarget() const;
             I18nService& getI18nService() const;
             Clipboard& getClipboard() const;
+            void showVirtualKeyboard(const Widget&, VirtualKeyboardType, const std::optional<Rectangle2D<int>>&);
+            void hideVirtualKeyboard(const Widget&);
             const Point2<int>& getUiResolution() const;
             Shader& getShader() const;
             UI3dData* getUi3dData() const;
@@ -85,6 +89,8 @@ namespace urchin {
             RenderTarget& renderTarget;
             I18nService& i18nService;
             std::unique_ptr<Clipboard> clipboard;
+            std::unique_ptr<VirtualKeyboard> virtualKeyboard;
+            const Widget* virtualKeyboardOwner;
             Point2<int> uiResolution;
             std::unique_ptr<Shader> uiShader;
 

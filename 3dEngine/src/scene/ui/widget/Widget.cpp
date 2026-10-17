@@ -102,6 +102,20 @@ namespace urchin {
         return uiRenderer->getClipboard();
     }
 
+    void Widget::showVirtualKeyboard(VirtualKeyboardType virtualKeyboardType) const {
+        if (!uiRenderer) {
+            throw std::runtime_error("Virtual keyboard not available because the widget is not initialized");
+        }
+        std::optional<Rectangle2D<int>> textFieldRectangle = isUi3D() ? std::nullopt : std::make_optional(widgetRectangle());
+        uiRenderer->showVirtualKeyboard(*this, virtualKeyboardType, textFieldRectangle);
+    }
+
+    void Widget::hideVirtualKeyboard() const {
+        if (uiRenderer) {
+            uiRenderer->hideVirtualKeyboard(*this);
+        }
+    }
+
     std::string Widget::getName() const {
         WidgetType widgetType = getWidgetType();
         std::string name = WidgetTypeUtil::toWidgetTypeString(widgetType);
