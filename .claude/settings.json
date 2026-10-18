@@ -4,19 +4,18 @@
     "autoAllowBashIfSandboxed": true
   },
   "permissions": {
+    "defaultMode": "default",
     "additionalDirectories": [
       "../urchinEngineTest",
       "../../photonEngineer",
       "../../stationTropale"
     ],
     "allow": [
-      "Bash(find:*)",
       "Bash(grep:*)",
       "Bash(rg:*)",
       "Bash(cat:*)",
       "Bash(head:*)",
       "Bash(tail:*)",
-      "Bash(sed -n:*)",
       "Bash(wc:*)",
       "Bash(ls:*)",
       "Bash(file:*)",
@@ -26,10 +25,30 @@
       "Bash(objdump:*)",
       "Bash(git check-ignore *)",
       "Bash(git mv *)",
-      "Bash(cmake:*)",
-      "Bash(ninja:*)",
-      "Bash(glslc:*)",
-      "Bash(blender:*)"
+      "Bash(glslc:*)"
+    ],
+    "ask": [
+      "Bash(rm -rf:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean:*)",
+      "Bash(git checkout -- :*)",
+      "Bash(git restore:*)",
+      "Bash(git push:*)",
+      "Bash(git rebase:*)"
+    ],
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/gh/**)",
+      "Read(~/.git-credentials)",
+      "Read(~/.netrc)",
+      "Read(~/.docker/config.json)",
+      "Read(~/.kube/**)",
+      "Read(~/.npmrc)",
+      "Read(~/.config/gcloud/**)",
+      "Read(~/.steam/**)",
+      "Read(**/.env*)"
     ]
   }
 }
