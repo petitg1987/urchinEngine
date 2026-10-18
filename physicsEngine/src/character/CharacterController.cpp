@@ -40,20 +40,29 @@ namespace urchin {
         physicsWorld.getCollisionWorld().getBroadPhase().removeBodyAsync(ghostBody);
     }
 
-    void CharacterController::walk(const Vector3<float>& direction) {
-        Vector3<float> newVelocity = direction;
-        if (isGravityEnabled()) {
-            newVelocity.Y = 0.0f;
-        }
-        this->velocity = newVelocity.normalize() * config.getWalkSpeed();
+    /**
+     * @param velocity Walk velocity in units/second.
+     */
+    void CharacterController::walk(const Vector3<float>& velocity) {
+        updateVelocity(velocity, config.getMaxWalkSpeed());
     }
 
-    void CharacterController::run(const Vector3<float>& direction) {
-        Vector3<float> newVelocity = direction;
+    /**
+     * @param velocity Run velocity in units/second.
+     */
+    void CharacterController::run(const Vector3<float>& velocity) {
+        updateVelocity(velocity, config.getMaxRunSpeed());
+    }
+
+    void CharacterController::updateVelocity(const Vector3<float>& velocity, float maxSpeed) {
+        Vector3<float> newVelocity = velocity;
         if (isGravityEnabled()) {
             newVelocity.Y = 0.0f;
         }
-        this->velocity = newVelocity.normalize() * config.getRunSpeed();
+        if (newVelocity.squareLength() > maxSpeed * maxSpeed) {
+            newVelocity = newVelocity.normalize() * maxSpeed;
+        }
+        this->velocity = newVelocity;
     }
 
     void CharacterController::verticalMove(float verticalSpeed) {
@@ -111,6 +120,10 @@ namespace urchin {
         return Quaternion<float>::fromRotationMatrix(mView).conjugate();
     }
 
+    const CharacterControllerConfig& CharacterController::getConfig() const {
+        return config;
+    }
+
     PhysicsCharacter& CharacterController::getPhysicsCharacter() const {
         return *physicsCharacter;
     }
@@ -162,7 +175,7 @@ namespace urchin {
 
             float radius = ghostBodyCapsule.getRadius();
             float height = ghostBodyCapsule.getCylinderHeight() + (2.0f * radius);
-            float maximumCharacterSpeed = config.getRunSpeed() * (1.0f + config.getMaxSlopeSpeedVariation());
+            float maximumCharacterSpeed = config.getMaxRunSpeed() * (1.0f + config.getMaxSlopeSpeedVariation());
 
             float ccdRadius = std::max(radius, maximumCharacterSpeed / MIN_UPDATE_FREQUENCY);
             float ccdHeight = std::max(height, (config.getMaxVerticalSpeed() / MIN_UPDATE_FREQUENCY) * 2.0f);
@@ -221,7 +234,7 @@ namespace urchin {
 
         //callback events
         if (closeToTheGround) {
-            if (velocity.xz().squareLength() - 0.01f > config.getWalkSpeed() * config.getWalkSpeed()) {
+            if (velocity.xz().squareLength() - 0.01f > config.getMaxWalkSpeed() * config.getMaxWalkSpeed()) {
                 config.getEventCallback().notifyRunning();
             } else if (velocity.xz().squareLength() - 0.01f > 0.0f) {
                 config.getEventCallback().notifyWalking();

@@ -28,11 +28,11 @@ namespace urchin {
             void setMaxVerticalSpeed(float);
             float getMaxVerticalSpeed() const;
 
-            void setWalkSpeed(float);
-            float getWalkSpeed() const;
+            void setMaxWalkSpeed(float);
+            float getMaxWalkSpeed() const;
 
-            void setRunSpeed(float);
-            float getRunSpeed() const;
+            void setMaxRunSpeed(float);
+            float getMaxRunSpeed() const;
 
         private:
             std::shared_ptr<CharacterEventCallback> characterEventCallback;
@@ -48,8 +48,8 @@ namespace urchin {
 
             float maxVerticalSpeed; //in units/second
 
-            float walkSpeed; //in units/second
-            float runSpeed; //in units/second
+            float maxWalkSpeed; //in units/second
+            float maxRunSpeed; //in units/second
     };
 
 }

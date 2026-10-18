@@ -45,6 +45,7 @@ namespace urchin {
             void updateTransform(const Point3<float>&, const Vector3<float>&) const;
             void updateOrientation(const Vector3<float>&) const;
 
+            const CharacterControllerConfig& getConfig() const;
             PhysicsCharacter& getPhysicsCharacter() const;
             bool isOnGround() const;
             const std::string& getGroundBodyId() const;
@@ -54,6 +55,7 @@ namespace urchin {
 
         private:
             void createBodies();
+            void updateVelocity(const Vector3<float>&, float);
 
             Quaternion<float> computeYRotation(const Vector3<float>&) const;
 

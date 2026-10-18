@@ -14,8 +14,8 @@ namespace urchin {
             timeKeepMoveInAir(2.5f),
             percentageControlInAir(0.4f),
             maxVerticalSpeed(30.0f), //human falling maximum speed is 55 m/s, but we use 30 m/s to improve performance of CCD
-            walkSpeed(7.0f / 3.6f), //7 km/h
-            runSpeed(11.0f / 3.6f) //11 km/h
+            maxWalkSpeed(7.0f / 3.6f), //7 km/h
+            maxRunSpeed(11.0f / 3.6f) //11 km/h
     {
         setMaxSlopeInRadian(MathValue::PI_FLOAT / 4.0f); //45 degrees
     }
@@ -85,25 +85,25 @@ namespace urchin {
     }
 
     /**
-     * Define the horizontal walk speed allowed for the character. The character walk speed is higher in downhill.
+     * Define the maximum horizontal walk speed allowed for the character. The character walk speed is higher in downhill.
      */
-    void CharacterControllerConfig::setWalkSpeed(float walkSpeed) {
-        this->walkSpeed = walkSpeed;
+    void CharacterControllerConfig::setMaxWalkSpeed(float maxWalkSpeed) {
+        this->maxWalkSpeed = maxWalkSpeed;
     }
 
-    float CharacterControllerConfig::getWalkSpeed() const {
-        return walkSpeed;
+    float CharacterControllerConfig::getMaxWalkSpeed() const {
+        return maxWalkSpeed;
     }
 
     /**
-     * Define the horizontal run speed allowed for the character. The character run speed is higher in downhill.
+     * Define the maximum horizontal run speed allowed for the character. The character run speed is higher in downhill.
      */
-    void CharacterControllerConfig::setRunSpeed(float runSpeed) {
-        this->runSpeed = runSpeed;
+    void CharacterControllerConfig::setMaxRunSpeed(float maxRunSpeed) {
+        this->maxRunSpeed = maxRunSpeed;
     }
 
-    float CharacterControllerConfig::getRunSpeed() const {
-        return runSpeed;
+    float CharacterControllerConfig::getMaxRunSpeed() const {
+        return maxRunSpeed;
     }
 
 }

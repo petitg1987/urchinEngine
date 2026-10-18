@@ -55,9 +55,9 @@ void CharacterControllerIT::characterMovingOnRemovedObjects() {
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, characterHeight / 2.0f, 0.8f), Quaternion<float>()));
     CharacterControllerConfig characterControllerConfig;
-    characterControllerConfig.setWalkSpeed(5.0f);
+    characterControllerConfig.setMaxWalkSpeed(5.0f);
     auto characterController = CharacterController(std::move(character), characterControllerConfig, *physicsWorld);
-    characterController.walk(Vector3(0.0f, 0.0f, -1.0f));
+    characterController.walk(Vector3(0.0f, 0.0f, -5.0f));
 
     auto physicsEngineThread = std::jthread([&physicsWorld] {
         for (std::size_t i = 0; i < 300; ++i) {
@@ -138,9 +138,9 @@ void CharacterControllerIT::ccdMovingCharacter() {
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, 0.35f, 0.0f), Quaternion<float>()));
     CharacterControllerConfig characterControllerConfig;
-    characterControllerConfig.setWalkSpeed(15.0f);
+    characterControllerConfig.setMaxWalkSpeed(15.0f);
     auto characterController = CharacterController(std::move(character), characterControllerConfig, *physicsWorld);
-    characterController.walk(Vector3(0.0f, 0.0f, -1.0f));
+    characterController.walk(Vector3(0.0f, 0.0f, -15.0f));
 
     auto physicsEngineThread = std::jthread([&physicsWorld] {
         for (std::size_t i = 0; i < 100; ++i) {
