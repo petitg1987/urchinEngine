@@ -4,7 +4,7 @@
     "autoAllowBashIfSandboxed": true
   },
   "permissions": {
-    "defaultMode": "default",
+    "defaultMode": "auto",
     "additionalDirectories": [
       "../urchinEngineTest",
       "../../photonEngineer",
