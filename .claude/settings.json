@@ -1,0 +1,35 @@
+{
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true
+  },
+  "permissions": {
+    "additionalDirectories": [
+      "../urchinEngineTest",
+      "../../photonEngineer",
+      "../../stationTropale"
+    ],
+    "allow": [
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(sed -n:*)",
+      "Bash(wc:*)",
+      "Bash(ls:*)",
+      "Bash(file:*)",
+      "Bash(echo:*)",
+      "Bash(nm:*)",
+      "Bash(readelf:*)",
+      "Bash(objdump:*)",
+      "Bash(git check-ignore *)",
+      "Bash(git mv *)",
+      "Bash(cmake:*)",
+      "Bash(ninja:*)",
+      "Bash(glslc:*)",
+      "Bash(blender:*)"
+    ]
+  }
+}
