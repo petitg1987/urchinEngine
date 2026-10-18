@@ -10,23 +10,6 @@
       "../../photonEngineer",
       "../../stationTropale"
     ],
-    "allow": [
-      "Bash(grep:*)",
-      "Bash(rg:*)",
-      "Bash(cat:*)",
-      "Bash(head:*)",
-      "Bash(tail:*)",
-      "Bash(wc:*)",
-      "Bash(ls:*)",
-      "Bash(file:*)",
-      "Bash(echo:*)",
-      "Bash(nm:*)",
-      "Bash(readelf:*)",
-      "Bash(objdump:*)",
-      "Bash(git check-ignore *)",
-      "Bash(git mv *)",
-      "Bash(glslc:*)"
-    ],
     "ask": [
       "Bash(rm -rf:*)",
       "Bash(git reset --hard:*)",
