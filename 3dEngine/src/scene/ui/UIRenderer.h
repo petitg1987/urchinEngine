@@ -53,6 +53,7 @@ namespace urchin {
             bool onMouseMove(double, double, double, double) override;
             bool onCursorMove();
             bool onScroll(double) override;
+            bool onGamepadAnalogInputUpdate(GamepadAnalogInput, float) override;
             void onDisable() override;
 
             RenderTarget& getRenderTarget() const;

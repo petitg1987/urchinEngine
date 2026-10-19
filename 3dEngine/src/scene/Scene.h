@@ -50,6 +50,7 @@ namespace urchin {
             bool onChar(char32_t);
             bool onMouseMove(double, double, double, double);
             bool onScroll(double);
+            bool onGamepadAnalogInputUpdate(GamepadAnalogInput, float);
 
             //render
             void display();

@@ -321,8 +321,14 @@ namespace urchin {
         return uiContainer.onScroll(offsetY);
     }
 
+    bool Renderer3d::onGamepadAnalogInputUpdate(GamepadAnalogInput gamepadAnalogInput, float value) {
+        //unlike the mouse move, store the value even when paused: avoid to keep a stale value when the stick is released during the pause
+        camera->onGamepadAnalogInputUpdate(gamepadAnalogInput, value);
+        return true;
+    }
+
     void Renderer3d::onDisable() {
-        //nothing to do
+        camera->releaseGamepadInputs();
     }
 
     void Renderer3d::pause() {
@@ -336,6 +342,9 @@ namespace urchin {
     void Renderer3d::prepareRendering(uint32_t frameCount, float dt, unsigned int& screenRenderingOrder) {
         ScopeProfiler sp(Profiler::graphic(), "pre3dRendering");
 
+        if (!paused) {
+            camera->refresh(dt);
+        }
         updateScene(dt);
 
         unsigned int numDependenciesToFirstPassOutput = computeDependenciesToFirstPassOutput();

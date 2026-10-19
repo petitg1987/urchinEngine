@@ -61,18 +61,22 @@ namespace urchin {
             virtual bool onKeyPress(InputKey);
             virtual bool onKeyRelease(InputKey);
             virtual bool onMouseMove(double, double);
-            virtual bool onGamepadStickMoved(const Vector2<float>&, float);
+            virtual void onGamepadAnalogInputUpdate(GamepadAnalogInput, float);
+            void releaseGamepadInputs();
 
             virtual void moveForward(float);
             virtual void moveBackward(float);
             virtual void moveLeft(float);
             virtual void moveRight(float);
 
+            virtual void refresh(float);
+
         private:
             void initializeOrUpdate(unsigned int, unsigned int);
             float computeVerticalFovAngle() const;
             float computeFov(float) const;
             void rotateFromDirection(Vector2<float>);
+            void rotateFromGamepadStick(float);
             void updateComponents();
 
             static constexpr float MOUSE_ROTATION_BASE_SENSITIVITY = 0.003f;
@@ -103,6 +107,7 @@ namespace urchin {
             float mouseSensitivityPercentage;
             float gamepadSensitivityPercentage;
             bool invertGamepadYAxis;
+            GamepadAnalogStick lookStick;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
     };

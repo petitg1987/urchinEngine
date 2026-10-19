@@ -20,6 +20,7 @@ namespace urchin {
             virtual bool onChar(char32_t) = 0;
             virtual bool onMouseMove(double, double, double, double) = 0;
             virtual bool onScroll(double) = 0;
+            virtual bool onGamepadAnalogInputUpdate(GamepadAnalogInput, float) = 0;
             virtual void onDisable() = 0;
 
             virtual void prepareRendering(uint32_t, float, unsigned int&) = 0;

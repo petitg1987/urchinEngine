@@ -71,6 +71,9 @@ namespace urchin {
 
     void Camera::allowInputDeviceToMoveCamera(bool use) {
         inputDeviceCanMoveCamera = use;
+        if (!inputDeviceCanMoveCamera) {
+            releaseGamepadInputs();
+        }
     }
 
     bool Camera::isInputDeviceCanMoveCamera() const {
@@ -273,24 +276,16 @@ namespace urchin {
         return true;
     }
 
-    /**
-     * @param stickDirection Gamepad stick direction (X positive: right, Y positive: down) with a length in [0, 1] range
-     */
-    bool Camera::onGamepadStickMoved(const Vector2<float>& stickDirection, float dt) {
-        if (inputDeviceCanMoveCamera) {
-            float stickLength = stickDirection.length();
-            if (MathFunction::isZero(stickLength)) {
-                return true;
-            }
-
-            Vector2<float> stickDirectionCurved = stickDirection * stickLength;
-            float rotationAngle = (float)((double)GAMEPAD_ROTATION_BASE_SENSITIVITY * (double)gamepadSensitivityPercentage * (double)dt);
-            float inversion = invertGamepadYAxis ? -1.0f : 1.0f;
-            rotateFromDirection(Vector2(-stickDirectionCurved.X * rotationAngle, -stickDirectionCurved.Y * inversion * rotationAngle));
-
-            return false;
+    void Camera::onGamepadAnalogInputUpdate(GamepadAnalogInput gamepadAnalogInput, float value) {
+        if (gamepadAnalogInput == GamepadAnalogInput::RIGHT_STICK_X) {
+            lookStick.setX(value);
+        } else if (gamepadAnalogInput == GamepadAnalogInput::RIGHT_STICK_Y) {
+            lookStick.setY(value);
         }
-        return true;
+    }
+
+    void Camera::releaseGamepadInputs() {
+        lookStick.reset();
     }
 
     void Camera::rotateFromDirection(Vector2<float> direction) {
@@ -339,6 +334,25 @@ namespace urchin {
 
     void Camera::moveRight(float) {
         //do nothing (can be overridden)
+    }
+
+    void Camera::refresh(float dt) {
+        rotateFromGamepadStick(dt);
+    }
+
+    void Camera::rotateFromGamepadStick(float dt) {
+        if (inputDeviceCanMoveCamera) {
+            Vector2<float> stickDirection = lookStick.getDirection();
+            float stickLength = stickDirection.length();
+            if (MathFunction::isZero(stickLength)) {
+                return;
+            }
+
+            Vector2<float> stickDirectionCurved = stickDirection * stickLength;
+            float rotationAngle = (float)((double)GAMEPAD_ROTATION_BASE_SENSITIVITY * (double)gamepadSensitivityPercentage * (double)dt);
+            float inversion = invertGamepadYAxis ? -1.0f : 1.0f;
+            rotateFromDirection(Vector2(-stickDirectionCurved.X * rotationAngle, -stickDirectionCurved.Y * inversion * rotationAngle));
+        }
     }
 
 }

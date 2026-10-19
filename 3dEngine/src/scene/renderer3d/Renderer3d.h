@@ -79,6 +79,7 @@ namespace urchin {
             bool onChar(char32_t) override;
             bool onMouseMove(double, double, double, double) override;
             bool onScroll(double) override;
+            bool onGamepadAnalogInputUpdate(GamepadAnalogInput, float) override;
             void onDisable() override;
 
             //scene

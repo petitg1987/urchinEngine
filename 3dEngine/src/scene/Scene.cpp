@@ -273,6 +273,15 @@ namespace urchin {
         return true;
     }
 
+    bool Scene::onGamepadAnalogInputUpdate(GamepadAnalogInput gamepadAnalogInput, float value) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
+            if (activeRenderer && !activeRenderer->onGamepadAnalogInputUpdate(gamepadAnalogInput, value)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     void Scene::display() {
         {
             ScopeProfiler sp(Profiler::graphic(), "sceneDisplay");

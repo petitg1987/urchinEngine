@@ -300,6 +300,11 @@ namespace urchin {
         return true;
     }
 
+    bool UIRenderer::onGamepadAnalogInputUpdate(GamepadAnalogInput, float) {
+        //nothing to do: widgets receive the gamepad sticks as keys
+        return true;
+    }
+
     void UIRenderer::onDisable() {
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             widgets[(std::size_t)i]->onResetState();
