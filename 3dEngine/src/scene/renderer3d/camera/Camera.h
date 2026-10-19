@@ -61,7 +61,7 @@ namespace urchin {
             virtual bool onKeyPress(InputKey);
             virtual bool onKeyRelease(InputKey);
             virtual bool onMouseMove(double, double);
-            virtual bool onGamepadStickMove(const Vector2<float>&, float);
+            virtual bool onGamepadStickMoved(const Vector2<float>&, float);
 
             virtual void moveForward(float);
             virtual void moveBackward(float);

@@ -276,7 +276,7 @@ namespace urchin {
     /**
      * @param stickDirection Gamepad stick direction (X positive: right, Y positive: down) with a length in [0, 1] range
      */
-    bool Camera::onGamepadStickMove(const Vector2<float>& stickDirection, float dt) {
+    bool Camera::onGamepadStickMoved(const Vector2<float>& stickDirection, float dt) {
         if (inputDeviceCanMoveCamera) {
             float stickLength = stickDirection.length();
             if (MathFunction::isZero(stickLength)) {
