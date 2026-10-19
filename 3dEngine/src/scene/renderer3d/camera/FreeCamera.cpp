@@ -18,7 +18,7 @@ namespace urchin {
 
     bool FreeCamera::onKeyPress(InputKey key) {
         if (key == InputKey::RMB) {
-            useMouseToMoveCamera(true);
+            allowInputDeviceToMoveCamera(true);
             return false;
         }
         return true;
@@ -26,7 +26,7 @@ namespace urchin {
 
     bool FreeCamera::onKeyRelease(InputKey key) {
         if (key == InputKey::RMB) {
-            useMouseToMoveCamera(false);
+            allowInputDeviceToMoveCamera(false);
             return false;
         }
         return true;
@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void FreeCamera::moveLeft(float dt) {
-        if (isUseMouseToMoveCamera()) {
+        if (isInputDeviceCanMoveCamera()) {
             moveOnLocalXAxis(dt * speed);
         } else {
             rotate(Quaternion<float>::rotationY(dt * rotateSpeed));
@@ -49,7 +49,7 @@ namespace urchin {
     }
 
     void FreeCamera::moveRight(float dt) {
-        if (isUseMouseToMoveCamera()) {
+        if (isInputDeviceCanMoveCamera()) {
             moveOnLocalXAxis(-dt * speed);
         } else {
             rotate(Quaternion<float>::rotationY(-dt * rotateSpeed));

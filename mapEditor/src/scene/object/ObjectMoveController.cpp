@@ -55,7 +55,7 @@ namespace urchin {
 
         bool mousePositionAdjusted = false;
         if (selectedAxis != -1) {
-            if (!camera.isUseMouseToMoveCamera()) {
+            if (!camera.isInputDeviceCanMoveCamera()) {
                 mousePositionAdjusted = adjustMousePosition();
                 if (!mousePositionAdjusted) {
                     moveObjects(Point2((float)oldMouseX, (float)oldMouseY), Point2((float)mouseX, (float)mouseY));

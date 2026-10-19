@@ -40,7 +40,7 @@ namespace urchin {
         bool propagateEvent = true;
         if (!disableNextMouseEvent) {
             propagateEvent = Camera::onMouseMove(deltaMouseX, deltaMouseY);
-            if (isUseMouseToMoveCamera()) {
+            if (isInputDeviceCanMoveCamera()) {
                 disableNextMouseEvent = mouseController.moveMouse((double) getSceneWidth() / 2.0, (double) getSceneHeight() / 2.0);
             }
         } else {

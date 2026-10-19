@@ -115,6 +115,8 @@
 #include "system/input/InputKey.h"
 #include "system/input/InputKeyLabel.h"
 #include "system/input/InputKeyNavigation.h"
+#include "system/input/GamepadAxis.h"
+#include "system/input/GamepadAnalogStick.h"
 
 #include "util/DateTimeUtil.h"
 #include "util/FileUtil.h"

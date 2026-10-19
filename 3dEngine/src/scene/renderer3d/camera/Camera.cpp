@@ -3,7 +3,6 @@
 namespace urchin {
 
     Camera::Camera(float horizontalFovAngle, float nearPlane, float farPlane) :
-            SENSITIVITY_FACTOR(ConfigService::instance().getFloatValue("camera.sensitivityFactor")),
             mView(Matrix4<float>()),
             mProjection(Matrix4<float>()),
             position(Point3(0.0f, 0.0f, 0.0f)),
@@ -14,9 +13,10 @@ namespace urchin {
             farPlane(farPlane),
             maxRotationX(0.995f),
             distance(0.0f),
-            useMouse(false),
-            sensitivityPercentage(1.0f),
-            invertYAxis(false),
+            inputDeviceCanMoveCamera(false),
+            mouseSensitivityPercentage(1.0f),
+            gamepadSensitivityPercentage(1.0f),
+            invertGamepadYAxis(false),
             sceneWidth(0),
             sceneHeight(0) {
         float verticalFovAngle = computeVerticalFovAngle();
@@ -69,20 +69,24 @@ namespace urchin {
         return 1.0f;
     }
 
-    void Camera::useMouseToMoveCamera(bool use) {
-        useMouse = use;
+    void Camera::allowInputDeviceToMoveCamera(bool use) {
+        inputDeviceCanMoveCamera = use;
     }
 
-    bool Camera::isUseMouseToMoveCamera() const {
-        return useMouse;
+    bool Camera::isInputDeviceCanMoveCamera() const {
+        return inputDeviceCanMoveCamera;
     }
 
-    void Camera::setSensitivityPercentage(float sensitivityPercentage) {
-        this->sensitivityPercentage = sensitivityPercentage;
+    void Camera::setMouseSensitivityPercentage(float mouseSensitivityPercentage) {
+        this->mouseSensitivityPercentage = mouseSensitivityPercentage;
     }
 
-    void Camera::setInvertYAxis(bool invertYAxis) {
-        this->invertYAxis = invertYAxis;
+    void Camera::setGamepadSensitivityPercentage(float gamepadSensitivityPercentage) {
+        this->gamepadSensitivityPercentage = gamepadSensitivityPercentage;
+    }
+
+    void Camera::setInvertGamepadYAxis(bool invertGamepadYAxis) {
+        this->invertGamepadYAxis = invertGamepadYAxis;
     }
 
     /**
@@ -254,35 +258,55 @@ namespace urchin {
     }
 
     bool Camera::onMouseMove(double deltaMouseX, double deltaMouseY) {
-        if (useMouse) {
+        if (inputDeviceCanMoveCamera) {
             if (deltaMouseX == 0.0 && deltaMouseY == 0.0) {
                 return false;
             }
 
             Vector2<float> mouseDirection;
-            mouseDirection.X = (float)(-deltaMouseX * (double)SENSITIVITY_FACTOR * (double)sensitivityPercentage);
-            mouseDirection.Y = (float)(-deltaMouseY * (double)SENSITIVITY_FACTOR * (double)sensitivityPercentage);
-            if (invertYAxis) {
-                mouseDirection.Y = - mouseDirection.Y;
-            }
-
-            //do not rotate up/down more than "maxRotationX" percent
-            float currentRotationX = view.Y + mouseDirection.Y;
-            if (currentRotationX > 0.0f && currentRotationX > maxRotationX) {
-                mouseDirection.Y -= (currentRotationX - maxRotationX);
-            } else if (currentRotationX < 0.0f && currentRotationX < -maxRotationX) {
-                mouseDirection.Y -= (currentRotationX + maxRotationX);
-            }
-
-            //rotate around the Y and X axis
-            rotate(Quaternion<float>::fromAxisAngle(up.crossProduct(view), -mouseDirection.Y));
-            rotate(Quaternion<float>::rotationY(mouseDirection.X));
-
-            updateComponents();
+            mouseDirection.X = (float)(-deltaMouseX * (double)MOUSE_ROTATION_BASE_SENSITIVITY * (double)mouseSensitivityPercentage);
+            mouseDirection.Y = (float)(-deltaMouseY * (double)MOUSE_ROTATION_BASE_SENSITIVITY * (double)mouseSensitivityPercentage);
+            rotateFromDirection(mouseDirection);
 
             return false;
         }
         return true;
+    }
+
+    /**
+     * @param stickDirection Gamepad stick direction (X positive: right, Y positive: down) with a length in [0, 1] range
+     */
+    bool Camera::onGamepadStickMove(const Vector2<float>& stickDirection, float dt) {
+        if (inputDeviceCanMoveCamera) {
+            float stickLength = stickDirection.length();
+            if (MathFunction::isZero(stickLength)) {
+                return true;
+            }
+
+            Vector2<float> stickDirectionCurved = stickDirection * stickLength;
+            float rotationAngle = (float)((double)GAMEPAD_ROTATION_BASE_SENSITIVITY * (double)gamepadSensitivityPercentage * (double)dt);
+            float inversion = invertGamepadYAxis ? -1.0f : 1.0f;
+            rotateFromDirection(Vector2(-stickDirectionCurved.X * rotationAngle, -stickDirectionCurved.Y * inversion * rotationAngle));
+
+            return false;
+        }
+        return true;
+    }
+
+    void Camera::rotateFromDirection(Vector2<float> direction) {
+        //do not rotate up/down more than "maxRotationX" percent
+        float currentRotationX = view.Y + direction.Y;
+        if (currentRotationX > 0.0f && currentRotationX > maxRotationX) {
+            direction.Y -= (currentRotationX - maxRotationX);
+        } else if (currentRotationX < 0.0f && currentRotationX < -maxRotationX) {
+            direction.Y -= (currentRotationX + maxRotationX);
+        }
+
+        //rotate around the Y and X axis
+        rotate(Quaternion<float>::fromAxisAngle(up.crossProduct(view), -direction.Y));
+        rotate(Quaternion<float>::rotationY(direction.X));
+
+        updateComponents();
     }
 
     void Camera::updateComponents() {

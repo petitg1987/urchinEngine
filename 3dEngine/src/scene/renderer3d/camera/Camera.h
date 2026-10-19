@@ -20,10 +20,11 @@ namespace urchin {
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
 
-            void useMouseToMoveCamera(bool);
-            bool isUseMouseToMoveCamera() const;
-            void setSensitivityPercentage(float);
-            void setInvertYAxis(bool);
+            void allowInputDeviceToMoveCamera(bool);
+            bool isInputDeviceCanMoveCamera() const;
+            void setMouseSensitivityPercentage(float);
+            void setGamepadSensitivityPercentage(float);
+            void setInvertGamepadYAxis(bool);
             void setDistance(float);
             bool isFirstPersonCamera() const;
             void setMaxRotationX(float);
@@ -60,6 +61,7 @@ namespace urchin {
             virtual bool onKeyPress(InputKey);
             virtual bool onKeyRelease(InputKey);
             virtual bool onMouseMove(double, double);
+            virtual bool onGamepadStickMove(const Vector2<float>&, float);
 
             virtual void moveForward(float);
             virtual void moveBackward(float);
@@ -70,9 +72,12 @@ namespace urchin {
             void initializeOrUpdate(unsigned int, unsigned int);
             float computeVerticalFovAngle() const;
             float computeFov(float) const;
+            void rotateFromDirection(Vector2<float>);
             void updateComponents();
 
-            const float SENSITIVITY_FACTOR;
+            static constexpr float MOUSE_ROTATION_BASE_SENSITIVITY = 0.003f;
+            static constexpr float GAMEPAD_ROTATION_BASE_SENSITIVITY = 2.0f;
+
             Matrix4<float> mView;
             Matrix4<float> mProjection;
 
@@ -94,9 +99,10 @@ namespace urchin {
 
             float maxRotationX;
             float distance; //distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
-            bool useMouse; //true if the cursor is used to move the camera
-            float sensitivityPercentage;
-            bool invertYAxis;
+            bool inputDeviceCanMoveCamera; //true if the cursor/gamepad is used to move the camera
+            float mouseSensitivityPercentage;
+            float gamepadSensitivityPercentage;
+            bool invertGamepadYAxis;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
     };

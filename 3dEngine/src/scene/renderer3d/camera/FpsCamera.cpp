@@ -5,7 +5,7 @@ namespace urchin {
     FpsCamera::FpsCamera(float horizontalFovAngle, float nearPlane, float farPlane) :
             Camera(horizontalFovAngle, nearPlane, farPlane),
             speed(10.0f) {
-        useMouseToMoveCamera(true);
+        allowInputDeviceToMoveCamera(true);
     }
 
     void FpsCamera::setSpeed(float speed) {
