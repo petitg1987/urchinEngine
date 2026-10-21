@@ -63,6 +63,7 @@ namespace urchin {
             bool depthTestEnabled;
             bool layerIndexDataInShaderEnabled;
             std::bitset<8> layersMask;
+            bool commandBufferRefreshEachFrame;
             std::vector<AlterableBufferHandler> dataBuffers;
             AlterableBufferHandler instanceDataBuffer;
             AlterableBufferHandler indexBuffer;

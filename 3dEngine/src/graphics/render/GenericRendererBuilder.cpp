@@ -16,7 +16,8 @@ namespace urchin {
             depthWriteEnabled(false),
             cullFaceEnabled(true),
             layerIndexDataInShaderEnabled(false),
-            layersMask(ULLONG_MAX) {
+            layersMask(ULLONG_MAX),
+            commandBufferRefreshEachFrame(false) {
 
     }
 
@@ -225,6 +226,20 @@ namespace urchin {
 
     std::bitset<8> GenericRendererBuilder::getLayersMask() const {
         return layersMask;
+    }
+
+    /**
+     * Record the draw commands at each frame instead of reusing them while nothing changed.
+     * Workaround for Nvidia driver 615.71.09: re-using the same command buffer of the deferred second pass during many frames leads to VK_ERROR_DEVICE_LOST
+     * (Xid 69: invalid pixel shader program address) when shadow maps are rendered in parallel.
+     */
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableCommandBufferRefreshEachFrame() {
+        commandBufferRefreshEachFrame = true;
+        return shared_from_this();
+    }
+
+    bool GenericRendererBuilder::isCommandBufferRefreshEachFrameEnabled() const {
+        return commandBufferRefreshEachFrame;
     }
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {

@@ -467,6 +467,7 @@ namespace urchin {
                 ->addUniformTextureReader(AO_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyGreyscale8Bits("empty AO"), TextureParam::buildNearest()))
                 ->addUniformTextureReaderArray(SM_TEX_UNIFORM_BINDING, shadowMapTextureReaders)
                 ->addUniformTextureReader(SM_OFFSET_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyArrayRg32Bits("empty SM offset"), TextureParam::buildNearest()))
+                ->enableCommandBufferRefreshEachFrame() //workaround for Nvidia driver bug: see method documentation
                 ->build();
 
         refreshDebugFramebuffers = true;

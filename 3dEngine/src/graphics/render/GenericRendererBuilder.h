@@ -64,6 +64,9 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> setLayersMask(std::bitset<8>);
             std::bitset<8> getLayersMask() const;
 
+            std::shared_ptr<GenericRendererBuilder> enableCommandBufferRefreshEachFrame();
+            bool isCommandBufferRefreshEachFrameEnabled() const;
+
             std::unique_ptr<GenericRenderer> build();
 
         private:
@@ -89,6 +92,7 @@ namespace urchin {
             bool cullFaceEnabled;
             bool layerIndexDataInShaderEnabled;
             std::bitset<8> layersMask;
+            bool commandBufferRefreshEachFrame;
     };
 
 }

@@ -21,7 +21,8 @@ namespace urchin {
             scissorSize(rendererBuilder.getScissorSize()),
             depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
             layerIndexDataInShaderEnabled(rendererBuilder.isLayerIndexDataInShaderEnabled()),
-            layersMask(rendererBuilder.getLayersMask()) {
+            layersMask(rendererBuilder.getLayersMask()),
+            commandBufferRefreshEachFrame(rendererBuilder.isCommandBufferRefreshEachFrameEnabled()) {
 
         setupPipelineBuilder(std::make_unique<PipelineBuilder>(GRAPHICS, getName()));
         getPipelineBuilder().setupRenderTarget(getRenderTarget());
@@ -219,7 +220,7 @@ namespace urchin {
     }
 
     bool GenericRenderer::needCommandBufferRefresh(std::size_t framebufferIndex) const {
-        return layerIndexDataInShaderEnabled || PipelineProcessor::needCommandBufferRefresh(framebufferIndex);
+        return layerIndexDataInShaderEnabled || commandBufferRefreshEachFrame || PipelineProcessor::needCommandBufferRefresh(framebufferIndex);
     }
 
     bool GenericRenderer::isApplicableOnLayer(std::size_t layerIndex) const {
