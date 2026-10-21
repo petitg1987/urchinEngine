@@ -24,7 +24,7 @@ namespace urchin {
             bool isInputDeviceCanMoveCamera() const;
             void setMouseSensitivityPercentage(float);
             void setGamepadSensitivityPercentage(float);
-            void setInvertGamepadYAxis(bool);
+            void setGamepadInvertYAxis(bool);
             void setDistance(float);
             bool isFirstPersonCamera() const;
             void setMaxRotationX(float);
@@ -106,7 +106,7 @@ namespace urchin {
             bool inputDeviceCanMoveCamera; //true if the cursor/gamepad is used to move the camera
             float mouseSensitivityPercentage;
             float gamepadSensitivityPercentage;
-            bool invertGamepadYAxis;
+            bool gamepadInvertYAxis;
             GamepadAnalogStick lookStick;
             unsigned int sceneWidth;
             unsigned int sceneHeight;

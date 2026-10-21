@@ -16,7 +16,7 @@ namespace urchin {
             inputDeviceCanMoveCamera(false),
             mouseSensitivityPercentage(1.0f),
             gamepadSensitivityPercentage(1.0f),
-            invertGamepadYAxis(false),
+            gamepadInvertYAxis(false),
             sceneWidth(0),
             sceneHeight(0) {
         float verticalFovAngle = computeVerticalFovAngle();
@@ -88,8 +88,8 @@ namespace urchin {
         this->gamepadSensitivityPercentage = gamepadSensitivityPercentage;
     }
 
-    void Camera::setInvertGamepadYAxis(bool invertGamepadYAxis) {
-        this->invertGamepadYAxis = invertGamepadYAxis;
+    void Camera::setGamepadInvertYAxis(bool gamepadInvertYAxis) {
+        this->gamepadInvertYAxis = gamepadInvertYAxis;
     }
 
     /**
@@ -350,7 +350,7 @@ namespace urchin {
 
             Vector2<float> stickDirectionCurved = stickDirection * stickLength;
             float rotationAngle = (float)((double)GAMEPAD_ROTATION_BASE_SENSITIVITY * (double)gamepadSensitivityPercentage * (double)dt);
-            float inversion = invertGamepadYAxis ? -1.0f : 1.0f;
+            float inversion = gamepadInvertYAxis ? -1.0f : 1.0f;
             rotateFromDirection(Vector2(-stickDirectionCurved.X * rotationAngle, -stickDirectionCurved.Y * inversion * rotationAngle));
         }
     }
