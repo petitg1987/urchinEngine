@@ -84,9 +84,9 @@ namespace urchin {
         keysLabelMap[InputKey::GAMEPAD_BUTTON_EAST] = "B";
         keysLabelMap[InputKey::GAMEPAD_BUTTON_WEST] = "X";
         keysLabelMap[InputKey::GAMEPAD_BUTTON_NORTH] = "Y";
-        keysLabelMap[InputKey::GAMEPAD_BACK] = "View";
+        keysLabelMap[InputKey::GAMEPAD_BACK] = "Back";
         keysLabelMap[InputKey::GAMEPAD_GUIDE] = "Home";
-        keysLabelMap[InputKey::GAMEPAD_START] = "Menu";
+        keysLabelMap[InputKey::GAMEPAD_START] = "Start";
         keysLabelMap[InputKey::GAMEPAD_LEFT_STICK_PRESS] = "LStick";
         keysLabelMap[InputKey::GAMEPAD_RIGHT_STICK_PRESS] = "RStick";
         keysLabelMap[InputKey::GAMEPAD_LEFT_SHOULDER] = "LB";
