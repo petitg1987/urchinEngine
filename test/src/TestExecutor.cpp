@@ -5,6 +5,7 @@
 #include "common/io/map/MapSerializerTest.h"
 #include "common/io/uda/UdaParserTest.h"
 #include "common/system/SystemInfoTest.h"
+#include "common/system/input/InputDeviceTrackerTest.h"
 #include "common/util/StringUtilTest.h"
 #include "common/util/HashUtilTest.h"
 #include "common/util/FileUtilTest.h"
@@ -68,6 +69,7 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
 
     //system
     runner.addTest(SystemInfoTest::suite());
+    runner.addTest(InputDeviceTrackerTest::suite());
 
     //container
     runner.addTest(EverGrowQueueTest::suite());

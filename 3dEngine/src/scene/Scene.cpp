@@ -229,6 +229,8 @@ namespace urchin {
     }
 
     bool Scene::onKeyPress(InputKey key) {
+        inputDeviceTracker.onKeyPress(key);
+
         for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onKeyPress(key)) {
                 return false;
@@ -256,6 +258,8 @@ namespace urchin {
     }
 
     bool Scene::onMouseMove(double mouseX, double mouseY, double deltaMouseX, double deltaMouseY) {
+        inputDeviceTracker.onMouseMove(deltaMouseX, deltaMouseY);
+
         for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onMouseMove(mouseX, mouseY, deltaMouseX, deltaMouseY)) {
                 return false;
@@ -265,6 +269,8 @@ namespace urchin {
     }
 
     bool Scene::onScroll(double offsetY) {
+        inputDeviceTracker.onScroll();
+
         for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onScroll(offsetY)) {
                 return false;
@@ -274,12 +280,18 @@ namespace urchin {
     }
 
     bool Scene::onGamepadAnalogInputUpdate(GamepadAnalogInput gamepadAnalogInput, float value) {
+        inputDeviceTracker.onGamepadAnalogInputUpdate(value);
+
         for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderer, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onGamepadAnalogInputUpdate(gamepadAnalogInput, value)) {
                 return false;
             }
         }
         return true;
+    }
+
+    InputDevice Scene::getLastInputDevice() const {
+        return inputDeviceTracker.getLastInputDevice();
     }
 
     void Scene::display() {

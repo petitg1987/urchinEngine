@@ -51,6 +51,7 @@ namespace urchin {
             bool onMouseMove(double, double, double, double);
             bool onScroll(double);
             bool onGamepadAnalogInputUpdate(GamepadAnalogInput, float);
+            InputDevice getLastInputDevice() const;
 
             //render
             void display();
@@ -86,6 +87,9 @@ namespace urchin {
             std::vector<std::unique_ptr<UIRenderer>> uiRenderers;
             UIRenderer* activeUiRenderer;
             float gammaFactor;
+
+            //events
+            InputDeviceTracker inputDeviceTracker;
     };
 
 }
