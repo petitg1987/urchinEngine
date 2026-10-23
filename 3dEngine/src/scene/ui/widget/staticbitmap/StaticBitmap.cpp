@@ -60,6 +60,20 @@ namespace urchin {
         return WidgetType::STATIC_BITMAP;
     }
 
+    void StaticBitmap::updateSize(Size size) {
+        Widget::updateSize(size);
+    }
+
+    void StaticBitmap::updateSize(WidthSize widthSize) {
+        float ratio = (float)texture->getHeight() / (float)texture->getWidth();
+        Widget::updateSize(Size(widthSize.getWidth(), widthSize.getWidthType(), ratio, RATIO_TO_WIDTH));
+    }
+
+    void StaticBitmap::updateSize(HeightSize heightSize) {
+        float ratio = (float)texture->getWidth() / (float)texture->getHeight();
+        Widget::updateSize(Size(ratio, RATIO_TO_HEIGHT, heightSize.getHeight(), heightSize.getHeightType()));
+    }
+
     void StaticBitmap::updateTexture(const std::string& filename) {
         texture = buildTexture(filename);
         changeTexture(texture);

@@ -21,6 +21,10 @@ namespace urchin {
 
             WidgetType getWidgetType() const override;
 
+            void updateSize(Size) override;
+            void updateSize(WidthSize);
+            void updateSize(HeightSize);
+
             void updateTexture(const std::string&);
             void updateTexture(std::shared_ptr<Texture>);
             const std::string& getTextureName() const;
