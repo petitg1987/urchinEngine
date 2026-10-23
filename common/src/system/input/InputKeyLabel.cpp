@@ -45,13 +45,13 @@ namespace urchin {
         keysLabelMap[InputKey::ESCAPE] = "Esc";
         keysLabelMap[InputKey::SPACE] = "Space";
         keysLabelMap[InputKey::CTRL_LEFT] = "Ctrl";
-        keysLabelMap[InputKey::CTRL_RIGHT] = "Ctrl (right)";
+        keysLabelMap[InputKey::CTRL_RIGHT] = "Ctrl Right";
         keysLabelMap[InputKey::ALT_LEFT] = "Alt";
-        keysLabelMap[InputKey::ALT_RIGHT] = "Alt (right)";
+        keysLabelMap[InputKey::ALT_RIGHT] = "Alt Right";
         keysLabelMap[InputKey::SHIFT_LEFT] = "Shift";
-        keysLabelMap[InputKey::SHIFT_RIGHT] = "Shift (right)";
+        keysLabelMap[InputKey::SHIFT_RIGHT] = "Shift Right";
         keysLabelMap[InputKey::SUPER_LEFT] = "Super";
-        keysLabelMap[InputKey::SUPER_RIGHT] = "Super (right)";
+        keysLabelMap[InputKey::SUPER_RIGHT] = "Super Right";
         keysLabelMap[InputKey::MENU] = "Menu";
         keysLabelMap[InputKey::ARROW_LEFT] = "Left";
         keysLabelMap[InputKey::ARROW_RIGHT] = "Right";
@@ -66,10 +66,10 @@ namespace urchin {
         keysLabelMap[InputKey::END] = "End";
         keysLabelMap[InputKey::PAGE_UP] = "Page Up";
         keysLabelMap[InputKey::PAGE_DOWN] = "Page Down";
-        keysLabelMap[InputKey::CAPS_LOCK] = "Caps lock";
-        keysLabelMap[InputKey::SCROLL_LOCK] = "Scroll lock";
-        keysLabelMap[InputKey::NUM_LOCK] = "Num lock";
-        keysLabelMap[InputKey::PRINT_SCREEN] = "Ptr scr";
+        keysLabelMap[InputKey::CAPS_LOCK] = "Caps Lock";
+        keysLabelMap[InputKey::SCROLL_LOCK] = "Scroll Lock";
+        keysLabelMap[InputKey::NUM_LOCK] = "Num Lock";
+        keysLabelMap[InputKey::PRINT_SCREEN] = "Ptr Scr";
         keysLabelMap[InputKey::PAUSE] = "Pause";
 
         //mouse
