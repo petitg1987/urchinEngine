@@ -13,4 +13,5 @@ class InputDeviceTrackerTest final : public CppUnit::TestFixture {
         void switchBackToKeyboardMouse();
         void ignoreSyntheticMouseMove();
         void ignoreUnknownKey();
+        void gamepadType();
 };

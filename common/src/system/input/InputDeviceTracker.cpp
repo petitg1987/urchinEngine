@@ -6,13 +6,18 @@
 namespace urchin {
 
     InputDeviceTracker::InputDeviceTracker() :
+            gamepadType(GamepadType::OTHER),
             lastInputDevice(InputDevice::KEYBOARD_MOUSE) {
 
     }
 
+    void InputDeviceTracker::onGamepadTypeUpdate(GamepadType gamepadType) {
+        this->gamepadType = gamepadType;
+    }
+
     void InputDeviceTracker::onKeyPress(InputKey key) {
         if (key != InputKey::UNKNOWN_KEY) {
-            lastInputDevice = InputKeyNavigation::isGamepadKey(key) ? InputDevice::GAMEPAD : InputDevice::KEYBOARD_MOUSE;
+            lastInputDevice = InputKeyNavigation::isGamepadKey(key) ? toGamepadInputDevice() : InputDevice::KEYBOARD_MOUSE;
         }
     }
 
@@ -28,12 +33,25 @@ namespace urchin {
 
     void InputDeviceTracker::onGamepadAnalogInputUpdate(float value) {
         if (std::abs(value) >= GAMEPAD_ANALOG_INPUT_THRESHOLD) {
-            lastInputDevice = InputDevice::GAMEPAD;
+            lastInputDevice = toGamepadInputDevice();
         }
+    }
+
+    bool InputDeviceTracker::isGamepad(InputDevice inputDevice) {
+        return inputDevice != InputDevice::KEYBOARD_MOUSE;
     }
 
     InputDevice InputDeviceTracker::getLastInputDevice() const {
         return lastInputDevice;
+    }
+
+    InputDevice InputDeviceTracker::toGamepadInputDevice() const {
+        if (gamepadType == GamepadType::XBOX) {
+            return InputDevice::GAMEPAD_XBOX;
+        } else if (gamepadType == GamepadType::PLAYSTATION) {
+            return InputDevice::GAMEPAD_PLAYSTATION;
+        }
+        return InputDevice::GAMEPAD_OTHER;
     }
 
 }

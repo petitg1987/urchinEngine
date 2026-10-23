@@ -51,6 +51,7 @@ namespace urchin {
             bool onMouseMove(double, double, double, double);
             bool onScroll(double);
             bool onGamepadAnalogInputUpdate(GamepadAnalogInput, float);
+            void onGamepadTypeUpdate(GamepadType);
             InputDevice getLastInputDevice() const;
 
             //render

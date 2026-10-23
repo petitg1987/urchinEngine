@@ -290,6 +290,10 @@ namespace urchin {
         return true;
     }
 
+    void Scene::onGamepadTypeUpdate(GamepadType gamepadType) {
+        inputDeviceTracker.onGamepadTypeUpdate(gamepadType);
+    }
+
     InputDevice Scene::getLastInputDevice() const {
         return inputDeviceTracker.getLastInputDevice();
     }

@@ -11,7 +11,7 @@ void InputDeviceTrackerTest::switchToGamepadByKey() {
 
     inputDeviceTracker.onKeyPress(InputKey::GAMEPAD_BUTTON_SOUTH);
 
-    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD);
+    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD_OTHER);
 }
 
 void InputDeviceTrackerTest::switchToGamepadByAnalogInput() {
@@ -19,7 +19,7 @@ void InputDeviceTrackerTest::switchToGamepadByAnalogInput() {
 
     inputDeviceTracker.onGamepadAnalogInputUpdate(-0.8f);
 
-    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD);
+    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD_OTHER);
 }
 
 void InputDeviceTrackerTest::ignoreSmallAnalogInput() {
@@ -52,7 +52,7 @@ void InputDeviceTrackerTest::ignoreSyntheticMouseMove() {
 
     inputDeviceTracker.onMouseMove(0.0, 0.0);
 
-    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD);
+    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD_OTHER);
 }
 
 void InputDeviceTrackerTest::ignoreUnknownKey() {
@@ -61,7 +61,22 @@ void InputDeviceTrackerTest::ignoreUnknownKey() {
 
     inputDeviceTracker.onKeyPress(InputKey::UNKNOWN_KEY);
 
-    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD);
+    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD_OTHER);
+}
+
+void InputDeviceTrackerTest::gamepadType() {
+    InputDeviceTracker inputDeviceTracker;
+
+    inputDeviceTracker.onGamepadTypeUpdate(GamepadType::PLAYSTATION);
+    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::KEYBOARD_MOUSE, "Gamepad type update should not switch the input device");
+
+    inputDeviceTracker.onKeyPress(InputKey::GAMEPAD_BUTTON_SOUTH);
+    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD_PLAYSTATION, "Gamepad key should switch to PlayStation gamepad");
+
+    inputDeviceTracker.onGamepadTypeUpdate(GamepadType::XBOX);
+    inputDeviceTracker.onGamepadAnalogInputUpdate(0.8f);
+    AssertHelper::assertTrue(inputDeviceTracker.getLastInputDevice() == InputDevice::GAMEPAD_XBOX, "Analog input should switch to Xbox gamepad");
+    AssertHelper::assertTrue(InputDeviceTracker::isGamepad(inputDeviceTracker.getLastInputDevice()), "Xbox gamepad should be a gamepad");
 }
 
 CppUnit::Test* InputDeviceTrackerTest::suite() {
@@ -73,6 +88,7 @@ CppUnit::Test* InputDeviceTrackerTest::suite() {
     suite->addTest(new CppUnit::TestCaller("switchBackToKeyboardMouse", &InputDeviceTrackerTest::switchBackToKeyboardMouse));
     suite->addTest(new CppUnit::TestCaller("ignoreSyntheticMouseMove", &InputDeviceTrackerTest::ignoreSyntheticMouseMove));
     suite->addTest(new CppUnit::TestCaller("ignoreUnknownKey", &InputDeviceTrackerTest::ignoreUnknownKey));
+    suite->addTest(new CppUnit::TestCaller("gamepadType", &InputDeviceTrackerTest::gamepadType));
 
     return suite;
 }
