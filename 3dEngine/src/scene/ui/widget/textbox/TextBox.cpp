@@ -173,7 +173,7 @@ namespace urchin {
                     }
                     return false;
                 }
-            } else if (key == InputKey::ARROW_LEFT) {
+            } else if (InputKeyNavigation::isLeft(key)) {
                 if (hasTextSelected()) {
                     cursorIndex = std::min(cursorIndex, selectionStartIndex);
                     refreshText(false);
@@ -185,7 +185,7 @@ namespace urchin {
                     resetSelection();
                     return false;
                 }
-            } else if (key == InputKey::ARROW_RIGHT) {
+            } else if (InputKeyNavigation::isRight(key)) {
                 if (hasTextSelected()) {
                     cursorIndex = std::max(cursorIndex, selectionStartIndex);
                     refreshText(false);
