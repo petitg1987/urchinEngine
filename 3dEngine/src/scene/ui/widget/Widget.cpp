@@ -709,6 +709,7 @@ namespace urchin {
         if (isMouseOnWidget(mouseX, mouseY)) {
             if (widgetState == DEFAULT) {
                 widgetState = FOCUS;
+                hasGameControllerFocus = getUi3dData() && getUi3dData()->pointerType == SCREEN_CENTER;
                 widgetStateUpdated = true;
             }
         } else if (widgetState == FOCUS) {
