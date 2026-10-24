@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "math/geometry/2d/object/Rectangle2D.h"
 
 namespace urchin {
@@ -69,6 +71,17 @@ namespace urchin {
         Point2<T> maxPoint = origin.translate(rectangleShape.getDiagonal());
         Point2<T> otherMaxPoint = other.getMax();
         return (origin.X < otherMaxPoint.X && maxPoint.X > other.getMin().X) && (origin.Y < otherMaxPoint.Y && maxPoint.Y > other.getMin().Y);
+    }
+
+    template<class T> T Rectangle2D<T>::computeOverlapArea(const Rectangle2D<T>& other) const {
+        Point2<T> maxPoint = getMax();
+        Point2<T> otherMaxPoint = other.getMax();
+        T overlapX = std::min(maxPoint.X, otherMaxPoint.X) - std::max(origin.X, other.getMin().X);
+        T overlapY = std::min(maxPoint.Y, otherMaxPoint.Y) - std::max(origin.Y, other.getMin().Y);
+        if (overlapX <= (T)0 || overlapY <= (T)0) {
+            return (T)0;
+        }
+        return overlapX * overlapY;
     }
 
     //explicit template

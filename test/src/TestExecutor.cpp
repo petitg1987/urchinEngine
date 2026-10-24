@@ -17,6 +17,7 @@
 #include "common/math/algebra/vector/VectorTest.h"
 #include "common/math/algorithm/MinEnclosingSphereTest.h"
 #include "common/math/geometry/2d/object/LineSegment2DTest.h"
+#include "common/math/geometry/2d/object/Rectangle2DTest.h"
 #include "common/math/geometry/2d/util/ResizePolygon2DServiceTest.h"
 #include "common/math/geometry/2d/shape/ConvexHullShape2DTest.h"
 #include "common/math/geometry/2d/Line2DTest.h"
@@ -92,6 +93,7 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //math - geometry
     runner.addTest(ResizePolygon2DServiceTest::suite());
     runner.addTest(LineSegment2DTest::suite());
+    runner.addTest(Rectangle2DTest::suite());
     runner.addTest(ConvexHullShape2DTest::suite());
     runner.addTest(Line2DTest::suite());
     runner.addTest(AABBoxTest::suite());

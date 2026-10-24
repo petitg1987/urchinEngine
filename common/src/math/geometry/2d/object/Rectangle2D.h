@@ -24,6 +24,7 @@ namespace urchin {
 
             bool collideWithPoint(const Point2<T>&) const;
             bool collideWithRectangle(const Rectangle2D<T>&) const;
+            T computeOverlapArea(const Rectangle2D<T>&) const;
 
         private:
             RectangleShape<T> rectangleShape;
