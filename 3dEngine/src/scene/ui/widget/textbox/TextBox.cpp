@@ -92,6 +92,7 @@ namespace urchin {
         StringUtil::readCodepoints(text, this->originalText);
         cursorIndex = originalText.size();
         refreshText(true);
+        resetSelection();
     }
 
     void TextBox::setAllowedCharacters(const std::string& allowedCharacters) {
