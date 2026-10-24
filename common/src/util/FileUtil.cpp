@@ -1,6 +1,9 @@
 #include <stdexcept>
 #include <fstream>
 #include <sys/stat.h>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
 #include "util/FileUtil.h"
 #include "util/UserAuthorityException.h"
@@ -66,9 +69,19 @@ namespace urchin {
 
     std::string FileUtil::pathToString(const std::filesystem::path& path) {
         #ifdef _WIN32
-            //NTFS filesystem use UTF-16 encoding. Therefore, without this specific code, the application won't work correctly if it is stored in a folder with characters others than ASCII (e.g.: é).
-            auto pathU16String = path.u16string();
-            return std::string(pathU16String.begin(), pathU16String.end());
+            //NTFS filesystem use UTF-16 encoding while the narrow strings of the application (GetModuleFileNameA, std::ifstream, fopen...) use the ANSI code page.
+            //Therefore, the path is converted into the ANSI code page to work correctly in a folder with characters others than ASCII (e.g.: é, Игры).
+            const std::wstring& pathWString = path.native();
+            if (pathWString.empty()) {
+                return "";
+            }
+            int ansiSize = WideCharToMultiByte(CP_ACP, 0, pathWString.data(), (int)pathWString.size(), nullptr, 0, nullptr, nullptr);
+            if (ansiSize <= 0) {
+                throw std::runtime_error("Unable to convert path to ANSI code page: " + path.string());
+            }
+            std::string ansiPath((std::size_t)ansiSize, '\0');
+            WideCharToMultiByte(CP_ACP, 0, pathWString.data(), (int)pathWString.size(), ansiPath.data(), ansiSize, nullptr, nullptr);
+            return ansiPath;
         #else
             auto pathU8String = path.u8string();
             return std::string(pathU8String.begin(), pathU8String.end());
