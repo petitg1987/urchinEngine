@@ -12,6 +12,7 @@ class TextareaTest final : public CppUnit::TestFixture {
         void textCut();
         void textCopyPaste();
         void leftArrowWithSelection();
+        void gamepadVerticalNavigation();
 
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();

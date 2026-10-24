@@ -51,6 +51,21 @@ void TextBoxTest::textSelection() {
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "");
 }
 
+void TextBoxTest::gamepadLeftAfterTextUpdate() {
+    auto uiRenderer = setupUiRenderer();
+    auto textBox = TextBox::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 20.0f, PIXEL), "test");
+    uiRenderer->addWidget(textBox);
+
+    textBox->updateText("abc"); //cursor index at 3
+    textBox->updateGameControllerFocus(true);
+    AssertHelper::assertFalse(uiRenderer->onKeyPress(InputKey::GAMEPAD_DPAD_LEFT)); //cursor index at 2
+    uiRenderer->onChar('x');
+    AssertHelper::assertStringEquals(textBox->getText(), "abxc");
+
+    AssertHelper::assertFalse(uiRenderer->onKeyPress(InputKey::GAMEPAD_DPAD_RIGHT)); //cursor index at 4
+    AssertHelper::assertTrue(uiRenderer->onKeyPress(InputKey::GAMEPAD_DPAD_RIGHT)); //cursor index still at 4
+}
+
 void TextBoxTest::virtualKeyboardFocusSwitch() {
     auto uiRenderer = setupUiRenderer();
     bool keyboardVisible = false;
@@ -86,6 +101,7 @@ CppUnit::Test* TextBoxTest::suite() {
 
     suite->addTest(new CppUnit::TestCaller("textShift", &TextBoxTest::textShift));
     suite->addTest(new CppUnit::TestCaller("textSelection", &TextBoxTest::textSelection));
+    suite->addTest(new CppUnit::TestCaller("gamepadLeftAfterTextUpdate", &TextBoxTest::gamepadLeftAfterTextUpdate));
     suite->addTest(new CppUnit::TestCaller("virtualKeyboardFocusSwitch", &TextBoxTest::virtualKeyboardFocusSwitch));
 
     return suite;

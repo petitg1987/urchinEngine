@@ -11,6 +11,7 @@ class TextBoxTest final : public CppUnit::TestFixture {
 
         void textShift();
         void textSelection();
+        void gamepadLeftAfterTextUpdate();
         void virtualKeyboardFocusSwitch();
 
     private:

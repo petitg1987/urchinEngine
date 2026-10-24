@@ -79,6 +79,22 @@ void TextareaTest::leftArrowWithSelection() {
     AssertHelper::assertStringEquals(textarea->getText(), "cab");
 }
 
+void TextareaTest::gamepadVerticalNavigation() {
+    auto uiRenderer = setupUiRenderer();
+    auto textarea = Textarea::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(500.0f, 100.0f, PIXEL), "test");
+    uiRenderer->addWidget(textarea);
+
+    textarea->updateText("ab\ncd"); //cursor at end of second line
+    textarea->updateGameControllerFocus(true);
+    AssertHelper::assertFalse(uiRenderer->onKeyPress(InputKey::GAMEPAD_DPAD_UP)); //cursor at end of first line
+    AssertHelper::assertTrue(uiRenderer->onKeyPress(InputKey::GAMEPAD_DPAD_UP)); //cursor still on first line: event propagated
+    uiRenderer->onChar('x');
+    AssertHelper::assertStringEquals(textarea->getText(), "abx\ncd");
+
+    AssertHelper::assertFalse(uiRenderer->onKeyPress(InputKey::GAMEPAD_DPAD_DOWN)); //cursor on second line
+    AssertHelper::assertTrue(uiRenderer->onKeyPress(InputKey::GAMEPAD_DPAD_DOWN)); //cursor still on second line: event propagated
+}
+
 std::unique_ptr<UIRenderer> TextareaTest::setupUiRenderer() {
     renderTarget = std::make_unique<OffscreenRender>("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
     renderTarget->setOutputSize(1920, 1080, 1, false);
@@ -94,6 +110,7 @@ CppUnit::Test* TextareaTest::suite() {
     suite->addTest(new CppUnit::TestCaller("textCut", &TextareaTest::textCut));
     suite->addTest(new CppUnit::TestCaller("textCopyPaste", &TextareaTest::textCopyPaste));
     suite->addTest(new CppUnit::TestCaller("leftArrowWithSelection", &TextareaTest::leftArrowWithSelection));
+    suite->addTest(new CppUnit::TestCaller("gamepadVerticalNavigation", &TextareaTest::gamepadVerticalNavigation));
 
     return suite;
 }
