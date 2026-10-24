@@ -71,7 +71,7 @@ namespace urchin {
     }
 
     bool Scrollbar::onKeyPressEvent(InputKey key) {
-        if (key == InputKey::LMB) {
+        if (scrollableWidget.isClickKey(key)) {
             if (scrollbarCursor->widgetRectangle().collideWithPoint(Point2(mouseX, mouseY))) {
                 state = CURSOR_SELECTED;
             } else if (scrollbarLine->widgetRectangle().collideWithPoint(Point2(mouseX, mouseY))) {
@@ -83,7 +83,7 @@ namespace urchin {
     }
 
     bool Scrollbar::onKeyReleaseEvent(InputKey key) {
-        if (key == InputKey::LMB) {
+        if (scrollableWidget.isClickKey(key)) {
             state = DEFAULT;
         }
         return true;

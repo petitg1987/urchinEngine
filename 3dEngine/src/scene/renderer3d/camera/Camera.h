@@ -80,7 +80,7 @@ namespace urchin {
             void updateComponents();
 
             static constexpr float MOUSE_ROTATION_BASE_SENSITIVITY = 0.003f;
-            static constexpr float GAMEPAD_ROTATION_BASE_SENSITIVITY = 2.0f;
+            static constexpr float GAMEPAD_ROTATION_BASE_SENSITIVITY = 1.75f;
 
             Matrix4<float> mView;
             Matrix4<float> mProjection;

@@ -124,6 +124,13 @@ namespace urchin {
         ui3dData->pointerType = pointerType;
     }
 
+    void UIRenderer::setClickKeys(std::vector<InputKey> clickKeys) const {
+        if (!ui3dData) {
+            throw std::runtime_error("UI renderer has not been initialized for UI 3d");
+        }
+        ui3dData->clickKeys = std::move(clickKeys);
+    }
+
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         uiResolution = Point2((int)sceneWidth, (int)sceneHeight);
         widgetSetDisplayer->onUiRendererSizeUpdated();

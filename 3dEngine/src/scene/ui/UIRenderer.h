@@ -27,6 +27,7 @@ namespace urchin {
 
         float maxInteractiveDistance = 4.0f;
         UI3dPointerType pointerType = MOUSE;
+        std::vector<InputKey> clickKeys = {InputKey::LMB}; //TODO Why not also InputKey::GAMEPAD_BUTTON_SOUTH ?
     };
 
     class WidgetSetDisplayer;
@@ -43,6 +44,7 @@ namespace urchin {
             void onCameraProjectionUpdate(Camera&);
             void setMaximumInteractiveDistance(float) const;
             void setPointerType(UI3dPointerType) const;
+            void setClickKeys(std::vector<InputKey>) const;
 
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;

@@ -115,7 +115,7 @@ namespace urchin {
             ctrlLeftKeyPressed = true;
         } else if (key == InputKey::CTRL_RIGHT) {
             ctrlRightKeyPressed = true;
-        } else if (key == InputKey::LMB) {
+        } else if (isClickKey(key)) {
             if (widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 changeTexture(texTextBoxFocus);
@@ -230,7 +230,7 @@ namespace urchin {
             ctrlLeftKeyPressed = false;
         } else if (key == InputKey::CTRL_RIGHT) {
             ctrlRightKeyPressed = false;
-        } else if (key == InputKey::LMB) {
+        } else if (isClickKey(key)) {
             if (selectModeOn) {
                 selectModeOn = false;
                 return false;

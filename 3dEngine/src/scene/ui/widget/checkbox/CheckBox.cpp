@@ -54,7 +54,7 @@ namespace urchin {
 
     bool CheckBox::onKeyReleaseEvent(InputKey key) {
         if (getWidgetState() == FOCUS) {
-            if (key == InputKey::LMB || (InputKeyNavigation::isValidate(key) && isGameControllerFocused())) {
+            if (isClickKey(key) || (isValidateKey(key) && isGameControllerFocused())) {
                 switchValue();
                 return false;
             }

@@ -98,7 +98,7 @@ namespace urchin {
             return false;
         }
 
-        if (key == InputKey::LMB) {
+        if (isClickKey(key)) {
             if (cursorImage->widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = CURSOR_SELECTED;
                 return false;
@@ -112,7 +112,7 @@ namespace urchin {
     }
 
     bool Slider::onKeyReleaseEvent(InputKey key) {
-        if (key == InputKey::LMB) {
+        if (isClickKey(key)) {
             state = DEFAULT;
         } else if (navigationKeyPressed == key) {
             resetNavigationKeyPressed();

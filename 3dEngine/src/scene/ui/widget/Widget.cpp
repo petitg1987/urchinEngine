@@ -265,6 +265,20 @@ namespace urchin {
         return hasGameControllerFocus;
     }
 
+    bool Widget::isClickKey(InputKey key) const {
+        if (const UI3dData* ui3dData = getUi3dData()) {
+            return std::ranges::find(ui3dData->clickKeys, key) != ui3dData->clickKeys.end();
+        }
+        return InputKeyNavigation::isClick(key);
+    }
+
+    bool Widget::isValidateKey(InputKey key) const {
+        if (const UI3dData* ui3dData = getUi3dData()) {
+            return std::ranges::find(ui3dData->clickKeys, key) != ui3dData->clickKeys.end();
+        }
+        return InputKeyNavigation::isValidate(key);
+    }
+
     Point2<int> Widget::getSceneSize() const {
         if (!uiRenderer) {
             throw std::runtime_error("Scene size not available because the widget is not initialized");
@@ -591,7 +605,7 @@ namespace urchin {
 
     bool Widget::handleWidgetKeyPress(InputKey key) {
         bool widgetStateUpdated = false;
-        if (key == InputKey::LMB || (InputKeyNavigation::isValidate(key) && hasGameControllerFocus)) {
+        if (isClickKey(key) || (isValidateKey(key) && hasGameControllerFocus)) {
             if (widgetState == FOCUS) {
                 widgetState = CLICKING;
                 widgetStateUpdated = true;
@@ -633,7 +647,7 @@ namespace urchin {
 
     bool Widget::handleWidgetKeyRelease(InputKey key) {
         bool widgetStateUpdated = false;
-        if (key == InputKey::LMB) {
+        if (isClickKey(key)) {
             if (isMouseOnWidget(mouseX, mouseY)) {
                 if (widgetState == CLICKING) {
                     widgetState = FOCUS;
@@ -645,7 +659,7 @@ namespace urchin {
                     widgetStateUpdated = true;
                 }
             }
-        } else if (InputKeyNavigation::isValidate(key) && hasGameControllerFocus) {
+        } else if (isValidateKey(key) && hasGameControllerFocus) {
             if (widgetState == CLICKING) {
                 widgetState = FOCUS;
                 widgetStateUpdated = true;
