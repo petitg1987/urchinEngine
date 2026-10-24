@@ -27,7 +27,7 @@ namespace urchin {
 
         float maxInteractiveDistance = 4.0f;
         UI3dPointerType pointerType = MOUSE;
-        std::vector<InputKey> clickKeys = {InputKey::LMB}; //TODO Why not also InputKey::GAMEPAD_BUTTON_SOUTH ?
+        std::vector<InputKey> clickKeys = {InputKey::LMB};
     };
 
     class WidgetSetDisplayer;
