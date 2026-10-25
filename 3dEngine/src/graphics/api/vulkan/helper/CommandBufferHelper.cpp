@@ -3,10 +3,16 @@
 #include "graphics/api/vulkan/helper/CommandBufferHelper.h"
 #include "graphics/api/vulkan/setup/GraphicsSetupService.h"
 #include "graphics/api/vulkan/helper/DebugLabelHelper.h"
+#include "graphics/api/vulkan/helper/BufferUploadBatch.h"
 
 namespace urchin {
 
     CommandBufferData CommandBufferHelper::beginSingleTimeCommands(std::string_view name) {
+        //ensure the GPU commands submitted below never read a buffer whose upload is still pending
+        if (BufferUploadBatch* bufferUploadBatch = BufferUploadBatch::getActiveBatch()) {
+            bufferUploadBatch->flush();
+        }
+
         VkCommandBufferAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
         allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;

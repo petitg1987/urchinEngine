@@ -116,8 +116,8 @@ namespace urchin {
             vmaUnmapMemory(allocator, stagingBufferMemory);
 
             buffer = BufferHelper::createBuffer(name, bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageType, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, bufferMemory);
-            if (BufferUploadBatch::isActive()) {
-                BufferUploadBatch::addCopy(stagingBuffer, stagingBufferMemory, buffer, bufferSize);
+            if (BufferUploadBatch* bufferUploadBatch = BufferUploadBatch::getActiveBatch()) {
+                bufferUploadBatch->addCopy(stagingBuffer, stagingBufferMemory, buffer, bufferSize);
             } else {
                 copyBuffer(stagingBuffer, buffer, bufferSize);
                 vmaDestroyBuffer(allocator, stagingBuffer, stagingBufferMemory);
@@ -139,7 +139,9 @@ namespace urchin {
         auto allocator = GraphicsSetupService::instance().getAllocator();
 
         if (buffer != nullptr) {
-            BufferUploadBatch::cancelCopies(buffer);
+            if (BufferUploadBatch* bufferUploadBatch = BufferUploadBatch::getActiveBatch()) {
+                bufferUploadBatch->cancelCopies(buffer);
+            }
             vmaDestroyBuffer(allocator, buffer, nullptr);
             buffer = nullptr;
         }

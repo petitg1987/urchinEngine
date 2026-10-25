@@ -10,15 +10,16 @@ namespace urchin {
     class BufferUploadBatch {
         public:
             BufferUploadBatch();
-            ~BufferUploadBatch() noexcept(false);
+            ~BufferUploadBatch();
 
             BufferUploadBatch(const BufferUploadBatch&) = delete;
             BufferUploadBatch& operator=(const BufferUploadBatch&) = delete;
 
-            static bool isActive();
-            static void addCopy(VkBuffer, VmaAllocation, VkBuffer, VkDeviceSize);
-            static void cancelCopies(VkBuffer);
-            static void flush();
+            static BufferUploadBatch* getActiveBatch();
+
+            void addCopy(VkBuffer, VmaAllocation, VkBuffer, VkDeviceSize);
+            void cancelCopies(VkBuffer);
+            void flush();
 
         private:
             struct PendingCopy {
@@ -28,10 +29,10 @@ namespace urchin {
                 VkDeviceSize size;
             };
 
-            static void destroyStagingBuffer(const PendingCopy&);
+            static void destroyStagingBuffers(const std::vector<PendingCopy>&);
 
-            static bool batchActive;
-            static std::vector<PendingCopy> pendingCopies;
+            static thread_local BufferUploadBatch* activeBatch;
+            std::vector<PendingCopy> pendingCopies;
     };
 
 }

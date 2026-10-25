@@ -1,4 +1,5 @@
 #include <cassert>
+#include <UrchinCommon.h>
 
 #include "libs/vma/vk_mem_alloc.h"
 #include "graphics/api/vulkan/helper/BufferUploadBatch.h"
@@ -8,35 +9,40 @@
 namespace urchin {
 
     //static
-    bool BufferUploadBatch::batchActive = false;
-    std::vector<BufferUploadBatch::PendingCopy> BufferUploadBatch::pendingCopies;
+    thread_local BufferUploadBatch* BufferUploadBatch::activeBatch = nullptr;
 
     BufferUploadBatch::BufferUploadBatch() {
-        if (batchActive) {
-            throw std::runtime_error("Buffer upload batch is already active");
+        if (activeBatch) {
+            throw std::runtime_error("Buffer upload batch is already active on this thread");
         }
-        batchActive = true;
+        activeBatch = this;
     }
 
-    BufferUploadBatch::~BufferUploadBatch() noexcept(false) {
-        assert(batchActive);
-        batchActive = false;
-        flush();
+    BufferUploadBatch::~BufferUploadBatch() {
+        assert(activeBatch == this);
+        if (!pendingCopies.empty()) {
+            try {
+                flush();
+            } catch (const std::exception& e) {
+                Logger::instance().logError("Buffer upload batch flush failed in destructor: " + std::string(e.what()));
+            }
+        }
+        activeBatch = nullptr;
     }
 
-    bool BufferUploadBatch::isActive() {
-        return batchActive;
+    BufferUploadBatch* BufferUploadBatch::getActiveBatch() {
+        return activeBatch;
     }
 
     void BufferUploadBatch::addCopy(VkBuffer stagingBuffer, VmaAllocation stagingBufferMemory, VkBuffer dstBuffer, VkDeviceSize size) {
-        assert(isActive());
+        assert(activeBatch == this);
         pendingCopies.emplace_back(PendingCopy{.stagingBuffer = stagingBuffer, .stagingBufferMemory = stagingBufferMemory, .dstBuffer = dstBuffer, .size = size});
     }
 
     void BufferUploadBatch::cancelCopies(VkBuffer dstBuffer) {
         std::erase_if(pendingCopies, [dstBuffer](const PendingCopy& pendingCopy) {
             if (pendingCopy.dstBuffer == dstBuffer) {
-                destroyStagingBuffer(pendingCopy);
+                destroyStagingBuffers({pendingCopy});
                 return true;
             }
             return false;
@@ -48,26 +54,34 @@ namespace urchin {
             return;
         }
 
-        CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("batch copy buffers");
-        {
-            for (const PendingCopy& pendingCopy : pendingCopies) {
-                VkBufferCopy copyRegion{};
-                copyRegion.srcOffset = 0;
-                copyRegion.dstOffset = 0;
-                copyRegion.size = pendingCopy.size;
-                vkCmdCopyBuffer(commandBufferData.commandBuffer, pendingCopy.stagingBuffer, pendingCopy.dstBuffer, 1, &copyRegion);
-            }
-        }
-        CommandBufferHelper::endSingleTimeCommands(commandBufferData);
-
-        for (const PendingCopy& pendingCopy : pendingCopies) {
-            destroyStagingBuffer(pendingCopy);
-        }
+        //move the copies out first: CommandBufferHelper::beginSingleTimeCommands flushes the active batch
+        std::vector<PendingCopy> copiesToFlush = std::move(pendingCopies);
         pendingCopies.clear();
+
+        try {
+            CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("batch copy buffers");
+            {
+                for (const PendingCopy& pendingCopy : copiesToFlush) {
+                    VkBufferCopy copyRegion{};
+                    copyRegion.srcOffset = 0;
+                    copyRegion.dstOffset = 0;
+                    copyRegion.size = pendingCopy.size;
+                    vkCmdCopyBuffer(commandBufferData.commandBuffer, pendingCopy.stagingBuffer, pendingCopy.dstBuffer, 1, &copyRegion);
+                }
+            }
+            CommandBufferHelper::endSingleTimeCommands(commandBufferData);
+        } catch (...) {
+            destroyStagingBuffers(copiesToFlush);
+            throw;
+        }
+
+        destroyStagingBuffers(copiesToFlush);
     }
 
-    void BufferUploadBatch::destroyStagingBuffer(const PendingCopy& pendingCopy) {
-        vmaDestroyBuffer(GraphicsSetupService::instance().getAllocator(), pendingCopy.stagingBuffer, pendingCopy.stagingBufferMemory);
+    void BufferUploadBatch::destroyStagingBuffers(const std::vector<PendingCopy>& copies) {
+        for (const PendingCopy& pendingCopy : copies) {
+            vmaDestroyBuffer(GraphicsSetupService::instance().getAllocator(), pendingCopy.stagingBuffer, pendingCopy.stagingBufferMemory);
+        }
     }
 
 }
