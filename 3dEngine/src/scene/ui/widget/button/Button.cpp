@@ -70,16 +70,23 @@ namespace urchin {
         return textureRefreshed;
     }
 
-    bool Button::onKeyPressEvent(InputKey) {
-        return !refreshTexture();
+    bool Button::onKeyPressEvent(InputKey key) {
+        bool textureRefreshed = refreshTexture();
+        return !textureRefreshed || !isNavigationValidateKey(key);
     }
 
-    bool Button::onKeyReleaseEvent(InputKey) {
-        return !refreshTexture();
+    bool Button::onKeyReleaseEvent(InputKey key) {
+        bool textureRefreshed = refreshTexture();
+        return !textureRefreshed || !isNavigationValidateKey(key);
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        return !refreshTexture();
+        refreshTexture();
+        return true;
+    }
+
+    bool Button::isNavigationValidateKey(InputKey key) const {
+        return isGameControllerFocused() && isValidateKey(key);
     }
 
     void Button::onGameControllerFocusUpdate() {

@@ -42,6 +42,7 @@
 #include "3d/scene/renderer3d/lighting/shadow/light/LightSplitShadowMapTest.h"
 #include "3d/scene/ui/UIRendererTest.h"
 #include "3d/scene/ui/widget/text/TextTest.h"
+#include "3d/scene/ui/widget/button/ButtonTest.h"
 #include "3d/scene/ui/widget/textbox/TextBoxTest.h"
 #include "3d/scene/ui/widget/textarea/TextareaTest.h"
 #include "physics/shape/ShapeToAABBoxTest.h"
@@ -133,6 +134,7 @@ void add3dUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //ui
     runner.addTest(UIRendererTest::suite());
     runner.addTest(TextTest::suite());
+    runner.addTest(ButtonTest::suite());
     runner.addTest(TextBoxTest::suite());
     runner.addTest(TextareaTest::suite());
 }
