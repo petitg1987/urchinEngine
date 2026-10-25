@@ -22,6 +22,8 @@ namespace urchin {
             rawMouseX(0.0),
             rawMouseY(0.0),
             bCanInteractWithUi(true),
+            clickKeys({InputKey::LMB}),
+            validateKeys({InputKey::ENTER, InputKey::NUM_PAD_ENTER, InputKey::GAMEPAD_BUTTON_SOUTH}),
             widgetSetDisplayer(std::make_unique<WidgetSetDisplayer>(*this)),
             widgetsQueue(32, 16),
             postponedWidgetsQueue(16, 8) {
@@ -98,6 +100,14 @@ namespace urchin {
         this->virtualKeyboardOwner = nullptr;
     }
 
+    void UIRenderer::setClickKeys(std::vector<InputKey> clickKeys) {
+        this->clickKeys = std::move(clickKeys);
+    }
+
+    void UIRenderer::setValidateKeys(std::vector<InputKey> validateKeys) {
+        this->validateKeys = std::move(validateKeys);
+    }
+
     void UIRenderer::onCameraProjectionUpdate(Camera& camera) {
         if (!ui3dData) {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
@@ -122,13 +132,6 @@ namespace urchin {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
         }
         ui3dData->pointerType = pointerType;
-    }
-
-    void UIRenderer::setClickKeys(std::vector<InputKey> clickKeys) const {
-        if (!ui3dData) {
-            throw std::runtime_error("UI renderer has not been initialized for UI 3d");
-        }
-        ui3dData->clickKeys = std::move(clickKeys);
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -354,6 +357,14 @@ namespace urchin {
 
     UI3dData* UIRenderer::getUi3dData() const {
         return ui3dData.get();
+    }
+
+    bool UIRenderer::isClickKey(InputKey key) const {
+        return std::ranges::find(clickKeys, key) != clickKeys.end();
+    }
+
+    bool UIRenderer::isValidateKey(InputKey key) const {
+        return std::ranges::find(validateKeys, key) != validateKeys.end();
     }
 
     bool UIRenderer::canInteractWithUi() const {

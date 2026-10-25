@@ -55,6 +55,40 @@ void ButtonTest::validateKeyConsumedOnNavigationFocus() {
     AssertHelper::assertTrue(button->getWidgetState() == Widget::FOCUS);
 }
 
+void ButtonTest::configuredClickKeys() {
+    auto uiRenderer = setupUiRenderer();
+    uiRenderer->setClickKeys({InputKey::RMB});
+    auto button = Button::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(20.0f, 20.0f, PIXEL), "test", "");
+    uiRenderer->addWidget(button);
+
+    uiRenderer->onMouseMove(5.0, 5.0, 0.0, 0.0); //mouse over button
+    uiRenderer->onKeyPress(InputKey::J);
+    AssertHelper::assertTrue(button->getWidgetState() == Widget::FOCUS);
+
+    uiRenderer->onKeyPress(InputKey::RMB);
+    AssertHelper::assertTrue(button->getWidgetState() == Widget::CLICKING);
+    uiRenderer->onKeyRelease(InputKey::RMB);
+    AssertHelper::assertTrue(button->getWidgetState() == Widget::FOCUS);
+}
+
+void ButtonTest::configuredValidateKeys() {
+    auto uiRenderer = setupUiRenderer();
+    uiRenderer->setValidateKeys({InputKey::GAMEPAD_BUTTON_WEST});
+    auto button = Button::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(20.0f, 20.0f, PIXEL), "test", "");
+    uiRenderer->addWidget(button);
+
+    button->updateGameControllerFocus(true);
+    AssertHelper::assertTrue(button->getWidgetState() == Widget::FOCUS);
+    AssertHelper::assertTrue(uiRenderer->onKeyPress(InputKey::GAMEPAD_BUTTON_SOUTH));
+    AssertHelper::assertTrue(uiRenderer->onKeyPress(InputKey::ENTER));
+    AssertHelper::assertTrue(button->getWidgetState() == Widget::FOCUS);
+
+    AssertHelper::assertFalse(uiRenderer->onKeyPress(InputKey::GAMEPAD_BUTTON_WEST));
+    AssertHelper::assertTrue(button->getWidgetState() == Widget::CLICKING);
+    AssertHelper::assertFalse(uiRenderer->onKeyRelease(InputKey::GAMEPAD_BUTTON_WEST));
+    AssertHelper::assertTrue(button->getWidgetState() == Widget::FOCUS);
+}
+
 std::unique_ptr<UIRenderer> ButtonTest::setupUiRenderer() {
     renderTarget = std::make_unique<OffscreenRender>("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
     renderTarget->setOutputSize(1920, 1080, 1, false);
@@ -70,6 +104,8 @@ CppUnit::Test* ButtonTest::suite() {
     suite->addTest(new CppUnit::TestCaller("focusSwitchBetweenAdjacentButtons", &ButtonTest::focusSwitchBetweenAdjacentButtons));
     suite->addTest(new CppUnit::TestCaller("clickOnButtonDeactivateTextBox", &ButtonTest::clickOnButtonDeactivateTextBox));
     suite->addTest(new CppUnit::TestCaller("validateKeyConsumedOnNavigationFocus", &ButtonTest::validateKeyConsumedOnNavigationFocus));
+    suite->addTest(new CppUnit::TestCaller("configuredClickKeys", &ButtonTest::configuredClickKeys));
+    suite->addTest(new CppUnit::TestCaller("configuredValidateKeys", &ButtonTest::configuredValidateKeys));
 
     return suite;
 }

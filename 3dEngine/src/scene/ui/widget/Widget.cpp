@@ -266,17 +266,11 @@ namespace urchin {
     }
 
     bool Widget::isClickKey(InputKey key) const {
-        if (const UI3dData* ui3dData = getUi3dData()) {
-            return std::ranges::find(ui3dData->clickKeys, key) != ui3dData->clickKeys.end();
-        }
-        return InputKeyNavigation::isClick(key);
+        return uiRenderer && uiRenderer->isClickKey(key);
     }
 
-    bool Widget::isValidateKey(InputKey key) const {
-        if (const UI3dData* ui3dData = getUi3dData()) {
-            return std::ranges::find(ui3dData->clickKeys, key) != ui3dData->clickKeys.end();
-        }
-        return InputKeyNavigation::isValidate(key);
+    bool Widget::isNavigationValidateKey(InputKey key) const {
+        return hasGameControllerFocus && uiRenderer && uiRenderer->isValidateKey(key);
     }
 
     Point2<int> Widget::getSceneSize() const {
@@ -605,7 +599,7 @@ namespace urchin {
 
     bool Widget::handleWidgetKeyPress(InputKey key) {
         bool widgetStateUpdated = false;
-        if (isClickKey(key) || (isValidateKey(key) && hasGameControllerFocus)) {
+        if (isClickKey(key) || isNavigationValidateKey(key)) {
             if (widgetState == FOCUS) {
                 widgetState = CLICKING;
                 widgetStateUpdated = true;
@@ -659,7 +653,7 @@ namespace urchin {
                     widgetStateUpdated = true;
                 }
             }
-        } else if (isValidateKey(key) && hasGameControllerFocus) {
+        } else if (isNavigationValidateKey(key)) {
             if (widgetState == CLICKING) {
                 widgetState = FOCUS;
                 widgetStateUpdated = true;
@@ -723,13 +717,19 @@ namespace urchin {
         if (isMouseOnWidget(mouseX, mouseY)) {
             if (widgetState == DEFAULT) {
                 widgetState = FOCUS;
-                hasGameControllerFocus = getUi3dData() && getUi3dData()->pointerType == SCREEN_CENTER;
                 widgetStateUpdated = true;
+                if (getUi3dData() && getUi3dData()->pointerType == SCREEN_CENTER) {
+                    hasGameControllerFocus = true;
+                    onGameControllerFocusUpdate();
+                }
             }
         } else if (widgetState == FOCUS) {
             widgetState = DEFAULT;
-            hasGameControllerFocus = false;
             widgetStateUpdated = true;
+            if (hasGameControllerFocus) {
+                hasGameControllerFocus = false;
+                onGameControllerFocusUpdate();
+            }
         }
         return widgetStateUpdated;
     }

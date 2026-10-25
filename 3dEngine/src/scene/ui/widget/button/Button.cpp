@@ -85,10 +85,6 @@ namespace urchin {
         return true;
     }
 
-    bool Button::isNavigationValidateKey(InputKey key) const {
-        return isGameControllerFocused() && isValidateKey(key);
-    }
-
     void Button::onGameControllerFocusUpdate() {
         refreshTexture();
     }

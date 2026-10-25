@@ -12,6 +12,8 @@ class ButtonTest final : public CppUnit::TestFixture {
         void focusSwitchBetweenAdjacentButtons();
         void clickOnButtonDeactivateTextBox();
         void validateKeyConsumedOnNavigationFocus();
+        void configuredClickKeys();
+        void configuredValidateKeys();
 
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();

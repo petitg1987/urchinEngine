@@ -27,7 +27,6 @@ namespace urchin {
 
         float maxInteractiveDistance = 4.0f;
         UI3dPointerType pointerType = MOUSE;
-        std::vector<InputKey> clickKeys = {InputKey::LMB};
     };
 
     class WidgetSetDisplayer;
@@ -41,10 +40,11 @@ namespace urchin {
             void setupUi3d(Camera*, const Transform<float>&, const Point2<int>&, const Point2<float>&, float, uint8_t lightMask);
             void setupClipboard(std::unique_ptr<Clipboard>);
             void setupVirtualKeyboard(std::unique_ptr<VirtualKeyboard>);
+            void setClickKeys(std::vector<InputKey>);
+            void setValidateKeys(std::vector<InputKey>);
             void onCameraProjectionUpdate(Camera&);
             void setMaximumInteractiveDistance(float) const;
             void setPointerType(UI3dPointerType) const;
-            void setClickKeys(std::vector<InputKey>) const;
 
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
@@ -66,6 +66,8 @@ namespace urchin {
             const Point2<int>& getUiResolution() const;
             Shader& getShader() const;
             UI3dData* getUi3dData() const;
+            bool isClickKey(InputKey) const;
+            bool isValidateKey(InputKey) const;
             bool canInteractWithUi() const;
             WidgetSetDisplayer& getWidgetSetDisplayer() const;
 
@@ -100,6 +102,9 @@ namespace urchin {
             double rawMouseX;
             double rawMouseY;
             bool bCanInteractWithUi;
+
+            std::vector<InputKey> clickKeys; //keys to click on the widget under the mouse
+            std::vector<InputKey> validateKeys; //keys to validate the widget focused by a game controller
 
             std::unique_ptr<UI3dData> ui3dData;
             std::vector<std::shared_ptr<Widget>> widgets;

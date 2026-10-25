@@ -71,7 +71,7 @@ namespace urchin {
             void updateGameControllerFocus(bool);
             bool isGameControllerFocused() const;
             bool isClickKey(InputKey) const;
-            bool isValidateKey(InputKey) const;
+            bool isNavigationValidateKey(InputKey) const;
             Point2<int> getSceneSize() const;
 
             void updatePosition(Position);

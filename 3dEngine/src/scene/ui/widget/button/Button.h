@@ -25,7 +25,6 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
             bool refreshTexture();
-            bool isNavigationValidateKey(InputKey) const;
 
             bool onKeyPressEvent(InputKey) override;
             bool onKeyReleaseEvent(InputKey) override;
