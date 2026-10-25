@@ -386,7 +386,7 @@ namespace urchin {
 
         if (!onGround) {
             groundBodyId = "";
-        } else if (groundBodyId != significantContactValues.mostUpVerticalBody->getId()) {
+        } else if (significantContactValues.mostUpVerticalBody != nullptr && groundBodyId != significantContactValues.mostUpVerticalBody->getId()) {
             groundBodyId = significantContactValues.mostUpVerticalBody->getId();
         }
 
