@@ -1,7 +1,11 @@
 #include <stdexcept>
 #include <fstream>
 #include <cctype>
+#include <cassert>
 #include <sys/stat.h>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
 #include "util/FileUtil.h"
 #include "util/UserAuthorityException.h"
@@ -66,7 +70,9 @@ namespace urchin {
     }
 
     std::string FileUtil::pathToString(const std::filesystem::path& path) {
-        //On Windows, the application manifest (app.manifest) must define the active code page to UTF-8 so that the narrow strings (GetModuleFileNameA, std::ifstream, fopen...) use UTF-8 encoding
+        #ifdef _WIN32
+            assert(GetACP() == CP_UTF8 && "Active code page must be UTF-8: add an app.manifest with activeCodePage=UTF-8 to the executable");
+        #endif
         auto pathU8String = path.u8string();
         return std::string(pathU8String.begin(), pathU8String.end());
     }
