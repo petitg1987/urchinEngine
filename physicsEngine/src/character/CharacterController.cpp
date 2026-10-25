@@ -354,7 +354,7 @@ namespace urchin {
     void CharacterController::resetSignificantContactValues() {
         significantContactValues.numberOfHit = 0;
 
-        significantContactValues.maxDotProductUpNormalAxis = std::numeric_limits<float>::min();
+        significantContactValues.maxDotProductUpNormalAxis = -std::numeric_limits<float>::max();
         significantContactValues.mostUpVerticalNormal = Vector3<float>();
         significantContactValues.mostUpVerticalBody = nullptr;
 
