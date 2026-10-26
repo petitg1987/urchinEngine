@@ -43,6 +43,7 @@ namespace urchin {
             void unload();
 
         private:
+            void setupGeneralBox(QVBoxLayout*);
             void setupMeshesBox(QVBoxLayout*);
             void setupTransformBox(QVBoxLayout*);
             void setupPosition(QGridLayout*);
@@ -83,6 +84,7 @@ namespace urchin {
             bool disableObjectEvent;
 
             //model
+            QCheckBox* objectEnabled;
             QLabel* meshesFile;
             QDoubleSpinBox* positionX;
             QDoubleSpinBox* positionY;
@@ -118,6 +120,7 @@ namespace urchin {
             void showUpdateItemsDialog();
             void onObjectTabChanged(int);
 
+            void objectEnabledToggled(int) const;
             void updateObjectOrientationType() const;
             void updateObjectTransform() const;
             void updateObjectScale() const;

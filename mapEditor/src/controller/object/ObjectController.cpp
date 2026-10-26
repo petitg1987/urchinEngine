@@ -126,6 +126,15 @@ namespace urchin {
         markModified();
     }
 
+    const ObjectEntity& ObjectController::updateObjectEnabled(const ObjectEntity& constObjectEntity, bool enabled) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+
+        objectEntity.enableObject(enabled);
+
+        markModified();
+        return objectEntity;
+    }
+
     const ObjectEntity& ObjectController::updateObjectTransform(const ObjectEntity& constObjectEntity, const Transform<float>& transform) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 

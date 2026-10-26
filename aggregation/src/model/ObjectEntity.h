@@ -21,6 +21,9 @@ namespace urchin {
             const std::vector<std::string>& getGroupHierarchy() const;
             std::string retrieveFullName() const;
 
+            void enableObject(bool);
+            bool isObjectEnabled() const;
+
             void setModel(const std::shared_ptr<Model>&);
             Model* getModel() const;
             const std::shared_ptr<Model>& getModelPtr() const;
@@ -50,6 +53,9 @@ namespace urchin {
             void setupRigidBody(std::shared_ptr<RigidBody>);
             void setupAIObject();
 
+            void addToWorld() const;
+            void removeFromWorld() const;
+
             void deleteRigidBody();
             void deleteAIObjects() const;
 
@@ -60,6 +66,7 @@ namespace urchin {
 
             std::string name;
             std::vector<std::string> groupHierarchy;
+            bool enabled;
 
             std::shared_ptr<Model> model;
             std::shared_ptr<RigidBody> rigidBody;

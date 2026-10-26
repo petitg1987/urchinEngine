@@ -71,11 +71,22 @@ namespace urchin {
     }
 
     QStandardItem* ObjectTableView::buildObjectEntityItem(const ObjectEntity& objectEntity) const {
-        auto* itemObjectEntity = new QStandardItem(QString::fromStdString(objectEntity.getName()));
+        auto* itemObjectEntity = new QStandardItem();
         itemObjectEntity->setData(true, IS_OBJECT_ENTITY_DATA);
         itemObjectEntity->setData(QVariant::fromValue(&objectEntity), GROUP_OR_OBJECT_ENTITY_DATA);
         itemObjectEntity->setEditable(false);
+        updateObjectEntityItemDisplay(itemObjectEntity, objectEntity);
         return itemObjectEntity;
+    }
+
+    void ObjectTableView::updateObjectEntityItemDisplay(QStandardItem* itemObjectEntity, const ObjectEntity& objectEntity) const {
+        itemObjectEntity->setText(QString::fromStdString(objectEntity.getName()));
+
+        if (objectEntity.isObjectEnabled()) {
+            itemObjectEntity->setData(QVariant(), Qt::ForegroundRole);
+        } else {
+            itemObjectEntity->setForeground(QBrush(Qt::gray));
+        }
     }
 
     bool ObjectTableView::hasMainGroupHierarchySelected() const {
@@ -248,6 +259,13 @@ namespace urchin {
         if (item) {
             removeItemsByIndexes({item->index()});
             addObjectEntity(objectEntity, true);
+        }
+    }
+
+    void ObjectTableView::refreshObjectEntityDisplay(const ObjectEntity& objectEntity) const {
+        QStandardItem* item = findItemByObjectEntity(objectEntity);
+        if (item) {
+            updateObjectEntityItemDisplay(item, objectEntity);
         }
     }
 

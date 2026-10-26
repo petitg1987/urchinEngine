@@ -29,6 +29,7 @@ namespace urchin {
             tabSelected(ObjectTab::MODEL),
             objectEntitySelected(nullptr),
             disableObjectEvent(false),
+            objectEnabled(nullptr),
             meshesFile(nullptr),
             positionX(nullptr),
             positionY(nullptr),
@@ -95,6 +96,7 @@ namespace urchin {
         auto* modelLayout = new QVBoxLayout(tabModel);
         modelLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
         modelLayout->setContentsMargins(1, 1, 1, 1);
+        setupGeneralBox(modelLayout);
         setupMeshesBox(modelLayout);
         setupTransformBox(modelLayout);
         setupPropertiesBox(modelLayout);
@@ -151,6 +153,20 @@ namespace urchin {
 
     PhysicsWidget* ObjectPanelWidget::getPhysicsWidget() const {
         return physicsWidget;
+    }
+
+    void ObjectPanelWidget::setupGeneralBox(QVBoxLayout* modelLayout) {
+        auto* generalGroupBox = new QGroupBox("General");
+        modelLayout->addWidget(generalGroupBox);
+        GroupBoxStyleHelper::applyDefaultStyle(generalGroupBox);
+
+        auto* generalLayout = new QGridLayout(generalGroupBox);
+        generalLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+
+        objectEnabled = new QCheckBox("Enabled");
+        objectEnabled->setToolTip("A disabled object is hidden and has no physics, light, sound or AI");
+        generalLayout->addWidget(objectEnabled, 0, 0);
+        connect(objectEnabled, SIGNAL(stateChanged(int)), this, SLOT(objectEnabledToggled(int)));
     }
 
     void ObjectPanelWidget::setupMeshesBox(QVBoxLayout* modelLayout) {
@@ -434,6 +450,8 @@ namespace urchin {
         const ConstMeshes* constMeshes = objectEntity.getModel()->getConstMeshes();
         const Transform<float>& modelTransform = model->getTransform();
 
+        objectEnabled->setChecked(objectEntity.isObjectEnabled());
+
         if (constMeshes) {
             meshesFile->setText(QString::fromStdString(constMeshes->getMeshesName()));
             meshesFile->setToolTip(QString::fromStdString(PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), constMeshes->getMeshesFilename())));
@@ -636,6 +654,14 @@ namespace urchin {
                     objectTableView->refreshObjectEntity(*updatedObjectEntity);
                 }
             }
+        }
+    }
+
+    void ObjectPanelWidget::objectEnabledToggled(int enabledState) const {
+        if (!disableObjectEvent) {
+            const ObjectEntity& objectEntity = *objectTableView->getMainSelectedObjectEntity();
+            objectController->updateObjectEnabled(objectEntity, Qt::CheckState::Checked == enabledState);
+            objectTableView->refreshObjectEntityDisplay(objectEntity);
         }
     }
 

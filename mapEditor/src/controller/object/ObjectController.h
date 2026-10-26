@@ -26,6 +26,7 @@ namespace urchin {
 
             void moveObjectInFrontOfCamera(const ObjectEntity&, bool);
             void changeMeshesFile(const ObjectEntity&, const std::string&);
+            const ObjectEntity& updateObjectEnabled(const ObjectEntity&, bool);
             const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
             const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowBehavior, uint8_t, Model::CullBehavior);
 

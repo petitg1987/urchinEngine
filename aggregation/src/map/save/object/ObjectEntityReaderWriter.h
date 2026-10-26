@@ -13,6 +13,7 @@ namespace urchin {
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char GROUP_HIERARCHY_TAG[] = "groupHierarchy";
             static constexpr char GROUP_TAG[] = "group";
+            static constexpr char ENABLED_TAG[] = "enabled";
             static constexpr char MODEL_TAG[] = "model";
             static constexpr char PHYSICS_TAG[] = "physics";
             static constexpr char LIGHT_TAG[] = "light";

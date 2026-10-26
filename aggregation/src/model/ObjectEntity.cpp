@@ -10,21 +10,16 @@ namespace urchin {
             physicsWorld(nullptr),
             soundEnvironment(nullptr),
             aiEnvironment(nullptr),
+            enabled(true),
             rigidBody(nullptr),
             aiObject(nullptr) {
 
     }
 
     ObjectEntity::~ObjectEntity() {
-        if (soundEnvironment) {
-            soundEnvironment->removeSoundComponent(soundComponent.get());
+        if (enabled) {
+            removeFromWorld();
         }
-        if (renderer3d) {
-            renderer3d->getLightManager().removeLight(light.get());
-            renderer3d->removeModel(model.get());
-        }
-        deleteRigidBody();
-        deleteAIObjects();
     }
 
     void ObjectEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundEnvironment* soundEnvironment, AIEnvironment* aiEnvironment) {
@@ -33,6 +28,12 @@ namespace urchin {
         this->soundEnvironment = soundEnvironment;
         this->aiEnvironment = aiEnvironment;
 
+        if (enabled) {
+            addToWorld();
+        }
+    }
+
+    void ObjectEntity::addToWorld() const {
         if (renderer3d) {
             renderer3d->addModel(model);
             renderer3d->getLightManager().addLight(light);
@@ -45,6 +46,22 @@ namespace urchin {
         }
         if (aiEnvironment && aiObject) {
             aiEnvironment->addEntity(aiObject);
+        }
+    }
+
+    void ObjectEntity::removeFromWorld() const {
+        if (soundEnvironment && soundComponent) {
+            soundEnvironment->removeSoundComponent(soundComponent.get());
+        }
+        if (renderer3d) {
+            renderer3d->getLightManager().removeLight(light.get());
+            renderer3d->removeModel(model.get());
+        }
+        if (physicsWorld && rigidBody) {
+            physicsWorld->removeBody(*rigidBody);
+        }
+        if (aiEnvironment && aiObject) {
+            aiEnvironment->removeEntity(aiObject);
         }
     }
 
@@ -68,8 +85,26 @@ namespace urchin {
         return StringUtil::join(groupHierarchy, '>') + ">" + name;
     }
 
+    void ObjectEntity::enableObject(bool enable) {
+        if (this->enabled == enable) {
+            return;
+        }
+
+        if (enable) {
+            this->enabled = true;
+            addToWorld();
+        } else {
+            removeFromWorld();
+            this->enabled = false;
+        }
+    }
+
+    bool ObjectEntity::isObjectEnabled() const {
+        return enabled;
+    }
+
     void ObjectEntity::setModel(const std::shared_ptr<Model>& model) {
-        if (renderer3d) {
+        if (renderer3d && enabled) {
             renderer3d->removeModel(this->model.get());
             renderer3d->addModel(model);
         }
@@ -116,7 +151,7 @@ namespace urchin {
         deleteRigidBody();
 
         this->rigidBody = std::move(rigidBody);
-        if (physicsWorld && this->rigidBody) {
+        if (physicsWorld && this->rigidBody && enabled) {
             physicsWorld->addBody(this->rigidBody);
         }
     }
@@ -130,7 +165,7 @@ namespace urchin {
     }
 
     void ObjectEntity::setLight(std::shared_ptr<Light> light) {
-        if (renderer3d) {
+        if (renderer3d && enabled) {
             renderer3d->getLightManager().removeLight(this->light.get());
             renderer3d->getLightManager().addLight(light);
         }
@@ -143,7 +178,7 @@ namespace urchin {
     }
 
     void ObjectEntity::setSoundComponent(const std::shared_ptr<SoundComponent>& soundComponent) {
-        if (soundEnvironment) {
+        if (soundEnvironment && enabled) {
             soundEnvironment->removeSoundComponent(this->soundComponent.get());
             soundEnvironment->addSoundComponent(soundComponent);
         }
@@ -159,21 +194,21 @@ namespace urchin {
         } else {
             std::string aiObjectName = "#" + rigidBody->getId(); //prefix to avoid collision name with terrains
             this->aiObject = AIEntityBuilder::buildAIObject(aiObjectName, rigidBody->getShape(), rigidBody->getTransform().toTransform());
-            if (aiEnvironment) {
+            if (aiEnvironment && enabled) {
                 aiEnvironment->addEntity(aiObject);
             }
         }
     }
 
     void ObjectEntity::deleteRigidBody() {
-        if (physicsWorld && rigidBody) {
+        if (physicsWorld && rigidBody && enabled) {
             physicsWorld->removeBody(*rigidBody);
         }
         rigidBody = nullptr;
     }
 
     void ObjectEntity::deleteAIObjects() const {
-        if (aiEnvironment && aiObject) {
+        if (aiEnvironment && aiObject && enabled) {
             aiEnvironment->removeEntity(aiObject);
         }
     }
@@ -182,6 +217,7 @@ namespace urchin {
         auto newObject = std::make_unique<ObjectEntity>();
         newObject->setName(std::move(newName));
         newObject->setGroupHierarchy(std::move(newGroupHierarchy));
+        newObject->enableObject(enabled);
         newObject->setModel(std::make_unique<Model>(*getModel()));
 
         RigidBody* toCloneRigidBody = getRigidBody();
@@ -255,7 +291,7 @@ namespace urchin {
     }
 
     void ObjectEntity::refresh() const {
-        if (rigidBody && rigidBody->isActive()) {
+        if (enabled && rigidBody && rigidBody->isActive()) {
             PhysicsTransform physicsTransform = rigidBody->getTransform();
             model->setTransform(Transform(physicsTransform.getPosition(), physicsTransform.getOrientation(), model->getTransform().getScale()));
             if (aiObject) {

@@ -30,6 +30,7 @@ namespace urchin {
             void addObjectEntity(const ObjectEntity&, bool);
             void removeSelectedItems();
             void refreshObjectEntity(const ObjectEntity&);
+            void refreshObjectEntityDisplay(const ObjectEntity&) const;
             void removeAll() const;
 
         private:
@@ -40,6 +41,7 @@ namespace urchin {
             void selectItem(const QModelIndex&);
             QStandardItem* buildGroupEntityItem(const std::string&) const;
             QStandardItem* buildObjectEntityItem(const ObjectEntity&) const;
+            void updateObjectEntityItemDisplay(QStandardItem*, const ObjectEntity&) const;
             QStandardItem* findOrCreateGroupHierarchy(const std::vector<std::string>&) const;
             QStandardItem* findOrCreateGroup(const std::string&, QStandardItem*) const;
             void removeItemsByIndexes(QModelIndexList);

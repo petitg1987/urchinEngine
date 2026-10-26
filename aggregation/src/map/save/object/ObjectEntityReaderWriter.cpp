@@ -24,6 +24,11 @@ namespace urchin {
         }
         objectEntity->setGroupHierarchy(groupHierarchy);
 
+        auto enabledChunk = udaParser.getFirstChunk(false, ENABLED_TAG, UdaAttribute(), objectEntityChunk);
+        if (enabledChunk != nullptr) {
+            objectEntity->enableObject(enabledChunk->getBoolValue());
+        }
+
         auto modelChunk = udaParser.getFirstChunk(true, MODEL_TAG, UdaAttribute(), objectEntityChunk);
         objectEntity->setModel(ModelReaderWriter::load(modelChunk, udaParser));
 
@@ -60,6 +65,10 @@ namespace urchin {
             for (const std::string& group : objectEntity.getGroupHierarchy()) {
                 udaParser.createChunk(GROUP_TAG, UdaAttribute(), &groupHierarchyChunk).setStringValue(group);
             }
+        }
+
+        if (!objectEntity.isObjectEnabled()) {
+            udaParser.createChunk(ENABLED_TAG, UdaAttribute(), &objectEntityChunk).setBoolValue(false);
         }
 
         auto& modelChunk = udaParser.createChunk(MODEL_TAG, UdaAttribute(), &objectEntityChunk);
