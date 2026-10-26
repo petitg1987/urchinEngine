@@ -17,7 +17,7 @@ namespace urchin {
         cleanCurrentDisplay();
 
         for (const ObjectEntity* objectEntity : objectEntities) {
-            if (!objectEntity->getLight()) {
+            if (!objectEntity->isObjectEnabled() || !objectEntity->getLight()) {
                 continue;
             }
             const Light* light = objectEntity->getLight();

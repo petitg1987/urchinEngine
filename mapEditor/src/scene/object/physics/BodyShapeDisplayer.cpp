@@ -27,7 +27,7 @@ namespace urchin {
         clearDisplay();
 
         for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
-            if (!selectedObjectEntity->getModel() || !selectedObjectEntity->getRigidBody()) {
+            if (!selectedObjectEntity->isObjectEnabled() || !selectedObjectEntity->getModel() || !selectedObjectEntity->getRigidBody()) {
                 continue;
             }
 

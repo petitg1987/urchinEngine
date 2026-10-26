@@ -17,7 +17,7 @@ namespace urchin {
         cleanCurrentDisplay();
 
         for (const ObjectEntity* objectEntity : objectEntities) {
-            if (!objectEntity->getSoundComponent()) {
+            if (!objectEntity->isObjectEnabled() || !objectEntity->getSoundComponent()) {
                 continue;
             }
 
