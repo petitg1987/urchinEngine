@@ -40,6 +40,7 @@ namespace urchin {
             Point3<float> computeSelectObjectsMeanPosition() const;
             AABBox<float> computeSelectObjectsAABBox() const;
             void updateObjectPosition(const ObjectEntity*, const Point3<float>&);
+            bool canMoveSelectedObjects() const;
 
             unsigned int sceneWidth;
             unsigned int sceneHeight;

@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     void ObjectMoveController::onCtrlXYZ(unsigned int axisIndex) {
-        if (!selectedObjectEntities.empty()) {
+        if (canMoveSelectedObjects()) {
             if (selectedAxis == -1) {
                 for (const ObjectEntity* selectedObjectEntity : selectedObjectEntities) {
                     savedPositions.insert({selectedObjectEntity, selectedObjectEntity->getModel()->getTransform().getPosition()});
@@ -254,8 +254,12 @@ namespace urchin {
         return *lastMovedObjectEntity;
     }
 
+    bool ObjectMoveController::canMoveSelectedObjects() const {
+        return !selectedObjectEntities.empty() && std::ranges::all_of(selectedObjectEntities, [](const ObjectEntity* o){ return o->isObjectEnabled(); });
+    }
+
     void ObjectMoveController::displayAxis() {
-        if (!selectedObjectEntities.empty()) {
+        if (canMoveSelectedObjects()) {
             Point3<float> modelsPosition = computeSelectObjectsMeanPosition();
             objectMoveAxisDisplayer.displayAxis(modelsPosition, (unsigned int)selectedAxis);
         } else {
