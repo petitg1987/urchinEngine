@@ -46,6 +46,7 @@ namespace urchin {
             bool isFeature13Available(VkPhysicalDevice, unsigned long) const;
 
             VkPhysicalDevice findPhysicalDevice(VkInstance instance);
+            std::string retrieveInstanceLayersDescription() const;
             PhysicalDeviceSuitability retrievePhysicalDeviceSuitability(VkPhysicalDevice);
             bool checkPhysicalDeviceExtensionSupport(VkPhysicalDevice, const char*) const;
 

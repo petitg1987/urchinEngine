@@ -138,6 +138,7 @@ namespace urchin {
             throw std::runtime_error("Failed to enumerate physics devices with error code: " + std::string(string_VkResult(resultEnumDevices)));
         }
         if (deviceCount == 0) {
+            Logger::instance().logInfo("No Vulkan physical device found, available instance layers: " + retrieveInstanceLayersDescription() + ")");
             throw UserAuthorityException("Failed to find a graphic card with Vulkan support", "Upgrade your graphic drivers to support Vulkan");
         }
 
@@ -164,6 +165,33 @@ namespace urchin {
         Logger::instance().logInfo("Physical device with a score of " + std::to_string(bestPhysicalDevice->second.score) + " selected: " + bestPhysicalDevice->second.deviceName);
 
         return bestPhysicalDevice->second.physicalDevice;
+    }
+
+    std::string DeviceHandler::retrieveInstanceLayersDescription() const {
+        uint32_t layerCount = 0;
+        VkResult result = vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+        if (result != VK_SUCCESS && result != VK_INCOMPLETE) {
+            return "<failed to enumerate: " + std::string(string_VkResult(result)) + ">";
+        }
+
+        std::vector<VkLayerProperties> availableLayers(layerCount);
+        result = vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+        if (result != VK_SUCCESS && result != VK_INCOMPLETE) {
+            return "<failed to enumerate: " + std::string(string_VkResult(result)) + ">";
+        }
+        availableLayers.resize(layerCount);
+        if (availableLayers.empty()) {
+            return "<none>";
+        }
+
+        std::string layersDescription;
+        for (const VkLayerProperties& layer : availableLayers) {
+            if (!layersDescription.empty()) {
+                layersDescription += ", ";
+            }
+            layersDescription += std::string(layer.layerName) + " v" + std::to_string(layer.implementationVersion);
+        }
+        return layersDescription;
     }
 
     PhysicalDeviceSuitability DeviceHandler::retrievePhysicalDeviceSuitability(VkPhysicalDevice physicalDeviceToCheck) {
