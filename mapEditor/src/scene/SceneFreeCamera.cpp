@@ -6,7 +6,6 @@ namespace urchin {
 
     SceneFreeCamera::SceneFreeCamera(float horizontalFovAngle, float nearPlane, float farPlane, MouseController& mouseController) :
             FreeCamera(horizontalFovAngle, nearPlane, farPlane),
-            disableNextMouseEvent(false),
             mouseController(mouseController) {
 
     }
@@ -37,14 +36,9 @@ namespace urchin {
     }
 
     bool SceneFreeCamera::onMouseMove(double deltaMouseX, double deltaMouseY) {
-        bool propagateEvent = true;
-        if (!disableNextMouseEvent) {
-            propagateEvent = Camera::onMouseMove(deltaMouseX, deltaMouseY);
-            if (isInputDeviceCanMoveCamera()) {
-                disableNextMouseEvent = mouseController.moveMouse((double) getSceneWidth() / 2.0, (double) getSceneHeight() / 2.0);
-            }
-        } else {
-            disableNextMouseEvent = false;
+        bool propagateEvent = Camera::onMouseMove(deltaMouseX, deltaMouseY);
+        if (isInputDeviceCanMoveCamera()) {
+            mouseController.moveMouse((double) getSceneWidth() / 2.0, (double) getSceneHeight() / 2.0);
         }
         return propagateEvent;
     }

@@ -19,7 +19,6 @@ namespace urchin {
         private:
             static constexpr char DATA_DELIMITER = '@';
 
-            bool disableNextMouseEvent;
             MouseController& mouseController;
     };
 

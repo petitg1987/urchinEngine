@@ -71,8 +71,12 @@ namespace urchin {
                 break;
             } case QEvent::PlatformSurface: {
                 if (static_cast<QPlatformSurfaceEvent*>(e)->surfaceEventType() == QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed) {
+                    mouseController.onSurfaceAboutToBeDestroyed();
                     releaseScene();
                 }
+                break;
+            } case QEvent::Enter: { //mouse enters widget
+                mouseController.onMouseEnter();
                 break;
             } case QEvent::Leave: { //mouse leaves widget
                 Point2<double> mousePositionInPixel = mouseController.getMousePosition();
@@ -371,8 +375,15 @@ namespace urchin {
         double newMouseX = event->position().x() * devicePixelRatio();
         double newMouseY = event->position().y() * devicePixelRatio();
 
+        if (mouseController.consumeWarpEvent(newMouseX, newMouseY)) {
+            this->mouseX = newMouseX;
+            this->mouseY = newMouseY;
+            return;
+        }
+
         double deltaMouseX = newMouseX - mouseX;
         double deltaMouseY = newMouseY - mouseY;
+        mouseController.takeRelativeMotion(deltaMouseX, deltaMouseY);
 
         this->mouseX = newMouseX;
         this->mouseY = newMouseY;

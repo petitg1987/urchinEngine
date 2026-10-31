@@ -78,21 +78,21 @@ namespace urchin {
     }
 
     bool ObjectMoveController::adjustMousePosition() {
-        constexpr double SAFETY_MARGIN = 5.0;
+        double safetyMargin = 0.075 * (double)std::min(sceneWidth, sceneHeight);
 
         Point2<double> mousePosition = mouseController.getMousePosition();
         Point2<double> newMousePosition = mousePosition;
 
-        if (mousePosition.X >= (double)sceneWidth - SAFETY_MARGIN) {
-            newMousePosition.X = SAFETY_MARGIN;
-        } else if (mousePosition.X <= SAFETY_MARGIN) {
-            newMousePosition.X = (double)sceneWidth - SAFETY_MARGIN;
+        if (mousePosition.X >= (double)sceneWidth - safetyMargin) {
+            newMousePosition.X = safetyMargin;
+        } else if (mousePosition.X <= safetyMargin) {
+            newMousePosition.X = (double)sceneWidth - safetyMargin;
         }
 
-        if (mousePosition.Y >= (double)sceneHeight - SAFETY_MARGIN) {
-            newMousePosition.Y = SAFETY_MARGIN;
-        } else if (mousePosition.Y <= SAFETY_MARGIN) {
-            newMousePosition.Y = (double)sceneHeight - SAFETY_MARGIN;
+        if (mousePosition.Y >= (double)sceneHeight - safetyMargin) {
+            newMousePosition.Y = safetyMargin;
+        } else if (mousePosition.Y <= safetyMargin) {
+            newMousePosition.Y = (double)sceneHeight - safetyMargin;
         }
 
         if (mousePosition != newMousePosition && mouseController.moveMouse(newMousePosition.X, newMousePosition.Y)) {
