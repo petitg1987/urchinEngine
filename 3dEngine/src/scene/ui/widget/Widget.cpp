@@ -474,8 +474,10 @@ namespace urchin {
     }
 
     void Widget::updateAlphaFactor(float alphaFactor) {
-        this->alphaFactor = alphaFactor;
-        notifyObservers(this, ALPHA_FACTOR_UPDATED);
+        if (this->alphaFactor != alphaFactor) {
+            this->alphaFactor = alphaFactor;
+            notifyObservers(this, ALPHA_FACTOR_UPDATED);
+        }
     }
 
     float Widget::getAlphaFactor() const {
