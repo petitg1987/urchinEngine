@@ -15,7 +15,9 @@ namespace urchin {
             percentageControlInAir(0.4f),
             maxVerticalSpeed(30.0f), //human falling maximum speed is 55 m/s, but we use 30 m/s to improve performance of CCD
             maxWalkSpeed(7.0f / 3.6f), //7 km/h
-            maxRunSpeed(11.0f / 3.6f) //11 km/h
+            maxRunSpeed(11.0f / 3.6f), //11 km/h
+            crouchHeight(-1.0f),
+            maxWalkSpeedWhenCrouched(3.0f / 3.6f) //3.0 km/h
     {
         setMaxSlopeInRadian(MathValue::PI_FLOAT / 4.0f); //45 degrees
     }
@@ -104,6 +106,26 @@ namespace urchin {
 
     float CharacterControllerConfig::getMaxRunSpeed() const {
         return maxRunSpeed;
+    }
+
+    void CharacterControllerConfig::setCrouchHeight(float crouchHeight) {
+        this->crouchHeight = crouchHeight;
+    }
+
+    float CharacterControllerConfig::getCrouchHeight() const {
+        return crouchHeight;
+    }
+
+    bool CharacterControllerConfig::isCrouchEnabled() const {
+        return crouchHeight > 0.0f;
+    }
+
+    void CharacterControllerConfig::setMaxWalkSpeedWhenCrouched(float maxWalkSpeedWhenCrouched) {
+        this->maxWalkSpeedWhenCrouched = maxWalkSpeedWhenCrouched;
+    }
+
+    float CharacterControllerConfig::getMaxWalkSpeedWhenCrouched() const {
+        return maxWalkSpeedWhenCrouched;
     }
 
 }

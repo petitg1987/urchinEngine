@@ -34,6 +34,13 @@ namespace urchin {
             void setMaxRunSpeed(float);
             float getMaxRunSpeed() const;
 
+            void setCrouchHeight(float);
+            float getCrouchHeight() const;
+            bool isCrouchEnabled() const;
+
+            void setMaxWalkSpeedWhenCrouched(float);
+            float getMaxWalkSpeedWhenCrouched() const;
+
         private:
             std::shared_ptr<CharacterEventCallback> characterEventCallback;
 
@@ -50,6 +57,9 @@ namespace urchin {
 
             float maxWalkSpeed; //in units/second
             float maxRunSpeed; //in units/second
+
+            float crouchHeight; //in units
+            float maxWalkSpeedWhenCrouched; //in units/second
     };
 
 }
