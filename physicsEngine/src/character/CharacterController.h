@@ -24,8 +24,8 @@ namespace urchin {
     };
 
     struct RespawnValues {
-        PhysicsTransform respawnTransform;
-        PhysicsTransform nextRespawnTransform;
+        PhysicsTransform respawnTransform; //transform of the standing body
+        PhysicsTransform nextRespawnTransform; //transform of the standing body
         float timeElapse{};
     };
 
@@ -41,6 +41,7 @@ namespace urchin {
             void run(const Vector3<float>&);
             void verticalMove(float);
             void jump();
+            void crouch(bool);
             void enableGravity(bool);
             void updateTransform(const Point3<float>&, const Vector3<float>&) const;
             void updateOrientation(const Vector3<float>&) const;
@@ -50,16 +51,25 @@ namespace urchin {
             bool isOnGround() const;
             const std::string& getGroundBodyId() const;
             bool isGravityEnabled() const;
+            bool isCrouching() const;
+            float getCurrentCharacterHeight() const;
 
             void update(float);
 
         private:
             void createBodies();
+            std::unique_ptr<const CollisionShape3D> createCcdShape(const CollisionShape3D&) const;
+            static float computeHeight(const CollisionShape3D&);
             void updateVelocity(const Vector3<float>&, float);
+            void applyTransform(const PhysicsTransform&) const;
+            PhysicsTransform toActiveBodyTransform(const PhysicsTransform&) const;
+            PhysicsTransform toStandingBodyTransform(const PhysicsTransform&) const;
 
             Quaternion<float> computeYRotation(const Vector3<float>&) const;
 
             void updateStep(float);
+            void updateCrouchState();
+            bool canStandUp();
             void updateBodiesTransform(float);
             void recoverFromPenetration(float);
             void resetSignificantContactValues();
@@ -75,13 +85,20 @@ namespace urchin {
             static constexpr unsigned int MAX_ERRORS_LOG = 10;
             static constexpr float MAX_DEPTH_TO_RECOVER = 0.0005f;
             static constexpr float MIN_UPDATE_FREQUENCY = 30;
+            static constexpr float STAND_UP_PENETRATION_TOLERANCE = 0.01f;
 
             std::unique_ptr<PhysicsCharacter> physicsCharacter;
             CharacterControllerConfig config;
             PhysicsWorld& physicsWorld;
             std::vector<ManifoldResult> manifoldResults;
-            std::shared_ptr<GhostBody> ghostBody;
-            std::shared_ptr<GhostBody> ccdGhostBody;
+            std::shared_ptr<GhostBody> ghostBody; //active body (standing or crouching body)
+            std::shared_ptr<GhostBody> ccdGhostBody; //active CCD body (standing or crouching CCD body)
+            std::shared_ptr<GhostBody> standingGhostBody;
+            std::shared_ptr<GhostBody> standingCcdGhostBody;
+            std::shared_ptr<GhostBody> crouchingGhostBody; //null when crouch is disabled
+            std::shared_ptr<GhostBody> crouchingCcdGhostBody; //null when crouch is disabled
+            float standingHeight;
+            float crouchingHeight;
             float verticalSpeed;
 
             Vector3<float> velocity;
@@ -97,6 +114,8 @@ namespace urchin {
             bool hitRoof; //character has hit the roof
             float timeInTheAir; //time (sec.) character is not on the ground
             bool jumping;
+            bool crouchRequested;
+            bool crouching; //the inactive bodies (standing or crouching) are kept in the broad phase and follow the active bodies (feet aligned)
             bool gravityEnabled; //without gravity, character is able to navigate freely up and down
             float slopeInPercentage; //slope in percentage (a positive value means that character climb)
     };

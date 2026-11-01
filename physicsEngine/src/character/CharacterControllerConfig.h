@@ -30,10 +30,8 @@ namespace urchin {
 
             void setMaxWalkSpeed(float);
             float getMaxWalkSpeed() const;
-
             void setMaxRunSpeed(float);
             float getMaxRunSpeed() const;
-
             void setMaxWalkSpeedWhenCrouched(float);
             float getMaxWalkSpeedWhenCrouched() const;
 
