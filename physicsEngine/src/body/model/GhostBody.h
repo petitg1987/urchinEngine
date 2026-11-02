@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <atomic>
 
 #include "body/model/AbstractBody.h"
 
@@ -19,8 +20,12 @@ namespace urchin {
 
             PairContainer* getPairContainer() const override;
 
+            void setInBroadPhase(bool);
+            bool isInBroadPhase() const;
+
         private:
             std::unique_ptr<PairContainer> pairContainer;
+            std::atomic_bool inBroadPhase;
     };
 
 }

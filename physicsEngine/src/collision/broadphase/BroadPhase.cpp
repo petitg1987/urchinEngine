@@ -1,5 +1,6 @@
 #include "collision/broadphase/BroadPhase.h"
 #include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
+#include "body/model/GhostBody.h"
 
 namespace urchin {
 
@@ -34,6 +35,9 @@ namespace urchin {
 
     void BroadPhase::addBody(const std::shared_ptr<AbstractBody>& body) {
         broadPhaseAlgorithm.addBody(body);
+        if (GhostBody* ghostBody = GhostBody::upCast(body.get())) {
+            ghostBody->setInBroadPhase(true);
+        }
     }
 
     /**
@@ -45,7 +49,10 @@ namespace urchin {
         bodiesToRemove.push_back(body);
     }
 
-    void BroadPhase::removeBody(const AbstractBody& body) {
+    void BroadPhase::removeBody(AbstractBody& body) {
+        if (GhostBody* ghostBody = GhostBody::upCast(&body)) {
+            ghostBody->setInBroadPhase(false);
+        }
         broadPhaseAlgorithm.removeBody(body);
     }
 

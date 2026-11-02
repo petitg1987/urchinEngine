@@ -327,6 +327,10 @@ namespace urchin {
     }
 
     bool CharacterController::canStandUp() {
+        if (!standingGhostBody->isInBroadPhase()) {
+            return false;
+        }
+
         manifoldResults.clear();
         physicsWorld.getCollisionWorld().getNarrowPhase().processGhostBody(*standingGhostBody, manifoldResults);
 

@@ -30,14 +30,14 @@ namespace urchin {
 
         private:
             void addBody(const std::shared_ptr<AbstractBody>&);
-            void removeBody(const AbstractBody&);
+            void removeBody(AbstractBody&);
             void synchronizeBodies();
 
             AABBTreeAlgorithm broadPhaseAlgorithm;
 
             std::mutex mutex;
             std::vector<std::shared_ptr<AbstractBody>> bodiesToAdd;
-            std::vector<std::shared_ptr<const AbstractBody>> bodiesToRemove;
+            std::vector<std::shared_ptr<AbstractBody>> bodiesToRemove;
     };
 
 }
