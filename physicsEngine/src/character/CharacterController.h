@@ -42,6 +42,7 @@ namespace urchin {
             void verticalMove(float);
             void jump();
             void crouch(bool);
+            void crouchImmediately();
             void enableGravity(bool);
             void updateTransform(const Point3<float>&, const Vector3<float>&) const;
             void updateOrientation(const Vector3<float>&) const;
@@ -51,7 +52,7 @@ namespace urchin {
             bool isOnGround() const;
             const std::string& getGroundBodyId() const;
             bool isGravityEnabled() const;
-            bool isCrouching() const;
+            bool isCrouched() const;
             float getCurrentCharacterHeight() const;
 
             void update(float);
@@ -69,6 +70,7 @@ namespace urchin {
 
             void updateStep(float);
             void updateCrouchState();
+            void switchBodies(bool);
             bool canStandUp();
             void updateBodiesTransform(float);
             void recoverFromPenetration(float);
@@ -91,14 +93,14 @@ namespace urchin {
             CharacterControllerConfig config;
             PhysicsWorld& physicsWorld;
             std::vector<ManifoldResult> manifoldResults;
-            std::shared_ptr<GhostBody> ghostBody; //active body (standing or crouching body)
-            std::shared_ptr<GhostBody> ccdGhostBody; //active CCD body (standing or crouching CCD body)
+            std::shared_ptr<GhostBody> ghostBody; //active body (standing or crouched body)
+            std::shared_ptr<GhostBody> ccdGhostBody; //active CCD body (standing or crouched CCD body)
             std::shared_ptr<GhostBody> standingGhostBody;
             std::shared_ptr<GhostBody> standingCcdGhostBody;
-            std::shared_ptr<GhostBody> crouchingGhostBody; //null when crouch is disabled
-            std::shared_ptr<GhostBody> crouchingCcdGhostBody; //null when crouch is disabled
+            std::shared_ptr<GhostBody> crouchedGhostBody; //null when crouch is disabled
+            std::shared_ptr<GhostBody> crouchedCcdGhostBody; //null when crouch is disabled
             float standingHeight;
-            float crouchingHeight;
+            float crouchedHeight;
             float verticalSpeed;
 
             Vector3<float> velocity;
@@ -115,7 +117,7 @@ namespace urchin {
             float timeInTheAir; //time (sec.) character is not on the ground
             bool jumping;
             bool crouchRequested;
-            bool crouching; //the inactive bodies (standing or crouching) are kept in the broad phase and follow the active bodies (feet aligned)
+            bool crouched; //the inactive bodies (standing or crouched) are kept in the broad phase and follow the active bodies (feet aligned)
             bool gravityEnabled; //without gravity, character is able to navigate freely up and down
             float slopeInPercentage; //slope in percentage (a positive value means that character climb)
     };

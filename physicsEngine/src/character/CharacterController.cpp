@@ -17,10 +17,10 @@ namespace urchin {
             ccdGhostBody(nullptr),
             standingGhostBody(nullptr),
             standingCcdGhostBody(nullptr),
-            crouchingGhostBody(nullptr),
-            crouchingCcdGhostBody(nullptr),
+            crouchedGhostBody(nullptr),
+            crouchedCcdGhostBody(nullptr),
             standingHeight(0.0f),
-            crouchingHeight(0.0f),
+            crouchedHeight(0.0f),
             verticalSpeed(0.0f),
             makeJump(false),
             significantContactValues({}),
@@ -32,15 +32,15 @@ namespace urchin {
             timeInTheAir(0.0f),
             jumping(false),
             crouchRequested(false),
-            crouching(false),
+            crouched(false),
             gravityEnabled(true),
             slopeInPercentage(0.0f) {
         createBodies();
         physicsWorld.getCollisionWorld().getBroadPhase().addBodyAsync(standingGhostBody);
         physicsWorld.getCollisionWorld().getBroadPhase().addBodyAsync(standingCcdGhostBody);
-        if (crouchingGhostBody) {
-            physicsWorld.getCollisionWorld().getBroadPhase().addBodyAsync(crouchingGhostBody);
-            physicsWorld.getCollisionWorld().getBroadPhase().addBodyAsync(crouchingCcdGhostBody);
+        if (crouchedGhostBody) {
+            physicsWorld.getCollisionWorld().getBroadPhase().addBodyAsync(crouchedGhostBody);
+            physicsWorld.getCollisionWorld().getBroadPhase().addBodyAsync(crouchedCcdGhostBody);
         }
 
         respawnValues.respawnTransform = standingGhostBody->getTransform();
@@ -48,9 +48,9 @@ namespace urchin {
     }
 
     CharacterController::~CharacterController() {
-        if (crouchingGhostBody) {
-            physicsWorld.getCollisionWorld().getBroadPhase().removeBodyAsync(crouchingCcdGhostBody);
-            physicsWorld.getCollisionWorld().getBroadPhase().removeBodyAsync(crouchingGhostBody);
+        if (crouchedGhostBody) {
+            physicsWorld.getCollisionWorld().getBroadPhase().removeBodyAsync(crouchedCcdGhostBody);
+            physicsWorld.getCollisionWorld().getBroadPhase().removeBodyAsync(crouchedGhostBody);
         }
         physicsWorld.getCollisionWorld().getBroadPhase().removeBodyAsync(standingCcdGhostBody);
         physicsWorld.getCollisionWorld().getBroadPhase().removeBodyAsync(standingGhostBody);
@@ -60,14 +60,14 @@ namespace urchin {
      * @param velocity Walk velocity in units/second.
      */
     void CharacterController::walk(const Vector3<float>& velocity) {
-        updateVelocity(velocity, crouching ? config.getMaxWalkSpeedWhenCrouched() : config.getMaxWalkSpeed());
+        updateVelocity(velocity, crouched ? config.getMaxWalkSpeedWhenCrouched() : config.getMaxWalkSpeed());
     }
 
     /**
      * @param velocity Run velocity in units/second.
      */
     void CharacterController::run(const Vector3<float>& velocity) {
-        updateVelocity(velocity, crouching ? config.getMaxWalkSpeedWhenCrouched() : config.getMaxRunSpeed());
+        updateVelocity(velocity, crouched ? config.getMaxWalkSpeedWhenCrouched() : config.getMaxRunSpeed());
     }
 
     void CharacterController::updateVelocity(const Vector3<float>& velocity, float maxSpeed) {
@@ -100,6 +100,15 @@ namespace urchin {
     void CharacterController::crouch(bool crouch) {
         if (physicsCharacter->isCrouchEnabled()) {
             crouchRequested = crouch;
+        }
+    }
+
+    void CharacterController::crouchImmediately() {
+        if (physicsCharacter->isCrouchEnabled()) {
+            crouchRequested = true;
+            if (!crouched) {
+                switchBodies(true);
+            }
         }
     }
 
@@ -158,12 +167,12 @@ namespace urchin {
         return gravityEnabled;
     }
 
-    bool CharacterController::isCrouching() const {
-        return crouching;
+    bool CharacterController::isCrouched() const {
+        return crouched;
     }
 
     float CharacterController::getCurrentCharacterHeight() const {
-        return crouching ? crouchingHeight : standingHeight;
+        return crouched ? crouchedHeight : standingHeight;
     }
 
     /**
@@ -200,17 +209,17 @@ namespace urchin {
         standingCcdGhostBody->setIsActive(true);
 
         if (physicsCharacter->isCrouchEnabled()) {
-            //crouching capsule keeps the radius of the standing capsule (validated by PhysicsCharacter): only its height is reduced
+            //crouched capsule keeps the radius of the standing capsule (validated by PhysicsCharacter): only its height is reduced
             const auto& standingCapsule = static_cast<const CollisionCapsuleShape&>(standingShape);
-            crouchingHeight = physicsCharacter->getCrouchHeight();
-            auto crouchingShape = std::make_unique<const CollisionCapsuleShape>(standingCapsule.getRadius(), crouchingHeight - (2.0f * standingCapsule.getRadius()), standingCapsule.getCapsuleOrientation());
+            crouchedHeight = physicsCharacter->getCrouchHeight();
+            auto crouchedShape = std::make_unique<const CollisionCapsuleShape>(standingCapsule.getRadius(), crouchedHeight - (2.0f * standingCapsule.getRadius()), standingCapsule.getCapsuleOrientation());
 
-            PhysicsTransform crouchingTransform = physicsCharacter->getTransform();
-            crouchingTransform.setPosition(crouchingTransform.getPosition().translate(Vector3(0.0f, (crouchingHeight - standingHeight) / 2.0f, 0.0f)));
-            crouchingCcdGhostBody = std::make_shared<GhostBody>(physicsCharacter->getName() + "_crouch_ccd", crouchingTransform, createCcdShape(*crouchingShape));
-            crouchingCcdGhostBody->setIsActive(true);
-            crouchingGhostBody = std::make_shared<GhostBody>(physicsCharacter->getName() + "_crouch", crouchingTransform, std::move(crouchingShape));
-            crouchingGhostBody->setIsActive(true);
+            PhysicsTransform crouchedTransform = physicsCharacter->getTransform();
+            crouchedTransform.setPosition(crouchedTransform.getPosition().translate(Vector3(0.0f, (crouchedHeight - standingHeight) / 2.0f, 0.0f)));
+            crouchedCcdGhostBody = std::make_shared<GhostBody>(physicsCharacter->getName() + "_crouch_ccd", crouchedTransform, createCcdShape(*crouchedShape));
+            crouchedCcdGhostBody->setIsActive(true);
+            crouchedGhostBody = std::make_shared<GhostBody>(physicsCharacter->getName() + "_crouch", crouchedTransform, std::move(crouchedShape));
+            crouchedGhostBody->setIsActive(true);
         }
 
         ghostBody = standingGhostBody;
@@ -245,16 +254,16 @@ namespace urchin {
         ghostBody->setTransform(transform);
         ccdGhostBody->setTransform(transform);
 
-        if (crouchingGhostBody) {
-            float inactiveHeight = crouching ? standingHeight : crouchingHeight;
+        if (crouchedGhostBody) {
+            float inactiveHeight = crouched ? standingHeight : crouchedHeight;
             PhysicsTransform inactiveTransform = transform;
             inactiveTransform.setPosition(transform.getPosition().translate(Vector3(0.0f, (inactiveHeight - getCurrentCharacterHeight()) / 2.0f, 0.0f)));
-            if (crouching) {
+            if (crouched) {
                 standingGhostBody->setTransform(inactiveTransform);
                 standingCcdGhostBody->setTransform(inactiveTransform);
             } else {
-                crouchingGhostBody->setTransform(inactiveTransform);
-                crouchingCcdGhostBody->setTransform(inactiveTransform);
+                crouchedGhostBody->setTransform(inactiveTransform);
+                crouchedCcdGhostBody->setTransform(inactiveTransform);
             }
         }
     }
@@ -300,22 +309,21 @@ namespace urchin {
     }
 
     void CharacterController::updateCrouchState() {
-        if (!crouchingGhostBody) {
+        if (!crouchedGhostBody) {
             return;
         }
 
-        bool switchBodies = false;
-        if (crouchRequested && !crouching) {
-            switchBodies = true;
-        } else if (!crouchRequested && crouching && canStandUp()) {
-            switchBodies = true;
+        if (crouchRequested && !crouched) {
+            switchBodies(true);
+        } else if (!crouchRequested && crouched && canStandUp()) {
+            switchBodies(false);
         }
+    }
 
-        if (switchBodies) {
-            crouching = !crouching;
-            ghostBody = crouching ? crouchingGhostBody : standingGhostBody;
-            ccdGhostBody = crouching ? crouchingCcdGhostBody : standingCcdGhostBody;
-        }
+    void CharacterController::switchBodies(bool crouched) {
+        this->crouched = crouched;
+        ghostBody = crouched ? crouchedGhostBody : standingGhostBody;
+        ccdGhostBody = crouched ? crouchedCcdGhostBody : standingCcdGhostBody;
     }
 
     bool CharacterController::canStandUp() {
@@ -372,7 +380,7 @@ namespace urchin {
         //jump
         if (makeJump) [[unlikely]] {
             makeJump = false;
-            if (closeToTheGround && !jumping && !crouching) {
+            if (closeToTheGround && !jumping && !crouched) {
                 verticalSpeed += config.getJumpSpeed();
                 onGround = false;
                 jumping = true;

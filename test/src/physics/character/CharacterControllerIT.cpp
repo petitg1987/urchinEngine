@@ -10,10 +10,8 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
     constructHeightfieldFloor(*physicsWorld);
     float cubeHeight = 0.5f;
     auto cubes = constructCubes(*physicsWorld, cubeHeight);
-    auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
-    float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(2.4f, 5.0f, 2.4f), Quaternion<float>()));
-    auto characterController = CharacterController(std::move(character), CharacterControllerConfig(), *physicsWorld);
+    auto characterController = constructCharacter(*physicsWorld, Point3(2.4f, 5.0f, 2.4f));
+    float characterHeight = characterController->getCurrentCharacterHeight();
 
     auto physicsEngineThread = std::jthread([&physicsWorld] {
         for (std::size_t i = 0; i < 300; ++i) {
@@ -23,7 +21,7 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
     });
     auto mainThread = std::jthread([&characterController] {
         for (std::size_t i = 0; i < 300; ++i) {
-            characterController.update(1.0f / 60.0f);
+            characterController->update(1.0f / 60.0f);
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
@@ -37,7 +35,7 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
         AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Cube " + cube->getId() + " must be on the ground or above another cube. Position Y: " + std::to_string(posY));
         AssertHelper::assertFalse(cube->isActive(), "Cube " + cube->getId() + " must become inactive.");
     }
-    float posY = characterController.getPhysicsCharacter().getTransform().getPosition().Y;
+    float posY = characterController->getPhysicsCharacter().getTransform().getPosition().Y;
     float minPosY = (characterHeight / 2.0f) - 0.01f;
     float maxPosY = cubeHeight + cubeHeight + (characterHeight / 2.0f) + 0.01f;
     AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Character must be on the ground or above one or two cubes. Position Y: " + std::to_string(posY));
@@ -51,13 +49,8 @@ void CharacterControllerIT::characterMovingOnRemovedObjects() {
     auto cubeBody = std::make_shared<RigidBody>("cube", PhysicsTransform(Point3(0.0f, 0.5f, 0.0f), Quaternion<float>()), std::move(cubeShape));
     physicsWorld->getBodyContainer().addBody(cubeBody);
 
-    auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
-    float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, characterHeight / 2.0f, 0.8f), Quaternion<float>()));
-    CharacterControllerConfig characterControllerConfig;
-    characterControllerConfig.setMaxWalkSpeed(5.0f);
-    auto characterController = CharacterController(std::move(character), characterControllerConfig, *physicsWorld);
-    characterController.walk(Vector3(0.0f, 0.0f, -5.0f));
+    auto characterController = constructCharacter(*physicsWorld, Point3(0.0f, 1.0f, 0.8f));
+    characterController->walk(Vector3(0.0f, 0.0f, -5.0f));
 
     auto physicsEngineThread = std::jthread([&physicsWorld] {
         for (std::size_t i = 0; i < 300; ++i) {
@@ -72,16 +65,16 @@ void CharacterControllerIT::characterMovingOnRemovedObjects() {
                 cubeBody = nullptr;
                 //cubeBody could still exist because of asynchronous removed
             }
-            characterController.update(1.0f / 60.0f);
+            characterController->update(1.0f / 60.0f);
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
     physicsEngineThread.join();
     mainThread.join();
 
-    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().X, 0.0f, 0.1f);
-    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.1f);
-    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Z, -20.0f, 2.0f);
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().X, 0.0f, 0.1f);
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.1f);
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Z, -20.0f, 2.0f);
 }
 
 void CharacterControllerIT::ccdFallingCharacter() {
@@ -113,21 +106,16 @@ void CharacterControllerIT::ccdFallingCharacter() {
 void CharacterControllerIT::ccdFallingCharacterAfterFrameDrop() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
     constructBoxFloor(*physicsWorld);
-    auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
-    float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3(0.0f, 50.0f, 0.0f), Quaternion<float>()));
-    auto characterController = CharacterController(std::move(character), CharacterControllerConfig(), *physicsWorld);
+    auto characterController = constructCharacter(*physicsWorld, Point3(0.0f, 50.0f, 0.0f));
+    float characterHeight = characterController->getCurrentCharacterHeight();
     physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
 
-    characterController.update(3.0f); //simulate a big frame drop
-    float posYAfterFrameDrop = characterController.getPhysicsCharacter().getTransform().getPosition().Y;
+    characterController->update(3.0f); //simulate a big frame drop
+    float posYAfterFrameDrop = characterController->getPhysicsCharacter().getTransform().getPosition().Y;
     AssertHelper::assertTrue(posYAfterFrameDrop > characterHeight / 2.0f - 0.01f, "Character must not go through the floor. Position Y: " + std::to_string(posYAfterFrameDrop));
 
-    for (std::size_t i = 0; i < 300; ++i) {
-        physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
-        characterController.update(1.0f / 60.0f);
-    }
-    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
+    simulate(*physicsWorld, *characterController, 300);
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
 }
 
 void CharacterControllerIT::ccdMovingCharacter() {
@@ -161,6 +149,71 @@ void CharacterControllerIT::ccdMovingCharacter() {
     AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Z, -9.75f, 0.15f);
 }
 
+void CharacterControllerIT::crouchAndStandUp() {
+    auto physicsWorld = std::make_unique<PhysicsWorld>();
+    constructBoxFloor(*physicsWorld);
+    auto characterController = constructCharacter(*physicsWorld, Point3(0.0f, 1.0f, 0.0f));
+    simulate(*physicsWorld, *characterController, 30);
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.01f);
+
+    characterController->crouch(true);
+    simulate(*physicsWorld, *characterController, 30);
+    AssertHelper::assertTrue(characterController->isCrouched(), "Character must be crouched");
+    AssertHelper::assertFloatEquals(characterController->getCurrentCharacterHeight(), 1.0f);
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.01f); //standing body position
+
+    characterController->jump();
+    simulate(*physicsWorld, *characterController, 10);
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.01f); //standing body position
+
+    characterController->crouch(false);
+    simulate(*physicsWorld, *characterController, 30);
+    AssertHelper::assertFalse(characterController->isCrouched(), "Character must be standing");
+    AssertHelper::assertFloatEquals(characterController->getCurrentCharacterHeight(), 2.0f);
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.01f);
+}
+
+void CharacterControllerIT::crouchUnderCeiling() {
+    auto physicsWorld = std::make_unique<PhysicsWorld>();
+    constructBoxFloor(*physicsWorld);
+    constructCeiling(*physicsWorld, 1.5f);
+    auto characterController = constructCharacter(*physicsWorld, Point3(0.0f, 1.0f, 5.0f));
+    simulate(*physicsWorld, *characterController, 10);
+
+    //crouch and move under the ceiling
+    characterController->crouch(true);
+    characterController->walk(Vector3(0.0f, 0.0f, -2.0f));
+    simulate(*physicsWorld, *characterController, 150);
+    float posZ = characterController->getPhysicsCharacter().getTransform().getPosition().Z;
+    AssertHelper::assertTrue(posZ > -1.5f && posZ < 1.5f, "Character must be under the ceiling. Position Z: " + std::to_string(posZ));
+
+    //stand up is not possible under the ceiling
+    characterController->crouch(false);
+    simulate(*physicsWorld, *characterController, 30);
+    AssertHelper::assertTrue(characterController->isCrouched(), "Character must stay crouched under the ceiling");
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.01f); //standing body position
+
+    //stand up automatically once out of the ceiling
+    characterController->walk(Vector3(0.0f, 0.0f, -2.0f));
+    simulate(*physicsWorld, *characterController, 180);
+    AssertHelper::assertFalse(characterController->isCrouched(), "Character must stand up once out of the ceiling");
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.01f); //standing body position
+}
+
+void CharacterControllerIT::crouchImmediatelyUnderCeiling() {
+    auto physicsWorld = std::make_unique<PhysicsWorld>();
+    constructBoxFloor(*physicsWorld);
+    constructCeiling(*physicsWorld, 1.5f);
+    auto characterController = constructCharacter(*physicsWorld, Point3(0.0f, 1.0f, 0.0f)); //standing body would penetrate the ceiling
+
+    characterController->crouchImmediately();
+    characterController->crouch(false); //stand up request: not possible under the ceiling
+    simulate(*physicsWorld, *characterController, 30);
+
+    AssertHelper::assertTrue(characterController->isCrouched(), "Character must stay crouched under the ceiling");
+    AssertHelper::assertFloatEquals(characterController->getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.01f);
+}
+
 void CharacterControllerIT::constructHeightfieldFloor(PhysicsWorld& physicsWorld) const {
     std::vector groundPoints = {
             Point3(-100.0f, 0.0f, -100.0f), Point3(100.0f, 0.0f, -100.0f),
@@ -181,6 +234,28 @@ void CharacterControllerIT::constructWall(PhysicsWorld& physicsWorld) const {
     auto wallShape = std::make_unique<CollisionBoxShape>(Vector3(100.0f, 100.0f, 0.15f));
     auto wallBody = std::make_unique<RigidBody>("wall", PhysicsTransform(Point3(0.0f, 0.0f, -10.0f), Quaternion<float>()), std::move(wallShape));
     physicsWorld.getBodyContainer().addBody(std::move(wallBody));
+}
+
+void CharacterControllerIT::constructCeiling(PhysicsWorld& physicsWorld, float ceilingBottomY) const {
+    auto ceilingShape = std::make_unique<CollisionBoxShape>(Vector3(2.0f, 0.1f, 2.0f));
+    auto ceilingBody = std::make_unique<RigidBody>("ceiling", PhysicsTransform(Point3(0.0f, ceilingBottomY + 0.1f, 0.0f), Quaternion<float>()), std::move(ceilingShape));
+    physicsWorld.getBodyContainer().addBody(std::move(ceilingBody));
+}
+
+std::unique_ptr<CharacterController> CharacterControllerIT::constructCharacter(PhysicsWorld& physicsWorld, const Point3<float>& position) const {
+    auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //height: 2.0
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(position, Quaternion<float>()), 1.0f);
+    CharacterControllerConfig characterControllerConfig;
+    characterControllerConfig.setMaxWalkSpeed(5.0f);
+    characterControllerConfig.setMaxWalkSpeedWhenCrouched(2.0f);
+    return std::make_unique<CharacterController>(std::move(character), characterControllerConfig, physicsWorld);
+}
+
+void CharacterControllerIT::simulate(PhysicsWorld& physicsWorld, CharacterController& characterController, std::size_t numberOfSteps) const {
+    for (std::size_t i = 0; i < numberOfSteps; ++i) {
+        physicsWorld.getCollisionWorld().process(1.0f / 60.0f, Vector3(0.0f, -9.81f, 0.0f));
+        characterController.update(1.0f / 60.0f);
+    }
 }
 
 std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(PhysicsWorld& physicsWorld, float cubeLength) const {
@@ -210,6 +285,10 @@ CppUnit::Test* CharacterControllerIT::suite() {
     suite->addTest(new CppUnit::TestCaller("ccdFallingCharacter", &CharacterControllerIT::ccdFallingCharacter));
     suite->addTest(new CppUnit::TestCaller("ccdFallingCharacterAfterFrameDrop", &CharacterControllerIT::ccdFallingCharacterAfterFrameDrop));
     suite->addTest(new CppUnit::TestCaller("ccdMovingCharacter", &CharacterControllerIT::ccdMovingCharacter));
+
+    suite->addTest(new CppUnit::TestCaller("crouchAndStandUp", &CharacterControllerIT::crouchAndStandUp));
+    suite->addTest(new CppUnit::TestCaller("crouchUnderCeiling", &CharacterControllerIT::crouchUnderCeiling));
+    suite->addTest(new CppUnit::TestCaller("crouchImmediatelyUnderCeiling", &CharacterControllerIT::crouchImmediatelyUnderCeiling));
 
     return suite;
 }

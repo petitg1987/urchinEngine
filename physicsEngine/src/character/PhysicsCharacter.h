@@ -24,7 +24,7 @@ namespace urchin {
             float mass;
             std::unique_ptr<const CollisionShape3D> standingShape;
             float crouchHeight;
-            PhysicsTransform transform; //transform of the standing character (even when the character is crouching)
+            PhysicsTransform transform; //transform of the standing character (even when the character is crouched)
     };
 
 }
