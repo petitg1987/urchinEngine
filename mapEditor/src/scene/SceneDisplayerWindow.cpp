@@ -159,6 +159,7 @@ namespace urchin {
     void SceneDisplayerWindow::closeMap() {
         statusBarController.clearState();
         sceneDisplayer.reset(nullptr);
+        ResourceContainer::instance().cleanResources();
     }
 
     void SceneDisplayerWindow::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {
