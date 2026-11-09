@@ -36,6 +36,7 @@ namespace urchin {
             void createOrUpdateRendering();
             void createOrUpdateTextures();
             void createOrUpdateModelSetDisplayer();
+            std::unique_ptr<ShaderConstants> buildShaderConstants() const;
 
             bool isTestMode;
             LightManager& lightManager;
@@ -49,6 +50,7 @@ namespace urchin {
 
             mutable SortUserData sortUserData;
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
+            std::unique_ptr<ModelSetDisplayer> depthModelSetDisplayer;
     };
 
 }

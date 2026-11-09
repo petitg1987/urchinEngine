@@ -49,7 +49,32 @@ namespace urchin {
         renderTarget->initialize();
     }
 
+    //TODO check method code + check without TAA
     void TransparentManager::createOrUpdateModelSetDisplayer() {
+        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_NO_INSTANCING_MODE /* no objects instancing as the objects must be drawn in order */);
+        modelSetDisplayer->setupShader("modelTransparent.vert.spv", "modelTransparent.frag.spv", buildShaderConstants());
+        modelSetDisplayer->setupDepthOperations(true, false);
+        modelSetDisplayer->setupBlendFunctions({BlendFunction::buildDefault()});
+        modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
+        modelSetDisplayer->setupFaceCull(false);
+        modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
+        modelSetDisplayer->initialize(*renderTarget);
+
+        //Write the depth of the mostly opaque transparent fragments once all the transparent models are drawn.
+        //Done in a separate displayer to not alter the blending between the transparent models.
+        //The depth is required by the post-processes using the depth buffer: without it, the TAA reprojects the transparent models with the depth of the models behind them (blurry/ghosting on camera move).
+        depthModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_NO_INSTANCING_MODE);
+        depthModelSetDisplayer->setupShader("modelTransparent.vert.spv", "modelTransparentDepth.frag.spv", buildShaderConstants());
+        depthModelSetDisplayer->setupDepthOperations(true, true);
+        depthModelSetDisplayer->setupBlendFunctions({BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE, BlendFactor::ZERO, BlendFactor::ONE) /* keep the color unchanged */});
+        depthModelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
+        depthModelSetDisplayer->setupFaceCull(false);
+        depthModelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
+        depthModelSetDisplayer->initialize(*renderTarget);
+    }
+
+    //TODO check method code + check without TAA
+    std::unique_ptr<ShaderConstants> TransparentManager::buildShaderConstants() const {
         ModelTransparentShaderConst modelTransparentConstData {
                 .maxLights = lightManager.getMaxLights(),
                 .maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR
@@ -58,16 +83,7 @@ namespace urchin {
                 sizeof(modelTransparentConstData.maxLights),
                 sizeof(modelTransparentConstData.maxEmissiveFactor)
         };
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &modelTransparentConstData);
-
-        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_NO_INSTANCING_MODE /* no objects instancing as the objects must be drawn in order */);
-        modelSetDisplayer->setupShader("modelTransparent.vert.spv", "modelTransparent.frag.spv", std::move(shaderConstants));
-        modelSetDisplayer->setupDepthOperations(true, false);
-        modelSetDisplayer->setupBlendFunctions({BlendFunction::buildDefault()});
-        modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
-        modelSetDisplayer->setupFaceCull(false);
-        modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
-        modelSetDisplayer->initialize(*renderTarget);
+        return std::make_unique<ShaderConstants>(variablesSize, &modelTransparentConstData);
     }
 
     const ModelSetDisplayer& TransparentManager::getModelSetDisplayer() const {
@@ -76,11 +92,15 @@ namespace urchin {
 
     void TransparentManager::replaceAllModels(const std::vector<Model*>& models) const {
         modelSetDisplayer->setModelsToDisplay(models);
+        depthModelSetDisplayer->setModelsToDisplay(models);
     }
 
     void TransparentManager::removeModel(Model* model) const {
         if (modelSetDisplayer) {
             modelSetDisplayer->unregisterModel(model);
+        }
+        if (depthModelSetDisplayer) {
+            depthModelSetDisplayer->unregisterModel(model);
         }
     }
 
@@ -116,6 +136,8 @@ namespace urchin {
 
         renderTarget->disableAllProcessors();
         modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix(), modelSorter, &sortUserData);
+        renderingOrder++;
+        depthModelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix());
         renderTarget->render(frameCount, numDependenciesToTransparentTextures);
     }
 
