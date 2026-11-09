@@ -56,7 +56,6 @@ namespace urchin {
         modelSetDisplayer->setupDepthOperations(true, false);
         modelSetDisplayer->setupBlendFunctions({BlendFunction::buildDefault()});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
-        modelSetDisplayer->setupFaceCull(false);
         modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
         modelSetDisplayer->initialize(*renderTarget);
 
@@ -68,7 +67,6 @@ namespace urchin {
         depthModelSetDisplayer->setupDepthOperations(true, true);
         depthModelSetDisplayer->setupBlendFunctions({BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE, BlendFactor::ZERO, BlendFactor::ONE) /* keep the color unchanged */});
         depthModelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
-        depthModelSetDisplayer->setupFaceCull(false);
         depthModelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
         depthModelSetDisplayer->initialize(*renderTarget);
     }
