@@ -257,7 +257,6 @@ namespace urchin {
         VkMemoryBarrier2 memoryBarrier{};
         memoryBarrier.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2_KHR;
         memoryBarrier.pNext = nullptr;
-        //TODO check validation layer
         //Before move on to the current sub-pass, the previous sub-pass must have finished the defined stages in this variable:
         memoryBarrier.srcStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS_BIT;
         //The current sub-pass can be executed until the specified stage and then must wait the previous sub-pass reach the stage specified in 'srcStageMask':
