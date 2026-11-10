@@ -198,7 +198,7 @@ namespace urchin {
 
      void Text::retrieveVertexCoordinates(std::vector<Point2<float>>& vertexCoord) {
         assert(vertexCoord.empty());
-        vertexCoord.reserve(baseText.size() * 4);
+        vertexCoord.reserve(baseText.size() * 6);
 
         float offsetY = 0.0f;
         for (const TextLine& textLine : cutTextLines) { //each line
@@ -233,7 +233,7 @@ namespace urchin {
 
      void Text::retrieveTextureCoordinates(std::vector<Point2<float>>& textureCoord) {
         assert(textureCoord.empty());
-        textureCoord.reserve(baseText.size() * 4);
+        textureCoord.reserve(baseText.size() * 6);
 
         for (const TextLine& textLine : cutTextLines) { //each line
             for (char32_t textLetter : textLine.text) { //each letter

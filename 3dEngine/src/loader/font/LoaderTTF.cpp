@@ -74,7 +74,7 @@ namespace urchin {
             glyph[i].bitmapHeight = face->glyph->bitmap.rows;
             glyph[i].buf.clear();
 
-            if (glyph[i].bitmapWidth > 0 && glyph[i].bitmapWidth > 0) {
+            if (glyph[i].bitmapWidth > 0 && glyph[i].bitmapHeight > 0) {
                 glyph[i].buf.resize(glyph[i].bitmapWidth * glyph[i].bitmapHeight);
                 for (unsigned int j = 0; j < (glyph[i].bitmapWidth * glyph[i].bitmapHeight); j++) {
                     glyph[i].buf[j] = face->glyph->bitmap.buffer[j];
