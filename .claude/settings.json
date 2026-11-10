@@ -8,7 +8,7 @@
     "additionalDirectories": [
       "../urchinEngineTest",
       "../../photonEngineer",
-      "../../stationTropale"
+      "../../yms"
     ],
     "ask": [
       "Bash(rm -rf:*)",
