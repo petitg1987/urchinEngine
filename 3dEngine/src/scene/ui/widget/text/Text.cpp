@@ -237,13 +237,11 @@ namespace urchin {
 
         for (const TextLine& textLine : cutTextLines) { //each line
             for (char32_t textLetter : textLine.text) { //each letter
-                auto letterWidth = (float)font->getGlyph(textLetter).bitmapWidth;
-                auto letterHeight = (float)font->getGlyph(textLetter).bitmapHeight;
-
-                float sMin = (float)(textLetter % 16) / 16.0f;
-                float tMin = (float)(textLetter >> 4u) / 16.0f;
-                float sMax = sMin + (letterWidth / (float)font->getDimensionTexture());
-                float tMax = tMin + (letterHeight / (float)font->getDimensionTexture());
+                const Glyph& glyph = font->getGlyph(textLetter);
+                float sMin = glyph.texCoordTopLeft.X;
+                float tMin = glyph.texCoordTopLeft.Y;
+                float sMax = glyph.texCoordBottomRight.X;
+                float tMax = glyph.texCoordBottomRight.Y;
 
                 textureCoord.emplace_back(sMin, tMin);
                 textureCoord.emplace_back(sMax, tMin);

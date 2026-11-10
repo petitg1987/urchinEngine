@@ -15,6 +15,8 @@ namespace urchin {
         int shiftY;
         int letterWidth;
         int letterHeight;
+        Point2<float> texCoordTopLeft;
+        Point2<float> texCoordBottomRight;
         std::vector<unsigned char> buf;
     };
 

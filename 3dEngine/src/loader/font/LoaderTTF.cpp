@@ -113,7 +113,9 @@ namespace urchin {
         std::vector texels(textureSize * textureSize, fontColorRgba);
         for (unsigned int charOriginY = 0, charIndex = 0; charOriginY < textureSize; charOriginY += maxCharactersSize) {
             for (unsigned int charOriginX = 0; charOriginX < textureSize; charOriginX += maxCharactersSize, charIndex++) {
-                const Glyph& currentGlyph = glyph[charIndex];
+                Glyph& currentGlyph = glyph[charIndex];
+                currentGlyph.texCoordTopLeft = Point2((float)charOriginX / (float)textureSize, (float)charOriginY / (float)textureSize);
+                currentGlyph.texCoordBottomRight = Point2((float)(charOriginX + currentGlyph.bitmapWidth) / (float)textureSize, (float)(charOriginY + currentGlyph.bitmapHeight) / (float)textureSize);
                 for (unsigned int glyphY = 0, glyphBufIndex = 0; glyphY < currentGlyph.bitmapHeight; glyphY++) {
                     std::size_t rowStartIndex = (charOriginY + glyphY) * textureSize;
                     for (unsigned int glyphX = 0; glyphX < currentGlyph.bitmapWidth; glyphX++, glyphBufIndex++) {
