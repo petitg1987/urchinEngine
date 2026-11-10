@@ -53,6 +53,9 @@ void main() {
         vec3 modelAmbient = albedo.rgb * meshData.ambientFactor;
         fragColor = vec4(lightsData.globalAmbient, albedo.a);
 
+        //emissive correction (emissive materials generally don't reflect well the direct light)
+        float lightingFactor = smoothstep(0.0, 1.0, 1.0 - emissiveFactor);
+
         for (int lightIndex = 0; lightIndex < lightsData.lightsCount; ++lightIndex) {
             LightInfo lightInfo = lightsData.lightsInfo[lightIndex];
 
@@ -65,7 +68,7 @@ void main() {
 
             vec3 ambient = lightInfo.lightColor * modelAmbient;
 
-            fragColor.rgb += lightAttenuation * ((albedo.rgb * lightValues.NdotL) + ambient);
+            fragColor.rgb += lightAttenuation * ((albedo.rgb * lightValues.NdotL * lightingFactor) + ambient);
         }
         fragColor.rgb += albedo.rgb * emissiveFactor;
     } else { //do not apply lighting
