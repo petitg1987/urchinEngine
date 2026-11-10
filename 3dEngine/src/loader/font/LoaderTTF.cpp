@@ -75,8 +75,13 @@ namespace urchin {
             glyph[i].bitmapHeight = face->glyph->bitmap.rows;
 
             if (glyph[i].bitmapWidth > 0 && glyph[i].bitmapHeight > 0) {
-                const unsigned char* bitmapBuffer = face->glyph->bitmap.buffer;
-                glyphBitmaps[i].assign(bitmapBuffer, bitmapBuffer + (std::size_t)glyph[i].bitmapWidth * glyph[i].bitmapHeight);
+                const FT_Bitmap& bitmap = face->glyph->bitmap;
+                assert(bitmap.pitch >= 0);
+                glyphBitmaps[i].resize((std::size_t)glyph[i].bitmapWidth * glyph[i].bitmapHeight);
+                for (unsigned int row = 0; row < glyph[i].bitmapHeight; ++row) {
+                    const unsigned char* sourceRowStart = bitmap.buffer + row * (unsigned int)bitmap.pitch;
+                    std::copy_n(sourceRowStart, glyph[i].bitmapWidth, glyphBitmaps[i].begin() + (row * glyph[i].bitmapWidth));
+                }
             }
         }
 
