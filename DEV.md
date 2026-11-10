@@ -2,13 +2,17 @@
 ## Linux
 * Install required libraries:
   ```
-  cd /home/greg/ && wget https://sdk.lunarg.com/sdk/download/1.4.363.0/linux/vulkansdk-linux-x86_64-1.4.363.0.tar.xz
-  tar -xJf vulkansdk-linux-x86_64-1.4.363.0.tar.xz
-  sudo mv ./1.4.363.0 /opt/vulkan-sdk
-  rm vulkansdk-linux-x86_64-1.4.363.0.tar.xz
-  echo 'export VULKAN_SDK=/opt/vulkan-sdk/x86_64' >> ~/.bashrc
-  echo 'export PATH=$VULKAN_SDK/bin:$PATH' >> ~/.bashrc
+  cd /home/greg/ && wget https://sdk.lunarg.com/sdk/download/1.4.363.1/linux/vulkansdk-linux-x86_64-1.4.363.1.tar.xz
+  tar -xJf vulkansdk-linux-x86_64-1.4.363.1.tar.xz
+  sudo rm -r /opt/vulkan-sdk
+  sudo mkdir -p /opt/vulkan-sdk
+  sudo cp -a ./1.4.363.1/. /opt/vulkan-sdk
+  rm -r ./1.4.363.1
+  rm vulkansdk-linux-x86_64-1.4.363.1.tar.xz
+  grep -qxF 'export VULKAN_SDK=/opt/vulkan-sdk/x86_64' ~/.bashrc || echo 'export VULKAN_SDK=/opt/vulkan-sdk/x86_64' >> ~/.bashrc
+  grep -qxF 'export PATH=$VULKAN_SDK/bin:$PATH' ~/.bashrc || echo 'export PATH=$VULKAN_SDK/bin:$PATH' >> ~/.bashrc
   source ~/.bashrc
+  sudo rm /usr/local/bin/glslc
   sudo ln -s /opt/vulkan-sdk/x86_64/bin/glslc /usr/local/bin/glslc #for Clion which do not read ~/.bashrc
   sudo apt install vulkan-tools vulkan-validationlayers
 
