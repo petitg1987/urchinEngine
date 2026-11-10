@@ -16,7 +16,11 @@ else()
     if(${CMAKE_VERSION} VERSION_LESS "3.24.0") #for build in Docker image
         set(CURL_LIB curl.a ssl.a crypto.a z.a nghttp2.a)
     else()
-        set(CURL_LIB curl.a ssl.a crypto.a z.a nghttp2.a zstd.a jitterentropy.a)
+        set(CURL_LIB curl.a ssl.a crypto.a z.a nghttp2.a zstd.a)
+        find_library(JITTERENTROPY_LIB NAMES libjitterentropy.a) #required by OpenSSL >= 3.5 only
+        if (JITTERENTROPY_LIB)
+            list(APPEND CURL_LIB ${JITTERENTROPY_LIB})
+        endif()
     endif()
 endif()
 
