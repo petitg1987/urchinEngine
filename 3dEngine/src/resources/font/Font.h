@@ -17,7 +17,6 @@ namespace urchin {
         int letterHeight;
         Point2<float> texCoordTopLeft;
         Point2<float> texCoordBottomRight;
-        std::vector<unsigned char> buf;
     };
 
     class Font final : public Resource {

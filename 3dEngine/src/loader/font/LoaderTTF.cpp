@@ -39,6 +39,7 @@ namespace urchin {
 
         //filled the struct_glyph
         std::array<Glyph, UnicodeUtil::NUM_CHARACTERS> glyph{};
+        std::array<std::vector<unsigned char>, UnicodeUtil::NUM_CHARACTERS> glyphBitmaps;
         FT_UInt glyphIndex = FT_Get_Char_Index(face, 65);
         if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
             FT_Done_Face(face);
@@ -72,13 +73,10 @@ namespace urchin {
             glyph[i].letterHeight = (int)(face->glyph->bitmap.rows);
             glyph[i].bitmapWidth = face->glyph->bitmap.width;
             glyph[i].bitmapHeight = face->glyph->bitmap.rows;
-            glyph[i].buf.clear();
 
             if (glyph[i].bitmapWidth > 0 && glyph[i].bitmapHeight > 0) {
-                glyph[i].buf.resize(glyph[i].bitmapWidth * glyph[i].bitmapHeight);
-                for (unsigned int j = 0; j < (glyph[i].bitmapWidth * glyph[i].bitmapHeight); j++) {
-                    glyph[i].buf[j] = face->glyph->bitmap.buffer[j];
-                }
+                const unsigned char* bitmapBuffer = face->glyph->bitmap.buffer;
+                glyphBitmaps[i].assign(bitmapBuffer, bitmapBuffer + (std::size_t)glyph[i].bitmapWidth * glyph[i].bitmapHeight);
             }
         }
 
@@ -88,7 +86,6 @@ namespace urchin {
             height = std::max(height, glyph[(std::size_t)i].bitmapHeight);
         }
         unsigned int spaceBetweenLines = MathFunction::roundToUInt((float)face->size->metrics.height / 64.0f);
-        glyph[(int)' '].bitmapWidth = MathFunction::roundToUInt((float)glyph[(int)'A'].bitmapWidth * 0.4f);
 
         FT_Done_Face(face);
         FT_Done_FreeType(library);
@@ -114,13 +111,14 @@ namespace urchin {
         for (unsigned int charOriginY = 0, charIndex = 0; charOriginY < textureSize; charOriginY += maxCharactersSize) {
             for (unsigned int charOriginX = 0; charOriginX < textureSize; charOriginX += maxCharactersSize, charIndex++) {
                 Glyph& currentGlyph = glyph[charIndex];
+                const std::vector<unsigned char>& currentGlyphBitmap = glyphBitmaps[charIndex];
                 currentGlyph.texCoordTopLeft = Point2((float)charOriginX / (float)textureSize, (float)charOriginY / (float)textureSize);
                 currentGlyph.texCoordBottomRight = Point2((float)(charOriginX + currentGlyph.bitmapWidth) / (float)textureSize, (float)(charOriginY + currentGlyph.bitmapHeight) / (float)textureSize);
                 for (unsigned int glyphY = 0, glyphBufIndex = 0; glyphY < currentGlyph.bitmapHeight; glyphY++) {
                     std::size_t rowStartIndex = (charOriginY + glyphY) * textureSize;
                     for (unsigned int glyphX = 0; glyphX < currentGlyph.bitmapWidth; glyphX++, glyphBufIndex++) {
                         std::size_t texelIndex = rowStartIndex + (charOriginX + glyphX);
-                        texels[texelIndex][3] = currentGlyph.buf[glyphBufIndex];
+                        texels[texelIndex][3] = currentGlyphBitmap[glyphBufIndex];
                     }
                 }
             }
@@ -130,12 +128,6 @@ namespace urchin {
         auto alphabetTexture = Texture::build(ttfFilename, textureSize, textureSize, TextureFormat::RGBA_8_UINT_NORM, texels.data(), transparencyData, TextureDataType::INT_8);
         if (useMipmap) {
             alphabetTexture->enableMipmap();
-        }
-
-        //clear buffers of characters
-        for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS; i++) {
-            glyph[i].buf.clear();
-            glyph[i].buf.shrink_to_fit();
         }
 
         return std::make_shared<Font>(fontSize, fontColor, alphabetTexture, glyph, spaceBetweenLines, height);
