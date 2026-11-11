@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <optional>
 
 #include "scene/ui/widget/staticbitmap/WidthSize.h"
 #include "scene/ui/widget/staticbitmap/HeightSize.h"
@@ -18,6 +19,8 @@ namespace urchin {
             static std::shared_ptr<StaticBitmap> create(Widget*, Position, Size, const std::string&);
             static std::shared_ptr<StaticBitmap> create(Widget*, Position, WidthSize, const std::string&);
             static std::shared_ptr<StaticBitmap> create(Widget*, Position, HeightSize, const std::string&);
+            static std::shared_ptr<StaticBitmap> createRepeated(Widget*, Position, Size, Size, const std::string&);
+            static std::shared_ptr<StaticBitmap> createRepeated(Widget*, Position, Size, HeightSize, const std::string&);
 
             WidgetType getWidgetType() const override;
 
@@ -29,17 +32,22 @@ namespace urchin {
             void updateTexture(std::shared_ptr<Texture>);
             const std::string& getTextureName() const;
 
+            void retrieveTextureCoordinates(std::vector<Point2<float>>&) override;
+            TextureParam::ReadMode getTextureReadMode() const override;
+
         private:
-            StaticBitmap(Position, Size, std::shared_ptr<Texture>);
+            StaticBitmap(Position, Size, std::shared_ptr<Texture>, std::optional<Size>);
 
             void createOrUpdateWidget() override;
             bool requireRenderer() const override;
             std::size_t getImplementationInstanceId() const override;
 
             static std::shared_ptr<Texture> buildTexture(const std::string&);
+            Point2<float> computeRepeatTileSizeInPixel() const;
 
             //visual
             std::shared_ptr<Texture> texture;
+            std::optional<Size> repeatTileSize;
     };
 
 }

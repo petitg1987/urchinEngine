@@ -84,7 +84,7 @@ namespace urchin {
             rendererBuilder->setScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
         }
 
-        rendererBuilder->addUniformTextureReader(TEX_UNIFORM_BINDING, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+        rendererBuilder->addUniformTextureReader(TEX_UNIFORM_BINDING, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(getReferenceWidget().getTextureReadMode(), TextureParam::LINEAR, getTextureAnisotropy())));
 
         renderer = rendererBuilder->build();
 
@@ -92,7 +92,7 @@ namespace urchin {
     }
 
     void WidgetInstanceDisplayer::updateTexture() const {
-        renderer->updateUniformTextureReader(TEX_UNIFORM_BINDING, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+        renderer->updateUniformTextureReader(TEX_UNIFORM_BINDING, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(getReferenceWidget().getTextureReadMode(), TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
     void WidgetInstanceDisplayer::updateScissor() const {

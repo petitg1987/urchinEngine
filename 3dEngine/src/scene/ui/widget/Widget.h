@@ -14,6 +14,7 @@
 #include "scene/ui/ClipboardLocal.h"
 #include "scene/ui/VirtualKeyboard.h"
 #include "scene/ui/displayer/WidgetDisplayable.h"
+#include "graphics/api/GraphicsApi.h"
 #include "i18n/I18nService.h"
 
 namespace urchin {
@@ -101,6 +102,7 @@ namespace urchin {
             const std::shared_ptr<Texture>& getTexture() const;
             virtual void retrieveVertexCoordinates(std::vector<Point2<float>>&);
             virtual void retrieveTextureCoordinates(std::vector<Point2<float>>&);
+            virtual TextureParam::ReadMode getTextureReadMode() const;
             std::optional<Scissor> retrieveScissor() const;
 
             template<class T> float widthLengthToPixel(float, LengthType, const T&) const;

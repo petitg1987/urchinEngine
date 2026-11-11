@@ -514,6 +514,10 @@ namespace urchin {
         textureCoord.emplace_back(0.0f, 1.0f);
     }
 
+    TextureParam::ReadMode Widget::getTextureReadMode() const {
+        return TextureParam::EDGE_CLAMP;
+    }
+
     std::optional<Scissor> Widget::retrieveScissor() const {
         auto currentWidget = this;
         const Widget *scissorContainer = nullptr;
